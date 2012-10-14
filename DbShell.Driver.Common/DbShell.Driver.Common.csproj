@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CC233C46-AE79-4ADB-AE5C-B4BAE3FD2495}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DbShell.Driver.Common</RootNamespace>
+    <AssemblyName>DbShell.Driver.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AbstractDb\GenericDatabase.cs" />
+    <Compile Include="Sql\ColumnDisplay.cs" />
+    <Compile Include="Sql\SqlDumper.cs" />
+    <Compile Include="Sql\SqlDumper_FmtUtils.cs" />
+    <Compile Include="Sql\SqlDumper_Table.cs" />
+    <Compile Include="Structure\ArrayDimension.cs" />
+    <Compile Include="Structure\CommonTypeSystem.cs" />
+    <Compile Include="AbstractDb\DatabaseAnalyser.cs" />
+    <Compile Include="AbstractDb\DialectDataAdapterBase.cs" />
+    <Compile Include="AbstractDb\IDatabaseFactory.cs" />
+    <Compile Include="AbstractDb\ISqlDialect.cs" />
+    <Compile Include="AbstractDb\SqlDumperExtension.cs" />
+    <Compile Include="AbstractDb\SqlLiteralFormatter.cs" />
+    <Compile Include="CommonDataLayer\CdlErrors.cs" />
+    <Compile Include="CommonDataLayer\CdlInterfaces.cs" />
+    <Compile Include="AbstractDb\IDialectDataAdapter.cs" />
+    <Compile Include="CommonDataLayer\CdlAdapter.cs" />
+    <Compile Include="CommonDataLayer\CdlReaderExtension.cs" />
+    <Compile Include="CommonDataLayer\CdlRecordAdapter.cs" />
+    <Compile Include="CommonDataLayer\CdlRow.cs" />
+    <Compile Include="CommonDataLayer\CdlRowCollection.cs" />
+    <Compile Include="CommonDataLayer\CdlTable.cs" />
+    <Compile Include="CommonDataLayer\CdlValueConvertor.cs" />
+    <Compile Include="CommonDataLayer\CdlValueExtension.cs" />
+    <Compile Include="CommonDataLayer\CdlValueFormatter.cs" />
+    <Compile Include="CommonDataLayer\CdlValueHolder.cs" />
+    <Compile Include="CommonDataLayer\CdlValueParser.cs" />
+    <Compile Include="CommonDataLayer\CdlXml.cs" />
+    <Compile Include="CommonDataLayer\DataFormatSettings.cs" />
+    <Compile Include="CommonDataLayer\DataReaderAdapter.cs" />
+    <Compile Include="CommonDataLayer\DataScript.cs" />
+    <Compile Include="CommonDataLayer\DateTimeEx.cs" />
+    <Compile Include="CommonDataLayer\DateTimeExFormat.cs" />
+    <Compile Include="CommonDataLayer\DateTimeExParse.cs" />
+    <Compile Include="CommonDataLayer\InMemoryTable.cs" />
+    <Compile Include="DmlFramework\DmlfCommon.cs" />
+    <Compile Include="DmlFramework\DmlfCondition.cs" />
+    <Compile Include="DmlFramework\DmlfExpression.cs" />
+    <Compile Include="DmlFramework\DmlfExtension.cs" />
+    <Compile Include="DmlFramework\DmlfRelation.cs" />
+    <Compile Include="DmlFramework\DmlfSelect.cs" />
+    <Compile Include="Utility\EnumerableExtension.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AbstractDb\ISqlDumper.cs" />
+    <Compile Include="Structure\DatabaseInfo.cs" />
+    <Compile Include="Structure\NameDefs.cs" />
+    <Compile Include="Structure\StructureTool.cs" />
+    <Compile Include="Structure\TableInfo.cs" />
+    <Compile Include="Utility\ArrayDataRecord.cs" />
+    <Compile Include="Utility\CommandDataReader.cs" />
+    <Compile Include="Utility\DataReaderExtension.cs" />
+    <Compile Include="Utility\DataReaderProxy.cs" />
+    <Compile Include="Utility\DataRecordProxy.cs" />
+    <Compile Include="Utility\DataRowExtension.cs" />
+    <Compile Include="Utility\DataTableExtension.cs" />
+    <Compile Include="Utility\DbConnectionExtension.cs" />
+    <Compile Include="Utility\DictionaryExtension.cs" />
+    <Compile Include="Utility\Errors.cs" />
+    <Compile Include="Utility\GoSplitter.cs" />
+    <Compile Include="Utility\HashSetEx.cs" />
+    <Compile Include="Utility\InMemoryTableExtension.cs" />
+    <Compile Include="Utility\IOTool.cs" />
+    <Compile Include="Utility\ListProxy.cs" />
+    <Compile Include="Utility\ObjectExtension.cs" />
+    <Compile Include="Utility\PyList.cs" />
+    <Compile Include="Utility\ReflTools.cs" />
+    <Compile Include="Utility\SqlOutputStream.cs" />
+    <Compile Include="Utility\StreamExtension.cs" />
+    <Compile Include="Utility\StringTool.cs" />
+    <Compile Include="Utility\TypeTool.cs" />
+    <Compile Include="Utility\XmlTool.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

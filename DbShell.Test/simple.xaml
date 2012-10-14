@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ExportTable
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns="clr-namespace:DbShell.Core;assembly=DbShell.Core"
+    Source="{GetTable 'x11, 224324'}"
+    >
+    <ExportTable.Target>
+        <File />
+    </ExportTable.Target>
+</ExportTable>
+ 
