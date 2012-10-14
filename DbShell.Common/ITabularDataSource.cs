@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DbShell.Driver.Common.CommonDataLayer;
+using DbShell.Driver.Common.Structure;
 
 namespace DbShell.Common
 {
     public interface ITabularDataSource
     {
-        string GetData();
+        TableInfo GetRowFormat();
+        ICdlReader CreateReader();
     }
 }

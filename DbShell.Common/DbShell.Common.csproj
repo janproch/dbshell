@@ -47,6 +47,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IShellContext.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DbShell.Driver.Common\DbShell.Driver.Common.csproj">
+      <Project>{cc233c46-ae79-4adb-ae5c-b4bae3fd2495}</Project>
+      <Name>DbShell.Driver.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

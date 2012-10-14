@@ -453,6 +453,11 @@ namespace DbShell.Driver.Common.Utility
                 ((IExplicitXmlPersistent)o).SaveToXml(xml);
                 return;
             }
+            o.SaveProperties(xml);
+        }
+
+        public static void SavePropertiesCore(this object o, XmlElement xml)
+        {
             foreach (PropertyInfo prop in o.GetType().GetProperties())
             {
                 foreach (XmlAttribAttribute attr in prop.GetCustomAttributes(typeof(XmlAttribAttribute), true))
@@ -519,12 +524,17 @@ namespace DbShell.Driver.Common.Utility
 
         public static void LoadProperties(this object o, XmlElement xml)
         {
-            if (xml == null) return;
             if (o is IExplicitXmlPersistent)
             {
                 ((IExplicitXmlPersistent)o).LoadFromXml(xml);
                 return;
             }
+            o.LoadPropertiesCore(xml);
+        }
+
+        public static void LoadPropertiesCore(this object o, XmlElement xml)
+        {
+            if (xml == null) return;
             foreach (PropertyInfo prop in o.GetType().GetProperties())
             {
                 bool propHandled = false;

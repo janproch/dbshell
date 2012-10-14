@@ -6,7 +6,7 @@ using DbShell.Common;
 
 namespace DbShell.Core
 {
-    public class ExportTable : ElementBase, IRunnable
+    public class CopyTable : ElementBase, IRunnable
     {
         public ITabularDataSource Source { get; set; }
         public ITabularDataTarget Target { get; set; }

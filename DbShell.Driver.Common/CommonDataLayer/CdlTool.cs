@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections;
+using System.IO;
 using System.Xml;
 using System.Globalization;
 using DbShell.Driver.Common.Structure;
@@ -264,6 +265,32 @@ namespace DbShell.Driver.Common.CommonDataLayer
         {
             string xtype = xml.GetAttribute("t"), xdata = xml.InnerText;
             return GetValueFromXml(xtype, xdata);
+        }
+
+        public static void SkipRecord(BinaryReader fr)
+        {
+            int len = fr.Read7BitEncodedInteger();
+            fr.BaseStream.Seek(len, SeekOrigin.Current);
+        }
+
+        public static ArrayDataRecord LoadRecord(BinaryReader fr, TableInfo table)
+        {
+            var res = new ArrayDataRecord(table);
+            for (int i = 0; i < table.Columns.Count; i++)
+            {
+                res.SeekValue(i);
+                res.ReadValue(fr);
+            }
+            return res;
+        }
+
+        public static void LoadRecord(BinaryReader fr, ArrayDataRecord record)
+        {
+            for (int i = 0; i < record.FieldCount; i++)
+            {
+                record.SeekValue(i);
+                record.ReadValue(fr);
+            }
         }
     }
 }

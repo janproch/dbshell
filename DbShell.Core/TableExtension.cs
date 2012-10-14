@@ -6,14 +6,14 @@ using System.Windows.Markup;
 
 namespace DbShell.Core
 {
-    public class GetTable : MarkupExtension
+    public class TableExtension : MarkupExtension
     {
-        public GetTable()
+        public TableExtension()
         {
 
         }
 
-        public GetTable(string name)
+        public TableExtension(string name)
         {
             Name = name;
         }

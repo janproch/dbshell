@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.Structure;
 
 namespace DbShell.Driver.Common.Utility

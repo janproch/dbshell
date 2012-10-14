@@ -100,6 +100,11 @@ namespace DbShell.Driver.Common.CommonDataLayer
         bool Read();
     }
 
+    public interface ICdlWriter : IDisposable
+    {
+        void Write(ICdlRecord row);
+    }
+
     public interface ICdlValueParser
     {
         void ParseValue(string text, TypeStorage type, ICdlValueWriter writer);
