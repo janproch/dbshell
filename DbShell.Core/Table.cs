@@ -10,9 +10,14 @@ namespace DbShell.Core
     {
         public string Name { get; set; }
 
-        string ITabularDataSource.GetData()
+        Driver.Common.Structure.TableInfo ITabularDataSource.GetRowFormat()
         {
-            return Name;
+            throw new NotImplementedException();
+        }
+
+        Driver.Common.CommonDataLayer.ICdlReader ITabularDataSource.CreateReader()
+        {
+            throw new NotImplementedException();
         }
     }
 }

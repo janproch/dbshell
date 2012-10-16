@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="BinaryTableFile.cs" />
     <Compile Include="BinaryTableFileReader.cs" />
+    <Compile Include="BinaryTableFileWriter.cs" />
     <Compile Include="CoreLoader.cs" />
     <Compile Include="CopyTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

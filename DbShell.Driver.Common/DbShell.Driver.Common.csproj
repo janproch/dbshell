@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractDb\GenericDatabase.cs" />
+    <Compile Include="CommonDataLayer\StreamValueWriter.cs" />
     <Compile Include="CommonTypeSystem\DbDatetimeSubType.cs" />
     <Compile Include="CommonTypeSystem\DbSizeType.cs" />
     <Compile Include="CommonTypeSystem\DbTypeArray.cs" />

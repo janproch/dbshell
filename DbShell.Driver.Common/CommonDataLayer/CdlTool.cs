@@ -292,5 +292,16 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 record.ReadValue(fr);
             }
         }
+
+        public static void SaveRecord(int fldcount, ICdlRecord record, BinaryWriter stream)
+        {
+            var fw = new StreamValueWriter(stream);
+            if (fldcount != record.FieldCount) throw new InternalError("DBSH-00000 field count mitchmatch");
+            for (int i = 0; i < fldcount; i++)
+            {
+                record.ReadValue(i);
+                fw.ReadFrom(record);
+            }
+        }
     }
 }

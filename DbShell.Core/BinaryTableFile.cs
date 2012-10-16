@@ -56,7 +56,7 @@ namespace DbShell.Core
 
         ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat)
         {
-            _rowFormat = rowFormat;
+            return new BinaryTableFileWriter(Name, rowFormat);
         }
 
         TableInfo ITabularDataTarget.GetRowFormat()
