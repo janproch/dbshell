@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Batch.cs" />
     <Compile Include="BinaryTableFile.cs" />
     <Compile Include="BinaryTableFileReader.cs" />
     <Compile Include="BinaryTableFileWriter.cs" />

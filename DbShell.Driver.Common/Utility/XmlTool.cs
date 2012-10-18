@@ -538,8 +538,8 @@ namespace DbShell.Driver.Common.Utility
             foreach (PropertyInfo prop in o.GetType().GetProperties())
             {
                 bool propHandled = false;
-                MethodInfo mtd = prop.GetSetMethod();
-                if (mtd == null) continue; // not SET method available
+                //MethodInfo setMethod = prop.GetSetMethod();
+                //if (setMethod == null) continue; // not SET method available
                 string sval = null;
                 foreach (XmlAttribAttribute attr in prop.GetCustomAttributes(typeof(XmlAttribAttribute), true))
                 {
@@ -569,7 +569,7 @@ namespace DbShell.Driver.Common.Utility
                         {
                             try
                             {
-                                subval = prop.PropertyType.CreateNewInstance();
+                                subval = prop.PropertyType.CreateNewChildInstance(o);
                                 prop.CallSet(o, subval);
                             }
                             catch
@@ -614,7 +614,7 @@ namespace DbShell.Driver.Common.Utility
                         {
                             try
                             {
-                                colval = prop.PropertyType.CreateNewInstance();
+                                colval = prop.PropertyType.CreateNewChildInstance(o);
                                 prop.CallSet(o, colval);
                             }
                             catch
@@ -633,7 +633,7 @@ namespace DbShell.Driver.Common.Utility
                                 else
                                 {
                                     object item;
-                                    item = attr.ElemType.CreateNewInstance();
+                                    item = attr.ElemType.CreateNewChildInstance(o);
                                     item.LoadProperties(elem);
                                     ((IList)colval).Add(item);
                                 }
@@ -643,7 +643,8 @@ namespace DbShell.Driver.Common.Utility
                 }
                 if (propHandled) continue;
                 object val = PropertyFromString(prop, sval);
-                if (val != null) mtd.Invoke(o, new object[] { val });
+                if (val != null) prop.CallSet(o, val);
+                //mtd.Invoke(o, new object[] { val });
             }
         }
 

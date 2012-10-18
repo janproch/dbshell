@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Batch
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns="clr-namespace:DbShell.Core;assembly=DbShell.Core"
+    >
+    
+    <CopyTable>
+        <CopyTable.Source>
+            <Table Name="Album" Connection="sqlserver://MultipleActiveResultSets=True;Data Source=localhost\SQLEXPRESS;Integrated Security=SSPI;Initial Catalog=Chinook"/>
+        </CopyTable.Source>
+        <CopyTable.Target>
+            <BinaryTableFile Name="test1.cdl" />
+        </CopyTable.Target>
+    </CopyTable>
+
+    <CopyTable>
+        <CopyTable.Source>
+            <BinaryTableFile Name="test1.cdl" />
+        </CopyTable.Source>
+        <CopyTable.Target>
+            <BinaryTableFile Name="test2.cdl" />
+        </CopyTable.Target>
+    </CopyTable>
+
+</Batch>    

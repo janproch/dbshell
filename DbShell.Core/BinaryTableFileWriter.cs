@@ -24,11 +24,13 @@ namespace DbShell.Core
 
         public void Write(ICdlRecord row)
         {
+            _bw.Write(false);
             CdlTool.SaveRecord(row.FieldCount, row, _bw);
         }
 
         public void Dispose()
         {
+            _bw.Write(true);
             _bw.Close();
         }
     }

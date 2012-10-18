@@ -1,8 +1,11 @@
+using DbShell.Driver.Common.Utility;
+
 namespace DbShell.Driver.Common.Structure
 {
     public class PrimaryKeyInfo : ColumnsConstraintInfo
     {
-        public string ConstraintName;
+        [XmlElem]
+        public string ConstraintName { get; set; }
 
         public PrimaryKeyInfo(TableInfo table)
             :base(table)
