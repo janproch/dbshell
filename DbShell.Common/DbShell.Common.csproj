@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="IConnectionProvider.cs" />
     <Compile Include="IRunnable.cs" />
+    <Compile Include="IShellElement.cs" />
     <Compile Include="ITabularDataSource.cs" />
     <Compile Include="ITabularDataTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

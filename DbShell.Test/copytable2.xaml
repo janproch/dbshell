@@ -2,12 +2,10 @@
 <Batch
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns="clr-namespace:DbShell.Core;assembly=DbShell.Core"
+    Connection="sqlserver://MultipleActiveResultSets=True;Data Source=localhost\SQLEXPRESS;Integrated Security=SSPI;Initial Catalog=Chinook"
     >
     
-    <CopyTable>
-        <CopyTable.Source>
-            <Table Name="Album" Connection="sqlserver://MultipleActiveResultSets=True;Data Source=localhost\SQLEXPRESS;Integrated Security=SSPI;Initial Catalog=Chinook"/>
-        </CopyTable.Source>
+    <CopyTable Source="{Table Album}">
         <CopyTable.Target>
             <BinaryTableFile Name="test1.cdl" />
         </CopyTable.Target>

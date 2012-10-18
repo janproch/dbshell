@@ -26,5 +26,13 @@ namespace DbShell.Core
                 }
             }
         }
+
+        public override void EnumChildren(Action<IShellElement> enumFunc)
+        {
+            base.EnumChildren(enumFunc);
+
+            YieldChild(enumFunc, Source);
+            YieldChild(enumFunc, Target);
+        }
     }
 }

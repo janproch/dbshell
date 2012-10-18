@@ -20,6 +20,21 @@ namespace DbShell.Runtime
             {
                 object obj = XamlReader.Load(fr);
                 _main = (IRunnable) obj;
+                var element = _main as IShellElement;
+                if (element != null) AfterLoad(element);
+            }
+        }
+
+        private void AfterLoad(IShellElement element)
+        {
+            var connection = element.Connection;
+            if (connection != null)
+            {
+                element.EnumChildren(child =>
+                    {
+                        if (child.Connection == null) child.Connection = connection;
+                        AfterLoad(child);
+                    });
             }
         }
 
