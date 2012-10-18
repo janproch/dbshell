@@ -8,7 +8,7 @@ namespace DbShell.Common
 {
     public interface IShellContext
     {
-        IDatabase Database { get; set; }
+        IConnectionProvider ConnectionProvider { get; set; }
         string CurrentDirectory { get; set; }
     }
 }

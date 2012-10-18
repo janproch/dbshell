@@ -57,5 +57,11 @@ namespace DbShell.Driver.Common.Structure
         {
             this.LoadProperties(xml);
         }
+
+        public override string ToString()
+        {
+            if (FullName != null) return FullName.ToString();
+            return Name;
+        }
     }
 }

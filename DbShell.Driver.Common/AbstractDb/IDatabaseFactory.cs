@@ -17,7 +17,7 @@
 
         public virtual IDialectDataAdapter CreateDataAdapter()
         {
-            return null;
+            return new GenericDialectDataAdapter(this, new SqlFormatProperties());
         }
 
         public virtual ISqlDumper CreateDumper(ISqlOutputStream stream, SqlFormatProperties props)

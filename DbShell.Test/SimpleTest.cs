@@ -8,11 +8,11 @@ namespace DbShell.Test
     public class SimpleTest
     {
         [TestMethod]
-        [DeploymentItem("simple.xaml")]
+        [DeploymentItem("simple1.xaml")]
         public void TestXamlReader()
         {
             var runner = new ShellRunner();
-            runner.LoadFile("simple.xaml");
+            runner.LoadFile("simple1.xaml");
             runner.Run();
         }
 
@@ -22,6 +22,15 @@ namespace DbShell.Test
         {
             var runner = new ShellRunner();
             runner.LoadFile("simple2.xaml");
+            runner.Run();
+        }
+
+        [TestMethod]
+        [DeploymentItem("copytable1.xaml")]
+        public void CopyTable1Test()
+        {
+            var runner = new ShellRunner();
+            runner.LoadFile("copytable1.xaml");
             runner.Run();
         }
     }

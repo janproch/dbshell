@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DbShell.Common;
+using DbShell.Core.Utility;
 
 namespace DbShell.Core
 {
@@ -13,8 +14,17 @@ namespace DbShell.Core
 
         void IRunnable.Run(IShellContext context)
         {
-            string data = Source.GetData();
-            Target.PutData(data);
+            var table = Source.GetRowFormat();
+            using (var reader = Source.CreateReader())
+            {
+                using (var writer = Target.CreateWriter(table))
+                {
+                    while (reader.Read())
+                    {
+                        writer.Write(reader);
+                    }
+                }
+            }
         }
     }
 }

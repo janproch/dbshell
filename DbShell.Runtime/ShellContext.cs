@@ -8,7 +8,7 @@ namespace DbShell.Runtime
 {
     public class ShellContext : IShellContext, IDisposable
     {
-        public IDatabase Database { get; set; }
+        public IConnectionProvider ConnectionProvider { get; set; }
         public string CurrentDirectory { get; set; }
 
         /// <summary>

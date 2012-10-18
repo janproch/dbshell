@@ -2,6 +2,7 @@
 using System.Data;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.CommonDataLayer
 {
@@ -82,10 +83,10 @@ namespace DbShell.Driver.Common.CommonDataLayer
         {
             m_reader = reader;
             m_factory = factory;
-            //m_structure = reader.GetTableStructure(m_dialect);
+            m_structure = reader.GetTableInfo();
         }
 
-        #region IBedReader Members
+        #region ICdlReader Members
 
         public bool Read()
         {

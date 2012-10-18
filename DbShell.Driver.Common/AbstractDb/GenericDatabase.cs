@@ -14,7 +14,8 @@
     {
         public static readonly GenericDialectDataAdapter Instance = new GenericDialectDataAdapter(GenericDatabaseFactory.Instance, SqlFormatProperties.Default);
 
-        public GenericDialectDataAdapter(IDatabaseFactory factory, SqlFormatProperties props):base(factory)
+        public GenericDialectDataAdapter(IDatabaseFactory factory, SqlFormatProperties props)
+            : base(factory)
         {
         }
     }

@@ -15,7 +15,7 @@ namespace DbShell.Driver.SqlServer
 
         internal static string LoadEmbeddedResource(string name)
         {
-            using (Stream s = typeof(SqlServerDatabaseFactory).Assembly.GetManifestResourceStream("DataLibrary.MsSql." + name))
+            using (Stream s = typeof(SqlServerDatabaseFactory).Assembly.GetManifestResourceStream("DbShell.Driver.SqlServer." + name))
             {
                 if (s == null)
                     throw new InvalidOperationException("Could not find embedded resource");

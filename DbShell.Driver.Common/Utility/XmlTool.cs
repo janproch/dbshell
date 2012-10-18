@@ -453,7 +453,7 @@ namespace DbShell.Driver.Common.Utility
                 ((IExplicitXmlPersistent)o).SaveToXml(xml);
                 return;
             }
-            o.SaveProperties(xml);
+            o.SavePropertiesCore(xml);
         }
 
         public static void SavePropertiesCore(this object o, XmlElement xml)

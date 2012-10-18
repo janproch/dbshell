@@ -39,8 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ElementBase.cs" />
-    <Compile Include="IDatabase.cs" />
+    <Compile Include="IConnectionProvider.cs" />
     <Compile Include="IRunnable.cs" />
     <Compile Include="ITabularDataSource.cs" />
     <Compile Include="ITabularDataTarget.cs" />
