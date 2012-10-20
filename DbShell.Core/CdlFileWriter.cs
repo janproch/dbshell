@@ -9,11 +9,11 @@ using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core
 {
-    public class BinaryTableFileWriter : ICdlWriter
+    public class CdlFileWriter : ICdlWriter
     {
         private BinaryWriter _bw;
 
-        public BinaryTableFileWriter(string file, TableInfo table)
+        public CdlFileWriter(string file, TableInfo table)
         {
             var fw = new FileInfo(file).OpenWrite();
             _bw = new BinaryWriter(fw);

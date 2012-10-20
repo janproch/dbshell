@@ -9,12 +9,12 @@ using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core
 {
-    internal class BinaryTableFileReader : ArrayDataRecord, ICdlReader
+    internal class CdlFileReader : ArrayDataRecord, ICdlReader
     {
         private BinaryReader _fr;
         private bool _eof;
 
-        public BinaryTableFileReader(TableInfo table, BinaryReader fr)
+        public CdlFileReader(TableInfo table, BinaryReader fr)
             :base(table)
         {
             _fr = fr;

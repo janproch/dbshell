@@ -7,16 +7,16 @@
     
     <CopyTable Source="{Table Album}">
         <CopyTable.Target>
-            <BinaryTableFile Name="test1.cdl" />
+            <CdlFile Name="test1.cdl" />
         </CopyTable.Target>
     </CopyTable>
 
     <CopyTable>
         <CopyTable.Source>
-            <BinaryTableFile Name="test1.cdl" />
+            <CdlFile Name="test1.cdl" />
         </CopyTable.Source>
         <CopyTable.Target>
-            <BinaryTableFile Name="test2.cdl" />
+            <CdlFile Name="test2.cdl" />
         </CopyTable.Target>
     </CopyTable>
 

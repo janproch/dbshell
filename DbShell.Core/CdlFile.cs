@@ -12,7 +12,7 @@ using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core
 {
-    public class BinaryTableFile : ElementBase, ITabularDataSource, ITabularDataTarget
+    public class CdlFile : ElementBase, ITabularDataSource, ITabularDataTarget
     {
         public string Name { get; set; }
 
@@ -47,7 +47,7 @@ namespace DbShell.Core
             TableInfo table;
             BinaryReader br;
             OpenRead(out table, out br);
-            return new BinaryTableFileReader(table, br);
+            return new CdlFileReader(table, br);
         }
 
         bool ITabularDataTarget.AvailableRowFormat
@@ -57,7 +57,7 @@ namespace DbShell.Core
 
         ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat)
         {
-            return new BinaryTableFileWriter(Name, rowFormat);
+            return new CdlFileWriter(Name, rowFormat);
         }
 
         TableInfo ITabularDataTarget.GetRowFormat()

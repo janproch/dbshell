@@ -7,7 +7,7 @@
         <Table Name="Album" Connection="sqlserver://MultipleActiveResultSets=True;Data Source=localhost\SQLEXPRESS;Integrated Security=SSPI;Initial Catalog=Chinook"/>
     </CopyTable.Source>
     <CopyTable.Target>
-        <BinaryTableFile Name="c:\test\test.cdl" />
+        <CdlFile Name="c:\test\test.cdl" />
     </CopyTable.Target>
 </CopyTable>
  

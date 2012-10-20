@@ -8,7 +8,7 @@ using DbShell.Driver.Common.CommonDataLayer;
 
 namespace DbShell.Core
 {
-    public class Table : ElementBase, ITabularDataSource
+    public class Table : ElementBase, ITabularDataSource, ITabularDataTarget
     {
         //public string Schema { get; set; }
         public string Name { get; set; }
@@ -31,6 +31,21 @@ namespace DbShell.Core
             //var fmt = Connection.Factory.CreateDumper();
             cmd.CommandText = "SELECT * FROM [" + Name + "]";
             return dda.AdaptReader(cmd.ExecuteReader());
+        }
+
+        bool ITabularDataTarget.AvailableRowFormat
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        ICdlWriter ITabularDataTarget.CreateWriter(Driver.Common.Structure.TableInfo rowFormat)
+        {
+            throw new NotImplementedException();
+        }
+
+        Driver.Common.Structure.TableInfo ITabularDataTarget.GetRowFormat()
+        {
+            throw new NotImplementedException();
         }
     }
 }

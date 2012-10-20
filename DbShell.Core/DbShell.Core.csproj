@@ -41,9 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Batch.cs" />
-    <Compile Include="BinaryTableFile.cs" />
-    <Compile Include="BinaryTableFileReader.cs" />
-    <Compile Include="BinaryTableFileWriter.cs" />
+    <Compile Include="CdlFile.cs" />
+    <Compile Include="CdlFileReader.cs" />
+    <Compile Include="CdlFileWriter.cs" />
     <Compile Include="ConnectionProvider.cs" />
     <Compile Include="Utility\ConnectionTypeConverter.cs" />
     <Compile Include="CoreLoader.cs" />
