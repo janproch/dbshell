@@ -18,7 +18,7 @@ namespace DbShell.Core
 
         private void OpenRead(out TableInfo table, out BinaryReader br)
         {
-            var fr = new FileInfo(Name).OpenRead();
+            var fr = new FileInfo(Context.Replace(Name)).OpenRead();
             br = new BinaryReader(fr);
             string s = br.ReadString();
             var doc = new XmlDocument();
@@ -57,7 +57,7 @@ namespace DbShell.Core
 
         ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat)
         {
-            return new CdlFileWriter(Name, rowFormat);
+            return new CdlFileWriter(Context.Replace(Name), rowFormat);
         }
 
         TableInfo ITabularDataTarget.GetRowFormat()

@@ -5,6 +5,8 @@ using System.Text;
 using DbShell.Common;
 using DbShell.Core.Utility;
 using DbShell.Driver.Common.CommonDataLayer;
+using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core
 {
@@ -15,17 +17,24 @@ namespace DbShell.Core
 
         Driver.Common.Structure.TableInfo ITabularDataSource.GetRowFormat()
         {
+            var fullName = new NameWithSchema(Context.Replace(Schema), Context.Replace(Name));
             var db = GetDatabaseStructure();
-            return db.FindTable(Schema, Name);
+            var table = db.FindTable(fullName.Schema, fullName.Name);
+            if (table == null)
+            {
+                throw new Exception(String.Format("DBSH-00000 Table {0} not found", fullName));
+            }
+            return table;
         }
 
         Driver.Common.CommonDataLayer.ICdlReader ITabularDataSource.CreateReader()
         {
+            var fullName = new NameWithSchema(Context.Replace(Schema), Context.Replace(Name));
             var dda = Connection.Factory.CreateDataAdapter();
             var conn = Connection.Connect();
             var cmd = conn.CreateCommand();
-            //var fmt = Connection.Factory.CreateDumper();
-            cmd.CommandText = "SELECT * FROM [" + Name + "]";
+            var dialect = Connection.Factory.CreateDialect();
+            cmd.CommandText = "SELECT * FROM " + dialect.QuoteFullName(fullName);
             var reader = cmd.ExecuteReader();
             var result = dda.AdaptReader(reader);
             result.Disposing += () =>

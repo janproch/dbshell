@@ -118,6 +118,7 @@
     <Compile Include="Structure\PrimaryKeyInfo.cs" />
     <Compile Include="Structure\TableObjectInfo.cs" />
     <Compile Include="Structure\ViewInfo.cs" />
+    <Compile Include="Utility\DialectExtension.cs" />
     <Compile Include="Utility\EnumerableExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AbstractDb\ISqlDumper.cs" />

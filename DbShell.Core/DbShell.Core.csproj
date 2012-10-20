@@ -45,6 +45,11 @@
     <Compile Include="CdlFileReader.cs" />
     <Compile Include="CdlFileWriter.cs" />
     <Compile Include="ConnectionProvider.cs" />
+    <Compile Include="EvalExtension.cs" />
+    <Compile Include="ForEach.cs" />
+    <Compile Include="RunnableContainer.cs" />
+    <Compile Include="TablesExtension.cs" />
+    <Compile Include="TablesProvider.cs" />
     <Compile Include="Utility\ConnectionTypeConverter.cs" />
     <Compile Include="CoreLoader.cs" />
     <Compile Include="CopyTable.cs" />

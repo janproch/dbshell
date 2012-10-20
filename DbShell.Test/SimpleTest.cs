@@ -41,7 +41,6 @@ namespace DbShell.Test
             using (var runner = new ShellRunner())
             {
                 runner.LoadFile("simple1.xaml");
-                runner.Run();
             }
         }
     
@@ -52,7 +51,6 @@ namespace DbShell.Test
             using (var runner = new ShellRunner())
             {
                 runner.LoadFile("simple2.xaml");
-                runner.Run();
             }
         }
 
@@ -78,6 +76,17 @@ namespace DbShell.Test
             }
 
             Assert.IsTrue(FileCompare("test1.cdl", "test2.cdl"));
+        }
+
+        [TestMethod]
+        [DeploymentItem("copyalltables.xaml")]
+        public void CopyAllTablesTest()
+        {
+            using (var runner = new ShellRunner())
+            {
+                runner.LoadFile("copyalltables.xaml");
+                runner.Run();
+            }
         }
     }
 }

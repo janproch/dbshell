@@ -10,5 +10,11 @@ namespace DbShell.Common
     public interface IShellContext
     {
         DatabaseInfo GetDatabaseStructure(IConnectionProvider connection);
+
+        void SetVariable(string name, object value);
+        object Evaluate(string expression);
+        void EnterScope();
+        void LeaveScope();
+        string Replace(string replaceString);
     }
 }
