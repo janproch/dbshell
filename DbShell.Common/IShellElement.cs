@@ -8,6 +8,7 @@ namespace DbShell.Common
     public interface IShellElement
     {
         IConnectionProvider Connection { get; set; }
+        IShellContext Context { get; set; }
         void EnumChildren(Action<IShellElement> enumFunc);
     }
 }

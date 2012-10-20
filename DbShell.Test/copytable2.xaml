@@ -19,5 +19,4 @@
             <CdlFile Name="test2.cdl" />
         </CopyTable.Target>
     </CopyTable>
-
 </Batch>    

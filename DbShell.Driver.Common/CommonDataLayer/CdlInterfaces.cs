@@ -95,12 +95,17 @@ namespace DbShell.Driver.Common.CommonDataLayer
         void ReadValue(int i);
     }
 
-    public interface ICdlReader : ICdlRecord, IDisposable
+    public interface IHookableDisposable : IDisposable
+    {
+        event Action Disposing;
+    }
+
+    public interface ICdlReader : ICdlRecord, IHookableDisposable
     {
         bool Read();
     }
 
-    public interface ICdlWriter : IDisposable
+    public interface ICdlWriter : IHookableDisposable
     {
         void Write(ICdlRecord row);
     }

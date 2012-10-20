@@ -3,18 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DbShell.Common;
+using DbShell.Driver.Common.Structure;
 
 namespace DbShell.Runtime
 {
     public class ShellContext : IShellContext, IDisposable
     {
-        public IConnectionProvider ConnectionProvider { get; set; }
-        public string CurrentDirectory { get; set; }
+        private Dictionary<IConnectionProvider, DatabaseInfo> _dbCache = new Dictionary<IConnectionProvider, DatabaseInfo>();
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2</filterpriority>
+        public DbShell.Driver.Common.Structure.DatabaseInfo GetDatabaseStructure(IConnectionProvider connection)
+        {
+            if (!_dbCache.ContainsKey(connection))
+            {
+                var analyser = connection.Factory.CreateAnalyser();
+                using (var conn = connection.Connect())
+                {
+                    analyser.Run(conn, conn.Database);
+                    _dbCache[connection] = analyser.Result;
+                }
+            }
+            return _dbCache[connection];
+        }
+
         public void Dispose()
         {
         }

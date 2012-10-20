@@ -19,11 +19,11 @@ namespace DbShell.Core
 
         public List<IRunnable> Items { get; set; }
 
-        void IRunnable.Run(IShellContext context)
+        void IRunnable.Run()
         {
             foreach(var item in Items)
             {
-                item.Run(context);
+                item.Run();
             }
         }
 

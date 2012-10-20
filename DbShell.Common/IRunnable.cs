@@ -7,6 +7,6 @@ namespace DbShell.Common
 {
     public interface IRunnable
     {
-        void Run(IShellContext context);
+        void Run();
     }
 }

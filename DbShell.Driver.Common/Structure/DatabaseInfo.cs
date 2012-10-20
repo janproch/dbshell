@@ -15,11 +15,23 @@ namespace DbShell.Driver.Common.Structure
             return _tables.FirstOrDefault(t => String.Compare(t.Name, table, true) == 0);
         }
 
-        public ColumnInfo FindColumn(string table, string column)
+        public TableInfo FindTable(string schema, string table)
         {
-            var tbl = FindTable(table);
-            if (tbl == null) return null;
-            return tbl.Columns.FirstOrDefault(c => String.Compare(c.Name, column, true) == 0);
+            if (schema == null)
+            {
+                return _tables.FirstOrDefault(t => String.Compare(t.Name, table, true) == 0);
+            }
+            else
+            {
+                return _tables.FirstOrDefault(t => String.Compare(t.Name, table, true) == 0 && String.Compare(t.Schema, schema, true) == 0);
+            }
         }
+
+        //public ColumnInfo FindColumn(string table, string column)
+        //{
+        //    var tbl = FindTable(table);
+        //    if (tbl == null) return null;
+        //    return tbl.Columns.FirstOrDefault(c => String.Compare(c.Name, column, true) == 0);
+        //}
     }
 }

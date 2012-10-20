@@ -38,36 +38,45 @@ namespace DbShell.Test
         [DeploymentItem("simple1.xaml")]
         public void TestXamlReader()
         {
-            var runner = new ShellRunner();
-            runner.LoadFile("simple1.xaml");
-            runner.Run();
+            using (var runner = new ShellRunner())
+            {
+                runner.LoadFile("simple1.xaml");
+                runner.Run();
+            }
         }
-
+    
         [TestMethod]
         [DeploymentItem("simple2.xaml")]
         public void TestXamlReader2()
         {
-            var runner = new ShellRunner();
-            runner.LoadFile("simple2.xaml");
-            runner.Run();
+            using (var runner = new ShellRunner())
+            {
+                runner.LoadFile("simple2.xaml");
+                runner.Run();
+            }
         }
 
         [TestMethod]
         [DeploymentItem("copytable1.xaml")]
         public void CopyTable1Test()
         {
-            var runner = new ShellRunner();
-            runner.LoadFile("copytable1.xaml");
-            runner.Run();
+            using (var runner = new ShellRunner())
+            {
+                runner.LoadFile("copytable1.xaml");
+                runner.Run();
+            }
         }
 
         [TestMethod]
         [DeploymentItem("copytable2.xaml")]
         public void CopyTable2Test()
         {
-            var runner = new ShellRunner();
-            runner.LoadFile("copytable2.xaml");
-            runner.Run();
+            using (var runner = new ShellRunner())
+            {
+                runner.LoadFile("copytable2.xaml");
+                runner.Run();
+            }
+
             Assert.IsTrue(FileCompare("test1.cdl", "test2.cdl"));
         }
     }

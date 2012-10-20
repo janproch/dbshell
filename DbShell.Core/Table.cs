@@ -10,17 +10,13 @@ namespace DbShell.Core
 {
     public class Table : ElementBase, ITabularDataSource, ITabularDataTarget
     {
-        //public string Schema { get; set; }
+        public string Schema { get; set; }
         public string Name { get; set; }
 
         Driver.Common.Structure.TableInfo ITabularDataSource.GetRowFormat()
         {
-            var analyser = Connection.Factory.CreateAnalyser();
-            using (var conn = Connection.Connect())
-            {
-                analyser.Run(conn, conn.Database);
-                return analyser.Result.FindTable(Name);
-            }
+            var db = GetDatabaseStructure();
+            return db.FindTable(Schema, Name);
         }
 
         Driver.Common.CommonDataLayer.ICdlReader ITabularDataSource.CreateReader()
@@ -30,8 +26,16 @@ namespace DbShell.Core
             var cmd = conn.CreateCommand();
             //var fmt = Connection.Factory.CreateDumper();
             cmd.CommandText = "SELECT * FROM [" + Name + "]";
-            return dda.AdaptReader(cmd.ExecuteReader());
+            var reader = cmd.ExecuteReader();
+            var result = dda.AdaptReader(reader);
+            result.Disposing += () =>
+                {
+                    reader.Dispose();
+                    conn.Dispose();
+                };
+            return result;
         }
+
 
         bool ITabularDataTarget.AvailableRowFormat
         {

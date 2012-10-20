@@ -12,7 +12,7 @@ namespace DbShell.Core
         public ITabularDataSource Source { get; set; }
         public ITabularDataTarget Target { get; set; }
 
-        void IRunnable.Run(IShellContext context)
+        void IRunnable.Run()
         {
             var table = Source.GetRowFormat();
             using (var reader = Source.CreateReader())

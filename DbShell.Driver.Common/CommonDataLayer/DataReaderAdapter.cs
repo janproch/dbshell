@@ -77,8 +77,6 @@ namespace DbShell.Driver.Common.CommonDataLayer
         IDataReader m_reader;
         IDatabaseFactory m_factory;
 
-        public bool DisposeReader = true;
-
         public DataReaderAdapter(IDataReader reader, IDatabaseFactory factory)
         {
             m_reader = reader;
@@ -108,8 +106,11 @@ namespace DbShell.Driver.Common.CommonDataLayer
 
         public void Dispose()
         {
-            if (DisposeReader) m_reader.Dispose();
+            if (Disposing != null) Disposing();
+            Disposing = null;
         }
+
+        public event Action Disposing;
 
         #endregion
     }

@@ -31,7 +31,12 @@ namespace DbShell.Core
 
         public void Dispose()
         {
+            if (Disposing != null) Disposing();
+            Disposing = null;
+
             _fr.Dispose();
         }
+
+        public event Action Disposing;
     }
 }
