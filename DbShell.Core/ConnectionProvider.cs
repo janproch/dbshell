@@ -20,28 +20,26 @@ namespace DbShell.Core
         {
             _connectionString = connectionString;
             _provider = provider;
+            _factory = FactoryProvider.FindFactory(_provider);
 
-            switch (provider.ToLower())
+            if (_factory == null)
             {
-                case "sqlserver":
-                    _factory = SqlServerDatabaseFactory.Instance;
-                    break;
-                default:
-                    throw new Exception("DBSH-00000 Unknown connection provider:" + provider);
+                throw new Exception("DBSH-00000 Unknown connection provider:" + provider);
             }
+
+            //switch (provider.ToLower())
+            //{
+            //    case "sqlserver":
+            //        _factory = SqlServerDatabaseFactory.Instance;
+            //        break;
+            //    default:
+                    
+            //}
         }
 
         DbConnection IConnectionProvider.Connect()
         {
-            DbConnection connection;
-            switch (_provider.ToLower())
-            {
-                case "sqlserver":
-                    connection = new SqlConnection(_connectionString);
-                    break;
-                default:
-                    throw new Exception("DBSH-00000 Unknown connection provider:" + _provider);
-            }
+            DbConnection connection = _factory.CreateConnection(_connectionString);
             connection.Open();
             return connection;
         }

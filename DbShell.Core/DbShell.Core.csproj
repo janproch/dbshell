@@ -57,6 +57,7 @@
     <Compile Include="Table.cs" />
     <Compile Include="TableExtension.cs" />
     <Compile Include="Utility\ElementBase.cs" />
+    <Compile Include="View.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DbShell.Common\DbShell.Common.csproj">

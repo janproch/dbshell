@@ -41,7 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractDb\BulkInserterBase.cs" />
+    <Compile Include="AbstractDb\BulkInsertOptions.cs" />
+    <Compile Include="AbstractDb\DatabaseFactoryBase.cs" />
+    <Compile Include="AbstractDb\FactoryProvider.cs" />
     <Compile Include="AbstractDb\GenericDatabase.cs" />
+    <Compile Include="AbstractDb\IBulkInserter.cs" />
     <Compile Include="CommonDataLayer\StreamValueWriter.cs" />
     <Compile Include="CommonTypeSystem\DbDatetimeSubType.cs" />
     <Compile Include="CommonTypeSystem\DbSizeType.cs" />

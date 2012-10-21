@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.IO;
 using DbShell.Driver.Common.AbstractDb;
 
@@ -15,7 +16,7 @@ namespace DbShell.Driver.SqlServer
 
         internal static string LoadEmbeddedResource(string name)
         {
-            using (Stream s = typeof(SqlServerDatabaseFactory).Assembly.GetManifestResourceStream("DbShell.Driver.SqlServer." + name))
+            using (Stream s = typeof (SqlServerDatabaseFactory).Assembly.GetManifestResourceStream("DbShell.Driver.SqlServer." + name))
             {
                 if (s == null)
                     throw new InvalidOperationException("Could not find embedded resource");
@@ -24,6 +25,26 @@ namespace DbShell.Driver.SqlServer
                     return sr.ReadToEnd();
                 }
             }
+        }
+
+        public override string[] Identifiers
+        {
+            get { return new string[] {"sqlserver"}; }
+        }
+
+        public override Type[] ConnectionTypes
+        {
+            get { return new Type[] {typeof (SqlConnection)}; }
+        }
+
+        public override System.Data.Common.DbConnection CreateConnection(string connectionString)
+        {
+            return new SqlConnection(connectionString);
+        }
+
+        public static void Initialize()
+        {
+            FactoryProvider.RegisterFactory(Instance);
         }
     }
 }
