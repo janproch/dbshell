@@ -4,193 +4,194 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.CommonDataLayer;
+using DbShell.Driver.Common.CommonTypeSystem;
+using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.AbstractDb
 {
-    //public class BulkInserterBase : IBulkInserter
-    //{
-    //    public TableInfo DestinationTable { get; set; }
+    public class BulkInserterBase : IBulkInserter
+    {
+        public TableInfo DestinationTable { get; set; }
 
-    //    public int BatchSize { get; set; }
-    //    public string DatabaseName { get; set; }
-    //    public DbConnection Connection { get; set; }
-    //    public BulkInsertOptions CopyOptions { get; set; }
+        public int BatchSize { get; set; }
+        public string DatabaseName { get; set; }
+        public DbConnection Connection { get; set; }
+        public BulkInsertOptions CopyOptions { get; set; }
 
-    //    public BulkInserterBase()
-    //    {
-    //        BatchSize = 100;
-    //        CopyOptions = new BulkInsertOptions();
-    //    }
+        public BulkInserterBase()
+        {
+            BatchSize = 100;
+            CopyOptions = new BulkInsertOptions();
+        }
 
-    //    #region IBulkInserter Members
+        #region IBulkInserter Members
 
-    //    public virtual void Run(ICdlReader reader)
-    //    {
-    //        BeforeRun();
-    //        if (CopyOptions.AllowBulkCopy)
-    //        {
-    //            RunBulkCopy(reader);
-    //        }
-    //        else
-    //        {
-    //            RunInserts(reader);
-    //        }
-    //        AfterRun();
-    //    }
+        public virtual void Run(ICdlReader reader)
+        {
+            BeforeRun();
+            if (CopyOptions.AllowBulkCopy)
+            {
+                RunBulkCopy(reader);
+            }
+            else
+            {
+                RunInserts(reader);
+            }
+            AfterRun();
+        }
 
-    //    #endregion
+        #endregion
 
-    //    protected virtual void BeforeRun()
-    //    {
-    //        if (CopyOptions.TruncateBeforeCopy)
-    //        {
-    //            try
-    //            {
-    //                Connection.RunScript(dmp => dmp.TruncateTable(DestinationTable.FullName));
-    //            }
-    //            catch (Exception err)
-    //            {
-    //                ProgressInfo.LogMessage("TRUNCATE", LogLevel.Warning, "Error truncating table:" + err.Message);
-    //            }
-    //        }
-    //        if (CopyOptions.DisableConstraints)
-    //        {
-    //            Connection.RunScript(dmp => dmp.EnableConstraints(DestinationTable.FullName, false));
-    //        }
-    //    }
+        protected virtual void BeforeRun()
+        {
+            if (CopyOptions.TruncateBeforeCopy)
+            {
+                try
+                {
+                    Connection.RunScript(dmp => dmp.TruncateTable(DestinationTable.FullName));
+                }
+                catch (Exception err)
+                {
+                    //ProgressInfo.LogMessage("TRUNCATE", LogLevel.Warning, "Error truncating table:" + err.Message);
+                }
+            }
+            if (CopyOptions.DisableConstraints)
+            {
+                Connection.RunScript(dmp => dmp.EnableConstraints(DestinationTable.FullName, false));
+            }
+        }
 
-    //    protected virtual void AfterRun()
-    //    {
-    //        if (CopyOptions.DisableConstraints)
-    //        {
-    //            Connection.RunScript(dmp => dmp.EnableConstraints(DestinationTable.FullName, true));
-    //        }
-    //    }
+        protected virtual void AfterRun()
+        {
+            if (CopyOptions.DisableConstraints)
+            {
+                Connection.RunScript(dmp => dmp.EnableConstraints(DestinationTable.FullName, true));
+            }
+        }
 
-    //    protected bool HasIdentity(IDataQueue queue)
-    //    {
-    //        ITableStructure ts = queue.GetRowFormat;
-    //        ITableStructure dst_ts = DestinationTable;
+        protected bool HasIdentity(ICdlReader reader)
+        {
+            var ts = reader.Structure;
+            var dst_ts = DestinationTable;
 
-    //        IColumnStructure autoinc = dst_ts.FindAutoIncrementColumn();
-    //        bool hasident = false;
-    //        if (autoinc != null)
-    //        {
-    //            if (ts.Columns.Count != dst_ts.Columns.Count)
-    //            {
-    //                // determine whether auto-inc column is inserted
-    //                hasident = ts.Columns.IndexOfIf(col => col.ColumnName == autoinc.ColumnName) >= 0;
-    //            }
-    //            else
-    //            {
-    //                hasident = true;
-    //            }
-    //        }
-    //        return hasident;
-    //    }
+            var autoinc = dst_ts.FindAutoIncrementColumn();
+            bool hasident = false;
+            if (autoinc != null)
+            {
+                if (ts.Columns.Count != dst_ts.Columns.Count)
+                {
+                    // determine whether auto-inc column is inserted
+                    hasident = ts.Columns.IndexOfIf(col => col.Name == autoinc.Name) >= 0;
+                }
+                else
+                {
+                    hasident = true;
+                }
+            }
+            return hasident;
+        }
 
-    //    protected virtual void RunInserts(IDataQueue queue)
-    //    {
-    //        Connection.SystemConnection.SafeChangeDatabase(DatabaseName);
-    //        var dda = Connection.GetAnyDDA();
-    //        using (DbCommand inscmd = Connection.DbFactory.CreateCommand())
-    //        {
-    //            List<string> colnames = new List<string>();
-    //            List<string> vals = new List<string>();
-    //            ITableStructure ts = queue.GetRowFormat;
-    //            ITableStructure dst_ts = DestinationTable;
-    //            foreach (IColumnStructure col in ts.Columns)
-    //            {
-    //                vals.Add("{" + colnames.Count.ToString() + "}");
-    //                colnames.Add(col.ColumnName);
-    //            }
-    //            string[] values = new string[colnames.Count];
-    //            NameWithSchema table = DestinationTable.FullName;
-    //            string insertTemplate = SqlDumper.Format(Connection.Dialect, "^insert ^into %f (%,i) ^values (%,s)", table, colnames, vals);
+        protected virtual void RunInserts(ICdlReader reader)
+        {
+            //Connection.SystemConnection.SafeChangeDatabase(DatabaseName);
+            var dda = Connection.GetFactory().CreateDataAdapter();
+            using (DbCommand inscmd = Connection.CreateCommand())
+            {
+                List<string> colnames = new List<string>();
+                List<string> vals = new List<string>();
+                var ts = reader.Structure;
+                var dst_ts = DestinationTable;
+                foreach (var col in ts.Columns)
+                {
+                    vals.Add("{" + colnames.Count.ToString() + "}");
+                    colnames.Add(col.Name);
+                }
+                string[] values = new string[colnames.Count];
+                NameWithSchema table = DestinationTable.FullName;
+                string insertTemplate = SqlDumper.Format(Connection.GetFactory(), "^insert ^into %f (%,i) ^values (%,s)", table, colnames, vals);
 
-    //            bool hasident = HasIdentity(queue);
+                bool hasident = HasIdentity(reader);
 
-    //            DbTransaction trans = Connection.SystemConnection.BeginTransaction();
-    //            inscmd.Connection = Connection.SystemConnection;
-    //            inscmd.Transaction = trans;
+                DbTransaction trans = Connection.BeginTransaction();
+                inscmd.Transaction = trans;
 
-    //            int okRowCount = 0, failRowCount = 0;
-    //            List<string> insertErrors = new List<string>();
-    //            try
-    //            {
-    //                if (hasident) Connection.RunScript(dmp => { dmp.AllowIdentityInsert(table, true); }, trans, ProgressInfo);
-    //                try
-    //                {
-    //                    int rowcounter = 0;
-    //                    while (!queue.IsEof)
-    //                    {
-    //                        rowcounter++;
-    //                        IBedRecord row = queue.GetRecord();
-    //                        for (int i = 0; i < row.FieldCount; i++)
-    //                        {
-    //                            row.ReadValue(i);
-    //                            values[i] = dda.GetSqlLiteral(row);
-    //                        }
-    //                        inscmd.CommandText = String.Format(insertTemplate, values);
+                int okRowCount = 0, failRowCount = 0;
+                List<string> insertErrors = new List<string>();
+                try
+                {
+                    if (hasident) Connection.RunScript(dmp => { dmp.AllowIdentityInsert(table, true); }, trans);
+                    try
+                    {
+                        int rowcounter = 0;
+                        while (reader.Read())
+                        {
+                            rowcounter++;
+                            var row = reader;
+                            for (int i = 0; i < row.FieldCount; i++)
+                            {
+                                row.ReadValue(i);
+                                values[i] = dda.GetSqlLiteral(row, new DbTypeString());
+                            }
+                            inscmd.CommandText = String.Format(insertTemplate, values);
 
-    //                        if (rowcounter > 10000)
-    //                        {
-    //                            // next transaction
-    //                            trans.Commit();
-    //                            trans.Dispose();
-    //                            trans = Connection.SystemConnection.BeginTransaction();
-    //                            inscmd.Transaction = trans;
-    //                            rowcounter = 0;
-    //                        }
-    //                        try
-    //                        {
-    //                            inscmd.ExecuteNonQuery();
-    //                            okRowCount++;
-    //                        }
-    //                        catch (Exception err)
-    //                        {
-    //                            if (insertErrors.Count < 10)
-    //                            {
-    //                                StringBuilder msg = new StringBuilder();
-    //                                msg.Append(err.Message);
-    //                                insertErrors.Add(msg.ToString());
-    //                            }
-    //                            failRowCount++;
-    //                        }
-    //                    }
-    //                }
-    //                finally
-    //                {
-    //                    if (hasident) Connection.RunScript(dmp => { dmp.AllowIdentityInsert(table, false); }, trans, ProgressInfo);
-    //                }
-    //                trans.Commit();
-    //                if (failRowCount > 0)
-    //                {
-    //                    ProgressInfo.LogMessageDetail(
-    //                        "INSERT", LogLevel.Error,
-    //                        String.Format("{0}, OK:{1}, FAIL:{2}", Texts.Get("s_error_inserting_into_table$table", "table", DestinationTable.FullName), okRowCount, failRowCount),
-    //                        insertErrors.CreateDelimitedText("\r\n")
-    //                        );
-    //                }
-    //                else
-    //                {
-    //                    ProgressInfo.LogMessage("INSERT", LogLevel.Info, Texts.Get("s_inserted_into_table$table$rows", "table", DestinationTable.FullName, "rows", okRowCount));
-    //                }
-    //            }
-    //            catch (Exception)
-    //            {
-    //                trans.Rollback();
-    //                throw;
-    //            }
-    //        }
-    //    }
+                            if (rowcounter > 10000)
+                            {
+                                // next transaction
+                                trans.Commit();
+                                trans.Dispose();
+                                trans = Connection.BeginTransaction();
+                                inscmd.Transaction = trans;
+                                rowcounter = 0;
+                            }
+                            try
+                            {
+                                inscmd.ExecuteNonQuery();
+                                okRowCount++;
+                            }
+                            catch (Exception err)
+                            {
+                                if (insertErrors.Count < 10)
+                                {
+                                    StringBuilder msg = new StringBuilder();
+                                    msg.Append(err.Message);
+                                    insertErrors.Add(msg.ToString());
+                                }
+                                failRowCount++;
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        if (hasident) Connection.RunScript(dmp => { dmp.AllowIdentityInsert(table, false); }, trans);
+                    }
+                    trans.Commit();
+                    //if (failRowCount > 0)
+                    //{
+                    //    ProgressInfo.LogMessageDetail(
+                    //        "INSERT", LogLevel.Error,
+                    //        String.Format("{0}, OK:{1}, FAIL:{2}", Texts.Get("s_error_inserting_into_table$table", "table", DestinationTable.FullName), okRowCount, failRowCount),
+                    //        insertErrors.CreateDelimitedText("\r\n")
+                    //        );
+                    //}
+                    //else
+                    //{
+                    //    ProgressInfo.LogMessage("INSERT", LogLevel.Info, Texts.Get("s_inserted_into_table$table$rows", "table", DestinationTable.FullName, "rows", okRowCount));
+                    //}
+                }
+                catch (Exception)
+                {
+                    trans.Rollback();
+                    throw;
+                }
+            }
+        }
 
-    //    protected virtual void RunBulkCopy(IDataQueue queue)
-    //    {
-    //        RunInserts(queue);
-    //    }
+        protected virtual void RunBulkCopy(ICdlReader reader)
+        {
+            RunInserts(reader);
+        }
 
-    //}
+    }
 }

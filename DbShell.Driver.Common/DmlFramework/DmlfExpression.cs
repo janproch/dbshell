@@ -22,7 +22,7 @@ namespace DbShell.Driver.Common.DmlFramework
                 case "lit":
                     return new DmlfLiteralExpression(xml);
             }
-            throw new InternalError("DAE-00039 Unkown DMLF expression type:" + type);
+            throw new InternalError("DBSH-00000 Unkown DMLF expression type:" + type);
         }
 
         public override void SaveToXml(XmlElement xml)

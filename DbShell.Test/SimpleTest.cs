@@ -79,6 +79,17 @@ namespace DbShell.Test
         }
 
         [TestMethod]
+        [DeploymentItem("copytable3.xaml")]
+        public void CopyTable3Test()
+        {
+            using (var runner = new ShellRunner())
+            {
+                runner.LoadFile("copytable3.xaml");
+                runner.Run();
+            }
+        }
+
+        [TestMethod]
         [DeploymentItem("copyalltables.xaml")]
         public void CopyAllTablesTest()
         {

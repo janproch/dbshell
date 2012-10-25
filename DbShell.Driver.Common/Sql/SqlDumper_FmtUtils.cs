@@ -184,7 +184,7 @@ namespace DbShell.Driver.Common.Sql
                                     else sb.Append(" ");
                                     break;
                                 default:
-                                    throw new InternalError("DAE-00041 Unknown & formatting instruction:" + c);
+                                    throw new InternalError("DBSH-00000 Unknown & formatting instruction:" + c);
                             }
                         }
                         break;
@@ -205,7 +205,7 @@ namespace DbShell.Driver.Common.Sql
                                 bool ok = false;
                                 if (args[argindex] is IEnumerable) ok = true;
                                 if (args[argindex] is ICdlRecord && c == 'v') ok = true;
-                                if (!ok) throw new InternalError("DAE-00042 List must be of type Enumerable");
+                                if (!ok) throw new InternalError("DBSH-00000 List must be of type Enumerable");
 
                                 bool was = false;
                                 if (args[argindex] is IEnumerable)
@@ -291,7 +291,7 @@ namespace DbShell.Driver.Common.Sql
                     }
                     else
                     {
-                        throw new InternalError("DAE-00043 Identifier must be of type string or IColumnReference");
+                        throw new InternalError("DBSH-00000 Identifier must be of type string or IColumnReference");
                     }
                     DataDumped(state);
                     break;
@@ -299,7 +299,7 @@ namespace DbShell.Driver.Common.Sql
                     DumpSeparatorIfNeeded(sb, props, state);
                     if (val is NameWithSchema) sb.Append(QuoteFullName(dialect, props, (NameWithSchema)val));
                     else if (val is IFullNamedObject) sb.Append(QuoteFullName(dialect, props, ((IFullNamedObject)val).FullName));
-                    else throw new InternalError("DAE-00044 Full name must be of type NameWithSchema or IFullNamedObject");
+                    else throw new InternalError("DBSH-00000 Full name must be of type NameWithSchema or IFullNamedObject");
                     DataDumped(state);
                     break;
                 case 's': // string - copy character data
@@ -312,12 +312,12 @@ namespace DbShell.Driver.Common.Sql
                     break;
                 case 'k': // keyword
                     DumpSeparatorIfNeeded(sb, props, state);
-                    if (!(val is string)) throw new InternalError("DAE-00045 Identifier must be of type string");
+                    if (!(val is string)) throw new InternalError("DBSH-00000 Identifier must be of type string");
                     foreach (char c2 in (string)val) sb.Append(GetCasedChar(c2, props.SqlCommandCase));
                     DataDumped(state);
                     break;
                 case 'K': // multi-word keyword
-                    if (!(val is IEnumerable<string>)) throw new InternalError("DAE-00046 Identifier must be of type string");
+                    if (!(val is IEnumerable<string>)) throw new InternalError("DBSH-00000 Identifier must be of type string");
                     foreach (string s in ((IEnumerable<string>)val))
                     {
                         DumpSeparatorIfNeeded(sb, props, state);
@@ -344,7 +344,7 @@ namespace DbShell.Driver.Common.Sql
                     if (val != null && !props.OmitVersionTests) sb.Append(val.ToString());
                     break;
                 default:
-                    throw new InternalError("DAE-00047 Unknown format character: " + fmt);
+                    throw new InternalError("DBSH-00000 Unknown format character: " + fmt);
             }
         }
 
@@ -399,12 +399,12 @@ namespace DbShell.Driver.Common.Sql
                 case SqlIdentifierQuoteMode.Plain:
                     if (MustBeQuoted(ident, dialect)) return dialect.QuoteIdentifier(GetCasedString(ident, props.IdentifierCase));
                     return GetCasedString(ident, props.IdentifierCase);
-                    break;
-                case SqlIdentifierQuoteMode.Quoted:
+
+                //case SqlIdentifierQuoteMode.Quoted:
+                default :
                     return dialect.QuoteIdentifier(GetCasedString(ident, props.IdentifierCase));
-                    break;
             }
-            throw new InternalError("DAE-00048 Unexpected idquote mode");
+            //throw new InternalError("DBSH-00000 Unexpected idquote mode");
         }
 
         protected string QuoteIdentifier(string ident)

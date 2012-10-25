@@ -240,13 +240,16 @@ namespace DbShell.Driver.Common.Utility
             data["sysconn_state"] = conn.State.ToString();
         }
 
-        public static void RunScript(this DbConnection conn, Action<ISqlDumper> script, DbTransaction trans)
+        public static void RunScript(this DbConnection conn, Action<ISqlDumper> script, DbTransaction trans = null)
         {
             ConnectionSqlOutputStream sqlo = new ConnectionSqlOutputStream(conn, trans, GenericDialect.Instance);
             ISqlDumper fmt = GenericDatabaseFactory.Instance.CreateDumper(sqlo, SqlFormatProperties.Default);
-            //fmt.ProgressInfo = progress;
             script(fmt);
         }
 
+        public static IDatabaseFactory GetFactory(this DbConnection connection)
+        {
+            return FactoryProvider.FindFactory(connection);
+        }
     }
 }

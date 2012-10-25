@@ -89,4 +89,17 @@ namespace DbShell.Driver.Common.Utility
         {
         }
     }
+
+    public class QueueClosedError : InternalError
+    {
+        public QueueClosedError(string errcode)
+            : base(errcode + " Queue closed, cannot perform operations on it")
+        {
+        }
+
+        public QueueClosedError(string errcode, Exception inner)
+            : base(errcode + " Queue closed, cannot perform operations on it", inner)
+        {
+        }
+    }
 }

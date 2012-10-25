@@ -31,5 +31,9 @@ namespace DbShell.Driver.Common.AbstractDb
 
         public abstract Type[] ConnectionTypes { get; }
 
+        public virtual IBulkInserter CreateBulkInserter()
+        {
+            return new BulkInserterBase();
+        }
     }
 }

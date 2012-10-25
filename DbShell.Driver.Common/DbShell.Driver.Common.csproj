@@ -47,6 +47,9 @@
     <Compile Include="AbstractDb\FactoryProvider.cs" />
     <Compile Include="AbstractDb\GenericDatabase.cs" />
     <Compile Include="AbstractDb\IBulkInserter.cs" />
+    <Compile Include="CommonDataLayer\CdlDataQueue.cs" />
+    <Compile Include="CommonDataLayer\CdlDataQueueAdapter.cs" />
+    <Compile Include="CommonDataLayer\CdlRecordProxy.cs" />
     <Compile Include="CommonDataLayer\StreamValueWriter.cs" />
     <Compile Include="CommonTypeSystem\DbDatetimeSubType.cs" />
     <Compile Include="CommonTypeSystem\DbSizeType.cs" />
@@ -153,6 +156,7 @@
     <Compile Include="Utility\StreamExtension.cs" />
     <Compile Include="Utility\StringTool.cs" />
     <Compile Include="Utility\TypeTool.cs" />
+    <Compile Include="Utility\WaitQueue.cs" />
     <Compile Include="Utility\XmlTool.cs" />
   </ItemGroup>
   <ItemGroup />

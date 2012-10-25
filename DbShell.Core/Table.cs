@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using DbShell.Common;
 using DbShell.Core.Utility;
 using DbShell.Driver.Common.CommonDataLayer;
@@ -15,9 +16,9 @@ namespace DbShell.Core
         public string Schema { get; set; }
         public string Name { get; set; }
 
-        Driver.Common.Structure.TableInfo ITabularDataSource.GetRowFormat()
+        private TableInfo GetRowFormat()
         {
-            var fullName = new NameWithSchema(Context.Replace(Schema), Context.Replace(Name));
+            var fullName = GetFullName();
             var db = GetDatabaseStructure();
             var table = db.FindTable(fullName.Schema, fullName.Name);
             if (table == null)
@@ -27,9 +28,20 @@ namespace DbShell.Core
             return table;
         }
 
-        Driver.Common.CommonDataLayer.ICdlReader ITabularDataSource.CreateReader()
+        private NameWithSchema GetFullName()
         {
-            var fullName = new NameWithSchema(Context.Replace(Schema), Context.Replace(Name));
+            return new NameWithSchema(Context.Replace(Schema), Context.Replace(Name));
+        }
+
+        TableInfo ITabularDataSource.GetRowFormat()
+        {
+            return GetRowFormat();
+
+        }
+
+        ICdlReader ITabularDataSource.CreateReader()
+        {
+            var fullName = GetFullName();
             var dda = Connection.Factory.CreateDataAdapter();
             var conn = Connection.Connect();
             var cmd = conn.CreateCommand();
@@ -48,17 +60,17 @@ namespace DbShell.Core
 
         bool ITabularDataTarget.AvailableRowFormat
         {
-            get { throw new NotImplementedException(); }
+            get { return true; }
         }
 
-        ICdlWriter ITabularDataTarget.CreateWriter(Driver.Common.Structure.TableInfo rowFormat)
+        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat)
         {
-            throw new NotImplementedException();
+            return new TableWriter(Connection, GetFullName(), rowFormat);
         }
 
-        Driver.Common.Structure.TableInfo ITabularDataTarget.GetRowFormat()
+        TableInfo ITabularDataTarget.GetRowFormat()
         {
-            throw new NotImplementedException();
+            return GetRowFormat();
         }
     }
 }
