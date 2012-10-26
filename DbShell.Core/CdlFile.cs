@@ -6,6 +6,7 @@ using System.Text;
 using System.Xml;
 using DbShell.Common;
 using DbShell.Core.Utility;
+using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
@@ -16,9 +17,14 @@ namespace DbShell.Core
     {
         public string Name { get; set; }
 
+        private string GetName()
+        {
+            return Context.Replace(Name);
+        }
+
         private void OpenRead(out TableInfo table, out BinaryReader br)
         {
-            var fr = new FileInfo(Context.Replace(Name)).OpenRead();
+            var fr = new FileInfo(GetName()).OpenRead();
             br = new BinaryReader(fr);
             string s = br.ReadString();
             var doc = new XmlDocument();
@@ -55,9 +61,9 @@ namespace DbShell.Core
             get { return false; }
         }
 
-        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat)
+        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options)
         {
-            return new CdlFileWriter(Context.Replace(Name), rowFormat);
+            return new CdlFileWriter(GetName(), rowFormat);
         }
 
         TableInfo ITabularDataTarget.GetRowFormat()

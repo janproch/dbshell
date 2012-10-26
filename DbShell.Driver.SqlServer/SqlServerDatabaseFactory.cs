@@ -46,5 +46,20 @@ namespace DbShell.Driver.SqlServer
         {
             FactoryProvider.RegisterFactory(Instance);
         }
+
+        public override ILiteralFormatter CreateLiteralFormatter()
+        {
+            return new SqlServerLiteralFormatter(this);
+        }
+
+        public override ISqlDialect CreateDialect()
+        {
+            return new SqlServerDialect();
+        }
+
+        public override ISqlDumper CreateDumper(ISqlOutputStream stream, SqlFormatProperties props)
+        {
+            return new SqlServerSqlDumper(stream, this, props);
+        }
     }
 }

@@ -5,5 +5,8 @@
     Connection="sqlserver://MultipleActiveResultSets=True;Data Source=localhost\SQLEXPRESS;Integrated Security=SSPI;Initial Catalog=Chinook"
     >
     
-    <CopyTable Source="{Table Album}" Target="{Table AlbumCopy}" />
+    <CopyTable Source="{Table Album}" Target="{Table AlbumCopy}" CleanTarget="True" />
+
+    <CopyTable Source="{Table Album}" Target="{File test1.cdl}" />
+    <CopyTable Source="{Table AlbumCopy}" Target="{File test2.cdl}" />
 </Batch>    

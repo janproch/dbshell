@@ -9,7 +9,7 @@ namespace DbShell.Driver.Common.AbstractDb
     public abstract class DialectDataAdapterBase : IDialectDataAdapter
     {
         protected bool m_allowZeroInDate = false;
-        protected SqlLiteralFormatter m_literalFormatter;
+        protected ILiteralFormatter m_literalFormatter;
         protected IDatabaseFactory m_factory;
         CdlValueHolder m_holder = new CdlValueHolder();
 
@@ -23,12 +23,7 @@ namespace DbShell.Driver.Common.AbstractDb
         public DialectDataAdapterBase(IDatabaseFactory factory)
         {
             m_factory = factory;
-            m_literalFormatter = CreateLiteralFormatter();
-        }
-
-        public virtual SqlLiteralFormatter CreateLiteralFormatter()
-        {
-            return new SqlLiteralFormatter(m_factory);
+            m_literalFormatter = factory.CreateLiteralFormatter();
         }
 
         //protected virtual void ApplyTypeRestrictions(CdlValueHolder holder, DbTypeBase type, ILogger logger)

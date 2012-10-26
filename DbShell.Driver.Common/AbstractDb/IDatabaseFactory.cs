@@ -13,5 +13,6 @@ namespace DbShell.Driver.Common.AbstractDb
         ISqlDumper CreateDumper(ISqlOutputStream stream, SqlFormatProperties props);
         ISqlDialect CreateDialect();
         IBulkInserter CreateBulkInserter();
+        ILiteralFormatter CreateLiteralFormatter();
     }
 }

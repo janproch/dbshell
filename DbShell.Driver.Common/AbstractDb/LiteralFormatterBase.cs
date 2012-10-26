@@ -6,14 +6,14 @@ using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.AbstractDb
 {
-    public class SqlLiteralFormatter : ICdlValueFormatter
+    public class LiteralFormatterBase : ILiteralFormatter
     {
         protected string m_text;
         private IDatabaseFactory _factory;
 
         #region ICdlValueWriter Members
 
-        public SqlLiteralFormatter(IDatabaseFactory factory)
+        public LiteralFormatterBase(IDatabaseFactory factory)
         {
             _factory = factory;
         }

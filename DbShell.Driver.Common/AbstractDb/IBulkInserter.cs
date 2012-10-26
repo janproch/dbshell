@@ -15,6 +15,6 @@ namespace DbShell.Driver.Common.AbstractDb
         string DatabaseName { get; set; }
         DbConnection Connection { get; set; }
         void Run(ICdlReader reader);
-        BulkInsertOptions CopyOptions { get; set; }
+        CopyTableTargetOptions CopyOptions { get; set; }
     }
 }

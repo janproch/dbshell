@@ -6,9 +6,9 @@ using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.AbstractDb
 {
-    public class BulkInsertOptions
+    public class CopyTableTargetOptions
     {
-        public BulkInsertOptions()
+        public CopyTableTargetOptions()
         {
             AllowBulkCopy = true;
             TruncateBeforeCopy = false;

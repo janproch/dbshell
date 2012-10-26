@@ -1,5 +1,6 @@
 using System;
 using System.Data.Common;
+using DbShell.Driver.Common.Sql;
 
 namespace DbShell.Driver.Common.AbstractDb
 {
@@ -17,10 +18,10 @@ namespace DbShell.Driver.Common.AbstractDb
 
         public virtual ISqlDumper CreateDumper(ISqlOutputStream stream, SqlFormatProperties props)
         {
-            return null;
+            return new SqlDumper(stream, this, props);
         }
 
-        public ISqlDialect CreateDialect()
+        public virtual ISqlDialect CreateDialect()
         {
             return new DialectBase();
         }
@@ -34,6 +35,11 @@ namespace DbShell.Driver.Common.AbstractDb
         public virtual IBulkInserter CreateBulkInserter()
         {
             return new BulkInserterBase();
+        }
+
+        public virtual ILiteralFormatter CreateLiteralFormatter()
+        {
+            return new LiteralFormatterBase(this);
         }
     }
 }

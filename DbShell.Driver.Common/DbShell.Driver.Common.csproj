@@ -42,11 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractDb\BulkInserterBase.cs" />
-    <Compile Include="AbstractDb\BulkInsertOptions.cs" />
+    <Compile Include="AbstractDb\CopyTableTargetOptions.cs" />
     <Compile Include="AbstractDb\DatabaseFactoryBase.cs" />
+    <Compile Include="AbstractDb\DialectBase.cs" />
+    <Compile Include="AbstractDb\DialectExtension.cs" />
     <Compile Include="AbstractDb\FactoryProvider.cs" />
     <Compile Include="AbstractDb\GenericDatabase.cs" />
     <Compile Include="AbstractDb\IBulkInserter.cs" />
+    <Compile Include="AbstractDb\ILiteralFormatter.cs" />
     <Compile Include="CommonDataLayer\CdlDataQueue.cs" />
     <Compile Include="CommonDataLayer\CdlDataQueueAdapter.cs" />
     <Compile Include="CommonDataLayer\CdlRecordProxy.cs" />
@@ -87,7 +90,7 @@
     <Compile Include="AbstractDb\IDatabaseFactory.cs" />
     <Compile Include="AbstractDb\ISqlDialect.cs" />
     <Compile Include="AbstractDb\SqlDumperExtension.cs" />
-    <Compile Include="AbstractDb\SqlLiteralFormatter.cs" />
+    <Compile Include="AbstractDb\LiteralFormatterBase.cs" />
     <Compile Include="CommonDataLayer\CdlErrors.cs" />
     <Compile Include="CommonDataLayer\CdlInterfaces.cs" />
     <Compile Include="AbstractDb\IDialectDataAdapter.cs" />

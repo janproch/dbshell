@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using DbShell.Common;
 using DbShell.Core.Utility;
+using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
@@ -63,9 +64,9 @@ namespace DbShell.Core
             get { return true; }
         }
 
-        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat)
+        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options)
         {
-            return new TableWriter(Connection, GetFullName(), rowFormat);
+            return new TableWriter(Connection, GetFullName(), rowFormat, options);
         }
 
         TableInfo ITabularDataTarget.GetRowFormat()

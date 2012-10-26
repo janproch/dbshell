@@ -42,6 +42,9 @@
     <Compile Include="SqlServerDatabaseAnalyser.cs" />
     <Compile Include="SqlServerDatabaseFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlServerDialect.cs" />
+    <Compile Include="SqlServerLiteralFormatter.cs" />
+    <Compile Include="SqlServerSqlDumper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DbShell.Driver.Common\DbShell.Driver.Common.csproj">

@@ -23,7 +23,7 @@ namespace DbShell.Core.Utility
         private IBulkInserter _inserter;
         private DbConnection _connection;
 
-        public TableWriter(IConnectionProvider connection, NameWithSchema name, TableInfo rowFormat)
+        public TableWriter(IConnectionProvider connection, NameWithSchema name, TableInfo rowFormat, CopyTableTargetOptions options)
         {
             _connectionProvider = connection;
             _name = name;
@@ -33,8 +33,9 @@ namespace DbShell.Core.Utility
             _inserter = connection.Factory.CreateBulkInserter();
             _connection = _connectionProvider.Connect();
             _inserter.Connection = _connection;
-            _inserter.DestinationTable = rowFormat;
+            _inserter.DestinationTable = rowFormat.Clone();
             _inserter.DestinationTable.FullName = name;
+            _inserter.CopyOptions = options;
 
             _thread = new Thread(Run);
             _thread.Start();

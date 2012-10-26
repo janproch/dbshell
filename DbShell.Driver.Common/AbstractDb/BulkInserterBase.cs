@@ -18,12 +18,12 @@ namespace DbShell.Driver.Common.AbstractDb
         public int BatchSize { get; set; }
         public string DatabaseName { get; set; }
         public DbConnection Connection { get; set; }
-        public BulkInsertOptions CopyOptions { get; set; }
+        public CopyTableTargetOptions CopyOptions { get; set; }
 
         public BulkInserterBase()
         {
             BatchSize = 100;
-            CopyOptions = new BulkInsertOptions();
+            CopyOptions = new CopyTableTargetOptions();
         }
 
         #region IBulkInserter Members
