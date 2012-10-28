@@ -70,5 +70,10 @@ namespace DbShell.Core
         {
             return null;
         }
+
+        public override string ToString()
+        {
+            return String.Format("[File {0}]", GetName());
+        }
     }
 }

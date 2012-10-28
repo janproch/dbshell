@@ -33,6 +33,9 @@
     <Reference Include="IronPython">
       <HintPath>..\_lib\IronPython.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\_lib\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Dynamic">
       <HintPath>..\_lib\Microsoft.Dynamic.dll</HintPath>
     </Reference>

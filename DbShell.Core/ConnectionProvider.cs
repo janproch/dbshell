@@ -48,5 +48,10 @@ namespace DbShell.Core
         {
             get { return _factory; }
         }
+
+        public override string ToString()
+        {
+            return _provider + "://" + _connectionString;
+        }
     }
 }

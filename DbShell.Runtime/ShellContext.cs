@@ -8,12 +8,15 @@ using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
 using IronPython.Hosting;
 using Microsoft.Scripting.Hosting;
+using log4net;
 
 
 namespace DbShell.Runtime
 {
     public class ShellContext : IShellContext, IDisposable
     {
+        private static ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private Dictionary<IConnectionProvider, DatabaseInfo> _dbCache = new Dictionary<IConnectionProvider, DatabaseInfo>();
         private ScriptEngine _engine;
         private List<ScriptScope> _scopeStack = new List<ScriptScope>();
@@ -28,6 +31,7 @@ namespace DbShell.Runtime
         {
             if (!_dbCache.ContainsKey(connection))
             {
+                _log.InfoFormat("Downloading structure for connection {0}", connection);
                 var analyser = connection.Factory.CreateAnalyser();
                 using (var conn = connection.Connect())
                 {

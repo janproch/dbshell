@@ -73,5 +73,10 @@ namespace DbShell.Core
         {
             return GetRowFormat();
         }
+
+        public override string ToString()
+        {
+            return String.Format("[Table {0}]", GetFullName());
+        }
     }
 }

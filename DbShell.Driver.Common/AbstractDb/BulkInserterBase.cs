@@ -8,11 +8,14 @@ using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
+using log4net;
 
 namespace DbShell.Driver.Common.AbstractDb
 {
     public class BulkInserterBase : IBulkInserter
     {
+        private static ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public TableInfo DestinationTable { get; set; }
 
         public int BatchSize { get; set; }
@@ -54,7 +57,7 @@ namespace DbShell.Driver.Common.AbstractDb
                 }
                 catch (Exception err)
                 {
-                    //ProgressInfo.LogMessage("TRUNCATE", LogLevel.Warning, "Error truncating table:" + err.Message);
+                    _log.Error(String.Format("Error truncating table {0}", DestinationTable), err);
                 }
             }
             if (CopyOptions.DisableConstraints)
@@ -167,18 +170,16 @@ namespace DbShell.Driver.Common.AbstractDb
                         if (hasident) Connection.RunScript(dmp => { dmp.AllowIdentityInsert(table, false); }, trans);
                     }
                     trans.Commit();
-                    //if (failRowCount > 0)
-                    //{
-                    //    ProgressInfo.LogMessageDetail(
-                    //        "INSERT", LogLevel.Error,
-                    //        String.Format("{0}, OK:{1}, FAIL:{2}", Texts.Get("s_error_inserting_into_table$table", "table", DestinationTable.FullName), okRowCount, failRowCount),
-                    //        insertErrors.CreateDelimitedText("\r\n")
-                    //        );
-                    //}
-                    //else
-                    //{
-                    //    ProgressInfo.LogMessage("INSERT", LogLevel.Info, Texts.Get("s_inserted_into_table$table$rows", "table", DestinationTable.FullName, "rows", okRowCount));
-                    //}
+
+                    if (failRowCount > 0)
+                    {
+                        _log.ErrorFormat("Error inserting into table {0}, correct inserts {1}, failed inserts {2}", DestinationTable, okRowCount, failRowCount);
+                        _log.Error(insertErrors.CreateDelimitedText("\n"));
+                    }
+                    else
+                    {
+                        _log.InfoFormat("{0} rows successfully inserted into table {1}", okRowCount, DestinationTable);
+                    }
                 }
                 catch (Exception)
                 {
