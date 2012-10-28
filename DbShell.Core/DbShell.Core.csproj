@@ -33,8 +33,15 @@
     <Reference Include="log4net">
       <HintPath>..\_lib\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="RazorEngine">
+      <HintPath>..\_lib\RazorEngine.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_lib\System.Web.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -52,6 +59,7 @@
     <Compile Include="EvalExtension.cs" />
     <Compile Include="File.cs" />
     <Compile Include="ForEach.cs" />
+    <Compile Include="RazorDatabase.cs" />
     <Compile Include="RunnableContainer.cs" />
     <Compile Include="TablesExtension.cs" />
     <Compile Include="TablesProvider.cs" />

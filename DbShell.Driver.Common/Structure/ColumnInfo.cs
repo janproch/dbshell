@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.Utility;
@@ -56,6 +58,19 @@ namespace DbShell.Driver.Common.Structure
             this.LoadPropertiesCore(xml);
             var type = xml.FindElement("Type");
             if (type != null) CommonType = DbTypeBase.Load(type);
+        }
+
+        public List<ForeignKeyInfo> GetForeignKeys()
+        {
+            var res = new List<ForeignKeyInfo>();
+            foreach (var fk in OwnerTable.ForeignKeys)
+            {
+                if (fk.Columns.Any(c => c.RefColumn == this))
+                {
+                    res.Add(fk);
+                }
+            }
+            return res;
         }
     }
 }

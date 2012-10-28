@@ -129,5 +129,18 @@ namespace DbShell.Test
                 runner.Run();
             }
         }
+
+        [TestMethod]
+        [DeploymentItem("dbdocs.xaml")]
+        [DeploymentItem("dbdocs.cshtml")]
+        public void DbDocs()
+        {
+            using (var runner = new ShellRunner())
+            {
+                runner.LoadFile("dbdocs.xaml");
+                runner.Run();
+            }
+        }
+
     }
 }

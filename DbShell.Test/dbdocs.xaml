@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<DatabaseDocumentation
+<RazorDatabase
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns="clr-namespace:DbShell.Core;assembly=DbShell.Core"
-    file=""
+    Connection="sqlserver://MultipleActiveResultSets=True;Data Source=localhost\SQLEXPRESS;Integrated Security=SSPI;Initial Catalog=Chinook"
+    File="dbdocs.html"
+    Template="dbdocs.cshtml"
     />
-
  

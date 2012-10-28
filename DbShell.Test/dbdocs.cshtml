@@ -1,0 +1,33 @@
+<h1>Database structure</h1>
+
+@foreach(var table in Model.Tables)
+{
+    <h2>Table @table.FullName</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Length</th>
+            <th>Default value</th>
+            <th>Keys</th>
+        </tr>
+        @foreach (var column in table.Columns)
+        {
+            <tr>
+                <td>  @if(column.NotNull) {<b>@column.Name</b>} @if(!column.NotNull) { <text>@column.Name</text> }  </td>
+                <td>@column.DataType</td>
+                <td>@column.Length</td>
+                <td>@column.DefaultValue</td>
+                <td>@if (column.PrimaryKey)
+                    {
+                        <b>PK</b>
+                    } 
+                    @foreach(var fk in column.GetForeignKeys())
+                    {
+                        <text>FK=>@fk.RefTable.FullName</text>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+}
