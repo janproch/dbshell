@@ -1,33 +1,135 @@
+<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="DB Shell, http://dbshell.com">
+  <title>Database Structure</title>
+  
+  <style>
+table {
+    border: solid 1px #e8eef4;
+    border-collapse: collapse;
+}
+
+table td {
+    padding: 5px;
+    border: solid 1px #e8eef4;
+}
+
+table th {
+    padding: 6px 5px;
+    text-align: left;
+    background-color: #e8eef4;
+    border: solid 1px #e8eef4;
+}
+
+body {
+    font-size: .85em;
+    font-family: "Trebuchet MS", Verdana, Helvetica, Sans-Serif;
+}
+
+a:link {
+    text-decoration: underline;
+}
+
+a:visited {
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+a:active {
+}
+
+p, ul {
+    margin-bottom: 20px;
+    line-height: 1.6em;
+}
+
+header,
+footer,
+nav,
+section {
+    display: block;
+}
+
+/* HEADINGS   
+----------------------------------------------------------*/
+h1, h2, h3, h4, h5, h6 {
+    font-size: 1.5em;
+    color: #000;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+h3 {
+    font-size: 1.2em;
+}
+
+h4 {
+    font-size: 1.1em;
+}
+
+h5, h6 {
+    font-size: 1em;
+}
+  </style>  
+ </head>
+ <body>
+  
 <h1>Database structure</h1>
+
+<h2>Table list</h2>
+<ul>
+@foreach(var table in Model.Tables)
+{
+  <li><a href='#@table.FullName'>@table.FullName</a></li>
+}
+</ul>
+</h2>
 
 @foreach(var table in Model.Tables)
 {
-    <h2>Table @table.FullName</h2>
+    <a name='@table.FullName'><h2>Table @table.FullName</h2></a>
+    <p>
     <table>
         <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Length</th>
-            <th>Default value</th>
-            <th>Keys</th>
+            <th width='250px'>Name</th>
+            <th width='100px'>Type</th>
+            <th width='100px'>Length</th>
+            <th width='100px'>Nullable</th>
+            <th width='100px'>Default value</th>
+            <th width='300px'>Keys</th>
         </tr>
         @foreach (var column in table.Columns)
         {
             <tr>
                 <td>  @if(column.NotNull) {<b>@column.Name</b>} @if(!column.NotNull) { <text>@column.Name</text> }  </td>
                 <td>@column.DataType</td>
-                <td>@column.Length</td>
-                <td>@column.DefaultValue</td>
+                <td>@column.LengthDisplay</td>
+                <td>@(column.NotNull ? "No" : "Yes")</td>
+                <td>@column.DefaultValueDisplay</td>
                 <td>@if (column.PrimaryKey)
                     {
                         <b>PK</b>
                     } 
                     @foreach(var fk in column.GetForeignKeys())
                     {
-                        <text>FK=>@fk.RefTable.FullName</text>
+                        <div>FK -> <a href='#@fk.RefTable.FullName'>@fk.RefTable.FullName</a></div>
                     }
                 </td>
             </tr>
         }
     </table>
+    </p>
 }
+
+ </body>
+</html>

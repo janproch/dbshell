@@ -16,6 +16,7 @@ namespace DbShell.Driver.Common.AbstractDb
             _dbname = dbname;
             _result = new DatabaseInfo();
             DoRun();
+            _result.Tables.Sort((a, b) => String.Compare(a.FullName.ToString(), b.FullName.ToString(), true));
         }
 
         protected abstract void DoRun();

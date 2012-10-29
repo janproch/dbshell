@@ -72,5 +72,28 @@ namespace DbShell.Driver.Common.Structure
             }
             return res;
         }
+
+        public string LengthDisplay
+        {
+            get
+            {
+                if (Length == 0) return "";
+                if (Length == -1) return "max";
+                return Length.ToString();
+            }
+        }
+
+        public string DefaultValueDisplay
+        {
+            get
+            {
+                string res = DefaultValue;
+                while (res != null && res.StartsWith("(") && res.EndsWith(")"))
+                {
+                    res = res.Substring(1, res.Length - 2);
+                }
+                return res;
+            }
+        }
     }
 }
