@@ -9,7 +9,7 @@ using DbShell.Driver.Common.Structure;
 namespace DbShell.Common
 {
     /// <summary>
-    /// represents target accepting table data (eg. table, CSV file)
+    /// Represents target accepting table data (eg. table, CSV file)
     /// </summary>
     public interface ITabularDataTarget
     {

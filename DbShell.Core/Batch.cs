@@ -10,7 +10,7 @@ using DbShell.Core.Utility;
 namespace DbShell.Core
 {
     /// <summary>
-    /// wrapper for more commands implementing <c>IRunnable</c>
+    /// Wrapper for more commands implementing IRunnable
     /// </summary>
     public class Batch : RunnableContainer, IRunnable
     {

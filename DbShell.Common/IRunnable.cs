@@ -6,7 +6,7 @@ using System.Text;
 namespace DbShell.Common
 {
     /// <summary>
-    /// is aiable to be run from Db Shell
+    /// Defines job, which is run in DB Shell batch
     /// </summary>
     public interface IRunnable
     {

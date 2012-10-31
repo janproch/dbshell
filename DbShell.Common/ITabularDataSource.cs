@@ -8,7 +8,7 @@ using DbShell.Driver.Common.Structure;
 namespace DbShell.Common
 {
     /// <summary>
-    /// represents source holding table data (eg. table, CSV file)
+    /// Represents source holding table data (eg. table, CSV file)
     /// </summary>
     public interface ITabularDataSource
     {

@@ -8,7 +8,7 @@ using DbShell.Common;
 namespace DbShell.Core
 {
     /// <summary>
-    /// enumerates items of collection
+    /// Enumerates items of collection
     /// </summary>
     /// <example>
     /// <ForEach>
