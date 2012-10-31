@@ -9,6 +9,9 @@ using DbShell.Core.Utility;
 
 namespace DbShell.Core
 {
+    /// <summary>
+    /// wrapper for more commands implementing <c>IRunnable</c>
+    /// </summary>
     public class Batch : RunnableContainer, IRunnable
     {
         void IRunnable.Run()

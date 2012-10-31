@@ -10,6 +10,9 @@ using DbShell.Driver.Common.Structure;
 
 namespace DbShell.Core
 {
+    /// <summary>
+    /// object representing file
+    /// </summary>
     public class File : ElementBase, ITabularDataSource, ITabularDataTarget
     {
         public string Name { get; set; }

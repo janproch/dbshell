@@ -7,6 +7,13 @@ using DbShell.Common;
 
 namespace DbShell.Core
 {
+    /// <summary>
+    /// enumerates items of collection
+    /// </summary>
+    /// <example>
+    /// <ForEach>
+    /// </ForEach>
+    /// </example>
     public class ForEach : RunnableContainer, IRunnable
     {
         public string Property { get; set; }
