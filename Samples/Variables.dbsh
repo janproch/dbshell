@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Batch 
+  xmlns="http://schemas.dbshell.com/core"
+>
+  <!-- define connection string here -->
+  <SetVariable Name="ConnectionNoDb" Value="" />
+  <!-- define database name -->
+  <SetVariable Name="DbName" Value="" />
+  
+  <SetVariable Name="Connection" Value="${ConnectionNoDb};Initial Catalog=${DbName}" />
+</Batch>

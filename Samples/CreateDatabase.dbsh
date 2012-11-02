@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Batch 
+  xmlns="http://schemas.dbshell.com/core"
+  Requires="Variables.dbsh"
+>
+  <CreateDatabase Connection="${ConnectionNoDb}" Name="${DbName}"/>
+  <Script File="Chinook.sql" Connection="${Connection}" />
+</Batch>
