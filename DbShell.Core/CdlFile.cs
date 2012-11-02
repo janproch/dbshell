@@ -13,8 +13,14 @@ using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core
 {
+    /// <summary>
+    /// Binary file holding table data. Can be used for temporary storage of table contents.
+    /// </summary>
     public class CdlFile : ElementBase, ITabularDataSource, ITabularDataTarget
     {
+        /// <summary>
+        /// File name (should have .cdl extension)
+        /// </summary>
         public string Name { get; set; }
 
         private string GetName()
@@ -71,6 +77,12 @@ namespace DbShell.Core
             return null;
         }
 
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
             return String.Format("[File {0}]", GetName());

@@ -60,6 +60,7 @@
     <Compile Include="EvalExtension.cs" />
     <Compile Include="File.cs" />
     <Compile Include="ForEach.cs" />
+    <Compile Include="NamespaceDoc.cs" />
     <Compile Include="RazorDatabase.cs" />
     <Compile Include="RunnableContainer.cs" />
     <Compile Include="TablesExtension.cs" />

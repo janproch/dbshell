@@ -12,9 +12,19 @@ using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core
 {
+    /// <summary>
+    /// Table in database
+    /// </summary>
     public class Table : ElementBase, ITabularDataSource, ITabularDataTarget
     {
+        /// <summary>
+        /// Table schema, can be ommited (eg. "dbo" on SQL server)
+        /// </summary>
         public string Schema { get; set; }
+
+        /// <summary>
+        /// Table name
+        /// </summary>
         public string Name { get; set; }
 
         private TableInfo GetRowFormat()

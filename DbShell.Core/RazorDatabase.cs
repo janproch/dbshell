@@ -12,11 +12,21 @@ using log4net;
 
 namespace DbShell.Core
 {
+    /// <summary>
+    /// Job, which can be used for export database structure to text file using razor template
+    /// </summary>
     public class RazorDatabase : ElementBase, IRunnable
     {
         private static ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        /// <summary>
+        /// Name of output file
+        /// </summary>
         public string File { get; set; }
+
+        /// <summary>
+        /// File name of Razor template (cshtml file)
+        /// </summary>
         public string Template { get; set; }
 
         void IRunnable.Run()

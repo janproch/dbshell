@@ -11,13 +11,31 @@ namespace DbShell.Core
     /// Enumerates items of collection
     /// </summary>
     /// <example>
-    /// <ForEach>
+    /// This example exports all table to CSV file.
+    /// <code>
+    /// <![CDATA[
+    /// <ForEach Source="{Tables}" Property="Table">
+    ///     <CopyTable Soruce="{Table ${Table.Name}}" Target="{File ${Table.Name}.csv}" />
     /// </ForEach>
+    /// ]]>
+    /// </code>
     /// </example>
     public class ForEach : RunnableContainer, IRunnable
     {
+        /// <summary>
+        /// Gets or sets the name of property, which is filled with iterating expression
+        /// </summary>
+        /// <value>
+        /// The property name
+        /// </value>
         public string Property { get; set; }
 
+        /// <summary>
+        /// Gets or sets the source of list data
+        /// </summary>
+        /// <value>
+        /// Data source, eg. Tables collection
+        /// </value>
         public IListProvider Source { get; set; }
 
         void IRunnable.Run()

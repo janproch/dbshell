@@ -19,8 +19,10 @@
     <HtmlHelpName>Documentation</HtmlHelpName>
     <Language>en-US</Language>
     <ApiFilter>
-      <Filter entryType="Namespace" fullName="DbShell.Common" isExposed="True">
-  <Filter entryType="Interface" fullName="DbShell.Common.IListProvider" filterName="IListProvider" isExposed="False" />
+      <Filter entryType="Namespace" fullName="DbShell.Common" isExposed="False">
+  <Filter entryType="Interface" fullName="DbShell.Common.IRunnable" filterName="IRunnable" isExposed="True" />
+  <Filter entryType="Interface" fullName="DbShell.Common.ITabularDataSource" filterName="ITabularDataSource" isExposed="True" />
+  <Filter entryType="Interface" fullName="DbShell.Common.ITabularDataTarget" filterName="ITabularDataTarget" isExposed="True" />
 </Filter>
 <Filter entryType="Namespace" fullName="DbShell.Core" isExposed="True">
   <Filter entryType="Class" fullName="DbShell.Core.CdlFileWriter" filterName="CdlFileWriter" isExposed="False" />
@@ -57,7 +59,7 @@
     <PresentationStyle>vs2005</PresentationStyle>
     <Preliminary>False</Preliminary>
     <NamingMethod>Guid</NamingMethod>
-    <HelpTitle>A Sandcastle Documented Class Library</HelpTitle>
+    <HelpTitle>DB Shell Documentation</HelpTitle>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in

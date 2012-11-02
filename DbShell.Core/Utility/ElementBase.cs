@@ -8,6 +8,12 @@ namespace DbShell.Core.Utility
 {
     public class ElementBase : IShellElement
     {
+        /// <summary>
+        /// Gets or sets the connection.
+        /// </summary>
+        /// <value>
+        /// The connection in format sqlserver://connection_string for SQL Server
+        /// </value>
         [TypeConverter(typeof (ConnectionTypeConverter))]
         public IConnectionProvider Connection { get; set; }
 

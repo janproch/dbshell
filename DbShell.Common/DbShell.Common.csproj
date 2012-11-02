@@ -48,6 +48,7 @@
     <Compile Include="ITabularDataTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IShellContext.cs" />
+    <Compile Include="NamespaceDoc.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DbShell.Driver.Common\DbShell.Driver.Common.csproj">

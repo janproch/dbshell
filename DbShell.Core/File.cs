@@ -11,7 +11,7 @@ using DbShell.Driver.Common.Structure;
 namespace DbShell.Core
 {
     /// <summary>
-    /// object representing file
+    /// Object representing file
     /// </summary>
     public class File : ElementBase, ITabularDataSource, ITabularDataTarget
     {

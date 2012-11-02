@@ -10,7 +10,7 @@ namespace DbShell.Core
 {
     public class TablesProvider : ElementBase, IListProvider
     {
-        public IEnumerable GetList()
+        IEnumerable IListProvider.GetList()
         {
             var db = GetDatabaseStructure();
             return db.Tables;
