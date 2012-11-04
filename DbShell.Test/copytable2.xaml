@@ -19,4 +19,6 @@
             <CdlFile Name="test2.cdl" />
         </CopyTable.Target>
     </CopyTable>
+    
+    <CopyTable Source="{File test1.cdl}" Target="{File test1.csv}" />
 </Batch>    

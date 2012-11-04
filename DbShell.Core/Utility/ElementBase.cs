@@ -20,6 +20,10 @@ namespace DbShell.Core.Utility
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IShellContext Context { get; set; }
 
+        /// <summary>
+        /// Enumerates all child elements
+        /// </summary>
+        /// <param name="enumFunc">Function called for each child</param>
         public virtual void EnumChildren(Action<IShellElement> enumFunc)
         {
             

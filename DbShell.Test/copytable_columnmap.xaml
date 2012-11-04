@@ -5,12 +5,14 @@
     Connection="sqlserver://MultipleActiveResultSets=True;Data Source=localhost\SQLEXPRESS;Integrated Security=SSPI;Initial Catalog=Chinook"
     >
     
-    <CopyTable Source="{Table Album}" Target="{File test.cdl}" CleanTarget="True" >
+    <CopyTable Source="{Table Album}" Target="{File test.csv}" CleanTarget="True" >
       <CopyTable.ColumnMap>
-        <MapColumn Source="AlbumId" />
+        <MapColumn Name="AlbumId" />
+          <!--
         <MapString Value="Ahoj" Name="Col1" />
         <MapExpression Value="${Row['AlbumId']}" Name="Col2" />
         <MapNull />
+          -->
       </CopyTable.ColumnMap>
     </CopyTable>
 </Batch>    

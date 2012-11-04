@@ -26,6 +26,7 @@ namespace DbShell.Core
         {
             string name = GetName();
             if (name.ToLower().EndsWith(".cdl")) return new CdlFile {Connection = Connection, Context = Context, Name = name};
+            if (name.ToLower().EndsWith(".csv")) return new CsvFile { Connection = Connection, Context = Context, Name = name };
             throw new Exception("DBSH-00000 Unknown soruce file type:" + name);
         }
 
@@ -33,6 +34,7 @@ namespace DbShell.Core
         {
             string name = GetName();
             if (name.ToLower().EndsWith(".cdl")) return new CdlFile { Connection = Connection, Context = Context, Name = name };
+            if (name.ToLower().EndsWith(".csv")) return new CsvFile { Connection = Connection, Context = Context, Name = name };
             throw new Exception("DBSH-00000 Unknown target file type:" + name);
         }
 

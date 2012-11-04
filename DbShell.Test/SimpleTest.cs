@@ -120,6 +120,17 @@ namespace DbShell.Test
         }
 
         [TestMethod]
+        [DeploymentItem("copytable_columnmap.xaml")]
+        public void CopyTableColumnMapTest()
+        {
+            using (var runner = new ShellRunner())
+            {
+                runner.LoadFile("copytable_columnmap.xaml");
+                runner.Run();
+            }
+        }
+
+        [TestMethod]
         [DeploymentItem("copyalltables.xaml")]
         public void CopyAllTablesTest()
         {

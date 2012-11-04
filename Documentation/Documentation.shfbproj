@@ -20,17 +20,18 @@
     <Language>en-US</Language>
     <ApiFilter>
       <Filter entryType="Namespace" fullName="DbShell.Common" isExposed="False">
-  <Filter entryType="Interface" fullName="DbShell.Common.IRunnable" filterName="IRunnable" isExposed="True" />
-  <Filter entryType="Interface" fullName="DbShell.Common.ITabularDataSource" filterName="ITabularDataSource" isExposed="True" />
-  <Filter entryType="Interface" fullName="DbShell.Common.ITabularDataTarget" filterName="ITabularDataTarget" isExposed="True" />
-</Filter>
-<Filter entryType="Namespace" fullName="DbShell.Core" isExposed="True">
-  <Filter entryType="Class" fullName="DbShell.Core.CdlFileWriter" filterName="CdlFileWriter" isExposed="False" />
-  <Filter entryType="Class" fullName="DbShell.Core.ConnectionProvider" filterName="ConnectionProvider" isExposed="False" />
-  <Filter entryType="Class" fullName="DbShell.Core.RunnableContainer" filterName="RunnableContainer" isExposed="False" />
-  <Filter entryType="Class" fullName="DbShell.Core.TablesProvider" filterName="TablesProvider" isExposed="False" />
-</Filter>
-<Filter entryType="Namespace" fullName="DbShell.Core.Utility" isExposed="False" /></ApiFilter>
+        <Filter entryType="Interface" fullName="DbShell.Common.IRunnable" filterName="IRunnable" isExposed="True" />
+        <Filter entryType="Interface" fullName="DbShell.Common.ITabularDataSource" filterName="ITabularDataSource" isExposed="True" />
+        <Filter entryType="Interface" fullName="DbShell.Common.ITabularDataTarget" filterName="ITabularDataTarget" isExposed="True" />
+      </Filter>
+      <Filter entryType="Namespace" fullName="DbShell.Core" isExposed="True">
+        <Filter entryType="Class" fullName="DbShell.Core.CdlFileWriter" filterName="CdlFileWriter" isExposed="False" />
+        <Filter entryType="Class" fullName="DbShell.Core.ConnectionProvider" filterName="ConnectionProvider" isExposed="False" />
+        <Filter entryType="Class" fullName="DbShell.Core.RunnableContainer" filterName="RunnableContainer" isExposed="False" />
+        <Filter entryType="Class" fullName="DbShell.Core.TablesProvider" filterName="TablesProvider" isExposed="False" />
+      </Filter>
+      <Filter entryType="Namespace" fullName="DbShell.Core.Utility" isExposed="False" />
+    </ApiFilter>
     <ComponentConfigurations />
     <DocumentationSources>
       <DocumentationSource sourceFile="..\DbShell.Core\DbShell.Core.csproj" />
@@ -58,7 +59,7 @@
     <RootNamespaceContainer>False</RootNamespaceContainer>
     <PresentationStyle>vs2005</PresentationStyle>
     <Preliminary>False</Preliminary>
-    <NamingMethod>Guid</NamingMethod>
+    <NamingMethod>MemberName</NamingMethod>
     <HelpTitle>DB Shell Documentation</HelpTitle>
     <ContentPlacement>AboveNamespaces</ContentPlacement>
   </PropertyGroup>

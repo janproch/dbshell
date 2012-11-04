@@ -5,6 +5,9 @@ using System.Text;
 using DbShell.Common;
 using DbShell.Core.Utility;
 using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.CommonDataLayer;
+using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.Utility;
 using log4net;
 
 namespace DbShell.Core
@@ -41,6 +44,15 @@ namespace DbShell.Core
         /// </value>
         public bool CleanTarget { get; set; }
 
+
+        /// <summary>
+        /// Gets or sets the column map. If ColumnMap is empty (no mappings are defined), identity column map is used
+        /// </summary>
+        /// <value>
+        /// The column map.
+        /// </value>
+        public List<IColumnMapping> ColumnMap { get; set; }
+
         void IRunnable.Run()
         {
             var options = new CopyTableTargetOptions
@@ -52,13 +64,45 @@ namespace DbShell.Core
 
             _log.InfoFormat("Copy table data {0}=>{1}", Source, Target);
 
+            var targetTable = table;
+            var counts = new List<int>();
+            if (ColumnMap.Count > 0)
+            {
+                targetTable = new TableInfo(null);
+                foreach (var mapItem in ColumnMap)
+                {
+                    var newCols = mapItem.GetOutputColumns(table);
+                    counts.Add(newCols.Length);
+                    targetTable.Columns.AddRange(newCols);
+                }
+            }
+
             using (var reader = Source.CreateReader())
             {
-                using (var writer = Target.CreateWriter(table, options))
+                using (var writer = Target.CreateWriter(targetTable, options))
                 {
                     while (reader.Read())
                     {
-                        writer.Write(reader);
+                        if (ColumnMap.Count > 0)
+                        {
+                            var outputRecord = new ArrayDataRecord(targetTable);
+                            int columnIndex = 0;
+                            for (int i = 0; i < ColumnMap.Count; i++)
+                            {
+                                var map = ColumnMap[i];
+                                int count = counts[i];
+                                for (int j = 0; j < count; j++, columnIndex++)
+                                {
+                                    outputRecord.SeekValue(columnIndex);
+                                    map.ProcessMapping(j, reader, outputRecord);
+                                }
+                            }
+                            writer.Write(outputRecord);
+                        }
+                        else
+                        {
+                            writer.Write(reader);
+                        }
                     }
                 }
             }
@@ -70,6 +114,14 @@ namespace DbShell.Core
 
             YieldChild(enumFunc, Source);
             YieldChild(enumFunc, Target);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CopyTable" /> class.
+        /// </summary>
+        public CopyTable()
+        {
+            ColumnMap = new List<IColumnMapping>();
         }
     }
 }
