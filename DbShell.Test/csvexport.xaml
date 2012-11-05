@@ -1,0 +1,2 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<CopyTable xmlns="http://schemas.dbshell.com/core" Source="{File Album.cdl}" Target="{File Album.csv}" />

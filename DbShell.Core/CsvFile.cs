@@ -7,6 +7,7 @@ using DbShell.Common;
 using DbShell.Core.Utility;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
+using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.Structure;
 
 namespace DbShell.Core
@@ -21,76 +22,104 @@ namespace DbShell.Core
         /// </summary>
         public string Name { get; set; }
 
-        char _delimiter = ',';
+        private char _delimiter = ',';
+
         public char Delimiter
         {
             get { return _delimiter; }
             set { _delimiter = value; }
         }
 
-        char _quote = '"';
+        private char _quote = '"';
+
         public char Quote
         {
             get { return _quote; }
             set { _quote = value; }
         }
 
-        string _endOfLine = "\r\n";
+        private string _endOfLine = "\r\n";
+
         public string EndOfLine
         {
             get { return _endOfLine; }
             set { _endOfLine = value; }
         }
 
-        char _escape = '"';
+        private char _escape = '"';
+
         public char Escape
         {
             get { return _escape; }
             set { _escape = value; }
         }
 
-        char _comment = '#';
+        private char _comment = '#';
+
         public char Comment
         {
             get { return _comment; }
             set { _comment = value; }
         }
 
-        bool _hasHeaders = true;
+        private bool _hasHeaders = true;
+
         public bool HasHeaders
         {
             get { return _hasHeaders; }
             set { _hasHeaders = value; }
         }
 
-        bool _trimSpaces = true;
-        public bool TrimSpaces
-        {
-            get { return _trimSpaces; }
-            set { _trimSpaces = value; }
-        }
+        private CsvQuotingMode _quotingMode = CsvQuotingMode.OnlyIfNecessary;
 
-        CsvQuotingMode _quotingMode = CsvQuotingMode.OnlyIfNecessary;
         public CsvQuotingMode QuotingMode
         {
             get { return _quotingMode; }
             set { _quotingMode = value; }
         }
 
+        protected Encoding _encoding = System.Text.Encoding.UTF8;
+
+        public Encoding Encoding
+        {
+            get { return _encoding; }
+            set { _encoding = value; }
+        }
+
+        private bool _trimSpaces = false;
+
+        public bool TrimSpaces
+        {
+            get { return _trimSpaces; }
+            set { _trimSpaces = value; }
+        }
 
         private string GetName()
         {
             return Context.Replace(Name);
         }
 
+        private LumenWorks.Framework.IO.Csv.CsvReader CreateCsvReader()
+        {
+            string name = GetName();
+            var textReader = new StreamReader(name, Encoding);
+            var reader = new LumenWorks.Framework.IO.Csv.CsvReader(textReader, HasHeaders, Delimiter, Quote, Escape, Comment,
+                                                                   TrimSpaces ? LumenWorks.Framework.IO.Csv.ValueTrimmingOptions.UnquotedOnly : LumenWorks.Framework.IO.Csv.ValueTrimmingOptions.None);
+            return reader;
+        }
+
         TableInfo ITabularDataSource.GetRowFormat()
         {
-            throw new NotImplementedException();
+            using (var reader = CreateCsvReader())
+            {
+                return GetStructure(reader);
+            }
         }
 
         ICdlReader ITabularDataSource.CreateReader()
         {
-            throw new NotImplementedException();
+            var reader = CreateCsvReader();
+            return new CsvReader(GetStructure(reader), reader);
         }
 
         bool ITabularDataTarget.AvailableRowFormat
@@ -100,7 +129,8 @@ namespace DbShell.Core
 
         ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options)
         {
-            var fw = new StreamWriter(GetName());
+            var fs = System.IO.File.OpenWrite(GetName());
+            var fw = new StreamWriter(fs, Encoding);
             var writer = new CsvWriter(fw, Delimiter, Quote, Escape, Comment, QuotingMode, EndOfLine);
             if (HasHeaders)
             {
@@ -108,6 +138,27 @@ namespace DbShell.Core
             }
             return writer;
         }
+
+        private TableInfo GetStructure(LumenWorks.Framework.IO.Csv.CsvReader reader)
+        {
+            var res = new TableInfo(null);
+            if (HasHeaders)
+            {
+                foreach (string col in reader.GetFieldHeaders())
+                {
+                    res.Columns.Add(new ColumnInfo(res) {CommonType = new DbTypeString(), DataType = "nvarchar", Length = -1, Name = col});
+                }
+            }
+            else
+            {
+                for (int i = 1; i <= reader.FieldCount; i++)
+                {
+                    res.Columns.Add(new ColumnInfo(res) { CommonType = new DbTypeString(), DataType = "nvarchar", Length = -1, Name = String.Format("#{0}", i) });
+                }
+            }
+            return res;
+        }
+
 
         TableInfo ITabularDataTarget.GetRowFormat()
         {

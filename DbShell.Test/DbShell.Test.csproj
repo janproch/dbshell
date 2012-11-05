@@ -60,6 +60,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CopyTableTest.cs" />
     <Compile Include="RazorTest.cs" />
+    <Compile Include="CsvTest.cs" />
+    <Compile Include="TestUtility.cs" />
     <Compile Include="XamlReaderTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +139,23 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="copytable_columnmap.xaml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Album.cdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="csvexport.xaml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="csvimport.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

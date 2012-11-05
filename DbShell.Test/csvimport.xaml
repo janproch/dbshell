@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Batch xmlns="http://schemas.dbshell.com/core">
+    <CopyTable Source="{File Album.cdl}" Target="{File Album.csv}" />
+    <CopyTable Source="{File Album.csv}" Target="{File Album2.cdl}" />
+    <CopyTable Source="{File Album2.cdl}" Target="{File Album2.csv}" />
+</Batch>

@@ -6,89 +6,89 @@ namespace DbShell.Driver.Common.Utility
 {
     public class ArrayDataRecord : ICdlRecord, ICdlRecordWriter
     {
-        object[] m_values;
-        TableInfo m_structure;
-        int m_curReadField = -1;
-        int m_curWriteField = -1;
-        CdlValueHolder m_workingHolder = new CdlValueHolder();
-        bool m_loadedValue;
+        protected object[] _values;
+        TableInfo _structure;
+        int _curReadField = -1;
+        int _curWriteField = -1;
+        CdlValueHolder _workingHolder = new CdlValueHolder();
+        bool _loadedValue;
 
         public ArrayDataRecord(TableInfo structure, object[] values)
         {
-            m_values = values;
-            m_structure = structure;
+            _values = values;
+            _structure = structure;
         }
 
         public ArrayDataRecord(TableInfo structure)
         {
-            m_structure = structure;
-            m_values = new object[structure.Columns.Count];
+            _structure = structure;
+            _values = new object[structure.Columns.Count];
         }
 
         public ArrayDataRecord(ICdlRecord record)
         {
-            m_values = new object[record.FieldCount];
-            m_structure = record.Structure;
-            record.GetValues(m_values);
+            _values = new object[record.FieldCount];
+            _structure = record.Structure;
+            record.GetValues(_values);
         }
 
         public ArrayDataRecord(ICdlRecord record, int[] colindexes, TableInfo changedStructure)
         {
             if (colindexes.Length != changedStructure.Columns.Count) throw new InternalError("DBSH-00000 ArrayDataRecord(): colnames.count != colindexes.count");
-            m_values = new object[colindexes.Length];
+            _values = new object[colindexes.Length];
             for (int i = 0; i < colindexes.Length; i++)
             {
                 if (colindexes[i] >= 0)
                 {
-                    m_values[i] = record.GetValue(colindexes[i]);
+                    _values[i] = record.GetValue(colindexes[i]);
                 }
             }
-            m_structure = changedStructure;
+            _structure = changedStructure;
         }
 
         #region ICdlRecord Members
 
         public TableInfo Structure
         {
-            get { return m_structure; }
+            get { return _structure; }
         }
 
         public int FieldCount
         {
-            get { return m_values.Length; }
+            get { return _values.Length; }
         }
 
         public int GetOrdinal(string colName)
         {
-            return m_structure.Columns.GetIndex(colName);
+            return _structure.Columns.GetIndex(colName);
         }
 
         public string GetName(int i)
         {
-            return m_structure.Columns[i].Name;
+            return _structure.Columns[i].Name;
         }
 
         public void ReadValue(int i)
         {
-            m_curReadField = i;
-            m_loadedValue = false;
+            _curReadField = i;
+            _loadedValue = false;
         }
 
         #endregion
 
         private void Changed()
         {
-            m_loadedValue = false;
+            _loadedValue = false;
         }
 
         private CdlValueHolder WantValue()
         {
-            if (!m_loadedValue)
+            if (!_loadedValue)
             {
-                m_workingHolder.ReadFrom(m_values[m_curReadField]);
-                m_loadedValue = true;
+                _workingHolder.ReadFrom(_values[_curReadField]);
+                _loadedValue = true;
             }
-            return m_workingHolder;
+            return _workingHolder;
         }
 
         #region ICdlValueReader Members
@@ -221,15 +221,15 @@ namespace DbShell.Driver.Common.Utility
 
         public object GetValue()
         {
-            return m_values[m_curReadField];
+            return _values[_curReadField];
         }
 
         public int GetValues(object[] data)
         {
-            int cnt = Math.Min(data.Length, m_values.Length);
+            int cnt = Math.Min(data.Length, _values.Length);
             for (int i = 0; i < cnt; i++)
             {
-                data[i] = m_values[i];
+                data[i] = _values[i];
             }
             return cnt;
         }
@@ -240,7 +240,7 @@ namespace DbShell.Driver.Common.Utility
 
         public void SeekValue(int i)
         {
-            m_curWriteField = i;
+            _curWriteField = i;
         }
 
         #endregion
@@ -249,127 +249,127 @@ namespace DbShell.Driver.Common.Utility
 
         public void SetBoolean(bool value)
         {
-            m_values[m_curWriteField] = value;
+            _values[_curWriteField] = value;
             Changed();
         }
 
         public void SetByte(byte value)
         {
-            m_values[m_curWriteField] = value;
+            _values[_curWriteField] = value;
             Changed();
         }
 
         public void SetSByte(sbyte value)
         {
-            m_values[m_curWriteField] = value;
+            _values[_curWriteField] = value;
             Changed();
         }
 
         public void SetByteArray(byte[] value)
         {
-            m_values[m_curWriteField] = value;
+            _values[_curWriteField] = value;
             Changed();
         }
 
         public void SetDateTime(DateTime value)
         {
-            m_values[m_curWriteField] = value;
+            _values[_curWriteField] = value;
             Changed();
         }
 
         public void SetDateTimeEx(DateTimeEx value)
         {
-            m_values[m_curWriteField] = value;
+            _values[_curWriteField] = value;
             Changed();
         }
 
         public void SetDateEx(DateEx value)
         {
-            m_values[m_curWriteField] = value;
+            _values[_curWriteField] = value;
             Changed();
         }
 
         public void SetTimeEx(TimeEx value)
         {
-            m_values[m_curWriteField] = value;
+            _values[_curWriteField] = value;
             Changed();
         }
 
         public void SetDecimal(decimal value)
         {
-            m_values[m_curWriteField] = value;
+            _values[_curWriteField] = value;
             Changed();
         }
 
         public void SetDouble(double value)
         {
-            m_values[m_curWriteField] = value;
+            _values[_curWriteField] = value;
             Changed();
         }
 
         public void SetFloat(float value)
         {
-            m_values[m_curWriteField] = value;
+            _values[_curWriteField] = value;
             Changed();
         }
 
         public void SetGuid(Guid value)
         {
-            m_values[m_curWriteField] = value;
+            _values[_curWriteField] = value;
             Changed();
         }
 
         public void SetInt16(short value)
         {
-            m_values[m_curWriteField] = value;
+            _values[_curWriteField] = value;
             Changed();
         }
 
         public void SetInt32(int value)
         {
-            m_values[m_curWriteField] = value;
+            _values[_curWriteField] = value;
             Changed();
         }
 
         public void SetInt64(long value)
         {
-            m_values[m_curWriteField] = value;
+            _values[_curWriteField] = value;
             Changed();
         }
 
         public void SetUInt16(ushort value)
         {
-            m_values[m_curWriteField] = value;
+            _values[_curWriteField] = value;
             Changed();
         }
 
         public void SetUInt32(uint value)
         {
-            m_values[m_curWriteField] = value;
+            _values[_curWriteField] = value;
             Changed();
         }
 
         public void SetUInt64(ulong value)
         {
-            m_values[m_curWriteField] = value;
+            _values[_curWriteField] = value;
             Changed();
         }
 
         public void SetString(string value)
         {
-            m_values[m_curWriteField] = value;
+            _values[_curWriteField] = value;
             Changed();
         }
 
         //public void SetArray(Array value)
         //{
-        //    m_values[m_curWriteField] = value;
+        //    _values[_curWriteField] = value;
         //    Changed();
         //}
 
         public void SetNull()
         {
-            m_values[m_curWriteField] = null;
+            _values[_curWriteField] = null;
             Changed();
         }
 

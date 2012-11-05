@@ -74,6 +74,7 @@
     <Compile Include="Table.cs" />
     <Compile Include="TableExtension.cs" />
     <Compile Include="Utility\CsvQuotingMode.cs" />
+    <Compile Include="Utility\CsvReader.cs" />
     <Compile Include="Utility\CsvWriter.cs" />
     <Compile Include="Utility\ElementBase.cs" />
     <Compile Include="Utility\TableWriter.cs" />
@@ -91,6 +92,10 @@
     <ProjectReference Include="..\DbShell.Driver.SqlServer\DbShell.Driver.SqlServer.csproj">
       <Project>{80906e4d-1539-4f93-a227-3e072f49baea}</Project>
       <Name>DbShell.Driver.SqlServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LumenWorks.Framework.IO\LumenWorks.Framework.IO.csproj">
+      <Project>{e3b83d68-c90c-4874-8e5f-dec8d038bc7c}</Project>
+      <Name>LumenWorks.Framework.IO</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
