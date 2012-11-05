@@ -58,7 +58,9 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimpleTest.cs" />
+    <Compile Include="CopyTableTest.cs" />
+    <Compile Include="RazorTest.cs" />
+    <Compile Include="XamlReaderTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DbShell.Common\DbShell.Common.csproj">
@@ -87,25 +89,25 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="simple1.xaml">
+    <Content Include="xamltest1.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="simple2.xaml">
+    <Content Include="xamltest2.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="copytable1.xaml">
+    <Content Include="copytable_tabletocdl.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="copytable2.xaml">
+    <Content Include="copytable_cdltocdl.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -117,7 +119,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="copytable3.xaml">
+    <Content Include="copytable_tabletotable.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

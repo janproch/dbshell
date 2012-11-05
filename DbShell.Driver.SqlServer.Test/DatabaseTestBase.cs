@@ -45,7 +45,7 @@ CREATE DATABASE {0}",
 
         public static string LoadEmbeddedResource(string name)
         {
-            using (Stream s = typeof(DatabaseTestBase).Assembly.GetManifestResourceStream("DataLibrary.MsSql.Tests." + name))
+            using (Stream s = typeof(DatabaseTestBase).Assembly.GetManifestResourceStream("DbShell.Driver.SqlServer.Test." + name))
             {
                 if (s == null)
                     throw new InvalidOperationException("Could not find embedded resource");

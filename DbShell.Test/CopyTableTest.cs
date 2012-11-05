@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DbShell.Test
 {
     [TestClass]
-    public class SimpleTest
+    public class CopyTableTest
     {
         private bool FileCompareCdlContent(string srcFileName, string dstFileName)
         {
@@ -63,43 +63,23 @@ namespace DbShell.Test
         }
 
         [TestMethod]
-        [DeploymentItem("simple1.xaml")]
-        public void TestXamlReader()
+        [DeploymentItem("copytable_tabletocdl.xaml")]
+        public void TableToCdl()
         {
             using (var runner = new ShellRunner())
             {
-                runner.LoadFile("simple1.xaml");
-            }
-        }
-    
-        [TestMethod]
-        [DeploymentItem("simple2.xaml")]
-        public void TestXamlReader2()
-        {
-            using (var runner = new ShellRunner())
-            {
-                runner.LoadFile("simple2.xaml");
-            }
-        }
-
-        [TestMethod]
-        [DeploymentItem("copytable1.xaml")]
-        public void CopyTable1Test()
-        {
-            using (var runner = new ShellRunner())
-            {
-                runner.LoadFile("copytable1.xaml");
+                runner.LoadFile("copytable_tabletocdl.xaml");
                 runner.Run();
             }
         }
 
         [TestMethod]
-        [DeploymentItem("copytable2.xaml")]
-        public void CopyTable2Test()
+        [DeploymentItem("copytable_cdltocdl.xaml")]
+        public void CdlToCdl()
         {
             using (var runner = new ShellRunner())
             {
-                runner.LoadFile("copytable2.xaml");
+                runner.LoadFile("copytable_cdltocdl.xaml");
                 runner.Run();
             }
 
@@ -107,12 +87,12 @@ namespace DbShell.Test
         }
 
         [TestMethod]
-        [DeploymentItem("copytable3.xaml")]
-        public void CopyTable3Test()
+        [DeploymentItem("copytable_tabletotable.xaml")]
+        public void TableToTable()
         {
             using (var runner = new ShellRunner())
             {
-                runner.LoadFile("copytable3.xaml");
+                runner.LoadFile("copytable_tabletotable.xaml");
                 runner.Run();
             }
 
@@ -140,18 +120,5 @@ namespace DbShell.Test
                 runner.Run();
             }
         }
-
-        [TestMethod]
-        [DeploymentItem("dbdocs.xaml")]
-        [DeploymentItem("dbdocs.cshtml")]
-        public void DbDocs()
-        {
-            using (var runner = new ShellRunner())
-            {
-                runner.LoadFile("dbdocs.xaml");
-                runner.Run();
-            }
-        }
-
     }
 }
