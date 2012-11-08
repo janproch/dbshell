@@ -8,11 +8,8 @@
     <CopyTable Source="{Table Album}" Target="{File test.csv}" CleanTarget="True" >
       <CopyTable.ColumnMap>
         <MapColumn Name="AlbumId" />
-          <!--
-        <MapString Value="Ahoj" Name="Col1" />
-        <MapExpression Value="${Row['AlbumId']}" Name="Col2" />
-        <MapNull />
-          -->
+        <MapValue Name="test" Expression="3+AlbumId"/>
+        <MapValue Name="test2" Value="AlbumId=${AlbumId}" UseExpression="True"/>
       </CopyTable.ColumnMap>
     </CopyTable>
 </Batch>    

@@ -53,6 +53,12 @@ namespace DbShell.Test
             {
                 runner.LoadFile("copytable_columnmap.xaml");
                 runner.Run();
+                using (var sr = new StreamReader("test.csv"))
+                {
+                    sr.ReadLine();
+                    string line = sr.ReadLine().Trim();
+                    Assert.AreEqual("1,4,AlbumId=1", line);
+                }
             }
         }
 

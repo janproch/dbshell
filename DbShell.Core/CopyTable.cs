@@ -114,6 +114,8 @@ namespace DbShell.Core
 
             YieldChild(enumFunc, Source);
             YieldChild(enumFunc, Target);
+
+            foreach(var item in ColumnMap) YieldChild(enumFunc, item);
         }
 
         /// <summary>

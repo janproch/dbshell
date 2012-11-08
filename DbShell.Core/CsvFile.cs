@@ -24,6 +24,12 @@ namespace DbShell.Core
 
         private char _delimiter = ',';
 
+        /// <summary>
+        /// Gets or sets the column delimiter.
+        /// </summary>
+        /// <value>
+        /// The column delimiter, by default ','
+        /// </value>
         public char Delimiter
         {
             get { return _delimiter; }
@@ -32,6 +38,12 @@ namespace DbShell.Core
 
         private char _quote = '"';
 
+        /// <summary>
+        /// Gets or sets the quoting character
+        /// </summary>
+        /// <value>
+        /// The quoting character, by default '"'
+        /// </value>
         public char Quote
         {
             get { return _quote; }
@@ -40,6 +52,12 @@ namespace DbShell.Core
 
         private string _endOfLine = "\r\n";
 
+        /// <summary>
+        /// Gets or sets the Line separator
+        /// </summary>
+        /// <value>
+        /// The end of line string, by default "\r\n"
+        /// </value>
         public string EndOfLine
         {
             get { return _endOfLine; }
@@ -48,6 +66,12 @@ namespace DbShell.Core
 
         private char _escape = '"';
 
+        /// <summary>
+        /// Gets or sets the escape character
+        /// </summary>
+        /// <value>
+        /// The escape character, used in quoted strings. By default '"'
+        /// </value>
         public char Escape
         {
             get { return _escape; }
@@ -56,6 +80,12 @@ namespace DbShell.Core
 
         private char _comment = '#';
 
+        /// <summary>
+        /// Gets or sets the line comment prefix
+        /// </summary>
+        /// <value>
+        /// The line comment prefix. By default '#'
+        /// </value>
         public char Comment
         {
             get { return _comment; }
@@ -64,6 +94,12 @@ namespace DbShell.Core
 
         private bool _hasHeaders = true;
 
+        /// <summary>
+        /// Gets or sets a value indicating whether CSV file has header row
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance has header row; otherwise, <c>false</c>.
+        /// </value>
         public bool HasHeaders
         {
             get { return _hasHeaders; }
@@ -72,6 +108,12 @@ namespace DbShell.Core
 
         private CsvQuotingMode _quotingMode = CsvQuotingMode.OnlyIfNecessary;
 
+        /// <summary>
+        /// Gets or sets the quoting mode.
+        /// </summary>
+        /// <value>
+        /// The quoting mode.
+        /// </value>
         public CsvQuotingMode QuotingMode
         {
             get { return _quotingMode; }
@@ -80,6 +122,12 @@ namespace DbShell.Core
 
         protected Encoding _encoding = System.Text.Encoding.UTF8;
 
+        /// <summary>
+        /// Gets or sets the file encoding.
+        /// </summary>
+        /// <value>
+        /// The encoding, by default UTF-8
+        /// </value>
         public Encoding Encoding
         {
             get { return _encoding; }
@@ -88,6 +136,12 @@ namespace DbShell.Core
 
         private bool _trimSpaces = false;
 
+        /// <summary>
+        /// Gets or sets a value indicating whether trim spaces
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if trim spaces; otherwise, <c>false</c>.
+        /// </value>
         public bool TrimSpaces
         {
             get { return _trimSpaces; }
