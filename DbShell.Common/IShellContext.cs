@@ -16,5 +16,7 @@ namespace DbShell.Common
         void EnterScope();
         void LeaveScope();
         string Replace(string replaceString);
+
+        void IncludeFile(string file, IShellElement parent);
     }
 }

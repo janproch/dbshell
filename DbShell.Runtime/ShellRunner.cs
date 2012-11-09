@@ -43,17 +43,17 @@ namespace DbShell.Runtime
             _main = (IRunnable)obj;
             _context = new ShellContext();
             var element = _main as IShellElement;
-            if (element != null) AfterLoad(element, null);
+            if (element != null) ProcessLoadedElement(element, null, _context);
         }
 
-        private void AfterLoad(IShellElement element, IShellElement parent)
+        public static void ProcessLoadedElement(IShellElement element, IShellElement parent, IShellContext context)
         {
-            element.Context = _context;
+            element.Context = context;
             if (element.Connection == null && parent != null && parent.Connection != null)
             {
                 element.Connection = parent.Connection;
             }
-            element.EnumChildren(child => AfterLoad(child, element));
+            element.EnumChildren(child => ProcessLoadedElement(child, element, context));
         }
 
         public void Run()

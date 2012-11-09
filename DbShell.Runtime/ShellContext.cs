@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Markup;
 using DbShell.Common;
+using DbShell.Core;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
 using IronPython.Hosting;
@@ -81,6 +84,19 @@ namespace DbShell.Runtime
         {
             if (replaceString == null) return null;
             return Regex.Replace(replaceString, @"\$\{([^\}]+)\}", ReplaceMatch);
+        }
+
+        public void IncludeFile(string file, IShellElement parent)
+        {
+            using (var fr = new FileInfo(file).OpenRead())
+            {
+                object obj = XamlReader.Load(fr);
+                var runnable = obj as IRunnable;
+                if (runnable == null) throw new Exception(String.Format("DBSH-00000 Included file {0} doesn't contain root element implementing IRunnable", file));
+                var shellElem = obj as IShellElement;
+                if (shellElem != null) ShellRunner.ProcessLoadedElement(shellElem, parent, this);
+                runnable.Run();
+            }
         }
     }
 }

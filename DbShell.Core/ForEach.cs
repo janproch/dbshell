@@ -20,7 +20,7 @@ namespace DbShell.Core
     /// ]]>
     /// </code>
     /// </example>
-    public class ForEach : RunnableContainer, IRunnable
+    public class ForEach : RunnableContainer
     {
         /// <summary>
         /// Gets or sets the name of property, which is filled with iterating expression
@@ -38,18 +38,24 @@ namespace DbShell.Core
         /// </value>
         public IListProvider Source { get; set; }
 
-        void IRunnable.Run()
+        protected override void DoRun()
         {
-            Context.EnterScope();
-            foreach (var item in Source.GetList())
+            try
             {
-                Context.SetVariable(Property, item);
-                foreach (var command in Commands)
+                Context.EnterScope();
+                foreach (var item in Source.GetList())
                 {
-                    command.Run();
+                    Context.SetVariable(Property, item);
+                    foreach (var command in Commands)
+                    {
+                        command.Run();
+                    }
                 }
             }
-            Context.LeaveScope();
+            finally
+            {
+                Context.LeaveScope();
+            }
         }
 
         public override void EnumChildren(Action<IShellElement> enumFunc)

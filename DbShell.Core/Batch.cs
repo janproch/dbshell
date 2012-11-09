@@ -12,9 +12,9 @@ namespace DbShell.Core
     /// <summary>
     /// Wrapper for more commands implementing <see cref="IRunnable"/>
     /// </summary>
-    public class Batch : RunnableContainer, IRunnable
+    public class Batch : RunnableContainer
     {
-        void IRunnable.Run()
+        protected override void DoRun()
         {
             RunContainer();
         }

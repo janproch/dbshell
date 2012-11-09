@@ -9,7 +9,7 @@ using DbShell.Core.Utility;
 namespace DbShell.Core
 {
     [ContentProperty("Commands")]
-    public class RunnableContainer : ElementBase
+    public abstract class RunnableContainer : RunnableBase
     {
         public RunnableContainer()
         {

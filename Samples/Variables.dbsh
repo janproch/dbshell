@@ -5,7 +5,7 @@
   <!-- define connection string here -->
   <SetVariable Name="ConnectionNoDb" Value="" />
   <!-- define database name -->
-  <SetVariable Name="DbName" Value="" />
+  <SetVariable Name="DbName" Value="Chinook" />
   
   <SetVariable Name="Connection" Value="${ConnectionNoDb};Initial Catalog=${DbName}" />
 </Batch>

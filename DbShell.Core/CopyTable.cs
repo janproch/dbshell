@@ -15,10 +15,9 @@ namespace DbShell.Core
     /// <summary>
     /// Process, which copies table data (possibly with structure)
     /// </summary>
-    public class CopyTable : ElementBase, IRunnable
+    public class CopyTable : RunnableBase
     {
         private static ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
 
         /// <summary>
         /// Source of copy operation
@@ -53,7 +52,7 @@ namespace DbShell.Core
         /// </value>
         public List<IColumnMapping> ColumnMap { get; set; }
 
-        void IRunnable.Run()
+        protected override void DoRun()
         {
             var options = new CopyTableTargetOptions
                 {
