@@ -123,70 +123,70 @@ namespace DbShell.Driver.Common.CommonDataLayer
         {
             if (m_fields[m_curField].Changed) return (bool)m_fields[m_curField].Value;
             if (m_original != null) return m_original.GetBoolean();
-            throw new CdlTableError("DBSH-00000 Cannot convert null to boolean");
+            throw new CdlTableError("DBSH-00016 Cannot convert null to boolean");
         }
 
         public byte GetByte()
         {
             if (m_fields[m_curField].Changed) return (byte)m_fields[m_curField].Value;
             if (m_original != null) return m_original.GetByte();
-            throw new CdlTableError("DBSH-00000 Cannot convert null to byte");
+            throw new CdlTableError("DBSH-00017 Cannot convert null to byte");
         }
 
         public sbyte GetSByte()
         {
             if (m_fields[m_curField].Changed) return (sbyte)m_fields[m_curField].Value;
             if (m_original != null) return m_original.GetSByte();
-            throw new CdlTableError("DBSH-00000 Cannot convert null to sbyte");
+            throw new CdlTableError("DBSH-00018 Cannot convert null to sbyte");
         }
 
         public byte[] GetByteArray()
         {
             if (m_fields[m_curField].Changed) return (byte[])m_fields[m_curField].Value;
             if (m_original != null) return m_original.GetByteArray();
-            throw new CdlTableError("DBSH-00000 Cannot convert null to byte array");
+            throw new CdlTableError("DBSH-00019 Cannot convert null to byte array");
         }
 
         public DateTime GetDateTime()
         {
             if (m_fields[m_curField].Changed) return (DateTime)m_fields[m_curField].Value;
             if (m_original != null) return m_original.GetDateTime();
-            throw new CdlTableError("DBSH-00000 Cannot convert null to datetime");
+            throw new CdlTableError("DBSH-00020 Cannot convert null to datetime");
         }
 
         public DateTimeEx GetDateTimeEx()
         {
             if (m_fields[m_curField].Changed) return (DateTimeEx)m_fields[m_curField].Value;
             if (m_original != null) return m_original.GetDateTimeEx();
-            throw new CdlTableError("DBSH-00000 Cannot convert null to datetimeex");
+            throw new CdlTableError("DBSH-00021 Cannot convert null to datetimeex");
         }
 
         public DateEx GetDateEx()
         {
             if (m_fields[m_curField].Changed) return (DateEx)m_fields[m_curField].Value;
             if (m_original != null) return m_original.GetDateEx();
-            throw new CdlTableError("DBSH-00000 Cannot convert null to dateex");
+            throw new CdlTableError("DBSH-00022 Cannot convert null to dateex");
         }
 
         public TimeEx GetTimeEx()
         {
             if (m_fields[m_curField].Changed) return (TimeEx)m_fields[m_curField].Value;
             if (m_original != null) return m_original.GetTimeEx();
-            throw new CdlTableError("DBSH-00000 Cannot convert null to timeex");
+            throw new CdlTableError("DBSH-00023 Cannot convert null to timeex");
         }
 
         public decimal GetDecimal()
         {
             if (m_fields[m_curField].Changed) return (decimal)m_fields[m_curField].Value;
             if (m_original != null) return m_original.GetDecimal();
-            throw new CdlTableError("DBSH-00000 Cannot convert null to decimal");
+            throw new CdlTableError("DBSH-00024 Cannot convert null to decimal");
         }
 
         public double GetDouble()
         {
             if (m_fields[m_curField].Changed) return (double)m_fields[m_curField].Value;
             if (m_original != null) return m_original.GetDouble();
-            throw new CdlTableError("DBSH-00000 Cannot convert null to double");
+            throw new CdlTableError("DBSH-00025 Cannot convert null to double");
         }
 
         public TypeStorage GetFieldType()
@@ -204,56 +204,56 @@ namespace DbShell.Driver.Common.CommonDataLayer
         {
             if (m_fields[m_curField].Changed) return (float)m_fields[m_curField].Value;
             if (m_original != null) return m_original.GetFloat();
-            throw new CdlTableError("DBSH-00000 Cannot convert null to float");
+            throw new CdlTableError("DBSH-00026 Cannot convert null to float");
         }
 
         public Guid GetGuid()
         {
             if (m_fields[m_curField].Changed) return (Guid)m_fields[m_curField].Value;
             if (m_original != null) return m_original.GetGuid();
-            throw new CdlTableError("DBSH-00000 Cannot convert null to Guid");
+            throw new CdlTableError("DBSH-00027 Cannot convert null to Guid");
         }
 
         public short GetInt16()
         {
             if (m_fields[m_curField].Changed) return (short)m_fields[m_curField].Value;
             if (m_original != null) return m_original.GetInt16();
-            throw new CdlTableError("DBSH-00000 Cannot convert null to short");
+            throw new CdlTableError("DBSH-00028 Cannot convert null to short");
         }
 
         public int GetInt32()
         {
             if (m_fields[m_curField].Changed) return (int)m_fields[m_curField].Value;
             if (m_original != null) return m_original.GetInt32();
-            throw new CdlTableError("DBSH-00000 Cannot convert null to int");
+            throw new CdlTableError("DBSH-00029 Cannot convert null to int");
         }
 
         public long GetInt64()
         {
             if (m_fields[m_curField].Changed) return (long)m_fields[m_curField].Value;
             if (m_original != null) return m_original.GetInt64();
-            throw new CdlTableError("DBSH-00000 Cannot convert null to long");
+            throw new CdlTableError("DBSH-00030 Cannot convert null to long");
         }
 
         public ushort GetUInt16()
         {
             if (m_fields[m_curField].Changed) return (ushort)m_fields[m_curField].Value;
             if (m_original != null) return m_original.GetUInt16();
-            throw new CdlTableError("DBSH-00000 Cannot convert null to ushort");
+            throw new CdlTableError("DBSH-00031 Cannot convert null to ushort");
         }
 
         public uint GetUInt32()
         {
             if (m_fields[m_curField].Changed) return (uint)m_fields[m_curField].Value;
             if (m_original != null) return m_original.GetUInt32();
-            throw new CdlTableError("DBSH-00000 Cannot convert null to uint");
+            throw new CdlTableError("DBSH-00032 Cannot convert null to uint");
         }
 
         public ulong GetUInt64()
         {
             if (m_fields[m_curField].Changed) return (ulong)m_fields[m_curField].Value;
             if (m_original != null) return m_original.GetUInt64();
-            throw new CdlTableError("DBSH-00000 Cannot convert null to ulong");
+            throw new CdlTableError("DBSH-00033 Cannot convert null to ulong");
         }
 
         public string GetName(int i)

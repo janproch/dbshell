@@ -34,7 +34,7 @@ namespace DbShell.Core
             var table = db.FindTable(fullName.Schema, fullName.Name);
             if (table == null)
             {
-                throw new Exception(String.Format("DBSH-00000 Table {0} not found", fullName));
+                throw new Exception(String.Format("DBSH-00007 Table {0} not found", fullName));
             }
             return table;
         }

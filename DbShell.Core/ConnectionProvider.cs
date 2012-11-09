@@ -24,7 +24,7 @@ namespace DbShell.Core
 
             if (_factory == null)
             {
-                throw new Exception("DBSH-00000 Unknown connection provider:" + provider);
+                throw new Exception("DBSH-00001 Unknown connection provider:" + provider);
             }
 
             //switch (provider.ToLower())

@@ -92,7 +92,7 @@ namespace DbShell.Runtime
             {
                 object obj = XamlReader.Load(fr);
                 var runnable = obj as IRunnable;
-                if (runnable == null) throw new Exception(String.Format("DBSH-00000 Included file {0} doesn't contain root element implementing IRunnable", file));
+                if (runnable == null) throw new Exception(String.Format("DBSH-00059 Included file {0} doesn't contain root element implementing IRunnable", file));
                 var shellElem = obj as IShellElement;
                 if (shellElem != null) ShellRunner.ProcessLoadedElement(shellElem, parent, this);
                 runnable.Run();

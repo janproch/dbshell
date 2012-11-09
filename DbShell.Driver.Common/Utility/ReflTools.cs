@@ -44,7 +44,7 @@ namespace DbShell.Driver.Common.Utility
         public static object CreateNewInstance(this Type type)
         {
             ConstructorInfo con = type.GetConstructor(new Type[] { });
-            if (con == null) throw new InternalError("DBSH-00000 Type " + type.FullName + " has no parameter-less constructor");
+            if (con == null) throw new InternalError("DBSH-00053 Type " + type.FullName + " has no parameter-less constructor");
             return con.Invoke(new object[] { });
         }
 
@@ -54,7 +54,7 @@ namespace DbShell.Driver.Common.Utility
             if (con == null)
             {
                 con = type.GetConstructor(new Type[] { parent.GetType() });
-                if (con == null) throw new InternalError(String.Format("DBSH-00000 Type {0} has no parameter-less constructor or ({1}) constructor", type.FullName, parent.GetType().FullName));
+                if (con == null) throw new InternalError(String.Format("DBSH-00054 Type {0} has no parameter-less constructor or ({1}) constructor", type.FullName, parent.GetType().FullName));
                 return con.Invoke(new object[] { parent });
             }
             return con.Invoke(new object[] { });
@@ -79,7 +79,7 @@ namespace DbShell.Driver.Common.Utility
             if (pi != null) return pi.GetValue(null, new object[] { });
             FieldInfo fld = type.GetField(fldname);
             if (fld != null) return fld.GetValue(null);
-            throw new Exception(String.Format("DBSH-00000 Type {0} has not property nor field {1}", type.FullName, fldname));
+            throw new Exception(String.Format("DBSH-00055 Type {0} has not property nor field {1}", type.FullName, fldname));
         }
     }
 }

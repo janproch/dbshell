@@ -56,22 +56,22 @@ namespace DbShell.Driver.Common.CommonDataLayer
 
         public long GetBytes(int i, long fieldOffset, byte[] buffer, int bufferoffset, int length)
         {
-            throw new NotImplementedError("DBSH-00000");
+            throw new NotImplementedError("DBSH-00012");
         }
 
         public char GetChar(int i)
         {
-            throw new NotImplementedError("DBSH-00000");
+            throw new NotImplementedError("DBSH-00013");
         }
 
         public long GetChars(int i, long fieldoffset, char[] buffer, int bufferoffset, int length)
         {
-            throw new NotImplementedError("DBSH-00000");
+            throw new NotImplementedError("DBSH-00014");
         }
 
         public IDataReader GetData(int i)
         {
-            throw new NotImplementedError("DBSH-00000");
+            throw new NotImplementedError("DBSH-00015");
         }
 
         public string GetDataTypeName(int i)

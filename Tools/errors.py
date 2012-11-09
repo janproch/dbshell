@@ -55,6 +55,8 @@ for err in dups:
     print err['code'], err['file']
 
 used = errs.keys()
+if len(used) == 0:
+  used.append(0)
 
 if len(sys.argv) >= 2 and sys.argv[1] == 'assign':
     for fn in enum_cs_files():

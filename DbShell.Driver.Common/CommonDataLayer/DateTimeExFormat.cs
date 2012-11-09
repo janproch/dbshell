@@ -23,7 +23,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                             num2 = ParseRepeatPattern(format, i, patternChar);
                             if (num2 > 7)
                             {
-                                throw new FormatException("DBSH-00000 Bad format");
+                                throw new FormatException("DBSH-00035 Bad format");
                             }
                             long num5 = dateTime.Nanosecond / 100;
                             num5 /= (long)Math.Pow(10.0, (double)(7 - num2));
@@ -69,7 +69,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                             int ch = ParseNextChar(format, i);
                             if (ch < 0)
                             {
-                                throw new FormatException("DBSH-00000 Invalid format");
+                                throw new FormatException("DBSH-00036 Invalid format");
                             }
                             outputBuffer.Append((char)ch);
                             num2 = 2;
@@ -161,7 +161,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 {
                     if (pos >= length)
                     {
-                        throw new FormatException("DBSH-00000 Invalid format");
+                        throw new FormatException("DBSH-00037 Invalid format");
                     }
                     result.Append(format[pos++]);
                 }
@@ -172,7 +172,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
             }
             if (!flag)
             {
-                throw new FormatException("DBSH-00000 Format_BadQuote:" + ch);
+                throw new FormatException("DBSH-00038 Format_BadQuote:" + ch);
             }
             return (pos - num2);
         }

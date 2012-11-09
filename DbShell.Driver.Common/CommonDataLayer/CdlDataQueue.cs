@@ -31,14 +31,14 @@ namespace DbShell.Driver.Common.CommonDataLayer
             try
             {
                 Element res = m_queue.Get();
-                if (res.IsEof) throw new Exception("DBSH-00000 Eof reached");
+                if (res.IsEof) throw new Exception("DBSH-00009 Eof reached");
                 ICdlRecord rec = res.Record;
                 return rec;
             }
             catch (QueueClosedError)
             {
-                if (m_error != null) throw new QueueClosedError("DBSH-00000", m_error);
-                throw new QueueClosedError("DBSH-00000");
+                if (m_error != null) throw new QueueClosedError("DBSH-00010", m_error);
+                throw new QueueClosedError("DBSH-00011");
             }
         }
 

@@ -36,7 +36,7 @@ namespace DbShell.Core
 
         protected override void DoRun()
         {
-            if (Value != null && Expression != null) throw new Exception("DBSH-00000 Both Value and Expression is set");
+            if (Value != null && Expression != null) throw new Exception("DBSH-00006 Both Value and Expression is set");
             if (Value != null)
             {
                 Context.SetVariable(Context.Replace(Name), Context.Replace(Value));

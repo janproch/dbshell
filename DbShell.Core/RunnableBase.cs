@@ -29,7 +29,7 @@ namespace DbShell.Core
                 foreach (string file in Requires.Split(';'))
                 {
                     if (String.IsNullOrEmpty(file)) continue;
-                    _log.InfoFormat("DBSH-00000 Including file {0}", file);
+                    _log.InfoFormat("DBSH-00005 Including file {0}", file);
                     Context.IncludeFile(file, this);
                 }
             }

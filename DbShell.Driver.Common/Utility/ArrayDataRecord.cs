@@ -34,7 +34,7 @@ namespace DbShell.Driver.Common.Utility
 
         public ArrayDataRecord(ICdlRecord record, int[] colindexes, TableInfo changedStructure)
         {
-            if (colindexes.Length != changedStructure.Columns.Count) throw new InternalError("DBSH-00000 ArrayDataRecord(): colnames.count != colindexes.count");
+            if (colindexes.Length != changedStructure.Columns.Count) throw new InternalError("DBSH-00050 ArrayDataRecord(): colnames.count != colindexes.count");
             _values = new object[colindexes.Length];
             for (int i = 0; i < colindexes.Length; i++)
             {

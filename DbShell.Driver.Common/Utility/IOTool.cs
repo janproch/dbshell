@@ -49,10 +49,10 @@ namespace DbShell.Driver.Common.Utility
             string fromDirectory, string toPath)
         {
             if (fromDirectory == null)
-                throw new ArgumentNullException("fromDirectory", "DBSH-00000 fromDirectory is null");
+                throw new ArgumentNullException("fromDirectory", "DBSH-00051 fromDirectory is null");
 
             if (toPath == null)
-                throw new ArgumentNullException("toPath", "DBSH-00000 toPath is null");
+                throw new ArgumentNullException("toPath", "DBSH-00052 toPath is null");
 
             bool isRooted = Path.IsPathRooted(fromDirectory)
                 && Path.IsPathRooted(toPath);

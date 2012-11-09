@@ -192,7 +192,7 @@ namespace DbShell.Driver.Common.Utility
                 case TypeStorage.Null:
                     return typeof(DBNull);
                 //case TypeStorage.Array:
-                //    throw new InternalError("DBSH-00000 TypeTool.GetDotNetType: Type array has not .NET representation");
+                //    throw new InternalError("DBSH-00056 TypeTool.GetDotNetType: Type array has not .NET representation");
             }
             return typeof(string);
         }

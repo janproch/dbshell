@@ -24,7 +24,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                             num2 = DateTimeExFormat.ParseRepeatPattern(format, i, patternChar);
                             if (num2 > 7)
                             {
-                                throw new FormatException("DBSH-00000 Bad format");
+                                throw new FormatException("DBSH-00039 Bad format");
                             }
                             int parsed = lexer.ReadNumber(num2);
                             res.Nanosecond = (int)Math.Pow(10.0, (double)(7 - num2)) * 100 * parsed;
@@ -68,7 +68,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                             int ch = DateTimeExFormat.ParseNextChar(format, i);
                             if (ch < 0)
                             {
-                                throw new FormatException("DBSH-00000 Invalid format");
+                                throw new FormatException("DBSH-00040 Invalid format");
                             }
                             lexer.Skip((char)ch);
                             num2 = 2;

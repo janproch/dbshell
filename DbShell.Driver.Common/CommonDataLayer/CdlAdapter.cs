@@ -122,7 +122,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
 
         public void SaveChanges(CdlTable table, ISqlDumper dmp)
         {
-            if (IsReadOnly) throw new InternalError("DBSH-00000 CdlAdapter is read only, can not save changes");
+            if (IsReadOnly) throw new InternalError("DBSH-00008 CdlAdapter is read only, can not save changes");
             DataScript script = table.GetBaseModifyScript();
             MultiTableUpdateScript lscript = table.GetLinkedDataScript(m_structure.FullName);
             //if (progress != null)

@@ -66,7 +66,7 @@ namespace DbShell.Core
             }
             if (Expression != null && Value != null)
             {
-                throw new Exception("DBSH-00000 MapValue: Both Expression and Value is set");
+                throw new Exception("DBSH-00004 MapValue: Both Expression and Value is set");
             }
             if (Value != null)
             {

@@ -65,7 +65,7 @@ namespace DbShell.Driver.Common.Utility
             {
                 lock (m_queue)
                 {
-                    if (m_closed) throw new QueueClosedError("DBSH-00000");
+                    if (m_closed) throw new QueueClosedError("DBSH-00057");
                     if (m_maxSize != null && m_queue[priority].Count >= m_maxSize.Value)
                     {
                         goto wait;
@@ -83,7 +83,7 @@ namespace DbShell.Driver.Common.Utility
 
         private bool DoGet(bool remove, out T res)
         {
-            if (m_closed) throw new QueueClosedError("DBSH-00000");
+            if (m_closed) throw new QueueClosedError("DBSH-00058");
             foreach (PriorityLevel level in m_priorities)
             {
                 if (m_queue[level].Count > 0)
