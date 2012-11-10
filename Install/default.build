@@ -1,0 +1,75 @@
+<?xml version="1.0" ?>
+<project name="PSAS" default="rebuild">
+
+<!--
+
+Usage:
+nant (Release build)
+nant debug (Debug build, asserts active, unit tests)
+
+To compile the script, you need:
+NANT - http://nant.sf.net
+NANT Contrib - http://nantcontrib.sf.net
+
+Prerequisities:
+Visual Studio 2010 (including MS-BUILD)
+
+-->
+
+    <!-- SVN location -->
+  <property name="git_exe"  value="git" />
+
+  <!-- Version number -->
+  <property name="version_number" value="1.0" />
+
+  <!-- path to NANT contrib -->
+  <property name="nantcontrib_path" value="C:\Program Files\nant-0.92\nantcontrib-0.92\bin\" />
+
+  <!-- path to NANT devenv -->
+  <property name="devenv" value="c:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv" />
+
+  <!-- SVN repository path and user credentials-->
+  <property name="git_repository" value="c:\jenasoft\dbshell" />
+
+	<property name="nant.settings.currentframework" value="net-4.0" />
+
+  <target name="rebuild" depends="define_settings, cleansource, cleanoutput, get, build">  
+  </target>
+
+  <target name="build" >  
+  </target>
+
+  <target name="define_settings">
+    <loadtasks assembly="${nantcontrib_path}/NAnt.Contrib.Tasks.dll" />
+    
+    <property name="build_date" value="${datetime::now()}" />
+    <property name="CCNetLabel" value="0" />
+  </target>
+	
+  <target name="cleansource" description="Clear all source files">        
+		<delete dir=".\source\"  if="${directory::exists('.\source')}" />
+  </target>
+	
+	<target name="cleanoutput" description="Clear all output files">			
+		<delete dir="./output" if="${directory::exists('./output')}" />
+		<mkdir dir="output" />
+  </target>
+
+
+  <target name="get" description="Get all sources from subversion">
+   <exec program="${git_exe}" commandline="clone ${git_repository} .\source"/>
+  </target>
+
+  <target name='application'>
+  
+    <exec basedir="."
+      program="${devenv}"
+      commandline=" source/DbShell.sln /Build Release" 
+      workingdir="."
+      failonerror="true" />
+
+    <copy todir="./output">
+      <fileset basedir="./source/DbShell/bin/Release"/>
+    </copy>
+  </target>
+</project>
