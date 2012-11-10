@@ -218,5 +218,10 @@ namespace DbShell.Core
         {
             throw new NotImplementedException();
         }
+
+        public override string ToString()
+        {
+            return "CSV:" + Name;
+        }
     }
 }

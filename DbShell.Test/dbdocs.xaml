@@ -4,6 +4,6 @@
     xmlns="http://schemas.dbshell.com/core"
     Connection="sqlserver://MultipleActiveResultSets=True;Data Source=localhost\SQLEXPRESS;Integrated Security=SSPI;Initial Catalog=Chinook"
     File="dbdocs.html"
-    Template="dbdocs.cshtml"
+    Template="DatabaseDoc.cshtml"
     />
  

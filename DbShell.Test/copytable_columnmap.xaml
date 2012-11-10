@@ -9,7 +9,7 @@
       <CopyTable.ColumnMap>
         <MapColumn Name="AlbumId" />
         <MapValue Name="test" Expression="3+AlbumId"/>
-        <MapValue Name="test2" Value="AlbumId=${AlbumId}" UseExpression="True"/>
+        <MapValue Name="test2" Value="AlbumId=${AlbumId}" />
       </CopyTable.ColumnMap>
     </CopyTable>
 </Batch>    

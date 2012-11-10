@@ -83,6 +83,12 @@ Visual Studio 2010 (including MS-BUILD)
       </fileset>
     </copy>
 
+    <copy todir="./output/Templates">
+      <fileset basedir="./source/Templates">
+        <include name="**/*.*" />
+      </fileset>
+    </copy>
+
     <copy tofile="./output/Documentation/DbShell.chm" file="./source/Documentation/Help/Documentation.chm" />
     
     <zip zipfile='DbShell.zip'>

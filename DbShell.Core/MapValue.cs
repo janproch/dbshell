@@ -29,7 +29,7 @@ namespace DbShell.Core
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the value expression of column. Must not be set, when Expression is set.
+        /// Gets or sets the value of column. Must not be set, when Expression is set.
         /// </summary>
         /// <value>
         /// The expression value.
@@ -37,12 +37,12 @@ namespace DbShell.Core
         public string Value { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether expression syntax in Value field is supported
+        /// Gets or sets a value indicating whether column values are available in expressions
         /// </summary>
         /// <value>
-        ///   if <c>true</c>, replace expressions can be used. There are available variables for all columns.
+        ///   if <c>true</c>, replace expressions are available. By default it is <c>true</c>. Change it to false for performance reasons.
         /// </value>
-        public bool UseExpression { get; set; }
+        public bool NeedColumnValues { get; set; }
 
         /// <summary>
         /// Gets or sets the expression. Must not be set, when Value is set.
@@ -58,6 +58,34 @@ namespace DbShell.Core
             return new[] {column};
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MapValue" /> class.
+        /// </summary>
+        public MapValue()
+        {
+            NeedColumnValues = true;
+        }
+
+        private void CreateColumnValues(ICdlRecord record)
+        {
+            if (NeedColumnValues)
+            {
+                Context.EnterScope();
+                for (int i = 0; i < record.FieldCount; i++)
+                {
+                    Context.SetVariable(record.GetName(i), record.GetValue(i));
+                }
+            }
+        }
+
+        private void FreeColumnValues()
+        {
+            if (NeedColumnValues)
+            {
+                Context.LeaveScope();
+            }
+        }
+
         void IColumnMapping.ProcessMapping(int column, ICdlRecord record, ICdlValueWriter writer)
         {
             if (_value == null)
@@ -70,47 +98,31 @@ namespace DbShell.Core
             }
             if (Value != null)
             {
-                if (UseExpression)
+                try
                 {
-                    try
-                    {
-                        Context.EnterScope();
-                        for (int i = 0; i < record.FieldCount; i++)
-                        {
-                            Context.SetVariable(record.GetName(i), record.GetValue(i));
-                        }
-                        string value = Context.Replace(Value);
-                        _value.ReadFrom(value);
-                    }
-                    finally
-                    {
-                        Context.LeaveScope();
-                    }
+                    CreateColumnValues(record);
+                    string value = Context.Replace(Value);
+                    _value.ReadFrom(value);
                     _value.WriteTo(writer);
                 }
-                else
+                finally
                 {
-                    _value.ReadFrom(Value);
-                    _value.WriteTo(writer);
+                    FreeColumnValues();
                 }
             }
             if (Expression != null)
             {
                 try
                 {
-                    Context.EnterScope();
-                    for (int i = 0; i < record.FieldCount; i++)
-                    {
-                        Context.SetVariable(record.GetName(i), record.GetValue(i));
-                    }
+                    CreateColumnValues(record);
                     object value = Context.Evaluate(Expression);
                     _value.ReadFrom(value);
+                    _value.WriteTo(writer);
                 }
                 finally
                 {
-                    Context.LeaveScope();
+                    FreeColumnValues();
                 }
-                _value.WriteTo(writer);
             }
             if (Expression == null && Value == null)
             {

@@ -12,7 +12,7 @@ namespace DbShell.Test
     {
         [TestMethod]
         [DeploymentItem("dbdocs.xaml")]
-        [DeploymentItem("dbdocs.cshtml")]
+        [DeploymentItem("DatabaseDoc.cshtml")]
         public void DbDocs()
         {
             using (var runner = new ShellRunner())

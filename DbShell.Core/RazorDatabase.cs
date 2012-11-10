@@ -15,7 +15,7 @@ namespace DbShell.Core
     /// <summary>
     /// Job, which can be used for export database structure to text file using razor template
     /// </summary>
-    public class RazorDatabase : ElementBase, IRunnable
+    public class RazorDatabase : RunnableBase
     {
         private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -29,7 +29,7 @@ namespace DbShell.Core
         /// </summary>
         public string Template { get; set; }
 
-        void IRunnable.Run()
+        protected override void DoRun()
         {
             _log.InfoFormat("Apply template {0}=>{1}", Template, File);
             using (var sr = new StreamReader(Context.ResolveFile(Template, ResolveFileMode.Template)))

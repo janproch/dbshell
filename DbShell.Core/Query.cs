@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Windows.Markup;
 using DbShell.Common;
 using DbShell.Core.Utility;
 using DbShell.Driver.Common.CommonDataLayer;
@@ -14,6 +15,7 @@ namespace DbShell.Core
     /// <summary>
     /// Represents query reading data from database. Can be exported to file in the some way as table.
     /// </summary>
+    [ContentProperty("Text")]
     public class Query : ElementBase, ITabularDataSource
     {
         /// <summary>
@@ -57,6 +59,11 @@ namespace DbShell.Core
                     conn.Dispose();
                 };
             return result;
+        }
+
+        public override string ToString()
+        {
+            return "QUERY:" + Text;
         }
     }
 }

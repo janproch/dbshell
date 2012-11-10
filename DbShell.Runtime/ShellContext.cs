@@ -136,7 +136,7 @@ namespace DbShell.Runtime
 
         private string GetTemplatesFolder()
         {
-            return Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), "templates");
+            return Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), "Templates");
         }
 
         private string GetExecutingFolder()

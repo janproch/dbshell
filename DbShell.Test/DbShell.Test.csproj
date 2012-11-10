@@ -133,11 +133,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="dbdocs.cshtml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="copytable_columnmap.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -157,6 +152,12 @@
   <ItemGroup>
     <Content Include="csvimport.xaml">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Templates\DatabaseDoc.cshtml">
+      <Link>DatabaseDoc.cshtml</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
