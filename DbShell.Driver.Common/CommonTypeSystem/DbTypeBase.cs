@@ -37,7 +37,7 @@ namespace DbShell.Driver.Common.CommonTypeSystem
                 case DbTypeCode.Array: return new DbTypeArray();
                 case DbTypeCode.Generic: return new DbTypeGeneric();
             }
-            throw new InternalError(String.Format("DBM-00000 Unknown db type code: {0}", code));
+            throw new InternalError(String.Format("DBSH-00071 Unknown db type code: {0}", code));
         }
 
         public virtual void SetAutoincrement(bool value) { }

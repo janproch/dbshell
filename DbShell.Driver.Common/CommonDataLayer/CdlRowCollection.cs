@@ -13,7 +13,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
 
         public override void Add(CdlRow item)
         {
-            if (item.RowState != CdlRowState.Detached) throw new BadCdlRowStateError("DBM-00000", CdlRowState.Detached, item.RowState);
+            if (item.RowState != CdlRowState.Detached) throw new BadCdlRowStateError("DBSH-00068", CdlRowState.Detached, item.RowState);
             base.Add(item);
             item.RowState = CdlRowState.Added;
             m_table.NotifyAddedRow(item);
@@ -21,7 +21,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
 
         public override void Insert(int index, CdlRow item)
         {
-            if (item.RowState != CdlRowState.Detached) throw new BadCdlRowStateError("DBM-00000", CdlRowState.Detached, item.RowState);
+            if (item.RowState != CdlRowState.Detached) throw new BadCdlRowStateError("DBSH-00069", CdlRowState.Detached, item.RowState);
             base.Insert(index, item);
             item.RowState = CdlRowState.Added;
             m_table.NotifyAddedRow(item);

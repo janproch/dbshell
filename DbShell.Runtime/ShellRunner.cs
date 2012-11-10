@@ -14,9 +14,11 @@ namespace DbShell.Runtime
     {
         private IRunnable _main;
         private ShellContext _context;
+        private string _loadedFile;
 
         public void LoadFile(string file)
         {
+            _loadedFile = file;
             CoreLoader.Load();
             using (var fr = new FileInfo(file).OpenRead())
             {
@@ -59,7 +61,9 @@ namespace DbShell.Runtime
         public void Run()
         {
             if (_context == null) throw new Exception("Load function not called");
+            if (_loadedFile != null) _context.PushExecutingFile(_loadedFile);
             _main.Run();
+            if (_loadedFile != null) _context.PopExecutingFile();
         }
 
         public void Dispose()

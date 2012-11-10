@@ -49,7 +49,7 @@ namespace DbShell.Driver.Common.DmlFramework
 
         public virtual void GenSql(ISqlDumper dmp, IDmlfHandler handler)
         {
-            throw new NotImplementedError("DBM-00000");
+            throw new NotImplementedError("DBSH-00072");
         }
 
         public virtual bool DmlfEquals(DmlfBase obj)

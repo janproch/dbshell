@@ -14,7 +14,7 @@ namespace DbShell
 
         private static int Main(string[] args)
         {
-            BasicConfigurator.Configure();
+            XmlConfigurator.Configure();
 
             var runner = new ShellRunner();
             try

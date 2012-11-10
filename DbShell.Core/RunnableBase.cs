@@ -30,7 +30,7 @@ namespace DbShell.Core
                 {
                     if (String.IsNullOrEmpty(file)) continue;
                     _log.InfoFormat("DBSH-00005 Including file {0}", file);
-                    Context.IncludeFile(file, this);
+                    Context.IncludeFile(Context.ResolveFile(file, ResolveFileMode.DbShell), this);
                 }
             }
 

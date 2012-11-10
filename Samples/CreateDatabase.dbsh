@@ -3,6 +3,11 @@
   xmlns="http://schemas.dbshell.com/core"
   Requires="Variables.dbsh"
 >
-  <CreateDatabase Connection="${ConnectionNoDb}" Name="${DbName}"/>
-  <Script File="Chinook.sql" Connection="${Connection}" />
+  <!-- create database -->
+  <Script Connection="${ConnectionNoDb}">
+    <Script.Command>CREATE DATABASE ${DbName}</Script.Command>
+  </Script> 
+  
+  <!-- fill database with sample data -->
+  <Script Connection="${Connection}" File="Chinook.sql" />
 </Batch>

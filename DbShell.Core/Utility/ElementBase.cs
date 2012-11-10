@@ -26,7 +26,7 @@ namespace DbShell.Core.Utility
         /// <param name="enumFunc">Function called for each child</param>
         public virtual void EnumChildren(Action<IShellElement> enumFunc)
         {
-            
+            if (Connection != this) YieldChild(enumFunc, Connection);
         }
 
         protected void YieldChild(Action<IShellElement> enumFunc, object value)

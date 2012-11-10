@@ -55,7 +55,7 @@
     <Compile Include="CdlFile.cs" />
     <Compile Include="CdlFileReader.cs" />
     <Compile Include="CdlFileWriter.cs" />
-    <Compile Include="ConnectionProvider.cs" />
+    <Compile Include="Utility\ConnectionProvider.cs" />
     <Compile Include="CsvFile.cs" />
     <Compile Include="Echo.cs" />
     <Compile Include="FileExtension.cs" />
@@ -68,6 +68,7 @@
     <Compile Include="RazorDatabase.cs" />
     <Compile Include="RunnableBase.cs" />
     <Compile Include="RunnableContainer.cs" />
+    <Compile Include="Script.cs" />
     <Compile Include="SetVariable.cs" />
     <Compile Include="TablesExtension.cs" />
     <Compile Include="TablesProvider.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Utility\CsvQuotingMode.cs" />
     <Compile Include="Utility\CsvReader.cs" />
     <Compile Include="Utility\CsvWriter.cs" />
+    <Compile Include="Utility\DynamicConnectionProvider.cs" />
     <Compile Include="Utility\ElementBase.cs" />
     <Compile Include="Utility\TableWriter.cs" />
     <Compile Include="View.cs" />

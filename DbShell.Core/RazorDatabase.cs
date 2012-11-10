@@ -17,7 +17,7 @@ namespace DbShell.Core
     /// </summary>
     public class RazorDatabase : ElementBase, IRunnable
     {
-        private static ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Name of output file
@@ -32,13 +32,13 @@ namespace DbShell.Core
         void IRunnable.Run()
         {
             _log.InfoFormat("Apply template {0}=>{1}", Template, File);
-            using (var sr = new StreamReader(Template))
+            using (var sr = new StreamReader(Context.ResolveFile(Template, ResolveFileMode.Template)))
             {
                 string templateData = sr.ReadToEnd();
                 try
                 {
                     string output = Razor.Parse(templateData, GetDatabaseStructure());
-                    using (var sw = new StreamWriter(File))
+                    using (var sw = new StreamWriter(Context.ResolveFile(File, ResolveFileMode.Output)))
                     {
                         sw.Write(output);
                     }

@@ -155,7 +155,7 @@ namespace DbShell.Core
 
         private LumenWorks.Framework.IO.Csv.CsvReader CreateCsvReader()
         {
-            string name = GetName();
+            string name = Context.ResolveFile(GetName(), ResolveFileMode.Input);
             var textReader = new StreamReader(name, Encoding);
             var reader = new LumenWorks.Framework.IO.Csv.CsvReader(textReader, HasHeaders, Delimiter, Quote, Escape, Comment,
                                                                    TrimSpaces ? LumenWorks.Framework.IO.Csv.ValueTrimmingOptions.UnquotedOnly : LumenWorks.Framework.IO.Csv.ValueTrimmingOptions.None);
@@ -183,7 +183,7 @@ namespace DbShell.Core
 
         ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options)
         {
-            var fs = System.IO.File.OpenWrite(GetName());
+            var fs = System.IO.File.OpenWrite(Context.ResolveFile(GetName(), ResolveFileMode.Output));
             var fw = new StreamWriter(fs, Encoding);
             var writer = new CsvWriter(fw, Delimiter, Quote, Escape, Comment, QuotingMode, EndOfLine);
             if (HasHeaders)

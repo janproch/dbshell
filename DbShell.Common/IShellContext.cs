@@ -10,13 +10,15 @@ namespace DbShell.Common
     public interface IShellContext
     {
         DatabaseInfo GetDatabaseStructure(IConnectionProvider connection);
-
         void SetVariable(string name, object value);
         object Evaluate(string expression);
         void EnterScope();
         void LeaveScope();
-        string Replace(string replaceString);
-
+        string Replace(string replaceString, string replacePattern = null);
         void IncludeFile(string file, IShellElement parent);
+        string ResolveFile(string file, ResolveFileMode mode);
+        void PushExecutingFile(string file);
+        void PopExecutingFile();
+        string GetExecutingFile();
     }
 }

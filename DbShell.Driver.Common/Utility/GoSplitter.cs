@@ -47,43 +47,20 @@ namespace DbShell.Driver.Common.Utility
                 string line = reader.ReadLine();
                 curline++;
                 if (line == null) break;
-                if (line.StartsWith("GO", StringComparison.InvariantCultureIgnoreCase))
+                string lineTrimmed = line.Trim();
+                if (String.Compare(lineTrimmed, "GO", true) == 0)
                 {
-                    if (line.Length == 2 || Char.IsWhiteSpace(line[2]) || Char.IsSymbol(line[2]))
-                    {
-                        string res = buf.ToString();
-                        if (res.Trim() != "") yield return new SplitQueryItem { Data = res, StartLine = startLine };
-                        buf = new StringBuilder();
-                        startLine = curline + 1;
-                        continue;
-                    }
+                    string res = buf.ToString();
+                    if (res.Trim() != "") yield return new SplitQueryItem {Data = res, StartLine = startLine};
+                    buf = new StringBuilder();
+                    startLine = curline + 1;
+                    continue;
                 }
                 buf.Append(line + "\n");
             }
             string res2 = buf.ToString();
             if (res2.Trim() != "") yield return new SplitQueryItem { Data = res2, StartLine = startLine };
         }
-
-        public static bool IsSimpleSelect(string query)
-        {
-            //return false;
-            query = query.ToUpper().Trim();
-            if (!query.StartsWith("SELECT")) return false;
-            if (!query.Contains("FROM")) return false;
-            if (query.IndexOf("SELECT", 1) >= 0) return false;
-            if (query.IndexOf("UPDATE") >= 0) return false;
-            if (query.IndexOf("INSERT") >= 0) return false;
-            if (query.IndexOf("DELETE") >= 0) return false;
-            if (query.IndexOf("\nGO") >= 0) return false;
-            return true;
-        }
-
-        //public static string GetBaseTableName(string query)
-        //{
-        //    Match m = Regex.Match(query, "from\\s+[\\[\\\"\\`]?([a-zA-Z0-9_]+)", RegexOptions.IgnoreCase);
-        //    if (m.Success) return m.Groups[1].Value;
-        //    return null;
-        //}
     }
 
 }

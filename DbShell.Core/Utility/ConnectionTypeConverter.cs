@@ -18,11 +18,9 @@ namespace DbShell.Core.Utility
             if (value is string)
             {
                 string s = (string) value;
-                var match = Regex.Match(s, @"(.*)\:\/\/(.*)");
-                if (match.Success)
-                {
-                    return new ConnectionProvider(match.Groups[1].Value, match.Groups[2].Value);
-                }
+                if (s.Contains("${")) return new DynamicConnectionProvider(s);
+                var provider = ConnectionProvider.FromString(s);
+                if (provider != null) return provider;
             }
 
             return base.ConvertFrom(context, culture, value);

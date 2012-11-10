@@ -200,7 +200,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
 
             while (reader.NodeType == XmlNodeType.Element)
             {
-                if (reader.LocalName != "Row") throw new XmlFormatError(String.Format("DBM-00000 Bad xml, expected tag {0}, found {1}", "Row", reader.LocalName));
+                if (reader.LocalName != "Row") throw new XmlFormatError(String.Format("DBSH-00070 Bad xml, expected tag {0}, found {1}", "Row", reader.LocalName));
                 reader.Read();
                 reader.MoveToContent();
                 object[] values = new object[table.Columns.Count];

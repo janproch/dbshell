@@ -18,11 +18,12 @@ namespace DbShell.Runtime
 {
     public class ShellContext : IShellContext, IDisposable
     {
-        private static ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private Dictionary<IConnectionProvider, DatabaseInfo> _dbCache = new Dictionary<IConnectionProvider, DatabaseInfo>();
-        private ScriptEngine _engine;
-        private List<ScriptScope> _scopeStack = new List<ScriptScope>();
+        private readonly Dictionary<IConnectionProvider, DatabaseInfo> _dbCache = new Dictionary<IConnectionProvider, DatabaseInfo>();
+        private readonly ScriptEngine _engine;
+        private readonly List<ScriptScope> _scopeStack = new List<ScriptScope>();
+        private readonly List<string> _executingFileStack = new List<string>();
 
         public ShellContext()
         {
@@ -30,7 +31,7 @@ namespace DbShell.Runtime
             _scopeStack.Add(_engine.CreateScope());
         }
 
-        public DbShell.Driver.Common.Structure.DatabaseInfo GetDatabaseStructure(IConnectionProvider connection)
+        public DatabaseInfo GetDatabaseStructure(IConnectionProvider connection)
         {
             if (!_dbCache.ContainsKey(connection))
             {
@@ -80,10 +81,10 @@ namespace DbShell.Runtime
             return Evaluate(m.Groups[1].Value).SafeToString();
         }
 
-        public string Replace(string replaceString)
+        public string Replace(string replaceString, string replacePattern = null)
         {
             if (replaceString == null) return null;
-            return Regex.Replace(replaceString, @"\$\{([^\}]+)\}", ReplaceMatch);
+            return Regex.Replace(replaceString, replacePattern ?? @"\$\{([^\}]+)\}", ReplaceMatch);
         }
 
         public void IncludeFile(string file, IShellElement parent)
@@ -95,8 +96,70 @@ namespace DbShell.Runtime
                 if (runnable == null) throw new Exception(String.Format("DBSH-00059 Included file {0} doesn't contain root element implementing IRunnable", file));
                 var shellElem = obj as IShellElement;
                 if (shellElem != null) ShellRunner.ProcessLoadedElement(shellElem, parent, this);
-                runnable.Run();
+                try
+                {
+                    PushExecutingFile(file);
+                    runnable.Run();
+                }
+                finally
+                {
+                    PopExecutingFile();
+                }
             }
+        }
+
+        private string SearchExistingFile(string file, params string[] folders)
+        {
+            foreach (string folder in folders)
+            {
+                if (folder == null) continue;
+                string fn = Path.Combine(folder, file);
+                if (System.IO.File.Exists(fn)) return fn;
+            }
+            if (System.IO.File.Exists(file)) return file;
+            throw new Exception(String.Format("DBSH-00063 Could not find file {0}, searched in folders {1}", file, folders.CreateDelimitedText(";")));
+        }
+
+        public string ResolveFile(string file, ResolveFileMode mode)
+        {
+            switch (mode)
+            {
+                case ResolveFileMode.DbShell:
+                    return SearchExistingFile(file, GetExecutingFolder());
+                case ResolveFileMode.Template:
+                    return SearchExistingFile(file, GetTemplatesFolder(), GetExecutingFolder());
+                case ResolveFileMode.Input:
+                    return SearchExistingFile(file, GetExecutingFolder());
+            }
+            return file;
+        }
+
+        private string GetTemplatesFolder()
+        {
+            return Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), "templates");
+        }
+
+        private string GetExecutingFolder()
+        {
+            string file = GetExecutingFile();
+            if (file != null) return Path.GetDirectoryName(file);
+            return null;
+        }
+
+        public void PushExecutingFile(string file)
+        {
+            _executingFileStack.Add(file);
+        }
+
+        public void PopExecutingFile()
+        {
+            _executingFileStack.RemoveAt(_executingFileStack.Count - 1);
+        }
+
+        public string GetExecutingFile()
+        {
+            if (_executingFileStack.Count > 0) return _executingFileStack[_executingFileStack.Count - 1];
+            return null;
         }
     }
 }

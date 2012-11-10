@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using DbShell.Common;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.SqlServer;
@@ -12,9 +13,9 @@ namespace DbShell.Core
 {
     public class ConnectionProvider : IConnectionProvider
     {
-        private string _connectionString;
-        private IDatabaseFactory _factory;
-        private string _provider;
+        private readonly string _connectionString;
+        private readonly IDatabaseFactory _factory;
+        private readonly string _provider;
 
         public ConnectionProvider(string provider, string connectionString)
         {
@@ -26,15 +27,6 @@ namespace DbShell.Core
             {
                 throw new Exception("DBSH-00001 Unknown connection provider:" + provider);
             }
-
-            //switch (provider.ToLower())
-            //{
-            //    case "sqlserver":
-            //        _factory = SqlServerDatabaseFactory.Instance;
-            //        break;
-            //    default:
-                    
-            //}
         }
 
         DbConnection IConnectionProvider.Connect()
@@ -58,6 +50,16 @@ namespace DbShell.Core
         public override string ToString()
         {
             return _provider + "://" + _connectionString;
+        }
+
+        public static ConnectionProvider FromString(string s)
+        {
+            var match = Regex.Match(s, @"(.*)\:\/\/(.*)");
+            if (match.Success)
+            {
+                return new ConnectionProvider(match.Groups[1].Value, match.Groups[2].Value);
+            }
+            return null;
         }
     }
 }
