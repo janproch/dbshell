@@ -36,7 +36,7 @@ Visual Studio 2010 (including MS-BUILD)
   <target name="rebuild" depends="define_settings, cleansource, cleanoutput, get, build">  
   </target>
 
-  <target name="build" >  
+  <target name="build" depends="application" >  
   </target>
 
   <target name="define_settings">
@@ -53,6 +53,7 @@ Visual Studio 2010 (including MS-BUILD)
 	<target name="cleanoutput" description="Clear all output files">			
 		<delete dir="./output" if="${directory::exists('./output')}" />
 		<mkdir dir="output" />
+    <delete file="./DbShell.zip" if="${file::exists('./DbShell.zip')}" />                                      
   </target>
 
 
@@ -68,8 +69,26 @@ Visual Studio 2010 (including MS-BUILD)
       workingdir="."
       failonerror="true" />
 
-    <copy todir="./output">
-      <fileset basedir="./source/DbShell/bin/Release"/>
+    <copy todir="./output/bin">
+      <fileset basedir="./source/DbShell/bin/Release">
+        <include name="*.dll" />
+        <include name="DbShell.exe" />
+        <include name="*.config" />
+      </fileset>
     </copy>
+    
+    <copy todir="./output/Samples">
+      <fileset basedir="./source/Samples">
+        <include name="**/*.*" />
+      </fileset>
+    </copy>
+
+    <copy tofile="./output/docs/DbShell.chm" file="./source/Documentation/Help/Documentation.chm" />
+    
+    <zip zipfile='DbShell.zip'>
+      <fileset basedir='output'>
+        <include name='**/*'/>
+      </fileset>
+    </zip>
   </target>
 </project>
