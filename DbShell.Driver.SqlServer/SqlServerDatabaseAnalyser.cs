@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
 using DbShell.Driver.Common.AbstractDb;
@@ -92,8 +93,11 @@ namespace DbShell.Driver.SqlServer
                         string fkschema = reader.SafeString("FK_Schema");
 
                         string pktable = reader.SafeString("PK_Table");
+                        if (String.IsNullOrEmpty(pktable)) pktable = reader.SafeString("IX_Table");
                         string pkcolumn = reader.SafeString("PK_Column");
+                        if (String.IsNullOrEmpty(pkcolumn)) pkcolumn = reader.SafeString("IX_Column");
                         string pkschema = reader.SafeString("PK_Schema");
+                        if (String.IsNullOrEmpty(pkschema)) pkschema = reader.SafeString("IX_Schema");
 
                         string cname = reader.SafeString("Constraint_Name");
 
@@ -102,17 +106,18 @@ namespace DbShell.Driver.SqlServer
                         var fk = fkt.ForeignKeys.Find(f => f.ConstraintName == cname);
                         if (fk == null)
                         {
-                            fk = new ForeignKeyInfo(fkt) { ConstraintName = cname, RefTable = pkt };
+                            fk = new ForeignKeyInfo(fkt) {ConstraintName = cname, RefTable = pkt};
                             fk.Columns.Add(new ColumnReference
-                            {
-                                RefColumn = fkt.Columns[fkcolumn]
-                            });
+                                {
+                                    RefColumn = fkt.Columns[fkcolumn]
+                                });
                             fk.RefColumns.Add(new ColumnReference
-                            {
-                                RefColumn = pkt.Columns[pkcolumn]
-                            });
+                                {
+                                    RefColumn = pkt.Columns[pkcolumn]
+                                });
                             fkt.ForeignKeys.Add(fk);
-                        };
+                        }
+                        ;
                     }
                 }
             }

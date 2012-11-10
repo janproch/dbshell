@@ -136,13 +136,17 @@ namespace DbShell.Runtime
 
         private string GetDbShellFolder()
         {
-            string file = System.Reflection.Assembly.GetEntryAssembly().Location;
+            var asm = System.Reflection.Assembly.GetEntryAssembly();
+            if (asm == null) return null;
+            string file = asm.Location;
             return Path.GetDirectoryName(Path.GetDirectoryName(file));
         }
 
         private string GetTemplatesFolder()
         {
-            return Path.Combine(GetDbShellFolder(), "Templates");
+            string folder = GetDbShellFolder();
+            if (folder == null) return null;
+            return Path.Combine(folder, "Templates");
         }
 
         private string GetExecutingFolder()
