@@ -31,7 +31,7 @@ namespace DbShell.Core
 
         protected override void DoRun()
         {
-            _log.InfoFormat("Apply template {0}=>{1}", Template, File);
+            _log.InfoFormat("DBSH-00074 Apply template {0}=>{1}", Template, File);
             using (var sr = new StreamReader(Context.ResolveFile(Template, ResolveFileMode.Template)))
             {
                 string templateData = sr.ReadToEnd();
@@ -45,7 +45,7 @@ namespace DbShell.Core
                 }
                 catch (TemplateCompilationException err)
                 {
-                    _log.ErrorFormat("Error compiling template {0}", Template);
+                    _log.ErrorFormat("DBSH-00075 Error compiling template {0}", Template);
                     foreach (var error in err.Errors)
                     {
                         _log.Error(error.ToString());

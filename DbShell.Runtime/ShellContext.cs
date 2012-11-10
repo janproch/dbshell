@@ -35,7 +35,7 @@ namespace DbShell.Runtime
         {
             if (!_dbCache.ContainsKey(connection))
             {
-                _log.InfoFormat("Downloading structure for connection {0}", connection);
+                _log.InfoFormat("DBSH-00076 Downloading structure for connection {0}", connection);
                 var analyser = connection.Factory.CreateAnalyser();
                 using (var conn = connection.Connect())
                 {

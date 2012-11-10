@@ -6,6 +6,8 @@ def enum_cs_files():
             dirs.remove('.svn')
         if '.bld' in dirs:
             dirs.remove('.bld')
+        if 'Install' in dirs:
+            dirs.remove('Install')
     
         for name in files:
             fn = os.path.join(root, name)

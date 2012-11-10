@@ -40,5 +40,18 @@ namespace DbShell.Core.Utility
                 return _provider.Factory;
             }
         }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            if (_provider != null) return _provider.ToString();
+            if (Context != null) return Context.Replace(_providerString);
+            return _providerString;
+        }
     }
 }
