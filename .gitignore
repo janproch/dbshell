@@ -6,3 +6,4 @@ TestResults
 *.user
 /Documentation/Documentation.shfbproj_jena
 /Documentation/Help
+/Install/source
