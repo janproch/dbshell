@@ -85,7 +85,6 @@
     <Compile Include="Utility\DynamicConnectionProvider.cs" />
     <Compile Include="Utility\ElementBase.cs" />
     <Compile Include="Utility\TableWriter.cs" />
-    <Compile Include="View.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DbShell.Common\DbShell.Common.csproj">

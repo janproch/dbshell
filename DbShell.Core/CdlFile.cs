@@ -85,7 +85,7 @@ namespace DbShell.Core
         /// </returns>
         public override string ToString()
         {
-            return String.Format("[File {0}]", GetName());
+            return String.Format("[CdlFile {0}]", GetName());
         }
     }
 }

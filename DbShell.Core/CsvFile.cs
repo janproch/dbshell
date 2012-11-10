@@ -221,7 +221,7 @@ namespace DbShell.Core
 
         public override string ToString()
         {
-            return "CSV:" + Name;
+            return String.Format("[CsvFile {0}]", Name);
         }
     }
 }

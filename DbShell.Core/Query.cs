@@ -63,7 +63,7 @@ namespace DbShell.Core
 
         public override string ToString()
         {
-            return "QUERY:" + Text;
+            return String.Format("[Query {0}]", Text);
         }
     }
 }
