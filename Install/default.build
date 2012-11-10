@@ -69,7 +69,7 @@ Visual Studio 2010 (including MS-BUILD)
       workingdir="."
       failonerror="true" />
 
-    <copy todir="./output/bin">
+    <copy todir="./output/Bin">
       <fileset basedir="./source/DbShell/bin/Release">
         <include name="*.dll" />
         <include name="DbShell.exe" />
@@ -83,7 +83,7 @@ Visual Studio 2010 (including MS-BUILD)
       </fileset>
     </copy>
 
-    <copy tofile="./output/docs/DbShell.chm" file="./source/Documentation/Help/Documentation.chm" />
+    <copy tofile="./output/Documentation/DbShell.chm" file="./source/Documentation/Help/Documentation.chm" />
     
     <zip zipfile='DbShell.zip'>
       <fileset basedir='output'>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CopyTable 
+  xmlns="http://schemas.dbshell.com/core"
+  Requires="Configuration.dbsh"
+  Connection="${Connection}"
+  Source="{Table Album}"
+>
+  <CopyTable.Target>
+    <CsvFile Name="Album.csv" Delimiter=';'/>
+  </CopyTable.Target>
+</CopyTable>

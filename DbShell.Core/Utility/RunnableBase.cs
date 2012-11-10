@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using DbShell.Common;
-using DbShell.Core.Utility;
 using log4net;
 
-namespace DbShell.Core
+namespace DbShell.Core.Utility
 {
     public abstract class RunnableBase : ElementBase, IRunnable
     {

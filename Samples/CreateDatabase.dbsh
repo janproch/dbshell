@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Batch 
   xmlns="http://schemas.dbshell.com/core"
-  Requires="Variables.dbsh"
+  Requires="Configuration.dbsh"
 >
   <!-- create database -->
   <Script Connection="${ConnectionNoDb}">
@@ -10,4 +10,6 @@
   
   <!-- fill database with sample data -->
   <Script Connection="${Connection}" File="Chinook.sql" />
+  
+  <Echo Message="Your samples database was succesfully created" />
 </Batch>

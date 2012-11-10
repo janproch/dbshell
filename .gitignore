@@ -7,3 +7,5 @@ TestResults
 /Documentation/Documentation.shfbproj_jena
 /Documentation/Help
 /Install/source
+/Install/output
+/Install/DbShell.zip

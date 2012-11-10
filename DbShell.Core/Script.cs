@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using DbShell.Common;
+using DbShell.Core.Utility;
 using DbShell.Driver.Common.Utility;
 using log4net;
 
@@ -101,7 +102,6 @@ namespace DbShell.Core
                     // execute inline command
                     if (Command != null)
                     {
-                        _log.InfoFormat("DBSH-00066 Executing SQL command {0}", Command);
                         RunScript(new StringReader(Command), conn, tran, UseReplacements == null || UseReplacements == true, true, false);
                     }
 

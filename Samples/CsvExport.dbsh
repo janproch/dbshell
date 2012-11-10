@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<CopyTable 
-  xmlns="http://schemas.dbshell.com/core"
-  Connection="sqlserver://MultipleActiveResultSets=True;Data Source=localhost\SQLEXPRESS;Integrated Security=SSPI;Initial Catalog=Chinook"
-  Source="{Table Album}"
-  Target="{File album.cdl}"
-/>
- 

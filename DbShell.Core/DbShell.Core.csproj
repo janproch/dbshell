@@ -55,6 +55,7 @@
     <Compile Include="CdlFile.cs" />
     <Compile Include="CdlFileReader.cs" />
     <Compile Include="CdlFileWriter.cs" />
+    <Compile Include="Query.cs" />
     <Compile Include="Utility\ConnectionProvider.cs" />
     <Compile Include="CsvFile.cs" />
     <Compile Include="Echo.cs" />
@@ -66,8 +67,8 @@
     <Compile Include="MapValue.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="RazorDatabase.cs" />
-    <Compile Include="RunnableBase.cs" />
-    <Compile Include="RunnableContainer.cs" />
+    <Compile Include="Utility\RunnableBase.cs" />
+    <Compile Include="Utility\RunnableContainer.cs" />
     <Compile Include="Script.cs" />
     <Compile Include="SetVariable.cs" />
     <Compile Include="TablesExtension.cs" />

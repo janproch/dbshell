@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Markup;
 using DbShell.Common;
-using DbShell.Core.Utility;
 
-namespace DbShell.Core
+namespace DbShell.Core.Utility
 {
     [ContentProperty("Commands")]
     public abstract class RunnableContainer : RunnableBase
