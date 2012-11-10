@@ -134,9 +134,15 @@ namespace DbShell.Runtime
             return file;
         }
 
+        private string GetDbShellFolder()
+        {
+            string file = System.Reflection.Assembly.GetEntryAssembly().Location;
+            return Path.GetDirectoryName(Path.GetDirectoryName(file));
+        }
+
         private string GetTemplatesFolder()
         {
-            return Path.Combine(Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory), "Templates");
+            return Path.Combine(GetDbShellFolder(), "Templates");
         }
 
         private string GetExecutingFolder()
