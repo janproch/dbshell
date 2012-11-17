@@ -11,7 +11,7 @@
   <ForEach Source="{Query 'SELECT * FROM Album'}">
     <SaveToFile Value="${AlbumId}" File="data${AlbumId}.txt" />
   </ForEach>
-  
+
   <ds:DataSet VariableName="ds1">
     <ds:AddRow Table="Album" Condition="AlbumId=1" />
     <ds:LoadReference FkTable="Track" PkTable="Album" />

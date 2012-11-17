@@ -21,5 +21,17 @@ namespace DbShell.Test
                 runner.Run();
             }
         }
+
+        [TestMethod]
+        [DeploymentItem("querytofiles.xaml")]
+        public void QueryToFiles()
+        {
+            using (var runner = new ShellRunner())
+            {
+                runner.LoadFile("querytofiles.xaml");
+                runner.Run();
+                Assert.AreEqual("Rock", System.IO.File.ReadAllText("genre1.txt"));
+            }
+        }
     }
 }

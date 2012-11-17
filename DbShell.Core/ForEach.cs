@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using DbShell.Common;
 using DbShell.Core.Utility;
+using DbShell.Driver.Common.CommonDataLayer;
 
 namespace DbShell.Core
 {
@@ -24,10 +25,10 @@ namespace DbShell.Core
     public class ForEach : RunnableContainer
     {
         /// <summary>
-        /// Gets or sets the name of property, which is filled with iterating expression
+        /// Gets or sets the name of property, which is filled with iterating expression.
         /// </summary>
         /// <value>
-        /// The property name
+        /// The property name. If property is not set, items of collection must provide named properties.
         /// </value>
         public string Property { get; set; }
 
@@ -46,7 +47,33 @@ namespace DbShell.Core
                 Context.EnterScope();
                 foreach (var item in Source.GetList())
                 {
-                    Context.SetVariable(Property, item);
+                    if (Property == null)
+                    {
+                        bool processed = false;
+                        var dct = item as Dictionary<string, object>;
+                        if (dct != null)
+                        {
+                            foreach (var tuple in dct)
+                            {
+                                Context.SetVariable(tuple.Key, tuple.Value);
+                            }
+                            processed = true;
+                        }
+                        var record = item as ICdlRecord;
+                        if (record != null)
+                        {
+                            for (int i = 0; i < record.FieldCount; i++)
+                            {
+                                Context.SetVariable(record.GetName(i), record.GetValue(i));
+                            }
+                            processed = true;
+                        }
+                        if (!processed) throw new Exception("DBSH-00000 Property is not set and Items collection doesn't return property names");
+                    }
+                    else
+                    {
+                        Context.SetVariable(Property, item);
+                    }
                     foreach (var command in Commands)
                     {
                         command.Run();

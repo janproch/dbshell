@@ -56,11 +56,12 @@
     <Compile Include="CdlFileReader.cs" />
     <Compile Include="CdlFileWriter.cs" />
     <Compile Include="Query.cs" />
+    <Compile Include="QueryExtension.cs" />
+    <Compile Include="SaveToFile.cs" />
     <Compile Include="Utility\ConnectionProvider.cs" />
     <Compile Include="CsvFile.cs" />
     <Compile Include="Echo.cs" />
     <Compile Include="FileExtension.cs" />
-    <Compile Include="EvalExtension.cs" />
     <Compile Include="File.cs" />
     <Compile Include="ForEach.cs" />
     <Compile Include="MapColumn.cs" />

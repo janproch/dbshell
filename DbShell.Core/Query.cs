@@ -16,7 +16,7 @@ namespace DbShell.Core
     /// Represents query reading data from database. Can be exported to file in the some way as table.
     /// </summary>
     [ContentProperty("Text")]
-    public class Query : ElementBase, ITabularDataSource
+    public class Query : ElementBase, ITabularDataSource, IListProvider
     {
         /// <summary>
         /// Gets or sets the query text.
@@ -64,6 +64,17 @@ namespace DbShell.Core
         public override string ToString()
         {
             return String.Format("[Query {0}]", Text);
+        }
+
+        System.Collections.IEnumerable IListProvider.GetList()
+        {
+            using (var reader = ((ITabularDataSource)this).CreateReader())
+            {
+                while (reader.Read())
+                {
+                    yield return reader;
+                }
+            }
         }
     }
 }
