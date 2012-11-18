@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace DbShell.Core
     /// Represents query reading data from database. Can be exported to file in the some way as table.
     /// </summary>
     [ContentProperty("Text")]
-    public class Query : ElementBase, ITabularDataSource, IListProvider
+    public class Query : ElementBase, ITabularDataSource, IListProvider, IEnumerable, IModelProvider
     {
         /// <summary>
         /// Gets or sets the query text.
@@ -66,7 +67,7 @@ namespace DbShell.Core
             return String.Format("[Query {0}]", Text);
         }
 
-        System.Collections.IEnumerable IListProvider.GetList()
+        IEnumerable IListProvider.GetList()
         {
             using (var reader = ((ITabularDataSource)this).CreateReader())
             {
@@ -75,6 +76,16 @@ namespace DbShell.Core
                     yield return reader;
                 }
             }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IListProvider) this).GetList().GetEnumerator();
+        }
+
+        object IModelProvider.GetModel()
+        {
+            return new TableDataModel(this);
         }
     }
 }

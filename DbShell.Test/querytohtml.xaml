@@ -3,8 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns="http://schemas.dbshell.com/core"
     Connection="sqlserver://MultipleActiveResultSets=True;Data Source=localhost\SQLEXPRESS;Integrated Security=SSPI;Initial Catalog=Chinook"
-    File="dbdocs.html"
-    Template="DatabaseDoc.cshtml"
-    Model="{Database}"
-    />
- 
+    Model="{Query 'SELECT * FROM Genre'}"
+    File="genres.html"
+    Template="TableData.cshtml"
+/>

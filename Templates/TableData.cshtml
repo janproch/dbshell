@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01
+<html>
+ <head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="DB Shell, http://dbshell.com">
+  <title>Database Structure</title>
+  
+  <style>
+table {
+    border: solid 1px #e8eef4;
+    border-collapse: collapse;
+}
+
+table td {
+    padding: 5px;
+    border: solid 1px #e8eef4;
+}
+
+table th {
+    padding: 6px 5px;
+    text-align: left;
+    background-color: #e8eef4;
+    border: solid 1px #e8eef4;
+}
+
+body {
+    font-size: .85em;
+    font-family: "Trebuchet MS", Verdana, Helvetica, Sans-Serif;
+}
+
+a:link {
+    text-decoration: underline;
+}
+
+a:visited {
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+a:active {
+}
+
+p, ul {
+    margin-bottom: 20px;
+    line-height: 1.6em;
+}
+
+header,
+footer,
+nav,
+section {
+    display: block;
+}
+
+/* HEADINGS   
+----------------------------------------------------------*/
+h1, h2, h3, h4, h5, h6 {
+    font-size: 1.5em;
+    color: #000;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+h3 {
+    font-size: 1.2em;
+}
+
+h4 {
+    font-size: 1.1em;
+}
+
+h5, h6 {
+    font-size: 1em;
+}
+  </style>  
+ </head>
+ <body>
+  
+<h1>Table @Model.TableName</h1>
+
+<table>
+<tr>
+@foreach(var column in Model.Columns) {
+  <th>@column.Name</th>
+}
+</tr>
+@foreach(var row in Model.Rows) {
+  <tr>
+    @foreach(var column in Model.Columns) {
+      <td>@row[column.Name]</td>
+    }
+  </tr>
+}
+</table>
+
+ </body>
+</html>

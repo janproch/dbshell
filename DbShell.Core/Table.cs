@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,7 @@ namespace DbShell.Core
     /// <summary>
     /// Table in database
     /// </summary>
-    public class Table : ElementBase, ITabularDataSource, ITabularDataTarget
+    public class Table : ElementBase, ITabularDataSource, ITabularDataTarget, IListProvider, IEnumerable, IModelProvider
     {
         /// <summary>
         /// Table schema, can be ommited (eg. "dbo" on SQL server)
@@ -87,6 +88,27 @@ namespace DbShell.Core
         public override string ToString()
         {
             return String.Format("[Table {0}]", GetFullName());
+        }
+
+        IEnumerable IListProvider.GetList()
+        {
+            using (var reader = ((ITabularDataSource)this).CreateReader())
+            {
+                while (reader.Read())
+                {
+                    yield return reader;
+                }
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IListProvider)this).GetList().GetEnumerator();
+        }
+
+        object IModelProvider.GetModel()
+        {
+            return new TableDataModel(this);
         }
     }
 }

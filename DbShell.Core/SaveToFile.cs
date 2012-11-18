@@ -50,8 +50,8 @@ namespace DbShell.Core
         protected override void DoRun()
         {
             string file = Context.ResolveFile(Context.Replace(File), ResolveFileMode.Output);
-            if (Expression != null && Value != null) throw new Exception("DBSH-00000 SaveToFile: both Expression and Value is set");
-            if (Expression == null && Value == null) throw new Exception("DBSH-00000 SaveToFile: none of Expression and Value is set");
+            if (Expression != null && Value != null) throw new Exception("DBSH-00078 SaveToFile: both Expression and Value is set");
+            if (Expression == null && Value == null) throw new Exception("DBSH-00079 SaveToFile: none of Expression and Value is set");
             if (Expression != null)
             {
                 object obj = Context.Evaluate(Expression);

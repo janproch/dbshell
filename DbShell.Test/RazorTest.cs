@@ -33,5 +33,17 @@ namespace DbShell.Test
                 Assert.AreEqual("Rock", System.IO.File.ReadAllText("genre1.txt"));
             }
         }
+
+        [TestMethod]
+        [DeploymentItem("querytohtml.xaml")]
+        [DeploymentItem("TableData.cshtml")]
+        public void QueryToHtml()
+        {
+            using (var runner = new ShellRunner())
+            {
+                runner.LoadFile("querytohtml.xaml");
+                runner.Run();
+            }
+        }
     }
 }

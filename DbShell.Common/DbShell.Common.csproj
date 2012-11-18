@@ -43,6 +43,7 @@
     <Compile Include="IColumnMapping.cs" />
     <Compile Include="IConnectionProvider.cs" />
     <Compile Include="IListProvider.cs" />
+    <Compile Include="IModelProvider.cs" />
     <Compile Include="IRunnable.cs" />
     <Compile Include="IShellElement.cs" />
     <Compile Include="ITabularDataSource.cs" />

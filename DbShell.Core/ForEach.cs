@@ -68,7 +68,7 @@ namespace DbShell.Core
                             }
                             processed = true;
                         }
-                        if (!processed) throw new Exception("DBSH-00000 Property is not set and Items collection doesn't return property names");
+                        if (!processed) throw new Exception("DBSH-00077 Property is not set and Items collection doesn't return property names");
                     }
                     else
                     {

@@ -1,0 +1,59 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using DbShell.Common;
+using DbShell.Driver.Common.CommonDataLayer;
+using DbShell.Driver.Common.Structure;
+
+namespace DbShell.Core.Utility
+{
+    public class TableDataModel
+    {
+        private ITabularDataSource _table;
+        private TableInfo _structure;
+
+        public TableDataModel(ITabularDataSource table)
+        {
+            _table = table;
+        }
+
+        public IEnumerable<DataRowModel> Rows
+        {
+            get
+            {
+                using (var reader = _table.CreateReader())
+                {
+                    while (reader.Read())
+                    {
+                        yield return new DataRowModel(reader);
+                    }
+                }
+            }
+        }
+
+        private void WantStructure()
+        {
+            if (_structure != null) return;
+            _structure = _table.GetRowFormat();
+        }
+
+        public List<ColumnInfo> Columns
+        {
+            get
+            {
+                WantStructure();
+                return _structure.Columns;
+            }
+        }
+
+        public string TableName
+        {
+            get
+            {
+                WantStructure();
+                return _structure.Name;
+            }
+        }
+    }
+}
