@@ -60,6 +60,8 @@
     <Compile Include="Query.cs" />
     <Compile Include="QueryExtension.cs" />
     <Compile Include="SaveToFile.cs" />
+    <Compile Include="SetColumnProperty.cs" />
+    <Compile Include="SetTableProperty.cs" />
     <Compile Include="Utility\ConnectionProvider.cs" />
     <Compile Include="CsvFile.cs" />
     <Compile Include="Echo.cs" />

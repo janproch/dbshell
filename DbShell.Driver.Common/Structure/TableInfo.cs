@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Xml;
+using System.Linq;
 using DbShell.Driver.Common.Utility;
+using System;
 
 namespace DbShell.Driver.Common.Structure
 {
@@ -62,6 +64,11 @@ namespace DbShell.Driver.Common.Structure
         {
             if (FullName != null) return FullName.ToString();
             return Name;
+        }
+
+        public ColumnInfo FindColumn(string column)
+        {
+            return Columns.FirstOrDefault(c => String.Compare(c.Name, column, true) == 0);
         }
     }
 }

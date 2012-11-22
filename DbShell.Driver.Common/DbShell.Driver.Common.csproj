@@ -131,6 +131,7 @@
     <Compile Include="Structure\NameWithSchemaExtension.cs" />
     <Compile Include="Structure\ObjectPath.cs" />
     <Compile Include="Structure\PrimaryKeyInfo.cs" />
+    <Compile Include="Structure\PropertyBag.cs" />
     <Compile Include="Structure\TableObjectInfo.cs" />
     <Compile Include="Structure\ViewInfo.cs" />
     <Compile Include="Utility\DialectExtension.cs" />
