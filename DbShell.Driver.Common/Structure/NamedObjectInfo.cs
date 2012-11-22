@@ -4,8 +4,14 @@ namespace DbShell.Driver.Common.Structure
 {
     public abstract class NamedObjectInfo : DatabaseObjectInfo
     {
+        /// <summary>
+        /// Full name of object (with schema)
+        /// </summary>
         public NameWithSchema FullName { get; set; }
 
+        /// <summary>
+        /// Name (without schema)
+        /// </summary>
         [XmlAttrib("name")]
         public string Name
         {
@@ -21,6 +27,9 @@ namespace DbShell.Driver.Common.Structure
             }
         }
 
+        /// <summary>
+        /// Schema name
+        /// </summary>
         [XmlAttrib("schema")]
         public string Schema
         {

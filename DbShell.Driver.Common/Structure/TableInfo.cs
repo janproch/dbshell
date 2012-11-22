@@ -6,6 +6,9 @@ using System;
 
 namespace DbShell.Driver.Common.Structure
 {
+    /// <summary>
+    /// Information abou table structure
+    /// </summary>
     public class TableInfo : ColumnListInfo
     {
         public TableInfo(DatabaseInfo database)
@@ -15,9 +18,15 @@ namespace DbShell.Driver.Common.Structure
 
         private List<ForeignKeyInfo> _foreignKeys = new List<ForeignKeyInfo>();
 
+        /// <summary>
+        /// Table primary key
+        /// </summary>
         [XmlSubElem]
         public PrimaryKeyInfo PrimaryKey { get; set; }
 
+        /// <summary>
+        /// List of table foreign keys
+        /// </summary>
         [XmlCollection(typeof(ForeignKeyInfo))]
         public List<ForeignKeyInfo> ForeignKeys { get { return _foreignKeys; } }
 
@@ -37,6 +46,10 @@ namespace DbShell.Driver.Common.Structure
             return null;
         }
 
+        /// <summary>
+        /// Gets list of referenced tables
+        /// </summary>
+        /// <returns></returns>
         public List<ForeignKeyInfo> GetReferences()
         {
             var res = new List<ForeignKeyInfo>();

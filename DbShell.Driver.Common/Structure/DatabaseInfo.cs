@@ -4,10 +4,16 @@ using System.Linq;
 
 namespace DbShell.Driver.Common.Structure
 {
+    /// <summary>
+    /// Information about database structure
+    /// </summary>
     public class DatabaseInfo
     {
         private List<TableInfo> _tables = new List<TableInfo>();
 
+        /// <summary>
+        /// List of tables
+        /// </summary>
         public List<TableInfo> Tables { get { return _tables; } }
 
         public TableInfo FindTable(string table)

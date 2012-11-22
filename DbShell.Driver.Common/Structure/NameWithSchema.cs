@@ -8,8 +8,16 @@ namespace DbShell.Driver.Common.Structure
 {
     public class NameWithSchema : IComparable, IFormattable
     {
-        public readonly string Schema = null;
-        public readonly string Name;
+        /// <summary>
+        /// Schema name
+        /// </summary>
+        public string Schema { get; private set; }
+
+        /// <summary>
+        /// Object name
+        /// </summary>
+        public string Name { get; private set; }
+
         public readonly bool HideSchema;
 
         public NameWithSchema(string schema, string name)

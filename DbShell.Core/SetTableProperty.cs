@@ -8,19 +8,37 @@ using System.Windows.Markup;
 
 namespace DbShell.Core
 {
+    /// <summary>
+    /// Job, which sets table property
+    /// </summary>
     [ContentProperty("Value")]
     public class SetTableProperty : RunnableBase
     {
+        /// <summary>
+        /// Name of property
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Table, which property should be set
+        /// </summary>
         public string Table { get; set; }
+
+        /// <summary>
+        /// Regular expression. All matched tables will be processed.
+        /// </summary>
         public string Tables { get; set; }
+
+        /// <summary>
+        /// Value, which will be set
+        /// </summary>
         public string Value { get; set; }
 
         protected override void DoRun()
         {
             var db = GetDatabaseStructure();
-            if (Table != null && Tables != null) throw new Exception("DBSH-00000 SetTableProperty: both of Table and tables attribute is set");
-            if (Table == null && Tables == null) throw new Exception("DBSH-00000 SetTableProperty: none of Table and tables attribute is set");
+            if (Table != null && Tables != null) throw new Exception("DBSH-00085 SetTableProperty: both of Table and tables attribute is set");
+            if (Table == null && Tables == null) throw new Exception("DBSH-00086 SetTableProperty: none of Table and tables attribute is set");
 
             if (Table != null)
             {
