@@ -64,37 +64,36 @@ namespace DbShell.Driver.Common.Utility
             return TypeTool.GetDatAdminType((Type)row["DataType"]);
         }
 
-        public static TableInfo SchemaTableToInfo(DataTable schemaTable)
+        public static QueryResultInfo SchemaTableToInfo(DataTable schemaTable)
         {
-            var res = new TableInfo(new DatabaseInfo());
-            var pk = new PrimaryKeyInfo(res);
+            var res = new QueryResultInfo();
             foreach (DataRow row in schemaTable.Rows.SortedByKey<DataRow, int>(row => Int32.Parse(row["ColumnOrdinal"].ToString())))
             {
-                if (row.SafeBool("IsHidden", false)) continue;
-
-                var col = new ColumnInfo(res);
+                var col = new QueryResultColumnInfo();
                 col.Name = row.SafeString("ColumnName");
                 col.NotNull = !(bool)row["AllowDBNull"];
                 col.DataType = row["DataTypeName"].SafeToString();
                 col.CommonType = ReaderDataType(row);
 
-                string schema = row.SafeString("BaseSchemaName");
-                string table = row.SafeString("BaseTableName");
-                if (table != null && res.FullName == null) res.FullName = new NameWithSchema(schema, table);
-                if (row.SafeBool("IsAutoIncrement", false)) col.CommonType.SetAutoincrement(true);
-
-                if (row.SafeBool("IsKey", false))
+                col.BaseSchemaName = row.SafeString("BaseSchemaName");
+                col.BaseTableName = row .SafeString("BaseTableName");
+                col.BaseServerName = row.SafeString("BaseServerName");
+                col.BaseCatalogName = row.SafeString("BaseCatalogName");
+                if (row.SafeBool("IsAutoIncrement", false))
                 {
-                    pk.Columns.Add(new ColumnReference { RefColumn = col });
+                    col.CommonType.SetAutoincrement(true);
+                    col.AutoIncrement = true;
                 }
+                if (row.SafeBool("IsKey", false)) col.IsKey = true;
+                if (row.SafeBool("IsHidden", false)) col.IsHidden = true;
+                if (row.SafeBool("IsReadOnly", false)) col.IsReadOnly = true;
+                if (row.SafeBool("IsAliased", false)) col.IsAliased = true;
                 res.Columns.Add(col);
             }
-            if (pk.Columns.Count > 0) res.PrimaryKey = pk;
             return res;
-
         }
 
-        public static TableInfo GetTableInfo(this IDataReader reader)
+        public static QueryResultInfo GetQueryResultInfo(this IDataReader reader)
         {
             DataTable columns;
             try
@@ -107,6 +106,13 @@ namespace DbShell.Driver.Common.Utility
             }
             if (columns == null) return null;
             return SchemaTableToInfo(columns);
+        }
+
+        public static TableInfo GetTableInfo(this IDataReader reader)
+        {
+            var info = reader.GetQueryResultInfo();
+            if (info != null) return info.ToTableInfo();
+            return null;
         }
 
         public static string[] GetFieldNames(this IDataRecord record)

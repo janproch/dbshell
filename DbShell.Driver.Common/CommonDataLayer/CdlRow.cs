@@ -18,6 +18,20 @@ namespace DbShell.Driver.Common.CommonDataLayer
         Detached, Unchanged, Added, Deleted, Modified
     }
 
+    public class CdlRowCellCollection
+    {
+        private CdlRow _row;
+        public CdlRowCellCollection(CdlRow row)
+        {
+            _row = row;
+        }
+
+        public object this [int index]
+        {
+            get { return _row.GetValue(index); }
+        }
+    }
+
     public class CdlRow : ICdlRecord
     {
         struct FieldRec
@@ -397,5 +411,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
             m_table.CdlConvertor.Formatter.ReadFrom(this);
             return m_table.CdlConvertor.Formatter.GetText();
         }
+
+        public CdlRowCellCollection Cells { get { return new CdlRowCellCollection(this); } }
     }
 }

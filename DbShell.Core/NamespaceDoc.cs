@@ -6,7 +6,7 @@ using System.Text;
 namespace DbShell.Core
 {
     /// <summary>
-    /// Then <see cref="DbShell.Core"/> namespace contains utility classes, which can be used in DB Shell XAML files
+    /// The <see cref="DbShell.Core"/> namespace contains utility classes, which can be used in DB Shell XAML files
     /// </summary>
     [System.Runtime.CompilerServices.CompilerGenerated]
     class NamespaceDoc

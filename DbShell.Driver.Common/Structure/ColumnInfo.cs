@@ -89,6 +89,24 @@ namespace DbShell.Driver.Common.Structure
             return res;
         }
 
+        protected override void Assign(DatabaseObjectInfo source)
+        {
+            base.Assign(source);
+            var src = (ColumnInfo) source;
+            Name = src.Name;
+            DataType = src.DataType;
+            DefaultValue = src.DefaultValue;
+            Length = src.Length;
+            NotNull = src.NotNull;
+            Precision = src.Precision;
+            Scale = src.Scale;
+            AutoIncrement = src.AutoIncrement;
+            PrimaryKey = src.PrimaryKey;
+            Comment = src.Comment;
+            if (src.CommonType != null) CommonType = src.CommonType.Clone();
+            else CommonType = null;
+        }
+
         public void SaveToXml(XmlElement xml)
         {
             this.SavePropertiesCore(xml);

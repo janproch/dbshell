@@ -19,6 +19,7 @@ namespace DbShell.Driver.SqlServer
 
         protected override void DoRun()
         {
+            var dialect = SqlServerDatabaseFactory.Instance.CreateDialect();
             var tables = Connection.GetSchema("Tables");
             var columns = new List<DataRow>();
             foreach (DataRow row in Connection.GetSchema("Columns").Rows) columns.Add(row);
@@ -118,6 +119,61 @@ namespace DbShell.Driver.SqlServer
                             fkt.ForeignKeys.Add(fk);
                         }
                         ;
+                    }
+                }
+            }
+
+            // load code text
+            var objs = new Dictionary<NameWithSchema, string>();
+            using (var cmd = Connection.CreateCommand())
+            {
+                cmd.CommandText = SqlServerDatabaseFactory.LoadEmbeddedResource("loadsqlcode.sql");
+                using (var reader = cmd.ExecuteReader())
+                {
+                    NameWithSchema lastName = null;
+                    while (reader.Read())
+                    {
+                        var name = new NameWithSchema(reader.SafeString("OBJ_SCHEMA"), reader.SafeString("OBJ_NAME"));
+                        string text = reader.SafeString("CODE_TEXT") ?? "";
+                        if (lastName != null && name == lastName)
+                        {
+                            objs[name] += text;
+                        }
+                        else
+                        {
+                            lastName = name;
+                            objs[name] = text;
+                        }
+                    }
+                }
+            }
+
+            // load views
+            using (var cmd = Connection.CreateCommand())
+            {
+                cmd.CommandText = SqlServerDatabaseFactory.LoadEmbeddedResource("loadviews.sql");
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var name = new NameWithSchema(reader.SafeString("Schema"), reader.SafeString("Name"));
+                        var view = new ViewInfo(Result);
+                        view.FullName = name;
+                        if (objs.ContainsKey(name)) view.QueryText = objs[name];
+                        Result.Views.Add(view);
+                    }
+                }
+            }
+
+            foreach(var view in Result.Views)
+            {
+                using (var cmd = Connection.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT * FROM " + dialect.QuoteFullName(view.FullName);
+                    using (var reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly | CommandBehavior.KeyInfo))
+                    {
+                        var queryInfo = reader.GetQueryResultInfo();
+                        view.QueryInfo = queryInfo;
                     }
                 }
             }

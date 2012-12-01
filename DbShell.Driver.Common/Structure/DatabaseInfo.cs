@@ -10,11 +10,14 @@ namespace DbShell.Driver.Common.Structure
     public class DatabaseInfo
     {
         private List<TableInfo> _tables = new List<TableInfo>();
+        private List<ViewInfo> _views = new List<ViewInfo>();
 
         /// <summary>
         /// List of tables
         /// </summary>
         public List<TableInfo> Tables { get { return _tables; } }
+
+        public List<ViewInfo> Views { get { return _views; } }
 
         public TableInfo FindTable(string table)
         {

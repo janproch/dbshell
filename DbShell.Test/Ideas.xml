@@ -15,6 +15,20 @@
   <Razor Model="GetDatabase()" Template="DatabaseDoc.cshtml" File="docs.html" />
   <Razor Model="{Query 'SELECT * FROM Album'}" Template="TableData.cshtml" File="table.html" />
 
+  <SetTableProperty Table="t1" Name="x" />
+  <DatabaseProvider VariableName="s1" />
+  
+  <UseDatabase VariableName="s1" >
+    <SetTableProperty Table="t1" Name="x" />
+    <Razor Model="{Database}" />
+  </UseDatabase>
+  
+  <Batch Connection="var://s1">
+    
+  </Batch>
+
+  
+  
   <ds:DataSet VariableName="ds1">
     <ds:AddRow Table="Album" Condition="AlbumId=1" />
     <ds:LoadReference FkTable="Track" PkTable="Album" />
