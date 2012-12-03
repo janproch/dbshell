@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.CommonTypeSystem;
+using DbShell.Driver.Common.DmlFramework;
 
 namespace DbShell.Driver.Common.Structure
 {
@@ -34,5 +36,25 @@ namespace DbShell.Driver.Common.Structure
         public string BaseColumnName { get; set; }
         public string BaseSchemaName { get; set; }
         public string BaseTableName { get; set; }
+
+        public ColumnInfo FindOriginalColumn(DatabaseInfo db, DmlfSelect select)
+        {
+            if (BaseColumnName == null) return null;
+
+            // determine original table name
+            TableInfo table = null;
+            if (BaseTableName != null)
+            {
+                table = db.FindTable(BaseSchemaName, BaseTableName);
+            }
+            else
+            {
+                if (select.From.Source.TableOrView != null) table = db.FindTable(select.From.Source.TableOrView.Schema, select.From.Source.TableOrView.Name);
+            }
+            if (table == null) return null;
+
+            var tableCol = table.FindColumn(BaseColumnName);
+            return tableCol;
+        }
     }
 }

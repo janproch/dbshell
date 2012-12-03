@@ -230,31 +230,31 @@ namespace DbShell.Driver.Common.CommonDataLayer
             }
         }
 
-        public TColumnDisplay<ColumnInfo> GetColumnDisplay()
-        {
-            var res = new TColumnDisplay<ColumnInfo>();
-            var pk = Structure.PrimaryKey;
-            var pkcols = new List<string>();
-            if (pk != null) pkcols = new List<string>(pk.Columns.GetNames());
-            if (ResultFields == null)
-            {
-                for (int i = 0; i < Structure.Columns.Count; i++)
-                {
-                    var col = Structure.Columns[i];
-                    var di = new ColumnDisplayInfo { IsPrimaryKey = pkcols.Contains(col.Name) };
-                    res.AddColumn(col.Name, i, col);
-                }
-            }
-            else
-            {
-                for (int i = 0; i < Math.Min(Structure.Columns.Count, ResultFields.Count); i++)
-                {
-                    var col = Structure.Columns[i];
-                    res.AddColumn(ResultFields[i], i, col);
-                }
-            }
-            return res;
-        }
+        //public TColumnDisplay<ColumnInfo> GetColumnDisplay()
+        //{
+        //    var res = new TColumnDisplay<ColumnInfo>();
+        //    var pk = Structure.PrimaryKey;
+        //    var pkcols = new List<string>();
+        //    if (pk != null) pkcols = new List<string>(pk.Columns.GetNames());
+        //    if (ResultFields == null)
+        //    {
+        //        for (int i = 0; i < Structure.Columns.Count; i++)
+        //        {
+        //            var col = Structure.Columns[i];
+        //            var di = new ColumnDisplayInfo { IsPrimaryKey = pkcols.Contains(col.Name) };
+        //            res.AddColumn(col.Name, i, col);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        for (int i = 0; i < Math.Min(Structure.Columns.Count, ResultFields.Count); i++)
+        //        {
+        //            var col = Structure.Columns[i];
+        //            res.AddColumn(ResultFields[i], i, col);
+        //        }
+        //    }
+        //    return res;
+        //}
 
         public CdlTable GetFirstRows(int count)
         {

@@ -28,93 +28,93 @@ namespace DbShell.Driver.Common.DmlFramework
             From = new DmlfFrom();
         }
 
-        /// <summary>
-        /// adds primary key information to query definition, or marks columns as read only, of no PK is available
-        /// </summary>
-        /// <param name="handler">used for obtain table structures with PKs</param>
-        public void CompleteUpdatingInfo(IDmlfHandler handler)
-        {
-            var pks = new Dictionary<DmlfSource, PrimaryKeyInfo>();
-            var required_pks = new Dictionary<DmlfSource, PrimaryKeyInfo>();
-            // list of columns
-            var usedcols = new HashSetEx<DmlfColumnRef>();
+        ///// <summary>
+        ///// adds primary key information to query definition, or marks columns as read only, of no PK is available
+        ///// </summary>
+        ///// <param name="handler">used for obtain table structures with PKs</param>
+        //public void CompleteUpdatingInfo(IDmlfHandler handler)
+        //{
+        //    var pks = new Dictionary<DmlfSource, PrimaryKeyInfo>();
+        //    var required_pks = new Dictionary<DmlfSource, PrimaryKeyInfo>();
+        //    // list of columns
+        //    var usedcols = new HashSetEx<DmlfColumnRef>();
 
-            foreach (var col in Columns)
-            {
-                var di = col.DisplayInfo;
-                if (di == null) continue;
-                var tbl = col.Source;
-                if (tbl == null) tbl = handler.BaseTable;
-                if (tbl == null) continue;
-                var cr = col.Expr as DmlfColumnRefExpression;
-                if (cr == null)
-                {
-                    di.IsReadOnly = true;
-                    continue;
-                }
-                if (!pks.ContainsKey(tbl))
-                {
-                    pks[tbl] = null;
-                    if (handler != null)
-                    {
-                        var ts = handler.GetStructure(tbl.TableOrView);
-                        if (ts != null)
-                        {
-                            pks[tbl] = ts.PrimaryKey;
-                        }
-                    }
-                }
-                var pk = pks[tbl];
-                if (pk == null)
-                {
-                    // no primary key, is readonly
-                    di.IsReadOnly = true;
-                    continue;
-                }
-                var pkcols = new List<string>(pk.Columns.GetNames());
-                if (pkcols.Contains(cr.Column.ColumnName))
-                {
-                    di.IsPrimaryKey = true;
-                }
-                usedcols.Add(new DmlfColumnRef { Source = tbl, ColumnName = cr.Column.ColumnName });
-                if (di.Style == ColumnDisplayInfo.UsageStyle.Value)
-                {
-                    required_pks[tbl] = pk;
-                }
-                if (di.Style == ColumnDisplayInfo.UsageStyle.Lookup)
-                {
-                    di.IsReadOnly = true;
-                }
-            }
+        //    foreach (var col in Columns)
+        //    {
+        //        var di = col.DisplayInfo;
+        //        if (di == null) continue;
+        //        var tbl = col.Source;
+        //        if (tbl == null) tbl = handler.BaseTable;
+        //        if (tbl == null) continue;
+        //        var cr = col.Expr as DmlfColumnRefExpression;
+        //        if (cr == null)
+        //        {
+        //            di.IsReadOnly = true;
+        //            continue;
+        //        }
+        //        if (!pks.ContainsKey(tbl))
+        //        {
+        //            pks[tbl] = null;
+        //            if (handler != null)
+        //            {
+        //                var ts = handler.GetStructure(tbl.TableOrView);
+        //                if (ts != null)
+        //                {
+        //                    pks[tbl] = ts.PrimaryKey;
+        //                }
+        //            }
+        //        }
+        //        var pk = pks[tbl];
+        //        if (pk == null)
+        //        {
+        //            // no primary key, is readonly
+        //            di.IsReadOnly = true;
+        //            continue;
+        //        }
+        //        var pkcols = new List<string>(pk.Columns.GetNames());
+        //        if (pkcols.Contains(cr.Column.ColumnName))
+        //        {
+        //            di.IsPrimaryKey = true;
+        //        }
+        //        usedcols.Add(new DmlfColumnRef { Source = tbl, ColumnName = cr.Column.ColumnName });
+        //        if (di.Style == ColumnDisplayInfo.UsageStyle.Value)
+        //        {
+        //            required_pks[tbl] = pk;
+        //        }
+        //        if (di.Style == ColumnDisplayInfo.UsageStyle.Lookup)
+        //        {
+        //            di.IsReadOnly = true;
+        //        }
+        //    }
 
-            // add missing primary key columns as hidden columns
-            foreach (var pkt in required_pks)
-            {
-                foreach (string col in pkt.Value.Columns.GetNames())
-                {
-                    var key = new DmlfColumnRef { Source = pkt.Key, ColumnName = col };
-                    if (usedcols.Contains(key)) continue;
-                    usedcols.Add(key);
-                    var nc = new DmlfResultField
-                    {
-                        DisplayInfo = new ColumnDisplayInfo
-                        {
-                            IsPrimaryKey = true,
-                            Style = ColumnDisplayInfo.UsageStyle.Hidden,
-                        },
-                        Expr = new DmlfColumnRefExpression
-                        {
-                            Column = new DmlfColumnRef
-                            {
-                                Source = pkt.Key,
-                                ColumnName = col,
-                            }
-                        }
-                    };
-                    Columns.Add(nc);
-                }
-            }
-        }
+        //    // add missing primary key columns as hidden columns
+        //    foreach (var pkt in required_pks)
+        //    {
+        //        foreach (string col in pkt.Value.Columns.GetNames())
+        //        {
+        //            var key = new DmlfColumnRef { Source = pkt.Key, ColumnName = col };
+        //            if (usedcols.Contains(key)) continue;
+        //            usedcols.Add(key);
+        //            var nc = new DmlfResultField
+        //            {
+        //                DisplayInfo = new ColumnDisplayInfo
+        //                {
+        //                    IsPrimaryKey = true,
+        //                    Style = ColumnDisplayInfo.UsageStyle.Hidden,
+        //                },
+        //                Expr = new DmlfColumnRefExpression
+        //                {
+        //                    Column = new DmlfColumnRef
+        //                    {
+        //                        Source = pkt.Key,
+        //                        ColumnName = col,
+        //                    }
+        //                }
+        //            };
+        //            Columns.Add(nc);
+        //        }
+        //    }
+        //}
 
         public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
         {
@@ -188,7 +188,7 @@ namespace DbShell.Driver.Common.DmlFramework
             foreach (var fld in this)
             {
                 var col = fld.Column;
-                if (col != null && fld.DisplayInfo.IsPrimaryKey && col.Source == src) res.Add(col);
+                if (col != null && fld.ResultInfo != null && fld.ResultInfo.IsKey && col.Source == src) res.Add(col);
             }
             return res;
         }
@@ -218,16 +218,16 @@ namespace DbShell.Driver.Common.DmlFramework
             }
         }
 
-        public void SplitVisible(out DmlfResultFieldCollection visCols, out DmlfResultFieldCollection hidCols)
-        {
-            visCols = new DmlfResultFieldCollection();
-            hidCols = new DmlfResultFieldCollection();
-            foreach (var fld in this)
-            {
-                if (fld.DisplayInfo.Style == ColumnDisplayInfo.UsageStyle.Value) visCols.Add(fld);
-                else hidCols.Add(fld);
-            }
-        }
+        //public void SplitVisible(out DmlfResultFieldCollection visCols, out DmlfResultFieldCollection hidCols)
+        //{
+        //    visCols = new DmlfResultFieldCollection();
+        //    hidCols = new DmlfResultFieldCollection();
+        //    foreach (var fld in this)
+        //    {
+        //        if (fld.DisplayInfo.Style == ColumnDisplayInfo.UsageStyle.Value) visCols.Add(fld);
+        //        else hidCols.Add(fld);
+        //    }
+        //}
     }
 
     public class DmlfExpressionHolder : DmlfBase
@@ -283,7 +283,7 @@ namespace DbShell.Driver.Common.DmlFramework
     {
         public DmlfResultField()
         {
-            DisplayInfo = new ColumnDisplayInfo();
+            //DisplayInfo = new ColumnDisplayInfo();
         }
 
         private string m_alias;
@@ -297,8 +297,10 @@ namespace DbShell.Driver.Common.DmlFramework
                 if (m_alias.IsEmpty()) m_alias = null;
             }
         }
-        [XmlSubElem]
-        public ColumnDisplayInfo DisplayInfo { get; set; }
+        //[XmlSubElem]
+        //public ColumnDisplayInfo DisplayInfo { get; set; }
+
+        public QueryResultColumnInfo ResultInfo { get; set; }
 
         public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
         {
@@ -326,10 +328,10 @@ namespace DbShell.Driver.Common.DmlFramework
                         Source = src,
                     }
                 },
-                DisplayInfo = new ColumnDisplayInfo
-                {
-                    Style = ColumnDisplayInfo.UsageStyle.Value,
-                }
+                //DisplayInfo = new ColumnDisplayInfo
+                //{
+                //    Style = ColumnDisplayInfo.UsageStyle.Value,
+                //}
             };
         }
 
