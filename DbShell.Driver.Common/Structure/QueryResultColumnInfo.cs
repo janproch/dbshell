@@ -39,13 +39,14 @@ namespace DbShell.Driver.Common.Structure
 
         public ColumnInfo FindOriginalColumn(DatabaseInfo db, DmlfSelect select)
         {
-            if (BaseColumnName == null) return null;
+            string name = IsAliased ? BaseColumnName : Name;
+            if (name == null) return null;
 
             // determine original table name
             TableInfo table = null;
             if (BaseTableName != null)
             {
-                table = db.FindTable(BaseSchemaName, BaseTableName);
+                table = db.FindTable(String.IsNullOrWhiteSpace(BaseSchemaName) ? null : BaseSchemaName, BaseTableName);
             }
             else
             {
@@ -53,7 +54,7 @@ namespace DbShell.Driver.Common.Structure
             }
             if (table == null) return null;
 
-            var tableCol = table.FindColumn(BaseColumnName);
+            var tableCol = table.FindColumn(name);
             return tableCol;
         }
     }
