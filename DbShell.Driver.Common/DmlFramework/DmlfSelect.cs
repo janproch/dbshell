@@ -22,6 +22,12 @@ namespace DbShell.Driver.Common.DmlFramework
         [XmlSubElem]
         public DmlfWhere  Where { get; set; }
 
+        [XmlElem]
+        public int? TopRecords { get; set; }
+
+        [XmlElem]
+        public bool SelectAll { get; set; }
+
         public DmlfSelect()
         {
             Columns = new DmlfResultFieldCollection();
@@ -119,10 +125,25 @@ namespace DbShell.Driver.Common.DmlFramework
         public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
         {
             dmp.Put("^select ");
-            Columns.GenSql(dmp, handler);
+            if (TopRecords != null)
+            {
+                dmp.Put("^top %s ", TopRecords);
+            }
+            if (SelectAll)
+            {
+                dmp.Put("* ");
+            }
+            else
+            {
+                Columns.GenSql(dmp, handler);
+            }
             From.GenSql(dmp, handler);
             if (Where != null) Where.GenSql(dmp, handler);
-            if (OrderBy != null) OrderBy.GenSql(dmp, handler);
+            if (OrderBy != null)
+            {
+                dmp.Put("^order ^by ");
+                OrderBy.GenSql(dmp, handler);
+            }
         }
 
         public void GenSqlCount(ISqlDumper dmp, IDmlfHandler handler)

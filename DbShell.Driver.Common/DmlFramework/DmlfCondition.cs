@@ -38,6 +38,49 @@ namespace DbShell.Driver.Common.DmlFramework
         }
     }
 
+    public class DmlfBetweenCondition : DmlfConditionBase
+    {
+        public DmlfExpression Expr { get; set; }
+        public DmlfExpression LowerBound { get; set; }
+        public DmlfExpression UpperBound { get; set; }
+
+        public override void ForEachChild(Action<IDmlfNode> action)
+        {
+            base.ForEachChild(action);
+            action(Expr);
+            action(LowerBound);
+            action(UpperBound);
+        }
+
+        public override void SaveToXml(XmlElement xml)
+        {
+            base.SaveToXml(xml);
+            if (Expr != null) Expr.SaveToXml(xml.AddChild("Expr"));
+            if (LowerBound != null) LowerBound.SaveToXml(xml.AddChild("LowerBound"));
+            if (UpperBound != null) UpperBound.SaveToXml(xml.AddChild("UpperBound"));
+        }
+
+        public override void LoadFromXml(XmlElement xml)
+        {
+            base.LoadFromXml(xml);
+            var xe = xml.FindElement("Expr");
+            if (xe != null) Expr = DmlfExpression.Load(xe);
+            var xl = xml.FindElement("LowerBound");
+            if (xl != null) LowerBound = DmlfExpression.Load(xl);
+            var xu = xml.FindElement("UpperBound");
+            if (xu != null) UpperBound = DmlfExpression.Load(xu);
+        }
+
+        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        {
+            Expr.GenSql(dmp, handler);
+            dmp.Put(" ^between "); 
+            LowerBound.GenSql(dmp, handler);
+            dmp.Put(" ^and ");
+            UpperBound.GenSql(dmp, handler);
+        }
+    }
+
     public class DmlfEqualCondition : DmlfBinaryCondition
     {
         public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
@@ -54,6 +97,16 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             LeftExpr.GenSql(dmp, handler);
             dmp.Put(" ^like ");
+            RightExpr.GenSql(dmp, handler);
+        }
+    }
+
+    public class DmlfInCondition : DmlfBinaryCondition
+    {
+        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        {
+            LeftExpr.GenSql(dmp, handler);
+            dmp.Put(" ^in ");
             RightExpr.GenSql(dmp, handler);
         }
     }

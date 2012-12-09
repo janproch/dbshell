@@ -21,6 +21,8 @@ namespace DbShell.Driver.Common.DmlFramework
                     return new DmlfStringExpression(xml);
                 case "lit":
                     return new DmlfLiteralExpression(xml);
+                case "count":
+                    return new DmlfCountExpression(xml);
             }
             throw new InternalError("DBSH-00041 Unkown DMLF expression type:" + type);
         }
@@ -32,6 +34,35 @@ namespace DbShell.Driver.Common.DmlFramework
         }
 
         protected abstract string GetTypeName();
+    }
+
+    public class DmlfCountExpression : DmlfExpression
+    {
+        public DmlfCountExpression() { }
+        public DmlfCountExpression(XmlElement xml)
+        {
+            LoadFromXml(xml);
+        }
+
+        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        {
+            dmp.Put("^count(*)");
+        }
+
+        public override string ToString()
+        {
+            return "COUNT(*)";
+        }
+
+        protected override string GetTypeName()
+        {
+            return "count";
+        }
+
+        public override int GetHashCode()
+        {
+            return 0;
+        }
     }
 
     public class DmlfColumnRefExpression : DmlfExpression
@@ -161,6 +192,37 @@ namespace DbShell.Driver.Common.DmlFramework
         protected override string GetTypeName()
         {
             return "str";
+        }
+    }
+
+    public class DmlfRowNumberExpression : DmlfExpression
+    {
+        public DmlfSortOrderCollection OrderBy = new DmlfSortOrderCollection();
+
+        public DmlfRowNumberExpression()
+        {
+        }
+
+        public DmlfRowNumberExpression(XmlElement xml)
+        {
+        }
+
+        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        {
+            dmp.Put("^row_number() ^over (^order ^by ");
+            bool was = false;
+            foreach (var col in OrderBy)
+            {
+                if (was) dmp.Put(", ");
+                col.GenSql(dmp, handler);
+                was = true;
+            }
+            dmp.Put(")");
+        }
+
+        protected override string GetTypeName()
+        {
+            return "row_number";
         }
     }
 

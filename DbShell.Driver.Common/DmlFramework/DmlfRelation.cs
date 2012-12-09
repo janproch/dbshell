@@ -76,12 +76,23 @@ namespace DbShell.Driver.Common.DmlFramework
                 if (m_alias.IsEmpty()) m_alias = null;
             }
         }
+        [XmlSubElem]
+        public DmlfSelect SubQuery { get; set; }
 
         public void GenSqlDef(ISqlDumper dmp, IDmlfHandler handler)
         {
+            if (TableOrView != null && SubQuery != null) throw new Exception("DBSH-00000 DmlfSource: both TableOfView and SubQuery are set");
+            if (TableOrView == null && SubQuery == null) throw new Exception("DBSH-00000 DmlfSource: none TableOfView and SubQuery are set");
+
             if (TableOrView != null)
             {
                 dmp.Put("%f", TableOrView);
+            }
+            if (SubQuery != null)
+            {
+                dmp.Put("(");
+                SubQuery.GenSql(dmp, handler);
+                dmp.Put(")");
             }
             if (Alias != null)
             {
