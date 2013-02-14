@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Batch 
   xmlns="http://schemas.dbshell.com/core"
-  Requires="Connection.dbsh" 
+  Requires="Configuration.dbsh" 
 >
   <Echo Message="Hello world!" />
   <Echo Message="You will be connected to database ${DbName}" />
