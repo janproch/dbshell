@@ -36,6 +36,23 @@ namespace DbShell.Driver.Common.Structure
             }
         }
 
+        public ViewInfo FindView(string view)
+        {
+            return _views.FirstOrDefault(t => String.Compare(t.Name, view, true) == 0);
+        }
+
+        public ViewInfo FindView(string schema, string view)
+        {
+            if (schema == null)
+            {
+                return _views.FirstOrDefault(t => String.Compare(t.Name, view, true) == 0);
+            }
+            else
+            {
+                return _views.FirstOrDefault(t => String.Compare(t.Name, view, true) == 0 && String.Compare(t.Schema, schema, true) == 0);
+            }
+        }
+
         //public ColumnInfo FindColumn(string table, string column)
         //{
         //    var tbl = FindTable(table);
