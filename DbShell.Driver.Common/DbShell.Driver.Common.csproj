@@ -158,6 +158,7 @@
     <Compile Include="Utility\HashSetEx.cs" />
     <Compile Include="Utility\InMemoryTableExtension.cs" />
     <Compile Include="Utility\IOTool.cs" />
+    <Compile Include="Utility\ListExtension.cs" />
     <Compile Include="Utility\ListProxy.cs" />
     <Compile Include="Utility\ObjectExtension.cs" />
     <Compile Include="Utility\PyList.cs" />

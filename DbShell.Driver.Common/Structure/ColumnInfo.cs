@@ -126,11 +126,14 @@ namespace DbShell.Driver.Common.Structure
         public List<ForeignKeyInfo> GetForeignKeys()
         {
             var res = new List<ForeignKeyInfo>();
-            foreach (var fk in OwnerTable.ForeignKeys)
+            if (OwnerTable != null)
             {
-                if (fk.Columns.Any(c => c.RefColumn == this))
+                foreach (var fk in OwnerTable.ForeignKeys)
                 {
-                    res.Add(fk);
+                    if (fk.Columns.Any(c => c.RefColumn == this))
+                    {
+                        res.Add(fk);
+                    }
                 }
             }
             return res;

@@ -5,7 +5,7 @@ namespace DbShell.Driver.Common.Structure
         public TableInfo OwnerTable { get; private set; }
 
         public TableObjectInfo(TableInfo table)
-            : base(table.OwnerDatabase)
+            : base(table == null ? null : table.OwnerDatabase)
         {
             OwnerTable = table;
         }
