@@ -186,8 +186,9 @@ namespace DbShell.Driver.Common.DmlFramework
 
         public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
         {
-            JoinType.GenSql(dmp);
             dmp.Put("&n");
+            JoinType.GenSql(dmp);
+            dmp.Put(" ");
             Reference.GenSqlDef(dmp, handler);
             dmp.Put(" ^on ");
             bool was = false;

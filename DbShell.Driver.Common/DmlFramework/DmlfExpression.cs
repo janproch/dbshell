@@ -209,7 +209,7 @@ namespace DbShell.Driver.Common.DmlFramework
 
         public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
         {
-            dmp.Put("^row_number() ^over (^order ^by ");
+            dmp.Put(" ^row_number() ^over (^order ^by ");
             bool was = false;
             foreach (var col in OrderBy)
             {

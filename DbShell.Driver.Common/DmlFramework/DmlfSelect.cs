@@ -141,7 +141,7 @@ namespace DbShell.Driver.Common.DmlFramework
             if (Where != null) Where.GenSql(dmp, handler);
             if (OrderBy != null && OrderBy.Count > 0)
             {
-                dmp.Put("^order ^by ");
+                dmp.Put(" ^order ^by ");
                 OrderBy.GenSql(dmp, handler);
             }
         }
