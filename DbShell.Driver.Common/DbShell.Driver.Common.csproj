@@ -136,6 +136,7 @@
     <Compile Include="Structure\QueryResultInfo.cs" />
     <Compile Include="Structure\TableObjectInfo.cs" />
     <Compile Include="Structure\ViewInfo.cs" />
+    <Compile Include="CommonDataLayer\CdlFileStorage.cs" />
     <Compile Include="Utility\DialectExtension.cs" />
     <Compile Include="Utility\EnumerableExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
