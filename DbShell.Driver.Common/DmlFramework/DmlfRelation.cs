@@ -79,10 +79,16 @@ namespace DbShell.Driver.Common.DmlFramework
         [XmlSubElem]
         public DmlfSelect SubQuery { get; set; }
 
+        [XmlElem]
+        public string SubQueryString { get; set; }
+
         public void GenSqlDef(ISqlDumper dmp, IDmlfHandler handler)
         {
-            if (TableOrView != null && SubQuery != null) throw new Exception("DBSH-00000 DmlfSource: both TableOfView and SubQuery are set");
-            if (TableOrView == null && SubQuery == null) throw new Exception("DBSH-00000 DmlfSource: none TableOfView and SubQuery are set");
+            int sources = 0;
+            if (TableOrView != null) sources++;
+            if (SubQuery != null) sources++;
+            if (SubQueryString != null) sources++;
+            if (sources != 1) throw new Exception("DBSH-00000 DmlfSource should have exactly one source");
 
             if (TableOrView != null)
             {
@@ -92,6 +98,12 @@ namespace DbShell.Driver.Common.DmlFramework
             {
                 dmp.Put("(");
                 SubQuery.GenSql(dmp, handler);
+                dmp.Put(")");
+            }
+            if (SubQueryString != null)
+            {
+                dmp.Put("(");
+                dmp.WriteRaw(SubQueryString);
                 dmp.Put(")");
             }
             if (Alias != null)
