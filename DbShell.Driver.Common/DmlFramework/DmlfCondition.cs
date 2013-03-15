@@ -91,6 +91,18 @@ namespace DbShell.Driver.Common.DmlFramework
         }
     }
 
+    public class DmlfRelationCondition : DmlfBinaryCondition
+    {
+        public string Relation = "=";
+
+        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        {
+            LeftExpr.GenSql(dmp, handler);
+            dmp.Put(Relation);
+            RightExpr.GenSql(dmp, handler);
+        }
+    }
+
     public class DmlfLikeCondition : DmlfBinaryCondition
     {
         public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)

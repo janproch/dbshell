@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
 using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
 
@@ -10,11 +11,11 @@ namespace DbShell.Driver.SqlServer
 {
     public class SqlServerDatabaseAnalyser : DatabaseAnalyser
     {
-        Dictionary<NameWithSchema, TableInfo> _tables = new Dictionary<NameWithSchema, TableInfo>();
+        private Dictionary<NameWithSchema, TableInfo> _tables = new Dictionary<NameWithSchema, TableInfo>();
 
-        SqlConnection Connection
+        private SqlConnection Connection
         {
-            get { return (SqlConnection)_conn; }
+            get { return (SqlConnection) _conn; }
         }
 
         protected override void DoRun()
@@ -47,6 +48,7 @@ namespace DbShell.Driver.SqlServer
                 col.Precision = row.SafeInt("NUMERIC_PRECISION");
                 col.Scale = row.SafeInt("NUMERIC_SCALE");
                 col.DefaultValue = row.SafeString("COLUMN_DEFAULT");
+                col.CommonType = AnalyseType(col.DataType, col.Length, col.Precision, col.Scale);
                 table.Columns.Add(col);
             }
 
@@ -165,7 +167,7 @@ namespace DbShell.Driver.SqlServer
                 }
             }
 
-            foreach(var view in Result.Views)
+            foreach (var view in Result.Views)
             {
                 using (var cmd = Connection.CreateCommand())
                 {
@@ -179,6 +181,138 @@ namespace DbShell.Driver.SqlServer
             }
 
             Result.FixPrimaryKeys();
+        }
+
+        private DbTypeBase AnalyseType(string dt, int len, int prec, int scale)
+        {
+            switch (dt)
+            {
+                case "binary":
+                    return new DbTypeString
+                        {
+                            Length = len,
+                            IsBinary = true,
+                        };
+                case "image":
+                    return new DbTypeBlob();
+                case "timestamp":
+                    return new DbTypeString();
+                case "varbinary":
+                    return new DbTypeString
+                        {
+                            Length = len,
+                            IsBinary = true,
+                            IsVarLength = true,
+                        };
+                case "bit":
+                    return new DbTypeLogical();
+                case "tinyint":
+                    return new DbTypeInt
+                        {
+                            Bytes = 1
+                        };
+                case "datetime":
+                    return new DbTypeDatetime
+                        {
+                            SubType = DbDatetimeSubType.Datetime,
+                        };
+                case "datetime2":
+                    return new DbTypeDatetime
+                        {
+                            SubType = DbDatetimeSubType.Datetime,
+                        };
+                case "datetimeoffset":
+                    return new DbTypeDatetime
+                        {
+                            SubType = DbDatetimeSubType.Datetime,
+                            HasTimeZone = true,
+                        };
+                case "date":
+                    return new DbTypeDatetime
+                        {
+                            SubType = DbDatetimeSubType.Date,
+                        };
+                case "time":
+                    return new DbTypeDatetime
+                        {
+                            SubType = DbDatetimeSubType.Time,
+                        };
+                case "smalldatetime":
+                    return new DbTypeDatetime
+                        {
+                            SubType = DbDatetimeSubType.Datetime,
+                        };
+                case "decimal":
+                    return new DbTypeNumeric
+                        {
+                            Precision = prec,
+                            Scale = scale,
+                        };
+                case "numeric":
+                    return new DbTypeNumeric
+                        {
+                            Precision = prec,
+                            Scale = scale,
+                        };
+                case "float":
+                    return new DbTypeFloat();
+                case "uniqueidentifier":
+                    return new DbTypeGuid();
+                case "smallint":
+                    return new DbTypeInt
+                        {
+                            Bytes = 2
+                        };
+                case "int":
+                    return new DbTypeInt
+                        {
+                            Bytes = 4
+                        };
+                case "bigint":
+                    return new DbTypeInt
+                        {
+                            Bytes = 8
+                        };
+                case "real":
+                    return new DbTypeFloat();
+                case "char":
+                    return new DbTypeString
+                        {
+                            Length = len,
+                        };
+                case "nchar":
+                    return new DbTypeString
+                        {
+                            Length = len,
+                            IsUnicode = true,
+                        };
+                case "varchar":
+                    return new DbTypeString
+                        {
+                            Length = len,
+                            IsVarLength = true,
+                        };
+                case "nvarchar":
+                    return new DbTypeString
+                        {
+                            Length = len,
+                            IsVarLength = true,
+                            IsUnicode = true,
+                        };
+                case "text":
+                    return new DbTypeText();
+                case "ntext":
+                    return new DbTypeText();
+                case "xml":
+                    return new DbTypeXml();
+                case "money":
+                    return new DbTypeNumeric();
+                case "smallmoney":
+                    return new DbTypeNumeric();
+                case "sql_variant":
+                    return new DbTypeText();
+            }
+            return new DbTypeGeneric {Sql = dt};
         }
     }
 }
