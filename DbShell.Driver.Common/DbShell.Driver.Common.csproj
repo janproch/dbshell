@@ -76,6 +76,9 @@
     <Compile Include="CommonTypeSystem\DbTypeText.cs" />
     <Compile Include="CommonTypeSystem\DbTypeXml.cs" />
     <Compile Include="CommonTypeSystem\IsIdentityAttribute.cs" />
+    <Compile Include="FilterParser\FilterParser.cs" />
+    <Compile Include="FilterParser\FilterTokenizer.cs" />
+    <Compile Include="FilterParser\NumberFilterParser.cs" />
     <Compile Include="Sql\ColumnDisplay.cs" />
     <Compile Include="Sql\SqlDumper.cs" />
     <Compile Include="Sql\SqlDumper_FmtUtils.cs" />
