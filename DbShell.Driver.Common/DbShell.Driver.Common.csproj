@@ -82,6 +82,8 @@
     <Compile Include="CommonTypeSystem\DbTypeText.cs" />
     <Compile Include="CommonTypeSystem\DbTypeXml.cs" />
     <Compile Include="CommonTypeSystem\IsIdentityAttribute.cs" />
+    <Compile Include="FilterParser\antlr\DateTimeFilterLexer.cs" />
+    <Compile Include="FilterParser\antlr\DateTimeFilterParser.cs" />
     <Compile Include="FilterParser\antlr\DbShellFilterAntlrParser.cs" />
     <Compile Include="FilterParser\antlr\NumberFilterLexer.cs" />
     <Compile Include="FilterParser\antlr\NumberFilterParser.cs" />
