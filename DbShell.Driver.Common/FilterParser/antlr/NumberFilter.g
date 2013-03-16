@@ -11,14 +11,19 @@ options {
 using System.Globalization;
 }
 
-number: 
-  MINUS num1=NUMBER { Push(-Decimal.Parse($num1.text, CultureInfo.InvariantCulture)); }
-  | num2=NUMBER { Push(Decimal.Parse($num2.text, CultureInfo.InvariantCulture)); } ;
+negative_number: 
+  MINUS num1=NUMBER { Push(-Decimal.Parse($num1.text, CultureInfo.InvariantCulture)); };
+  
+positive_number: 
+  num1=NUMBER { Push(Decimal.Parse($num1.text, CultureInfo.InvariantCulture)); };
+  
+number:
+  positive_number | negative_number;
 
 interval : 
-number MINUS number {
-        var right = Pop<decimal>();var left = Pop<decimal>();
-        Condition.Conditions.Add(new DmlfBetweenCondition
+number MINUS num2=NUMBER {
+        var left = Pop<decimal>();var right=Decimal.Parse($num2.text, CultureInfo.InvariantCulture);
+        Conditions.Add(new DmlfBetweenCondition
             {
                 Expr = ColumnValue,
                 LowerBound = new DmlfLiteralExpression{Value = left},
@@ -26,8 +31,8 @@ number MINUS number {
             });
 };
  
-factor:
-  number { AddEqualCondition(Pop<decimal>().ToString(CultureInfo.InvariantCulture)); } 
+element_no_negative:
+  positive_number { AddEqualCondition(Pop<decimal>().ToString(CultureInfo.InvariantCulture)); } 
   | interval
   | LT num1=number { AddNumberRelation($num1.text, "<"); } 
   | GT num1=number { AddNumberRelation($num1.text, ">"); } 
@@ -35,12 +40,19 @@ factor:
   | GE num1=number { AddNumberRelation($num1.text, "<="); } 
   | NE num1=number { AddNumberRelation($num1.text, "<>"); } 
   | EQ num1=number { AddNumberRelation($num1.text, "="); } 
-   ;
+  ;
+  
+element_maybe_negative:
+  negative_number { AddEqualCondition(Pop<decimal>().ToString(CultureInfo.InvariantCulture)); }
+  | element_no_negative;
+  
+factor :
+  element_maybe_negative element_no_negative*;
 
 list: 
-  factor ( COMMA factor ) *; 
+  factor ( (COMMA | (ENDLINE+)) { AddAndCondition(); } factor ) * ENDLINE*; 
  
-expr: list; 
+expr: list ; 
  
 MINUS:  '-';
 LT:  '<';
@@ -51,7 +63,7 @@ NE:  '!=' | '<>';
 EQ:  '=';
 COMMA: ',';
  
-NUMBER  : (DIGIT)+ ;
+NUMBER  : (DIGIT)+ ('.' (DIGIT)+)?;
 
 WHITESPACE : ( '\t' | ' ' | '\u000C' )+    { $channel = HIDDEN; } ;
 ENDLINE: ( '\r' | '\n' )+; 

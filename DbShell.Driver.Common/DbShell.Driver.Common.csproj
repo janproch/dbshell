@@ -85,6 +85,8 @@
     <Compile Include="FilterParser\antlr\DbShellFilterAntlrParser.cs" />
     <Compile Include="FilterParser\antlr\NumberFilterLexer.cs" />
     <Compile Include="FilterParser\antlr\NumberFilterParser.cs" />
+    <Compile Include="FilterParser\antlr\StringFilterLexer.cs" />
+    <Compile Include="FilterParser\antlr\StringFilterParser.cs" />
     <Compile Include="FilterParser\FilterParser.cs" />
     <Compile Include="Sql\ColumnDisplay.cs" />
     <Compile Include="Sql\SqlDumper.cs" />

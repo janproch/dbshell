@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 NumberFilter.g 2013-03-15 23:25:25
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 NumberFilter.g 2013-03-16 10:33:07
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 168, 219
@@ -19,9 +19,9 @@ public partial class NumberFilterLexer : Lexer {
     public const int COMMA = 12;
     public const int NUMBER = 5;
     public const int GT = 7;
-    public const int WHITESPACE = 14;
-    public const int ENDLINE = 15;
-    public const int DIGIT = 13;
+    public const int WHITESPACE = 15;
+    public const int ENDLINE = 13;
+    public const int DIGIT = 14;
     public const int MINUS = 4;
     public const int EQ = 11;
     public const int EOF = -1;
@@ -56,8 +56,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = MINUS;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:45:6: ( '-' )
-            // NumberFilter.g:45:9: '-'
+            // NumberFilter.g:57:6: ( '-' )
+            // NumberFilter.g:57:9: '-'
             {
             	Match('-'); 
 
@@ -79,8 +79,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = LT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:46:3: ( '<' )
-            // NumberFilter.g:46:6: '<'
+            // NumberFilter.g:58:3: ( '<' )
+            // NumberFilter.g:58:6: '<'
             {
             	Match('<'); 
 
@@ -102,8 +102,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = GT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:47:3: ( '>' )
-            // NumberFilter.g:47:6: '>'
+            // NumberFilter.g:59:3: ( '>' )
+            // NumberFilter.g:59:6: '>'
             {
             	Match('>'); 
 
@@ -125,8 +125,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = GE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:48:3: ( '>=' )
-            // NumberFilter.g:48:6: '>='
+            // NumberFilter.g:60:3: ( '>=' )
+            // NumberFilter.g:60:6: '>='
             {
             	Match(">="); 
 
@@ -149,8 +149,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = LE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:49:3: ( '<=' )
-            // NumberFilter.g:49:6: '<='
+            // NumberFilter.g:61:3: ( '<=' )
+            // NumberFilter.g:61:6: '<='
             {
             	Match("<="); 
 
@@ -173,7 +173,7 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = NE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:50:3: ( '!=' | '<>' )
+            // NumberFilter.g:62:3: ( '!=' | '<>' )
             int alt1 = 2;
             int LA1_0 = input.LA(1);
 
@@ -195,7 +195,7 @@ public partial class NumberFilterLexer : Lexer {
             switch (alt1) 
             {
                 case 1 :
-                    // NumberFilter.g:50:6: '!='
+                    // NumberFilter.g:62:6: '!='
                     {
                     	Match("!="); 
 
@@ -203,7 +203,7 @@ public partial class NumberFilterLexer : Lexer {
                     }
                     break;
                 case 2 :
-                    // NumberFilter.g:50:13: '<>'
+                    // NumberFilter.g:62:13: '<>'
                     {
                     	Match("<>"); 
 
@@ -228,8 +228,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = EQ;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:51:3: ( '=' )
-            // NumberFilter.g:51:6: '='
+            // NumberFilter.g:63:3: ( '=' )
+            // NumberFilter.g:63:6: '='
             {
             	Match('='); 
 
@@ -251,8 +251,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = COMMA;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:52:6: ( ',' )
-            // NumberFilter.g:52:8: ','
+            // NumberFilter.g:64:6: ( ',' )
+            // NumberFilter.g:64:8: ','
             {
             	Match(','); 
 
@@ -274,10 +274,10 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = NUMBER;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:54:9: ( ( DIGIT )+ )
-            // NumberFilter.g:54:11: ( DIGIT )+
+            // NumberFilter.g:66:9: ( ( DIGIT )+ ( '.' ( DIGIT )+ )? )
+            // NumberFilter.g:66:11: ( DIGIT )+ ( '.' ( DIGIT )+ )?
             {
-            	// NumberFilter.g:54:11: ( DIGIT )+
+            	// NumberFilter.g:66:11: ( DIGIT )+
             	int cnt2 = 0;
             	do 
             	{
@@ -293,7 +293,7 @@ public partial class NumberFilterLexer : Lexer {
             	    switch (alt2) 
             		{
             			case 1 :
-            			    // NumberFilter.g:54:12: DIGIT
+            			    // NumberFilter.g:66:12: DIGIT
             			    {
             			    	mDIGIT(); 
 
@@ -311,6 +311,61 @@ public partial class NumberFilterLexer : Lexer {
 
             	loop2:
             		;	// Stops C# compiler whining that label 'loop2' has no statements
+
+            	// NumberFilter.g:66:20: ( '.' ( DIGIT )+ )?
+            	int alt4 = 2;
+            	int LA4_0 = input.LA(1);
+
+            	if ( (LA4_0 == '.') )
+            	{
+            	    alt4 = 1;
+            	}
+            	switch (alt4) 
+            	{
+            	    case 1 :
+            	        // NumberFilter.g:66:21: '.' ( DIGIT )+
+            	        {
+            	        	Match('.'); 
+            	        	// NumberFilter.g:66:25: ( DIGIT )+
+            	        	int cnt3 = 0;
+            	        	do 
+            	        	{
+            	        	    int alt3 = 2;
+            	        	    int LA3_0 = input.LA(1);
+
+            	        	    if ( ((LA3_0 >= '0' && LA3_0 <= '9')) )
+            	        	    {
+            	        	        alt3 = 1;
+            	        	    }
+
+
+            	        	    switch (alt3) 
+            	        		{
+            	        			case 1 :
+            	        			    // NumberFilter.g:66:26: DIGIT
+            	        			    {
+            	        			    	mDIGIT(); 
+
+            	        			    }
+            	        			    break;
+
+            	        			default:
+            	        			    if ( cnt3 >= 1 ) goto loop3;
+            	        		            EarlyExitException eee3 =
+            	        		                new EarlyExitException(3, input);
+            	        		            throw eee3;
+            	        	    }
+            	        	    cnt3++;
+            	        	} while (true);
+
+            	        	loop3:
+            	        		;	// Stops C# compiler whining that label 'loop3' has no statements
+
+
+            	        }
+            	        break;
+
+            	}
 
 
             }
@@ -331,23 +386,23 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = WHITESPACE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:56:12: ( ( '\\t' | ' ' | '\\u000C' )+ )
-            // NumberFilter.g:56:14: ( '\\t' | ' ' | '\\u000C' )+
+            // NumberFilter.g:68:12: ( ( '\\t' | ' ' | '\\u000C' )+ )
+            // NumberFilter.g:68:14: ( '\\t' | ' ' | '\\u000C' )+
             {
-            	// NumberFilter.g:56:14: ( '\\t' | ' ' | '\\u000C' )+
-            	int cnt3 = 0;
+            	// NumberFilter.g:68:14: ( '\\t' | ' ' | '\\u000C' )+
+            	int cnt5 = 0;
             	do 
             	{
-            	    int alt3 = 2;
-            	    int LA3_0 = input.LA(1);
+            	    int alt5 = 2;
+            	    int LA5_0 = input.LA(1);
 
-            	    if ( (LA3_0 == '\t' || LA3_0 == '\f' || LA3_0 == ' ') )
+            	    if ( (LA5_0 == '\t' || LA5_0 == '\f' || LA5_0 == ' ') )
             	    {
-            	        alt3 = 1;
+            	        alt5 = 1;
             	    }
 
 
-            	    switch (alt3) 
+            	    switch (alt5) 
             		{
             			case 1 :
             			    // NumberFilter.g:
@@ -368,16 +423,16 @@ public partial class NumberFilterLexer : Lexer {
             			    break;
 
             			default:
-            			    if ( cnt3 >= 1 ) goto loop3;
-            		            EarlyExitException eee3 =
-            		                new EarlyExitException(3, input);
-            		            throw eee3;
+            			    if ( cnt5 >= 1 ) goto loop5;
+            		            EarlyExitException eee5 =
+            		                new EarlyExitException(5, input);
+            		            throw eee5;
             	    }
-            	    cnt3++;
+            	    cnt5++;
             	} while (true);
 
-            	loop3:
-            		;	// Stops C# compiler whining that label 'loop3' has no statements
+            	loop5:
+            		;	// Stops C# compiler whining that label 'loop5' has no statements
 
             	 _channel = HIDDEN; 
 
@@ -399,23 +454,23 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = ENDLINE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:57:8: ( ( '\\r' | '\\n' )+ )
-            // NumberFilter.g:57:10: ( '\\r' | '\\n' )+
+            // NumberFilter.g:69:8: ( ( '\\r' | '\\n' )+ )
+            // NumberFilter.g:69:10: ( '\\r' | '\\n' )+
             {
-            	// NumberFilter.g:57:10: ( '\\r' | '\\n' )+
-            	int cnt4 = 0;
+            	// NumberFilter.g:69:10: ( '\\r' | '\\n' )+
+            	int cnt6 = 0;
             	do 
             	{
-            	    int alt4 = 2;
-            	    int LA4_0 = input.LA(1);
+            	    int alt6 = 2;
+            	    int LA6_0 = input.LA(1);
 
-            	    if ( (LA4_0 == '\n' || LA4_0 == '\r') )
+            	    if ( (LA6_0 == '\n' || LA6_0 == '\r') )
             	    {
-            	        alt4 = 1;
+            	        alt6 = 1;
             	    }
 
 
-            	    switch (alt4) 
+            	    switch (alt6) 
             		{
             			case 1 :
             			    // NumberFilter.g:
@@ -436,16 +491,16 @@ public partial class NumberFilterLexer : Lexer {
             			    break;
 
             			default:
-            			    if ( cnt4 >= 1 ) goto loop4;
-            		            EarlyExitException eee4 =
-            		                new EarlyExitException(4, input);
-            		            throw eee4;
+            			    if ( cnt6 >= 1 ) goto loop6;
+            		            EarlyExitException eee6 =
+            		                new EarlyExitException(6, input);
+            		            throw eee6;
             	    }
-            	    cnt4++;
+            	    cnt6++;
             	} while (true);
 
-            	loop4:
-            		;	// Stops C# compiler whining that label 'loop4' has no statements
+            	loop6:
+            		;	// Stops C# compiler whining that label 'loop6' has no statements
 
 
             }
@@ -464,8 +519,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:59:17: ( '0' .. '9' )
-            // NumberFilter.g:59:19: '0' .. '9'
+            // NumberFilter.g:71:17: ( '0' .. '9' )
+            // NumberFilter.g:71:19: '0' .. '9'
             {
             	MatchRange('0','9'); 
 
@@ -481,9 +536,9 @@ public partial class NumberFilterLexer : Lexer {
     override public void mTokens() // throws RecognitionException 
     {
         // NumberFilter.g:1:8: ( MINUS | LT | GT | GE | LE | NE | EQ | COMMA | NUMBER | WHITESPACE | ENDLINE )
-        int alt5 = 11;
-        alt5 = dfa5.Predict(input);
-        switch (alt5) 
+        int alt7 = 11;
+        alt7 = dfa7.Predict(input);
+        switch (alt7) 
         {
             case 1 :
                 // NumberFilter.g:1:10: MINUS
@@ -568,26 +623,26 @@ public partial class NumberFilterLexer : Lexer {
     }
 
 
-    protected DFA5 dfa5;
+    protected DFA7 dfa7;
 	private void InitializeCyclicDFAs()
 	{
-	    this.dfa5 = new DFA5(this);
+	    this.dfa7 = new DFA7(this);
 	}
 
-    const string DFA5_eotS =
+    const string DFA7_eotS =
         "\x02\uffff\x01\x0b\x01\x0d\x0a\uffff";
-    const string DFA5_eofS =
+    const string DFA7_eofS =
         "\x0e\uffff";
-    const string DFA5_minS =
+    const string DFA7_minS =
         "\x01\x09\x01\uffff\x02\x3d\x0a\uffff";
-    const string DFA5_maxS =
+    const string DFA7_maxS =
         "\x01\x3e\x01\uffff\x01\x3e\x01\x3d\x0a\uffff";
-    const string DFA5_acceptS =
+    const string DFA7_acceptS =
         "\x01\uffff\x01\x01\x02\uffff\x01\x06\x01\x07\x01\x08\x01\x09\x01"+
         "\x0a\x01\x0b\x01\x05\x01\x02\x01\x04\x01\x03";
-    const string DFA5_specialS =
+    const string DFA7_specialS =
         "\x0e\uffff}>";
-    static readonly string[] DFA5_transitionS = {
+    static readonly string[] DFA7_transitionS = {
             "\x01\x08\x01\x09\x01\uffff\x01\x08\x01\x09\x12\uffff\x01\x08"+
             "\x01\x04\x0a\uffff\x01\x06\x01\x01\x02\uffff\x0a\x07\x02\uffff"+
             "\x01\x02\x01\x05\x01\x03",
@@ -606,27 +661,27 @@ public partial class NumberFilterLexer : Lexer {
             ""
     };
 
-    static readonly short[] DFA5_eot = DFA.UnpackEncodedString(DFA5_eotS);
-    static readonly short[] DFA5_eof = DFA.UnpackEncodedString(DFA5_eofS);
-    static readonly char[] DFA5_min = DFA.UnpackEncodedStringToUnsignedChars(DFA5_minS);
-    static readonly char[] DFA5_max = DFA.UnpackEncodedStringToUnsignedChars(DFA5_maxS);
-    static readonly short[] DFA5_accept = DFA.UnpackEncodedString(DFA5_acceptS);
-    static readonly short[] DFA5_special = DFA.UnpackEncodedString(DFA5_specialS);
-    static readonly short[][] DFA5_transition = DFA.UnpackEncodedStringArray(DFA5_transitionS);
+    static readonly short[] DFA7_eot = DFA.UnpackEncodedString(DFA7_eotS);
+    static readonly short[] DFA7_eof = DFA.UnpackEncodedString(DFA7_eofS);
+    static readonly char[] DFA7_min = DFA.UnpackEncodedStringToUnsignedChars(DFA7_minS);
+    static readonly char[] DFA7_max = DFA.UnpackEncodedStringToUnsignedChars(DFA7_maxS);
+    static readonly short[] DFA7_accept = DFA.UnpackEncodedString(DFA7_acceptS);
+    static readonly short[] DFA7_special = DFA.UnpackEncodedString(DFA7_specialS);
+    static readonly short[][] DFA7_transition = DFA.UnpackEncodedStringArray(DFA7_transitionS);
 
-    protected class DFA5 : DFA
+    protected class DFA7 : DFA
     {
-        public DFA5(BaseRecognizer recognizer)
+        public DFA7(BaseRecognizer recognizer)
         {
             this.recognizer = recognizer;
-            this.decisionNumber = 5;
-            this.eot = DFA5_eot;
-            this.eof = DFA5_eof;
-            this.min = DFA5_min;
-            this.max = DFA5_max;
-            this.accept = DFA5_accept;
-            this.special = DFA5_special;
-            this.transition = DFA5_transition;
+            this.decisionNumber = 7;
+            this.eot = DFA7_eot;
+            this.eof = DFA7_eof;
+            this.min = DFA7_min;
+            this.max = DFA7_max;
+            this.accept = DFA7_accept;
+            this.special = DFA7_special;
+            this.transition = DFA7_transition;
 
         }
 

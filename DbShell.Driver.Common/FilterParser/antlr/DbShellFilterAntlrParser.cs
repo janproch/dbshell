@@ -13,28 +13,64 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
     string _errors = null;
     private Stack<object> _stack = new Stack<object>();
 
+    public List<DmlfConditionBase> Conditions
+    {
+        get { return ((DmlfAndCondition) Condition.Conditions.Last()).Conditions; }
+    }
+
     public DbShellFilterAntlrParser(ITokenStream input, RecognizerSharedState state)
         : base(input, state)
     {
+        AddAndCondition();
+    }
+
+    public void AddAndCondition()
+    {
+        var and = new DmlfAndCondition();
+        Condition.Conditions.Add(and);
     }
 
     public void AddEqualCondition(string term)
     {
-        Condition.Conditions.Add(new DmlfEqualCondition
+        Conditions.Add(new DmlfEqualCondition
             {
                 LeftExpr = ColumnValue,
                 RightExpr = new DmlfStringExpression {Value = term},
             });
     }
 
+    public void AddLikeCondition(bool prefix, string term, bool postfix)
+    {
+        Conditions.Add(new DmlfLikeCondition
+        {
+            LeftExpr = ColumnValue,
+            RightExpr = new DmlfStringExpression { Value = (prefix ? "%" : "") + term + (postfix ? "%" : "") },
+        });
+    }
+
+    public void NegateLastCondition()
+    {
+        Conditions[Condition.Conditions.Count - 1] = new DmlfNotCondition {Expr = Conditions[Condition.Conditions.Count - 1]};
+    }
+
     public void AddNumberRelation(string number, string relation)
     {
-        Condition.Conditions.Add(new DmlfRelationCondition
+        Conditions.Add(new DmlfRelationCondition
             {
                 LeftExpr = ColumnValue,
                 RightExpr = new DmlfLiteralExpression {Value = Decimal.Parse(number, CultureInfo.InvariantCulture)},
                 Relation = relation,
             });
+    }
+
+    public void AddStringRelation(string term, string relation)
+    {
+        Conditions.Add(new DmlfRelationCondition
+        {
+            LeftExpr = ColumnValue,
+            RightExpr = new DmlfStringExpression { Value = term },
+            Relation = relation,
+        });
     }
 
     public override void EmitErrorMessage(string msg)
@@ -48,6 +84,17 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
         {
             _errors = msg;
         }
+    }
+
+    public string ExtractString(string term)
+    {
+        if (String.IsNullOrEmpty(term)) return term;
+        char ch = term[0];
+        if (term.Length >= 2 && (ch == '\'' || ch == '"') && term[term.Length - 1] == ch)
+        {
+            return term.Substring(1, term.Length - 2).Replace("" + ch + ch, "" + ch);
+        }
+        return term;
     }
 
     public string Errors { get { return _errors; } }

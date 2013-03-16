@@ -9,6 +9,24 @@ namespace DbShell.Driver.Common.DmlFramework
     {
     }
 
+    public class DmlfNotCondition : DmlfConditionBase
+    {
+        public DmlfConditionBase Expr { get; set; }
+
+        public override void ForEachChild(Action<IDmlfNode> action)
+        {
+            base.ForEachChild(action);
+            action(Expr);
+        }
+
+        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        {
+            dmp.Put("(^not(");
+            Expr.GenSql(dmp, handler);
+            dmp.Put("))");
+        }
+    }
+
     public class DmlfBinaryCondition : DmlfConditionBase
     {
         public DmlfExpression LeftExpr { get; set; }
