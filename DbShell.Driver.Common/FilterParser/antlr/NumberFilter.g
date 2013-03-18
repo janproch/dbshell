@@ -37,7 +37,7 @@ element_no_negative:
   | LT num1=number { AddNumberRelation($num1.text, "<"); } 
   | GT num1=number { AddNumberRelation($num1.text, ">"); } 
   | LE num1=number { AddNumberRelation($num1.text, "<="); } 
-  | GE num1=number { AddNumberRelation($num1.text, "<="); } 
+  | GE num1=number { AddNumberRelation($num1.text, ">="); } 
   | NE num1=number { AddNumberRelation($num1.text, "<>"); } 
   | EQ num1=number { AddNumberRelation($num1.text, "="); } 
   ;

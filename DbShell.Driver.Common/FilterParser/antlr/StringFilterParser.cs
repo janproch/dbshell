@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 StringFilter.g 2013-03-16 13:19:43
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 StringFilter.g 2013-03-18 23:38:57
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 168, 219
@@ -31,7 +31,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
 		"Q_STRING", 
 		"A_STRING", 
 		"I_STRING", 
-		"STAR", 
+		"PLUS", 
 		"MINUS", 
 		"LT", 
 		"GT", 
@@ -45,6 +45,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
 		"NDOLLAR", 
 		"COMMA", 
 		"ENDLINE", 
+		"STAR", 
 		"WHITESPACE", 
 		"DIGIT"
     };
@@ -52,9 +53,9 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
     public const int DOLLAR = 17;
     public const int GE = 12;
     public const int LT = 9;
-    public const int STAR = 7;
+    public const int STAR = 21;
     public const int I_STRING = 6;
-    public const int WHITESPACE = 21;
+    public const int WHITESPACE = 22;
     public const int MINUS = 8;
     public const int EOF = -1;
     public const int Q_STRING = 4;
@@ -63,8 +64,9 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
     public const int A_STRING = 5;
     public const int GT = 10;
     public const int ARROW = 15;
+    public const int PLUS = 7;
     public const int ENDLINE = 20;
-    public const int DIGIT = 22;
+    public const int DIGIT = 23;
     public const int EQ = 14;
     public const int NARROW = 16;
     public const int LE = 11;
@@ -182,7 +184,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
     };
 
     // $ANTLR start "element"
-    // StringFilter.g:16:1: element : (s1= string_lit | STAR s1= string_lit | MINUS s1= string_lit | LT s1= string_lit | GT s1= string_lit | LE s1= string_lit | GE s1= string_lit | NE s1= string_lit | EQ s1= string_lit | ARROW s1= string_lit | NARROW s1= string_lit | DOLLAR s1= string_lit | NDOLLAR s1= string_lit );
+    // StringFilter.g:16:1: element : (s1= string_lit | PLUS s1= string_lit | MINUS s1= string_lit | LT s1= string_lit | GT s1= string_lit | LE s1= string_lit | GE s1= string_lit | NE s1= string_lit | EQ s1= string_lit | ARROW s1= string_lit | NARROW s1= string_lit | DOLLAR s1= string_lit | NDOLLAR s1= string_lit );
     public StringFilterParser.element_return element() // throws RecognitionException [1]
     {   
         StringFilterParser.element_return retval = new StringFilterParser.element_return();
@@ -190,7 +192,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
 
         object root_0 = null;
 
-        IToken STAR2 = null;
+        IToken PLUS2 = null;
         IToken MINUS3 = null;
         IToken LT4 = null;
         IToken GT5 = null;
@@ -205,7 +207,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
         StringFilterParser.string_lit_return s1 = default(StringFilterParser.string_lit_return);
 
 
-        object STAR2_tree=null;
+        object PLUS2_tree=null;
         object MINUS3_tree=null;
         object LT4_tree=null;
         object GT5_tree=null;
@@ -220,7 +222,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
 
         try 
     	{
-            // StringFilter.g:16:8: (s1= string_lit | STAR s1= string_lit | MINUS s1= string_lit | LT s1= string_lit | GT s1= string_lit | LE s1= string_lit | GE s1= string_lit | NE s1= string_lit | EQ s1= string_lit | ARROW s1= string_lit | NARROW s1= string_lit | DOLLAR s1= string_lit | NDOLLAR s1= string_lit )
+            // StringFilter.g:16:8: (s1= string_lit | PLUS s1= string_lit | MINUS s1= string_lit | LT s1= string_lit | GT s1= string_lit | LE s1= string_lit | GE s1= string_lit | NE s1= string_lit | EQ s1= string_lit | ARROW s1= string_lit | NARROW s1= string_lit | DOLLAR s1= string_lit | NDOLLAR s1= string_lit )
             int alt1 = 13;
             switch ( input.LA(1) ) 
             {
@@ -231,7 +233,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                 alt1 = 1;
                 }
                 break;
-            case STAR:
+            case PLUS:
             	{
                 alt1 = 2;
                 }
@@ -315,13 +317,13 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                     }
                     break;
                 case 2 :
-                    // StringFilter.g:18:5: STAR s1= string_lit
+                    // StringFilter.g:18:5: PLUS s1= string_lit
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	STAR2=(IToken)Match(input,STAR,FOLLOW_STAR_in_element69); 
-                    		STAR2_tree = (object)adaptor.Create(STAR2);
-                    		adaptor.AddChild(root_0, STAR2_tree);
+                    	PLUS2=(IToken)Match(input,PLUS,FOLLOW_PLUS_in_element69); 
+                    		PLUS2_tree = (object)adaptor.Create(PLUS2);
+                    		adaptor.AddChild(root_0, PLUS2_tree);
 
                     	PushFollow(FOLLOW_string_lit_in_element73);
                     	s1 = string_lit();
@@ -418,7 +420,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                     	state.followingStackPointer--;
 
                     	adaptor.AddChild(root_0, s1.Tree);
-                    	 AddStringRelation(ExtractString(((s1 != null) ? input.ToString((IToken)(s1.Start),(IToken)(s1.Stop)) : null)), "<="); 
+                    	 AddStringRelation(ExtractString(((s1 != null) ? input.ToString((IToken)(s1.Start),(IToken)(s1.Stop)) : null)), ">="); 
 
                     }
                     break;
@@ -976,7 +978,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
 
     public static readonly BitSet FOLLOW_set_in_string_lit0 = new BitSet(new ulong[]{0x0000000000000002UL});
     public static readonly BitSet FOLLOW_string_lit_in_element60 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_STAR_in_element69 = new BitSet(new ulong[]{0x0000000000000070UL});
+    public static readonly BitSet FOLLOW_PLUS_in_element69 = new BitSet(new ulong[]{0x0000000000000070UL});
     public static readonly BitSet FOLLOW_string_lit_in_element73 = new BitSet(new ulong[]{0x0000000000000002UL});
     public static readonly BitSet FOLLOW_MINUS_in_element82 = new BitSet(new ulong[]{0x0000000000000070UL});
     public static readonly BitSet FOLLOW_string_lit_in_element86 = new BitSet(new ulong[]{0x0000000000000002UL});

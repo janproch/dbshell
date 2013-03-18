@@ -76,6 +76,16 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
         });
     }
 
+    public void AddDateTimeRelation(DateTime value, string relation)
+    {
+        Conditions.Add(new DmlfRelationCondition
+        {
+            LeftExpr = ColumnValue,
+            RightExpr = new DmlfStringExpression { Value = value.ToString("s") },
+            Relation = relation,
+        });
+    }
+
     public override void EmitErrorMessage(string msg)
     {
         base.EmitErrorMessage(msg);
@@ -108,6 +118,19 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
                 LowerBound = new DmlfLiteralExpression {Value = left.ToString("s")},
                 UpperBound = new DmlfLiteralExpression {Value = right.ToString("s")},
             });
+    }
+
+    public void AddDateTimeNotIntervalCondition(DateTime left, DateTime right)
+    {
+        Conditions.Add(new DmlfNotCondition
+        {
+            Expr = new DmlfBetweenCondition
+                {
+                    Expr = ColumnValue,
+                    LowerBound = new DmlfLiteralExpression { Value = left.ToString("s") },
+                    UpperBound = new DmlfLiteralExpression { Value = right.ToString("s") },
+                }
+        });
     }
 
     public TimeSpan ParseTime(string term)

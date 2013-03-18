@@ -15,12 +15,12 @@ string_lit: Q_STRING | A_STRING | I_STRING;
 
 element:
   s1=string_lit  { AddLikeCondition(true, ExtractString($s1.text), true); }
-  | STAR s1=string_lit  { AddLikeCondition(true, ExtractString($s1.text), true); }
+  | PLUS s1=string_lit  { AddLikeCondition(true, ExtractString($s1.text), true); }
   | MINUS s1=string_lit  { AddLikeCondition(true, ExtractString($s1.text), true);NegateLastCondition(); }
   | LT s1=string_lit { AddStringRelation(ExtractString($s1.text), "<"); } 
   | GT s1=string_lit { AddStringRelation(ExtractString($s1.text), ">"); } 
   | LE s1=string_lit { AddStringRelation(ExtractString($s1.text), "<="); } 
-  | GE s1=string_lit { AddStringRelation(ExtractString($s1.text), "<="); } 
+  | GE s1=string_lit { AddStringRelation(ExtractString($s1.text), ">="); } 
   | NE s1=string_lit { AddStringRelation(ExtractString($s1.text), "<>"); } 
   | EQ s1=string_lit { AddStringRelation(ExtractString($s1.text), "="); } 
   | ARROW s1=string_lit { AddLikeCondition(false, ExtractString($s1.text), true); } 
@@ -44,6 +44,7 @@ GE:  '>=';
 LE:  '<=';
 NE:  '!=' | '<>';
 EQ:  '=';
+PLUS: '+';
 STAR:  '*';
 COMMA: ',';
 ARROW:  '^';
@@ -67,7 +68,7 @@ Q_STRING:
 	  '\"' )
 ;
 
-I_STRING: (~('-' | ' ' | '<' | '>' | '=' | '!' | '\r' | '\n' | '^' | '$' | '*' | ',' ))*;
+I_STRING: (~('-' | ' ' | '<' | '>' | '=' | '!' | '\r' | '\n' | '^' | '$' | '*' | ',' | '+' ))*;
 
 
 WHITESPACE : ( '\t' | ' ' | '\u000C' )+    { $channel = HIDDEN; } ;

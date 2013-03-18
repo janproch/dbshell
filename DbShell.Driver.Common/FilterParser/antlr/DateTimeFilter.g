@@ -14,10 +14,10 @@ using System.Globalization;
 specification:
   y=YEAR { var d1=new DateTime(Int32.Parse($y.text), 1, 1); AddDateTimeIntervalCondition(d1, d1.AddYears(1)); }
   | d=DATE { AddDateCondition($d.text); }
-  | HOUR_ANY_MINUTE { AddAnyMinuteCondition($d.text); } 
-  | FLOW_MONTH { AddFlowMonthCondition($d.text); }
-  | FLOW_DAY { AddFlowDayCondition($d.text); }
-  | YEAR_MONTH { AddYearMonthCondition($d.text); }
+  | d=HOUR_ANY_MINUTE { AddAnyMinuteCondition($d.text); } 
+  | d=FLOW_MONTH { AddFlowMonthCondition($d.text); }
+  | d=FLOW_DAY { AddFlowDayCondition($d.text); }
+  | d=YEAR_MONTH { AddYearMonthCondition($d.text); }
   
   | JAN { AddMonthCondition(1); }
   | FEB { AddMonthCondition(2); }
@@ -59,6 +59,18 @@ specification:
   | LAST_YEAR { var d1=new DateTime(Now.Year, 1, 1); AddDateTimeIntervalCondition(d1.AddYears(-1), d1); }
   | THIS_YEAR { var d1=new DateTime(Now.Year, 1, 1); AddDateTimeIntervalCondition(d1, d1.AddYears(1)); }
   | NEXT_YEAR { var d1=new DateTime(Now.Year, 1, 1); AddDateTimeIntervalCondition(d1.AddYears(1), d1.AddYears(2)); }
+  
+  | EQ d=DATE { var dt=ParseDate($d.text);AddDateTimeIntervalCondition(dt, dt + TimeSpan.FromDays(1)); }  
+  | LT d=DATE { var dt=ParseDate($d.text);AddDateTimeRelation(dt, "<"); }  
+  | LE d=DATE { var dt=ParseDate($d.text);AddDateTimeRelation(dt+TimeSpan.FromDays(1), "<"); }  
+  | GT d=DATE { var dt=ParseDate($d.text);AddDateTimeRelation(dt+TimeSpan.FromDays(1), ">="); }  
+  | GE d=DATE { var dt=ParseDate($d.text);AddDateTimeRelation(dt, ">="); }  
+  | NE d=DATE { var dt=ParseDate($d.text);AddDateTimeNotIntervalCondition(dt, dt + TimeSpan.FromDays(1)); }
+    
+  | LT d=DATE t=TIME { var dt=ParseDate($d.text)+ParseTime($t.text);AddDateTimeRelation(dt, "<"); }  
+  | LE d=DATE t=TIME { var dt=ParseDate($d.text)+ParseTime($t.text);AddDateTimeRelation(dt, "<="); }  
+  | GT d=DATE t=TIME { var dt=ParseDate($d.text)+ParseTime($t.text);AddDateTimeRelation(dt, ">"); }  
+  | GE d=DATE t=TIME { var dt=ParseDate($d.text)+ParseTime($t.text);AddDateTimeRelation(dt, ">="); }  
 ;
 
 interval : 
