@@ -19,46 +19,46 @@ specification:
   | d=FLOW_DAY { AddFlowDayCondition($d.text); }
   | d=YEAR_MONTH { AddYearMonthCondition($d.text); }
   
-  | JAN { AddMonthCondition(1); }
-  | FEB { AddMonthCondition(2); }
-  | MAR { AddMonthCondition(3); }
-  | APR { AddMonthCondition(4); }
-  | MAY { AddMonthCondition(5); }
-  | JUN { AddMonthCondition(6); }
-  | JUL { AddMonthCondition(7); }
-  | AUG { AddMonthCondition(8); }
-  | SEP { AddMonthCondition(9); }
-  | OCT { AddMonthCondition(10); }
-  | NOV { AddMonthCondition(11); }
-  | DEC { AddMonthCondition(12); }
+  | T_JAN { AddMonthCondition(1); }
+  | T_FEB { AddMonthCondition(2); }
+  | T_MAR { AddMonthCondition(3); }
+  | T_APR { AddMonthCondition(4); }
+  | T_MAY { AddMonthCondition(5); }
+  | T_JUN { AddMonthCondition(6); }
+  | T_JUL { AddMonthCondition(7); }
+  | T_AUG { AddMonthCondition(8); }
+  | T_SEP { AddMonthCondition(9); }
+  | T_OCT { AddMonthCondition(10); }
+  | T_NOV { AddMonthCondition(11); }
+  | T_DEC { AddMonthCondition(12); }
   
-  | MON { AddDayOfWeekCondition(1); }
-  | TUE { AddDayOfWeekCondition(2); }
-  | WED { AddDayOfWeekCondition(3); }
-  | THU { AddDayOfWeekCondition(4); }
-  | FRI { AddDayOfWeekCondition(5); }
-  | SAT { AddDayOfWeekCondition(6); }
-  | SUN { AddDayOfWeekCondition(7); }
+  | T_MON { AddDayOfWeekCondition(1); }
+  | T_TUE { AddDayOfWeekCondition(2); }
+  | T_WED { AddDayOfWeekCondition(3); }
+  | T_THU { AddDayOfWeekCondition(4); }
+  | T_FRI { AddDayOfWeekCondition(5); }
+  | T_SAT { AddDayOfWeekCondition(6); }
+  | T_SUN { AddDayOfWeekCondition(7); }
   
-  | LAST_HOUR { var h1 = new DateTime(Now.Year, Now.Month, Now.Day, Now.Hour, 0, 0); AddDateTimeIntervalCondition(h1 - TimeSpan.FromHours(1), h1); }
-  | THIS_HOUR { var h1 = new DateTime(Now.Year, Now.Month, Now.Day, Now.Hour, 0, 0); AddDateTimeIntervalCondition(h1, h1 + TimeSpan.FromHours(1)); }
-  | NEXT_HOUR { var h1 = new DateTime(Now.Year, Now.Month, Now.Day, Now.Hour, 0, 0); AddDateTimeIntervalCondition(h1 + TimeSpan.FromHours(1), h1 + TimeSpan.FromHours(2)); }
+  | T_LAST T_HOUR { var h1 = new DateTime(Now.Year, Now.Month, Now.Day, Now.Hour, 0, 0); AddDateTimeIntervalCondition(h1 - TimeSpan.FromHours(1), h1); }
+  | T_THIS T_HOUR { var h1 = new DateTime(Now.Year, Now.Month, Now.Day, Now.Hour, 0, 0); AddDateTimeIntervalCondition(h1, h1 + TimeSpan.FromHours(1)); }
+  | T_NEXT T_HOUR { var h1 = new DateTime(Now.Year, Now.Month, Now.Day, Now.Hour, 0, 0); AddDateTimeIntervalCondition(h1 + TimeSpan.FromHours(1), h1 + TimeSpan.FromHours(2)); }
 
-  | YESTERDAY { AddDateTimeIntervalCondition(Now.Date-TimeSpan.FromDays(1), Now.Date); }
-  | TODAY { AddDateTimeIntervalCondition(Now.Date, Now.Date+TimeSpan.FromDays(1)); }
-  | TOMORROW { AddDateTimeIntervalCondition(Now.Date+TimeSpan.FromDays(1), Now.Date+TimeSpan.FromDays(2)); }
+  | T_YESTERDAY { AddDateTimeIntervalCondition(Now.Date-TimeSpan.FromDays(1), Now.Date); }
+  | T_TODAY { AddDateTimeIntervalCondition(Now.Date, Now.Date+TimeSpan.FromDays(1)); }
+  | T_TOMORROW { AddDateTimeIntervalCondition(Now.Date+TimeSpan.FromDays(1), Now.Date+TimeSpan.FromDays(2)); }
   
-  | LAST_WEEK { var d1=GetFirstDayOfWeek(Now.Date); AddDateTimeIntervalCondition(d1-TimeSpan.FromDays(7), d1); }
-  | THIS_WEEK { var d1=GetFirstDayOfWeek(Now.Date); AddDateTimeIntervalCondition(d1, d1+TimeSpan.FromDays(7)); }
-  | NEXT_WEEK { var d1=GetFirstDayOfWeek(Now.Date); AddDateTimeIntervalCondition(d1+TimeSpan.FromDays(7), d1+TimeSpan.FromDays(14)); }
+  | T_LAST T_WEEK { var d1=GetFirstDayOfWeek(Now.Date); AddDateTimeIntervalCondition(d1-TimeSpan.FromDays(7), d1); }
+  | T_THIS T_WEEK { var d1=GetFirstDayOfWeek(Now.Date); AddDateTimeIntervalCondition(d1, d1+TimeSpan.FromDays(7)); }
+  | T_NEXT T_WEEK { var d1=GetFirstDayOfWeek(Now.Date); AddDateTimeIntervalCondition(d1+TimeSpan.FromDays(7), d1+TimeSpan.FromDays(14)); }
 
-  | LAST_MONTH { var d1=new DateTime(Now.Year, Now.Month, 1); AddDateTimeIntervalCondition(d1.AddMonths(-1), d1); }
-  | THIS_MONTH { var d1=new DateTime(Now.Year, Now.Month, 1); AddDateTimeIntervalCondition(d1, d1.AddMonths(1)); }
-  | NEXT_MONTH { var d1=new DateTime(Now.Year, Now.Month, 1); AddDateTimeIntervalCondition(d1.AddMonths(1), d1.AddMonths(2)); }
+  | T_LAST T_MONTH { var d1=new DateTime(Now.Year, Now.Month, 1); AddDateTimeIntervalCondition(d1.AddMonths(-1), d1); }
+  | T_THIS T_MONTH { var d1=new DateTime(Now.Year, Now.Month, 1); AddDateTimeIntervalCondition(d1, d1.AddMonths(1)); }
+  | T_NEXT T_MONTH { var d1=new DateTime(Now.Year, Now.Month, 1); AddDateTimeIntervalCondition(d1.AddMonths(1), d1.AddMonths(2)); }
   
-  | LAST_YEAR { var d1=new DateTime(Now.Year, 1, 1); AddDateTimeIntervalCondition(d1.AddYears(-1), d1); }
-  | THIS_YEAR { var d1=new DateTime(Now.Year, 1, 1); AddDateTimeIntervalCondition(d1, d1.AddYears(1)); }
-  | NEXT_YEAR { var d1=new DateTime(Now.Year, 1, 1); AddDateTimeIntervalCondition(d1.AddYears(1), d1.AddYears(2)); }
+  | T_LAST T_YEAR { var d1=new DateTime(Now.Year, 1, 1); AddDateTimeIntervalCondition(d1.AddYears(-1), d1); }
+  | T_THIS T_YEAR { var d1=new DateTime(Now.Year, 1, 1); AddDateTimeIntervalCondition(d1, d1.AddYears(1)); }
+  | T_NEXT T_YEAR { var d1=new DateTime(Now.Year, 1, 1); AddDateTimeIntervalCondition(d1.AddYears(1), d1.AddYears(2)); }
   
   | EQ d=DATE { var dt=ParseDate($d.text);AddDateTimeIntervalCondition(dt, dt + TimeSpan.FromDays(1)); }  
   | LT d=DATE { var dt=ParseDate($d.text);AddDateTimeRelation(dt, "<"); }  
@@ -70,7 +70,9 @@ specification:
   | LT d=DATE t=TIME { var dt=ParseDate($d.text)+ParseTime($t.text);AddDateTimeRelation(dt, "<"); }  
   | LE d=DATE t=TIME { var dt=ParseDate($d.text)+ParseTime($t.text);AddDateTimeRelation(dt, "<="); }  
   | GT d=DATE t=TIME { var dt=ParseDate($d.text)+ParseTime($t.text);AddDateTimeRelation(dt, ">"); }  
-  | GE d=DATE t=TIME { var dt=ParseDate($d.text)+ParseTime($t.text);AddDateTimeRelation(dt, ">="); }  
+  | GE d=DATE t=TIME { var dt=ParseDate($d.text)+ParseTime($t.text);AddDateTimeRelation(dt, ">="); }
+  | T_NULL { AddIsNullCondition(); }
+  | T_NOT T_NULL { AddIsNotNullCondition(); }
 ;
 
 interval : 
@@ -100,26 +102,6 @@ NE:  '!=' | '<>';
 EQ:  '=';
 COMMA: ',';
 
-LAST_HOUR: 'l' 'a' 's' 't' '_' 'h' 'o' 'u' 'r';
-THIS_HOUR: 't' 'h' 'i' 's' '_' 'h' 'o' 'u' 'r';
-NEXT_HOUR: 'n' 'e' 'x' 't' '_' 'h' 'o' 'u' 'r';
-
-YESTERDAY: 'y' 'e' 's' 't' 'e' 'r' 'd' 'y';
-TODAY: 't' 'o' 'd' 'a' 'y';
-TOMORROW: 't' 'o' 'm' 'o' 'r' 'r' 'o' 'w';
-
-LAST_WEEK: 'l' 'a' 's' 't' '_' 'w' 'e' 'e' 'k';
-THIS_WEEK: 't' 'h' 'i' 's' '_' 'w' 'e' 'e' 'k';
-NEXT_WEEK: 'n' 'e' 'x' 't' '_' 'w' 'e' 'e' 'k';
-
-LAST_MONTH: 'l' 'a' 's' 't' '_' 'm' 'o' 'n' 't' 'h';
-THIS_MONTH: 't' 'h' 'i' 's' '_' 'm' 'o' 'n' 't' 'h';
-NEXT_MONTH: 'n' 'e' 'x' 't' '_' 'm' 'o' 'n' 't' 'h';
-
-LAST_YEAR: 'l' 'a' 's' 't' '_' 'y' 'e' 'a' 'r';
-THIS_YEAR: 't' 'h' 'i' 's' '_' 'y' 'e' 'a' 'r';
-NEXT_YEAR: 'n' 'e' 'x' 't' '_' 'y' 'e' 'a' 'r';
- 
 YEAR: DIGIT DIGIT DIGIT DIGIT;
 
 DATE: DIGIT DIGIT DIGIT DIGIT '-' DIGIT? DIGIT '-' DIGIT? DIGIT    // ISO format
@@ -134,29 +116,71 @@ FLOW_DAY: DIGIT? DIGIT '.' ;
 YEAR_MONTH: DIGIT DIGIT DIGIT DIGIT '-' DIGIT? DIGIT ; 
 HOUR_ANY_MINUTE: DIGIT? DIGIT ':' '*'; 
 
-JAN: 'j' 'a' 'n';
-FEB: 'f' 'e' 'b';
-MAR: 'm' 'a' 'r';
-APR: 'a' 'p' 'r';
-MAY: 'm' 'a' 'y';
-JUN: 'j' 'u' 'n';
-JUL: 'j' 'u' 'l';
-AUG: 'a' 'u' 'g';
-SEP: 's' 'e' 'p';
-OCT: 'o' 'c' 't';
-NOV: 'n' 'o' 'v';
-DEC: 'd' 'e' 'c';
+T_LAST: L A S T;
+T_THIS: T H I S;
+T_NEXT: N E X T;
 
-MON: 'm' 'o' 'n';
-TUE: 't' 'u' 'e';
-WED: 'w' 'e' 'd';
-THU: 't' 'h' 'u';
-FRI: 'f' 'r' 'i';
-SAT: 's' 'a' 't';
-SUN: 's' 'u' 'n';
+T_HOUR: H O U R;
+T_WEEK: W E E K;
+T_MONTH: M O N T H;
+T_YEAR: Y E A R;
+
+T_YESTERDAY: Y E S T E R D A Y;
+T_TODAY: T O D A Y;
+T_TOMORROW: T O M O R R O W; 
+
+T_JAN: J A N;
+T_FEB: F E B;
+T_MAR: M A R;
+T_APR: A P R;
+T_MAY: M A Y;
+T_JUN: J U N;
+T_JUL: J U L;
+T_AUG: A U G;
+T_SEP: S E P;
+T_OCT: O C T;
+T_NOV: N O V;
+T_DEC: D E C;
+
+T_MON: M O N;
+T_TUE: T U E;
+T_WED: W E D;
+T_THU: T H U;
+T_FRI: F R I;
+T_SAT: S A T;
+T_SUN: S U N;
+
+T_NULL: N U L L;
+T_NOT: N O T;
   
 WHITESPACE : ( '\t' | ' ' | '\u000C' )+    { $channel = HIDDEN; } ;
 ENDLINE: ( '\r' | '\n' )+;
-
  
 fragment DIGIT  : '0'..'9' ;
+
+fragment A: 'A';
+fragment B: 'B';
+fragment C: 'C';
+fragment D: 'D';
+fragment E: 'E';
+fragment F: 'F';
+fragment G: 'G';
+fragment H: 'H';
+fragment I: 'I';
+fragment J: 'J';
+fragment K: 'K';
+fragment L: 'L';
+fragment M: 'M';
+fragment N: 'N';
+fragment O: 'O';
+fragment P: 'P';
+fragment Q: 'Q';
+fragment R: 'R';
+fragment S: 'S';
+fragment T: 'T';
+fragment U: 'U';
+fragment V: 'V';
+fragment W: 'W';
+fragment X: 'X';
+fragment Y: 'Y';
+fragment Z: 'Z';

@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 DateTimeFilter.g 2013-03-18 23:38:59
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 DateTimeFilter.g 2013-03-19 20:36:20
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 168, 219
@@ -14,59 +14,82 @@ using Stack 		= Antlr.Runtime.Collections.StackList;
 
 
 public partial class DateTimeFilterLexer : Lexer {
-    public const int DEC = 21;
-    public const int LT = 45;
-    public const int JAN = 10;
-    public const int MON = 22;
+    public const int LT = 40;
     public const int FLOW_MONTH = 7;
-    public const int THIS_YEAR = 42;
+    public const int T_AUG = 17;
     public const int HOUR_ANY_MINUTE = 6;
     public const int YEAR = 4;
-    public const int AUG = 17;
-    public const int THIS_MONTH = 39;
-    public const int NOV = 20;
-    public const int APR = 13;
-    public const int MAY = 14;
+    public const int T_OCT = 19;
+    public const int T_NEXT = 32;
     public const int EOF = -1;
-    public const int FEB = 11;
+    public const int T_SEP = 18;
+    public const int T_SAT = 27;
     public const int YEAR_MONTH = 9;
-    public const int SUN = 28;
-    public const int LAST_YEAR = 41;
-    public const int TIME = 50;
-    public const int TUE = 23;
-    public const int LAST_MONTH = 38;
-    public const int SEP = 18;
-    public const int COMMA = 52;
-    public const int LAST_WEEK = 35;
-    public const int JUL = 16;
+    public const int TIME = 45;
+    public const int COMMA = 49;
+    public const int T_NULL = 46;
+    public const int T_SUN = 28;
+    public const int T_WED = 24;
+    public const int T_FRI = 26;
     public const int FLOW_DAY = 8;
-    public const int DIGIT = 54;
-    public const int JUN = 15;
-    public const int EQ = 44;
-    public const int THU = 25;
-    public const int NEXT_HOUR = 31;
-    public const int NE = 49;
-    public const int TOMORROW = 34;
-    public const int GE = 48;
-    public const int FRI = 26;
-    public const int TODAY = 33;
-    public const int NEXT_MONTH = 40;
-    public const int LAST_HOUR = 29;
-    public const int WED = 24;
-    public const int THIS_HOUR = 30;
-    public const int NEXT_WEEK = 37;
-    public const int WHITESPACE = 55;
-    public const int SAT = 27;
-    public const int MINUS = 51;
-    public const int THIS_WEEK = 36;
-    public const int OCT = 19;
-    public const int NEXT_YEAR = 43;
-    public const int MAR = 12;
-    public const int GT = 47;
-    public const int ENDLINE = 53;
+    public const int DIGIT = 51;
+    public const int EQ = 39;
+    public const int T_YESTERDAY = 33;
+    public const int NE = 44;
+    public const int T_WEEK = 36;
+    public const int D = 68;
+    public const int E = 59;
+    public const int F = 70;
+    public const int GE = 43;
+    public const int T_APR = 13;
+    public const int G = 73;
+    public const int A = 53;
+    public const int B = 71;
+    public const int T_THIS = 31;
+    public const int C = 74;
+    public const int T_TUE = 23;
+    public const int T_TOMORROW = 35;
+    public const int L = 52;
+    public const int M = 66;
+    public const int N = 58;
+    public const int O = 61;
+    public const int H = 56;
+    public const int I = 57;
+    public const int J = 69;
+    public const int T_LAST = 29;
+    public const int K = 65;
+    public const int U = 62;
+    public const int T = 55;
+    public const int W = 64;
+    public const int WHITESPACE = 76;
+    public const int T_YEAR = 38;
+    public const int V = 75;
+    public const int Q = 77;
+    public const int P = 72;
+    public const int T_MONTH = 37;
+    public const int S = 54;
+    public const int MINUS = 48;
+    public const int R = 63;
+    public const int Y = 67;
+    public const int X = 60;
+    public const int T_DEC = 21;
+    public const int Z = 78;
+    public const int T_THU = 25;
+    public const int T_HOUR = 30;
+    public const int T_JAN = 10;
+    public const int T_JUN = 15;
+    public const int GT = 42;
+    public const int T_MON = 22;
+    public const int ENDLINE = 50;
+    public const int T_TODAY = 34;
+    public const int T_MAY = 14;
     public const int DATE = 5;
-    public const int YESTERDAY = 32;
-    public const int LE = 46;
+    public const int T_NOT = 47;
+    public const int T_NOV = 20;
+    public const int T_FEB = 11;
+    public const int LE = 41;
+    public const int T_MAR = 12;
+    public const int T_JUL = 16;
 
     // delegates
     // delegators
@@ -96,8 +119,8 @@ public partial class DateTimeFilterLexer : Lexer {
     		{
             int _type = MINUS;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:94:6: ( '-' )
-            // DateTimeFilter.g:94:9: '-'
+            // DateTimeFilter.g:96:6: ( '-' )
+            // DateTimeFilter.g:96:9: '-'
             {
             	Match('-'); 
 
@@ -119,8 +142,8 @@ public partial class DateTimeFilterLexer : Lexer {
     		{
             int _type = LT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:95:3: ( '<' )
-            // DateTimeFilter.g:95:6: '<'
+            // DateTimeFilter.g:97:3: ( '<' )
+            // DateTimeFilter.g:97:6: '<'
             {
             	Match('<'); 
 
@@ -142,8 +165,8 @@ public partial class DateTimeFilterLexer : Lexer {
     		{
             int _type = GT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:96:3: ( '>' )
-            // DateTimeFilter.g:96:6: '>'
+            // DateTimeFilter.g:98:3: ( '>' )
+            // DateTimeFilter.g:98:6: '>'
             {
             	Match('>'); 
 
@@ -165,8 +188,8 @@ public partial class DateTimeFilterLexer : Lexer {
     		{
             int _type = GE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:97:3: ( '>=' )
-            // DateTimeFilter.g:97:6: '>='
+            // DateTimeFilter.g:99:3: ( '>=' )
+            // DateTimeFilter.g:99:6: '>='
             {
             	Match(">="); 
 
@@ -189,8 +212,8 @@ public partial class DateTimeFilterLexer : Lexer {
     		{
             int _type = LE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:98:3: ( '<=' )
-            // DateTimeFilter.g:98:6: '<='
+            // DateTimeFilter.g:100:3: ( '<=' )
+            // DateTimeFilter.g:100:6: '<='
             {
             	Match("<="); 
 
@@ -213,7 +236,7 @@ public partial class DateTimeFilterLexer : Lexer {
     		{
             int _type = NE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:99:3: ( '!=' | '<>' )
+            // DateTimeFilter.g:101:3: ( '!=' | '<>' )
             int alt1 = 2;
             int LA1_0 = input.LA(1);
 
@@ -235,7 +258,7 @@ public partial class DateTimeFilterLexer : Lexer {
             switch (alt1) 
             {
                 case 1 :
-                    // DateTimeFilter.g:99:6: '!='
+                    // DateTimeFilter.g:101:6: '!='
                     {
                     	Match("!="); 
 
@@ -243,7 +266,7 @@ public partial class DateTimeFilterLexer : Lexer {
                     }
                     break;
                 case 2 :
-                    // DateTimeFilter.g:99:13: '<>'
+                    // DateTimeFilter.g:101:13: '<>'
                     {
                     	Match("<>"); 
 
@@ -268,8 +291,8 @@ public partial class DateTimeFilterLexer : Lexer {
     		{
             int _type = EQ;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:100:3: ( '=' )
-            // DateTimeFilter.g:100:6: '='
+            // DateTimeFilter.g:102:3: ( '=' )
+            // DateTimeFilter.g:102:6: '='
             {
             	Match('='); 
 
@@ -291,8 +314,8 @@ public partial class DateTimeFilterLexer : Lexer {
     		{
             int _type = COMMA;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:101:6: ( ',' )
-            // DateTimeFilter.g:101:8: ','
+            // DateTimeFilter.g:103:6: ( ',' )
+            // DateTimeFilter.g:103:8: ','
             {
             	Match(','); 
 
@@ -307,468 +330,6 @@ public partial class DateTimeFilterLexer : Lexer {
     }
     // $ANTLR end "COMMA"
 
-    // $ANTLR start "LAST_HOUR"
-    public void mLAST_HOUR() // throws RecognitionException [2]
-    {
-    		try
-    		{
-            int _type = LAST_HOUR;
-    	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:103:10: ( 'l' 'a' 's' 't' '_' 'h' 'o' 'u' 'r' )
-            // DateTimeFilter.g:103:12: 'l' 'a' 's' 't' '_' 'h' 'o' 'u' 'r'
-            {
-            	Match('l'); 
-            	Match('a'); 
-            	Match('s'); 
-            	Match('t'); 
-            	Match('_'); 
-            	Match('h'); 
-            	Match('o'); 
-            	Match('u'); 
-            	Match('r'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally 
-    	{
-        }
-    }
-    // $ANTLR end "LAST_HOUR"
-
-    // $ANTLR start "THIS_HOUR"
-    public void mTHIS_HOUR() // throws RecognitionException [2]
-    {
-    		try
-    		{
-            int _type = THIS_HOUR;
-    	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:104:10: ( 't' 'h' 'i' 's' '_' 'h' 'o' 'u' 'r' )
-            // DateTimeFilter.g:104:12: 't' 'h' 'i' 's' '_' 'h' 'o' 'u' 'r'
-            {
-            	Match('t'); 
-            	Match('h'); 
-            	Match('i'); 
-            	Match('s'); 
-            	Match('_'); 
-            	Match('h'); 
-            	Match('o'); 
-            	Match('u'); 
-            	Match('r'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally 
-    	{
-        }
-    }
-    // $ANTLR end "THIS_HOUR"
-
-    // $ANTLR start "NEXT_HOUR"
-    public void mNEXT_HOUR() // throws RecognitionException [2]
-    {
-    		try
-    		{
-            int _type = NEXT_HOUR;
-    	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:105:10: ( 'n' 'e' 'x' 't' '_' 'h' 'o' 'u' 'r' )
-            // DateTimeFilter.g:105:12: 'n' 'e' 'x' 't' '_' 'h' 'o' 'u' 'r'
-            {
-            	Match('n'); 
-            	Match('e'); 
-            	Match('x'); 
-            	Match('t'); 
-            	Match('_'); 
-            	Match('h'); 
-            	Match('o'); 
-            	Match('u'); 
-            	Match('r'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally 
-    	{
-        }
-    }
-    // $ANTLR end "NEXT_HOUR"
-
-    // $ANTLR start "YESTERDAY"
-    public void mYESTERDAY() // throws RecognitionException [2]
-    {
-    		try
-    		{
-            int _type = YESTERDAY;
-    	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:107:10: ( 'y' 'e' 's' 't' 'e' 'r' 'd' 'y' )
-            // DateTimeFilter.g:107:12: 'y' 'e' 's' 't' 'e' 'r' 'd' 'y'
-            {
-            	Match('y'); 
-            	Match('e'); 
-            	Match('s'); 
-            	Match('t'); 
-            	Match('e'); 
-            	Match('r'); 
-            	Match('d'); 
-            	Match('y'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally 
-    	{
-        }
-    }
-    // $ANTLR end "YESTERDAY"
-
-    // $ANTLR start "TODAY"
-    public void mTODAY() // throws RecognitionException [2]
-    {
-    		try
-    		{
-            int _type = TODAY;
-    	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:108:6: ( 't' 'o' 'd' 'a' 'y' )
-            // DateTimeFilter.g:108:8: 't' 'o' 'd' 'a' 'y'
-            {
-            	Match('t'); 
-            	Match('o'); 
-            	Match('d'); 
-            	Match('a'); 
-            	Match('y'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally 
-    	{
-        }
-    }
-    // $ANTLR end "TODAY"
-
-    // $ANTLR start "TOMORROW"
-    public void mTOMORROW() // throws RecognitionException [2]
-    {
-    		try
-    		{
-            int _type = TOMORROW;
-    	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:109:9: ( 't' 'o' 'm' 'o' 'r' 'r' 'o' 'w' )
-            // DateTimeFilter.g:109:11: 't' 'o' 'm' 'o' 'r' 'r' 'o' 'w'
-            {
-            	Match('t'); 
-            	Match('o'); 
-            	Match('m'); 
-            	Match('o'); 
-            	Match('r'); 
-            	Match('r'); 
-            	Match('o'); 
-            	Match('w'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally 
-    	{
-        }
-    }
-    // $ANTLR end "TOMORROW"
-
-    // $ANTLR start "LAST_WEEK"
-    public void mLAST_WEEK() // throws RecognitionException [2]
-    {
-    		try
-    		{
-            int _type = LAST_WEEK;
-    	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:111:10: ( 'l' 'a' 's' 't' '_' 'w' 'e' 'e' 'k' )
-            // DateTimeFilter.g:111:12: 'l' 'a' 's' 't' '_' 'w' 'e' 'e' 'k'
-            {
-            	Match('l'); 
-            	Match('a'); 
-            	Match('s'); 
-            	Match('t'); 
-            	Match('_'); 
-            	Match('w'); 
-            	Match('e'); 
-            	Match('e'); 
-            	Match('k'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally 
-    	{
-        }
-    }
-    // $ANTLR end "LAST_WEEK"
-
-    // $ANTLR start "THIS_WEEK"
-    public void mTHIS_WEEK() // throws RecognitionException [2]
-    {
-    		try
-    		{
-            int _type = THIS_WEEK;
-    	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:112:10: ( 't' 'h' 'i' 's' '_' 'w' 'e' 'e' 'k' )
-            // DateTimeFilter.g:112:12: 't' 'h' 'i' 's' '_' 'w' 'e' 'e' 'k'
-            {
-            	Match('t'); 
-            	Match('h'); 
-            	Match('i'); 
-            	Match('s'); 
-            	Match('_'); 
-            	Match('w'); 
-            	Match('e'); 
-            	Match('e'); 
-            	Match('k'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally 
-    	{
-        }
-    }
-    // $ANTLR end "THIS_WEEK"
-
-    // $ANTLR start "NEXT_WEEK"
-    public void mNEXT_WEEK() // throws RecognitionException [2]
-    {
-    		try
-    		{
-            int _type = NEXT_WEEK;
-    	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:113:10: ( 'n' 'e' 'x' 't' '_' 'w' 'e' 'e' 'k' )
-            // DateTimeFilter.g:113:12: 'n' 'e' 'x' 't' '_' 'w' 'e' 'e' 'k'
-            {
-            	Match('n'); 
-            	Match('e'); 
-            	Match('x'); 
-            	Match('t'); 
-            	Match('_'); 
-            	Match('w'); 
-            	Match('e'); 
-            	Match('e'); 
-            	Match('k'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally 
-    	{
-        }
-    }
-    // $ANTLR end "NEXT_WEEK"
-
-    // $ANTLR start "LAST_MONTH"
-    public void mLAST_MONTH() // throws RecognitionException [2]
-    {
-    		try
-    		{
-            int _type = LAST_MONTH;
-    	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:115:11: ( 'l' 'a' 's' 't' '_' 'm' 'o' 'n' 't' 'h' )
-            // DateTimeFilter.g:115:13: 'l' 'a' 's' 't' '_' 'm' 'o' 'n' 't' 'h'
-            {
-            	Match('l'); 
-            	Match('a'); 
-            	Match('s'); 
-            	Match('t'); 
-            	Match('_'); 
-            	Match('m'); 
-            	Match('o'); 
-            	Match('n'); 
-            	Match('t'); 
-            	Match('h'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally 
-    	{
-        }
-    }
-    // $ANTLR end "LAST_MONTH"
-
-    // $ANTLR start "THIS_MONTH"
-    public void mTHIS_MONTH() // throws RecognitionException [2]
-    {
-    		try
-    		{
-            int _type = THIS_MONTH;
-    	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:116:11: ( 't' 'h' 'i' 's' '_' 'm' 'o' 'n' 't' 'h' )
-            // DateTimeFilter.g:116:13: 't' 'h' 'i' 's' '_' 'm' 'o' 'n' 't' 'h'
-            {
-            	Match('t'); 
-            	Match('h'); 
-            	Match('i'); 
-            	Match('s'); 
-            	Match('_'); 
-            	Match('m'); 
-            	Match('o'); 
-            	Match('n'); 
-            	Match('t'); 
-            	Match('h'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally 
-    	{
-        }
-    }
-    // $ANTLR end "THIS_MONTH"
-
-    // $ANTLR start "NEXT_MONTH"
-    public void mNEXT_MONTH() // throws RecognitionException [2]
-    {
-    		try
-    		{
-            int _type = NEXT_MONTH;
-    	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:117:11: ( 'n' 'e' 'x' 't' '_' 'm' 'o' 'n' 't' 'h' )
-            // DateTimeFilter.g:117:13: 'n' 'e' 'x' 't' '_' 'm' 'o' 'n' 't' 'h'
-            {
-            	Match('n'); 
-            	Match('e'); 
-            	Match('x'); 
-            	Match('t'); 
-            	Match('_'); 
-            	Match('m'); 
-            	Match('o'); 
-            	Match('n'); 
-            	Match('t'); 
-            	Match('h'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally 
-    	{
-        }
-    }
-    // $ANTLR end "NEXT_MONTH"
-
-    // $ANTLR start "LAST_YEAR"
-    public void mLAST_YEAR() // throws RecognitionException [2]
-    {
-    		try
-    		{
-            int _type = LAST_YEAR;
-    	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:119:10: ( 'l' 'a' 's' 't' '_' 'y' 'e' 'a' 'r' )
-            // DateTimeFilter.g:119:12: 'l' 'a' 's' 't' '_' 'y' 'e' 'a' 'r'
-            {
-            	Match('l'); 
-            	Match('a'); 
-            	Match('s'); 
-            	Match('t'); 
-            	Match('_'); 
-            	Match('y'); 
-            	Match('e'); 
-            	Match('a'); 
-            	Match('r'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally 
-    	{
-        }
-    }
-    // $ANTLR end "LAST_YEAR"
-
-    // $ANTLR start "THIS_YEAR"
-    public void mTHIS_YEAR() // throws RecognitionException [2]
-    {
-    		try
-    		{
-            int _type = THIS_YEAR;
-    	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:120:10: ( 't' 'h' 'i' 's' '_' 'y' 'e' 'a' 'r' )
-            // DateTimeFilter.g:120:12: 't' 'h' 'i' 's' '_' 'y' 'e' 'a' 'r'
-            {
-            	Match('t'); 
-            	Match('h'); 
-            	Match('i'); 
-            	Match('s'); 
-            	Match('_'); 
-            	Match('y'); 
-            	Match('e'); 
-            	Match('a'); 
-            	Match('r'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally 
-    	{
-        }
-    }
-    // $ANTLR end "THIS_YEAR"
-
-    // $ANTLR start "NEXT_YEAR"
-    public void mNEXT_YEAR() // throws RecognitionException [2]
-    {
-    		try
-    		{
-            int _type = NEXT_YEAR;
-    	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:121:10: ( 'n' 'e' 'x' 't' '_' 'y' 'e' 'a' 'r' )
-            // DateTimeFilter.g:121:12: 'n' 'e' 'x' 't' '_' 'y' 'e' 'a' 'r'
-            {
-            	Match('n'); 
-            	Match('e'); 
-            	Match('x'); 
-            	Match('t'); 
-            	Match('_'); 
-            	Match('y'); 
-            	Match('e'); 
-            	Match('a'); 
-            	Match('r'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally 
-    	{
-        }
-    }
-    // $ANTLR end "NEXT_YEAR"
-
     // $ANTLR start "YEAR"
     public void mYEAR() // throws RecognitionException [2]
     {
@@ -776,8 +337,8 @@ public partial class DateTimeFilterLexer : Lexer {
     		{
             int _type = YEAR;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:123:5: ( DIGIT DIGIT DIGIT DIGIT )
-            // DateTimeFilter.g:123:7: DIGIT DIGIT DIGIT DIGIT
+            // DateTimeFilter.g:105:5: ( DIGIT DIGIT DIGIT DIGIT )
+            // DateTimeFilter.g:105:7: DIGIT DIGIT DIGIT DIGIT
             {
             	mDIGIT(); 
             	mDIGIT(); 
@@ -802,7 +363,7 @@ public partial class DateTimeFilterLexer : Lexer {
     		{
             int _type = DATE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:125:5: ( DIGIT DIGIT DIGIT DIGIT '-' ( DIGIT )? DIGIT '-' ( DIGIT )? DIGIT | ( DIGIT )? DIGIT '.' ( DIGIT )? DIGIT '.' ( DIGIT DIGIT DIGIT DIGIT )? | ( DIGIT )? DIGIT '/' ( DIGIT )? DIGIT ( '/' DIGIT DIGIT DIGIT DIGIT )? )
+            // DateTimeFilter.g:107:5: ( DIGIT DIGIT DIGIT DIGIT '-' ( DIGIT )? DIGIT '-' ( DIGIT )? DIGIT | ( DIGIT )? DIGIT '.' ( DIGIT )? DIGIT '.' ( DIGIT DIGIT DIGIT DIGIT )? | ( DIGIT )? DIGIT '/' ( DIGIT )? DIGIT ( '/' DIGIT DIGIT DIGIT DIGIT )? )
             int alt10 = 3;
             int LA10_0 = input.LA(1);
 
@@ -810,6 +371,11 @@ public partial class DateTimeFilterLexer : Lexer {
             {
                 switch ( input.LA(2) ) 
                 {
+                case '/':
+                	{
+                    alt10 = 3;
+                    }
+                    break;
                 case '0':
                 case '1':
                 case '2':
@@ -837,21 +403,21 @@ public partial class DateTimeFilterLexer : Lexer {
                         alt10 = 1;
                         }
                         break;
-                    case '.':
-                    	{
-                        alt10 = 2;
-                        }
-                        break;
                     case '/':
                     	{
                         alt10 = 3;
                         }
                         break;
+                    case '.':
+                    	{
+                        alt10 = 2;
+                        }
+                        break;
                     	default:
-                    	    NoViableAltException nvae_d10s2 =
-                    	        new NoViableAltException("", 10, 2, input);
+                    	    NoViableAltException nvae_d10s3 =
+                    	        new NoViableAltException("", 10, 3, input);
 
-                    	    throw nvae_d10s2;
+                    	    throw nvae_d10s3;
                     }
 
                     }
@@ -859,11 +425,6 @@ public partial class DateTimeFilterLexer : Lexer {
                 case '.':
                 	{
                     alt10 = 2;
-                    }
-                    break;
-                case '/':
-                	{
-                    alt10 = 3;
                     }
                     break;
                 	default:
@@ -884,14 +445,14 @@ public partial class DateTimeFilterLexer : Lexer {
             switch (alt10) 
             {
                 case 1 :
-                    // DateTimeFilter.g:125:7: DIGIT DIGIT DIGIT DIGIT '-' ( DIGIT )? DIGIT '-' ( DIGIT )? DIGIT
+                    // DateTimeFilter.g:107:7: DIGIT DIGIT DIGIT DIGIT '-' ( DIGIT )? DIGIT '-' ( DIGIT )? DIGIT
                     {
                     	mDIGIT(); 
                     	mDIGIT(); 
                     	mDIGIT(); 
                     	mDIGIT(); 
                     	Match('-'); 
-                    	// DateTimeFilter.g:125:35: ( DIGIT )?
+                    	// DateTimeFilter.g:107:35: ( DIGIT )?
                     	int alt2 = 2;
                     	int LA2_0 = input.LA(1);
 
@@ -907,7 +468,7 @@ public partial class DateTimeFilterLexer : Lexer {
                     	switch (alt2) 
                     	{
                     	    case 1 :
-                    	        // DateTimeFilter.g:125:35: DIGIT
+                    	        // DateTimeFilter.g:107:35: DIGIT
                     	        {
                     	        	mDIGIT(); 
 
@@ -918,7 +479,7 @@ public partial class DateTimeFilterLexer : Lexer {
 
                     	mDIGIT(); 
                     	Match('-'); 
-                    	// DateTimeFilter.g:125:52: ( DIGIT )?
+                    	// DateTimeFilter.g:107:52: ( DIGIT )?
                     	int alt3 = 2;
                     	int LA3_0 = input.LA(1);
 
@@ -934,7 +495,7 @@ public partial class DateTimeFilterLexer : Lexer {
                     	switch (alt3) 
                     	{
                     	    case 1 :
-                    	        // DateTimeFilter.g:125:52: DIGIT
+                    	        // DateTimeFilter.g:107:52: DIGIT
                     	        {
                     	        	mDIGIT(); 
 
@@ -948,9 +509,9 @@ public partial class DateTimeFilterLexer : Lexer {
                     }
                     break;
                 case 2 :
-                    // DateTimeFilter.g:126:5: ( DIGIT )? DIGIT '.' ( DIGIT )? DIGIT '.' ( DIGIT DIGIT DIGIT DIGIT )?
+                    // DateTimeFilter.g:108:5: ( DIGIT )? DIGIT '.' ( DIGIT )? DIGIT '.' ( DIGIT DIGIT DIGIT DIGIT )?
                     {
-                    	// DateTimeFilter.g:126:5: ( DIGIT )?
+                    	// DateTimeFilter.g:108:5: ( DIGIT )?
                     	int alt4 = 2;
                     	int LA4_0 = input.LA(1);
 
@@ -966,7 +527,7 @@ public partial class DateTimeFilterLexer : Lexer {
                     	switch (alt4) 
                     	{
                     	    case 1 :
-                    	        // DateTimeFilter.g:126:5: DIGIT
+                    	        // DateTimeFilter.g:108:5: DIGIT
                     	        {
                     	        	mDIGIT(); 
 
@@ -977,7 +538,7 @@ public partial class DateTimeFilterLexer : Lexer {
 
                     	mDIGIT(); 
                     	Match('.'); 
-                    	// DateTimeFilter.g:126:23: ( DIGIT )?
+                    	// DateTimeFilter.g:108:23: ( DIGIT )?
                     	int alt5 = 2;
                     	int LA5_0 = input.LA(1);
 
@@ -993,7 +554,7 @@ public partial class DateTimeFilterLexer : Lexer {
                     	switch (alt5) 
                     	{
                     	    case 1 :
-                    	        // DateTimeFilter.g:126:23: DIGIT
+                    	        // DateTimeFilter.g:108:23: DIGIT
                     	        {
                     	        	mDIGIT(); 
 
@@ -1004,7 +565,7 @@ public partial class DateTimeFilterLexer : Lexer {
 
                     	mDIGIT(); 
                     	Match('.'); 
-                    	// DateTimeFilter.g:126:40: ( DIGIT DIGIT DIGIT DIGIT )?
+                    	// DateTimeFilter.g:108:40: ( DIGIT DIGIT DIGIT DIGIT )?
                     	int alt6 = 2;
                     	int LA6_0 = input.LA(1);
 
@@ -1015,7 +576,7 @@ public partial class DateTimeFilterLexer : Lexer {
                     	switch (alt6) 
                     	{
                     	    case 1 :
-                    	        // DateTimeFilter.g:126:41: DIGIT DIGIT DIGIT DIGIT
+                    	        // DateTimeFilter.g:108:41: DIGIT DIGIT DIGIT DIGIT
                     	        {
                     	        	mDIGIT(); 
                     	        	mDIGIT(); 
@@ -1031,9 +592,9 @@ public partial class DateTimeFilterLexer : Lexer {
                     }
                     break;
                 case 3 :
-                    // DateTimeFilter.g:127:5: ( DIGIT )? DIGIT '/' ( DIGIT )? DIGIT ( '/' DIGIT DIGIT DIGIT DIGIT )?
+                    // DateTimeFilter.g:109:5: ( DIGIT )? DIGIT '/' ( DIGIT )? DIGIT ( '/' DIGIT DIGIT DIGIT DIGIT )?
                     {
-                    	// DateTimeFilter.g:127:5: ( DIGIT )?
+                    	// DateTimeFilter.g:109:5: ( DIGIT )?
                     	int alt7 = 2;
                     	int LA7_0 = input.LA(1);
 
@@ -1049,7 +610,7 @@ public partial class DateTimeFilterLexer : Lexer {
                     	switch (alt7) 
                     	{
                     	    case 1 :
-                    	        // DateTimeFilter.g:127:5: DIGIT
+                    	        // DateTimeFilter.g:109:5: DIGIT
                     	        {
                     	        	mDIGIT(); 
 
@@ -1060,7 +621,7 @@ public partial class DateTimeFilterLexer : Lexer {
 
                     	mDIGIT(); 
                     	Match('/'); 
-                    	// DateTimeFilter.g:127:23: ( DIGIT )?
+                    	// DateTimeFilter.g:109:23: ( DIGIT )?
                     	int alt8 = 2;
                     	int LA8_0 = input.LA(1);
 
@@ -1076,7 +637,7 @@ public partial class DateTimeFilterLexer : Lexer {
                     	switch (alt8) 
                     	{
                     	    case 1 :
-                    	        // DateTimeFilter.g:127:23: DIGIT
+                    	        // DateTimeFilter.g:109:23: DIGIT
                     	        {
                     	        	mDIGIT(); 
 
@@ -1086,7 +647,7 @@ public partial class DateTimeFilterLexer : Lexer {
                     	}
 
                     	mDIGIT(); 
-                    	// DateTimeFilter.g:127:36: ( '/' DIGIT DIGIT DIGIT DIGIT )?
+                    	// DateTimeFilter.g:109:36: ( '/' DIGIT DIGIT DIGIT DIGIT )?
                     	int alt9 = 2;
                     	int LA9_0 = input.LA(1);
 
@@ -1097,7 +658,7 @@ public partial class DateTimeFilterLexer : Lexer {
                     	switch (alt9) 
                     	{
                     	    case 1 :
-                    	        // DateTimeFilter.g:127:37: '/' DIGIT DIGIT DIGIT DIGIT
+                    	        // DateTimeFilter.g:109:37: '/' DIGIT DIGIT DIGIT DIGIT
                     	        {
                     	        	Match('/'); 
                     	        	mDIGIT(); 
@@ -1131,10 +692,10 @@ public partial class DateTimeFilterLexer : Lexer {
     		{
             int _type = TIME;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:130:5: ( ( DIGIT )? DIGIT ':' ( DIGIT )? DIGIT ( ':' ( DIGIT )? DIGIT ( '.' DIGIT ( ( DIGIT )? DIGIT )? )? )? )
-            // DateTimeFilter.g:130:7: ( DIGIT )? DIGIT ':' ( DIGIT )? DIGIT ( ':' ( DIGIT )? DIGIT ( '.' DIGIT ( ( DIGIT )? DIGIT )? )? )?
+            // DateTimeFilter.g:112:5: ( ( DIGIT )? DIGIT ':' ( DIGIT )? DIGIT ( ':' ( DIGIT )? DIGIT ( '.' DIGIT ( ( DIGIT )? DIGIT )? )? )? )
+            // DateTimeFilter.g:112:7: ( DIGIT )? DIGIT ':' ( DIGIT )? DIGIT ( ':' ( DIGIT )? DIGIT ( '.' DIGIT ( ( DIGIT )? DIGIT )? )? )?
             {
-            	// DateTimeFilter.g:130:7: ( DIGIT )?
+            	// DateTimeFilter.g:112:7: ( DIGIT )?
             	int alt11 = 2;
             	int LA11_0 = input.LA(1);
 
@@ -1150,7 +711,7 @@ public partial class DateTimeFilterLexer : Lexer {
             	switch (alt11) 
             	{
             	    case 1 :
-            	        // DateTimeFilter.g:130:7: DIGIT
+            	        // DateTimeFilter.g:112:7: DIGIT
             	        {
             	        	mDIGIT(); 
 
@@ -1161,7 +722,7 @@ public partial class DateTimeFilterLexer : Lexer {
 
             	mDIGIT(); 
             	Match(':'); 
-            	// DateTimeFilter.g:130:24: ( DIGIT )?
+            	// DateTimeFilter.g:112:24: ( DIGIT )?
             	int alt12 = 2;
             	int LA12_0 = input.LA(1);
 
@@ -1177,7 +738,7 @@ public partial class DateTimeFilterLexer : Lexer {
             	switch (alt12) 
             	{
             	    case 1 :
-            	        // DateTimeFilter.g:130:24: DIGIT
+            	        // DateTimeFilter.g:112:24: DIGIT
             	        {
             	        	mDIGIT(); 
 
@@ -1187,7 +748,7 @@ public partial class DateTimeFilterLexer : Lexer {
             	}
 
             	mDIGIT(); 
-            	// DateTimeFilter.g:130:37: ( ':' ( DIGIT )? DIGIT ( '.' DIGIT ( ( DIGIT )? DIGIT )? )? )?
+            	// DateTimeFilter.g:112:37: ( ':' ( DIGIT )? DIGIT ( '.' DIGIT ( ( DIGIT )? DIGIT )? )? )?
             	int alt17 = 2;
             	int LA17_0 = input.LA(1);
 
@@ -1198,10 +759,10 @@ public partial class DateTimeFilterLexer : Lexer {
             	switch (alt17) 
             	{
             	    case 1 :
-            	        // DateTimeFilter.g:130:39: ':' ( DIGIT )? DIGIT ( '.' DIGIT ( ( DIGIT )? DIGIT )? )?
+            	        // DateTimeFilter.g:112:39: ':' ( DIGIT )? DIGIT ( '.' DIGIT ( ( DIGIT )? DIGIT )? )?
             	        {
             	        	Match(':'); 
-            	        	// DateTimeFilter.g:130:43: ( DIGIT )?
+            	        	// DateTimeFilter.g:112:43: ( DIGIT )?
             	        	int alt13 = 2;
             	        	int LA13_0 = input.LA(1);
 
@@ -1217,7 +778,7 @@ public partial class DateTimeFilterLexer : Lexer {
             	        	switch (alt13) 
             	        	{
             	        	    case 1 :
-            	        	        // DateTimeFilter.g:130:43: DIGIT
+            	        	        // DateTimeFilter.g:112:43: DIGIT
             	        	        {
             	        	        	mDIGIT(); 
 
@@ -1227,7 +788,7 @@ public partial class DateTimeFilterLexer : Lexer {
             	        	}
 
             	        	mDIGIT(); 
-            	        	// DateTimeFilter.g:130:56: ( '.' DIGIT ( ( DIGIT )? DIGIT )? )?
+            	        	// DateTimeFilter.g:112:56: ( '.' DIGIT ( ( DIGIT )? DIGIT )? )?
             	        	int alt16 = 2;
             	        	int LA16_0 = input.LA(1);
 
@@ -1238,11 +799,11 @@ public partial class DateTimeFilterLexer : Lexer {
             	        	switch (alt16) 
             	        	{
             	        	    case 1 :
-            	        	        // DateTimeFilter.g:130:58: '.' DIGIT ( ( DIGIT )? DIGIT )?
+            	        	        // DateTimeFilter.g:112:58: '.' DIGIT ( ( DIGIT )? DIGIT )?
             	        	        {
             	        	        	Match('.'); 
             	        	        	mDIGIT(); 
-            	        	        	// DateTimeFilter.g:130:68: ( ( DIGIT )? DIGIT )?
+            	        	        	// DateTimeFilter.g:112:68: ( ( DIGIT )? DIGIT )?
             	        	        	int alt15 = 2;
             	        	        	int LA15_0 = input.LA(1);
 
@@ -1253,9 +814,9 @@ public partial class DateTimeFilterLexer : Lexer {
             	        	        	switch (alt15) 
             	        	        	{
             	        	        	    case 1 :
-            	        	        	        // DateTimeFilter.g:130:69: ( DIGIT )? DIGIT
+            	        	        	        // DateTimeFilter.g:112:69: ( DIGIT )? DIGIT
             	        	        	        {
-            	        	        	        	// DateTimeFilter.g:130:69: ( DIGIT )?
+            	        	        	        	// DateTimeFilter.g:112:69: ( DIGIT )?
             	        	        	        	int alt14 = 2;
             	        	        	        	int LA14_0 = input.LA(1);
 
@@ -1271,7 +832,7 @@ public partial class DateTimeFilterLexer : Lexer {
             	        	        	        	switch (alt14) 
             	        	        	        	{
             	        	        	        	    case 1 :
-            	        	        	        	        // DateTimeFilter.g:130:69: DIGIT
+            	        	        	        	        // DateTimeFilter.g:112:69: DIGIT
             	        	        	        	        {
             	        	        	        	        	mDIGIT(); 
 
@@ -1318,10 +879,10 @@ public partial class DateTimeFilterLexer : Lexer {
     		{
             int _type = FLOW_MONTH;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:132:11: ( ( DIGIT )? DIGIT '/' )
-            // DateTimeFilter.g:132:13: ( DIGIT )? DIGIT '/'
+            // DateTimeFilter.g:114:11: ( ( DIGIT )? DIGIT '/' )
+            // DateTimeFilter.g:114:13: ( DIGIT )? DIGIT '/'
             {
-            	// DateTimeFilter.g:132:13: ( DIGIT )?
+            	// DateTimeFilter.g:114:13: ( DIGIT )?
             	int alt18 = 2;
             	int LA18_0 = input.LA(1);
 
@@ -1337,7 +898,7 @@ public partial class DateTimeFilterLexer : Lexer {
             	switch (alt18) 
             	{
             	    case 1 :
-            	        // DateTimeFilter.g:132:13: DIGIT
+            	        // DateTimeFilter.g:114:13: DIGIT
             	        {
             	        	mDIGIT(); 
 
@@ -1367,10 +928,10 @@ public partial class DateTimeFilterLexer : Lexer {
     		{
             int _type = FLOW_DAY;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:133:9: ( ( DIGIT )? DIGIT '.' )
-            // DateTimeFilter.g:133:11: ( DIGIT )? DIGIT '.'
+            // DateTimeFilter.g:115:9: ( ( DIGIT )? DIGIT '.' )
+            // DateTimeFilter.g:115:11: ( DIGIT )? DIGIT '.'
             {
-            	// DateTimeFilter.g:133:11: ( DIGIT )?
+            	// DateTimeFilter.g:115:11: ( DIGIT )?
             	int alt19 = 2;
             	int LA19_0 = input.LA(1);
 
@@ -1386,7 +947,7 @@ public partial class DateTimeFilterLexer : Lexer {
             	switch (alt19) 
             	{
             	    case 1 :
-            	        // DateTimeFilter.g:133:11: DIGIT
+            	        // DateTimeFilter.g:115:11: DIGIT
             	        {
             	        	mDIGIT(); 
 
@@ -1416,15 +977,15 @@ public partial class DateTimeFilterLexer : Lexer {
     		{
             int _type = YEAR_MONTH;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:134:11: ( DIGIT DIGIT DIGIT DIGIT '-' ( DIGIT )? DIGIT )
-            // DateTimeFilter.g:134:13: DIGIT DIGIT DIGIT DIGIT '-' ( DIGIT )? DIGIT
+            // DateTimeFilter.g:116:11: ( DIGIT DIGIT DIGIT DIGIT '-' ( DIGIT )? DIGIT )
+            // DateTimeFilter.g:116:13: DIGIT DIGIT DIGIT DIGIT '-' ( DIGIT )? DIGIT
             {
             	mDIGIT(); 
             	mDIGIT(); 
             	mDIGIT(); 
             	mDIGIT(); 
             	Match('-'); 
-            	// DateTimeFilter.g:134:41: ( DIGIT )?
+            	// DateTimeFilter.g:116:41: ( DIGIT )?
             	int alt20 = 2;
             	int LA20_0 = input.LA(1);
 
@@ -1440,7 +1001,7 @@ public partial class DateTimeFilterLexer : Lexer {
             	switch (alt20) 
             	{
             	    case 1 :
-            	        // DateTimeFilter.g:134:41: DIGIT
+            	        // DateTimeFilter.g:116:41: DIGIT
             	        {
             	        	mDIGIT(); 
 
@@ -1469,10 +1030,10 @@ public partial class DateTimeFilterLexer : Lexer {
     		{
             int _type = HOUR_ANY_MINUTE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:135:16: ( ( DIGIT )? DIGIT ':' '*' )
-            // DateTimeFilter.g:135:18: ( DIGIT )? DIGIT ':' '*'
+            // DateTimeFilter.g:117:16: ( ( DIGIT )? DIGIT ':' '*' )
+            // DateTimeFilter.g:117:18: ( DIGIT )? DIGIT ':' '*'
             {
-            	// DateTimeFilter.g:135:18: ( DIGIT )?
+            	// DateTimeFilter.g:117:18: ( DIGIT )?
             	int alt21 = 2;
             	int LA21_0 = input.LA(1);
 
@@ -1488,7 +1049,7 @@ public partial class DateTimeFilterLexer : Lexer {
             	switch (alt21) 
             	{
             	    case 1 :
-            	        // DateTimeFilter.g:135:18: DIGIT
+            	        // DateTimeFilter.g:117:18: DIGIT
             	        {
             	        	mDIGIT(); 
 
@@ -1512,19 +1073,20 @@ public partial class DateTimeFilterLexer : Lexer {
     }
     // $ANTLR end "HOUR_ANY_MINUTE"
 
-    // $ANTLR start "JAN"
-    public void mJAN() // throws RecognitionException [2]
+    // $ANTLR start "T_LAST"
+    public void mT_LAST() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = JAN;
+            int _type = T_LAST;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:137:4: ( 'j' 'a' 'n' )
-            // DateTimeFilter.g:137:6: 'j' 'a' 'n'
+            // DateTimeFilter.g:119:7: ( L A S T )
+            // DateTimeFilter.g:119:9: L A S T
             {
-            	Match('j'); 
-            	Match('a'); 
-            	Match('n'); 
+            	mL(); 
+            	mA(); 
+            	mS(); 
+            	mT(); 
 
             }
 
@@ -1535,21 +1097,22 @@ public partial class DateTimeFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "JAN"
+    // $ANTLR end "T_LAST"
 
-    // $ANTLR start "FEB"
-    public void mFEB() // throws RecognitionException [2]
+    // $ANTLR start "T_THIS"
+    public void mT_THIS() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = FEB;
+            int _type = T_THIS;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:138:4: ( 'f' 'e' 'b' )
-            // DateTimeFilter.g:138:6: 'f' 'e' 'b'
+            // DateTimeFilter.g:120:7: ( T H I S )
+            // DateTimeFilter.g:120:9: T H I S
             {
-            	Match('f'); 
-            	Match('e'); 
-            	Match('b'); 
+            	mT(); 
+            	mH(); 
+            	mI(); 
+            	mS(); 
 
             }
 
@@ -1560,21 +1123,22 @@ public partial class DateTimeFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "FEB"
+    // $ANTLR end "T_THIS"
 
-    // $ANTLR start "MAR"
-    public void mMAR() // throws RecognitionException [2]
+    // $ANTLR start "T_NEXT"
+    public void mT_NEXT() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = MAR;
+            int _type = T_NEXT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:139:4: ( 'm' 'a' 'r' )
-            // DateTimeFilter.g:139:6: 'm' 'a' 'r'
+            // DateTimeFilter.g:121:7: ( N E X T )
+            // DateTimeFilter.g:121:9: N E X T
             {
-            	Match('m'); 
-            	Match('a'); 
-            	Match('r'); 
+            	mN(); 
+            	mE(); 
+            	mX(); 
+            	mT(); 
 
             }
 
@@ -1585,21 +1149,22 @@ public partial class DateTimeFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "MAR"
+    // $ANTLR end "T_NEXT"
 
-    // $ANTLR start "APR"
-    public void mAPR() // throws RecognitionException [2]
+    // $ANTLR start "T_HOUR"
+    public void mT_HOUR() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = APR;
+            int _type = T_HOUR;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:140:4: ( 'a' 'p' 'r' )
-            // DateTimeFilter.g:140:6: 'a' 'p' 'r'
+            // DateTimeFilter.g:123:7: ( H O U R )
+            // DateTimeFilter.g:123:9: H O U R
             {
-            	Match('a'); 
-            	Match('p'); 
-            	Match('r'); 
+            	mH(); 
+            	mO(); 
+            	mU(); 
+            	mR(); 
 
             }
 
@@ -1610,21 +1175,22 @@ public partial class DateTimeFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "APR"
+    // $ANTLR end "T_HOUR"
 
-    // $ANTLR start "MAY"
-    public void mMAY() // throws RecognitionException [2]
+    // $ANTLR start "T_WEEK"
+    public void mT_WEEK() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = MAY;
+            int _type = T_WEEK;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:141:4: ( 'm' 'a' 'y' )
-            // DateTimeFilter.g:141:6: 'm' 'a' 'y'
+            // DateTimeFilter.g:124:7: ( W E E K )
+            // DateTimeFilter.g:124:9: W E E K
             {
-            	Match('m'); 
-            	Match('a'); 
-            	Match('y'); 
+            	mW(); 
+            	mE(); 
+            	mE(); 
+            	mK(); 
 
             }
 
@@ -1635,21 +1201,23 @@ public partial class DateTimeFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "MAY"
+    // $ANTLR end "T_WEEK"
 
-    // $ANTLR start "JUN"
-    public void mJUN() // throws RecognitionException [2]
+    // $ANTLR start "T_MONTH"
+    public void mT_MONTH() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = JUN;
+            int _type = T_MONTH;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:142:4: ( 'j' 'u' 'n' )
-            // DateTimeFilter.g:142:6: 'j' 'u' 'n'
+            // DateTimeFilter.g:125:8: ( M O N T H )
+            // DateTimeFilter.g:125:10: M O N T H
             {
-            	Match('j'); 
-            	Match('u'); 
-            	Match('n'); 
+            	mM(); 
+            	mO(); 
+            	mN(); 
+            	mT(); 
+            	mH(); 
 
             }
 
@@ -1660,21 +1228,22 @@ public partial class DateTimeFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "JUN"
+    // $ANTLR end "T_MONTH"
 
-    // $ANTLR start "JUL"
-    public void mJUL() // throws RecognitionException [2]
+    // $ANTLR start "T_YEAR"
+    public void mT_YEAR() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = JUL;
+            int _type = T_YEAR;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:143:4: ( 'j' 'u' 'l' )
-            // DateTimeFilter.g:143:6: 'j' 'u' 'l'
+            // DateTimeFilter.g:126:7: ( Y E A R )
+            // DateTimeFilter.g:126:9: Y E A R
             {
-            	Match('j'); 
-            	Match('u'); 
-            	Match('l'); 
+            	mY(); 
+            	mE(); 
+            	mA(); 
+            	mR(); 
 
             }
 
@@ -1685,21 +1254,27 @@ public partial class DateTimeFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "JUL"
+    // $ANTLR end "T_YEAR"
 
-    // $ANTLR start "AUG"
-    public void mAUG() // throws RecognitionException [2]
+    // $ANTLR start "T_YESTERDAY"
+    public void mT_YESTERDAY() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = AUG;
+            int _type = T_YESTERDAY;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:144:4: ( 'a' 'u' 'g' )
-            // DateTimeFilter.g:144:6: 'a' 'u' 'g'
+            // DateTimeFilter.g:128:12: ( Y E S T E R D A Y )
+            // DateTimeFilter.g:128:14: Y E S T E R D A Y
             {
-            	Match('a'); 
-            	Match('u'); 
-            	Match('g'); 
+            	mY(); 
+            	mE(); 
+            	mS(); 
+            	mT(); 
+            	mE(); 
+            	mR(); 
+            	mD(); 
+            	mA(); 
+            	mY(); 
 
             }
 
@@ -1710,21 +1285,23 @@ public partial class DateTimeFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "AUG"
+    // $ANTLR end "T_YESTERDAY"
 
-    // $ANTLR start "SEP"
-    public void mSEP() // throws RecognitionException [2]
+    // $ANTLR start "T_TODAY"
+    public void mT_TODAY() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = SEP;
+            int _type = T_TODAY;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:145:4: ( 's' 'e' 'p' )
-            // DateTimeFilter.g:145:6: 's' 'e' 'p'
+            // DateTimeFilter.g:129:8: ( T O D A Y )
+            // DateTimeFilter.g:129:10: T O D A Y
             {
-            	Match('s'); 
-            	Match('e'); 
-            	Match('p'); 
+            	mT(); 
+            	mO(); 
+            	mD(); 
+            	mA(); 
+            	mY(); 
 
             }
 
@@ -1735,21 +1312,26 @@ public partial class DateTimeFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "SEP"
+    // $ANTLR end "T_TODAY"
 
-    // $ANTLR start "OCT"
-    public void mOCT() // throws RecognitionException [2]
+    // $ANTLR start "T_TOMORROW"
+    public void mT_TOMORROW() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = OCT;
+            int _type = T_TOMORROW;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:146:4: ( 'o' 'c' 't' )
-            // DateTimeFilter.g:146:6: 'o' 'c' 't'
+            // DateTimeFilter.g:130:11: ( T O M O R R O W )
+            // DateTimeFilter.g:130:13: T O M O R R O W
             {
-            	Match('o'); 
-            	Match('c'); 
-            	Match('t'); 
+            	mT(); 
+            	mO(); 
+            	mM(); 
+            	mO(); 
+            	mR(); 
+            	mR(); 
+            	mO(); 
+            	mW(); 
 
             }
 
@@ -1760,21 +1342,21 @@ public partial class DateTimeFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "OCT"
+    // $ANTLR end "T_TOMORROW"
 
-    // $ANTLR start "NOV"
-    public void mNOV() // throws RecognitionException [2]
+    // $ANTLR start "T_JAN"
+    public void mT_JAN() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = NOV;
+            int _type = T_JAN;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:147:4: ( 'n' 'o' 'v' )
-            // DateTimeFilter.g:147:6: 'n' 'o' 'v'
+            // DateTimeFilter.g:132:6: ( J A N )
+            // DateTimeFilter.g:132:8: J A N
             {
-            	Match('n'); 
-            	Match('o'); 
-            	Match('v'); 
+            	mJ(); 
+            	mA(); 
+            	mN(); 
 
             }
 
@@ -1785,21 +1367,21 @@ public partial class DateTimeFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "NOV"
+    // $ANTLR end "T_JAN"
 
-    // $ANTLR start "DEC"
-    public void mDEC() // throws RecognitionException [2]
+    // $ANTLR start "T_FEB"
+    public void mT_FEB() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = DEC;
+            int _type = T_FEB;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:148:4: ( 'd' 'e' 'c' )
-            // DateTimeFilter.g:148:6: 'd' 'e' 'c'
+            // DateTimeFilter.g:133:6: ( F E B )
+            // DateTimeFilter.g:133:8: F E B
             {
-            	Match('d'); 
-            	Match('e'); 
-            	Match('c'); 
+            	mF(); 
+            	mE(); 
+            	mB(); 
 
             }
 
@@ -1810,21 +1392,21 @@ public partial class DateTimeFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "DEC"
+    // $ANTLR end "T_FEB"
 
-    // $ANTLR start "MON"
-    public void mMON() // throws RecognitionException [2]
+    // $ANTLR start "T_MAR"
+    public void mT_MAR() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = MON;
+            int _type = T_MAR;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:150:4: ( 'm' 'o' 'n' )
-            // DateTimeFilter.g:150:6: 'm' 'o' 'n'
+            // DateTimeFilter.g:134:6: ( M A R )
+            // DateTimeFilter.g:134:8: M A R
             {
-            	Match('m'); 
-            	Match('o'); 
-            	Match('n'); 
+            	mM(); 
+            	mA(); 
+            	mR(); 
 
             }
 
@@ -1835,21 +1417,21 @@ public partial class DateTimeFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "MON"
+    // $ANTLR end "T_MAR"
 
-    // $ANTLR start "TUE"
-    public void mTUE() // throws RecognitionException [2]
+    // $ANTLR start "T_APR"
+    public void mT_APR() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = TUE;
+            int _type = T_APR;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:151:4: ( 't' 'u' 'e' )
-            // DateTimeFilter.g:151:6: 't' 'u' 'e'
+            // DateTimeFilter.g:135:6: ( A P R )
+            // DateTimeFilter.g:135:8: A P R
             {
-            	Match('t'); 
-            	Match('u'); 
-            	Match('e'); 
+            	mA(); 
+            	mP(); 
+            	mR(); 
 
             }
 
@@ -1860,21 +1442,21 @@ public partial class DateTimeFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "TUE"
+    // $ANTLR end "T_APR"
 
-    // $ANTLR start "WED"
-    public void mWED() // throws RecognitionException [2]
+    // $ANTLR start "T_MAY"
+    public void mT_MAY() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = WED;
+            int _type = T_MAY;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:152:4: ( 'w' 'e' 'd' )
-            // DateTimeFilter.g:152:6: 'w' 'e' 'd'
+            // DateTimeFilter.g:136:6: ( M A Y )
+            // DateTimeFilter.g:136:8: M A Y
             {
-            	Match('w'); 
-            	Match('e'); 
-            	Match('d'); 
+            	mM(); 
+            	mA(); 
+            	mY(); 
 
             }
 
@@ -1885,21 +1467,21 @@ public partial class DateTimeFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "WED"
+    // $ANTLR end "T_MAY"
 
-    // $ANTLR start "THU"
-    public void mTHU() // throws RecognitionException [2]
+    // $ANTLR start "T_JUN"
+    public void mT_JUN() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = THU;
+            int _type = T_JUN;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:153:4: ( 't' 'h' 'u' )
-            // DateTimeFilter.g:153:6: 't' 'h' 'u'
+            // DateTimeFilter.g:137:6: ( J U N )
+            // DateTimeFilter.g:137:8: J U N
             {
-            	Match('t'); 
-            	Match('h'); 
-            	Match('u'); 
+            	mJ(); 
+            	mU(); 
+            	mN(); 
 
             }
 
@@ -1910,21 +1492,21 @@ public partial class DateTimeFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "THU"
+    // $ANTLR end "T_JUN"
 
-    // $ANTLR start "FRI"
-    public void mFRI() // throws RecognitionException [2]
+    // $ANTLR start "T_JUL"
+    public void mT_JUL() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = FRI;
+            int _type = T_JUL;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:154:4: ( 'f' 'r' 'i' )
-            // DateTimeFilter.g:154:6: 'f' 'r' 'i'
+            // DateTimeFilter.g:138:6: ( J U L )
+            // DateTimeFilter.g:138:8: J U L
             {
-            	Match('f'); 
-            	Match('r'); 
-            	Match('i'); 
+            	mJ(); 
+            	mU(); 
+            	mL(); 
 
             }
 
@@ -1935,21 +1517,21 @@ public partial class DateTimeFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "FRI"
+    // $ANTLR end "T_JUL"
 
-    // $ANTLR start "SAT"
-    public void mSAT() // throws RecognitionException [2]
+    // $ANTLR start "T_AUG"
+    public void mT_AUG() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = SAT;
+            int _type = T_AUG;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:155:4: ( 's' 'a' 't' )
-            // DateTimeFilter.g:155:6: 's' 'a' 't'
+            // DateTimeFilter.g:139:6: ( A U G )
+            // DateTimeFilter.g:139:8: A U G
             {
-            	Match('s'); 
-            	Match('a'); 
-            	Match('t'); 
+            	mA(); 
+            	mU(); 
+            	mG(); 
 
             }
 
@@ -1960,21 +1542,21 @@ public partial class DateTimeFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "SAT"
+    // $ANTLR end "T_AUG"
 
-    // $ANTLR start "SUN"
-    public void mSUN() // throws RecognitionException [2]
+    // $ANTLR start "T_SEP"
+    public void mT_SEP() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = SUN;
+            int _type = T_SEP;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:156:4: ( 's' 'u' 'n' )
-            // DateTimeFilter.g:156:6: 's' 'u' 'n'
+            // DateTimeFilter.g:140:6: ( S E P )
+            // DateTimeFilter.g:140:8: S E P
             {
-            	Match('s'); 
-            	Match('u'); 
-            	Match('n'); 
+            	mS(); 
+            	mE(); 
+            	mP(); 
 
             }
 
@@ -1985,7 +1567,308 @@ public partial class DateTimeFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "SUN"
+    // $ANTLR end "T_SEP"
+
+    // $ANTLR start "T_OCT"
+    public void mT_OCT() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            int _type = T_OCT;
+    	int _channel = DEFAULT_TOKEN_CHANNEL;
+            // DateTimeFilter.g:141:6: ( O C T )
+            // DateTimeFilter.g:141:8: O C T
+            {
+            	mO(); 
+            	mC(); 
+            	mT(); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "T_OCT"
+
+    // $ANTLR start "T_NOV"
+    public void mT_NOV() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            int _type = T_NOV;
+    	int _channel = DEFAULT_TOKEN_CHANNEL;
+            // DateTimeFilter.g:142:6: ( N O V )
+            // DateTimeFilter.g:142:8: N O V
+            {
+            	mN(); 
+            	mO(); 
+            	mV(); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "T_NOV"
+
+    // $ANTLR start "T_DEC"
+    public void mT_DEC() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            int _type = T_DEC;
+    	int _channel = DEFAULT_TOKEN_CHANNEL;
+            // DateTimeFilter.g:143:6: ( D E C )
+            // DateTimeFilter.g:143:8: D E C
+            {
+            	mD(); 
+            	mE(); 
+            	mC(); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "T_DEC"
+
+    // $ANTLR start "T_MON"
+    public void mT_MON() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            int _type = T_MON;
+    	int _channel = DEFAULT_TOKEN_CHANNEL;
+            // DateTimeFilter.g:145:6: ( M O N )
+            // DateTimeFilter.g:145:8: M O N
+            {
+            	mM(); 
+            	mO(); 
+            	mN(); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "T_MON"
+
+    // $ANTLR start "T_TUE"
+    public void mT_TUE() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            int _type = T_TUE;
+    	int _channel = DEFAULT_TOKEN_CHANNEL;
+            // DateTimeFilter.g:146:6: ( T U E )
+            // DateTimeFilter.g:146:8: T U E
+            {
+            	mT(); 
+            	mU(); 
+            	mE(); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "T_TUE"
+
+    // $ANTLR start "T_WED"
+    public void mT_WED() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            int _type = T_WED;
+    	int _channel = DEFAULT_TOKEN_CHANNEL;
+            // DateTimeFilter.g:147:6: ( W E D )
+            // DateTimeFilter.g:147:8: W E D
+            {
+            	mW(); 
+            	mE(); 
+            	mD(); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "T_WED"
+
+    // $ANTLR start "T_THU"
+    public void mT_THU() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            int _type = T_THU;
+    	int _channel = DEFAULT_TOKEN_CHANNEL;
+            // DateTimeFilter.g:148:6: ( T H U )
+            // DateTimeFilter.g:148:8: T H U
+            {
+            	mT(); 
+            	mH(); 
+            	mU(); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "T_THU"
+
+    // $ANTLR start "T_FRI"
+    public void mT_FRI() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            int _type = T_FRI;
+    	int _channel = DEFAULT_TOKEN_CHANNEL;
+            // DateTimeFilter.g:149:6: ( F R I )
+            // DateTimeFilter.g:149:8: F R I
+            {
+            	mF(); 
+            	mR(); 
+            	mI(); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "T_FRI"
+
+    // $ANTLR start "T_SAT"
+    public void mT_SAT() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            int _type = T_SAT;
+    	int _channel = DEFAULT_TOKEN_CHANNEL;
+            // DateTimeFilter.g:150:6: ( S A T )
+            // DateTimeFilter.g:150:8: S A T
+            {
+            	mS(); 
+            	mA(); 
+            	mT(); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "T_SAT"
+
+    // $ANTLR start "T_SUN"
+    public void mT_SUN() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            int _type = T_SUN;
+    	int _channel = DEFAULT_TOKEN_CHANNEL;
+            // DateTimeFilter.g:151:6: ( S U N )
+            // DateTimeFilter.g:151:8: S U N
+            {
+            	mS(); 
+            	mU(); 
+            	mN(); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "T_SUN"
+
+    // $ANTLR start "T_NULL"
+    public void mT_NULL() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            int _type = T_NULL;
+    	int _channel = DEFAULT_TOKEN_CHANNEL;
+            // DateTimeFilter.g:153:7: ( N U L L )
+            // DateTimeFilter.g:153:9: N U L L
+            {
+            	mN(); 
+            	mU(); 
+            	mL(); 
+            	mL(); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "T_NULL"
+
+    // $ANTLR start "T_NOT"
+    public void mT_NOT() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            int _type = T_NOT;
+    	int _channel = DEFAULT_TOKEN_CHANNEL;
+            // DateTimeFilter.g:154:6: ( N O T )
+            // DateTimeFilter.g:154:8: N O T
+            {
+            	mN(); 
+            	mO(); 
+            	mT(); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "T_NOT"
 
     // $ANTLR start "WHITESPACE"
     public void mWHITESPACE() // throws RecognitionException [2]
@@ -1994,10 +1877,10 @@ public partial class DateTimeFilterLexer : Lexer {
     		{
             int _type = WHITESPACE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:158:12: ( ( '\\t' | ' ' | '\\u000C' )+ )
-            // DateTimeFilter.g:158:14: ( '\\t' | ' ' | '\\u000C' )+
+            // DateTimeFilter.g:156:12: ( ( '\\t' | ' ' | '\\u000C' )+ )
+            // DateTimeFilter.g:156:14: ( '\\t' | ' ' | '\\u000C' )+
             {
-            	// DateTimeFilter.g:158:14: ( '\\t' | ' ' | '\\u000C' )+
+            	// DateTimeFilter.g:156:14: ( '\\t' | ' ' | '\\u000C' )+
             	int cnt22 = 0;
             	do 
             	{
@@ -2062,10 +1945,10 @@ public partial class DateTimeFilterLexer : Lexer {
     		{
             int _type = ENDLINE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // DateTimeFilter.g:159:8: ( ( '\\r' | '\\n' )+ )
-            // DateTimeFilter.g:159:10: ( '\\r' | '\\n' )+
+            // DateTimeFilter.g:157:8: ( ( '\\r' | '\\n' )+ )
+            // DateTimeFilter.g:157:10: ( '\\r' | '\\n' )+
             {
-            	// DateTimeFilter.g:159:10: ( '\\r' | '\\n' )+
+            	// DateTimeFilter.g:157:10: ( '\\r' | '\\n' )+
             	int cnt23 = 0;
             	do 
             	{
@@ -2127,8 +2010,8 @@ public partial class DateTimeFilterLexer : Lexer {
     {
     		try
     		{
-            // DateTimeFilter.g:162:17: ( '0' .. '9' )
-            // DateTimeFilter.g:162:19: '0' .. '9'
+            // DateTimeFilter.g:159:17: ( '0' .. '9' )
+            // DateTimeFilter.g:159:19: '0' .. '9'
             {
             	MatchRange('0','9'); 
 
@@ -2141,10 +2024,504 @@ public partial class DateTimeFilterLexer : Lexer {
     }
     // $ANTLR end "DIGIT"
 
+    // $ANTLR start "A"
+    public void mA() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:161:11: ( 'A' )
+            // DateTimeFilter.g:161:13: 'A'
+            {
+            	Match('A'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "A"
+
+    // $ANTLR start "B"
+    public void mB() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:162:11: ( 'B' )
+            // DateTimeFilter.g:162:13: 'B'
+            {
+            	Match('B'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "B"
+
+    // $ANTLR start "C"
+    public void mC() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:163:11: ( 'C' )
+            // DateTimeFilter.g:163:13: 'C'
+            {
+            	Match('C'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "C"
+
+    // $ANTLR start "D"
+    public void mD() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:164:11: ( 'D' )
+            // DateTimeFilter.g:164:13: 'D'
+            {
+            	Match('D'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "D"
+
+    // $ANTLR start "E"
+    public void mE() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:165:11: ( 'E' )
+            // DateTimeFilter.g:165:13: 'E'
+            {
+            	Match('E'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "E"
+
+    // $ANTLR start "F"
+    public void mF() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:166:11: ( 'F' )
+            // DateTimeFilter.g:166:13: 'F'
+            {
+            	Match('F'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "F"
+
+    // $ANTLR start "G"
+    public void mG() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:167:11: ( 'G' )
+            // DateTimeFilter.g:167:13: 'G'
+            {
+            	Match('G'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "G"
+
+    // $ANTLR start "H"
+    public void mH() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:168:11: ( 'H' )
+            // DateTimeFilter.g:168:13: 'H'
+            {
+            	Match('H'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "H"
+
+    // $ANTLR start "I"
+    public void mI() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:169:11: ( 'I' )
+            // DateTimeFilter.g:169:13: 'I'
+            {
+            	Match('I'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "I"
+
+    // $ANTLR start "J"
+    public void mJ() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:170:11: ( 'J' )
+            // DateTimeFilter.g:170:13: 'J'
+            {
+            	Match('J'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "J"
+
+    // $ANTLR start "K"
+    public void mK() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:171:11: ( 'K' )
+            // DateTimeFilter.g:171:13: 'K'
+            {
+            	Match('K'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "K"
+
+    // $ANTLR start "L"
+    public void mL() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:172:11: ( 'L' )
+            // DateTimeFilter.g:172:13: 'L'
+            {
+            	Match('L'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "L"
+
+    // $ANTLR start "M"
+    public void mM() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:173:11: ( 'M' )
+            // DateTimeFilter.g:173:13: 'M'
+            {
+            	Match('M'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "M"
+
+    // $ANTLR start "N"
+    public void mN() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:174:11: ( 'N' )
+            // DateTimeFilter.g:174:13: 'N'
+            {
+            	Match('N'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "N"
+
+    // $ANTLR start "O"
+    public void mO() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:175:11: ( 'O' )
+            // DateTimeFilter.g:175:13: 'O'
+            {
+            	Match('O'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "O"
+
+    // $ANTLR start "P"
+    public void mP() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:176:11: ( 'P' )
+            // DateTimeFilter.g:176:13: 'P'
+            {
+            	Match('P'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "P"
+
+    // $ANTLR start "Q"
+    public void mQ() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:177:11: ( 'Q' )
+            // DateTimeFilter.g:177:13: 'Q'
+            {
+            	Match('Q'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "Q"
+
+    // $ANTLR start "R"
+    public void mR() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:178:11: ( 'R' )
+            // DateTimeFilter.g:178:13: 'R'
+            {
+            	Match('R'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "R"
+
+    // $ANTLR start "S"
+    public void mS() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:179:11: ( 'S' )
+            // DateTimeFilter.g:179:13: 'S'
+            {
+            	Match('S'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "S"
+
+    // $ANTLR start "T"
+    public void mT() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:180:11: ( 'T' )
+            // DateTimeFilter.g:180:13: 'T'
+            {
+            	Match('T'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "T"
+
+    // $ANTLR start "U"
+    public void mU() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:181:11: ( 'U' )
+            // DateTimeFilter.g:181:13: 'U'
+            {
+            	Match('U'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "U"
+
+    // $ANTLR start "V"
+    public void mV() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:182:11: ( 'V' )
+            // DateTimeFilter.g:182:13: 'V'
+            {
+            	Match('V'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "V"
+
+    // $ANTLR start "W"
+    public void mW() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:183:11: ( 'W' )
+            // DateTimeFilter.g:183:13: 'W'
+            {
+            	Match('W'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "W"
+
+    // $ANTLR start "X"
+    public void mX() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:184:11: ( 'X' )
+            // DateTimeFilter.g:184:13: 'X'
+            {
+            	Match('X'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "X"
+
+    // $ANTLR start "Y"
+    public void mY() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:185:11: ( 'Y' )
+            // DateTimeFilter.g:185:13: 'Y'
+            {
+            	Match('Y'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "Y"
+
+    // $ANTLR start "Z"
+    public void mZ() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // DateTimeFilter.g:186:11: ( 'Z' )
+            // DateTimeFilter.g:186:13: 'Z'
+            {
+            	Match('Z'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "Z"
+
     override public void mTokens() // throws RecognitionException 
     {
-        // DateTimeFilter.g:1:8: ( MINUS | LT | GT | GE | LE | NE | EQ | COMMA | LAST_HOUR | THIS_HOUR | NEXT_HOUR | YESTERDAY | TODAY | TOMORROW | LAST_WEEK | THIS_WEEK | NEXT_WEEK | LAST_MONTH | THIS_MONTH | NEXT_MONTH | LAST_YEAR | THIS_YEAR | NEXT_YEAR | YEAR | DATE | TIME | FLOW_MONTH | FLOW_DAY | YEAR_MONTH | HOUR_ANY_MINUTE | JAN | FEB | MAR | APR | MAY | JUN | JUL | AUG | SEP | OCT | NOV | DEC | MON | TUE | WED | THU | FRI | SAT | SUN | WHITESPACE | ENDLINE )
-        int alt24 = 51;
+        // DateTimeFilter.g:1:8: ( MINUS | LT | GT | GE | LE | NE | EQ | COMMA | YEAR | DATE | TIME | FLOW_MONTH | FLOW_DAY | YEAR_MONTH | HOUR_ANY_MINUTE | T_LAST | T_THIS | T_NEXT | T_HOUR | T_WEEK | T_MONTH | T_YEAR | T_YESTERDAY | T_TODAY | T_TOMORROW | T_JAN | T_FEB | T_MAR | T_APR | T_MAY | T_JUN | T_JUL | T_AUG | T_SEP | T_OCT | T_NOV | T_DEC | T_MON | T_TUE | T_WED | T_THU | T_FRI | T_SAT | T_SUN | T_NULL | T_NOT | WHITESPACE | ENDLINE )
+        int alt24 = 48;
         alt24 = dfa24.Predict(input);
         switch (alt24) 
         {
@@ -2205,301 +2582,280 @@ public partial class DateTimeFilterLexer : Lexer {
                 }
                 break;
             case 9 :
-                // DateTimeFilter.g:1:40: LAST_HOUR
-                {
-                	mLAST_HOUR(); 
-
-                }
-                break;
-            case 10 :
-                // DateTimeFilter.g:1:50: THIS_HOUR
-                {
-                	mTHIS_HOUR(); 
-
-                }
-                break;
-            case 11 :
-                // DateTimeFilter.g:1:60: NEXT_HOUR
-                {
-                	mNEXT_HOUR(); 
-
-                }
-                break;
-            case 12 :
-                // DateTimeFilter.g:1:70: YESTERDAY
-                {
-                	mYESTERDAY(); 
-
-                }
-                break;
-            case 13 :
-                // DateTimeFilter.g:1:80: TODAY
-                {
-                	mTODAY(); 
-
-                }
-                break;
-            case 14 :
-                // DateTimeFilter.g:1:86: TOMORROW
-                {
-                	mTOMORROW(); 
-
-                }
-                break;
-            case 15 :
-                // DateTimeFilter.g:1:95: LAST_WEEK
-                {
-                	mLAST_WEEK(); 
-
-                }
-                break;
-            case 16 :
-                // DateTimeFilter.g:1:105: THIS_WEEK
-                {
-                	mTHIS_WEEK(); 
-
-                }
-                break;
-            case 17 :
-                // DateTimeFilter.g:1:115: NEXT_WEEK
-                {
-                	mNEXT_WEEK(); 
-
-                }
-                break;
-            case 18 :
-                // DateTimeFilter.g:1:125: LAST_MONTH
-                {
-                	mLAST_MONTH(); 
-
-                }
-                break;
-            case 19 :
-                // DateTimeFilter.g:1:136: THIS_MONTH
-                {
-                	mTHIS_MONTH(); 
-
-                }
-                break;
-            case 20 :
-                // DateTimeFilter.g:1:147: NEXT_MONTH
-                {
-                	mNEXT_MONTH(); 
-
-                }
-                break;
-            case 21 :
-                // DateTimeFilter.g:1:158: LAST_YEAR
-                {
-                	mLAST_YEAR(); 
-
-                }
-                break;
-            case 22 :
-                // DateTimeFilter.g:1:168: THIS_YEAR
-                {
-                	mTHIS_YEAR(); 
-
-                }
-                break;
-            case 23 :
-                // DateTimeFilter.g:1:178: NEXT_YEAR
-                {
-                	mNEXT_YEAR(); 
-
-                }
-                break;
-            case 24 :
-                // DateTimeFilter.g:1:188: YEAR
+                // DateTimeFilter.g:1:40: YEAR
                 {
                 	mYEAR(); 
 
                 }
                 break;
-            case 25 :
-                // DateTimeFilter.g:1:193: DATE
+            case 10 :
+                // DateTimeFilter.g:1:45: DATE
                 {
                 	mDATE(); 
 
                 }
                 break;
-            case 26 :
-                // DateTimeFilter.g:1:198: TIME
+            case 11 :
+                // DateTimeFilter.g:1:50: TIME
                 {
                 	mTIME(); 
 
                 }
                 break;
-            case 27 :
-                // DateTimeFilter.g:1:203: FLOW_MONTH
+            case 12 :
+                // DateTimeFilter.g:1:55: FLOW_MONTH
                 {
                 	mFLOW_MONTH(); 
 
                 }
                 break;
-            case 28 :
-                // DateTimeFilter.g:1:214: FLOW_DAY
+            case 13 :
+                // DateTimeFilter.g:1:66: FLOW_DAY
                 {
                 	mFLOW_DAY(); 
 
                 }
                 break;
-            case 29 :
-                // DateTimeFilter.g:1:223: YEAR_MONTH
+            case 14 :
+                // DateTimeFilter.g:1:75: YEAR_MONTH
                 {
                 	mYEAR_MONTH(); 
 
                 }
                 break;
-            case 30 :
-                // DateTimeFilter.g:1:234: HOUR_ANY_MINUTE
+            case 15 :
+                // DateTimeFilter.g:1:86: HOUR_ANY_MINUTE
                 {
                 	mHOUR_ANY_MINUTE(); 
 
                 }
                 break;
-            case 31 :
-                // DateTimeFilter.g:1:250: JAN
+            case 16 :
+                // DateTimeFilter.g:1:102: T_LAST
                 {
-                	mJAN(); 
+                	mT_LAST(); 
+
+                }
+                break;
+            case 17 :
+                // DateTimeFilter.g:1:109: T_THIS
+                {
+                	mT_THIS(); 
+
+                }
+                break;
+            case 18 :
+                // DateTimeFilter.g:1:116: T_NEXT
+                {
+                	mT_NEXT(); 
+
+                }
+                break;
+            case 19 :
+                // DateTimeFilter.g:1:123: T_HOUR
+                {
+                	mT_HOUR(); 
+
+                }
+                break;
+            case 20 :
+                // DateTimeFilter.g:1:130: T_WEEK
+                {
+                	mT_WEEK(); 
+
+                }
+                break;
+            case 21 :
+                // DateTimeFilter.g:1:137: T_MONTH
+                {
+                	mT_MONTH(); 
+
+                }
+                break;
+            case 22 :
+                // DateTimeFilter.g:1:145: T_YEAR
+                {
+                	mT_YEAR(); 
+
+                }
+                break;
+            case 23 :
+                // DateTimeFilter.g:1:152: T_YESTERDAY
+                {
+                	mT_YESTERDAY(); 
+
+                }
+                break;
+            case 24 :
+                // DateTimeFilter.g:1:164: T_TODAY
+                {
+                	mT_TODAY(); 
+
+                }
+                break;
+            case 25 :
+                // DateTimeFilter.g:1:172: T_TOMORROW
+                {
+                	mT_TOMORROW(); 
+
+                }
+                break;
+            case 26 :
+                // DateTimeFilter.g:1:183: T_JAN
+                {
+                	mT_JAN(); 
+
+                }
+                break;
+            case 27 :
+                // DateTimeFilter.g:1:189: T_FEB
+                {
+                	mT_FEB(); 
+
+                }
+                break;
+            case 28 :
+                // DateTimeFilter.g:1:195: T_MAR
+                {
+                	mT_MAR(); 
+
+                }
+                break;
+            case 29 :
+                // DateTimeFilter.g:1:201: T_APR
+                {
+                	mT_APR(); 
+
+                }
+                break;
+            case 30 :
+                // DateTimeFilter.g:1:207: T_MAY
+                {
+                	mT_MAY(); 
+
+                }
+                break;
+            case 31 :
+                // DateTimeFilter.g:1:213: T_JUN
+                {
+                	mT_JUN(); 
 
                 }
                 break;
             case 32 :
-                // DateTimeFilter.g:1:254: FEB
+                // DateTimeFilter.g:1:219: T_JUL
                 {
-                	mFEB(); 
+                	mT_JUL(); 
 
                 }
                 break;
             case 33 :
-                // DateTimeFilter.g:1:258: MAR
+                // DateTimeFilter.g:1:225: T_AUG
                 {
-                	mMAR(); 
+                	mT_AUG(); 
 
                 }
                 break;
             case 34 :
-                // DateTimeFilter.g:1:262: APR
+                // DateTimeFilter.g:1:231: T_SEP
                 {
-                	mAPR(); 
+                	mT_SEP(); 
 
                 }
                 break;
             case 35 :
-                // DateTimeFilter.g:1:266: MAY
+                // DateTimeFilter.g:1:237: T_OCT
                 {
-                	mMAY(); 
+                	mT_OCT(); 
 
                 }
                 break;
             case 36 :
-                // DateTimeFilter.g:1:270: JUN
+                // DateTimeFilter.g:1:243: T_NOV
                 {
-                	mJUN(); 
+                	mT_NOV(); 
 
                 }
                 break;
             case 37 :
-                // DateTimeFilter.g:1:274: JUL
+                // DateTimeFilter.g:1:249: T_DEC
                 {
-                	mJUL(); 
+                	mT_DEC(); 
 
                 }
                 break;
             case 38 :
-                // DateTimeFilter.g:1:278: AUG
+                // DateTimeFilter.g:1:255: T_MON
                 {
-                	mAUG(); 
+                	mT_MON(); 
 
                 }
                 break;
             case 39 :
-                // DateTimeFilter.g:1:282: SEP
+                // DateTimeFilter.g:1:261: T_TUE
                 {
-                	mSEP(); 
+                	mT_TUE(); 
 
                 }
                 break;
             case 40 :
-                // DateTimeFilter.g:1:286: OCT
+                // DateTimeFilter.g:1:267: T_WED
                 {
-                	mOCT(); 
+                	mT_WED(); 
 
                 }
                 break;
             case 41 :
-                // DateTimeFilter.g:1:290: NOV
+                // DateTimeFilter.g:1:273: T_THU
                 {
-                	mNOV(); 
+                	mT_THU(); 
 
                 }
                 break;
             case 42 :
-                // DateTimeFilter.g:1:294: DEC
+                // DateTimeFilter.g:1:279: T_FRI
                 {
-                	mDEC(); 
+                	mT_FRI(); 
 
                 }
                 break;
             case 43 :
-                // DateTimeFilter.g:1:298: MON
+                // DateTimeFilter.g:1:285: T_SAT
                 {
-                	mMON(); 
+                	mT_SAT(); 
 
                 }
                 break;
             case 44 :
-                // DateTimeFilter.g:1:302: TUE
+                // DateTimeFilter.g:1:291: T_SUN
                 {
-                	mTUE(); 
+                	mT_SUN(); 
 
                 }
                 break;
             case 45 :
-                // DateTimeFilter.g:1:306: WED
+                // DateTimeFilter.g:1:297: T_NULL
                 {
-                	mWED(); 
+                	mT_NULL(); 
 
                 }
                 break;
             case 46 :
-                // DateTimeFilter.g:1:310: THU
+                // DateTimeFilter.g:1:304: T_NOT
                 {
-                	mTHU(); 
+                	mT_NOT(); 
 
                 }
                 break;
             case 47 :
-                // DateTimeFilter.g:1:314: FRI
-                {
-                	mFRI(); 
-
-                }
-                break;
-            case 48 :
-                // DateTimeFilter.g:1:318: SAT
-                {
-                	mSAT(); 
-
-                }
-                break;
-            case 49 :
-                // DateTimeFilter.g:1:322: SUN
-                {
-                	mSUN(); 
-
-                }
-                break;
-            case 50 :
-                // DateTimeFilter.g:1:326: WHITESPACE
+                // DateTimeFilter.g:1:310: WHITESPACE
                 {
                 	mWHITESPACE(); 
 
                 }
                 break;
-            case 51 :
-                // DateTimeFilter.g:1:337: ENDLINE
+            case 48 :
+                // DateTimeFilter.g:1:321: ENDLINE
                 {
                 	mENDLINE(); 
 
@@ -2518,96 +2874,83 @@ public partial class DateTimeFilterLexer : Lexer {
 	}
 
     const string DFA24_eotS =
-        "\x02\uffff\x01\x17\x01\x19\x1d\uffff\x01\x37\x01\x38\x1f\uffff"+
-        "\x01\x46\x11\uffff\x01\x55\x01\uffff\x01\x55";
+        "\x02\uffff\x01\x18\x01\x1a\x19\uffff\x01\x36\x01\x37\x23\uffff"+
+        "\x01\x48\x04\uffff\x01\x4a\x04\uffff\x01\x4d\x01\uffff\x01\x4d";
     const string DFA24_eofS =
-        "\x57\uffff";
+        "\x4f\uffff";
     const string DFA24_minS =
-        "\x01\x09\x01\uffff\x02\x3d\x03\uffff\x01\x61\x01\x68\x01\x65\x01"+
-        "\uffff\x01\x2e\x01\x61\x01\x65\x01\x61\x01\x70\x01\x61\x09\uffff"+
-        "\x01\x73\x01\x69\x01\x64\x01\uffff\x01\x78\x01\uffff\x01\x2e\x02"+
-        "\x30\x01\x2a\x01\uffff\x01\x6c\x02\uffff\x01\x72\x06\uffff\x01\x74"+
-        "\x01\x73\x03\uffff\x01\x74\x01\x30\x09\uffff\x03\x5f\x01\x2d\x03"+
-        "\x68\x01\uffff\x01\x30\x0c\uffff\x01\x2d\x01\uffff\x01\x2d";
+        "\x01\x09\x01\uffff\x02\x3d\x03\uffff\x01\x2e\x01\uffff\x01\x48"+
+        "\x01\x45\x01\uffff\x01\x45\x01\x41\x01\x45\x01\x41\x01\x45\x01\x50"+
+        "\x01\x41\x08\uffff\x01\x2a\x01\x2e\x02\x30\x01\x49\x01\x44\x02\uffff"+
+        "\x01\x54\x01\uffff\x01\x44\x01\x52\x01\x4e\x01\x41\x01\x4c\x0a\uffff"+
+        "\x01\x30\x0d\uffff\x01\x54\x04\uffff\x01\x2d\x03\uffff\x01\x30\x01"+
+        "\x2d\x01\uffff\x01\x2d";
     const string DFA24_maxS =
-        "\x01\x79\x01\uffff\x01\x3e\x01\x3d\x03\uffff\x01\x61\x01\x75\x01"+
-        "\x6f\x01\uffff\x01\x3a\x01\x75\x01\x72\x01\x6f\x02\x75\x09\uffff"+
-        "\x01\x73\x01\x75\x01\x6d\x01\uffff\x01\x78\x01\uffff\x01\x3a\x03"+
-        "\x39\x01\uffff\x01\x6e\x02\uffff\x01\x79\x06\uffff\x01\x74\x01\x73"+
-        "\x03\uffff\x01\x74\x01\x39\x09\uffff\x03\x5f\x01\x2d\x03\x79\x01"+
-        "\uffff\x01\x39\x0c\uffff\x01\x39\x01\uffff\x01\x2d";
+        "\x01\x59\x01\uffff\x01\x3e\x01\x3d\x03\uffff\x01\x3a\x01\uffff"+
+        "\x02\x55\x01\uffff\x01\x45\x01\x4f\x01\x45\x01\x55\x01\x52\x02\x55"+
+        "\x08\uffff\x01\x39\x01\x3a\x02\x39\x01\x55\x01\x4d\x02\uffff\x01"+
+        "\x56\x01\uffff\x01\x45\x01\x59\x01\x4e\x01\x53\x01\x4e\x0a\uffff"+
+        "\x01\x39\x0d\uffff\x01\x54\x04\uffff\x01\x2d\x03\uffff\x02\x39\x01"+
+        "\uffff\x01\x2d";
     const string DFA24_acceptS =
-        "\x01\uffff\x01\x01\x02\uffff\x01\x06\x01\x07\x01\x08\x03\uffff"+
-        "\x01\x0c\x06\uffff\x01\x28\x01\x2a\x01\x2d\x01\x32\x01\x33\x01\x05"+
-        "\x01\x02\x01\x04\x01\x03\x03\uffff\x01\x2c\x01\uffff\x01\x29\x04"+
-        "\uffff\x01\x1f\x01\uffff\x01\x20\x01\x2f\x01\uffff\x01\x2b\x01\x22"+
-        "\x01\x26\x01\x27\x01\x30\x01\x31\x02\uffff\x01\x2e\x01\x0d\x01\x0e"+
-        "\x02\uffff\x01\x19\x01\x1b\x01\x1c\x01\x1e\x01\x1a\x01\x24\x01\x25"+
-        "\x01\x21\x01\x23\x07\uffff\x01\x18\x01\uffff\x01\x09\x01\x0f\x01"+
-        "\x12\x01\x15\x01\x0a\x01\x10\x01\x13\x01\x16\x01\x0b\x01\x11\x01"+
-        "\x14\x01\x17\x01\uffff\x01\x1d\x01\uffff";
+        "\x01\uffff\x01\x01\x02\uffff\x01\x06\x01\x07\x01\x08\x01\uffff"+
+        "\x01\x10\x02\uffff\x01\x13\x07\uffff\x01\x23\x01\x25\x01\x2f\x01"+
+        "\x30\x01\x05\x01\x02\x01\x04\x01\x03\x06\uffff\x01\x27\x01\x12\x01"+
+        "\uffff\x01\x2d\x05\uffff\x01\x1a\x01\x2a\x01\x1b\x01\x1d\x01\x21"+
+        "\x01\x2c\x01\x22\x01\x2b\x01\x0f\x01\x0b\x01\uffff\x01\x0a\x01\x0d"+
+        "\x01\x0c\x01\x29\x01\x11\x01\x19\x01\x18\x01\x24\x01\x2e\x01\x28"+
+        "\x01\x14\x01\x1c\x01\x1e\x01\uffff\x01\x16\x01\x17\x01\x1f\x01\x20"+
+        "\x01\uffff\x01\x26\x01\x15\x01\x09\x02\uffff\x01\x0e\x01\uffff";
     const string DFA24_specialS =
-        "\x57\uffff}>";
+        "\x4f\uffff}>";
     static readonly string[] DFA24_transitionS = {
-            "\x01\x14\x01\x15\x01\uffff\x01\x14\x01\x15\x12\uffff\x01\x14"+
-            "\x01\x04\x0a\uffff\x01\x06\x01\x01\x02\uffff\x0a\x0b\x02\uffff"+
-            "\x01\x02\x01\x05\x01\x03\x22\uffff\x01\x0f\x02\uffff\x01\x12"+
-            "\x01\uffff\x01\x0d\x03\uffff\x01\x0c\x01\uffff\x01\x07\x01\x0e"+
-            "\x01\x09\x01\x11\x03\uffff\x01\x10\x01\x08\x02\uffff\x01\x13"+
-            "\x01\uffff\x01\x0a",
+            "\x01\x15\x01\x16\x01\uffff\x01\x15\x01\x16\x12\uffff\x01\x15"+
+            "\x01\x04\x0a\uffff\x01\x06\x01\x01\x02\uffff\x0a\x07\x02\uffff"+
+            "\x01\x02\x01\x05\x01\x03\x02\uffff\x01\x11\x02\uffff\x01\x14"+
+            "\x01\uffff\x01\x10\x01\uffff\x01\x0b\x01\uffff\x01\x0f\x01\uffff"+
+            "\x01\x08\x01\x0d\x01\x0a\x01\x13\x03\uffff\x01\x12\x01\x09\x02"+
+            "\uffff\x01\x0c\x01\uffff\x01\x0e",
             "",
-            "\x01\x16\x01\x04",
-            "\x01\x18",
-            "",
-            "",
-            "",
-            "\x01\x1a",
-            "\x01\x1b\x06\uffff\x01\x1c\x05\uffff\x01\x1d",
-            "\x01\x1e\x09\uffff\x01\x1f",
-            "",
-            "\x01\x22\x01\x21\x0a\x20\x01\x23",
-            "\x01\x24\x13\uffff\x01\x25",
-            "\x01\x26\x0c\uffff\x01\x27",
-            "\x01\x28\x0d\uffff\x01\x29",
-            "\x01\x2a\x04\uffff\x01\x2b",
-            "\x01\x2d\x03\uffff\x01\x2c\x0f\uffff\x01\x2e",
+            "\x01\x17\x01\x04",
+            "\x01\x19",
             "",
             "",
             "",
+            "\x01\x1d\x01\x1e\x0a\x1c\x01\x1b",
             "",
+            "\x01\x1f\x06\uffff\x01\x20\x05\uffff\x01\x21",
+            "\x01\x22\x09\uffff\x01\x23\x05\uffff\x01\x24",
             "",
-            "",
-            "",
-            "",
-            "",
-            "\x01\x2f",
-            "\x01\x30\x0b\uffff\x01\x31",
-            "\x01\x32\x08\uffff\x01\x33",
-            "",
-            "\x01\x34",
-            "",
-            "\x01\x22\x01\x21\x0a\x35\x01\x23",
-            "\x0a\x36",
-            "\x0a\x36",
-            "\x01\x39\x05\uffff\x0a\x3a",
-            "",
-            "\x01\x3c\x01\uffff\x01\x3b",
-            "",
-            "",
-            "\x01\x3d\x06\uffff\x01\x3e",
+            "\x01\x25",
+            "\x01\x26\x0d\uffff\x01\x27",
+            "\x01\x28",
+            "\x01\x2a\x13\uffff\x01\x29",
+            "\x01\x2c\x0c\uffff\x01\x2b",
+            "\x01\x2d\x04\uffff\x01\x2e",
+            "\x01\x31\x03\uffff\x01\x30\x0f\uffff\x01\x2f",
             "",
             "",
             "",
             "",
             "",
             "",
-            "\x01\x3f",
-            "\x01\x40",
             "",
             "",
+            "\x01\x32\x05\uffff\x0a\x33",
+            "\x01\x1d\x01\x1e\x0a\x34\x01\x1b",
+            "\x0a\x35",
+            "\x0a\x35",
+            "\x01\x39\x0b\uffff\x01\x38",
+            "\x01\x3b\x08\uffff\x01\x3a",
             "",
-            "\x01\x41",
-            "\x0a\x42",
+            "",
+            "\x01\x3d\x01\uffff\x01\x3c",
+            "",
+            "\x01\x3e\x01\x3f",
+            "\x01\x40\x06\uffff\x01\x41",
+            "\x01\x42",
+            "\x01\x43\x11\uffff\x01\x44",
+            "\x01\x46\x01\uffff\x01\x45",
             "",
             "",
             "",
@@ -2617,18 +2960,8 @@ public partial class DateTimeFilterLexer : Lexer {
             "",
             "",
             "",
-            "\x01\x43",
-            "\x01\x44",
-            "\x01\x45",
-            "\x01\x47",
-            "\x01\x48\x04\uffff\x01\x4a\x09\uffff\x01\x49\x01\uffff\x01"+
-            "\x4b",
-            "\x01\x4c\x04\uffff\x01\x4e\x09\uffff\x01\x4d\x01\uffff\x01"+
-            "\x4f",
-            "\x01\x50\x04\uffff\x01\x52\x09\uffff\x01\x51\x01\uffff\x01"+
-            "\x53",
             "",
-            "\x0a\x54",
+            "\x0a\x47",
             "",
             "",
             "",
@@ -2641,9 +2974,20 @@ public partial class DateTimeFilterLexer : Lexer {
             "",
             "",
             "",
-            "\x01\x36\x02\uffff\x0a\x56",
             "",
-            "\x01\x36"
+            "\x01\x49",
+            "",
+            "",
+            "",
+            "",
+            "\x01\x4b",
+            "",
+            "",
+            "",
+            "\x0a\x4c",
+            "\x01\x35\x02\uffff\x0a\x4e",
+            "",
+            "\x01\x35"
     };
 
     static readonly short[] DFA24_eot = DFA.UnpackEncodedString(DFA24_eotS);
@@ -2672,7 +3016,7 @@ public partial class DateTimeFilterLexer : Lexer {
 
         override public string Description
         {
-            get { return "1:1: Tokens : ( MINUS | LT | GT | GE | LE | NE | EQ | COMMA | LAST_HOUR | THIS_HOUR | NEXT_HOUR | YESTERDAY | TODAY | TOMORROW | LAST_WEEK | THIS_WEEK | NEXT_WEEK | LAST_MONTH | THIS_MONTH | NEXT_MONTH | LAST_YEAR | THIS_YEAR | NEXT_YEAR | YEAR | DATE | TIME | FLOW_MONTH | FLOW_DAY | YEAR_MONTH | HOUR_ANY_MINUTE | JAN | FEB | MAR | APR | MAY | JUN | JUL | AUG | SEP | OCT | NOV | DEC | MON | TUE | WED | THU | FRI | SAT | SUN | WHITESPACE | ENDLINE );"; }
+            get { return "1:1: Tokens : ( MINUS | LT | GT | GE | LE | NE | EQ | COMMA | YEAR | DATE | TIME | FLOW_MONTH | FLOW_DAY | YEAR_MONTH | HOUR_ANY_MINUTE | T_LAST | T_THIS | T_NEXT | T_HOUR | T_WEEK | T_MONTH | T_YEAR | T_YESTERDAY | T_TODAY | T_TOMORROW | T_JAN | T_FEB | T_MAR | T_APR | T_MAY | T_JUN | T_JUL | T_AUG | T_SEP | T_OCT | T_NOV | T_DEC | T_MON | T_TUE | T_WED | T_THU | T_FRI | T_SAT | T_SUN | T_NULL | T_NOT | WHITESPACE | ENDLINE );"; }
         }
 
     }

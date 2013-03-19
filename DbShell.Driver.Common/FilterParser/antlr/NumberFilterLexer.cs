@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 NumberFilter.g 2013-03-18 23:38:56
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 NumberFilter.g 2013-03-19 20:36:18
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 168, 219
@@ -14,17 +14,45 @@ using Stack 		= Antlr.Runtime.Collections.StackList;
 
 
 public partial class NumberFilterLexer : Lexer {
+    public const int D = 26;
+    public const int E = 27;
+    public const int F = 28;
     public const int GE = 9;
+    public const int G = 29;
     public const int LT = 6;
-    public const int COMMA = 12;
+    public const int A = 23;
+    public const int B = 24;
+    public const int C = 25;
+    public const int L = 18;
+    public const int M = 34;
+    public const int N = 16;
+    public const int O = 19;
+    public const int H = 30;
+    public const int I = 31;
+    public const int J = 32;
     public const int NUMBER = 5;
-    public const int GT = 7;
-    public const int WHITESPACE = 15;
-    public const int ENDLINE = 13;
-    public const int DIGIT = 14;
+    public const int K = 33;
+    public const int U = 17;
+    public const int T = 20;
+    public const int WHITESPACE = 22;
+    public const int W = 40;
+    public const int V = 39;
+    public const int Q = 36;
+    public const int P = 35;
+    public const int S = 38;
     public const int MINUS = 4;
-    public const int EQ = 11;
+    public const int R = 37;
     public const int EOF = -1;
+    public const int Y = 42;
+    public const int X = 41;
+    public const int Z = 43;
+    public const int COMMA = 14;
+    public const int T_NULL = 12;
+    public const int GT = 7;
+    public const int ENDLINE = 15;
+    public const int DIGIT = 21;
+    public const int EQ = 11;
+    public const int T_NOT = 13;
     public const int LE = 8;
     public const int NE = 10;
 
@@ -49,6 +77,57 @@ public partial class NumberFilterLexer : Lexer {
     	get { return "NumberFilter.g";} 
     }
 
+    // $ANTLR start "T_NULL"
+    public void mT_NULL() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            int _type = T_NULL;
+    	int _channel = DEFAULT_TOKEN_CHANNEL;
+            // NumberFilter.g:59:7: ( N U L L )
+            // NumberFilter.g:59:9: N U L L
+            {
+            	mN(); 
+            	mU(); 
+            	mL(); 
+            	mL(); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "T_NULL"
+
+    // $ANTLR start "T_NOT"
+    public void mT_NOT() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            int _type = T_NOT;
+    	int _channel = DEFAULT_TOKEN_CHANNEL;
+            // NumberFilter.g:60:6: ( N O T )
+            // NumberFilter.g:60:8: N O T
+            {
+            	mN(); 
+            	mO(); 
+            	mT(); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "T_NOT"
+
     // $ANTLR start "MINUS"
     public void mMINUS() // throws RecognitionException [2]
     {
@@ -56,8 +135,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = MINUS;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:57:6: ( '-' )
-            // NumberFilter.g:57:9: '-'
+            // NumberFilter.g:62:6: ( '-' )
+            // NumberFilter.g:62:9: '-'
             {
             	Match('-'); 
 
@@ -79,8 +158,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = LT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:58:3: ( '<' )
-            // NumberFilter.g:58:6: '<'
+            // NumberFilter.g:63:3: ( '<' )
+            // NumberFilter.g:63:6: '<'
             {
             	Match('<'); 
 
@@ -102,8 +181,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = GT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:59:3: ( '>' )
-            // NumberFilter.g:59:6: '>'
+            // NumberFilter.g:64:3: ( '>' )
+            // NumberFilter.g:64:6: '>'
             {
             	Match('>'); 
 
@@ -125,8 +204,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = GE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:60:3: ( '>=' )
-            // NumberFilter.g:60:6: '>='
+            // NumberFilter.g:65:3: ( '>=' )
+            // NumberFilter.g:65:6: '>='
             {
             	Match(">="); 
 
@@ -149,8 +228,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = LE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:61:3: ( '<=' )
-            // NumberFilter.g:61:6: '<='
+            // NumberFilter.g:66:3: ( '<=' )
+            // NumberFilter.g:66:6: '<='
             {
             	Match("<="); 
 
@@ -173,7 +252,7 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = NE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:62:3: ( '!=' | '<>' )
+            // NumberFilter.g:67:3: ( '!=' | '<>' )
             int alt1 = 2;
             int LA1_0 = input.LA(1);
 
@@ -195,7 +274,7 @@ public partial class NumberFilterLexer : Lexer {
             switch (alt1) 
             {
                 case 1 :
-                    // NumberFilter.g:62:6: '!='
+                    // NumberFilter.g:67:6: '!='
                     {
                     	Match("!="); 
 
@@ -203,7 +282,7 @@ public partial class NumberFilterLexer : Lexer {
                     }
                     break;
                 case 2 :
-                    // NumberFilter.g:62:13: '<>'
+                    // NumberFilter.g:67:13: '<>'
                     {
                     	Match("<>"); 
 
@@ -228,8 +307,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = EQ;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:63:3: ( '=' )
-            // NumberFilter.g:63:6: '='
+            // NumberFilter.g:68:3: ( '=' )
+            // NumberFilter.g:68:6: '='
             {
             	Match('='); 
 
@@ -251,8 +330,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = COMMA;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:64:6: ( ',' )
-            // NumberFilter.g:64:8: ','
+            // NumberFilter.g:69:6: ( ',' )
+            // NumberFilter.g:69:8: ','
             {
             	Match(','); 
 
@@ -274,10 +353,10 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = NUMBER;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:66:9: ( ( DIGIT )+ ( '.' ( DIGIT )+ )? )
-            // NumberFilter.g:66:11: ( DIGIT )+ ( '.' ( DIGIT )+ )?
+            // NumberFilter.g:71:9: ( ( DIGIT )+ ( '.' ( DIGIT )+ )? )
+            // NumberFilter.g:71:11: ( DIGIT )+ ( '.' ( DIGIT )+ )?
             {
-            	// NumberFilter.g:66:11: ( DIGIT )+
+            	// NumberFilter.g:71:11: ( DIGIT )+
             	int cnt2 = 0;
             	do 
             	{
@@ -293,7 +372,7 @@ public partial class NumberFilterLexer : Lexer {
             	    switch (alt2) 
             		{
             			case 1 :
-            			    // NumberFilter.g:66:12: DIGIT
+            			    // NumberFilter.g:71:12: DIGIT
             			    {
             			    	mDIGIT(); 
 
@@ -312,7 +391,7 @@ public partial class NumberFilterLexer : Lexer {
             	loop2:
             		;	// Stops C# compiler whining that label 'loop2' has no statements
 
-            	// NumberFilter.g:66:20: ( '.' ( DIGIT )+ )?
+            	// NumberFilter.g:71:20: ( '.' ( DIGIT )+ )?
             	int alt4 = 2;
             	int LA4_0 = input.LA(1);
 
@@ -323,10 +402,10 @@ public partial class NumberFilterLexer : Lexer {
             	switch (alt4) 
             	{
             	    case 1 :
-            	        // NumberFilter.g:66:21: '.' ( DIGIT )+
+            	        // NumberFilter.g:71:21: '.' ( DIGIT )+
             	        {
             	        	Match('.'); 
-            	        	// NumberFilter.g:66:25: ( DIGIT )+
+            	        	// NumberFilter.g:71:25: ( DIGIT )+
             	        	int cnt3 = 0;
             	        	do 
             	        	{
@@ -342,7 +421,7 @@ public partial class NumberFilterLexer : Lexer {
             	        	    switch (alt3) 
             	        		{
             	        			case 1 :
-            	        			    // NumberFilter.g:66:26: DIGIT
+            	        			    // NumberFilter.g:71:26: DIGIT
             	        			    {
             	        			    	mDIGIT(); 
 
@@ -386,10 +465,10 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = WHITESPACE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:68:12: ( ( '\\t' | ' ' | '\\u000C' )+ )
-            // NumberFilter.g:68:14: ( '\\t' | ' ' | '\\u000C' )+
+            // NumberFilter.g:73:12: ( ( '\\t' | ' ' | '\\u000C' )+ )
+            // NumberFilter.g:73:14: ( '\\t' | ' ' | '\\u000C' )+
             {
-            	// NumberFilter.g:68:14: ( '\\t' | ' ' | '\\u000C' )+
+            	// NumberFilter.g:73:14: ( '\\t' | ' ' | '\\u000C' )+
             	int cnt5 = 0;
             	do 
             	{
@@ -454,10 +533,10 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = ENDLINE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:69:8: ( ( '\\r' | '\\n' )+ )
-            // NumberFilter.g:69:10: ( '\\r' | '\\n' )+
+            // NumberFilter.g:74:8: ( ( '\\r' | '\\n' )+ )
+            // NumberFilter.g:74:10: ( '\\r' | '\\n' )+
             {
-            	// NumberFilter.g:69:10: ( '\\r' | '\\n' )+
+            	// NumberFilter.g:74:10: ( '\\r' | '\\n' )+
             	int cnt6 = 0;
             	do 
             	{
@@ -519,8 +598,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:71:17: ( '0' .. '9' )
-            // NumberFilter.g:71:19: '0' .. '9'
+            // NumberFilter.g:76:17: ( '0' .. '9' )
+            // NumberFilter.g:76:19: '0' .. '9'
             {
             	MatchRange('0','9'); 
 
@@ -533,85 +612,593 @@ public partial class NumberFilterLexer : Lexer {
     }
     // $ANTLR end "DIGIT"
 
+    // $ANTLR start "A"
+    public void mA() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:78:11: ( 'A' )
+            // NumberFilter.g:78:13: 'A'
+            {
+            	Match('A'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "A"
+
+    // $ANTLR start "B"
+    public void mB() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:79:11: ( 'B' )
+            // NumberFilter.g:79:13: 'B'
+            {
+            	Match('B'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "B"
+
+    // $ANTLR start "C"
+    public void mC() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:80:11: ( 'C' )
+            // NumberFilter.g:80:13: 'C'
+            {
+            	Match('C'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "C"
+
+    // $ANTLR start "D"
+    public void mD() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:81:11: ( 'D' )
+            // NumberFilter.g:81:13: 'D'
+            {
+            	Match('D'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "D"
+
+    // $ANTLR start "E"
+    public void mE() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:82:11: ( 'E' )
+            // NumberFilter.g:82:13: 'E'
+            {
+            	Match('E'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "E"
+
+    // $ANTLR start "F"
+    public void mF() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:83:11: ( 'F' )
+            // NumberFilter.g:83:13: 'F'
+            {
+            	Match('F'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "F"
+
+    // $ANTLR start "G"
+    public void mG() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:84:11: ( 'G' )
+            // NumberFilter.g:84:13: 'G'
+            {
+            	Match('G'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "G"
+
+    // $ANTLR start "H"
+    public void mH() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:85:11: ( 'H' )
+            // NumberFilter.g:85:13: 'H'
+            {
+            	Match('H'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "H"
+
+    // $ANTLR start "I"
+    public void mI() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:86:11: ( 'I' )
+            // NumberFilter.g:86:13: 'I'
+            {
+            	Match('I'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "I"
+
+    // $ANTLR start "J"
+    public void mJ() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:87:11: ( 'J' )
+            // NumberFilter.g:87:13: 'J'
+            {
+            	Match('J'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "J"
+
+    // $ANTLR start "K"
+    public void mK() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:88:11: ( 'K' )
+            // NumberFilter.g:88:13: 'K'
+            {
+            	Match('K'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "K"
+
+    // $ANTLR start "L"
+    public void mL() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:89:11: ( 'L' )
+            // NumberFilter.g:89:13: 'L'
+            {
+            	Match('L'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "L"
+
+    // $ANTLR start "M"
+    public void mM() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:90:11: ( 'M' )
+            // NumberFilter.g:90:13: 'M'
+            {
+            	Match('M'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "M"
+
+    // $ANTLR start "N"
+    public void mN() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:91:11: ( 'N' )
+            // NumberFilter.g:91:13: 'N'
+            {
+            	Match('N'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "N"
+
+    // $ANTLR start "O"
+    public void mO() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:92:11: ( 'O' )
+            // NumberFilter.g:92:13: 'O'
+            {
+            	Match('O'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "O"
+
+    // $ANTLR start "P"
+    public void mP() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:93:11: ( 'P' )
+            // NumberFilter.g:93:13: 'P'
+            {
+            	Match('P'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "P"
+
+    // $ANTLR start "Q"
+    public void mQ() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:94:11: ( 'Q' )
+            // NumberFilter.g:94:13: 'Q'
+            {
+            	Match('Q'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "Q"
+
+    // $ANTLR start "R"
+    public void mR() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:95:11: ( 'R' )
+            // NumberFilter.g:95:13: 'R'
+            {
+            	Match('R'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "R"
+
+    // $ANTLR start "S"
+    public void mS() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:96:11: ( 'S' )
+            // NumberFilter.g:96:13: 'S'
+            {
+            	Match('S'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "S"
+
+    // $ANTLR start "T"
+    public void mT() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:97:11: ( 'T' )
+            // NumberFilter.g:97:13: 'T'
+            {
+            	Match('T'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "T"
+
+    // $ANTLR start "U"
+    public void mU() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:98:11: ( 'U' )
+            // NumberFilter.g:98:13: 'U'
+            {
+            	Match('U'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "U"
+
+    // $ANTLR start "V"
+    public void mV() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:99:11: ( 'V' )
+            // NumberFilter.g:99:13: 'V'
+            {
+            	Match('V'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "V"
+
+    // $ANTLR start "W"
+    public void mW() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:100:11: ( 'W' )
+            // NumberFilter.g:100:13: 'W'
+            {
+            	Match('W'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "W"
+
+    // $ANTLR start "X"
+    public void mX() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:101:11: ( 'X' )
+            // NumberFilter.g:101:13: 'X'
+            {
+            	Match('X'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "X"
+
+    // $ANTLR start "Y"
+    public void mY() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:102:11: ( 'Y' )
+            // NumberFilter.g:102:13: 'Y'
+            {
+            	Match('Y'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "Y"
+
+    // $ANTLR start "Z"
+    public void mZ() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // NumberFilter.g:103:11: ( 'Z' )
+            // NumberFilter.g:103:13: 'Z'
+            {
+            	Match('Z'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "Z"
+
     override public void mTokens() // throws RecognitionException 
     {
-        // NumberFilter.g:1:8: ( MINUS | LT | GT | GE | LE | NE | EQ | COMMA | NUMBER | WHITESPACE | ENDLINE )
-        int alt7 = 11;
+        // NumberFilter.g:1:8: ( T_NULL | T_NOT | MINUS | LT | GT | GE | LE | NE | EQ | COMMA | NUMBER | WHITESPACE | ENDLINE )
+        int alt7 = 13;
         alt7 = dfa7.Predict(input);
         switch (alt7) 
         {
             case 1 :
-                // NumberFilter.g:1:10: MINUS
+                // NumberFilter.g:1:10: T_NULL
+                {
+                	mT_NULL(); 
+
+                }
+                break;
+            case 2 :
+                // NumberFilter.g:1:17: T_NOT
+                {
+                	mT_NOT(); 
+
+                }
+                break;
+            case 3 :
+                // NumberFilter.g:1:23: MINUS
                 {
                 	mMINUS(); 
 
                 }
                 break;
-            case 2 :
-                // NumberFilter.g:1:16: LT
+            case 4 :
+                // NumberFilter.g:1:29: LT
                 {
                 	mLT(); 
 
                 }
                 break;
-            case 3 :
-                // NumberFilter.g:1:19: GT
+            case 5 :
+                // NumberFilter.g:1:32: GT
                 {
                 	mGT(); 
 
                 }
                 break;
-            case 4 :
-                // NumberFilter.g:1:22: GE
+            case 6 :
+                // NumberFilter.g:1:35: GE
                 {
                 	mGE(); 
 
                 }
                 break;
-            case 5 :
-                // NumberFilter.g:1:25: LE
+            case 7 :
+                // NumberFilter.g:1:38: LE
                 {
                 	mLE(); 
 
                 }
                 break;
-            case 6 :
-                // NumberFilter.g:1:28: NE
+            case 8 :
+                // NumberFilter.g:1:41: NE
                 {
                 	mNE(); 
 
                 }
                 break;
-            case 7 :
-                // NumberFilter.g:1:31: EQ
+            case 9 :
+                // NumberFilter.g:1:44: EQ
                 {
                 	mEQ(); 
 
                 }
                 break;
-            case 8 :
-                // NumberFilter.g:1:34: COMMA
+            case 10 :
+                // NumberFilter.g:1:47: COMMA
                 {
                 	mCOMMA(); 
 
                 }
                 break;
-            case 9 :
-                // NumberFilter.g:1:40: NUMBER
+            case 11 :
+                // NumberFilter.g:1:53: NUMBER
                 {
                 	mNUMBER(); 
 
                 }
                 break;
-            case 10 :
-                // NumberFilter.g:1:47: WHITESPACE
+            case 12 :
+                // NumberFilter.g:1:60: WHITESPACE
                 {
                 	mWHITESPACE(); 
 
                 }
                 break;
-            case 11 :
-                // NumberFilter.g:1:58: ENDLINE
+            case 13 :
+                // NumberFilter.g:1:71: ENDLINE
                 {
                 	mENDLINE(); 
 
@@ -630,25 +1217,28 @@ public partial class NumberFilterLexer : Lexer {
 	}
 
     const string DFA7_eotS =
-        "\x02\uffff\x01\x0b\x01\x0d\x0a\uffff";
+        "\x03\uffff\x01\x0e\x01\x10\x0c\uffff";
     const string DFA7_eofS =
-        "\x0e\uffff";
+        "\x11\uffff";
     const string DFA7_minS =
-        "\x01\x09\x01\uffff\x02\x3d\x0a\uffff";
+        "\x01\x09\x01\x4f\x01\uffff\x02\x3d\x0c\uffff";
     const string DFA7_maxS =
-        "\x01\x3e\x01\uffff\x01\x3e\x01\x3d\x0a\uffff";
+        "\x01\x4e\x01\x55\x01\uffff\x01\x3e\x01\x3d\x0c\uffff";
     const string DFA7_acceptS =
-        "\x01\uffff\x01\x01\x02\uffff\x01\x06\x01\x07\x01\x08\x01\x09\x01"+
-        "\x0a\x01\x0b\x01\x05\x01\x02\x01\x04\x01\x03";
+        "\x02\uffff\x01\x03\x02\uffff\x01\x08\x01\x09\x01\x0a\x01\x0b\x01"+
+        "\x0c\x01\x0d\x01\x01\x01\x02\x01\x07\x01\x04\x01\x06\x01\x05";
     const string DFA7_specialS =
-        "\x0e\uffff}>";
+        "\x11\uffff}>";
     static readonly string[] DFA7_transitionS = {
-            "\x01\x08\x01\x09\x01\uffff\x01\x08\x01\x09\x12\uffff\x01\x08"+
-            "\x01\x04\x0a\uffff\x01\x06\x01\x01\x02\uffff\x0a\x07\x02\uffff"+
-            "\x01\x02\x01\x05\x01\x03",
+            "\x01\x09\x01\x0a\x01\uffff\x01\x09\x01\x0a\x12\uffff\x01\x09"+
+            "\x01\x05\x0a\uffff\x01\x07\x01\x02\x02\uffff\x0a\x08\x02\uffff"+
+            "\x01\x03\x01\x06\x01\x04\x0f\uffff\x01\x01",
+            "\x01\x0c\x05\uffff\x01\x0b",
             "",
-            "\x01\x0a\x01\x04",
-            "\x01\x0c",
+            "\x01\x0d\x01\x05",
+            "\x01\x0f",
+            "",
+            "",
             "",
             "",
             "",
@@ -687,7 +1277,7 @@ public partial class NumberFilterLexer : Lexer {
 
         override public string Description
         {
-            get { return "1:1: Tokens : ( MINUS | LT | GT | GE | LE | NE | EQ | COMMA | NUMBER | WHITESPACE | ENDLINE );"; }
+            get { return "1:1: Tokens : ( T_NULL | T_NOT | MINUS | LT | GT | GE | LE | NE | EQ | COMMA | NUMBER | WHITESPACE | ENDLINE );"; }
         }
 
     }

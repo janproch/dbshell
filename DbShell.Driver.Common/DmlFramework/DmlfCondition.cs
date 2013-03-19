@@ -9,7 +9,19 @@ namespace DbShell.Driver.Common.DmlFramework
     {
     }
 
-    public class DmlfNotCondition : DmlfConditionBase
+    public abstract class DmlfUnaryCondition : DmlfConditionBase
+    {
+        public DmlfExpression Expr { get; set; }
+
+        public override void ForEachChild(Action<IDmlfNode> action)
+        {
+            base.ForEachChild(action);
+            action(Expr);
+        }
+    }
+
+
+    public class DmlfNotCondition : DmlfUnaryCondition
     {
         public DmlfConditionBase Expr { get; set; }
 
@@ -24,6 +36,24 @@ namespace DbShell.Driver.Common.DmlFramework
             dmp.Put("(^not(");
             Expr.GenSql(dmp, handler);
             dmp.Put("))");
+        }
+    }
+
+    public class DmlfIsNullCondition : DmlfUnaryCondition
+    {
+        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        {
+            Expr.GenSql(dmp, handler);
+            dmp.Put("^is ^null");
+        }
+    }
+
+    public class DmlfIsNotNullCondition : DmlfUnaryCondition
+    {
+        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        {
+            Expr.GenSql(dmp, handler);
+            dmp.Put("^is ^not ^null");
         }
     }
 

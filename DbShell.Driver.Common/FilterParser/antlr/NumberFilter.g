@@ -40,6 +40,8 @@ element_no_negative:
   | GE num1=number { AddNumberRelation($num1.text, ">="); } 
   | NE num1=number { AddNumberRelation($num1.text, "<>"); } 
   | EQ num1=number { AddNumberRelation($num1.text, "="); } 
+  | T_NULL { AddIsNullCondition(); }
+  | T_NOT T_NULL { AddIsNotNullCondition(); }
   ;
   
 element_maybe_negative:
@@ -53,6 +55,9 @@ list:
   factor ( (COMMA | (ENDLINE+)) { AddAndCondition(); } factor ) * ENDLINE*; 
  
 expr: list ; 
+
+T_NULL: N U L L;
+T_NOT: N O T;
  
 MINUS:  '-';
 LT:  '<';
@@ -69,3 +74,30 @@ WHITESPACE : ( '\t' | ' ' | '\u000C' )+    { $channel = HIDDEN; } ;
 ENDLINE: ( '\r' | '\n' )+; 
  
 fragment DIGIT  : '0'..'9' ;
+
+fragment A: 'A';
+fragment B: 'B';
+fragment C: 'C';
+fragment D: 'D';
+fragment E: 'E';
+fragment F: 'F';
+fragment G: 'G';
+fragment H: 'H';
+fragment I: 'I';
+fragment J: 'J';
+fragment K: 'K';
+fragment L: 'L';
+fragment M: 'M';
+fragment N: 'N';
+fragment O: 'O';
+fragment P: 'P';
+fragment Q: 'Q';
+fragment R: 'R';
+fragment S: 'S';
+fragment T: 'T';
+fragment U: 'U';
+fragment V: 'V';
+fragment W: 'W';
+fragment X: 'X';
+fragment Y: 'Y';
+fragment Z: 'Z';

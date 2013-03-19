@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 NumberFilter.g 2013-03-18 23:38:56
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 NumberFilter.g 2013-03-19 20:36:18
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 168, 219
@@ -36,23 +36,79 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
 		"GE", 
 		"NE", 
 		"EQ", 
+		"T_NULL", 
+		"T_NOT", 
 		"COMMA", 
 		"ENDLINE", 
+		"N", 
+		"U", 
+		"L", 
+		"O", 
+		"T", 
 		"DIGIT", 
-		"WHITESPACE"
+		"WHITESPACE", 
+		"A", 
+		"B", 
+		"C", 
+		"D", 
+		"E", 
+		"F", 
+		"G", 
+		"H", 
+		"I", 
+		"J", 
+		"K", 
+		"M", 
+		"P", 
+		"Q", 
+		"R", 
+		"S", 
+		"V", 
+		"W", 
+		"X", 
+		"Y", 
+		"Z"
     };
 
+    public const int D = 26;
+    public const int E = 27;
+    public const int F = 28;
     public const int GE = 9;
+    public const int G = 29;
     public const int LT = 6;
-    public const int COMMA = 12;
+    public const int A = 23;
+    public const int B = 24;
+    public const int C = 25;
+    public const int L = 18;
+    public const int M = 34;
+    public const int N = 16;
+    public const int O = 19;
+    public const int H = 30;
+    public const int I = 31;
+    public const int J = 32;
+    public const int K = 33;
     public const int NUMBER = 5;
-    public const int WHITESPACE = 15;
-    public const int GT = 7;
-    public const int ENDLINE = 13;
-    public const int DIGIT = 14;
-    public const int EQ = 11;
+    public const int U = 17;
+    public const int T = 20;
+    public const int W = 40;
+    public const int WHITESPACE = 22;
+    public const int V = 39;
+    public const int Q = 36;
+    public const int P = 35;
+    public const int S = 38;
+    public const int R = 37;
     public const int MINUS = 4;
     public const int EOF = -1;
+    public const int Y = 42;
+    public const int X = 41;
+    public const int Z = 43;
+    public const int COMMA = 14;
+    public const int T_NULL = 12;
+    public const int GT = 7;
+    public const int ENDLINE = 15;
+    public const int DIGIT = 21;
+    public const int EQ = 11;
+    public const int T_NOT = 13;
     public const int LE = 8;
     public const int NE = 10;
 
@@ -399,7 +455,7 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
     };
 
     // $ANTLR start "element_no_negative"
-    // NumberFilter.g:34:1: element_no_negative : ( positive_number | interval | LT num1= number | GT num1= number | LE num1= number | GE num1= number | NE num1= number | EQ num1= number );
+    // NumberFilter.g:34:1: element_no_negative : ( positive_number | interval | LT num1= number | GT num1= number | LE num1= number | GE num1= number | NE num1= number | EQ num1= number | T_NULL | T_NOT T_NULL );
     public NumberFilterParser.element_no_negative_return element_no_negative() // throws RecognitionException [1]
     {   
         NumberFilterParser.element_no_negative_return retval = new NumberFilterParser.element_no_negative_return();
@@ -413,6 +469,9 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
         IToken GE11 = null;
         IToken NE12 = null;
         IToken EQ13 = null;
+        IToken T_NULL14 = null;
+        IToken T_NOT15 = null;
+        IToken T_NULL16 = null;
         NumberFilterParser.number_return num1 = default(NumberFilterParser.number_return);
 
         NumberFilterParser.positive_number_return positive_number6 = default(NumberFilterParser.positive_number_return);
@@ -426,11 +485,14 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
         object GE11_tree=null;
         object NE12_tree=null;
         object EQ13_tree=null;
+        object T_NULL14_tree=null;
+        object T_NOT15_tree=null;
+        object T_NULL16_tree=null;
 
         try 
     	{
-            // NumberFilter.g:34:20: ( positive_number | interval | LT num1= number | GT num1= number | LE num1= number | GE num1= number | NE num1= number | EQ num1= number )
-            int alt2 = 8;
+            // NumberFilter.g:34:20: ( positive_number | interval | LT num1= number | GT num1= number | LE num1= number | GE num1= number | NE num1= number | EQ num1= number | T_NULL | T_NOT T_NULL )
+            int alt2 = 10;
             alt2 = dfa2.Predict(input);
             switch (alt2) 
             {
@@ -569,6 +631,36 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
 
                     }
                     break;
+                case 9 :
+                    // NumberFilter.g:43:5: T_NULL
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	T_NULL14=(IToken)Match(input,T_NULL,FOLLOW_T_NULL_in_element_no_negative200); 
+                    		T_NULL14_tree = (object)adaptor.Create(T_NULL14);
+                    		adaptor.AddChild(root_0, T_NULL14_tree);
+
+                    	 AddIsNullCondition(); 
+
+                    }
+                    break;
+                case 10 :
+                    // NumberFilter.g:44:5: T_NOT T_NULL
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	T_NOT15=(IToken)Match(input,T_NOT,FOLLOW_T_NOT_in_element_no_negative208); 
+                    		T_NOT15_tree = (object)adaptor.Create(T_NOT15);
+                    		adaptor.AddChild(root_0, T_NOT15_tree);
+
+                    	T_NULL16=(IToken)Match(input,T_NULL,FOLLOW_T_NULL_in_element_no_negative210); 
+                    		T_NULL16_tree = (object)adaptor.Create(T_NULL16);
+                    		adaptor.AddChild(root_0, T_NULL16_tree);
+
+                    	 AddIsNotNullCondition(); 
+
+                    }
+                    break;
 
             }
             retval.Stop = input.LT(-1);
@@ -602,7 +694,7 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
     };
 
     // $ANTLR start "element_maybe_negative"
-    // NumberFilter.g:45:1: element_maybe_negative : ( negative_number | element_no_negative );
+    // NumberFilter.g:47:1: element_maybe_negative : ( negative_number | element_no_negative );
     public NumberFilterParser.element_maybe_negative_return element_maybe_negative() // throws RecognitionException [1]
     {   
         NumberFilterParser.element_maybe_negative_return retval = new NumberFilterParser.element_maybe_negative_return();
@@ -610,43 +702,43 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
 
         object root_0 = null;
 
-        NumberFilterParser.negative_number_return negative_number14 = default(NumberFilterParser.negative_number_return);
+        NumberFilterParser.negative_number_return negative_number17 = default(NumberFilterParser.negative_number_return);
 
-        NumberFilterParser.element_no_negative_return element_no_negative15 = default(NumberFilterParser.element_no_negative_return);
+        NumberFilterParser.element_no_negative_return element_no_negative18 = default(NumberFilterParser.element_no_negative_return);
 
 
 
         try 
     	{
-            // NumberFilter.g:45:23: ( negative_number | element_no_negative )
+            // NumberFilter.g:47:23: ( negative_number | element_no_negative )
             int alt3 = 2;
             alt3 = dfa3.Predict(input);
             switch (alt3) 
             {
                 case 1 :
-                    // NumberFilter.g:46:3: negative_number
+                    // NumberFilter.g:48:3: negative_number
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	PushFollow(FOLLOW_negative_number_in_element_maybe_negative208);
-                    	negative_number14 = negative_number();
+                    	PushFollow(FOLLOW_negative_number_in_element_maybe_negative226);
+                    	negative_number17 = negative_number();
                     	state.followingStackPointer--;
 
-                    	adaptor.AddChild(root_0, negative_number14.Tree);
+                    	adaptor.AddChild(root_0, negative_number17.Tree);
                     	 AddEqualCondition(Pop<decimal>().ToString(CultureInfo.InvariantCulture)); 
 
                     }
                     break;
                 case 2 :
-                    // NumberFilter.g:47:5: element_no_negative
+                    // NumberFilter.g:49:5: element_no_negative
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	PushFollow(FOLLOW_element_no_negative_in_element_maybe_negative216);
-                    	element_no_negative15 = element_no_negative();
+                    	PushFollow(FOLLOW_element_no_negative_in_element_maybe_negative234);
+                    	element_no_negative18 = element_no_negative();
                     	state.followingStackPointer--;
 
-                    	adaptor.AddChild(root_0, element_no_negative15.Tree);
+                    	adaptor.AddChild(root_0, element_no_negative18.Tree);
 
                     }
                     break;
@@ -683,7 +775,7 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
     };
 
     // $ANTLR start "factor"
-    // NumberFilter.g:49:1: factor : element_maybe_negative ( element_no_negative )* ;
+    // NumberFilter.g:51:1: factor : element_maybe_negative ( element_no_negative )* ;
     public NumberFilterParser.factor_return factor() // throws RecognitionException [1]
     {   
         NumberFilterParser.factor_return retval = new NumberFilterParser.factor_return();
@@ -691,31 +783,31 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
 
         object root_0 = null;
 
-        NumberFilterParser.element_maybe_negative_return element_maybe_negative16 = default(NumberFilterParser.element_maybe_negative_return);
+        NumberFilterParser.element_maybe_negative_return element_maybe_negative19 = default(NumberFilterParser.element_maybe_negative_return);
 
-        NumberFilterParser.element_no_negative_return element_no_negative17 = default(NumberFilterParser.element_no_negative_return);
+        NumberFilterParser.element_no_negative_return element_no_negative20 = default(NumberFilterParser.element_no_negative_return);
 
 
 
         try 
     	{
-            // NumberFilter.g:49:8: ( element_maybe_negative ( element_no_negative )* )
-            // NumberFilter.g:50:3: element_maybe_negative ( element_no_negative )*
+            // NumberFilter.g:51:8: ( element_maybe_negative ( element_no_negative )* )
+            // NumberFilter.g:52:3: element_maybe_negative ( element_no_negative )*
             {
             	root_0 = (object)adaptor.GetNilNode();
 
-            	PushFollow(FOLLOW_element_maybe_negative_in_factor228);
-            	element_maybe_negative16 = element_maybe_negative();
+            	PushFollow(FOLLOW_element_maybe_negative_in_factor246);
+            	element_maybe_negative19 = element_maybe_negative();
             	state.followingStackPointer--;
 
-            	adaptor.AddChild(root_0, element_maybe_negative16.Tree);
-            	// NumberFilter.g:50:26: ( element_no_negative )*
+            	adaptor.AddChild(root_0, element_maybe_negative19.Tree);
+            	// NumberFilter.g:52:26: ( element_no_negative )*
             	do 
             	{
             	    int alt4 = 2;
             	    int LA4_0 = input.LA(1);
 
-            	    if ( ((LA4_0 >= MINUS && LA4_0 <= EQ)) )
+            	    if ( ((LA4_0 >= MINUS && LA4_0 <= T_NOT)) )
             	    {
             	        alt4 = 1;
             	    }
@@ -724,13 +816,13 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
             	    switch (alt4) 
             		{
             			case 1 :
-            			    // NumberFilter.g:50:26: element_no_negative
+            			    // NumberFilter.g:52:26: element_no_negative
             			    {
-            			    	PushFollow(FOLLOW_element_no_negative_in_factor230);
-            			    	element_no_negative17 = element_no_negative();
+            			    	PushFollow(FOLLOW_element_no_negative_in_factor248);
+            			    	element_no_negative20 = element_no_negative();
             			    	state.followingStackPointer--;
 
-            			    	adaptor.AddChild(root_0, element_no_negative17.Tree);
+            			    	adaptor.AddChild(root_0, element_no_negative20.Tree);
 
             			    }
             			    break;
@@ -777,7 +869,7 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
     };
 
     // $ANTLR start "list"
-    // NumberFilter.g:52:1: list : factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )* ;
+    // NumberFilter.g:54:1: list : factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )* ;
     public NumberFilterParser.list_return list() // throws RecognitionException [1]
     {   
         NumberFilterParser.list_return retval = new NumberFilterParser.list_return();
@@ -785,31 +877,31 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
 
         object root_0 = null;
 
-        IToken COMMA19 = null;
-        IToken ENDLINE20 = null;
-        IToken ENDLINE22 = null;
-        NumberFilterParser.factor_return factor18 = default(NumberFilterParser.factor_return);
-
+        IToken COMMA22 = null;
+        IToken ENDLINE23 = null;
+        IToken ENDLINE25 = null;
         NumberFilterParser.factor_return factor21 = default(NumberFilterParser.factor_return);
 
+        NumberFilterParser.factor_return factor24 = default(NumberFilterParser.factor_return);
 
-        object COMMA19_tree=null;
-        object ENDLINE20_tree=null;
-        object ENDLINE22_tree=null;
+
+        object COMMA22_tree=null;
+        object ENDLINE23_tree=null;
+        object ENDLINE25_tree=null;
 
         try 
     	{
-            // NumberFilter.g:52:5: ( factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )* )
-            // NumberFilter.g:53:3: factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )*
+            // NumberFilter.g:54:5: ( factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )* )
+            // NumberFilter.g:55:3: factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )*
             {
             	root_0 = (object)adaptor.GetNilNode();
 
-            	PushFollow(FOLLOW_factor_in_list241);
-            	factor18 = factor();
+            	PushFollow(FOLLOW_factor_in_list259);
+            	factor21 = factor();
             	state.followingStackPointer--;
 
-            	adaptor.AddChild(root_0, factor18.Tree);
-            	// NumberFilter.g:53:10: ( ( COMMA | ( ( ENDLINE )+ ) ) factor )*
+            	adaptor.AddChild(root_0, factor21.Tree);
+            	// NumberFilter.g:55:10: ( ( COMMA | ( ( ENDLINE )+ ) ) factor )*
             	do 
             	{
             	    int alt7 = 2;
@@ -817,9 +909,9 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
             	    switch (alt7) 
             		{
             			case 1 :
-            			    // NumberFilter.g:53:12: ( COMMA | ( ( ENDLINE )+ ) ) factor
+            			    // NumberFilter.g:55:12: ( COMMA | ( ( ENDLINE )+ ) ) factor
             			    {
-            			    	// NumberFilter.g:53:12: ( COMMA | ( ( ENDLINE )+ ) )
+            			    	// NumberFilter.g:55:12: ( COMMA | ( ( ENDLINE )+ ) )
             			    	int alt6 = 2;
             			    	int LA6_0 = input.LA(1);
 
@@ -841,22 +933,22 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
             			    	switch (alt6) 
             			    	{
             			    	    case 1 :
-            			    	        // NumberFilter.g:53:13: COMMA
+            			    	        // NumberFilter.g:55:13: COMMA
             			    	        {
-            			    	        	COMMA19=(IToken)Match(input,COMMA,FOLLOW_COMMA_in_list246); 
-            			    	        		COMMA19_tree = (object)adaptor.Create(COMMA19);
-            			    	        		adaptor.AddChild(root_0, COMMA19_tree);
+            			    	        	COMMA22=(IToken)Match(input,COMMA,FOLLOW_COMMA_in_list264); 
+            			    	        		COMMA22_tree = (object)adaptor.Create(COMMA22);
+            			    	        		adaptor.AddChild(root_0, COMMA22_tree);
 
 
             			    	        }
             			    	        break;
             			    	    case 2 :
-            			    	        // NumberFilter.g:53:21: ( ( ENDLINE )+ )
+            			    	        // NumberFilter.g:55:21: ( ( ENDLINE )+ )
             			    	        {
-            			    	        	// NumberFilter.g:53:21: ( ( ENDLINE )+ )
-            			    	        	// NumberFilter.g:53:22: ( ENDLINE )+
+            			    	        	// NumberFilter.g:55:21: ( ( ENDLINE )+ )
+            			    	        	// NumberFilter.g:55:22: ( ENDLINE )+
             			    	        	{
-            			    	        		// NumberFilter.g:53:22: ( ENDLINE )+
+            			    	        		// NumberFilter.g:55:22: ( ENDLINE )+
             			    	        		int cnt5 = 0;
             			    	        		do 
             			    	        		{
@@ -872,11 +964,11 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
             			    	        		    switch (alt5) 
             			    	        			{
             			    	        				case 1 :
-            			    	        				    // NumberFilter.g:53:22: ENDLINE
+            			    	        				    // NumberFilter.g:55:22: ENDLINE
             			    	        				    {
-            			    	        				    	ENDLINE20=(IToken)Match(input,ENDLINE,FOLLOW_ENDLINE_in_list251); 
-            			    	        				    		ENDLINE20_tree = (object)adaptor.Create(ENDLINE20);
-            			    	        				    		adaptor.AddChild(root_0, ENDLINE20_tree);
+            			    	        				    	ENDLINE23=(IToken)Match(input,ENDLINE,FOLLOW_ENDLINE_in_list269); 
+            			    	        				    		ENDLINE23_tree = (object)adaptor.Create(ENDLINE23);
+            			    	        				    		adaptor.AddChild(root_0, ENDLINE23_tree);
 
 
             			    	        				    }
@@ -904,11 +996,11 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
             			    	}
 
             			    	 AddAndCondition(); 
-            			    	PushFollow(FOLLOW_factor_in_list258);
-            			    	factor21 = factor();
+            			    	PushFollow(FOLLOW_factor_in_list276);
+            			    	factor24 = factor();
             			    	state.followingStackPointer--;
 
-            			    	adaptor.AddChild(root_0, factor21.Tree);
+            			    	adaptor.AddChild(root_0, factor24.Tree);
 
             			    }
             			    break;
@@ -921,7 +1013,7 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
             	loop7:
             		;	// Stops C# compiler whining that label 'loop7' has no statements
 
-            	// NumberFilter.g:53:67: ( ENDLINE )*
+            	// NumberFilter.g:55:67: ( ENDLINE )*
             	do 
             	{
             	    int alt8 = 2;
@@ -936,11 +1028,11 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
             	    switch (alt8) 
             		{
             			case 1 :
-            			    // NumberFilter.g:53:67: ENDLINE
+            			    // NumberFilter.g:55:67: ENDLINE
             			    {
-            			    	ENDLINE22=(IToken)Match(input,ENDLINE,FOLLOW_ENDLINE_in_list264); 
-            			    		ENDLINE22_tree = (object)adaptor.Create(ENDLINE22);
-            			    		adaptor.AddChild(root_0, ENDLINE22_tree);
+            			    	ENDLINE25=(IToken)Match(input,ENDLINE,FOLLOW_ENDLINE_in_list282); 
+            			    		ENDLINE25_tree = (object)adaptor.Create(ENDLINE25);
+            			    		adaptor.AddChild(root_0, ENDLINE25_tree);
 
 
             			    }
@@ -988,7 +1080,7 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
     };
 
     // $ANTLR start "expr"
-    // NumberFilter.g:55:1: expr : list ;
+    // NumberFilter.g:57:1: expr : list ;
     public NumberFilterParser.expr_return expr() // throws RecognitionException [1]
     {   
         NumberFilterParser.expr_return retval = new NumberFilterParser.expr_return();
@@ -996,22 +1088,22 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
 
         object root_0 = null;
 
-        NumberFilterParser.list_return list23 = default(NumberFilterParser.list_return);
+        NumberFilterParser.list_return list26 = default(NumberFilterParser.list_return);
 
 
 
         try 
     	{
-            // NumberFilter.g:55:5: ( list )
-            // NumberFilter.g:55:7: list
+            // NumberFilter.g:57:5: ( list )
+            // NumberFilter.g:57:7: list
             {
             	root_0 = (object)adaptor.GetNilNode();
 
-            	PushFollow(FOLLOW_list_in_expr274);
-            	list23 = list();
+            	PushFollow(FOLLOW_list_in_expr292);
+            	list26 = list();
             	state.followingStackPointer--;
 
-            	adaptor.AddChild(root_0, list23.Tree);
+            	adaptor.AddChild(root_0, list26.Tree);
 
             }
 
@@ -1049,25 +1141,25 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
 	}
 
     const string DFA2_eotS =
-        "\x10\uffff";
+        "\x12\uffff";
     const string DFA2_eofS =
-        "\x01\uffff\x01\x0a\x09\uffff\x01\x02\x01\uffff\x01\x0a\x01\uffff"+
+        "\x01\uffff\x01\x0c\x0b\uffff\x01\x02\x01\uffff\x01\x0c\x01\uffff"+
         "\x01\x02";
     const string DFA2_minS =
-        "\x02\x04\x07\uffff\x01\x05\x01\uffff\x01\x04\x01\x05\x01\x04\x01"+
+        "\x02\x04\x09\uffff\x01\x05\x01\uffff\x01\x04\x01\x05\x01\x04\x01"+
         "\x05\x01\x04";
     const string DFA2_maxS =
-        "\x01\x0b\x01\x0d\x07\uffff\x01\x05\x01\uffff\x01\x0d\x01\x05\x01"+
-        "\x0d\x01\x05\x01\x0d";
+        "\x01\x0d\x01\x0f\x09\uffff\x01\x05\x01\uffff\x01\x0f\x01\x05\x01"+
+        "\x0f\x01\x05\x01\x0f";
     const string DFA2_acceptS =
         "\x02\uffff\x01\x02\x01\x03\x01\x04\x01\x05\x01\x06\x01\x07\x01"+
-        "\x08\x01\uffff\x01\x01\x05\uffff";
+        "\x08\x01\x09\x01\x0a\x01\uffff\x01\x01\x05\uffff";
     const string DFA2_specialS =
-        "\x10\uffff}>";
+        "\x12\uffff}>";
     static readonly string[] DFA2_transitionS = {
             "\x01\x02\x01\x01\x01\x03\x01\x04\x01\x05\x01\x06\x01\x07\x01"+
-            "\x08",
-            "\x01\x09\x09\x0a",
+            "\x08\x01\x09\x01\x0a",
+            "\x01\x0b\x0b\x0c",
             "",
             "",
             "",
@@ -1075,13 +1167,15 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
             "",
             "",
             "",
-            "\x01\x0b",
             "",
-            "\x01\x0c\x09\x02",
+            "",
             "\x01\x0d",
-            "\x01\x0e\x09\x0a",
+            "",
+            "\x01\x0e\x0b\x02",
             "\x01\x0f",
-            "\x01\x0c\x09\x02"
+            "\x01\x10\x0b\x0c",
+            "\x01\x11",
+            "\x01\x0e\x0b\x02"
     };
 
     static readonly short[] DFA2_eot = DFA.UnpackEncodedString(DFA2_eotS);
@@ -1110,7 +1204,7 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
 
         override public string Description
         {
-            get { return "34:1: element_no_negative : ( positive_number | interval | LT num1= number | GT num1= number | LE num1= number | GE num1= number | NE num1= number | EQ num1= number );"; }
+            get { return "34:1: element_no_negative : ( positive_number | interval | LT num1= number | GT num1= number | LE num1= number | GE num1= number | NE num1= number | EQ num1= number | T_NULL | T_NOT T_NULL );"; }
         }
 
     }
@@ -1118,30 +1212,30 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
     const string DFA3_eotS =
         "\x0b\uffff";
     const string DFA3_eofS =
-        "\x03\uffff\x01\x05\x02\uffff\x01\x02\x01\uffff\x01\x05\x01\uffff"+
+        "\x03\uffff\x01\x04\x02\uffff\x01\x02\x01\uffff\x01\x04\x01\uffff"+
         "\x01\x02";
     const string DFA3_minS =
-        "\x01\x04\x01\x05\x01\uffff\x01\x04\x01\x05\x01\uffff\x01\x04\x01"+
+        "\x01\x04\x01\x05\x01\uffff\x01\x04\x01\uffff\x01\x05\x01\x04\x01"+
         "\x05\x01\x04\x01\x05\x01\x04";
     const string DFA3_maxS =
-        "\x01\x0b\x01\x05\x01\uffff\x01\x0d\x01\x05\x01\uffff\x01\x0d\x01"+
-        "\x05\x01\x0d\x01\x05\x01\x0d";
+        "\x01\x0d\x01\x05\x01\uffff\x01\x0f\x01\uffff\x01\x05\x01\x0f\x01"+
+        "\x05\x01\x0f\x01\x05\x01\x0f";
     const string DFA3_acceptS =
-        "\x02\uffff\x01\x02\x02\uffff\x01\x01\x05\uffff";
+        "\x02\uffff\x01\x02\x01\uffff\x01\x01\x06\uffff";
     const string DFA3_specialS =
         "\x0b\uffff}>";
     static readonly string[] DFA3_transitionS = {
-            "\x01\x01\x07\x02",
+            "\x01\x01\x09\x02",
             "\x01\x03",
             "",
-            "\x01\x04\x09\x05",
-            "\x01\x06",
+            "\x01\x05\x0b\x04",
             "",
-            "\x01\x07\x09\x02",
+            "\x01\x06",
+            "\x01\x07\x0b\x02",
             "\x01\x08",
-            "\x01\x09\x09\x05",
+            "\x01\x09\x0b\x04",
             "\x01\x0a",
-            "\x01\x07\x09\x02"
+            "\x01\x07\x0b\x02"
     };
 
     static readonly short[] DFA3_eot = DFA.UnpackEncodedString(DFA3_eotS);
@@ -1170,7 +1264,7 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
 
         override public string Description
         {
-            get { return "45:1: element_maybe_negative : ( negative_number | element_no_negative );"; }
+            get { return "47:1: element_maybe_negative : ( negative_number | element_no_negative );"; }
         }
 
     }
@@ -1180,16 +1274,16 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
     const string DFA7_eofS =
         "\x02\x02\x02\uffff";
     const string DFA7_minS =
-        "\x01\x0c\x01\x04\x02\uffff";
+        "\x01\x0e\x01\x04\x02\uffff";
     const string DFA7_maxS =
-        "\x02\x0d\x02\uffff";
+        "\x02\x0f\x02\uffff";
     const string DFA7_acceptS =
         "\x02\uffff\x01\x02\x01\x01";
     const string DFA7_specialS =
         "\x04\uffff}>";
     static readonly string[] DFA7_transitionS = {
             "\x01\x03\x01\x01",
-            "\x08\x03\x01\uffff\x01\x01",
+            "\x0a\x03\x01\uffff\x01\x01",
             "",
             ""
     };
@@ -1220,7 +1314,7 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
 
         override public string Description
         {
-            get { return "()* loopback of 53:10: ( ( COMMA | ( ( ENDLINE )+ ) ) factor )*"; }
+            get { return "()* loopback of 55:10: ( ( COMMA | ( ( ENDLINE )+ ) ) factor )*"; }
         }
 
     }
@@ -1249,15 +1343,18 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
     public static readonly BitSet FOLLOW_number_in_element_no_negative178 = new BitSet(new ulong[]{0x0000000000000002UL});
     public static readonly BitSet FOLLOW_EQ_in_element_no_negative187 = new BitSet(new ulong[]{0x0000000000000030UL});
     public static readonly BitSet FOLLOW_number_in_element_no_negative191 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_negative_number_in_element_maybe_negative208 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_element_no_negative_in_element_maybe_negative216 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_element_maybe_negative_in_factor228 = new BitSet(new ulong[]{0x0000000000000FF2UL});
-    public static readonly BitSet FOLLOW_element_no_negative_in_factor230 = new BitSet(new ulong[]{0x0000000000000FF2UL});
-    public static readonly BitSet FOLLOW_factor_in_list241 = new BitSet(new ulong[]{0x0000000000003002UL});
-    public static readonly BitSet FOLLOW_COMMA_in_list246 = new BitSet(new ulong[]{0x0000000000000FF0UL});
-    public static readonly BitSet FOLLOW_ENDLINE_in_list251 = new BitSet(new ulong[]{0x0000000000002FF0UL});
-    public static readonly BitSet FOLLOW_factor_in_list258 = new BitSet(new ulong[]{0x0000000000003002UL});
-    public static readonly BitSet FOLLOW_ENDLINE_in_list264 = new BitSet(new ulong[]{0x0000000000002002UL});
-    public static readonly BitSet FOLLOW_list_in_expr274 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_T_NULL_in_element_no_negative200 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_T_NOT_in_element_no_negative208 = new BitSet(new ulong[]{0x0000000000001000UL});
+    public static readonly BitSet FOLLOW_T_NULL_in_element_no_negative210 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_negative_number_in_element_maybe_negative226 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_element_no_negative_in_element_maybe_negative234 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_element_maybe_negative_in_factor246 = new BitSet(new ulong[]{0x0000000000003FF2UL});
+    public static readonly BitSet FOLLOW_element_no_negative_in_factor248 = new BitSet(new ulong[]{0x0000000000003FF2UL});
+    public static readonly BitSet FOLLOW_factor_in_list259 = new BitSet(new ulong[]{0x000000000000C002UL});
+    public static readonly BitSet FOLLOW_COMMA_in_list264 = new BitSet(new ulong[]{0x0000000000003FF0UL});
+    public static readonly BitSet FOLLOW_ENDLINE_in_list269 = new BitSet(new ulong[]{0x000000000000BFF0UL});
+    public static readonly BitSet FOLLOW_factor_in_list276 = new BitSet(new ulong[]{0x000000000000C002UL});
+    public static readonly BitSet FOLLOW_ENDLINE_in_list282 = new BitSet(new ulong[]{0x0000000000008002UL});
+    public static readonly BitSet FOLLOW_list_in_expr292 = new BitSet(new ulong[]{0x0000000000000002UL});
 
 }

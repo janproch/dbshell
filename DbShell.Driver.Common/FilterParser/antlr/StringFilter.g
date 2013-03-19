@@ -27,6 +27,10 @@ element:
   | NARROW s1=string_lit { AddLikeCondition(false, ExtractString($s1.text), true);NegateLastCondition(); } 
   | DOLLAR s1=string_lit { AddLikeCondition(true, ExtractString($s1.text), false); } 
   | NDOLLAR s1=string_lit { AddLikeCondition(true, ExtractString($s1.text), false);NegateLastCondition(); } 
+  | T_NULL { AddIsNullCondition(); }
+  | T_NOT T_NULL { AddIsNotNullCondition(); }
+  | T_EMPTY { AddIsEmptyCondition(); }
+  | T_NOT T_EMPTY { AddIsNotEmptyCondition(); }
    ;
 
 factor:
@@ -51,6 +55,10 @@ ARROW:  '^';
 DOLLAR:  '$';
 NARROW:  '!^';
 NDOLLAR:  '!$';
+
+T_NULL: N U L L;
+T_NOT: N O T;
+T_EMPTY: E M P T Y;
  
 A_STRING:
 	  ('\''
@@ -70,8 +78,34 @@ Q_STRING:
 
 I_STRING: (~('-' | ' ' | '<' | '>' | '=' | '!' | '\r' | '\n' | '^' | '$' | '*' | ',' | '+' ))*;
 
-
 WHITESPACE : ( '\t' | ' ' | '\u000C' )+    { $channel = HIDDEN; } ;
 ENDLINE: ( '\r' | '\n' )+; 
  
 fragment DIGIT  : '0'..'9' ;
+
+fragment A: 'A';
+fragment B: 'B';
+fragment C: 'C';
+fragment D: 'D';
+fragment E: 'E';
+fragment F: 'F';
+fragment G: 'G';
+fragment H: 'H';
+fragment I: 'I';
+fragment J: 'J';
+fragment K: 'K';
+fragment L: 'L';
+fragment M: 'M';
+fragment N: 'N';
+fragment O: 'O';
+fragment P: 'P';
+fragment Q: 'Q';
+fragment R: 'R';
+fragment S: 'S';
+fragment T: 'T';
+fragment U: 'U';
+fragment V: 'V';
+fragment W: 'W';
+fragment X: 'X';
+fragment Y: 'Y';
+fragment Z: 'Z';

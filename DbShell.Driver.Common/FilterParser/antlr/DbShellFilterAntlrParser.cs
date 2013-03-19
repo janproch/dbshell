@@ -133,6 +133,35 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
         });
     }
 
+    public void AddIsNullCondition()
+    {
+        Conditions.Add(new DmlfIsNullCondition {Expr = ColumnValue});
+    }
+
+    public void AddIsNotNullCondition()
+    {
+        Conditions.Add(new DmlfIsNotNullCondition { Expr = ColumnValue });
+    }
+
+    public void AddIsEmptyCondition()
+    {
+        Conditions.Add(new DmlfEqualCondition
+            {
+                LeftExpr = new DmlfFuncCallExpression("LTRIM", new DmlfFuncCallExpression("RTRIM", ColumnValue)),
+                RightExpr = new DmlfStringExpression {Value = ""}
+            });
+    }
+
+    public void AddIsNotEmptyCondition()
+    {
+        Conditions.Add(new DmlfRelationCondition
+        {
+            LeftExpr = new DmlfFuncCallExpression("LTRIM", new DmlfFuncCallExpression("RTRIM", ColumnValue)),
+            RightExpr = new DmlfStringExpression { Value = "" },
+            Relation = "<>"
+        });
+    }
+
     public TimeSpan ParseTime(string term)
     {
         var m = Regex.Match(term, @"(\d?\d):(\d?\d)(:(\d?\d)(\.\d?\d?\d)?)?");
