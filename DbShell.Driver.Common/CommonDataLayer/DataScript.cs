@@ -7,7 +7,7 @@ using DbShell.Driver.Common.Structure;
 
 namespace DbShell.Driver.Common.CommonDataLayer
 {
-    public class DataScript
+    public class SingleTableDataScript
     {
         public readonly List<InsertAction> Inserts = new List<InsertAction>();
         public readonly List<UpdateAction> Updates = new List<UpdateAction>();
@@ -122,8 +122,8 @@ namespace DbShell.Driver.Common.CommonDataLayer
             {
                 return String.Format("UPDATE {0} {1} WHERE {2}", 
                     Table,
-                    DataScript.ActionBase.FormatColSet(Columns, Values),
-                    DataScript.ActionBase.FormatColSet(CondCols, CondValues));
+                    SingleTableDataScript.ActionBase.FormatColSet(Columns, Values),
+                    SingleTableDataScript.ActionBase.FormatColSet(CondCols, CondValues));
             }
         }
 
@@ -146,5 +146,19 @@ namespace DbShell.Driver.Common.CommonDataLayer
         //    progress.IncrementCount(SaveProgressMeasure.UpdatedRows, Updates.Count);
         //    foreach (var upd in Updates) progress.IncrementCount(SaveProgressMeasure.UpdatedFields, upd.Values.Length);
         //}
+    }
+
+    public class DataScript
+    {
+        public NameWithSchema MainTable;
+
+        public SingleTableDataScript MainChanges;
+        public MultiTableUpdateScript LinkedChanges;
+
+        public DataScript()
+        {
+            MainChanges = new SingleTableDataScript();
+            LinkedChanges = new MultiTableUpdateScript();
+        }
     }
 }

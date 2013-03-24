@@ -60,6 +60,7 @@
     <Compile Include="AbstractDb\GenericDatabase.cs" />
     <Compile Include="AbstractDb\IBulkInserter.cs" />
     <Compile Include="AbstractDb\ILiteralFormatter.cs" />
+    <Compile Include="CommonDataLayer\CdlChangeSet.cs" />
     <Compile Include="CommonDataLayer\CdlDataQueue.cs" />
     <Compile Include="CommonDataLayer\CdlDataQueueAdapter.cs" />
     <Compile Include="CommonDataLayer\CdlRecordProxy.cs" />
@@ -90,7 +91,6 @@
     <Compile Include="FilterParser\antlr\StringFilterLexer.cs" />
     <Compile Include="FilterParser\antlr\StringFilterParser.cs" />
     <Compile Include="FilterParser\FilterParser.cs" />
-    <Compile Include="Sql\ColumnDisplay.cs" />
     <Compile Include="Sql\SqlDumper.cs" />
     <Compile Include="Sql\SqlDumper_FmtUtils.cs" />
     <Compile Include="Sql\SqlDumper_Table.cs" />

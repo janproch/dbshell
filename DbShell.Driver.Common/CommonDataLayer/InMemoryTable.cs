@@ -39,7 +39,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
             m_structure = table.Clone();
         }
 
-        public InMemoryTable(InMemoryTable oldTable, DataScript script)
+        public InMemoryTable(InMemoryTable oldTable, SingleTableDataScript script)
         {
             Initialize();
             m_structure = oldTable.Structure.Clone();

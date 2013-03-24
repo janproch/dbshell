@@ -25,7 +25,7 @@ namespace DbShell.Driver.Common.Sql
             PutCmd("^delete ^from %f", name);
         }
 
-        public void UpdateData(TableInfo table, DataScript script)
+        public void UpdateData(TableInfo table, SingleTableDataScript script)
         {
             if (script == null) return;
             int delcnt = 0, inscnt = 0, updrows = 0, updflds = 0;

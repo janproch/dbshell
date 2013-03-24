@@ -215,7 +215,7 @@ namespace DbShell.Driver.Common.AbstractDb
         // table operations
         void TruncateTable(NameWithSchema name);
 
-        void UpdateData(TableInfo table, DataScript script);
+        void UpdateData(TableInfo table, SingleTableDataScript script);
         void UpdateData(MultiTableUpdateScript script);
     }
 }

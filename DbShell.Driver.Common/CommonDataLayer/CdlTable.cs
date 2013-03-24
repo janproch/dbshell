@@ -10,13 +10,16 @@ namespace DbShell.Driver.Common.CommonDataLayer
 {
     public class CdlTable : IInMemoryTable<CdlRow>
     {
-        TableInfo m_structure;
-        CdlValueConvertor m_convertor;
-        CdlValueConvertor m_defConvertor;
+        private TableInfo m_structure;
+        private CdlValueConvertor m_convertor;
+        private CdlValueConvertor m_defConvertor;
 
         //private ColumnDisplayInfoCollection m_columnDisplay;
 
-        public TableInfo Structure { get { return m_structure; } }
+        public TableInfo Structure
+        {
+            get { return m_structure; }
+        }
 
         public CdlRowCollection Rows { get; private set; }
 
@@ -42,7 +45,10 @@ namespace DbShell.Driver.Common.CommonDataLayer
         //// readundant information, for more comfortable work
         //public List<DmlfColumnRef> RealColumnsEx { get; private set; }
 
-        IRowCollection<CdlRow> IInMemoryTable<CdlRow>.Rows { get { return this.Rows; } }
+        IRowCollection<CdlRow> IInMemoryTable<CdlRow>.Rows
+        {
+            get { return this.Rows; }
+        }
 
         public event CdlRowEventHandler AddedRow;
         public event CdlRowEventHandler RemovedRow;
@@ -75,12 +81,12 @@ namespace DbShell.Driver.Common.CommonDataLayer
 
         internal void NotifyAddedRow(CdlRow row)
         {
-            if (AddedRow != null) AddedRow(this, new CdlRowEventArgs { Row = row });
+            if (AddedRow != null) AddedRow(this, new CdlRowEventArgs {Row = row});
         }
 
         internal void NotifyRemovedRow(CdlRow row)
         {
-            if (RemovedRow != null) RemovedRow(this, new CdlRowEventArgs { Row = row });
+            if (RemovedRow != null) RemovedRow(this, new CdlRowEventArgs {Row = row});
         }
 
         public void AddRow(ICdlRecord record)
@@ -107,13 +113,13 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public InMemoryTable ToInMemoryTable()
         {
             return InMemoryTable.FromEnumerable(m_structure,
-                from row in Rows
-                where row.RowState != CdlRowState.Detached && row.RowState != CdlRowState.Deleted
-                select row
+                                                from row in Rows
+                                                where row.RowState != CdlRowState.Detached && row.RowState != CdlRowState.Deleted
+                                                select row
                 );
         }
 
-        public void RunScript(DataScript script)
+        public void RunScript(SingleTableDataScript script)
         {
             foreach (var del in script.Deletes)
             {
@@ -146,9 +152,9 @@ namespace DbShell.Driver.Common.CommonDataLayer
             }
         }
 
-        public DataScript GetBaseModifyScript()
+        public SingleTableDataScript GetBaseModifyScript()
         {
-            DataScript res = new DataScript();
+            SingleTableDataScript res = new SingleTableDataScript();
             DmlfColumnRef[] wherecols = GetBaseWhereCols();
             foreach (var row in Rows)
             {
@@ -206,10 +212,10 @@ namespace DbShell.Driver.Common.CommonDataLayer
                     }
                     var pk = pks[src];
                     res.Update(src == DmlfSource.BaseTable ? basetable : src.TableOrView,
-                        (from c in pk select c.ColumnName).ToArray(),
-                        row.Original.GetValuesByCols(pk.ToArray(), ResultFields),
-                        (from c in cols select c.ColumnName).ToArray(),
-                        row.GetValuesByCols(cols.ToArray()));
+                               (from c in pk select c.ColumnName).ToArray(),
+                               row.Original.GetValuesByCols(pk.ToArray(), ResultFields),
+                               (from c in cols select c.ColumnName).ToArray(),
+                               row.GetValuesByCols(cols.ToArray()));
                 }
             }
 
@@ -222,7 +228,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
             {
                 row.RevertChanges();
             }
-            for (int i = 0; i < Rows.Count; )
+            for (int i = 0; i < Rows.Count;)
             {
                 var row = Rows[i];
                 if (row.RowState == CdlRowState.Added) Rows.RemoveAt(i);
@@ -264,6 +270,103 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 res.AddRow(Rows[i]);
             }
             return res;
+        }
+
+        public void AddChangesToChangeSet(CdlChangeSet changeSet, string[] colNames, int[] pk)
+        {
+            foreach (var row in Rows)
+            {
+                switch (row.RowState)
+                {
+                    case CdlRowState.Unchanged:
+                        continue;
+                    case CdlRowState.Added:
+                        {
+                            var values = new CdlChangeSet.RowValues();
+                            for (int i = 0; i < colNames.Length; i++)
+                            {
+                                if (!row.IsChanged(i)) continue;
+                                values.ChangedItems.Add(new CdlChangeSet.RowValues.Item
+                                    {
+                                        Column = colNames[i],
+                                        Value = row[i],
+                                    });
+                            }
+                            changeSet.ChangedRows.Add(values);
+                        }
+                        break;
+                    case CdlRowState.Modified:
+                        {
+                            object[] pkVals = row.Original.GetValuesByCols(pk);
+                            var values = changeSet.FindValuesByKey(pkVals);
+                            if (values == null)
+                            {
+                                values = new CdlChangeSet.RowValues
+                                    {
+                                        UpdateKey = pkVals,
+                                    };
+                            }
+                            for (int i = 0; i < colNames.Length; i++)
+                            {
+                                if (!row.IsChanged(i)) continue;
+                                values.ChangedItems.Add(new CdlChangeSet.RowValues.Item
+                                    {
+                                        Column = colNames[i],
+                                        Value = row[i],
+                                    });
+                            }
+                            changeSet.ChangedRows.Add(values);
+                        }
+                        break;
+                    case CdlRowState.Deleted:
+                        {
+                            object[] pkVals = row.Original.GetValuesByCols(pk);
+                            changeSet.DeletedRows.Add(pkVals);
+                        }
+                        break;
+                }
+            }
+        }
+
+
+        public void ApplyChangesFromChangeSet(CdlChangeSet changeSet, bool removeFromChangeSet, string[] colNames, int[] pk)
+        {
+            var dct = CdlChangeSet.CreateTableDict(this, pk);
+
+            foreach (var pkVal in changeSet.DeletedRows.ToArray())
+            {
+                string key = CdlChangeSet.GetPkString(pkVal);
+                if (dct.ContainsKey(key))
+                {
+                    dct[key].RowState = CdlRowState.Deleted;
+                    if (removeFromChangeSet) changeSet.DeletedRows.Remove(pkVal);
+                }
+            }
+
+            foreach (var change in changeSet.ChangedRows.ToArray())
+            {
+                if (change.UpdateKey != null)
+                {
+                    string key = CdlChangeSet.GetPkString(change.UpdateKey);
+                    if (dct.ContainsKey(key))
+                    {
+                        var row = dct[key];
+                        foreach (var item in change.ChangedItems.ToArray())
+                        {
+                            int index = colNames.IndexOfEx(item.Column);
+                            if (index >= 0)
+                            {
+                                row[index] = item.Value;
+                                if (removeFromChangeSet) change.ChangedItems.Remove(item);
+                            }
+                        }
+                        if (removeFromChangeSet && change.ChangedItems.Count == 0)
+                        {
+                            changeSet.ChangedRows.Remove(change);
+                        }
+                    }
+                }
+            }
         }
     }
 }
