@@ -282,26 +282,27 @@ namespace DbShell.Driver.Common.CommonDataLayer
                         continue;
                     case CdlRowState.Added:
                         {
-                            var values = new CdlChangeSet.RowValues();
+                            var values = new CdlChangeSet.InsertedRowValues();
                             for (int i = 0; i < colNames.Length; i++)
                             {
                                 if (!row.IsChanged(i)) continue;
-                                values.ChangedItems.Add(new CdlChangeSet.RowValues.Item
+                                values.ChangedItems.Add(new CdlChangeSet.RowValuesBase.Item
                                     {
                                         Column = colNames[i],
                                         Value = row[i],
                                     });
                             }
-                            changeSet.ChangedRows.Add(values);
+                            changeSet.InsertedRows.Add(values);
                         }
                         break;
                     case CdlRowState.Modified:
                         {
+                            if (pk == null) throw new Exception("DBSH-00000 PK required");
                             object[] pkVals = row.Original.GetValuesByCols(pk);
                             var values = changeSet.FindValuesByKey(pkVals);
                             if (values == null)
                             {
-                                values = new CdlChangeSet.RowValues
+                                values = new CdlChangeSet.UpdatedRowValues
                                     {
                                         UpdateKey = pkVals,
                                     };
@@ -309,17 +310,18 @@ namespace DbShell.Driver.Common.CommonDataLayer
                             for (int i = 0; i < colNames.Length; i++)
                             {
                                 if (!row.IsChanged(i)) continue;
-                                values.ChangedItems.Add(new CdlChangeSet.RowValues.Item
+                                values.ChangedItems.Add(new CdlChangeSet.RowValuesBase.Item
                                     {
                                         Column = colNames[i],
                                         Value = row[i],
                                     });
                             }
-                            changeSet.ChangedRows.Add(values);
+                            changeSet.UpdatedRows.Add(values);
                         }
                         break;
                     case CdlRowState.Deleted:
                         {
+                            if (pk == null) throw new Exception("DBSH-00000 PK required");
                             object[] pkVals = row.Original.GetValuesByCols(pk);
                             changeSet.DeletedRows.Add(pkVals);
                         }
@@ -327,7 +329,6 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 }
             }
         }
-
 
         public void ApplyChangesFromChangeSet(CdlChangeSet changeSet, bool removeFromChangeSet, string[] colNames, int[] pk)
         {
@@ -343,7 +344,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 }
             }
 
-            foreach (var change in changeSet.ChangedRows.ToArray())
+            foreach (var change in changeSet.UpdatedRows.ToArray())
             {
                 if (change.UpdateKey != null)
                 {
@@ -362,9 +363,31 @@ namespace DbShell.Driver.Common.CommonDataLayer
                         }
                         if (removeFromChangeSet && change.ChangedItems.Count == 0)
                         {
-                            changeSet.ChangedRows.Remove(change);
+                            changeSet.UpdatedRows.Remove(change);
                         }
                     }
+                }
+            }
+        }
+
+        public void ApplyAddedRowsFromChangeSet(CdlChangeSet changeSet, bool removeFromChangeSet, string[] colNames)
+        {
+            foreach(var change in changeSet.InsertedRows.ToArray())
+            {
+                var row = NewRow();
+                Rows.Add(row);
+                foreach (var item in change.ChangedItems.ToArray())
+                {
+                    int index = colNames.IndexOfEx(item.Column);
+                    if (index >= 0)
+                    {
+                        row[index] = item.Value;
+                        if (removeFromChangeSet) change.ChangedItems.Remove(item);
+                    }
+                }
+                if (removeFromChangeSet && change.ChangedItems.Count == 0)
+                {
+                    changeSet.InsertedRows.Remove(change);
                 }
             }
         }

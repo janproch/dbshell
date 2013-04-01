@@ -10,7 +10,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
 {
     public class CdlChangeSet
     {
-        public class RowValues
+        public class RowValuesBase
         {
             public class Item
             {
@@ -18,16 +18,12 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 public object Value;
             }
 
-            public object[] UpdateKey; // if NULL, it is insert
             public List<Item> ChangedItems = new List<Item>();
+        }
 
-            public RowValues Clone()
-            {
-                var res = new RowValues();
-                res.ChangedItems.AddRange(ChangedItems);
-                res.UpdateKey = UpdateKey;
-                return res;
-            }
+        public class UpdatedRowValues : RowValuesBase
+        {
+            public object[] UpdateKey; // if NULL, it is insert
 
             private string _updateKeyString;
 
@@ -42,16 +38,38 @@ namespace DbShell.Driver.Common.CommonDataLayer
                     return _updateKeyString;
                 }
             }
+
+            public UpdatedRowValues Clone()
+            {
+                var res = new UpdatedRowValues();
+                res.ChangedItems.AddRange(ChangedItems);
+                res.UpdateKey = UpdateKey;
+                return res;
+            }
+        }
+
+        public class InsertedRowValues : RowValuesBase
+        {
+            public int InsertIndex;
+
+            public InsertedRowValues Clone()
+            {
+                var res = new InsertedRowValues();
+                res.ChangedItems.AddRange(ChangedItems);
+                res.InsertIndex = InsertIndex;
+                return res;
+            }
         }
 
         public List<object[]> DeletedRows = new List<object[]>();
-        public List<RowValues> ChangedRows = new List<RowValues>();
+        public List<UpdatedRowValues> UpdatedRows = new List<UpdatedRowValues>();
+        public List<InsertedRowValues> InsertedRows = new List<InsertedRowValues>();
 
         public CdlChangeSet Clone()
         {
             var res = new CdlChangeSet();
             res.DeletedRows.AddRange(DeletedRows);
-            foreach(var values in ChangedRows) res.ChangedRows.Add(values.Clone());
+            foreach(var values in UpdatedRows) res.UpdatedRows.Add(values.Clone());
             return res;
         }
 
@@ -71,10 +89,10 @@ namespace DbShell.Driver.Common.CommonDataLayer
             return dct;
         }
 
-        public RowValues FindValuesByKey(object[] key)
+        public UpdatedRowValues FindValuesByKey(object[] key)
         {
             string skey = GetPkString(key);
-            foreach (var values in ChangedRows)
+            foreach (var values in UpdatedRows)
             {
                 if (values.UpdateKey != null && values.UpdateKeyString == skey)
                 {
@@ -112,7 +130,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         //}
         public bool HasChanges()
         {
-            return ChangedRows.Count > 0 || DeletedRows.Count > 0;
+            return UpdatedRows.Count > 0 || DeletedRows.Count > 0;
         }
     }
 }
