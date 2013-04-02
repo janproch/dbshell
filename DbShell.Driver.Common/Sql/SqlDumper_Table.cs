@@ -22,7 +22,7 @@ namespace DbShell.Driver.Common.Sql
 
         public virtual void TruncateTable(NameWithSchema name)
         {
-            PutCmd("^delete ^from %f", name);
+            Put("^delete ^from %f;&n", name);
         }
 
         public void UpdateData(TableInfo table, SingleTableDataScript script)
@@ -34,7 +34,7 @@ namespace DbShell.Driver.Common.Sql
             {
                 Put("^delete ^from %f", table.FullName);
                 Where(table.FullName, del.CondCols, del.CondValues);
-                EndCommand();
+                Put(";&n");
                 delcnt++;
             }
             foreach (var upd in script.Updates)
@@ -46,7 +46,7 @@ namespace DbShell.Driver.Common.Sql
                     Put("%i=%v", upd.Columns[i], new ValueTypeHolder(upd.Values[i], table.Columns[upd.Columns[i]].CommonType));
                 }
                 Where(table.FullName, upd.CondCols, upd.CondValues);
-                EndCommand();
+                Put(";&n");
                 updrows++;
                 updflds += upd.Values.Length;
             }
@@ -72,7 +72,7 @@ namespace DbShell.Driver.Common.Sql
                 {
                     vals[i] = new ValueTypeHolder(ins.Values[i], table.Columns[ins.Columns[i]].CommonType);
                 }
-                PutCmd("^insert ^into %f (%,i) ^values (%,v)", table.FullName, ins.Columns, vals);
+                Put("^insert ^into %f (%,i) ^values (%,v);&n", table.FullName, ins.Columns, vals);
                 inscnt++;
             }
             if (isIdentityInsert) AllowIdentityInsert(table.FullName, false);
@@ -91,7 +91,7 @@ namespace DbShell.Driver.Common.Sql
                     Put("%i=%v", upd.Columns[i], upd.Values[i]);
                 }
                 Where(upd.Table, upd.CondCols, upd.CondValues);
-                EndCommand();
+                Put(";&n");
                 updrows++;
                 updflds += upd.Values.Length;
             }
