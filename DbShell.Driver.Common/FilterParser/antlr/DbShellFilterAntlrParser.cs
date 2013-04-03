@@ -112,12 +112,25 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
 
     public void AddDateTimeIntervalCondition(DateTime left, DateTime right)
     {
-        Conditions.Add(new DmlfBetweenCondition
+        var and = new DmlfAndCondition();
+        and.Conditions.Add(new DmlfRelationCondition
             {
-                Expr = ColumnValue,
-                LowerBound = new DmlfLiteralExpression {Value = left.ToString("s")},
-                UpperBound = new DmlfLiteralExpression {Value = right.ToString("s")},
+                LeftExpr = ColumnValue, Relation = ">=", RightExpr = new DmlfLiteralExpression {Value = left.ToString("s")}
             });
+        and.Conditions.Add(new DmlfRelationCondition
+        {
+            LeftExpr = ColumnValue,
+            Relation = "<",
+            RightExpr = new DmlfLiteralExpression { Value = right.ToString("s") }
+        });
+        Conditions.Add(and);
+
+        //Conditions.Add(new DmlfBetweenCondition
+        //    {
+        //        Expr = ColumnValue,
+        //        LowerBound = new DmlfLiteralExpression {Value = left.ToString("s")},
+        //        UpperBound = new DmlfLiteralExpression {Value = right.ToString("s")},
+        //    });
     }
 
     public void AddDateTimeNotIntervalCondition(DateTime left, DateTime right)
@@ -279,12 +292,16 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
 
     public void AddFlowMonthCondition(string term)
     {
-        AddMonthCondition(Int32.Parse(term.Substring(0, term.Length - 1)));
+        int month = Int32.Parse(term.Substring(0, term.Length - 1));
+        AddDateTimeIntervalCondition(new DateTime(Now.Year, month, 1), new DateTime(Now.Year, month, 1).AddMonths(1));
+        //AddMonthCondition(Int32.Parse(term.Substring(0, term.Length - 1)));
     }
 
     public void AddFlowDayCondition(string term)
     {
-        AddDayCondition(Int32.Parse(term.Substring(0, term.Length - 1)));
+        int day = Int32.Parse(term.Substring(0, term.Length - 1));
+        AddDateTimeIntervalCondition(new DateTime(Now.Year, Now.Month, day), new DateTime(Now.Year, Now.Month, day).AddDays(1));
+        //AddDayCondition(Int32.Parse(term.Substring(0, term.Length - 1)));
     }
 
     public void AddAnyMinuteCondition(string term)
