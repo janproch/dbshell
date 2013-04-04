@@ -37,7 +37,7 @@ namespace DbShell.Driver.Common.Structure
         public string BaseSchemaName { get; set; }
         public string BaseTableName { get; set; }
 
-        public ColumnInfo FindOriginalColumn(DatabaseInfo db, DmlfSelect select)
+        public ColumnInfo FindOriginalColumn(DatabaseInfo db, NameWithSchema baseName)
         {
             string name = IsAliased ? BaseColumnName : Name;
             if (name == null) return null;
@@ -50,7 +50,7 @@ namespace DbShell.Driver.Common.Structure
             }
             else
             {
-                if (select.From.Source.TableOrView != null) table = db.FindTable(select.From.Source.TableOrView.Schema, select.From.Source.TableOrView.Name);
+                if (baseName != null) table = db.FindTable(baseName.Schema, baseName.Name);
             }
             if (table == null) return null;
 
