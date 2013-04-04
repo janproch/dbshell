@@ -14,5 +14,6 @@ namespace DbShell.Driver.Common.AbstractDb
         ISqlDialect CreateDialect();
         IBulkInserter CreateBulkInserter();
         ILiteralFormatter CreateLiteralFormatter();
+        IStatisticsProvider CreateStatisticsProvider();
     }
 }

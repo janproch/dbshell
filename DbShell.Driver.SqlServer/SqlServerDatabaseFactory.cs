@@ -61,5 +61,10 @@ namespace DbShell.Driver.SqlServer
         {
             return new SqlServerSqlDumper(stream, this, props);
         }
+
+        public override IStatisticsProvider CreateStatisticsProvider()
+        {
+            return new SqlServerStatisticsProvider();
+        }
     }
 }

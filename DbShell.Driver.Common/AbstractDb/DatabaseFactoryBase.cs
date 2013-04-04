@@ -41,5 +41,10 @@ namespace DbShell.Driver.Common.AbstractDb
         {
             return new LiteralFormatterBase(this);
         }
+
+        public virtual IStatisticsProvider CreateStatisticsProvider()
+        {
+            return null;
+        }
     }
 }
