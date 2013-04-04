@@ -240,25 +240,29 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
     {
         bool isYear;
         var dt = ParseDate(date, out isYear);
-        if (isYear)
-        {
-            AddDateTimeIntervalCondition(dt, dt + TimeSpan.FromDays(1));
-            return;
-        }
-        var cond = new DmlfAndCondition();
 
-        cond.Conditions.Add(new DmlfEqualCondition
-            {
-                LeftExpr = new DmlfFuncCallExpression("MONTH", ColumnValue),
-                RightExpr = new DmlfLiteralExpression {Value = dt.Month},
-            });
-        cond.Conditions.Add(new DmlfEqualCondition
-        {
-            LeftExpr = new DmlfFuncCallExpression("DAY", ColumnValue),
-            RightExpr = new DmlfLiteralExpression { Value = dt.Day },
-        });
+        AddDateTimeIntervalCondition(dt, dt + TimeSpan.FromDays(1));
 
-        Conditions.Add(cond);
+        //TODO: make option to allow this
+        //if (isYear)
+        //{
+        //    AddDateTimeIntervalCondition(dt, dt + TimeSpan.FromDays(1));
+        //    return;
+        //}
+        //var cond = new DmlfAndCondition();
+
+        //cond.Conditions.Add(new DmlfEqualCondition
+        //    {
+        //        LeftExpr = new DmlfFuncCallExpression("MONTH", ColumnValue),
+        //        RightExpr = new DmlfLiteralExpression {Value = dt.Month},
+        //    });
+        //cond.Conditions.Add(new DmlfEqualCondition
+        //{
+        //    LeftExpr = new DmlfFuncCallExpression("DAY", ColumnValue),
+        //    RightExpr = new DmlfLiteralExpression { Value = dt.Day },
+        //});
+
+        //Conditions.Add(cond);
     }
 
     public string Errors { get { return _errors; } }
@@ -294,6 +298,7 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
     {
         int month = Int32.Parse(term.Substring(0, term.Length - 1));
         AddDateTimeIntervalCondition(new DateTime(Now.Year, month, 1), new DateTime(Now.Year, month, 1).AddMonths(1));
+        //TODO: make option to allow this
         //AddMonthCondition(Int32.Parse(term.Substring(0, term.Length - 1)));
     }
 
@@ -301,6 +306,7 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
     {
         int day = Int32.Parse(term.Substring(0, term.Length - 1));
         AddDateTimeIntervalCondition(new DateTime(Now.Year, Now.Month, day), new DateTime(Now.Year, Now.Month, day).AddDays(1));
+        //TODO: make option to allow this
         //AddDayCondition(Int32.Parse(term.Substring(0, term.Length - 1)));
     }
 
