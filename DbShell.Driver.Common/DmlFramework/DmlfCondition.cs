@@ -178,8 +178,14 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             Conditions = new DmlfList<DmlfConditionBase>();
         }
-        public virtual void GenSqlBegin(ISqlDumper dmp) { }
-        public virtual void GenSqlEnd(ISqlDumper dmp) { }
+        public virtual void GenSqlBegin(ISqlDumper dmp)
+        {
+            dmp.Put("(");
+        }
+        public virtual void GenSqlEnd(ISqlDumper dmp)
+        {
+            dmp.Put(")");
+        }
         public abstract void GenSqlConjuction(ISqlDumper dmp);
         public abstract void GenSqlEmpty(ISqlDumper dmp);
         public virtual void GenSqlItem(DmlfConditionBase item, ISqlDumper dmp, IDmlfHandler handler)
@@ -215,7 +221,7 @@ namespace DbShell.Driver.Common.DmlFramework
         }
         public override void GenSqlEmpty(ISqlDumper dmp)
         {
-            dmp.Put("1=1");
+            dmp.Put("(1=1)");
         }
     }
 
@@ -227,7 +233,7 @@ namespace DbShell.Driver.Common.DmlFramework
         }
         public override void GenSqlEmpty(ISqlDumper dmp)
         {
-            dmp.Put("1=0");
+            dmp.Put("(1=0)");
         }
     }
 
@@ -235,7 +241,7 @@ namespace DbShell.Driver.Common.DmlFramework
     {
         public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
         {
-            dmp.Put("1=0");
+            dmp.Put("(1=0)");
         }
     }
 }
