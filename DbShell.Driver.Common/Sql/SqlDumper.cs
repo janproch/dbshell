@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Structure;
 
@@ -68,5 +69,31 @@ namespace DbShell.Driver.Common.Sql
         public virtual void AlterDatabaseOptions(string dbname, Dictionary<string, string> options)
         {
         }
+
+        public virtual void CreateView(ViewInfo obj)
+        {
+            WriteRaw(obj.QueryText);
+            EndCommand();
+        }
+
+        public virtual void DropView(ViewInfo obj)
+        {
+            PutCmd("^drop ^view  %f", obj.FullName);
+        }
+
+        public virtual void AlterView(ViewInfo obj)
+        {
+            WriteRaw(Regex.Replace(obj.QueryText, @"create\s+view", "ALTER VIEW", RegexOptions.IgnoreCase));
+            EndCommand();
+        }
+
+        public virtual void ChangeViewSchema(ViewInfo obj, string newschema)
+        {
+        }
+
+        public virtual void RenameView(ViewInfo obj, string newname)
+        {
+        }
+
     }
 }

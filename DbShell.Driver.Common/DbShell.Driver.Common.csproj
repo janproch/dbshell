@@ -58,6 +58,7 @@
     <Compile Include="AbstractDb\DialectExtension.cs" />
     <Compile Include="AbstractDb\FactoryProvider.cs" />
     <Compile Include="AbstractDb\GenericDatabase.cs" />
+    <Compile Include="AbstractDb\IAlterProcessor.cs" />
     <Compile Include="AbstractDb\IBulkInserter.cs" />
     <Compile Include="AbstractDb\ILiteralFormatter.cs" />
     <Compile Include="AbstractDb\IStatisticsProvider.cs" />

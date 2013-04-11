@@ -19,5 +19,15 @@ namespace DbShell.Driver.SqlServer
         {
             Put("^set ^identity_insert %f %k;&n", table, allow ? "on" : "off");
         }
+
+        public override void RenameView(ViewInfo obj, string newname)
+        {
+            PutCmd("execute sp_rename '%f', '%s', 'OBJECT'", obj.FullName, newname);
+        }
+
+        public override void ChangeViewSchema(ViewInfo obj, string newschema)
+        {
+            PutCmd("execute sp_changeobjectowner '%f', '%s'", obj.FullName, newschema);
+        }
     }
 }

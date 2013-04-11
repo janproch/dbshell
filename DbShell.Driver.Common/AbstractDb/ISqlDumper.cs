@@ -184,7 +184,7 @@ namespace DbShell.Driver.Common.AbstractDb
         DropReferences = 2,
     }
 
-    public interface ISqlDumper
+    public interface ISqlDumper : IAlterProcessor
     {
         /// <summary>
         /// returns underlying SQL stream
