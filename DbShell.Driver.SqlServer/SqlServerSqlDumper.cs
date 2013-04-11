@@ -20,14 +20,44 @@ namespace DbShell.Driver.SqlServer
             Put("^set ^identity_insert %f %k;&n", table, allow ? "on" : "off");
         }
 
-        public override void RenameView(ViewInfo obj, string newname)
+        private void RenameObject(NamedObjectInfo obj, string newname)
         {
             PutCmd("execute sp_rename '%f', '%s', 'OBJECT'", obj.FullName, newname);
         }
 
-        public override void ChangeViewSchema(ViewInfo obj, string newschema)
+        private void ChangeObjectSchema(NamedObjectInfo obj, string newschema)
         {
             PutCmd("execute sp_changeobjectowner '%f', '%s'", obj.FullName, newschema);
+        }
+
+        public override void RenameView(ViewInfo obj, string newname)
+        {
+            RenameObject(obj, newname);
+        }
+
+        public override void ChangeViewSchema(ViewInfo obj, string newschema)
+        {
+            ChangeObjectSchema(obj, newschema);
+        }
+
+        public override void RenameFunction(FunctionInfo obj, string newname)
+        {
+            RenameObject(obj, newname);
+        }
+
+        public override void ChangeFunctionSchema(FunctionInfo obj, string newschema)
+        {
+            ChangeObjectSchema(obj, newschema);
+        }
+
+        public override void RenameStoredProcedure(StoredProcedureInfo obj, string newname)
+        {
+            RenameObject(obj, newname);
+        }
+
+        public override void ChangeStoredProcedureSchema(StoredProcedureInfo obj, string newschema)
+        {
+            ChangeObjectSchema(obj, newschema);
         }
     }
 }

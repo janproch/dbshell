@@ -89,11 +89,86 @@ namespace DbShell.Driver.Common.Sql
 
         public virtual void ChangeViewSchema(ViewInfo obj, string newschema)
         {
+            throw new System.NotImplementedException();
         }
 
         public virtual void RenameView(ViewInfo obj, string newname)
         {
+            throw new System.NotImplementedException();
         }
 
+        public virtual void CreateStoredProcedure(StoredProcedureInfo obj)
+        {
+            WriteRaw(obj.SqlText);
+            EndCommand();
+        }
+
+        public virtual void DropStoredProcedure(StoredProcedureInfo obj)
+        {
+            PutCmd("^drop ^procedure  %f", obj.FullName);
+        }
+
+        public virtual void AlterStoredProcedure(StoredProcedureInfo obj)
+        {
+            WriteRaw(Regex.Replace(obj.SqlText, @"create\s+procedure", "ALTER PROCEDURE", RegexOptions.IgnoreCase));
+            EndCommand();
+        }
+
+        public virtual void ChangeStoredProcedureSchema(StoredProcedureInfo obj, string newschema)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public virtual void RenameStoredProcedure(StoredProcedureInfo obj, string newname)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public virtual void CreateFunction(FunctionInfo obj)
+        {
+            WriteRaw(obj.SqlText);
+            EndCommand();
+        }
+
+        public virtual void DropFunction(FunctionInfo obj)
+        {
+            PutCmd("^drop ^function %f", obj.FullName);
+        }
+
+        public virtual void AlterFunction(FunctionInfo obj)
+        {
+            WriteRaw(Regex.Replace(obj.SqlText, @"create\s+function", "ALTER FUNCTION", RegexOptions.IgnoreCase));
+            EndCommand();
+        }
+
+        public virtual void ChangeFunctionSchema(FunctionInfo obj, string newschema)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public virtual void RenameFunction(FunctionInfo obj, string newname)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public virtual void CreateTable(TableInfo obj)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public virtual void DropTable(TableInfo obj)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public virtual void ChangeTableSchema(NameWithSchema obj, string schema)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public virtual void RenameTable(NameWithSchema obj, string newname)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
