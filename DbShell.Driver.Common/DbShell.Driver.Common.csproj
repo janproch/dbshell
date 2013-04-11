@@ -92,6 +92,9 @@
     <Compile Include="FilterParser\antlr\StringFilterLexer.cs" />
     <Compile Include="FilterParser\antlr\StringFilterParser.cs" />
     <Compile Include="FilterParser\FilterParser.cs" />
+    <Compile Include="Structure\FunctionInfo.cs" />
+    <Compile Include="Structure\ParameterInfo.cs" />
+    <Compile Include="Structure\ProgrammableInfo.cs" />
     <Compile Include="Sql\SqlDumper.cs" />
     <Compile Include="Sql\SqlDumper_FmtUtils.cs" />
     <Compile Include="Sql\SqlDumper_Table.cs" />
@@ -150,6 +153,7 @@
     <Compile Include="Structure\PropertyBag.cs" />
     <Compile Include="Structure\QueryResultColumnInfo.cs" />
     <Compile Include="Structure\QueryResultInfo.cs" />
+    <Compile Include="Structure\StoredProcedureInfo.cs" />
     <Compile Include="Structure\TableObjectInfo.cs" />
     <Compile Include="Structure\ViewInfo.cs" />
     <Compile Include="CommonDataLayer\CdlFileStorage.cs" />

@@ -11,6 +11,8 @@ namespace DbShell.Driver.Common.Structure
     {
         private List<TableInfo> _tables = new List<TableInfo>();
         private List<ViewInfo> _views = new List<ViewInfo>();
+        private List<FunctionInfo> _functions = new List<FunctionInfo>();
+        private List<StoredProcedureInfo> _storedProcedures = new List<StoredProcedureInfo>();
 
         /// <summary>
         /// List of tables
@@ -18,6 +20,11 @@ namespace DbShell.Driver.Common.Structure
         public List<TableInfo> Tables { get { return _tables; } }
 
         public List<ViewInfo> Views { get { return _views; } }
+
+        public List<StoredProcedureInfo> StoredProcedures { get { return _storedProcedures; } }
+
+        public List<FunctionInfo> Functions { get { return _functions; } }
+
 
         public TableInfo FindTable(string table)
         {

@@ -167,6 +167,64 @@ namespace DbShell.Driver.SqlServer
                 }
             }
 
+            var programmables = new Dictionary<NameWithSchema, ProgrammableInfo>();
+
+            // load procedures and functions
+            using (var cmd = Connection.CreateCommand())
+            {
+                cmd.CommandText = "SELECT ROUTINE_SCHEMA, ROUTINE_NAME, ROUTINE_TYPE FROM INFORMATION_SCHEMA.ROUTINES";
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var name = new NameWithSchema(reader.SafeString("ROUTINE_SCHEMA"), reader.SafeString("ROUTINE_NAME"));
+                        ProgrammableInfo info = null;
+                        switch (reader.SafeString("ROUTINE_TYPE"))
+                        {
+                            case "PROCEDURE":
+                                info = new StoredProcedureInfo(Result);
+                                break;
+                            case "FUNCTION":
+                                info = new FunctionInfo(Result);
+                                break;
+                        }
+                        if (info == null) continue;
+                        programmables[name] = info;
+                        info.FullName = name;
+                        if (objs.ContainsKey(name)) info.SqlText = objs[name];
+                        if (info is StoredProcedureInfo) Result.StoredProcedures.Add((StoredProcedureInfo) info);
+                        if (info is FunctionInfo) Result.Functions.Add((FunctionInfo) info);
+                    }
+                }
+            }
+
+            // load parameters
+            using (var cmd = Connection.CreateCommand())
+            {
+                cmd.CommandText = "SELECT SPECIFIC_SCHEMA, SPECIFIC_NAME, PARAMETER_MODE, IS_RESULT, PARAMETER_NAME, DATA_TYPE FROM INFORMATION_SCHEMA.PARAMETERS ORDER BY ORDINAL_POSITION";
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var name = new NameWithSchema(reader.SafeString("SPECIFIC_SCHEMA"), reader.SafeString("SPECIFIC_NAME"));
+                        if (!programmables.ContainsKey(name)) continue;
+                        var prg = programmables[name];
+                        if (reader.SafeString("IS_RESULT") == "YES")
+                        {
+                            var func = prg as FunctionInfo;
+                            if (func == null) continue;
+                            func.ResultType = reader.SafeString("DATA_TYPE");
+                            continue;
+                        }
+                        var arg = new ParameterInfo(prg);
+                        prg.Parameters.Add(arg);
+                        arg.DataType = reader.SafeString("DATA_TYPE");
+                        arg.Name = reader.SafeString("PARAMETER_NAME");
+                        arg.IsOutput = reader.SafeString("PARAMETER_MODE") == "OUT";
+                    }
+                }
+            }
+
             foreach (var view in Result.Views)
             {
                 using (var cmd = Connection.CreateCommand())
