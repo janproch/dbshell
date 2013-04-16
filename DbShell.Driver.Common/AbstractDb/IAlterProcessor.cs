@@ -10,30 +10,30 @@ namespace DbShell.Driver.Common.AbstractDb
     {
         // view operations
         void CreateView(ViewInfo obj);
-        void DropView(ViewInfo obj);
+        void DropView(ViewInfo obj, bool testIfExists);
         void AlterView(ViewInfo obj);
         void ChangeViewSchema(ViewInfo obj, string newschema);
         void RenameView(ViewInfo obj, string newname);
 
         // stored procedure operations
         void CreateStoredProcedure(StoredProcedureInfo obj);
-        void DropStoredProcedure(StoredProcedureInfo obj);
+        void DropStoredProcedure(StoredProcedureInfo obj, bool testIfExists);
         void AlterStoredProcedure(StoredProcedureInfo obj);
         void ChangeStoredProcedureSchema(StoredProcedureInfo obj, string newschema);
         void RenameStoredProcedure(StoredProcedureInfo obj, string newname);
 
         // stored function operations
         void CreateFunction(FunctionInfo obj);
-        void DropFunction(FunctionInfo obj);
+        void DropFunction(FunctionInfo obj, bool testIfExists);
         void AlterFunction(FunctionInfo obj);
         void ChangeFunctionSchema(FunctionInfo obj, string newschema);
         void RenameFunction(FunctionInfo obj, string newname);
 
         // table operations
         void CreateTable(TableInfo obj);
-        void DropTable(TableInfo obj);
-        void ChangeTableSchema(NameWithSchema obj, string schema);
-        void RenameTable(NameWithSchema obj, string newname);
+        void DropTable(TableInfo obj, bool testIfExists);
+        void ChangeTableSchema(TableInfo obj, string schema);
+        void RenameTable(TableInfo obj, string newname);
 
         //// database operations
         //void AlterDatabaseOptions(string dbname, Dictionary<string, string> options);

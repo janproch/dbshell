@@ -59,5 +59,24 @@ namespace DbShell.Driver.SqlServer
         {
             ChangeObjectSchema(obj, newschema);
         }
+
+        public override void DropTable(TableInfo obj, bool testIfExists)
+        {
+            if (testIfExists)
+            {
+                Put("IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'%f') AND type in (N'U'))&n", obj.FullName);
+            }
+            base.DropTable(obj, testIfExists);
+        }
+
+        public override void RenameTable(TableInfo obj, string newname)
+        {
+            RenameObject(obj, newname);
+        }
+
+        public override void ChangeTableSchema(TableInfo obj, string schema)
+        {
+            ChangeObjectSchema(obj, schema);
+        }
     }
 }

@@ -177,13 +177,6 @@ namespace DbShell.Driver.Common.AbstractDb
         }
     }
 
-    public enum DropFlags
-    {
-        None = 0,
-        TestIfExist = 1,
-        DropReferences = 2,
-    }
-
     public interface ISqlDumper : IAlterProcessor
     {
         /// <summary>

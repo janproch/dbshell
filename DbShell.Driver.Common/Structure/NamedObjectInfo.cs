@@ -2,7 +2,7 @@ using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.Structure
 {
-    public abstract class NamedObjectInfo : DatabaseObjectInfo
+    public abstract class NamedObjectInfo : DatabaseObjectInfo, IFullNamedObject
     {
         /// <summary>
         /// Full name of object (with schema)

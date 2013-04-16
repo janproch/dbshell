@@ -76,7 +76,7 @@ namespace DbShell.Driver.Common.Sql
             EndCommand();
         }
 
-        public virtual void DropView(ViewInfo obj)
+        public virtual void DropView(ViewInfo obj, bool testIfExists)
         {
             PutCmd("^drop ^view  %f", obj.FullName);
         }
@@ -103,7 +103,7 @@ namespace DbShell.Driver.Common.Sql
             EndCommand();
         }
 
-        public virtual void DropStoredProcedure(StoredProcedureInfo obj)
+        public virtual void DropStoredProcedure(StoredProcedureInfo obj, bool testIfExists)
         {
             PutCmd("^drop ^procedure  %f", obj.FullName);
         }
@@ -130,7 +130,7 @@ namespace DbShell.Driver.Common.Sql
             EndCommand();
         }
 
-        public virtual void DropFunction(FunctionInfo obj)
+        public virtual void DropFunction(FunctionInfo obj, bool testIfExists)
         {
             PutCmd("^drop ^function %f", obj.FullName);
         }
@@ -151,22 +151,105 @@ namespace DbShell.Driver.Common.Sql
             throw new System.NotImplementedException();
         }
 
-        public virtual void CreateTable(TableInfo obj)
+        public virtual void CreateTable(TableInfo table)
+        {
+            Put("^create ^table %f ( &>&n", table.FullName);
+            bool first = true;
+            foreach (var col in table.Columns)
+            {
+                if (!first) Put(", &n");
+                first = false;
+                Put("%i ", col.Name);
+                ColumnDefinition(col, true, true, true);
+            }
+            if (table.PrimaryKey != null)
+            {
+                if (!first) Put(", &n");
+                first = false;
+                if (table.PrimaryKey.ConstraintName != null)
+                {
+                    Put("^constraint %i", table.PrimaryKey.ConstraintName);
+                }
+                Put(" ^primary ^key (%,i)", table.PrimaryKey.Columns);
+            }
+            foreach (var cnt in table.ForeignKeys)
+            {
+                if (!first) Put(", &n");
+                first = false;
+                CreateForeignKeyCore(cnt);
+            }
+            Put("&<&n)");
+        }
+
+        protected virtual void CreateForeignKeyCore(ForeignKeyInfo fk)
+        {
+            if (fk.ConstraintName != null) Put("^constraint %i ", fk.ConstraintName);
+            Put("^foreign ^key (");
+            ColumnRefs(fk.Columns);
+            Put(") ^references %f", fk.RefTable);
+            if (fk.RefColumns != null)
+            {
+                WriteRaw("(");
+                ColumnRefs(fk.RefColumns);
+                WriteRaw(")");
+            }
+            //string ondelete = m_dialect.OnDeleteSqlName(fk.OnDeleteAction);
+            //string onupdate = m_dialect.OnUpdateSqlName(fk.OnUpdateAction);
+            //if (ondelete != null) Put(" ^on ^delete %k", ondelete);
+            //if (onupdate != null) Put(" ^on ^update %k", onupdate);
+        }
+
+        protected virtual void ColumnRef(ColumnReference colref)
+        {
+            Put("%i", colref.Name);
+            //WriteRaw(QuoteIdentifier(colref.Name, null));
+        }
+
+        protected virtual void ColumnRefs(IEnumerable<ColumnReference> colrefs)
+        {
+            bool was = false;
+            foreach (var colref in colrefs)
+            {
+                if (was) WriteRaw(",");
+                ColumnRef(colref);
+                was = true;
+            }
+        }
+
+        public virtual void ColumnDefinition(ColumnInfo col, bool includeDefault, bool includeNullable, bool includeCollate)
+        {
+            Put("%k", col.DataType);
+            if (col.Length !=0)
+            {
+                if (col.Length == -1) Put("(^max)");
+                else Put("(%s)", col.Length);
+            }
+            if (col.Precision > 0)
+            {
+                Put("(%s,%s)", col.Precision, col.Scale);
+            }
+            WriteRaw(" ");
+            if (includeNullable)
+            {
+                Put(col.NotNull ? "^not ^null" : "^null");
+            }
+            //if (includeDefault && col.DefaultValue != null)
+            //{
+            //    ColumnDefinition_Default(col);
+            //}
+        }
+
+        public virtual void DropTable(TableInfo obj, bool testIfExists)
+        {
+            PutCmd("^drop ^table %f", obj.FullName);
+        }
+
+        public virtual void ChangeTableSchema(TableInfo obj, string schema)
         {
             throw new System.NotImplementedException();
         }
 
-        public virtual void DropTable(TableInfo obj)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public virtual void ChangeTableSchema(NameWithSchema obj, string schema)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public virtual void RenameTable(NameWithSchema obj, string newname)
+        public virtual void RenameTable(TableInfo obj, string newname)
         {
             throw new System.NotImplementedException();
         }
