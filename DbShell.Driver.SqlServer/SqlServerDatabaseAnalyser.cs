@@ -230,10 +230,17 @@ namespace DbShell.Driver.SqlServer
                 using (var cmd = Connection.CreateCommand())
                 {
                     cmd.CommandText = "SELECT * FROM " + dialect.QuoteFullName(view.FullName);
-                    using (var reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly | CommandBehavior.KeyInfo))
+                    try
                     {
-                        var queryInfo = reader.GetQueryResultInfo();
-                        view.QueryInfo = queryInfo;
+                        using (var reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly | CommandBehavior.KeyInfo))
+                        {
+                            var queryInfo = reader.GetQueryResultInfo();
+                            view.QueryInfo = queryInfo;
+                        }
+                    }
+                    catch (Exception err)
+                    {
+                        view.QueryInfo = null;
                     }
                 }
             }
