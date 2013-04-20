@@ -10,7 +10,7 @@ namespace DbShell.Driver.Common.DmlFramework
 {
     public class DmlfSelect : DmlfBase
     {
-        [XmlCollection(typeof(DmlfResultField))]
+        [XmlCollection(typeof (DmlfResultField))]
         public DmlfResultFieldCollection Columns { get; set; }
 
         [XmlSubElem]
@@ -20,7 +20,7 @@ namespace DbShell.Driver.Common.DmlFramework
         public DmlfSortOrderCollection OrderBy { get; set; }
 
         [XmlSubElem]
-        public DmlfWhere  Where { get; set; }
+        public DmlfWhere Where { get; set; }
 
         [XmlElem]
         public int? TopRecords { get; set; }
@@ -152,17 +152,28 @@ namespace DbShell.Driver.Common.DmlFramework
             From.GenSql(dmp, handler);
         }
 
-        //public ColumnDisplay GetColumnDisplay()
-        //{
-        //    var res = new ColumnDisplay();
-        //    int index = 0;
-        //    foreach (var col in Columns)
-        //    {
-        //        res.AddColumn(col, index);
-        //        index++;
-        //    }
-        //    return res;
-        //}
+        public void AddAndCondition(DmlfConditionBase cond)
+        {
+            if (Where == null) Where = new DmlfWhere();
+            if (Where.Condition != null)
+            {
+                if (Where.Condition is DmlfAndCondition)
+                {
+                    ((DmlfAndCondition) Where.Condition).Conditions.Add(cond);
+                }
+                else
+                {
+                    var and = new DmlfAndCondition();
+                    and.Conditions.Add(Where.Condition);
+                    and.Conditions.Add(cond);
+                    Where.Condition = and;
+                }
+            }
+            else
+            {
+                Where.Condition = cond;
+            }
+        }
     }
 
     public class DmlfExpressionHolderCollection<T> : DmlfList<T>
