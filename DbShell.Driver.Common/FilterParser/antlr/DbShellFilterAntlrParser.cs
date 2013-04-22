@@ -53,7 +53,7 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
 
     public void NegateLastCondition()
     {
-        Conditions[Condition.Conditions.Count - 1] = new DmlfNotCondition {Expr = Conditions[Condition.Conditions.Count - 1]};
+        Conditions[Conditions.Count - 1] = new DmlfNotCondition {Expr = Conditions[Conditions.Count - 1]};
     }
 
     public void AddNumberRelation(string number, string relation)
