@@ -522,6 +522,14 @@ namespace DbShell.Driver.Common.CommonDataLayer
             }
         }
 
+        public static DateTimeEx MinDateTimeValue = DateTimeEx.FromDateTime(DateTime.MinValue);
+        public static DateTimeEx MaxDateTimeValue = DateTimeEx.FromDateTime(DateTime.MaxValue);
+
+        public bool IsValidDateTime
+        {
+            get { return this >= MinDateTimeValue && this <= MaxDateTimeValue; }
+        }
+
         public static DateTimeEx FromDateTime(DateTime value)
         {
             DateTimeEx res = new DateTimeEx();

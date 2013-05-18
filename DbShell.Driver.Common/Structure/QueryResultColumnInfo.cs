@@ -44,7 +44,7 @@ namespace DbShell.Driver.Common.Structure
 
             // determine original table name
             TableInfo table = null;
-            if (BaseTableName != null)
+            if (!String.IsNullOrEmpty(BaseTableName))
             {
                 table = db.FindTable(String.IsNullOrWhiteSpace(BaseSchemaName) ? null : BaseSchemaName, BaseTableName);
             }

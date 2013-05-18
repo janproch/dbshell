@@ -17,8 +17,11 @@ negative_number:
 positive_number: 
   num1=NUMBER { Push(Decimal.Parse($num1.text, CultureInfo.InvariantCulture)); };
   
+number_as_string:  
+  num1=Q_STRING | num1=A_STRING { string value=$num1.text; Push(Decimal.Parse(value.Substring(1, value.Length - 2), CultureInfo.InvariantCulture)); };
+  
 number:
-  positive_number | negative_number;
+  positive_number | negative_number | number_as_string;
 
 interval : 
 number MINUS num2=NUMBER {
@@ -72,6 +75,22 @@ NUMBER  : (DIGIT)+ ('.' (DIGIT)+)?;
 
 WHITESPACE : ( '\t' | ' ' | '\u000C' )+    { $channel = HIDDEN; } ;
 ENDLINE: ( '\r' | '\n' )+; 
+ 
+A_STRING:
+	  ('\''
+	  	(
+	  		  options{greedy=true;}: ~('\'' | '\r' | '\n' ) | '\'' '\''
+	  	)*
+	  '\'' )
+;
+
+Q_STRING:
+	  ('\"'
+	  	(
+	  		  options{greedy=true;}: ~('\"' | '\r' | '\n' ) | '\"' '\"'
+	  	)*
+	  '\"' )
+; 
  
 fragment DIGIT  : '0'..'9' ;
 
