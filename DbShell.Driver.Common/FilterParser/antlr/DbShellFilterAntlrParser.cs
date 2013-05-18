@@ -56,12 +56,12 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
         Conditions[Conditions.Count - 1] = new DmlfNotCondition {Expr = Conditions[Conditions.Count - 1]};
     }
 
-    public void AddNumberRelation(string number, string relation)
+    public void AddNumberRelation(decimal number, string relation)
     {
         Conditions.Add(new DmlfRelationCondition
             {
                 LeftExpr = ColumnValue,
-                RightExpr = new DmlfLiteralExpression {Value = Decimal.Parse(number, CultureInfo.InvariantCulture)},
+                RightExpr = new DmlfLiteralExpression {Value = number},
                 Relation = relation,
             });
     }

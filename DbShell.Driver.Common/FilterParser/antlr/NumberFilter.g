@@ -32,17 +32,29 @@ number MINUS num2=NUMBER {
                 LowerBound = new DmlfLiteralExpression{Value = left},
                 UpperBound = new DmlfLiteralExpression{Value = right},
             });
+} |
+(number MINUS num2=Q_STRING | number MINUS num2=A_STRING) {
+        var left = Pop<decimal>();
+        string value=$num2.text; 
+        var right=Decimal.Parse(value.Substring(1, value.Length - 2), CultureInfo.InvariantCulture);
+        Conditions.Add(new DmlfBetweenCondition
+            {
+                Expr = ColumnValue,
+                LowerBound = new DmlfLiteralExpression{Value = left},
+                UpperBound = new DmlfLiteralExpression{Value = right},
+            });
 };
  
 element_no_negative:
   positive_number { AddEqualCondition(Pop<decimal>().ToString(CultureInfo.InvariantCulture)); } 
+  | number_as_string { AddEqualCondition(Pop<decimal>().ToString(CultureInfo.InvariantCulture)); } 
   | interval
-  | LT num1=number { AddNumberRelation($num1.text, "<"); } 
-  | GT num1=number { AddNumberRelation($num1.text, ">"); } 
-  | LE num1=number { AddNumberRelation($num1.text, "<="); } 
-  | GE num1=number { AddNumberRelation($num1.text, ">="); } 
-  | NE num1=number { AddNumberRelation($num1.text, "<>"); } 
-  | EQ num1=number { AddNumberRelation($num1.text, "="); } 
+  | LT num1=number { AddNumberRelation(Pop<decimal>(), "<"); } 
+  | GT num1=number { AddNumberRelation(Pop<decimal>(), ">"); } 
+  | LE num1=number { AddNumberRelation(Pop<decimal>(), "<="); } 
+  | GE num1=number { AddNumberRelation(Pop<decimal>(), ">="); } 
+  | NE num1=number { AddNumberRelation(Pop<decimal>(), "<>"); } 
+  | EQ num1=number { AddNumberRelation(Pop<decimal>(), "="); } 
   | T_NULL { AddIsNullCondition(); }
   | T_NOT T_NULL { AddIsNotNullCondition(); }
   ;
