@@ -17,8 +17,9 @@ namespace DbShell.Common
         string Replace(string replaceString, string replacePattern = null);
         void IncludeFile(string file, IShellElement parent);
         string ResolveFile(string file, ResolveFileMode mode);
-        void PushExecutingFile(string file);
-        void PopExecutingFile();
-        string GetExecutingFile();
+        void PushExecutingFolder(string folder);
+        void PopExecutingFolder();
+        string GetExecutingFolder();
+        void OutputMessage(string message);
     }
 }

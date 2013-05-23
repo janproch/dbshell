@@ -23,10 +23,12 @@ namespace DbShell.Runtime
         private readonly Dictionary<IConnectionProvider, DatabaseInfo> _dbCache = new Dictionary<IConnectionProvider, DatabaseInfo>();
         private readonly ScriptEngine _engine;
         private readonly List<ScriptScope> _scopeStack = new List<ScriptScope>();
-        private readonly List<string> _executingFileStack = new List<string>();
+        private readonly List<string> _executingFolderStack = new List<string>();
+        private ShellRunner _runner;
 
-        public ShellContext()
+        public ShellContext(ShellRunner runner)
         {
+            _runner = runner;
             _engine = Python.CreateEngine();
             _scopeStack.Add(_engine.CreateScope());
         }
@@ -95,15 +97,15 @@ namespace DbShell.Runtime
                 var runnable = obj as IRunnable;
                 if (runnable == null) throw new Exception(String.Format("DBSH-00059 Included file {0} doesn't contain root element implementing IRunnable", file));
                 var shellElem = obj as IShellElement;
-                if (shellElem != null) ShellRunner.ProcessLoadedElement(shellElem, parent, this);
+                if (shellElem != null) ShellRunner.ProcessLoadedElement(shellElem, parent, this, null);
                 try
                 {
-                    PushExecutingFile(file);
+                    PushExecutingFolder(Path.GetDirectoryName(file));
                     runnable.Run();
                 }
                 finally
                 {
-                    PopExecutingFile();
+                    PopExecutingFolder();
                 }
             }
         }
@@ -149,27 +151,32 @@ namespace DbShell.Runtime
             return Path.Combine(folder, "Templates");
         }
 
-        private string GetExecutingFolder()
+        //private string GetExecutingFolder()
+        //{
+        //    string file = GetExecutingFile();
+        //    if (file != null) return Path.GetDirectoryName(file);
+        //    return null;
+        //}
+
+        public void PushExecutingFolder(string folder)
         {
-            string file = GetExecutingFile();
-            if (file != null) return Path.GetDirectoryName(file);
+            _executingFolderStack.Add(folder);
+        }
+
+        public void PopExecutingFolder()
+        {
+            _executingFolderStack.RemoveAt(_executingFolderStack.Count - 1);
+        }
+
+        public string GetExecutingFolder()
+        {
+            if (_executingFolderStack.Count > 0) return _executingFolderStack[_executingFolderStack.Count - 1];
             return null;
         }
 
-        public void PushExecutingFile(string file)
+        public void OutputMessage(string message)
         {
-            _executingFileStack.Add(file);
-        }
-
-        public void PopExecutingFile()
-        {
-            _executingFileStack.RemoveAt(_executingFileStack.Count - 1);
-        }
-
-        public string GetExecutingFile()
-        {
-            if (_executingFileStack.Count > 0) return _executingFileStack[_executingFileStack.Count - 1];
-            return null;
+            if (_runner != null) _runner.OnOutputMessage(message);
         }
     }
 }
