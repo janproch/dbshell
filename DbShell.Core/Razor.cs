@@ -47,6 +47,11 @@ namespace DbShell.Core
         public string Template { get; set; }
 
         /// <summary>
+        /// Inlined template data
+        /// </summary>
+        public string TemplateData { get; set; }
+
+        /// <summary>
         /// Gets or sets the model. If Model has type String, it is evaluated as expression. Use Model="{Database}" for database structure
         /// </summary>
         /// <value>
@@ -69,34 +74,41 @@ namespace DbShell.Core
             {
                 model = Model;
             }
-            _log.InfoFormat("DBSH-00074 Apply template {0}=>{1}", Template, File);
-            using (var sr = new StreamReader(Context.ResolveFile(Template, ResolveFileMode.Template)))
+
+            _log.InfoFormat("DBSH-00074 Apply template {0}=>{1}", Template ?? "(inline template)", File);
+            string templateData = TemplateData;
+
+            if (templateData == null)
             {
-                string templateData = sr.ReadToEnd();
-                try
+                using (var sr = new StreamReader(Context.ResolveFile(Template, ResolveFileMode.Template)))
                 {
-                    foreach (var method in typeof (RazorEngine.Razor).GetMethods())
+                    templateData = sr.ReadToEnd();
+                }
+            }
+            try
+            {
+                foreach (var method in typeof (RazorEngine.Razor).GetMethods())
+                {
+                    if (method.Name == "Parse" && method.IsGenericMethod)
                     {
-                        if (method.Name == "Parse" && method.IsGenericMethod)
+                        var m2 = method.MakeGenericMethod(model.GetType());
+                        string output = m2.Invoke(null, new object[] {templateData, model, null}) as string;
+                        string fn = Context.ResolveFile(Context.Replace(File), ResolveFileMode.Output);
+                        using (var sw = new StreamWriter(fn))
                         {
-                            var m2 = method.MakeGenericMethod(model.GetType());
-                            string output = m2.Invoke(null, new object[] {templateData, model, null}) as string;
-                            using (var sw = new StreamWriter(Context.ResolveFile(File, ResolveFileMode.Output)))
-                            {
-                                sw.Write(output);
-                            }
+                            sw.Write(output);
                         }
                     }
                 }
-                catch (RazorEngine.Templating.TemplateCompilationException err)
+            }
+            catch (RazorEngine.Templating.TemplateCompilationException err)
+            {
+                _log.ErrorFormat("DBSH-00075 Error compiling template {0}", Template);
+                foreach (var error in err.Errors)
                 {
-                    _log.ErrorFormat("DBSH-00075 Error compiling template {0}", Template);
-                    foreach (var error in err.Errors)
-                    {
-                        _log.Error(error.ToString());
-                    }
-                    throw;
+                    _log.Error(error.ToString());
                 }
+                throw;
             }
         }
 
