@@ -28,12 +28,22 @@ namespace DbShell.Core
         public ITabularDataSource Source { get; set; }
 
         /// <summary>
+        /// Expression to obtain source of copy operation
+        /// </summary>
+        public string SourceExpression { get; set; }
+
+        /// <summary>
         /// Target of data operation
         /// </summary>
         /// <value>
         /// Table or data file
         /// </value>
         public ITabularDataTarget Target { get; set; }
+
+        /// <summary>
+        /// Expression to obtain source of copy operation
+        /// </summary>
+        public string TargetExpression { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether clean target table before copying
@@ -54,12 +64,38 @@ namespace DbShell.Core
 
         protected override void DoRun()
         {
+            ITabularDataSource source;
+            ITabularDataTarget target;
+
+            if (Source != null && SourceExpression != null) throw new Exception("DBSH-00000 CopyTable: Both Source and SourceExpression are set");
+            if (Source == null && SourceExpression == null) throw new Exception("DBSH-00000 CopyTable: None Source and SourceExpression are set");
+            if (Target != null && TargetExpression != null) throw new Exception("DBSH-00000 CopyTable: Both Target and TargetExpression are set");
+            if (Target == null && TargetExpression == null) throw new Exception("DBSH-00000 CopyTable: None Target and TargetExpression are set");
+
+            if (SourceExpression != null)
+            {
+                source = (ITabularDataSource) Context.Evaluate(SourceExpression);
+            }
+            else
+            {
+                source = Source;
+            }
+
+            if (TargetExpression != null)
+            {
+                target = (ITabularDataTarget) Context.Evaluate(TargetExpression);
+            }
+            else
+            {
+                target = Target;
+            }
+
             var options = new CopyTableTargetOptions
                 {
                     TruncateBeforeCopy = CleanTarget,
                 };
 
-            var table = Source.GetRowFormat();
+            var table = source.GetRowFormat();
 
             _log.InfoFormat("Copy table data {0}=>{1}", Source, Target);
 
@@ -76,9 +112,9 @@ namespace DbShell.Core
                 }
             }
 
-            using (var reader = Source.CreateReader())
+            using (var reader = source.CreateReader())
             {
-                using (var writer = Target.CreateWriter(targetTable, options))
+                using (var writer = target.CreateWriter(targetTable, options))
                 {
                     while (reader.Read())
                     {
@@ -114,7 +150,7 @@ namespace DbShell.Core
             YieldChild(enumFunc, Source);
             YieldChild(enumFunc, Target);
 
-            foreach(var item in ColumnMap) YieldChild(enumFunc, item);
+            foreach (var item in ColumnMap) YieldChild(enumFunc, item);
         }
 
         /// <summary>
