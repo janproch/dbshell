@@ -34,9 +34,6 @@
     <Reference Include="log4net">
       <HintPath>..\_lib\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="RazorEngine">
-      <HintPath>..\_lib\RazorEngine.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -105,6 +102,10 @@
     <ProjectReference Include="..\DbShell.Driver.SqlServer\DbShell.Driver.SqlServer.csproj">
       <Project>{80906e4d-1539-4f93-a227-3e072f49baea}</Project>
       <Name>DbShell.Driver.SqlServer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DbShell.RazorEngine\DbShell.RazorEngine.csproj">
+      <Project>{64128c85-b9af-4b4c-be83-04983ef7f8c9}</Project>
+      <Name>DbShell.RazorEngine</Name>
     </ProjectReference>
     <ProjectReference Include="..\LumenWorks.Framework.IO\LumenWorks.Framework.IO.csproj">
       <Project>{e3b83d68-c90c-4874-8e5f-dec8d038bc7c}</Project>

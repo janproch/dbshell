@@ -87,18 +87,10 @@ namespace DbShell.Core
             }
             try
             {
-                foreach (var method in typeof (RazorEngine.Razor).GetMethods())
+                string fn = Context.ResolveFile(Context.Replace(File), ResolveFileMode.Output);
+                using (var sw = new StreamWriter(fn))
                 {
-                    if (method.Name == "Parse" && method.IsGenericMethod)
-                    {
-                        var m2 = method.MakeGenericMethod(model.GetType());
-                        string output = m2.Invoke(null, new object[] {templateData, model, null}) as string;
-                        string fn = Context.ResolveFile(Context.Replace(File), ResolveFileMode.Output);
-                        using (var sw = new StreamWriter(fn))
-                        {
-                            sw.Write(output);
-                        }
-                    }
+                    RazorEngine.Razor.Parse(templateData, sw, model);
                 }
             }
             catch (RazorEngine.Templating.TemplateCompilationException err)
