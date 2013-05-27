@@ -173,6 +173,11 @@ namespace RazorEngine
             DefaultTemplateService.Parse(template, output, model, name);
         }
 
+        public static ITemplate CompileTemplate(string template, Type modelType)
+        {
+            return DefaultTemplateService.CompileTemplate(template, modelType);
+        }
+
         /// <summary>
         /// Runs the template with the specified name.
         /// </summary>

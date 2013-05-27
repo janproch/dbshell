@@ -24,10 +24,10 @@ namespace DbShell.Driver.Common.Sql
 
     partial class SqlDumper
     {
-        protected void WriteRaw(string text) { m_stream.Write(text); }
-        protected void EndCommand() { m_stream.EndCommand(); }
+        public void WriteRaw(string text) { m_stream.Write(text); }
+        public void EndCommand() { m_stream.EndCommand(); }
 
-        protected void PutCmd(string format, params object[] args)
+        public void PutCmd(string format, params object[] args)
         {
             Put(format, args);
             EndCommand();
@@ -51,9 +51,9 @@ namespace DbShell.Driver.Common.Sql
         public virtual void PutVersionTestBegin(string version) { }
         public virtual void PutVersionTestEnd(string version) { }
 
-        protected void Put(string format, params object[] args)
+        public void Put(string format, params object[] args)
         {
-            SqlDumperExtension.Put(this, format, args);
+            WriteRaw(Format(Factory, FormatProperties, FormatterState, format, args));
         }
 
         public static string Format(IDatabaseFactory factory, string format, params object[] args)
@@ -198,9 +198,10 @@ namespace DbShell.Driver.Common.Sql
                                 sb.Append('%');
                                 i++;
                             }
-                            else if (c == ',') // comma separated list
+                            else if (c == ',' || c == ';') // comma separated list
                             {
                                 i++;
+                                bool lining = c == ';';
                                 c = format[i];
                                 bool ok = false;
                                 if (args[argindex] is IEnumerable) ok = true;
@@ -210,22 +211,59 @@ namespace DbShell.Driver.Common.Sql
                                 bool was = false;
                                 if (args[argindex] is IEnumerable)
                                 {
+                                    if (lining)
+                                    {
+                                        state.IndentLevel++;
+                                        DumpEoln(sb, props, state);
+                                    }
                                     foreach (object item in (IEnumerable)args[argindex])
                                     {
-                                        if (was) sb.Append(", ");
+                                        if (was)
+                                        {
+                                            if (lining)
+                                            {
+                                                DumpEoln(sb, props, state);
+                                                sb.Append(",");
+                                            }
+                                            else
+                                            {
+                                                sb.Append(", ");
+                                            }
+                                        }
                                         WriteFormattedValue(dialect, props, sb, item, c, state, dda);
                                         was = true;
+                                    }
+                                    if (lining)
+                                    {
+                                        state.IndentLevel--;
                                     }
                                 }
                                 else
                                 {
                                     var rec = (ICdlRecord)args[argindex];
+                                    if (lining)
+                                    {
+                                        state.IndentLevel++;
+                                        DumpEoln(sb, props, state);
+                                    }
                                     for (int x = 0; x < rec.FieldCount; x++)
                                     {
-                                        if (was) sb.Append(", ");
+                                        if (lining)
+                                        {
+                                            DumpEoln(sb, props, state);
+                                            sb.Append(",");
+                                        }
+                                        else
+                                        {
+                                            sb.Append(", ");
+                                        }
                                         rec.ReadValue(x);
                                         sb.Append(GetSqlLiteral(props, dda, state, rec));
                                         was = true;
+                                    }
+                                    if (lining)
+                                    {
+                                        state.IndentLevel--;
                                     }
                                 }
 

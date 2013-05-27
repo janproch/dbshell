@@ -34,6 +34,12 @@ namespace RazorEngine.Templating
 
         #region Methods
 
+
+        public virtual void Clear()
+        {
+            int x = 0;
+        }
+
         /// <summary>
         /// Executes the compiled template.
         /// </summary>

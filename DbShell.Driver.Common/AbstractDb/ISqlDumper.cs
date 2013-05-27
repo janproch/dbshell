@@ -210,5 +210,10 @@ namespace DbShell.Driver.Common.AbstractDb
 
         void UpdateData(TableInfo table, SingleTableDataScript script);
         void UpdateData(MultiTableUpdateScript script);
+
+        void Put(string format, params object[] args);
+        void PutCmd(string format, params object[] args);
+        void WriteRaw(string data);
+        void EndCommand();
     }
 }

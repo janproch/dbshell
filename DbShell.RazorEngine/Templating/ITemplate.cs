@@ -21,6 +21,9 @@ namespace RazorEngine.Templating
         #endregion
 
         #region Methods
+
+        void Clear();
+
         /// <summary>
         /// Executes the compiled template.
         /// </summary>

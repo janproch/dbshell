@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Markup;
 using DbShell.Common;
 using DbShell.Core.Utility;
 using DbShell.Driver.Common.Structure;
@@ -26,6 +27,7 @@ namespace DbShell.Core
     /// ]]>
     /// </code>
     /// </example>
+    [ContentProperty("TemplateData")]
     public class Razor : RunnableBase
     {
         private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
@@ -44,7 +46,7 @@ namespace DbShell.Core
         /// <value>
         /// File name of Razor template (cshtml file)
         /// </value>
-        public string Template { get; set; }
+        public string TemplateFile { get; set; }
 
         /// <summary>
         /// Inlined template data
@@ -75,12 +77,12 @@ namespace DbShell.Core
                 model = Model;
             }
 
-            _log.InfoFormat("DBSH-00074 Apply template {0}=>{1}", Template ?? "(inline template)", File);
+            _log.InfoFormat("DBSH-00074 Apply template {0}=>{1}", TemplateFile ?? "(inline template)", File);
             string templateData = TemplateData;
 
             if (templateData == null)
             {
-                using (var sr = new StreamReader(Context.ResolveFile(Template, ResolveFileMode.Template)))
+                using (var sr = new StreamReader(Context.ResolveFile(TemplateFile, ResolveFileMode.Template)))
                 {
                     templateData = sr.ReadToEnd();
                 }
@@ -95,7 +97,7 @@ namespace DbShell.Core
             }
             catch (RazorEngine.Templating.TemplateCompilationException err)
             {
-                _log.ErrorFormat("DBSH-00075 Error compiling template {0}", Template);
+                _log.ErrorFormat("DBSH-00075 Error compiling template {0}", TemplateFile);
                 foreach (var error in err.Errors)
                 {
                     _log.Error(error.ToString());

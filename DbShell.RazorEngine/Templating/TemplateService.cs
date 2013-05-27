@@ -202,6 +202,11 @@ namespace RazorEngine.Templating
         /// <returns>An instance of <see cref="ITemplate"/>.</returns>
         internal ITemplate GetTemplate(string template, Type modelType, string name)
         {
+            if (name == null)
+            {
+                name = modelType.FullName + "|" + template;
+            }
+
             if (!string.IsNullOrEmpty(name))
                 if (templateCache.ContainsKey(name))
                     return templateCache[name];
@@ -246,6 +251,13 @@ namespace RazorEngine.Templating
             SetService(instance, this);
             SetModel(instance, model);
             instance.Execute();
+        }
+
+
+        public ITemplate CompileTemplate(string template, Type modelType)
+        {
+            var instance = GetTemplate(template, modelType, null);
+            return instance;
         }
 
         /// <summary>
@@ -332,15 +344,20 @@ namespace RazorEngine.Templating
         /// <typeparam name="T">The model type.</typeparam>
         /// <param name="template">The template instance to set the model on.</param>
         /// <param name="model">The model.</param>
-        private static void SetModel<T>(ITemplate template, T model)
+        public static void SetModel(ITemplate template, object model)
         {
-            var dynamicModel = template as ITemplate<dynamic>;
-            if (dynamicModel != null)
-                dynamicModel.Model = model;
+            var type = template.GetType();
+            var modelProp = type.GetProperty("Model");
+            var setter = modelProp.GetSetMethod();
+            setter.Invoke(template, new object[] { model });
 
-            var strictModel = template as ITemplate<T>;
-            if (strictModel != null)
-                strictModel.Model = model;
+            //var dynamicModel = template as ITemplate<dynamic>;
+            //if (dynamicModel != null)
+            //    dynamicModel.Model = model;
+
+            //var strictModel = template as ITemplate<T>;
+            //if (strictModel != null)
+            //    strictModel.Model = model;
         }
 
         /// <summary>
