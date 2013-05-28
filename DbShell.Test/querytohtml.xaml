@@ -5,5 +5,5 @@
     Connection="sqlserver://MultipleActiveResultSets=True;Data Source=localhost\SQLEXPRESS;Integrated Security=SSPI;Initial Catalog=Chinook"
     Model="{Query 'SELECT * FROM Genre'}"
     File="genres.html"
-    Template="TableData.cshtml"
+    TemplateFile="TableData.cshtml"
 />
