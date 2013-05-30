@@ -11,5 +11,6 @@ namespace DbShell.Common
     {
         DbConnection Connect();
         IDatabaseFactory Factory { get; }
+        string ProviderString { get; }
     }
 }

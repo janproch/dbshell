@@ -41,6 +41,11 @@ namespace DbShell.Core
             get { return _factory; }
         }
 
+        string IConnectionProvider.ProviderString
+        {
+            get { return _provider + "://" + _connectionString; }
+        }
+
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
@@ -49,7 +54,7 @@ namespace DbShell.Core
         /// </returns>
         public override string ToString()
         {
-            return _provider + "://" + _connectionString;
+            return ((IConnectionProvider)this).ProviderString;
         }
 
         public static ConnectionProvider FromString(string s)

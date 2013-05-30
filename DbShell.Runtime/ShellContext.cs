@@ -20,7 +20,7 @@ namespace DbShell.Runtime
     {
         private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly Dictionary<IConnectionProvider, DatabaseInfo> _dbCache = new Dictionary<IConnectionProvider, DatabaseInfo>();
+        private readonly Dictionary<string, DatabaseInfo> _dbCache = new Dictionary<string, DatabaseInfo>();
         private readonly ScriptEngine _engine;
         private readonly List<ScriptScope> _scopeStack = new List<ScriptScope>();
         private readonly List<string> _executingFolderStack = new List<string>();
@@ -35,17 +35,18 @@ namespace DbShell.Runtime
 
         public DatabaseInfo GetDatabaseStructure(IConnectionProvider connection)
         {
-            if (!_dbCache.ContainsKey(connection))
+            string key = connection.ProviderString;
+            if (!_dbCache.ContainsKey(key))
             {
                 _log.InfoFormat("DBSH-00076 Downloading structure for connection {0}", connection);
                 var analyser = connection.Factory.CreateAnalyser();
                 using (var conn = connection.Connect())
                 {
                     analyser.Run(conn, conn.Database);
-                    _dbCache[connection] = analyser.Result;
+                    _dbCache[key] = analyser.Result;
                 }
             }
-            return _dbCache[connection];
+            return _dbCache[key];
         }
 
         private ScriptScope Scope

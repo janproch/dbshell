@@ -41,6 +41,15 @@ namespace DbShell.Core.Utility
             }
         }
 
+        public string ProviderString
+        {
+            get
+            {
+                WantProvider();
+                return _provider.ProviderString;
+            }
+        }
+
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
