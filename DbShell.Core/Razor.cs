@@ -67,6 +67,10 @@ namespace DbShell.Core
             if (Model is string)
             {
                 model = Context.Evaluate((string) Model);
+                if (model is IModelProvider)
+                {
+                    model = ((IModelProvider)model).GetModel();
+                }
             }
             else if (Model is IModelProvider)
             {
