@@ -226,7 +226,7 @@ namespace RazorEngine.Templating
         /// <param name="template">The template to parse.</param>
         /// <param name="name">[Optional] The name of the template. This is used to cache the template.</param>
         /// <returns>The string result of the parsed template.</returns>
-        public void Parse(string template, TextWriter output, string name = null)
+        public void Parse(string template, Action<string> output, string name = null)
         {
             var instance = GetTemplate(template, null, name);
             instance.Output = output;
@@ -243,7 +243,7 @@ namespace RazorEngine.Templating
         /// <param name="model">The model.</param>
         /// <param name="name">[Optional] The name of the template. This is used to cache the template.</param>
         /// <returns>The string result of the parsed template.</returns>
-        public void Parse(string template, TextWriter output, object model, string name = null)
+        public void Parse(string template, Action<string> output, object model, string name = null)
         {
             var instance = GetTemplate(template, model.GetType(), name);
             instance.Output = output;
@@ -265,7 +265,7 @@ namespace RazorEngine.Templating
         /// </summary>
         /// <param name="name">The name of the template to run.</param>
         /// <returns>The result of the template.</returns>
-        public void Run(string name, TextWriter output)
+        public void Run(string name, Action<string> output)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("The named of the cached template is required.");
@@ -287,7 +287,7 @@ namespace RazorEngine.Templating
         /// <param name="model">The model.</param>
         /// <param name="name">The name of the template to run.</param>
         /// <returns>The result of the template.</returns>
-        public void Run(object model, string name, TextWriter output)
+        public void Run(object model, string name, Action<string> output)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("The named of the cached template is required.");

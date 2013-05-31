@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace RazorEngine.Templating
 {
@@ -12,7 +13,7 @@ namespace RazorEngine.Templating
         /// <summary>
         /// Current output stream
         /// </summary>
-        TextWriter Output { get; set; }
+        Action<string> Output { get; set; }
 
         /// <summary>
         /// Gets or sets the template service.

@@ -155,7 +155,7 @@ namespace RazorEngine
         /// <param name="template">The template to parse.</param>
         /// <param name="name">[Optional] The name of the template. This is used to cache the template.</param>
         /// <returns>The string result of the parsed template.</returns>
-        public static void Parse(string template, TextWriter output, string name = null)
+        public static void Parse(string template, Action<string> output, string name = null)
         {
             DefaultTemplateService.Parse(template, output, name);
         }
@@ -168,7 +168,7 @@ namespace RazorEngine
         /// <param name="model">The model.</param>
         /// <param name="name">[Optional] The name of the template. This is used to cache the template.</param>
         /// <returns>The string result of the parsed template.</returns>
-        public static void Parse(string template, TextWriter output, object model, string name = null)
+        public static void Parse(string template, Action<string> output, object model, string name = null)
         {
             DefaultTemplateService.Parse(template, output, model, name);
         }
@@ -183,7 +183,7 @@ namespace RazorEngine
         /// </summary>
         /// <param name="name">The name of the template to run.</param>
         /// <returns>The result of the template.</returns>
-        public static void Run(string name, TextWriter output)
+        public static void Run(string name, Action<string> output)
         {
             DefaultTemplateService.Run(name, output);
         }
@@ -195,7 +195,7 @@ namespace RazorEngine
         /// <param name="model">The model.</param>
         /// <param name="name">The name of the template to run.</param>
         /// <returns>The result of the template.</returns>
-        public static void Run(object model, TextWriter output, string name)
+        public static void Run(object model, Action<string> output, string name)
         {
             DefaultTemplateService.Run(model, name, output);
         }

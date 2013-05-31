@@ -96,7 +96,7 @@ namespace DbShell.Core
                 string fn = Context.ResolveFile(Context.Replace(File), ResolveFileMode.Output);
                 using (var sw = new StreamWriter(fn))
                 {
-                    RazorEngine.Razor.Parse(templateData, sw, model);
+                    RazorEngine.Razor.Parse(templateData, sw.Write, model);
                 }
             }
             catch (RazorEngine.Templating.TemplateCompilationException err)

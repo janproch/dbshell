@@ -29,7 +29,7 @@ namespace RazorEngine.Templating
         /// <summary>
         /// Gets or sets output stream
         /// </summary>
-        public TextWriter Output { get; set; }
+        public Action<string> Output { get; set; }
         #endregion
 
         #region Methods
@@ -88,7 +88,7 @@ namespace RazorEngine.Templating
             if (@object == null)
                 return;
 
-            Output.Write(@object);
+            Output(@object.ToString());
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace RazorEngine.Templating
             if (@string == null)
                 return;
 
-            Output.Write(@string);
+            Output(@string);
         }
 
         /// <summary>
