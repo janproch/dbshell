@@ -27,8 +27,7 @@ namespace DbShell.Core
     /// ]]>
     /// </code>
     /// </example>
-    [ContentProperty("TemplateData")]
-    public class Razor : RunnableBase
+    public class Razor : TemplateHolderBase
     {
         private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -39,19 +38,6 @@ namespace DbShell.Core
         /// Name of output file.
         /// </value>
         public string File { get; set; }
-
-        /// <summary>
-        /// Gets or sets the template file.
-        /// </summary>
-        /// <value>
-        /// File name of Razor template (cshtml file)
-        /// </value>
-        public string TemplateFile { get; set; }
-
-        /// <summary>
-        /// Inlined template data
-        /// </summary>
-        public string TemplateData { get; set; }
 
         /// <summary>
         /// Gets or sets the model. If Model has type String, it is evaluated as expression. Use Model="{Database}" for database structure
@@ -82,15 +68,9 @@ namespace DbShell.Core
             }
 
             _log.InfoFormat("DBSH-00074 Apply template {0}=>{1}", TemplateFile ?? "(inline template)", File);
-            string templateData = TemplateData;
 
-            if (templateData == null)
-            {
-                using (var sr = new StreamReader(Context.ResolveFile(TemplateFile, ResolveFileMode.Template)))
-                {
-                    templateData = sr.ReadToEnd();
-                }
-            }
+            string templateData = LoadTemplate();
+
             try
             {
                 string fn = Context.ResolveFile(Context.Replace(File), ResolveFileMode.Output);
