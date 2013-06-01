@@ -1,18 +1,23 @@
 import os, os.path, re, sys
 
 def enum_cs_files():
-    for root, dirs, files in os.walk('..'):
-        if '.svn' in dirs:
-            dirs.remove('.svn')
-        if '.bld' in dirs:
-            dirs.remove('.bld')
-        if 'Install' in dirs:
-            dirs.remove('Install')
-    
-        for name in files:
-            fn = os.path.join(root, name)
-            if fn.endswith('.cs'):
-                yield fn
+    for folder in ['..', '../../dbmouse']:
+        for root, dirs, files in os.walk(folder):
+            if '.svn' in dirs:
+                dirs.remove('.svn')
+            if '.bld' in dirs:
+                dirs.remove('.bld')
+            if 'Install' in dirs:
+                dirs.remove('Install')
+            if 'install' in dirs:
+                dirs.remove('install')
+            if 'obj' in dirs:
+                dirs.remove('obj')
+        
+            for name in files:
+                fn = os.path.join(root, name)
+                if fn.endswith('.cs'):
+                    yield fn
 
 errs = {}
 uerrs = []
@@ -55,6 +60,7 @@ print
 print 'Duplicates:', len(dups)
 for err in dups:
     print err['code'], err['file']
+    print 'OTHER:', errs[err['code']]['file']
 
 used = errs.keys()
 if len(used) == 0:

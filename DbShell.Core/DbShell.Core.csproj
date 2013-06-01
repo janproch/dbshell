@@ -52,6 +52,8 @@
     <Compile Include="CdlFile.cs" />
     <Compile Include="CdlFileReader.cs" />
     <Compile Include="CdlFileWriter.cs" />
+    <Compile Include="Utility\TableOrView.cs" />
+    <Compile Include="View.cs" />
     <Compile Include="DatabaseExtension.cs" />
     <Compile Include="DatabaseProvider.cs" />
     <Compile Include="Query.cs" />

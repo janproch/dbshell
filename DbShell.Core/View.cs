@@ -14,25 +14,29 @@ using DbShell.Driver.Common.Utility;
 namespace DbShell.Core
 {
     /// <summary>
-    /// Table in database
+    /// View in database
     /// </summary>
-    public class Table : TableOrView
+    public class View : TableOrView
     {
         protected override TableInfo GetRowFormat()
         {
             var fullName = GetFullName();
             var db = GetDatabaseStructure();
-            var table = db.FindTable(fullName.Schema, fullName.Name);
-            if (table == null)
+            var view = db.FindView(fullName.Schema, fullName.Name);
+            if (view == null)
             {
-                throw new Exception(String.Format("DBSH-00007 Table {0} not found", fullName));
+                throw new Exception(String.Format("DBSH-00000 View {0} not found", fullName));
             }
-            return table;
+            if (view.QueryInfo == null)
+            {
+                throw new Exception(String.Format("DBSH-00000 View {0} has not result info, probably view contains errors", fullName));
+            }
+            return view.QueryInfo.ToTableInfo();
         }
 
         public override string ToString()
         {
-            return String.Format("[Table {0}]", GetFullName());
+            return String.Format("[View {0}]", GetFullName());
         }
     }
 }
