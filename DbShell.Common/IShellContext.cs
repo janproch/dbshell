@@ -21,5 +21,6 @@ namespace DbShell.Common
         void PopExecutingFolder();
         string GetExecutingFolder();
         void OutputMessage(string message);
+        void AddSearchFolder(ResolveFileMode mode, string folder);
     }
 }

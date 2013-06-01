@@ -25,6 +25,7 @@ namespace DbShell.Runtime
         private readonly List<ScriptScope> _scopeStack = new List<ScriptScope>();
         private readonly List<string> _executingFolderStack = new List<string>();
         private ShellRunner _runner;
+        private Dictionary<ResolveFileMode, List<string>> _additionalSearchFolders = new Dictionary<ResolveFileMode, List<string>>();
 
         public ShellContext(ShellRunner runner)
         {
@@ -111,13 +112,21 @@ namespace DbShell.Runtime
             }
         }
 
-        private string SearchExistingFile(string file, params string[] folders)
+        private string SearchExistingFile(string file, ResolveFileMode mode, params string[] folders)
         {
             foreach (string folder in folders)
             {
                 if (folder == null) continue;
                 string fn = Path.Combine(folder, file);
                 if (System.IO.File.Exists(fn)) return fn;
+            }
+            if (_additionalSearchFolders.ContainsKey(mode))
+            {
+                foreach (string folder in _additionalSearchFolders[mode])
+                {
+                    string fn = Path.Combine(folder, file);
+                    if (System.IO.File.Exists(fn)) return fn;
+                }
             }
             if (System.IO.File.Exists(file)) return file;
             throw new Exception(String.Format("DBSH-00063 Could not find file {0}, searched in folders {1}", file, folders.CreateDelimitedText(";")));
@@ -128,11 +137,11 @@ namespace DbShell.Runtime
             switch (mode)
             {
                 case ResolveFileMode.DbShell:
-                    return SearchExistingFile(file, GetExecutingFolder());
+                    return SearchExistingFile(file, mode, GetExecutingFolder());
                 case ResolveFileMode.Template:
-                    return SearchExistingFile(file, GetTemplatesFolder(), GetExecutingFolder());
+                    return SearchExistingFile(file, mode, GetTemplatesFolder(), GetExecutingFolder());
                 case ResolveFileMode.Input:
-                    return SearchExistingFile(file, GetExecutingFolder());
+                    return SearchExistingFile(file, mode, GetExecutingFolder());
             }
             return file;
         }
@@ -178,6 +187,15 @@ namespace DbShell.Runtime
         public void OutputMessage(string message)
         {
             if (_runner != null) _runner.OnOutputMessage(message);
+        }
+
+        public void AddSearchFolder(ResolveFileMode mode, string folder)
+        {
+            if (!_additionalSearchFolders.ContainsKey(mode))
+            {
+                _additionalSearchFolders[mode] = new List<string>();
+            }
+            _additionalSearchFolders[mode].Add(folder);
         }
     }
 }
