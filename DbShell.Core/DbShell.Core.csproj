@@ -69,6 +69,7 @@
     <Compile Include="MapValue.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Razor.cs" />
+    <Compile Include="Utility\TextHolderBase.cs" />
     <Compile Include="Utility\DataRowModel.cs" />
     <Compile Include="Utility\RunnableBase.cs" />
     <Compile Include="Utility\RunnableContainer.cs" />

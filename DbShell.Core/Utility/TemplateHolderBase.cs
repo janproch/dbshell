@@ -33,7 +33,7 @@ namespace DbShell.Core.Utility
 
             if (templateData == null && TemplateFile != null)
             {
-                using (var sr = new StreamReader(Context.ResolveFile(TemplateFile, ResolveFileMode.Template)))
+                using (var sr = new StreamReader(Context.ResolveFile(Context.Replace(TemplateFile), ResolveFileMode.Template)))
                 {
                     templateData = sr.ReadToEnd();
                 }
