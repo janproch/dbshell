@@ -25,11 +25,11 @@ namespace DbShell.Core
             var view = db.FindView(fullName.Schema, fullName.Name);
             if (view == null)
             {
-                throw new Exception(String.Format("DBSH-00000 View {0} not found", fullName));
+                throw new Exception(String.Format("DBSH-00091 View {0} not found", fullName));
             }
             if (view.QueryInfo == null)
             {
-                throw new Exception(String.Format("DBSH-00000 View {0} has not result info, probably view contains errors", fullName));
+                throw new Exception(String.Format("DBSH-00092 View {0} has not result info, probably view contains errors", fullName));
             }
             return view.QueryInfo.ToTableInfo();
         }

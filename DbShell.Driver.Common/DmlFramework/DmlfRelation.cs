@@ -88,7 +88,7 @@ namespace DbShell.Driver.Common.DmlFramework
             if (TableOrView != null) sources++;
             if (SubQuery != null) sources++;
             if (SubQueryString != null) sources++;
-            if (sources != 1) throw new Exception("DBSH-00000 DmlfSource should have exactly one source");
+            if (sources != 1) throw new Exception("DBSH-00095 DmlfSource should have exactly one source");
 
             if (TableOrView != null)
             {

@@ -67,10 +67,10 @@ namespace DbShell.Core
             ITabularDataSource source;
             ITabularDataTarget target;
 
-            if (Source != null && SourceExpression != null) throw new Exception("DBSH-00000 CopyTable: Both Source and SourceExpression are set");
-            if (Source == null && SourceExpression == null) throw new Exception("DBSH-00000 CopyTable: None Source and SourceExpression are set");
-            if (Target != null && TargetExpression != null) throw new Exception("DBSH-00000 CopyTable: Both Target and TargetExpression are set");
-            if (Target == null && TargetExpression == null) throw new Exception("DBSH-00000 CopyTable: None Target and TargetExpression are set");
+            if (Source != null && SourceExpression != null) throw new Exception("DBSH-00087 CopyTable: Both Source and SourceExpression are set");
+            if (Source == null && SourceExpression == null) throw new Exception("DBSH-00088 CopyTable: None Source and SourceExpression are set");
+            if (Target != null && TargetExpression != null) throw new Exception("DBSH-00089 CopyTable: Both Target and TargetExpression are set");
+            if (Target == null && TargetExpression == null) throw new Exception("DBSH-00090 CopyTable: None Target and TargetExpression are set");
 
             if (SourceExpression != null)
             {

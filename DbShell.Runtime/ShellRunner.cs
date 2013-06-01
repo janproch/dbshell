@@ -123,7 +123,7 @@ namespace DbShell.Runtime
         {
             if (_thread == null)
             {
-                throw new Exception("DBSH-00000 Calling ShellRunner.Abort without valid thread");
+                throw new Exception("DBSH-00096 Calling ShellRunner.Abort without valid thread");
             }
             _thread.Abort();
         }
@@ -137,7 +137,7 @@ namespace DbShell.Runtime
         //{
         //    if (_thread == null)
         //    {
-        //        throw new Exception("DBSH-00000 Calling ShellRunner.WaitToFinish without valid thread");
+        //        throw new Exception("DBSH-00097 Calling ShellRunner.WaitToFinish without valid thread");
         //    }
         //    _thread.Join();
         //}

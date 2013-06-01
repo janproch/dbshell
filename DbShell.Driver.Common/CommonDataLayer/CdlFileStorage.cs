@@ -5,6 +5,7 @@ using System.IO;
 using System.Xml;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.CommonDataLayer
 {
@@ -52,7 +53,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
             }
         }
 
-        private class ChunkInfo
+        internal class ChunkInfo
         {
             internal int[] Lengths;
             internal int ChunkSize;
@@ -134,25 +135,6 @@ namespace DbShell.Driver.Common.CommonDataLayer
             }
         }
 
-        public IEnumerable<ICdlRecord> EnumRows()
-        {
-            int page = 0;
-            while (page < _directory.Count)
-            {
-                lock (_directory)
-                {
-                    BinaryReader br = new BinaryReader(_cache);
-                    _cache.Seek(_directory[page], SeekOrigin.Begin);
-                    ChunkInfo info = ChunkInfo.LoadInfo(br);
-                    for (int i = 0; i < info.Count; i++)
-                    {
-                        yield return CdlTool.LoadRecord(br, _table);
-                    }
-                }
-                page++;
-            }
-        }
-
         public TableInfo Structure
         {
             get { return _table; }
@@ -193,13 +175,47 @@ namespace DbShell.Driver.Common.CommonDataLayer
         {
             _directory = null;
             _cache.Close();
-            File.Delete(_file);
+            System.IO.File.Delete(_file);
 
             if (Disposing != null)
             {
                 Disposing();
                 Disposing = null;
             }
+        }
+
+        public IEnumerable<ICdlRecord> EnumRows(ArrayDataRecord record)
+        {
+            int page = 0;
+            while (page < _directory.Count)
+            {
+                lock (_directory)
+                {
+                    BinaryReader br = new BinaryReader(_cache);
+                    _cache.Seek(_directory[page], SeekOrigin.Begin);
+                    ChunkInfo info = ChunkInfo.LoadInfo(br);
+                    for (int i = 0; i < info.Count; i++)
+                    {
+                        if (record == null)
+                        {
+                            yield return CdlTool.LoadRecord(br, _table);
+                        }
+                        else
+                        {
+                            CdlTool.LoadRecord(br, record);
+                            yield return record;
+                        }
+                    }
+                }
+                page++;
+            }
+        }
+
+        public ICdlReader CreateReader()
+        {
+            var reader = new CdlFileStorageReader(Structure);
+            reader.SetEnumerator(EnumRows(reader));
+            return reader;
         }
     }
 }

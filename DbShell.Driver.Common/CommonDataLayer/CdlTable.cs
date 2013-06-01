@@ -297,7 +297,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                         break;
                     case CdlRowState.Modified:
                         {
-                            if (pk == null) throw new Exception("DBSH-00000 PK required");
+                            if (pk == null) throw new Exception("DBSH-00093 PK required");
                             object[] pkVals = row.Original.GetValuesByCols(pk);
                             var values = changeSet.FindValuesByKey(pkVals);
                             if (values == null)
@@ -321,7 +321,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                         break;
                     case CdlRowState.Deleted:
                         {
-                            if (pk == null) throw new Exception("DBSH-00000 PK required");
+                            if (pk == null) throw new Exception("DBSH-00094 PK required");
                             object[] pkVals = row.Original.GetValuesByCols(pk);
                             changeSet.DeletedRows.Add(pkVals);
                         }
