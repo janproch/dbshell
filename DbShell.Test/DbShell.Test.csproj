@@ -85,10 +85,6 @@
       <Project>{80906e4d-1539-4f93-a227-3e072f49baea}</Project>
       <Name>DbShell.Driver.SqlServer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DbShell.Runtime\DbShell.Runtime.csproj">
-      <Project>{66acab4b-a09f-4fbe-b5b9-de1d56a83414}</Project>
-      <Name>DbShell.Runtime</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Ideas.xml">

@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Markup;
 using DbShell.Common;
-using DbShell.Core;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
 using IronPython.Hosting;
 using Microsoft.Scripting.Hosting;
 using log4net;
 
-
-namespace DbShell.Runtime
+namespace DbShell.Core.Runtime
 {
     public class ShellContext : IShellContext, IDisposable
     {
@@ -40,6 +36,7 @@ namespace DbShell.Runtime
             if (!_dbCache.ContainsKey(key))
             {
                 _log.InfoFormat("DBSH-00076 Downloading structure for connection {0}", connection);
+                OutputMessage(String.Format("Downloading structure for connection {0}", connection));
                 var analyser = connection.Factory.CreateAnalyser();
                 using (var conn = connection.Connect())
                 {
@@ -48,6 +45,11 @@ namespace DbShell.Runtime
                 }
             }
             return _dbCache[key];
+        }
+
+        public void PutDatabaseInfoCache(string providerKey, DatabaseInfo db)
+        {
+            _dbCache[providerKey] = db;
         }
 
         private ScriptScope Scope
@@ -99,7 +101,7 @@ namespace DbShell.Runtime
                 var runnable = obj as IRunnable;
                 if (runnable == null) throw new Exception(String.Format("DBSH-00059 Included file {0} doesn't contain root element implementing IRunnable", file));
                 var shellElem = obj as IShellElement;
-                if (shellElem != null) ShellRunner.ProcessLoadedElement(shellElem, parent, this, null);
+                if (shellElem != null) ShellRunner.ProcessLoadedElement(shellElem, parent, this);
                 try
                 {
                     PushExecutingFolder(Path.GetDirectoryName(file));
@@ -197,5 +199,7 @@ namespace DbShell.Runtime
             }
             _additionalSearchFolders[mode].Add(folder);
         }
+
+        public IConnectionProvider DefaultConnection { get; set; }
     }
 }

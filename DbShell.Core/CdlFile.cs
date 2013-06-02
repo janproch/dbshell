@@ -25,7 +25,7 @@ namespace DbShell.Core
 
         private string GetName()
         {
-            return Context.Replace(Name);
+            return Replace(Name);
         }
 
         private void OpenRead(out TableInfo table, out BinaryReader br)

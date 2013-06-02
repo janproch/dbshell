@@ -14,5 +14,9 @@ namespace DbShell.Core
         {
             return GetDatabaseStructure();
         }
+
+        public void InitializeTemplate(IRazorTemplate template)
+        {
+        }
     }
 }

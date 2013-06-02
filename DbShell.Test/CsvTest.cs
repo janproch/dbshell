@@ -1,5 +1,5 @@
 ﻿using System;
-using DbShell.Runtime;
+using DbShell.Core.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DbShell.Test

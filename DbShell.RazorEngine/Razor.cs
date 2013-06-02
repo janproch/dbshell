@@ -168,9 +168,9 @@ namespace RazorEngine
         /// <param name="model">The model.</param>
         /// <param name="name">[Optional] The name of the template. This is used to cache the template.</param>
         /// <returns>The string result of the parsed template.</returns>
-        public static void Parse(string template, Action<string> output, object model, string name = null)
+        public static void Parse(string template, Action<string> output, object model, string name = null, Action<ITemplate> initializeTemplate = null)
         {
-            DefaultTemplateService.Parse(template, output, model, name);
+            DefaultTemplateService.Parse(template, output, model, name, initializeTemplate);
         }
 
         public static ITemplate CompileTemplate(string template, Type modelType)

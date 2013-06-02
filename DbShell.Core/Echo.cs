@@ -24,7 +24,7 @@ namespace DbShell.Core
 
         protected override void DoRun()
         {
-            string text = Context.Replace(Message);
+            string text = Replace(Message);
             _log.Info(text);
             Context.OutputMessage(text);
         }

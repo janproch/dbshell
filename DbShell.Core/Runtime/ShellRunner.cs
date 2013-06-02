@@ -1,22 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows.Markup;
 using System.Xml;
 using DbShell.Common;
-using DbShell.Core;
 
-namespace DbShell.Runtime
+namespace DbShell.Core.Runtime
 {
     public class ShellRunner : IDisposable
     {
         private IRunnable _main;
         private ShellContext _context;
         private string _rootFolder;
-        public IConnectionProvider DefaultConnection;
         private Thread _thread;
         public Exception Error { get; private set; }
         public bool FinishedOk { get; private set; }
@@ -50,7 +45,7 @@ namespace DbShell.Runtime
             _main = (IRunnable)obj;
             _context = new ShellContext(this);
             var element = _main as IShellElement;
-            if (element != null) ProcessLoadedElement(element, null, _context, DefaultConnection);
+            if (element != null) ProcessLoadedElement(element, null, _context);
         }
 
         public ShellContext Context
@@ -58,18 +53,14 @@ namespace DbShell.Runtime
             get { return _context; }
         }
 
-        public static void ProcessLoadedElement(IShellElement element, IShellElement parent, IShellContext context, IConnectionProvider defaultConnection)
+        public static void ProcessLoadedElement(IShellElement element, IShellElement parent, IShellContext context)
         {
             element.Context = context;
-            if (element.Connection == null && parent != null && parent.Connection != null)
+            if (element.OwnConnection == null && parent != null && parent.OwnConnection != null)
             {
-                element.Connection = parent.Connection;
+                element.OwnConnection = parent.OwnConnection;
             }
-            if (element.Connection == null && defaultConnection != null)
-            {
-                element.Connection = defaultConnection;
-            }
-            element.EnumChildren(child => ProcessLoadedElement(child, element, context, defaultConnection));
+            element.EnumChildren(child => ProcessLoadedElement(child, element, context));
         }
 
         public void Run()

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Markup;
 using DbShell.Common;
+using DbShell.Core.RazorModels;
 using DbShell.Core.Utility;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
@@ -32,7 +33,7 @@ namespace DbShell.Core
             using (var conn = Connection.Connect())
             {
                 var cmd = conn.CreateCommand();
-                cmd.CommandText = Context.Replace(Text);
+                cmd.CommandText = Replace(Text);
                 using (var reader = cmd.ExecuteReader(CommandBehavior.KeyInfo | CommandBehavior.SchemaOnly))
                 {
                     return reader.GetTableInfo();
@@ -51,7 +52,7 @@ namespace DbShell.Core
             var dda = Connection.Factory.CreateDataAdapter();
             var conn = Connection.Connect();
             var cmd = conn.CreateCommand();
-            cmd.CommandText = Context.Replace(Text);
+            cmd.CommandText = Replace(Text);
             var reader = cmd.ExecuteReader();
             var result = dda.AdaptReader(reader);
             result.Disposing += () =>
@@ -85,7 +86,12 @@ namespace DbShell.Core
 
         object IModelProvider.GetModel()
         {
-            return new TableDataModel(this);
+            return this;
+        }
+
+        void IModelProvider.InitializeTemplate(IRazorTemplate template)
+        {
+            template.TabularData = this;
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using DbShell.Runtime;
+using DbShell.Core.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DbShell.Test

@@ -215,5 +215,7 @@ namespace DbShell.Driver.Common.AbstractDb
         void PutCmd(string format, params object[] args);
         void WriteRaw(string data);
         void EndCommand();
+
+        string Format(string format, params object[] args);
     }
 }

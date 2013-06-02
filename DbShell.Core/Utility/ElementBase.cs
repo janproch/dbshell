@@ -15,7 +15,24 @@ namespace DbShell.Core.Utility
         /// The connection in format sqlserver://connection_string for SQL Server
         /// </value>
         [TypeConverter(typeof (ConnectionTypeConverter))]
-        public IConnectionProvider Connection { get; set; }
+        public IConnectionProvider Connection
+        {
+            get
+            {
+                if (_connection != null) return _connection;
+                if (Context != null) return Context.DefaultConnection;
+                return null;
+            }
+            set { _connection = value; }
+        }
+
+        public IConnectionProvider OwnConnection
+        {
+            get { return _connection; }
+            set { _connection = value; }
+        }
+
+        private IConnectionProvider _connection;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IShellContext Context { get; set; }
@@ -38,6 +55,12 @@ namespace DbShell.Core.Utility
         protected DatabaseInfo GetDatabaseStructure()
         {
             return Context.GetDatabaseStructure(Connection);
+        }
+
+        protected string Replace(string value, string replacePattern = null)
+        {
+            if (Context != null) return Context.Replace(value, replacePattern);
+            return value;
         }
     }
 }

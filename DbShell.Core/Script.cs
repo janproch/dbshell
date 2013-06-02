@@ -67,7 +67,7 @@ namespace DbShell.Core
                 string sql = item;
                 if (replace)
                 {
-                    sql = Context.Replace(sql, ReplacePattern);
+                    sql = Replace(sql, ReplacePattern);
                 }
                 var cmd = conn.CreateCommand();
                 cmd.CommandText = sql;

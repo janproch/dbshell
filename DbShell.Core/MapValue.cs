@@ -101,7 +101,7 @@ namespace DbShell.Core
                 try
                 {
                     CreateColumnValues(record);
-                    string value = Context.Replace(Value);
+                    string value = Replace(Value);
                     _value.ReadFrom(value);
                     _value.WriteTo(writer);
                 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DbShell.Common;
+using DbShell.Core.RazorModels;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
@@ -30,7 +31,7 @@ namespace DbShell.Core.Utility
 
         protected NameWithSchema GetFullName()
         {
-            return new NameWithSchema(Context.Replace(Schema), Context.Replace(Name));
+            return new NameWithSchema(Replace(Schema), Replace(Name));
         }
 
         TableInfo ITabularDataSource.GetRowFormat()
@@ -91,7 +92,14 @@ namespace DbShell.Core.Utility
 
         object IModelProvider.GetModel()
         {
-            return new TableDataModel(this);
+            return this;
+        }
+
+        void IModelProvider.InitializeTemplate(IRazorTemplate template)
+        {
+            template.TabularData = this;
+            template.Name = Name;
+            template.Schema = Schema;
         }
     }
 }

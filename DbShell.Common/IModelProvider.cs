@@ -15,5 +15,11 @@ namespace DbShell.Common
         /// </summary>
         /// <returns>The model</returns>
         object GetModel();
+
+        /// <summary>
+        /// initializes member of razor template
+        /// </summary>
+        /// <param name="template"></param>
+        void InitializeTemplate(IRazorTemplate template);
     }
 }

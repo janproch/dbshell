@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Markup;
 using DbShell.Common;
+using DbShell.Core.RazorModels;
 using DbShell.Core.Utility;
 using DbShell.Driver.Common.Structure;
 using log4net;
@@ -50,17 +51,20 @@ namespace DbShell.Core
         protected override void DoRun()
         {
             object model = null;
+            IModelProvider provider = null;
             if (Model is string)
             {
                 model = Context.Evaluate((string) Model);
                 if (model is IModelProvider)
                 {
-                    model = ((IModelProvider)model).GetModel();
+                    provider = (IModelProvider) model;
+                    model = provider.GetModel();
                 }
             }
             else if (Model is IModelProvider)
             {
-                model = ((IModelProvider) Model).GetModel();
+                provider = (IModelProvider)Model;
+                model = provider.GetModel();
             }
             else
             {
@@ -73,10 +77,11 @@ namespace DbShell.Core
 
             try
             {
-                string fn = Context.ResolveFile(Context.Replace(File), ResolveFileMode.Output);
+                string fn = Context.ResolveFile(Replace(File), ResolveFileMode.Output);
                 using (var sw = new StreamWriter(fn))
                 {
-                    RazorEngine.Razor.Parse(templateData, sw.Write, model);
+                    RazorScripting.ParseRazor(templateData, sw.Write, model, 
+                        provider != null ? provider.InitializeTemplate : (Action<IRazorTemplate>) null);
                 }
             }
             catch (RazorEngine.Templating.TemplateCompilationException err)

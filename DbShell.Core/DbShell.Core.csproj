@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -31,6 +31,18 @@
     <DocumentationFile>bin\Release\DbShell.Core.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IronPython">
+      <HintPath>..\_lib\IronPython.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\_lib\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Dynamic">
+      <HintPath>..\_lib\Microsoft.Dynamic.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting">
+      <HintPath>..\_lib\Microsoft.Scripting.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\_lib\log4net.dll</HintPath>
     </Reference>
@@ -46,12 +58,19 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Batch.cs" />
     <Compile Include="CdlFile.cs" />
     <Compile Include="CdlFileReader.cs" />
     <Compile Include="CdlFileWriter.cs" />
+    <Compile Include="RazorModels\ColumnModel.cs" />
+    <Compile Include="RazorModels\RazorTemplateBase.cs" />
+    <Compile Include="RazorModels\RazorScripting.cs" />
+    <Compile Include="Runtime\ShellContext.cs" />
+    <Compile Include="Runtime\ShellRunner.cs" />
     <Compile Include="Utility\TableOrView.cs" />
     <Compile Include="View.cs" />
     <Compile Include="DatabaseExtension.cs" />
@@ -72,7 +91,7 @@
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Razor.cs" />
     <Compile Include="Utility\TextHolderBase.cs" />
-    <Compile Include="Utility\DataRowModel.cs" />
+    <Compile Include="RazorModels\DataRowModel.cs" />
     <Compile Include="Utility\RunnableBase.cs" />
     <Compile Include="Utility\RunnableContainer.cs" />
     <Compile Include="Script.cs" />
@@ -90,7 +109,7 @@
     <Compile Include="Utility\CsvWriter.cs" />
     <Compile Include="Utility\DynamicConnectionProvider.cs" />
     <Compile Include="Utility\ElementBase.cs" />
-    <Compile Include="Utility\TableDataModel.cs" />
+    <Compile Include="RazorModels\TableDataModel.cs" />
     <Compile Include="Utility\TableWriter.cs" />
     <Compile Include="Utility\TemplateHolderBase.cs" />
   </ItemGroup>

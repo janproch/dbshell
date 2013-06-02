@@ -308,7 +308,7 @@ namespace DbShell.Driver.Common.Sql
             return sb.ToString();
         }
 
-        protected string Format(string format, params object[] args)
+        public string Format(string format, params object[] args)
         {
             return Format(Factory, FormatProperties, FormatterState, format, args);
         }

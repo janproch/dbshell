@@ -20,7 +20,7 @@ namespace DbShell.Core.Utility
         {
             if (_provider == null)
             {
-                string s = Context.Replace(_providerString);
+                string s = Replace(_providerString);
                 _provider = ConnectionProvider.FromString(s);
                 if (_provider == null) throw new Exception(String.Format("DBSH-00062 cannot create connection provider from string {0}", s));
             }
@@ -59,7 +59,7 @@ namespace DbShell.Core.Utility
         public override string ToString()
         {
             if (_provider != null) return _provider.ToString();
-            if (Context != null) return Context.Replace(_providerString);
+            if (Context != null) return Replace(_providerString);
             return _providerString;
         }
     }

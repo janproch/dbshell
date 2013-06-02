@@ -40,15 +40,15 @@ namespace DbShell.Core
             if (Value != null && Expression != null) throw new Exception("DBSH-00006 Both Value and Expression is set");
             if (Value != null)
             {
-                Context.SetVariable(Context.Replace(Name), Context.Replace(Value));
+                Context.SetVariable(Replace(Name), Replace(Value));
             }
             if (Expression != null)
             {
-                Context.SetVariable(Context.Replace(Name), Context.Evaluate(Expression));
+                Context.SetVariable(Replace(Name), Context.Evaluate(Expression));
             }
             if (Expression == null && Value == null)
             {
-                Context.SetVariable(Context.Replace(Name), null);
+                Context.SetVariable(Replace(Name), null);
             }
         }
     }

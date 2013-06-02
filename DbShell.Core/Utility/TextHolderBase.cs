@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Markup;
 using DbShell.Common;
+using DbShell.Core.RazorModels;
 using log4net;
 
 namespace DbShell.Core.Utility
@@ -29,7 +30,7 @@ namespace DbShell.Core.Utility
             if (templateData != null)
             {
                 var sw = new StringWriter();
-                RazorEngine.Razor.Parse(templateData, sw.Write, model);
+                RazorScripting.ParseRazor(templateData, sw.Write, model);
                 return sw.ToString();
             }
 
@@ -37,7 +38,7 @@ namespace DbShell.Core.Utility
 
             if (textData == null && TextFile != null)
             {
-                using (var sr = new StreamReader(Context.ResolveFile(Context.Replace(TextFile), ResolveFileMode.Input)))
+                using (var sr = new StreamReader(Context.ResolveFile(Replace(TextFile), ResolveFileMode.Input)))
                 {
                     textData = sr.ReadToEnd();
                 }

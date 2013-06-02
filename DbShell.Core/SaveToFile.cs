@@ -49,7 +49,7 @@ namespace DbShell.Core
 
         protected override void DoRun()
         {
-            string file = Context.ResolveFile(Context.Replace(File), ResolveFileMode.Output);
+            string file = Context.ResolveFile(Replace(File), ResolveFileMode.Output);
             if (Expression != null && Value != null) throw new Exception("DBSH-00078 SaveToFile: both Expression and Value is set");
             if (Expression == null && Value == null) throw new Exception("DBSH-00079 SaveToFile: none of Expression and Value is set");
             if (Expression != null)
@@ -73,7 +73,7 @@ namespace DbShell.Core
             }
             if (Value!=null)
             {
-                string val = Context.Replace(Value);
+                string val = Replace(Value);
                 using (var fw = new StreamWriter(file, false, Encoding))
                 {
                     fw.Write(val);

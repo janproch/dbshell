@@ -19,7 +19,7 @@ namespace DbShell.Core
 
         private string GetName()
         {
-            return Context.Replace(Name);
+            return Replace(Name);
         }
 
         private ITabularDataSource CreateSource()
