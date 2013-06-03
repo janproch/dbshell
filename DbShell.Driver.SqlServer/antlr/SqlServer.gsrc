@@ -7,8 +7,7 @@ options {
 
 @header {
     using System.Globalization;
-    using DatAdmin;
-    using Plugin.mssql;
+    using DbShell.Driver.Common.Utility;
 }
 
 find_deps[DepsCollector dc]

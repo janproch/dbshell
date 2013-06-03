@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g 2013-06-02 23:48:07
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g 2013-06-03 21:01:03
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 168, 219
@@ -197,8 +197,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = EQUALS;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:27:7: ( '=' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:27:16: '='
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:26:7: ( '=' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:26:16: '='
             {
             	Match('='); 
 
@@ -220,8 +220,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = SAFEEQUALS;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:28:11: ( '<=>' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:28:16: '<=>'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:27:11: ( '<=>' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:27:16: '<=>'
             {
             	Match("<=>"); 
 
@@ -244,8 +244,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = EQUALS2;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:29:8: ( '==' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:29:16: '=='
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:28:8: ( '==' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:28:16: '=='
             {
             	Match("=="); 
 
@@ -268,8 +268,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = NOT_EQUALS;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:30:11: ( '!=' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:30:16: '!='
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:29:11: ( '!=' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:29:16: '!='
             {
             	Match("!="); 
 
@@ -292,8 +292,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = NOT_EQUALS2;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:31:12: ( '<>' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:31:16: '<>'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:30:12: ( '<>' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:30:16: '<>'
             {
             	Match("<>"); 
 
@@ -316,8 +316,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = LESS;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:32:5: ( '<' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:32:16: '<'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:31:5: ( '<' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:31:16: '<'
             {
             	Match('<'); 
 
@@ -339,8 +339,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = LESS_OR_EQ;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:33:11: ( '<=' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:33:16: '<='
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:32:11: ( '<=' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:32:16: '<='
             {
             	Match("<="); 
 
@@ -363,8 +363,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = GREATER;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:34:8: ( '>' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:34:16: '>'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:33:8: ( '>' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:33:16: '>'
             {
             	Match('>'); 
 
@@ -386,8 +386,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = GREATER_OR_EQ;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:35:14: ( '>=' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:35:16: '>='
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:34:14: ( '>=' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:34:16: '>='
             {
             	Match(">="); 
 
@@ -410,8 +410,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = SHIFT_LEFT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:36:11: ( '<<' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:36:16: '<<'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:35:11: ( '<<' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:35:16: '<<'
             {
             	Match("<<"); 
 
@@ -434,8 +434,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = SHIFT_RIGHT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:37:12: ( '>>' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:37:16: '>>'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:36:12: ( '>>' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:36:16: '>>'
             {
             	Match(">>"); 
 
@@ -458,8 +458,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = AMPERSAND;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:38:10: ( '&' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:38:16: '&'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:37:10: ( '&' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:37:16: '&'
             {
             	Match('&'); 
 
@@ -481,8 +481,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = DOUBLE_AMPERSAND;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:39:17: ( '&&' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:39:19: '&&'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:38:17: ( '&&' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:38:19: '&&'
             {
             	Match("&&"); 
 
@@ -505,8 +505,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = PIPE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:40:5: ( '|' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:40:16: '|'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:39:5: ( '|' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:39:16: '|'
             {
             	Match('|'); 
 
@@ -528,8 +528,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = DOUBLE_PIPE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:41:12: ( '||' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:41:16: '||'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:40:12: ( '||' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:40:16: '||'
             {
             	Match("||"); 
 
@@ -552,8 +552,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = PLUS;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:42:5: ( '+' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:42:16: '+'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:41:5: ( '+' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:41:16: '+'
             {
             	Match('+'); 
 
@@ -575,8 +575,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = MINUS;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:43:6: ( '-' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:43:16: '-'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:42:6: ( '-' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:42:16: '-'
             {
             	Match('-'); 
 
@@ -598,8 +598,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = TILDA;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:44:6: ( '~' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:44:16: '~'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:43:6: ( '~' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:43:16: '~'
             {
             	Match('~'); 
 
@@ -621,8 +621,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = ASTERISK;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:45:9: ( '*' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:45:16: '*'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:44:9: ( '*' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:44:16: '*'
             {
             	Match('*'); 
 
@@ -644,8 +644,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = SLASH;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:46:6: ( '/' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:46:16: '/'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:45:6: ( '/' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:45:16: '/'
             {
             	Match('/'); 
 
@@ -667,8 +667,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = PERCENT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:47:8: ( '%' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:47:16: '%'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:46:8: ( '%' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:46:16: '%'
             {
             	Match('%'); 
 
@@ -690,8 +690,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = SEMI;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:48:5: ( ';' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:48:16: ';'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:47:5: ( ';' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:47:16: ';'
             {
             	Match(';'); 
 
@@ -713,8 +713,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = DOT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:49:4: ( '.' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:49:16: '.'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:48:4: ( '.' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:48:16: '.'
             {
             	Match('.'); 
 
@@ -736,8 +736,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = COMMA;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:50:6: ( ',' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:50:16: ','
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:49:6: ( ',' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:49:16: ','
             {
             	Match(','); 
 
@@ -759,8 +759,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = LPAREN;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:51:7: ( '(' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:51:16: '('
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:50:7: ( '(' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:50:16: '('
             {
             	Match('('); 
 
@@ -782,8 +782,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = RPAREN;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:52:7: ( ')' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:52:16: ')'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:51:7: ( ')' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:51:16: ')'
             {
             	Match(')'); 
 
@@ -805,8 +805,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = QUESTION;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:53:9: ( '?' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:53:16: '?'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:52:9: ( '?' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:52:16: '?'
             {
             	Match('?'); 
 
@@ -828,8 +828,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = EXCLAMATION;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:54:12: ( '!' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:54:16: '!'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:53:12: ( '!' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:53:16: '!'
             {
             	Match('!'); 
 
@@ -851,8 +851,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = COLON;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:55:6: ( ':' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:55:16: ':'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:54:6: ( ':' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:54:16: ':'
             {
             	Match(':'); 
 
@@ -874,8 +874,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = AT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:56:3: ( '@' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:56:16: '@'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:55:3: ( '@' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:55:16: '@'
             {
             	Match('@'); 
 
@@ -897,8 +897,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = DOLLAR;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:57:7: ( '$' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:57:16: '$'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:56:7: ( '$' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:56:16: '$'
             {
             	Match('$'); 
 
@@ -920,8 +920,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = ARROW_UP;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:58:9: ( '^' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:58:16: '^'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:57:9: ( '^' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:57:16: '^'
             {
             	Match('^'); 
 
@@ -941,8 +941,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:70:11: ( ( 'a' | 'A' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:70:12: ( 'a' | 'A' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:69:11: ( ( 'a' | 'A' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:69:12: ( 'a' | 'A' )
             {
             	if ( input.LA(1) == 'A' || input.LA(1) == 'a' ) 
             	{
@@ -970,8 +970,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:71:11: ( ( 'b' | 'B' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:71:12: ( 'b' | 'B' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:70:11: ( ( 'b' | 'B' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:70:12: ( 'b' | 'B' )
             {
             	if ( input.LA(1) == 'B' || input.LA(1) == 'b' ) 
             	{
@@ -999,8 +999,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:72:11: ( ( 'c' | 'C' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:72:12: ( 'c' | 'C' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:71:11: ( ( 'c' | 'C' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:71:12: ( 'c' | 'C' )
             {
             	if ( input.LA(1) == 'C' || input.LA(1) == 'c' ) 
             	{
@@ -1028,8 +1028,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:73:11: ( ( 'd' | 'D' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:73:12: ( 'd' | 'D' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:72:11: ( ( 'd' | 'D' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:72:12: ( 'd' | 'D' )
             {
             	if ( input.LA(1) == 'D' || input.LA(1) == 'd' ) 
             	{
@@ -1057,8 +1057,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:74:11: ( ( 'e' | 'E' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:74:12: ( 'e' | 'E' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:73:11: ( ( 'e' | 'E' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:73:12: ( 'e' | 'E' )
             {
             	if ( input.LA(1) == 'E' || input.LA(1) == 'e' ) 
             	{
@@ -1086,8 +1086,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:75:11: ( ( 'f' | 'F' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:75:12: ( 'f' | 'F' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:74:11: ( ( 'f' | 'F' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:74:12: ( 'f' | 'F' )
             {
             	if ( input.LA(1) == 'F' || input.LA(1) == 'f' ) 
             	{
@@ -1115,8 +1115,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:76:11: ( ( 'g' | 'G' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:76:12: ( 'g' | 'G' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:75:11: ( ( 'g' | 'G' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:75:12: ( 'g' | 'G' )
             {
             	if ( input.LA(1) == 'G' || input.LA(1) == 'g' ) 
             	{
@@ -1144,8 +1144,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:77:11: ( ( 'h' | 'H' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:77:12: ( 'h' | 'H' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:76:11: ( ( 'h' | 'H' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:76:12: ( 'h' | 'H' )
             {
             	if ( input.LA(1) == 'H' || input.LA(1) == 'h' ) 
             	{
@@ -1173,8 +1173,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:78:11: ( ( 'i' | 'I' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:78:12: ( 'i' | 'I' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:77:11: ( ( 'i' | 'I' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:77:12: ( 'i' | 'I' )
             {
             	if ( input.LA(1) == 'I' || input.LA(1) == 'i' ) 
             	{
@@ -1202,8 +1202,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:79:11: ( ( 'j' | 'J' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:79:12: ( 'j' | 'J' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:78:11: ( ( 'j' | 'J' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:78:12: ( 'j' | 'J' )
             {
             	if ( input.LA(1) == 'J' || input.LA(1) == 'j' ) 
             	{
@@ -1231,8 +1231,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:80:11: ( ( 'k' | 'K' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:80:12: ( 'k' | 'K' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:79:11: ( ( 'k' | 'K' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:79:12: ( 'k' | 'K' )
             {
             	if ( input.LA(1) == 'K' || input.LA(1) == 'k' ) 
             	{
@@ -1260,8 +1260,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:81:11: ( ( 'l' | 'L' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:81:12: ( 'l' | 'L' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:80:11: ( ( 'l' | 'L' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:80:12: ( 'l' | 'L' )
             {
             	if ( input.LA(1) == 'L' || input.LA(1) == 'l' ) 
             	{
@@ -1289,8 +1289,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:82:11: ( ( 'm' | 'M' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:82:12: ( 'm' | 'M' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:81:11: ( ( 'm' | 'M' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:81:12: ( 'm' | 'M' )
             {
             	if ( input.LA(1) == 'M' || input.LA(1) == 'm' ) 
             	{
@@ -1318,8 +1318,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:83:11: ( ( 'n' | 'N' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:83:12: ( 'n' | 'N' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:82:11: ( ( 'n' | 'N' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:82:12: ( 'n' | 'N' )
             {
             	if ( input.LA(1) == 'N' || input.LA(1) == 'n' ) 
             	{
@@ -1347,8 +1347,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:84:11: ( ( 'o' | 'O' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:84:12: ( 'o' | 'O' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:83:11: ( ( 'o' | 'O' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:83:12: ( 'o' | 'O' )
             {
             	if ( input.LA(1) == 'O' || input.LA(1) == 'o' ) 
             	{
@@ -1376,8 +1376,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:85:11: ( ( 'p' | 'P' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:85:12: ( 'p' | 'P' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:84:11: ( ( 'p' | 'P' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:84:12: ( 'p' | 'P' )
             {
             	if ( input.LA(1) == 'P' || input.LA(1) == 'p' ) 
             	{
@@ -1405,8 +1405,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:86:11: ( ( 'q' | 'Q' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:86:12: ( 'q' | 'Q' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:85:11: ( ( 'q' | 'Q' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:85:12: ( 'q' | 'Q' )
             {
             	if ( input.LA(1) == 'Q' || input.LA(1) == 'q' ) 
             	{
@@ -1434,8 +1434,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:87:11: ( ( 'r' | 'R' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:87:12: ( 'r' | 'R' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:86:11: ( ( 'r' | 'R' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:86:12: ( 'r' | 'R' )
             {
             	if ( input.LA(1) == 'R' || input.LA(1) == 'r' ) 
             	{
@@ -1463,8 +1463,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:88:11: ( ( 's' | 'S' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:88:12: ( 's' | 'S' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:87:11: ( ( 's' | 'S' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:87:12: ( 's' | 'S' )
             {
             	if ( input.LA(1) == 'S' || input.LA(1) == 's' ) 
             	{
@@ -1492,8 +1492,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:89:11: ( ( 't' | 'T' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:89:12: ( 't' | 'T' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:88:11: ( ( 't' | 'T' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:88:12: ( 't' | 'T' )
             {
             	if ( input.LA(1) == 'T' || input.LA(1) == 't' ) 
             	{
@@ -1521,8 +1521,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:90:11: ( ( 'u' | 'U' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:90:12: ( 'u' | 'U' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:89:11: ( ( 'u' | 'U' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:89:12: ( 'u' | 'U' )
             {
             	if ( input.LA(1) == 'U' || input.LA(1) == 'u' ) 
             	{
@@ -1550,8 +1550,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:91:11: ( ( 'v' | 'V' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:91:12: ( 'v' | 'V' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:90:11: ( ( 'v' | 'V' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:90:12: ( 'v' | 'V' )
             {
             	if ( input.LA(1) == 'V' || input.LA(1) == 'v' ) 
             	{
@@ -1579,8 +1579,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:92:11: ( ( 'w' | 'W' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:92:12: ( 'w' | 'W' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:91:11: ( ( 'w' | 'W' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:91:12: ( 'w' | 'W' )
             {
             	if ( input.LA(1) == 'W' || input.LA(1) == 'w' ) 
             	{
@@ -1608,8 +1608,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:93:11: ( ( 'x' | 'X' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:93:12: ( 'x' | 'X' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:92:11: ( ( 'x' | 'X' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:92:12: ( 'x' | 'X' )
             {
             	if ( input.LA(1) == 'X' || input.LA(1) == 'x' ) 
             	{
@@ -1637,8 +1637,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:94:11: ( ( 'y' | 'Y' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:94:12: ( 'y' | 'Y' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:93:11: ( ( 'y' | 'Y' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:93:12: ( 'y' | 'Y' )
             {
             	if ( input.LA(1) == 'Y' || input.LA(1) == 'y' ) 
             	{
@@ -1666,8 +1666,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:95:11: ( ( 'z' | 'Z' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:95:12: ( 'z' | 'Z' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:94:11: ( ( 'z' | 'Z' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:94:12: ( 'z' | 'Z' )
             {
             	if ( input.LA(1) == 'Z' || input.LA(1) == 'z' ) 
             	{
@@ -1697,8 +1697,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = ADD;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:98:5: ( A D D )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:98:7: A D D
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:97:5: ( A D D )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:97:7: A D D
             {
             	mA(); 
             	mD(); 
@@ -1722,8 +1722,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = ALTER;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:99:7: ( A L T E R )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:99:9: A L T E R
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:98:7: ( A L T E R )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:98:9: A L T E R
             {
             	mA(); 
             	mL(); 
@@ -1749,8 +1749,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = AND;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:100:5: ( A N D )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:100:7: A N D
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:99:5: ( A N D )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:99:7: A N D
             {
             	mA(); 
             	mN(); 
@@ -1774,8 +1774,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = AS;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:101:4: ( A S )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:101:6: A S
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:100:4: ( A S )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:100:6: A S
             {
             	mA(); 
             	mS(); 
@@ -1798,8 +1798,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = ASC;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:102:5: ( A S C )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:102:7: A S C
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:101:5: ( A S C )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:101:7: A S C
             {
             	mA(); 
             	mS(); 
@@ -1823,8 +1823,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = BEGIN;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:103:7: ( B E G I N )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:103:9: B E G I N
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:102:7: ( B E G I N )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:102:9: B E G I N
             {
             	mB(); 
             	mE(); 
@@ -1850,8 +1850,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = BETWEEN;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:104:9: ( B E T W E E N )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:104:11: B E T W E E N
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:103:9: ( B E T W E E N )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:103:11: B E T W E E N
             {
             	mB(); 
             	mE(); 
@@ -1879,8 +1879,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = BY;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:105:4: ( B Y )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:105:6: B Y
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:104:4: ( B Y )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:104:6: B Y
             {
             	mB(); 
             	mY(); 
@@ -1903,8 +1903,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = CASCADE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:106:9: ( C A S C A D E )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:106:11: C A S C A D E
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:105:9: ( C A S C A D E )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:105:11: C A S C A D E
             {
             	mC(); 
             	mA(); 
@@ -1932,8 +1932,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = CASE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:107:6: ( C A S E )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:107:8: C A S E
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:106:6: ( C A S E )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:106:8: C A S E
             {
             	mC(); 
             	mA(); 
@@ -1958,8 +1958,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = CAST;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:108:6: ( C A S T )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:108:8: C A S T
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:107:6: ( C A S T )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:107:8: C A S T
             {
             	mC(); 
             	mA(); 
@@ -1984,8 +1984,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = CHECK;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:109:7: ( C H E C K )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:109:9: C H E C K
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:108:7: ( C H E C K )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:108:9: C H E C K
             {
             	mC(); 
             	mH(); 
@@ -2011,8 +2011,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = COLLATE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:110:9: ( C O L L A T E )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:110:11: C O L L A T E
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:109:9: ( C O L L A T E )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:109:11: C O L L A T E
             {
             	mC(); 
             	mO(); 
@@ -2040,8 +2040,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = COLUMN;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:111:8: ( C O L U M N )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:111:10: C O L U M N
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:110:8: ( C O L U M N )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:110:10: C O L U M N
             {
             	mC(); 
             	mO(); 
@@ -2068,8 +2068,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = COMMIT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:112:8: ( C O M M I T )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:112:10: C O M M I T
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:111:8: ( C O M M I T )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:111:10: C O M M I T
             {
             	mC(); 
             	mO(); 
@@ -2096,8 +2096,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = CONFLICT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:113:10: ( C O N F L I C T )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:113:12: C O N F L I C T
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:112:10: ( C O N F L I C T )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:112:12: C O N F L I C T
             {
             	mC(); 
             	mO(); 
@@ -2126,8 +2126,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = CONSTRAINT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:114:12: ( C O N S T R A I N T )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:114:14: C O N S T R A I N T
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:113:12: ( C O N S T R A I N T )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:113:14: C O N S T R A I N T
             {
             	mC(); 
             	mO(); 
@@ -2158,8 +2158,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = CREATE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:115:8: ( C R E A T E )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:115:10: C R E A T E
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:114:8: ( C R E A T E )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:114:10: C R E A T E
             {
             	mC(); 
             	mR(); 
@@ -2186,8 +2186,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = CROSS;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:116:7: ( C R O S S )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:116:9: C R O S S
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:115:7: ( C R O S S )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:115:9: C R O S S
             {
             	mC(); 
             	mR(); 
@@ -2213,8 +2213,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = CURRENT_TIME;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:117:14: ( C U R R E N T '_' T I M E )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:117:16: C U R R E N T '_' T I M E
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:116:14: ( C U R R E N T '_' T I M E )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:116:16: C U R R E N T '_' T I M E
             {
             	mC(); 
             	mU(); 
@@ -2247,8 +2247,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = CURRENT_DATE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:118:14: ( C U R R E N T '_' D A T E )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:118:16: C U R R E N T '_' D A T E
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:117:14: ( C U R R E N T '_' D A T E )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:117:16: C U R R E N T '_' D A T E
             {
             	mC(); 
             	mU(); 
@@ -2281,8 +2281,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = CURRENT_TIMESTAMP;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:119:19: ( C U R R E N T '_' T I M E S T A M P )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:119:21: C U R R E N T '_' T I M E S T A M P
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:118:19: ( C U R R E N T '_' T I M E S T A M P )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:118:21: C U R R E N T '_' T I M E S T A M P
             {
             	mC(); 
             	mU(); 
@@ -2320,8 +2320,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = UTC_TIMESTAMP;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:120:15: ( U T C '_' T I M E S T A M P )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:120:17: U T C '_' T I M E S T A M P
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:119:15: ( U T C '_' T I M E S T A M P )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:119:17: U T C '_' T I M E S T A M P
             {
             	mU(); 
             	mT(); 
@@ -2355,8 +2355,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = DATABASE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:121:10: ( D A T A B A S E )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:121:12: D A T A B A S E
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:120:10: ( D A T A B A S E )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:120:12: D A T A B A S E
             {
             	mD(); 
             	mA(); 
@@ -2385,8 +2385,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = DEFAULT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:122:9: ( D E F A U L T )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:122:11: D E F A U L T
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:121:9: ( D E F A U L T )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:121:11: D E F A U L T
             {
             	mD(); 
             	mE(); 
@@ -2414,8 +2414,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = DELETE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:123:8: ( D E L E T E )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:123:10: D E L E T E
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:122:8: ( D E L E T E )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:122:10: D E L E T E
             {
             	mD(); 
             	mE(); 
@@ -2442,8 +2442,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = DESC;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:124:6: ( D E S C )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:124:8: D E S C
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:123:6: ( D E S C )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:123:8: D E S C
             {
             	mD(); 
             	mE(); 
@@ -2468,8 +2468,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = DISTINCT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:125:10: ( D I S T I N C T )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:125:12: D I S T I N C T
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:124:10: ( D I S T I N C T )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:124:12: D I S T I N C T
             {
             	mD(); 
             	mI(); 
@@ -2498,8 +2498,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = DROP;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:126:6: ( D R O P )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:126:8: D R O P
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:125:6: ( D R O P )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:125:8: D R O P
             {
             	mD(); 
             	mR(); 
@@ -2524,8 +2524,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = ELSE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:127:6: ( E L S E )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:127:8: E L S E
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:126:6: ( E L S E )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:126:8: E L S E
             {
             	mE(); 
             	mL(); 
@@ -2550,8 +2550,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = END;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:128:5: ( E N D )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:128:7: E N D
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:127:5: ( E N D )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:127:7: E N D
             {
             	mE(); 
             	mN(); 
@@ -2575,8 +2575,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = ESCAPE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:129:8: ( E S C A P E )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:129:10: E S C A P E
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:128:8: ( E S C A P E )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:128:10: E S C A P E
             {
             	mE(); 
             	mS(); 
@@ -2603,8 +2603,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = EXCEPT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:130:8: ( E X C E P T )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:130:10: E X C E P T
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:129:8: ( E X C E P T )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:129:10: E X C E P T
             {
             	mE(); 
             	mX(); 
@@ -2631,8 +2631,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = EXCLUSIVE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:131:11: ( E X C L U S I V E )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:131:13: E X C L U S I V E
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:130:11: ( E X C L U S I V E )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:130:13: E X C L U S I V E
             {
             	mE(); 
             	mX(); 
@@ -2662,8 +2662,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = EXISTS;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:132:8: ( E X I S T S )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:132:10: E X I S T S
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:131:8: ( E X I S T S )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:131:10: E X I S T S
             {
             	mE(); 
             	mX(); 
@@ -2690,8 +2690,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = EXPLAIN;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:133:9: ( E X P L A I N )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:133:11: E X P L A I N
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:132:9: ( E X P L A I N )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:132:11: E X P L A I N
             {
             	mE(); 
             	mX(); 
@@ -2719,8 +2719,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = FOR;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:134:5: ( F O R )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:134:7: F O R
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:133:5: ( F O R )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:133:7: F O R
             {
             	mF(); 
             	mO(); 
@@ -2744,8 +2744,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = FOREIGN;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:135:9: ( F O R E I G N )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:135:11: F O R E I G N
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:134:9: ( F O R E I G N )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:134:11: F O R E I G N
             {
             	mF(); 
             	mO(); 
@@ -2773,8 +2773,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = FROM;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:136:6: ( F R O M )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:136:8: F R O M
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:135:6: ( F R O M )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:135:8: F R O M
             {
             	mF(); 
             	mR(); 
@@ -2799,8 +2799,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = GROUP;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:137:7: ( G R O U P )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:137:9: G R O U P
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:136:7: ( G R O U P )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:136:9: G R O U P
             {
             	mG(); 
             	mR(); 
@@ -2826,8 +2826,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = HAVING;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:138:8: ( H A V I N G )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:138:10: H A V I N G
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:137:8: ( H A V I N G )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:137:10: H A V I N G
             {
             	mH(); 
             	mA(); 
@@ -2854,8 +2854,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = IF;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:139:4: ( I F )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:139:6: I F
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:138:4: ( I F )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:138:6: I F
             {
             	mI(); 
             	mF(); 
@@ -2878,8 +2878,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = IN;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:140:4: ( I N )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:140:6: I N
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:139:4: ( I N )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:139:6: I N
             {
             	mI(); 
             	mN(); 
@@ -2902,8 +2902,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = INDEX;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:141:7: ( I N D E X )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:141:9: I N D E X
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:140:7: ( I N D E X )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:140:9: I N D E X
             {
             	mI(); 
             	mN(); 
@@ -2929,8 +2929,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = INNER;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:142:7: ( I N N E R )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:142:9: I N N E R
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:141:7: ( I N N E R )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:141:9: I N N E R
             {
             	mI(); 
             	mN(); 
@@ -2956,8 +2956,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = INSERT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:143:8: ( I N S E R T )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:143:10: I N S E R T
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:142:8: ( I N S E R T )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:142:10: I N S E R T
             {
             	mI(); 
             	mN(); 
@@ -2984,8 +2984,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = INTERSECT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:144:11: ( I N T E R S E C T )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:144:13: I N T E R S E C T
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:143:11: ( I N T E R S E C T )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:143:13: I N T E R S E C T
             {
             	mI(); 
             	mN(); 
@@ -3015,8 +3015,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = INTO;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:145:6: ( I N T O )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:145:8: I N T O
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:144:6: ( I N T O )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:144:8: I N T O
             {
             	mI(); 
             	mN(); 
@@ -3041,8 +3041,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = IS;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:146:4: ( I S )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:146:6: I S
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:145:4: ( I S )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:145:6: I S
             {
             	mI(); 
             	mS(); 
@@ -3065,8 +3065,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = JOIN;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:147:6: ( J O I N )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:147:8: J O I N
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:146:6: ( J O I N )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:146:8: J O I N
             {
             	mJ(); 
             	mO(); 
@@ -3091,8 +3091,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = KEY;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:148:5: ( K E Y )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:148:7: K E Y
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:147:5: ( K E Y )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:147:7: K E Y
             {
             	mK(); 
             	mE(); 
@@ -3116,8 +3116,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = LEFT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:149:6: ( L E F T )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:149:8: L E F T
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:148:6: ( L E F T )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:148:8: L E F T
             {
             	mL(); 
             	mE(); 
@@ -3142,8 +3142,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = LIKE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:150:6: ( L I K E )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:150:8: L I K E
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:149:6: ( L I K E )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:149:8: L I K E
             {
             	mL(); 
             	mI(); 
@@ -3168,8 +3168,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = NOT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:151:5: ( N O T )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:151:7: N O T
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:150:5: ( N O T )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:150:7: N O T
             {
             	mN(); 
             	mO(); 
@@ -3193,8 +3193,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = NULL;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:152:6: ( N U L L )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:152:8: N U L L
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:151:6: ( N U L L )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:151:8: N U L L
             {
             	mN(); 
             	mU(); 
@@ -3219,8 +3219,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = OF;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:153:4: ( O F )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:153:6: O F
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:152:4: ( O F )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:152:6: O F
             {
             	mO(); 
             	mF(); 
@@ -3243,8 +3243,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = ON;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:154:4: ( O N )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:154:6: O N
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:153:4: ( O N )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:153:6: O N
             {
             	mO(); 
             	mN(); 
@@ -3267,8 +3267,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = OR;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:155:4: ( O R )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:155:6: O R
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:154:4: ( O R )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:154:6: O R
             {
             	mO(); 
             	mR(); 
@@ -3291,8 +3291,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = ORDER;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:156:7: ( O R D E R )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:156:9: O R D E R
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:155:7: ( O R D E R )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:155:9: O R D E R
             {
             	mO(); 
             	mR(); 
@@ -3318,8 +3318,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = OUTER;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:157:7: ( O U T E R )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:157:9: O U T E R
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:156:7: ( O U T E R )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:156:9: O U T E R
             {
             	mO(); 
             	mU(); 
@@ -3345,8 +3345,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = PRIMARY;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:158:9: ( P R I M A R Y )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:158:11: P R I M A R Y
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:157:9: ( P R I M A R Y )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:157:11: P R I M A R Y
             {
             	mP(); 
             	mR(); 
@@ -3374,8 +3374,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = REFERENCES;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:159:12: ( R E F E R E N C E S )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:159:14: R E F E R E N C E S
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:158:12: ( R E F E R E N C E S )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:158:14: R E F E R E N C E S
             {
             	mR(); 
             	mE(); 
@@ -3406,8 +3406,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = ROLLBACK;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:160:10: ( R O L L B A C K )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:160:12: R O L L B A C K
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:159:10: ( R O L L B A C K )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:159:12: R O L L B A C K
             {
             	mR(); 
             	mO(); 
@@ -3436,8 +3436,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = SELECT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:161:8: ( S E L E C T )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:161:10: S E L E C T
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:160:8: ( S E L E C T )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:160:10: S E L E C T
             {
             	mS(); 
             	mE(); 
@@ -3464,8 +3464,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = SET;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:162:5: ( S E T )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:162:7: S E T
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:161:5: ( S E T )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:161:7: S E T
             {
             	mS(); 
             	mE(); 
@@ -3489,8 +3489,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = TABLE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:163:7: ( T A B L E )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:163:9: T A B L E
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:162:7: ( T A B L E )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:162:9: T A B L E
             {
             	mT(); 
             	mA(); 
@@ -3516,8 +3516,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = TEMPORARY;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:164:11: ( T E M P O R A R Y )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:164:13: T E M P O R A R Y
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:163:11: ( T E M P O R A R Y )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:163:13: T E M P O R A R Y
             {
             	mT(); 
             	mE(); 
@@ -3547,8 +3547,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = TEMP;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:165:6: ( T E M P )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:165:8: T E M P
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:164:6: ( T E M P )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:164:8: T E M P
             {
             	mT(); 
             	mE(); 
@@ -3573,8 +3573,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = THEN;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:166:6: ( T H E N )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:166:8: T H E N
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:165:6: ( T H E N )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:165:8: T H E N
             {
             	mT(); 
             	mH(); 
@@ -3599,8 +3599,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = TO;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:167:4: ( T O )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:167:6: T O
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:166:4: ( T O )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:166:6: T O
             {
             	mT(); 
             	mO(); 
@@ -3623,8 +3623,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = TRANSACTION;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:168:13: ( T R A N S A C T I O N )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:168:15: T R A N S A C T I O N
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:167:13: ( T R A N S A C T I O N )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:167:15: T R A N S A C T I O N
             {
             	mT(); 
             	mR(); 
@@ -3656,8 +3656,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = TRIGGER;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:169:9: ( T R I G G E R )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:169:11: T R I G G E R
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:168:9: ( T R I G G E R )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:168:11: T R I G G E R
             {
             	mT(); 
             	mR(); 
@@ -3685,8 +3685,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = UNION;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:170:7: ( U N I O N )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:170:9: U N I O N
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:169:7: ( U N I O N )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:169:9: U N I O N
             {
             	mU(); 
             	mN(); 
@@ -3712,8 +3712,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = UNIQUE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:171:8: ( U N I Q U E )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:171:10: U N I Q U E
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:170:8: ( U N I Q U E )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:170:10: U N I Q U E
             {
             	mU(); 
             	mN(); 
@@ -3740,8 +3740,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = UPDATE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:172:8: ( U P D A T E )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:172:10: U P D A T E
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:171:8: ( U P D A T E )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:171:10: U P D A T E
             {
             	mU(); 
             	mP(); 
@@ -3768,8 +3768,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = VALUES;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:173:8: ( V A L U E S )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:173:10: V A L U E S
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:172:8: ( V A L U E S )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:172:10: V A L U E S
             {
             	mV(); 
             	mA(); 
@@ -3796,8 +3796,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = VIEW;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:174:6: ( V I E W )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:174:8: V I E W
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:173:6: ( V I E W )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:173:8: V I E W
             {
             	mV(); 
             	mI(); 
@@ -3822,8 +3822,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = WHEN;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:175:6: ( W H E N )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:175:8: W H E N
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:174:6: ( W H E N )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:174:8: W H E N
             {
             	mW(); 
             	mH(); 
@@ -3848,8 +3848,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = WHERE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:176:7: ( W H E R E )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:176:9: W H E R E
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:175:7: ( W H E R E )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:175:9: W H E R E
             {
             	mW(); 
             	mH(); 
@@ -3875,8 +3875,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = WITH;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:177:6: ( W I T H )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:177:8: W I T H
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:176:6: ( W I T H )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:176:8: W I T H
             {
             	mW(); 
             	mI(); 
@@ -3901,8 +3901,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = PARSER;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:178:8: ( P A R S E R )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:178:10: P A R S E R
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:177:8: ( P A R S E R )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:177:10: P A R S E R
             {
             	mP(); 
             	mA(); 
@@ -3929,8 +3929,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = XOR;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:179:5: ( X O R )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:179:7: X O R
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:178:5: ( X O R )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:178:7: X O R
             {
             	mX(); 
             	mO(); 
@@ -3952,8 +3952,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:181:18: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:181:20: ( 'a' .. 'z' | 'A' .. 'Z' | '_' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:180:18: ( ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:180:20: ( 'a' .. 'z' | 'A' .. 'Z' | '_' )
             {
             	if ( (input.LA(1) >= 'A' && input.LA(1) <= 'Z') || input.LA(1) == '_' || (input.LA(1) >= 'a' && input.LA(1) <= 'z') ) 
             	{
@@ -3983,14 +3983,14 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = T_IDENT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:182:8: ( ( ID_START ( ID_START | '0' .. '9' )* ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:182:10: ( ID_START ( ID_START | '0' .. '9' )* )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:181:8: ( ( ID_START ( ID_START | '0' .. '9' )* ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:181:10: ( ID_START ( ID_START | '0' .. '9' )* )
             {
-            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:182:10: ( ID_START ( ID_START | '0' .. '9' )* )
-            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:182:11: ID_START ( ID_START | '0' .. '9' )*
+            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:181:10: ( ID_START ( ID_START | '0' .. '9' )* )
+            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:181:11: ID_START ( ID_START | '0' .. '9' )*
             	{
             		mID_START(); 
-            		// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:182:20: ( ID_START | '0' .. '9' )*
+            		// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:181:20: ( ID_START | '0' .. '9' )*
             		do 
             		{
             		    int alt1 = 2;
@@ -4052,11 +4052,11 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = T_QUOTED_IDENT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:183:15: ( '[' ( options {greedy=false; } : . )* ']' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:183:17: '[' ( options {greedy=false; } : . )* ']'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:182:15: ( '[' ( options {greedy=false; } : . )* ']' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:182:17: '[' ( options {greedy=false; } : . )* ']'
             {
             	Match('['); 
-            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:183:21: ( options {greedy=false; } : . )*
+            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:182:21: ( options {greedy=false; } : . )*
             	do 
             	{
             	    int alt2 = 2;
@@ -4075,7 +4075,7 @@ public partial class SqlServerLexer : Lexer {
             	    switch (alt2) 
             		{
             			case 1 :
-            			    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:183:49: .
+            			    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:182:49: .
             			    {
             			    	MatchAny(); 
 
@@ -4110,8 +4110,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = T_NSTRING;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:185:10: ( ( 'N' | 'n' ) ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:186:2: ( 'N' | 'n' ) ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:184:10: ( ( 'N' | 'n' ) ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:185:2: ( 'N' | 'n' ) ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
             {
             	if ( input.LA(1) == 'N' || input.LA(1) == 'n' ) 
             	{
@@ -4124,11 +4124,11 @@ public partial class SqlServerLexer : Lexer {
             	    Recover(mse);
             	    throw mse;}
 
-            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:187:4: ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
-            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:187:5: '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\''
+            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:186:4: ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
+            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:186:5: '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\''
             	{
             		Match('\''); 
-            		// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:188:5: ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )*
+            		// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:187:5: ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )*
             		do 
             		{
             		    int alt3 = 3;
@@ -4154,7 +4154,7 @@ public partial class SqlServerLexer : Lexer {
             		    switch (alt3) 
             			{
             				case 1 :
-            				    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:189:31: ~ ( '\\'' | '\\r' | '\\n' )
+            				    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:188:31: ~ ( '\\'' | '\\r' | '\\n' )
             				    {
             				    	if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t') || (input.LA(1) >= '\u000B' && input.LA(1) <= '\f') || (input.LA(1) >= '\u000E' && input.LA(1) <= '&') || (input.LA(1) >= '(' && input.LA(1) <= '\uFFFF') ) 
             				    	{
@@ -4171,7 +4171,7 @@ public partial class SqlServerLexer : Lexer {
             				    }
             				    break;
             				case 2 :
-            				    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:189:56: '\\'' '\\''
+            				    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:188:56: '\\'' '\\''
             				    {
             				    	Match('\''); 
             				    	Match('\''); 
@@ -4210,14 +4210,14 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = T_STRING;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:193:9: ( ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:194:4: ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:192:9: ( ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:193:4: ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
             {
-            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:194:4: ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
-            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:194:5: '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\''
+            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:193:4: ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
+            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:193:5: '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\''
             	{
             		Match('\''); 
-            		// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:195:5: ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )*
+            		// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:194:5: ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )*
             		do 
             		{
             		    int alt4 = 3;
@@ -4243,7 +4243,7 @@ public partial class SqlServerLexer : Lexer {
             		    switch (alt4) 
             			{
             				case 1 :
-            				    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:196:31: ~ ( '\\'' | '\\r' | '\\n' )
+            				    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:195:31: ~ ( '\\'' | '\\r' | '\\n' )
             				    {
             				    	if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t') || (input.LA(1) >= '\u000B' && input.LA(1) <= '\f') || (input.LA(1) >= '\u000E' && input.LA(1) <= '&') || (input.LA(1) >= '(' && input.LA(1) <= '\uFFFF') ) 
             				    	{
@@ -4260,7 +4260,7 @@ public partial class SqlServerLexer : Lexer {
             				    }
             				    break;
             				case 2 :
-            				    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:196:56: '\\'' '\\''
+            				    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:195:56: '\\'' '\\''
             				    {
             				    	Match('\''); 
             				    	Match('\''); 
@@ -4299,10 +4299,10 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = T_INTEGER;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:200:10: ( ( '0' .. '9' )+ )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:200:12: ( '0' .. '9' )+
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:199:10: ( ( '0' .. '9' )+ )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:199:12: ( '0' .. '9' )+
             {
-            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:200:12: ( '0' .. '9' )+
+            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:199:12: ( '0' .. '9' )+
             	int cnt5 = 0;
             	do 
             	{
@@ -4318,7 +4318,7 @@ public partial class SqlServerLexer : Lexer {
             	    switch (alt5) 
             		{
             			case 1 :
-            			    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:200:13: '0' .. '9'
+            			    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:199:13: '0' .. '9'
             			    {
             			    	MatchRange('0','9'); 
 
@@ -4354,8 +4354,8 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:201:20: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:201:22: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:200:20: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:200:22: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
             {
             	if ( input.LA(1) == 'E' || input.LA(1) == 'e' ) 
             	{
@@ -4368,7 +4368,7 @@ public partial class SqlServerLexer : Lexer {
             	    Recover(mse);
             	    throw mse;}
 
-            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:201:32: ( '+' | '-' )?
+            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:200:32: ( '+' | '-' )?
             	int alt6 = 2;
             	int LA6_0 = input.LA(1);
 
@@ -4398,7 +4398,7 @@ public partial class SqlServerLexer : Lexer {
 
             	}
 
-            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:201:43: ( '0' .. '9' )+
+            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:200:43: ( '0' .. '9' )+
             	int cnt7 = 0;
             	do 
             	{
@@ -4414,7 +4414,7 @@ public partial class SqlServerLexer : Lexer {
             	    switch (alt7) 
             		{
             			case 1 :
-            			    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:201:44: '0' .. '9'
+            			    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:200:44: '0' .. '9'
             			    {
             			    	MatchRange('0','9'); 
 
@@ -4450,15 +4450,15 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = T_FLOAT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:203:5: ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( FLOAT_EXP )? | '.' ( '0' .. '9' )+ ( FLOAT_EXP )? | ( '0' .. '9' )+ FLOAT_EXP )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:202:5: ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( FLOAT_EXP )? | '.' ( '0' .. '9' )+ ( FLOAT_EXP )? | ( '0' .. '9' )+ FLOAT_EXP )
             int alt14 = 3;
             alt14 = dfa14.Predict(input);
             switch (alt14) 
             {
                 case 1 :
-                    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:203:9: ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( FLOAT_EXP )?
+                    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:202:9: ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( FLOAT_EXP )?
                     {
-                    	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:203:9: ( '0' .. '9' )+
+                    	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:202:9: ( '0' .. '9' )+
                     	int cnt8 = 0;
                     	do 
                     	{
@@ -4474,7 +4474,7 @@ public partial class SqlServerLexer : Lexer {
                     	    switch (alt8) 
                     		{
                     			case 1 :
-                    			    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:203:10: '0' .. '9'
+                    			    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:202:10: '0' .. '9'
                     			    {
                     			    	MatchRange('0','9'); 
 
@@ -4494,7 +4494,7 @@ public partial class SqlServerLexer : Lexer {
                     		;	// Stops C# compiler whining that label 'loop8' has no statements
 
                     	Match('.'); 
-                    	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:203:25: ( '0' .. '9' )*
+                    	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:202:25: ( '0' .. '9' )*
                     	do 
                     	{
                     	    int alt9 = 2;
@@ -4509,7 +4509,7 @@ public partial class SqlServerLexer : Lexer {
                     	    switch (alt9) 
                     		{
                     			case 1 :
-                    			    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:203:26: '0' .. '9'
+                    			    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:202:26: '0' .. '9'
                     			    {
                     			    	MatchRange('0','9'); 
 
@@ -4524,7 +4524,7 @@ public partial class SqlServerLexer : Lexer {
                     	loop9:
                     		;	// Stops C# compiler whining that label 'loop9' has no statements
 
-                    	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:203:37: ( FLOAT_EXP )?
+                    	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:202:37: ( FLOAT_EXP )?
                     	int alt10 = 2;
                     	int LA10_0 = input.LA(1);
 
@@ -4535,7 +4535,7 @@ public partial class SqlServerLexer : Lexer {
                     	switch (alt10) 
                     	{
                     	    case 1 :
-                    	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:203:37: FLOAT_EXP
+                    	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:202:37: FLOAT_EXP
                     	        {
                     	        	mFLOAT_EXP(); 
 
@@ -4548,10 +4548,10 @@ public partial class SqlServerLexer : Lexer {
                     }
                     break;
                 case 2 :
-                    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:204:9: '.' ( '0' .. '9' )+ ( FLOAT_EXP )?
+                    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:203:9: '.' ( '0' .. '9' )+ ( FLOAT_EXP )?
                     {
                     	Match('.'); 
-                    	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:204:13: ( '0' .. '9' )+
+                    	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:203:13: ( '0' .. '9' )+
                     	int cnt11 = 0;
                     	do 
                     	{
@@ -4567,7 +4567,7 @@ public partial class SqlServerLexer : Lexer {
                     	    switch (alt11) 
                     		{
                     			case 1 :
-                    			    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:204:14: '0' .. '9'
+                    			    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:203:14: '0' .. '9'
                     			    {
                     			    	MatchRange('0','9'); 
 
@@ -4586,7 +4586,7 @@ public partial class SqlServerLexer : Lexer {
                     	loop11:
                     		;	// Stops C# compiler whining that label 'loop11' has no statements
 
-                    	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:204:25: ( FLOAT_EXP )?
+                    	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:203:25: ( FLOAT_EXP )?
                     	int alt12 = 2;
                     	int LA12_0 = input.LA(1);
 
@@ -4597,7 +4597,7 @@ public partial class SqlServerLexer : Lexer {
                     	switch (alt12) 
                     	{
                     	    case 1 :
-                    	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:204:25: FLOAT_EXP
+                    	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:203:25: FLOAT_EXP
                     	        {
                     	        	mFLOAT_EXP(); 
 
@@ -4610,9 +4610,9 @@ public partial class SqlServerLexer : Lexer {
                     }
                     break;
                 case 3 :
-                    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:205:9: ( '0' .. '9' )+ FLOAT_EXP
+                    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:204:9: ( '0' .. '9' )+ FLOAT_EXP
                     {
-                    	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:205:9: ( '0' .. '9' )+
+                    	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:204:9: ( '0' .. '9' )+
                     	int cnt13 = 0;
                     	do 
                     	{
@@ -4628,7 +4628,7 @@ public partial class SqlServerLexer : Lexer {
                     	    switch (alt13) 
                     		{
                     			case 1 :
-                    			    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:205:10: '0' .. '9'
+                    			    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:204:10: '0' .. '9'
                     			    {
                     			    	MatchRange('0','9'); 
 
@@ -4669,8 +4669,8 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = T_BLOB;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:207:7: ( ( 'x' | 'X' ) '\\'' ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )+ '\\'' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:207:9: ( 'x' | 'X' ) '\\'' ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )+ '\\''
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:206:7: ( ( 'x' | 'X' ) '\\'' ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )+ '\\'' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:206:9: ( 'x' | 'X' ) '\\'' ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )+ '\\''
             {
             	if ( input.LA(1) == 'X' || input.LA(1) == 'x' ) 
             	{
@@ -4684,7 +4684,7 @@ public partial class SqlServerLexer : Lexer {
             	    throw mse;}
 
             	Match('\''); 
-            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:207:24: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )+
+            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:206:24: ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' )+
             	int cnt15 = 0;
             	do 
             	{
@@ -4749,7 +4749,7 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = T_BINARYNUM;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:209:13: ( ( '0' 'b' ( '0' | '1' )+ ) | 'b' '\\'' ( '0' | '1' )+ '\\'' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:208:13: ( ( '0' 'b' ( '0' | '1' )+ ) | 'b' '\\'' ( '0' | '1' )+ '\\'' )
             int alt18 = 2;
             int LA18_0 = input.LA(1);
 
@@ -4771,14 +4771,14 @@ public partial class SqlServerLexer : Lexer {
             switch (alt18) 
             {
                 case 1 :
-                    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:209:15: ( '0' 'b' ( '0' | '1' )+ )
+                    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:208:15: ( '0' 'b' ( '0' | '1' )+ )
                     {
-                    	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:209:15: ( '0' 'b' ( '0' | '1' )+ )
-                    	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:209:16: '0' 'b' ( '0' | '1' )+
+                    	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:208:15: ( '0' 'b' ( '0' | '1' )+ )
+                    	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:208:16: '0' 'b' ( '0' | '1' )+
                     	{
                     		Match('0'); 
                     		Match('b'); 
-                    		// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:209:24: ( '0' | '1' )+
+                    		// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:208:24: ( '0' | '1' )+
                     		int cnt16 = 0;
                     		do 
                     		{
@@ -4830,11 +4830,11 @@ public partial class SqlServerLexer : Lexer {
                     }
                     break;
                 case 2 :
-                    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:209:41: 'b' '\\'' ( '0' | '1' )+ '\\''
+                    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:208:41: 'b' '\\'' ( '0' | '1' )+ '\\''
                     {
                     	Match('b'); 
                     	Match('\''); 
-                    	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:209:50: ( '0' | '1' )+
+                    	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:208:50: ( '0' | '1' )+
                     	int cnt17 = 0;
                     	do 
                     	{
@@ -4899,12 +4899,12 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:211:19: ( '/*' ( options {greedy=false; } : . )* '*/' )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:211:21: '/*' ( options {greedy=false; } : . )* '*/'
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:210:19: ( '/*' ( options {greedy=false; } : . )* '*/' )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:210:21: '/*' ( options {greedy=false; } : . )* '*/'
             {
             	Match("/*"); 
 
-            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:211:26: ( options {greedy=false; } : . )*
+            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:210:26: ( options {greedy=false; } : . )*
             	do 
             	{
             	    int alt19 = 2;
@@ -4934,7 +4934,7 @@ public partial class SqlServerLexer : Lexer {
             	    switch (alt19) 
             		{
             			case 1 :
-            			    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:211:54: .
+            			    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:210:54: .
             			    {
             			    	MatchAny(); 
 
@@ -4966,12 +4966,12 @@ public partial class SqlServerLexer : Lexer {
     {
     		try
     		{
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:212:22: ( '--' (~ ( '\\n' | '\\r' ) )* ( ( '\\r' )? '\\n' | EOF ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:212:24: '--' (~ ( '\\n' | '\\r' ) )* ( ( '\\r' )? '\\n' | EOF )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:211:22: ( '--' (~ ( '\\n' | '\\r' ) )* ( ( '\\r' )? '\\n' | EOF ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:211:24: '--' (~ ( '\\n' | '\\r' ) )* ( ( '\\r' )? '\\n' | EOF )
             {
             	Match("--"); 
 
-            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:212:29: (~ ( '\\n' | '\\r' ) )*
+            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:211:29: (~ ( '\\n' | '\\r' ) )*
             	do 
             	{
             	    int alt20 = 2;
@@ -4986,7 +4986,7 @@ public partial class SqlServerLexer : Lexer {
             	    switch (alt20) 
             		{
             			case 1 :
-            			    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:212:29: ~ ( '\\n' | '\\r' )
+            			    // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:211:29: ~ ( '\\n' | '\\r' )
             			    {
             			    	if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t') || (input.LA(1) >= '\u000B' && input.LA(1) <= '\f') || (input.LA(1) >= '\u000E' && input.LA(1) <= '\uFFFF') ) 
             			    	{
@@ -5011,7 +5011,7 @@ public partial class SqlServerLexer : Lexer {
             	loop20:
             		;	// Stops C# compiler whining that label 'loop20' has no statements
 
-            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:212:43: ( ( '\\r' )? '\\n' | EOF )
+            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:211:43: ( ( '\\r' )? '\\n' | EOF )
             	int alt22 = 2;
             	int LA22_0 = input.LA(1);
 
@@ -5025,9 +5025,9 @@ public partial class SqlServerLexer : Lexer {
             	switch (alt22) 
             	{
             	    case 1 :
-            	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:212:44: ( '\\r' )? '\\n'
+            	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:211:44: ( '\\r' )? '\\n'
             	        {
-            	        	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:212:44: ( '\\r' )?
+            	        	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:211:44: ( '\\r' )?
             	        	int alt21 = 2;
             	        	int LA21_0 = input.LA(1);
 
@@ -5038,7 +5038,7 @@ public partial class SqlServerLexer : Lexer {
             	        	switch (alt21) 
             	        	{
             	        	    case 1 :
-            	        	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:212:44: '\\r'
+            	        	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:211:44: '\\r'
             	        	        {
             	        	        	Match('\r'); 
 
@@ -5052,7 +5052,7 @@ public partial class SqlServerLexer : Lexer {
             	        }
             	        break;
             	    case 2 :
-            	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:212:55: EOF
+            	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:211:55: EOF
             	        {
             	        	Match(EOF); 
 
@@ -5078,10 +5078,10 @@ public partial class SqlServerLexer : Lexer {
     		{
             int _type = WHITESPACE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:214:11: ( ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' | T_COMMENT | LINE_COMMENT ) )
-            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:214:13: ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' | T_COMMENT | LINE_COMMENT )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:213:11: ( ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' | T_COMMENT | LINE_COMMENT ) )
+            // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:213:13: ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' | T_COMMENT | LINE_COMMENT )
             {
-            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:214:13: ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' | T_COMMENT | LINE_COMMENT )
+            	// ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:213:13: ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' | T_COMMENT | LINE_COMMENT )
             	int alt23 = 7;
             	switch ( input.LA(1) ) 
             	{
@@ -5130,49 +5130,49 @@ public partial class SqlServerLexer : Lexer {
             	switch (alt23) 
             	{
             	    case 1 :
-            	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:214:14: ' '
+            	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:213:14: ' '
             	        {
             	        	Match(' '); 
 
             	        }
             	        break;
             	    case 2 :
-            	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:214:18: '\\r'
+            	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:213:18: '\\r'
             	        {
             	        	Match('\r'); 
 
             	        }
             	        break;
             	    case 3 :
-            	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:214:23: '\\t'
+            	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:213:23: '\\t'
             	        {
             	        	Match('\t'); 
 
             	        }
             	        break;
             	    case 4 :
-            	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:214:28: '\\u000C'
+            	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:213:28: '\\u000C'
             	        {
             	        	Match('\f'); 
 
             	        }
             	        break;
             	    case 5 :
-            	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:214:37: '\\n'
+            	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:213:37: '\\n'
             	        {
             	        	Match('\n'); 
 
             	        }
             	        break;
             	    case 6 :
-            	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:214:42: T_COMMENT
+            	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:213:42: T_COMMENT
             	        {
             	        	mT_COMMENT(); 
 
             	        }
             	        break;
             	    case 7 :
-            	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:214:52: LINE_COMMENT
+            	        // ..\\DbShell.Driver.SqlServer\\antlr\\SqlServer.g:213:52: LINE_COMMENT
             	        {
             	        	mLINE_COMMENT(); 
 
@@ -6123,7 +6123,7 @@ public partial class SqlServerLexer : Lexer {
 
         override public string Description
         {
-            get { return "202:1: T_FLOAT : ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( FLOAT_EXP )? | '.' ( '0' .. '9' )+ ( FLOAT_EXP )? | ( '0' .. '9' )+ FLOAT_EXP );"; }
+            get { return "201:1: T_FLOAT : ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( FLOAT_EXP )? | '.' ( '0' .. '9' )+ ( FLOAT_EXP )? | ( '0' .. '9' )+ FLOAT_EXP );"; }
         }
 
     }

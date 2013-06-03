@@ -61,7 +61,9 @@
     <Compile Include="AbstractDb\IAlterProcessor.cs" />
     <Compile Include="AbstractDb\IBulkInserter.cs" />
     <Compile Include="AbstractDb\ILiteralFormatter.cs" />
+    <Compile Include="AbstractDb\IParsingService.cs" />
     <Compile Include="AbstractDb\IStatisticsProvider.cs" />
+    <Compile Include="AbstractDb\ParsingServiceBase.cs" />
     <Compile Include="CommonDataLayer\CdlChangeSet.cs" />
     <Compile Include="CommonDataLayer\CdlDataQueue.cs" />
     <Compile Include="CommonDataLayer\CdlDataQueueAdapter.cs" />
@@ -159,6 +161,7 @@
     <Compile Include="Structure\TableObjectInfo.cs" />
     <Compile Include="Structure\ViewInfo.cs" />
     <Compile Include="CommonDataLayer\CdlFileStorage.cs" />
+    <Compile Include="Utility\DepsCollector.cs" />
     <Compile Include="Utility\DialectExtension.cs" />
     <Compile Include="Utility\EnumerableExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -193,9 +196,7 @@
     <Compile Include="Utility\WaitQueue.cs" />
     <Compile Include="Utility\XmlTool.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SqlParser\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
