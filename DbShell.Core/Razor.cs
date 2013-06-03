@@ -78,6 +78,7 @@ namespace DbShell.Core
             try
             {
                 string fn = Context.ResolveFile(Replace(File), ResolveFileMode.Output);
+                Context.OutputMessage("Generating file " + fn);
                 using (var sw = new StreamWriter(fn))
                 {
                     RazorScripting.ParseRazor(templateData, sw.Write, model, 

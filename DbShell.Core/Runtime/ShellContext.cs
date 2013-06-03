@@ -131,7 +131,13 @@ namespace DbShell.Core.Runtime
                 }
             }
             if (System.IO.File.Exists(file)) return file;
-            throw new Exception(String.Format("DBSH-00063 Could not find file {0}, searched in folders {1}", file, folders.CreateDelimitedText(";")));
+
+            var allFolders = new List<string>(folders);
+            if (_additionalSearchFolders.ContainsKey(mode))
+            {
+                allFolders.AddRange(_additionalSearchFolders[mode]);
+            }
+            throw new Exception(String.Format("DBSH-00063 Could not find file {0}, searched in folders {1}", file, allFolders.CreateDelimitedText(";")));
         }
 
         public string ResolveFile(string file, ResolveFileMode mode)
@@ -144,6 +150,9 @@ namespace DbShell.Core.Runtime
                     return SearchExistingFile(file, mode, GetTemplatesFolder(), GetExecutingFolder());
                 case ResolveFileMode.Input:
                     return SearchExistingFile(file, mode, GetExecutingFolder());
+                case ResolveFileMode.Output:
+                    if (DefaultOutputFolder != null) return Path.Combine(DefaultOutputFolder, file);
+                    return file;
             }
             return file;
         }
@@ -201,5 +210,6 @@ namespace DbShell.Core.Runtime
         }
 
         public IConnectionProvider DefaultConnection { get; set; }
+        public string DefaultOutputFolder { get; set; }
     }
 }

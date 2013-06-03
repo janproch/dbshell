@@ -22,7 +22,8 @@ namespace DbShell.Common
         string GetExecutingFolder();
         void OutputMessage(string message);
         void AddSearchFolder(ResolveFileMode mode, string folder);
-        IConnectionProvider DefaultConnection { get; set; }
         void PutDatabaseInfoCache(string providerKey, DatabaseInfo db);
+        IConnectionProvider DefaultConnection { get; set; }
+        string DefaultOutputFolder { get; set; }
     }
 }
