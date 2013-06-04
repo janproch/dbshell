@@ -45,6 +45,16 @@ namespace DbShell.Driver.Common.Structure
             }
         }
 
+        public TableInfo GetTable(NameWithSchema table)
+        {
+            return _tables.FirstOrDefault(t => t.FullName == table);
+        }
+
+        public ViewInfo GetView(NameWithSchema table)
+        {
+            return _views.FirstOrDefault(v => v.FullName == table);
+        }
+
         public TableInfo FindTable(string table)
         {
             return FindObject(_tables, table);

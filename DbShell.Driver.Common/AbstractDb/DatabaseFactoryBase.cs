@@ -47,7 +47,7 @@ namespace DbShell.Driver.Common.AbstractDb
             return null;
         }
 
-        public IParsingService CreateParsingService()
+        public virtual IParsingService CreateParsingService()
         {
             return null;
         }

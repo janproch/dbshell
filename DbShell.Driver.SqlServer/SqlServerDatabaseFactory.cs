@@ -66,5 +66,10 @@ namespace DbShell.Driver.SqlServer
         {
             return new SqlServerStatisticsProvider();
         }
+
+        public override IParsingService CreateParsingService()
+        {
+            return new SqlServerParsingService();
+        }
     }
 }
