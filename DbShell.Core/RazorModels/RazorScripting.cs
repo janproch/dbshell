@@ -14,7 +14,6 @@ namespace DbShell.Core.RazorModels
             if (!_initialized)
             {
                 Initialize();
-                _initialized = true;
             }
             var ctx = new ShellContext(null);
             if (InitializeContext != null) InitializeContext(ctx);
@@ -29,9 +28,10 @@ namespace DbShell.Core.RazorModels
             RazorEngine.Razor.Parse(templateData, write, model, null, func);
         }
 
-        private static void Initialize()
+        public static void Initialize(Type templateType = null)
         {
-            RazorEngine.Razor.SetTemplateBase(typeof(RazorTemplate<>));
+            _initialized = true;
+            RazorEngine.Razor.SetTemplateBase(templateType ?? typeof(RazorTemplate<>));
         }
 
         public static event Action<IShellContext> InitializeContext;
