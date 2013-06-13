@@ -243,7 +243,8 @@ namespace DbShell.Driver.Common.Utility
         public static void RunScript(this DbConnection conn, Action<ISqlDumper> script, DbTransaction trans = null)
         {
             ConnectionSqlOutputStream sqlo = new ConnectionSqlOutputStream(conn, trans, GenericDialect.Instance);
-            ISqlDumper fmt = conn.GetFactory().CreateDumper(sqlo, SqlFormatProperties.Default);
+            var factory = conn.GetFactory();
+            ISqlDumper fmt = factory.CreateDumper(sqlo, factory.GetFormatProperties());
             script(fmt);
         }
 

@@ -7,7 +7,7 @@ namespace DbShell.Driver.Common.AbstractDb
     {
         HashSetEx<string> _keywords;
 
-        public HashSetEx<string> Keywords
+        public virtual HashSetEx<string> Keywords
         {
             get
             {
