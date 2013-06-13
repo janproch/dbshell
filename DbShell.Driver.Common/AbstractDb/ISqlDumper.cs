@@ -16,7 +16,6 @@ namespace DbShell.Driver.Common.AbstractDb
 
     public enum CharacterCase { Original, Lower, Upper };
     public enum SqlIndentationLevel { Original, SingleLine, Compact, Large }
-    public enum SqlQualifierMode { Original, OmitDefaultSchema, OmitAll }
     public enum SqlIdentifierQuoteMode { Original, Plain, Quoted }
     public enum CharacterCase2
     {
@@ -30,61 +29,19 @@ namespace DbShell.Driver.Common.AbstractDb
     {
         public static readonly SqlFormatProperties Default = new SqlFormatProperties();
 
-        //[XmlSubElem]
-        //public SqlDumpWriterConfig DumpWriterConfig { get; set; }
-
-        [XmlElem]
-        //[SettingsKey("sql.format.command_case")]
         public CharacterCase SqlCommandCase { get; set; }
-        [XmlElem]
-        //[SettingsKey("sql.format.use_domains")]
         public bool UseDomains { get; set; }
-        [XmlElem]
-        //[SettingsKey("sql.format.indentation")]
         public int Indentation { get; set; }
-        [XmlElem]
-        //[SettingsKey("sql.format.omit_version_tests")]
         public bool OmitVersionTests { get; set; }
-        [XmlElem]
-        //[SettingsKey("sql.format.command_separator")]
         public string CommandSeparator { get; set; }
-        //[XmlElem]
-        //[SettingsKey("sql.format.header")]
-        //public string DumpFileBegin { get; set; }
-        //[XmlElem]
-        //[SettingsKey("sql.format.footer")]
-        //public string DumpFileEnd { get; set; }
-        //[Browsable(false)]
-        //public Dictionary<string, string> SpecificData { get; set; }
-        [XmlElem]
-        //[SettingsKey("sql.format.indentation_level")]
         public SqlIndentationLevel IndentationLevel { get; set; }
-        [XmlElem]
-        //[SettingsKey("sql.format.identifier_case")]
         public CharacterCase IdentifierCase { get; set; }
-        [XmlElem]
-        //[SettingsKey("sql.format.keyword_identifier_case")]
-        public CharacterCase KeywordIdentifierCase { get; set; }
-        [XmlElem]
-        //[SettingsKey("sql.format.qualifier_mode")]
-        public SqlQualifierMode QualifierMode { get; set; }
-        [XmlElem]
-        //[SettingsKey("sql.format.identifier_quote_mode")]
+        public bool UseSchema { get; set; }
         public SqlIdentifierQuoteMode IdentifierQuoteMode { get; set; }
-        [XmlElem]
-        //[SettingsKey("sql.format.use_original_values")]
         public bool UseOriginalValues { get; set; }
-        [XmlElem]
-        //[SettingsKey("sql.format.cleanup_specific_object_code")]
         public bool CleanupSpecificObjectCode { get; set; }
-        [XmlElem]
-        //[SettingsKey("sql.format.binary_strings")]
         public bool BinaryStrings { get; set; }
 
-        [XmlElem]
-        //[SettingsKey("sql.format.binary_strings")]
-        //[DatAdmin.DisplayName("s_encoding")]
-        //[TypeConverter(typeof(EncodingTypeConverter))]
         public string BinaryEncoding
         {
             get { return m_binaryEncoding.WebName; }
@@ -101,13 +58,11 @@ namespace DbShell.Driver.Common.AbstractDb
         {
             SqlCommandCase = CharacterCase.Upper;
             IdentifierCase = CharacterCase.Original;
-            KeywordIdentifierCase = CharacterCase.Original;
             IndentationLevel = SqlIndentationLevel.Large;
             Indentation = 4;
             OmitVersionTests = false;
             CommandSeparator = null; // use value from dialect
-            //SpecificData = new Dictionary<string, string>();
-            QualifierMode = SqlQualifierMode.Original;
+            UseSchema = true;
             IdentifierQuoteMode = SqlIdentifierQuoteMode.Original;
             UseDomains = true;
             UseOriginalValues = true;

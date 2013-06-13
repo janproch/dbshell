@@ -1,31 +1,22 @@
+using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.AbstractDb
 {
     public class DialectBase : ISqlDialect
     {
-        HashSetEx<string> m_possibleKeywords;
-        HashSetEx<string> m_noContextReservedWords;
+        HashSetEx<string> _keywords;
 
-        public HashSetEx<string> PossibleKeywords
+        public HashSetEx<string> Keywords
         {
             get
             {
-                if (m_possibleKeywords == null) m_possibleKeywords = LoadPossibleKeywords();
-                return m_possibleKeywords;
+                if (_keywords == null) _keywords = LoadKeywords();
+                return _keywords;
             }
         }
 
-        public HashSetEx<string> NoContextReservedWords
-        {
-            get
-            {
-                if (m_noContextReservedWords == null) m_noContextReservedWords = LoadNoContextReservedWords();
-                return m_noContextReservedWords;
-            }
-        }
-
-        protected virtual HashSetEx<string> LoadNoContextReservedWords()
+        protected virtual HashSetEx<string> LoadKeywords()
         {
             var res = new HashSetEx<string>();
             res.Add("SELECT"); res.Add("CREATE"); res.Add("UPDATE"); res.Add("DELETE");
@@ -37,14 +28,6 @@ namespace DbShell.Driver.Common.AbstractDb
             res.Add("DISTINCT"); res.Add("ALL"); res.Add("ANY");
             return res;
         }
-
-        protected virtual HashSetEx<string> LoadPossibleKeywords()
-        {
-            var res = new HashSetEx<string>();
-            //res.AddRange(from k in CoreRes.keywords.Split('\n') where k != "" select k.ToUpper().Trim());
-            return res;
-        }
-
 
         /// <summary>
         /// how ' character is quoted in string
@@ -74,6 +57,12 @@ namespace DbShell.Driver.Common.AbstractDb
         {
             //if (ident.IndexOf('.') >= 0) return ident;
             if (QuoteIdentBegin != '\0' && QuoteIdentEnd != '\0') return QuoteIdentBegin + ident + QuoteIdentEnd;
+            return ident;
+        }
+
+        public string QuoteIdentifierIfNecessary(string ident)
+        {
+            if (SqlDumper.MustBeQuoted(ident, this)) return QuoteIdentifier(ident);
             return ident;
         }
 

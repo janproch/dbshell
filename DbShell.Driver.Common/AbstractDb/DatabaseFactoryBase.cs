@@ -13,7 +13,7 @@ namespace DbShell.Driver.Common.AbstractDb
 
         public virtual IDialectDataAdapter CreateDataAdapter()
         {
-            return new GenericDialectDataAdapter(this, new SqlFormatProperties());
+            return new GenericDialectDataAdapter(this, SqlFormatProperties.Default);
         }
 
         public virtual ISqlDumper CreateDumper(ISqlOutputStream stream, SqlFormatProperties props)

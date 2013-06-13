@@ -21,9 +21,9 @@ namespace DbShell.Driver.Common.AbstractDb
         char QuoteIdentEnd { get; }
 
         string QuoteIdentifier(string ident);
+        string QuoteIdentifierIfNecessary(string ident);
         string UnquoteName(string name);
 
-        HashSetEx<string> PossibleKeywords { get; }
-        HashSetEx<string> NoContextReservedWords { get; }
+        HashSetEx<string> Keywords { get; }
     }
 }

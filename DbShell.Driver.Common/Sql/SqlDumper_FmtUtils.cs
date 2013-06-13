@@ -419,14 +419,14 @@ namespace DbShell.Driver.Common.Sql
             return dda.GetSqlLiteral(reader, dsttype);
         }
 
-        private static bool MustBeQuoted(string s, ISqlDialect dialect)
+        public static bool MustBeQuoted(string s, ISqlDialect dialect)
         {
             foreach (char c in s)
             {
                 bool ok = char.IsLetterOrDigit(c) || c == '_';
                 if (!ok) return true;
             }
-            if (dialect.PossibleKeywords.Contains(s.ToUpper())) return true;
+            if (dialect.Keywords.Contains(s.ToUpper())) return true;
             return false;
         }
 
@@ -452,7 +452,7 @@ namespace DbShell.Driver.Common.Sql
 
         private static string QuoteFullName(ISqlDialect dialect, SqlFormatProperties props, NameWithSchema name)
         {
-            if (props.QualifierMode == SqlQualifierMode.OmitAll || name.Schema == null)
+            if (!props.UseSchema || name.Schema == null)
             {
                 return QuoteIdentifier(dialect, props, name.Name);
             }
@@ -464,15 +464,22 @@ namespace DbShell.Driver.Common.Sql
             return QuoteFullName(m_dialect, m_props, name);
         }
 
-        private static string GetCasedString(string s, CharacterCase cc)
+        public static string GetCasedString(string s, CharacterCase cc)
         {
             if (s == null) return null;
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             foreach (char c in s) sb.Append(GetCasedChar(c, cc));
             return sb.ToString();
         }
-
-        private static char GetCasedChar(char c, CharacterCase cc)
+        public static string GetCasedString(string s, CharacterCase2 cc)
+        {
+            return GetCasedString(s, cc == CharacterCase2.Upper ? CharacterCase.Upper : CharacterCase.Lower);
+        }
+        public static char GetCasedChar(char c, CharacterCase2 cc)
+        {
+            return GetCasedChar(c, cc == CharacterCase2.Upper ? CharacterCase.Upper : CharacterCase.Lower);
+        }
+        public static char GetCasedChar(char c, CharacterCase cc)
         {
             switch (cc)
             {
