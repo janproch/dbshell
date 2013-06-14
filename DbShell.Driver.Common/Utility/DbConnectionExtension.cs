@@ -244,7 +244,7 @@ namespace DbShell.Driver.Common.Utility
         {
             ConnectionSqlOutputStream sqlo = new ConnectionSqlOutputStream(conn, trans, GenericDialect.Instance);
             var factory = conn.GetFactory();
-            ISqlDumper fmt = factory.CreateDumper(sqlo, factory.GetFormatProperties());
+            ISqlDumper fmt = factory.CreateDumper(sqlo, SqlFormatProperties.Default);
             script(fmt);
         }
 

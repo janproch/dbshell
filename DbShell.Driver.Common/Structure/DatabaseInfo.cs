@@ -25,6 +25,7 @@ namespace DbShell.Driver.Common.Structure
 
         public List<FunctionInfo> Functions { get { return _functions; } }
 
+        public string DefaultSchema;
 
         private T FindObject<T>(IEnumerable<T> objs, string name )
             where T : NamedObjectInfo
@@ -103,6 +104,32 @@ namespace DbShell.Driver.Common.Structure
                 if (res != null) return res;
             }
             return null;
+        }
+
+        private bool? _isSingleSchema;
+
+        /// <summary>
+        /// all database objects have DefaultSchema schema
+        /// </summary>
+        public bool IsSingleSchema
+        {
+            get
+            {
+                if (_isSingleSchema == null)
+                {
+                    _isSingleSchema = DetectSingleSchema();
+                }
+                return _isSingleSchema.Value;
+            }
+        }
+
+        private bool DetectSingleSchema()
+        {
+            if (Tables.Any(o => o.Schema != DefaultSchema)) return false;
+            if (Views.Any(o => o.Schema != DefaultSchema)) return false;
+            if (StoredProcedures.Any(o => o.Schema != DefaultSchema)) return false;
+            if (Functions.Any(o => o.Schema != DefaultSchema)) return false;
+            return true;
         }
 
         //public ColumnInfo FindColumn(string table, string column)

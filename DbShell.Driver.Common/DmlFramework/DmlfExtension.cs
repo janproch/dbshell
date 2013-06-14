@@ -99,7 +99,7 @@ namespace DbShell.Driver.Common.DmlFramework
         public static string ToSql(this IDmlfNode node, IDatabaseFactory factory, IDmlfHandler handler)
         {
             var sw = new StringWriter();
-            var dmp = factory.CreateDumper(new SqlOutputStream(factory.CreateDialect(), sw, factory.GetFormatProperties()), SqlFormatProperties.Default);
+            var dmp = factory.CreateDumper(new SqlOutputStream(factory.CreateDialect(), sw, SqlFormatProperties.Default), SqlFormatProperties.Default);
             node.GenSql(dmp, handler);
             return sw.ToString();
         }

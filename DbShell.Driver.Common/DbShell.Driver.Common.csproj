@@ -63,6 +63,7 @@
     <Compile Include="AbstractDb\ILiteralFormatter.cs" />
     <Compile Include="AbstractDb\IParsingService.cs" />
     <Compile Include="AbstractDb\IStatisticsProvider.cs" />
+    <Compile Include="AbstractDb\KeywordsProvider.cs" />
     <Compile Include="AbstractDb\ParsingServiceBase.cs" />
     <Compile Include="CommonDataLayer\CdlChangeSet.cs" />
     <Compile Include="CommonDataLayer\CdlDataQueue.cs" />

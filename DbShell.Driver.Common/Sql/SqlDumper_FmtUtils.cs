@@ -58,7 +58,7 @@ namespace DbShell.Driver.Common.Sql
 
         public static string Format(IDatabaseFactory factory, string format, params object[] args)
         {
-            return Format(factory, factory.GetFormatProperties(), null, format, args);
+            return Format(factory, SqlFormatProperties.Default, null, format, args);
         }
 
         private static void DataDumped(SqlFormatterState state)

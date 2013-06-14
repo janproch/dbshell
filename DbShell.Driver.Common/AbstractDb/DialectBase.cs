@@ -1,3 +1,4 @@
+using System;
 using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Utility;
 
@@ -11,6 +12,8 @@ namespace DbShell.Driver.Common.AbstractDb
         {
             get
             {
+                var res = KeywordsProvider.InvokeGetKeywords(this);
+                if (res != null) return res;
                 if (_keywords == null) _keywords = LoadKeywords();
                 return _keywords;
             }

@@ -225,6 +225,7 @@ namespace DbShell.Driver.SqlServer
                 }
             }
 
+            // load view structure
             foreach (var view in Result.Views)
             {
                 using (var cmd = Connection.CreateCommand())
@@ -243,6 +244,13 @@ namespace DbShell.Driver.SqlServer
                         view.QueryInfo = null;
                     }
                 }
+            }
+
+            // load default schema
+            using (var cmd = Connection.CreateCommand())
+            {
+                cmd.CommandText = "SELECT SCHEMA_NAME()";
+                Result.DefaultSchema = cmd.ExecuteScalar().ToString();
             }
 
             Result.FixPrimaryKeys();

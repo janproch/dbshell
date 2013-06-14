@@ -51,10 +51,5 @@ namespace DbShell.Driver.Common.AbstractDb
         {
             return null;
         }
-
-        public virtual SqlFormatProperties GetFormatProperties()
-        {
-            return SqlFormatProperties.Default;
-        }
     }
 }
