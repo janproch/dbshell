@@ -93,9 +93,6 @@ namespace DbShell.Core.RazorModels
             _columns = null;
             _sql = null;
             _tabularData = null;
-            Database = null;
         }
-
-        public string Database { get; set; }
     }
 }

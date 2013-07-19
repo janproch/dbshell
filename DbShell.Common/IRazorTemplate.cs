@@ -12,7 +12,6 @@ namespace DbShell.Common
         ITabularDataSource TabularData { get; set; }
         string Schema { get; set; }
         string Name { get; set; }
-        string Database { get; set; }
         IShellContext Context { get; set; }
         void Reset();
     }
