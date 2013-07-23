@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Common;
 using System.Collections;
 using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.Sql;
 
 namespace DbShell.Driver.Common.Utility
 {

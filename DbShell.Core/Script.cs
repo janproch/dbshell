@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using DbShell.Common;
 using DbShell.Core.Utility;
+using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Utility;
 using log4net;
 

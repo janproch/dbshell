@@ -4,8 +4,9 @@ using System.Data.Common;
 using System.IO;
 using System.Text;
 using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.Utility;
 
-namespace DbShell.Driver.Common.Utility
+namespace DbShell.Driver.Common.Sql
 {
     public class SqlOutputStream : ISqlOutputStream
     {

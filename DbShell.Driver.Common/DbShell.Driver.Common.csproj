@@ -181,7 +181,7 @@
     <Compile Include="Utility\DbConnectionExtension.cs" />
     <Compile Include="Utility\DictionaryExtension.cs" />
     <Compile Include="Utility\Errors.cs" />
-    <Compile Include="Utility\GoSplitter.cs" />
+    <Compile Include="Sql\GoSplitter.cs" />
     <Compile Include="Utility\HashSetEx.cs" />
     <Compile Include="Utility\InMemoryTableExtension.cs" />
     <Compile Include="Utility\IOTool.cs" />
@@ -190,7 +190,7 @@
     <Compile Include="Utility\ObjectExtension.cs" />
     <Compile Include="Utility\PyList.cs" />
     <Compile Include="Utility\ReflTools.cs" />
-    <Compile Include="Utility\SqlOutputStream.cs" />
+    <Compile Include="Sql\SqlOutputStream.cs" />
     <Compile Include="Utility\StreamExtension.cs" />
     <Compile Include="Utility\StringTool.cs" />
     <Compile Include="Utility\TypeTool.cs" />

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace DbShell.Driver.Common.Utility
+namespace DbShell.Driver.Common.Sql
 {
     public struct SplitQueryItem
     {

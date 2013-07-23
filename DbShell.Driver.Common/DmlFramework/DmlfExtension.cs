@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.DmlFramework
