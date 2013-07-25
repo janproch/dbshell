@@ -13,7 +13,43 @@ namespace DbShell.Core.Utility
         public class CommandItem
         {
             public string Command;
+            public int LineIndex;
             public List<string> Arguments = new List<string>();
+
+            public bool IsCommand(string cmd)
+            {
+                return System.String.Compare(cmd, Command, System.StringComparison.OrdinalIgnoreCase) == 0;
+            }
+
+            public char? RazorChar
+            {
+                get
+                {
+                    if (Command.StartsWith("razor", StringComparison.OrdinalIgnoreCase) && Command.Length == 6)
+                    {
+                        return Command[5];
+                    }
+                    if (String.Compare("razor", Command, StringComparison.OrdinalIgnoreCase) == 0)
+                    {
+                        return '\0';
+                    }
+                    return null;
+                }
+            }
+
+            public bool IsView
+            {
+                get { return IsCommand("view"); }
+            }
+
+            public bool IsRazor
+            {
+                get
+                {
+                    char? ch = RazorChar;
+                    return ch.HasValue && (ch == '\0' || ch == '#');
+                }
+            }
         }
 
         public List<CommandItem> Commands = new List<CommandItem>();
@@ -95,6 +131,8 @@ namespace DbShell.Core.Utility
             }
         }
 
+        public int LineCount;
+
         public SqlProlog(string content)
             : this(new StringReader(content ?? String.Empty))
         {
@@ -103,24 +141,43 @@ namespace DbShell.Core.Utility
 
         public SqlProlog(TextReader reader)
         {
+            int emptyLines = 0;
             for (;;)
             {
                 string line = reader.ReadLine();
                 if (line == null) return;
                 line = line.Trim();
-                if (String.IsNullOrEmpty(line)) continue;
+                if (String.IsNullOrEmpty(line))
+                {
+                    LineCount++;
+                    emptyLines++;
+                    continue;
+                }
 
                 var parser = new Parser(line);
-                if (parser.Current != '-' || parser.Next != '-') return;
+                if (parser.Current != '-' || parser.Next != '-')
+                {
+                    LineCount -= emptyLines;
+                    return;
+                }
                 parser.Skip(2);
                 parser.JumpWhite();
-                if (parser.Current != '#') return;
+                if (parser.Current != '#')
+                {
+                    LineCount -= emptyLines;
+                    return;
+                }
+
+                emptyLines = 0;
+                LineCount++;
+
                 parser.Skip(1);
                 string command = parser.ReadToken();
                 if (command == null) continue;
                 var item = new CommandItem
                     {
-                        Command = command
+                        LineIndex = LineCount - 1,
+                        Command = command,
                     };
                 Commands.Add(item);
                 while (!parser.IsEof)
@@ -130,6 +187,33 @@ namespace DbShell.Core.Utility
                     item.Arguments.Add(token);
                 }
             }
+        }
+
+        public string Replace(string content, Func<CommandItem, bool> removeItem, string newItem)
+        {
+            var reader = new StringReader(content);
+            var prologLines = new List<string>();
+            for (int i = 0; i < LineCount; i++)
+            {
+                prologLines.Add(reader.ReadLine().TrimEnd());
+            }
+            string append = reader.ReadToEnd();
+            bool shouldAddNewItem = newItem != null;
+            foreach (var cmd in Commands.OrderByDescending(c => c.LineIndex))
+            {
+                if (removeItem(cmd))
+                {
+                    prologLines.RemoveAt(cmd.LineIndex);
+                    if (shouldAddNewItem)
+                    {
+                        shouldAddNewItem = false;
+                        prologLines.Insert(cmd.LineIndex, newItem);
+                    }
+                }
+            }
+            if (shouldAddNewItem) prologLines.Add(newItem);
+            prologLines.Add(append);
+            return String.Join("\r\n", prologLines.ToArray());
         }
 
         public IEnumerable<CommandItem> this[string command]
@@ -167,14 +251,8 @@ namespace DbShell.Core.Utility
             {
                 foreach (var cmd in Commands)
                 {
-                    if (cmd.Command.StartsWith("razor", StringComparison.OrdinalIgnoreCase) && cmd.Command.Length == 6)
-                    {
-                        return cmd.Command[5];
-                    }
-                    if (String.Compare("razor", cmd.Command, StringComparison.OrdinalIgnoreCase) == 0)
-                    {
-                        return '\0';
-                    }
+                    char? ch = cmd.RazorChar;
+                    if (ch != null) return ch;
                 }
                 return null;
             }
