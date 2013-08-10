@@ -5,7 +5,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
 {
     public class CdlValueHolder : ICdlValueReader, ICdlValueWriter
     {
-        protected TypeStorage m_type = TypeStorage.Null;
+        protected TypeStorage _type = TypeStorage.Null;
 
         protected byte[] m_byteArrayVal;
         protected DateTime m_dateTimeVal;
@@ -22,13 +22,13 @@ namespace DbShell.Driver.Common.CommonDataLayer
 
         public TypeStorage GetFieldType()
         {
-            return m_type;
+            return _type;
         }
 
         public bool GetBoolean()
         {
 #if DEBUG
-            Debug.Assert(m_type == TypeStorage.Boolean);
+            Debug.Assert(_type == TypeStorage.Boolean);
 #endif
             return m_intVal != 0;
         }
@@ -36,7 +36,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public byte GetByte()
         {
 #if DEBUG
-            Debug.Assert(m_type == TypeStorage.Byte);
+            Debug.Assert(_type == TypeStorage.Byte);
 #endif
             unchecked
             {
@@ -47,7 +47,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public sbyte GetSByte()
         {
 #if DEBUG
-            Debug.Assert(m_type == TypeStorage.SByte);
+            Debug.Assert(_type == TypeStorage.SByte);
 #endif
             unchecked
             {
@@ -58,7 +58,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public byte[] GetByteArray()
         {
 #if DEBUG
-            Debug.Assert(m_type == TypeStorage.ByteArray);
+            Debug.Assert(_type == TypeStorage.ByteArray);
 #endif
             return m_byteArrayVal;
         }
@@ -66,7 +66,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public DateTime GetDateTime()
         {
 #if DEBUG
-            Debug.Assert(m_type == TypeStorage.DateTime);
+            Debug.Assert(_type == TypeStorage.DateTime);
 #endif
             return m_dateTimeVal;
         }
@@ -74,7 +74,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public DateTimeEx GetDateTimeEx()
         {
 #if DEBUG
-            Debug.Assert(m_type == TypeStorage.DateTimeEx);
+            Debug.Assert(_type == TypeStorage.DateTimeEx);
 #endif
             return m_dateTimeExVal;
         }
@@ -82,7 +82,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public TimeEx GetTimeEx()
         {
 #if DEBUG
-            Debug.Assert(m_type == TypeStorage.TimeEx);
+            Debug.Assert(_type == TypeStorage.TimeEx);
 #endif
             return m_dateTimeExVal.TimePart;
         }
@@ -90,7 +90,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public DateEx GetDateEx()
         {
 #if DEBUG
-            Debug.Assert(m_type == TypeStorage.DateEx);
+            Debug.Assert(_type == TypeStorage.DateEx);
 #endif
             return m_dateTimeExVal.DatePart;
         }
@@ -98,7 +98,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public decimal GetDecimal()
         {
 #if DEBUG
-            Debug.Assert(m_type == TypeStorage.Decimal);
+            Debug.Assert(_type == TypeStorage.Decimal);
 #endif
             return m_decimalVal;
         }
@@ -106,7 +106,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public double GetDouble()
         {
 #if DEBUG
-            Debug.Assert(m_type == TypeStorage.Double);
+            Debug.Assert(_type == TypeStorage.Double);
 #endif
             return m_doubleVal;
         }
@@ -114,7 +114,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public float GetFloat()
         {
 #if DEBUG
-            Debug.Assert(m_type == TypeStorage.Float);
+            Debug.Assert(_type == TypeStorage.Float);
 #endif
             return m_floatVal;
         }
@@ -122,7 +122,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public Guid GetGuid()
         {
 #if DEBUG
-            Debug.Assert(m_type == TypeStorage.Guid);
+            Debug.Assert(_type == TypeStorage.Guid);
 #endif
             return m_guidVal;
         }
@@ -130,7 +130,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public short GetInt16()
         {
 #if DEBUG
-            Debug.Assert(m_type == TypeStorage.Int16);
+            Debug.Assert(_type == TypeStorage.Int16);
 #endif
             unchecked
             {
@@ -141,7 +141,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public int GetInt32()
         {
 #if DEBUG
-            Debug.Assert(m_type == TypeStorage.Int32);
+            Debug.Assert(_type == TypeStorage.Int32);
 #endif
             unchecked
             {
@@ -152,7 +152,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public long GetInt64()
         {
 #if DEBUG
-            Debug.Assert(m_type == TypeStorage.Int64);
+            Debug.Assert(_type == TypeStorage.Int64);
 #endif
             unchecked
             {
@@ -163,7 +163,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public ushort GetUInt16()
         {
 #if DEBUG
-            Debug.Assert(m_type == TypeStorage.UInt16);
+            Debug.Assert(_type == TypeStorage.UInt16);
 #endif
             unchecked
             {
@@ -174,7 +174,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public uint GetUInt32()
         {
 #if DEBUG
-            Debug.Assert(m_type == TypeStorage.UInt32);
+            Debug.Assert(_type == TypeStorage.UInt32);
 #endif
             unchecked
             {
@@ -185,7 +185,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public ulong GetUInt64()
         {
 #if DEBUG
-            Debug.Assert(m_type == TypeStorage.UInt64);
+            Debug.Assert(_type == TypeStorage.UInt64);
 #endif
             unchecked
             {
@@ -196,7 +196,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public string GetString()
         {
 #if DEBUG
-            Debug.Assert(m_type == TypeStorage.String);
+            Debug.Assert(_type == TypeStorage.String);
 #endif
             return m_stringVal;
         }
@@ -221,103 +221,103 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public void SetBoolean(bool value)
         {
             m_intVal = value ? 1 : 0;
-            m_type = TypeStorage.Boolean;
+            _type = TypeStorage.Boolean;
         }
 
         public void SetByte(byte value)
         {
             m_intVal = value;
-            m_type = TypeStorage.Byte;
+            _type = TypeStorage.Byte;
         }
 
         public void SetSByte(sbyte value)
         {
             m_intVal = value;
-            m_type = TypeStorage.SByte;
+            _type = TypeStorage.SByte;
         }
 
         public void SetByteArray(byte[] value)
         {
             m_byteArrayVal = value;
-            m_type = TypeStorage.ByteArray;
+            _type = TypeStorage.ByteArray;
         }
 
         public void SetDateTime(DateTime value)
         {
             m_dateTimeVal = value;
-            m_type = TypeStorage.DateTime;
+            _type = TypeStorage.DateTime;
         }
 
         public void SetDateTimeEx(DateTimeEx value)
         {
             m_dateTimeExVal = value;
-            m_type = TypeStorage.DateTimeEx;
+            _type = TypeStorage.DateTimeEx;
         }
 
         public void SetTimeEx(TimeEx value)
         {
             m_dateTimeExVal.TimePart = value;
-            m_type = TypeStorage.TimeEx;
+            _type = TypeStorage.TimeEx;
         }
 
         public void SetDateEx(DateEx value)
         {
             m_dateTimeExVal.DatePart = value;
-            m_type = TypeStorage.DateEx;
+            _type = TypeStorage.DateEx;
         }
 
         public void SetDecimal(decimal value)
         {
             m_decimalVal = value;
-            m_type = TypeStorage.Decimal;
+            _type = TypeStorage.Decimal;
         }
 
         public void SetDouble(double value)
         {
             m_doubleVal = value;
-            m_type = TypeStorage.Double;
+            _type = TypeStorage.Double;
         }
 
         public void SetFloat(float value)
         {
             m_floatVal = value;
-            m_type = TypeStorage.Float;
+            _type = TypeStorage.Float;
         }
 
         public void SetGuid(Guid value)
         {
             m_guidVal = value;
-            m_type = TypeStorage.Guid;
+            _type = TypeStorage.Guid;
         }
 
         public void SetInt16(short value)
         {
             m_intVal = value;
-            m_type = TypeStorage.Int16;
+            _type = TypeStorage.Int16;
         }
 
         public void SetInt32(int value)
         {
             m_intVal = value;
-            m_type = TypeStorage.Int32;
+            _type = TypeStorage.Int32;
         }
 
         public void SetInt64(long value)
         {
             m_intVal = value;
-            m_type = TypeStorage.Int64;
+            _type = TypeStorage.Int64;
         }
 
         public void SetUInt16(ushort value)
         {
             m_intVal = value;
-            m_type = TypeStorage.UInt16;
+            _type = TypeStorage.UInt16;
         }
 
         public void SetUInt32(uint value)
         {
             m_intVal = value;
-            m_type = TypeStorage.UInt32;
+            _type = TypeStorage.UInt32;
         }
 
         public void SetUInt64(ulong value)
@@ -325,14 +325,14 @@ namespace DbShell.Driver.Common.CommonDataLayer
             unchecked
             {
                 m_intVal = (long)value;
-                m_type = TypeStorage.UInt64;
+                _type = TypeStorage.UInt64;
             }
         }
 
         public void SetString(string value)
         {
             m_stringVal = value;
-            m_type = TypeStorage.String;
+            _type = TypeStorage.String;
         }
 
         //public void SetArray(Array value)
@@ -343,10 +343,15 @@ namespace DbShell.Driver.Common.CommonDataLayer
 
         public void SetNull()
         {
-            m_type = TypeStorage.Null;
+            _type = TypeStorage.Null;
         }
 
         #endregion
+
+        public bool IsNull()
+        {
+            return _type == TypeStorage.Null;
+        }
     }
 
     //public sealed class WorkingCdlValueHolder : CdlValueHolder
