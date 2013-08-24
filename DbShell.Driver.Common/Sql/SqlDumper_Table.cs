@@ -50,7 +50,8 @@ namespace DbShell.Driver.Common.Sql
                 updrows++;
                 updflds += upd.Values.Length;
             }
-            ColumnInfo autoinc = table.FindAutoIncrementColumn();
+            ColumnInfo autoinc = null;
+            if (table != null) autoinc = table.FindAutoIncrementColumn();
             bool isIdentityInsert = false;
             foreach (var ins in script.Inserts)
             {

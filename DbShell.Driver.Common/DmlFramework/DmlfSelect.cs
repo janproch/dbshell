@@ -360,10 +360,6 @@ namespace DbShell.Driver.Common.DmlFramework
                         Source = src,
                     }
                 },
-                //DisplayInfo = new ColumnDisplayInfo
-                //{
-                //    Style = ColumnDisplayInfo.UsageStyle.Value,
-                //}
             };
         }
 

@@ -89,9 +89,11 @@ namespace DbShell.Driver.Common.CommonDataLayer
             if (RemovedRow != null) RemovedRow(this, new CdlRowEventArgs {Row = row});
         }
 
-        public void AddRow(ICdlRecord record)
+        public CdlRow AddRow(ICdlRecord record)
         {
-            Rows.AddInternal(new CdlRow(this, new ArrayDataRecord(record), CdlRowState.Unchanged, m_structure));
+            var row = new CdlRow(this, new ArrayDataRecord(record), CdlRowState.Unchanged, m_structure);
+            Rows.AddInternal(row);
+            return row;
         }
 
         internal void AddRowInternal(ArrayDataRecord rec)
