@@ -46,6 +46,8 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 res.UpdateKey = UpdateKey;
                 return res;
             }
+
+            public Dictionary<NameWithSchema, object[]> ReferencedTablesKeys = new Dictionary<NameWithSchema, object[]>();
         }
 
         public class InsertedRowValues : RowValuesBase

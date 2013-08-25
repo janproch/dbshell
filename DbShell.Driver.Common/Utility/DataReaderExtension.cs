@@ -75,6 +75,7 @@ namespace DbShell.Driver.Common.Utility
                 col.DataType = row["DataTypeName"].SafeToString();
                 col.CommonType = ReaderDataType(row);
 
+                col.BaseColumnName = row.SafeString("BaseColumnName");
                 col.BaseSchemaName = row.SafeString("BaseSchemaName");
                 col.BaseTableName = row .SafeString("BaseTableName");
                 col.BaseServerName = row.SafeString("BaseServerName");

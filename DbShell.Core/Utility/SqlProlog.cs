@@ -50,6 +50,15 @@ namespace DbShell.Core.Utility
                     return ch.HasValue && (ch == '\0' || ch == '#');
                 }
             }
+
+            public string Transformation
+            {
+                get
+                {
+                    if (Command.StartsWith("razor")) return Command;
+                    return null;
+                }
+            }
         }
 
         public List<CommandItem> Commands = new List<CommandItem>();
@@ -256,6 +265,11 @@ namespace DbShell.Core.Utility
                 }
                 return null;
             }
+        }
+
+        public string Transformation
+        {
+            get { return Commands.Select(cmd => cmd.Transformation).FirstOrDefault(tran => tran != null); }
         }
 
         public string PreprocessScript(string content)

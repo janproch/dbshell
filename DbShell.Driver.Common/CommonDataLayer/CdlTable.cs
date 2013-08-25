@@ -274,7 +274,8 @@ namespace DbShell.Driver.Common.CommonDataLayer
             return res;
         }
 
-        public void AddChangesToChangeSet(CdlChangeSet changeSet, string[] colNames, int[] pk)
+        public void AddChangesToChangeSet(CdlChangeSet changeSet, string[] colNames, int[] pk, 
+            Dictionary<int, Tuple<NameWithSchema, int[]>> referencedColumnKeys)
         {
             foreach (var row in Rows)
             {
@@ -308,6 +309,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                                     {
                                         UpdateKey = pkVals,
                                     };
+                                changeSet.UpdatedRows.Add(values);
                             }
                             for (int i = 0; i < colNames.Length; i++)
                             {
@@ -317,8 +319,12 @@ namespace DbShell.Driver.Common.CommonDataLayer
                                         Column = colNames[i],
                                         Value = row[i],
                                     });
+                                if (referencedColumnKeys != null && referencedColumnKeys.ContainsKey(i))
+                                {
+                                    values.ReferencedTablesKeys[referencedColumnKeys[i].Item1]
+                                        = row.Original.GetValuesByCols(referencedColumnKeys[i].Item2);
+                                }
                             }
-                            changeSet.UpdatedRows.Add(values);
                         }
                         break;
                     case CdlRowState.Deleted:
