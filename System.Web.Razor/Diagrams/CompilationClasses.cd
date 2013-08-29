@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Microsoft.WebPages.Compilation.Parser.CSharpCodeParser" Collapsed="true">
+    <Position X="3.75" Y="4.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AACAOAAAgIAkQAUIgQQACIIDRQIAAAIAAEgAAiAIIBI=</HashCode>
+      <FileName>Parser\CSharpCodeParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.WebPages.Compilation.Parser.HtmlMarkupParser" Collapsed="true">
+    <Position X="1" Y="4.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>ISAlEABAAIABMAACAilACMAABgAAAACCACAAAEgAAAA=</HashCode>
+      <FileName>Parser\HtmlMarkupParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.WebPages.Compilation.Parser.MarkupParser" Collapsed="true">
+    <Position X="1" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAAAAAAgAAAAAAAAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Parser\MarkupParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.WebPages.Compilation.Parser.ParserBase" Collapsed="true">
+    <Position X="3.75" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AABAgAAAAIAAAAAAEAAACYAAAAAAICAAAAAAAAAEAAA=</HashCode>
+      <FileName>Parser\ParserBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.WebPages.Compilation.Parser.SyntaxTreeNode" Collapsed="true">
+    <Position X="9" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAiAAAAAAAAAAAABAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Parser\SyntaxTreeNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.WebPages.Compilation.Parser.Span" Collapsed="true">
+    <Position X="10" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAiAAgAAFgAAAAABAAAAAAYAAAQAAAAAEAAA=</HashCode>
+      <FileName>Parser\Span.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.WebPages.Compilation.Parser.Block" Collapsed="true">
+    <Position X="7.75" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAiAAAAAEAAAEAAZAQAAAAQABAQAAAAAAAAA=</HashCode>
+      <FileName>Parser\Block.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.WebPages.Compilation.Parser.RazorError" Collapsed="true">
+    <Position X="9" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEkAIAAABAAAAAAIAAAAAAIAAAAAA=</HashCode>
+      <FileName>Parser\RazorError.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.WebPages.Compilation.CSharpRazorCodeLanguage" Collapsed="true">
+    <Position X="0.75" Y="10" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEEAAABAAAAAAAAQAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CSharpRazorCodeLanguage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.WebPages.Compilation.VBRazorCodeLanguage" Collapsed="true">
+    <Position X="3.75" Y="10" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAABAAAAAAAAQAEAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>VBRazorCodeLanguage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.WebPages.Compilation.VBRazorCodeGenerator" Collapsed="true">
+    <Position X="0.75" Y="7" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQACCAACAgABAAgCAAgEAAAAgAAAAAAAIA=</HashCode>
+      <FileName>VBRazorCodeGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.WebPages.Compilation.RazorCodeLanguage" Collapsed="true">
+    <Position X="2.25" Y="8.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAEAAEBQAAAAAAAQAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RazorCodeLanguage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.WebPages.Compilation.RazorCodeGenerator" Collapsed="true">
+    <Position X="2.25" Y="5.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>iEgAsjgECBSGACKgBKhBhAQAAAkgGIiYEwECABCyOYA=</HashCode>
+      <FileName>RazorCodeGenerator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.WebPages.Compilation.CSharpRazorCodeGenerator" Collapsed="true">
+    <Position X="3.75" Y="7" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAQAACAAAAgABAAAAAAgEAAAAgAAAAAAAIA=</HashCode>
+      <FileName>CSharpRazorCodeGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.WebPages.Compilation.Parser.CodeParser" Collapsed="true">
+    <Position X="5" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AACCAAQAgAAAAAAAACAAAQAAIAAAAAAgAAgAAAAAAAA=</HashCode>
+      <FileName>Parser\CodeParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.WebPages.Compilation.Parser.VBCodeParser" Collapsed="true">
+    <Position X="6.5" Y="4.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AICBAgAAIKEESABIAAEACICBAIAAQAEAAAgAAAAAIAA=</HashCode>
+      <FileName>Parser\VBCodeParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.WebPages.Compilation.Parser.RazorParser" Collapsed="true">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <AssociationLine Name="CodeParser" Type="Microsoft.WebPages.Compilation.Parser.ParserBase">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.075" Y="0.318" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="MarkupParser" Type="Microsoft.WebPages.Compilation.Parser.MarkupParser">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.162" Y="1.602" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAgAAAAAAAAAgAAAhAAIAAAAAAAIACAQA=</HashCode>
+      <FileName>Parser\RazorParser.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CodeParser" />
+      <Property Name="MarkupParser" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

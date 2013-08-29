@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="System.Razor.Parser.SyntaxTree.Block" Collapsed="true">
+    <Position X="6.5" Y="4.5" Width="1.5" />
+    <InheritanceLine Type="System.Razor.Parser.SyntaxTree.SyntaxTreeNode" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.875" Y="6" />
+        <Point X="6.875" Y="5.13" />
+      </Path>
+    </InheritanceLine>
+    <AssociationLine Name="Children" Type="System.Razor.Parser.SyntaxTree.SyntaxTreeNode">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.835" Y="0.485" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAACAAAAAEAAAEAAZAQAAAAQABAQAAAAAAgAA=</HashCode>
+      <FileName>Parser\SyntaxTree\Block.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Type" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Children" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="System.Razor.Parser.SyntaxTree.CodeSpan" Collapsed="true">
+    <Position X="10.5" Y="6" Width="1.5" />
+    <InheritanceLine Type="System.Razor.Parser.SyntaxTree.Span" FixedToPoint="true">
+      <Path>
+        <Point X="10" Y="6.312" />
+        <Point X="10.5" Y="6.312" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Parser\SyntaxTree\CodeSpan.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Razor.Parser.SyntaxTree.CommentSpan" Collapsed="true">
+    <Position X="10.5" Y="3" Width="1.5" />
+    <InheritanceLine Type="System.Razor.Parser.SyntaxTree.Span" FixedToPoint="true">
+      <Path>
+        <Point X="9.25" Y="6" />
+        <Point X="9.25" Y="3.312" />
+        <Point X="10.5" Y="3.312" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Parser\SyntaxTree\CommentSpan.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Razor.Parser.SyntaxTree.HelperHeaderSpan" Collapsed="true">
+    <Position X="16.75" Y="7" Width="1.5" />
+    <InheritanceLine Type="System.Razor.Parser.SyntaxTree.CodeSpan" FixedToPoint="true">
+      <Path>
+        <Point X="11.25" Y="6.63" />
+        <Point X="11.25" Y="7.312" />
+        <Point X="16.75" Y="7.312" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIEgAAAAAAAAAAAAMAAAAAAAAAAAAA=</HashCode>
+      <FileName>Parser\SyntaxTree\HelperHeaderSpan.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Razor.Parser.SyntaxTree.ImplicitExpressionSpan" Collapsed="true">
+    <Position X="16.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAUgAAAgACAAAAAAMAAAAAAAAAAgAA=</HashCode>
+      <FileName>Parser\SyntaxTree\ImplicitExpressionSpan.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Razor.Parser.SyntaxTree.InheritsSpan" Collapsed="true">
+    <Position X="16.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAEgAAAAAAAAAAAAMAAAAAAAAAAAAA=</HashCode>
+      <FileName>Parser\SyntaxTree\InheritsSpan.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Razor.Parser.SyntaxTree.MarkupSpan" Collapsed="true">
+    <Position X="10.5" Y="4.25" Width="1.5" />
+    <InheritanceLine Type="System.Razor.Parser.SyntaxTree.Span" FixedToPoint="true">
+      <Path>
+        <Point X="9.25" Y="6" />
+        <Point X="9.25" Y="4.562" />
+        <Point X="10.5" Y="4.562" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Parser\SyntaxTree\MarkupSpan.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Razor.Parser.SyntaxTree.MetaCodeSpan" Collapsed="true">
+    <Position X="10.5" Y="2" Width="1.5" />
+    <InheritanceLine Type="System.Razor.Parser.SyntaxTree.Span" FixedToPoint="true">
+      <Path>
+        <Point X="9.25" Y="6" />
+        <Point X="9.25" Y="2.312" />
+        <Point X="10.5" Y="2.312" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Parser\SyntaxTree\MetaCodeSpan.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Razor.Parser.SyntaxTree.NamespaceImportSpan" Collapsed="true">
+    <Position X="10.5" Y="9.25" Width="2" />
+    <InheritanceLine Type="System.Razor.Parser.SyntaxTree.Span" FixedToPoint="true">
+      <Path>
+        <Point X="9.25" Y="6.63" />
+        <Point X="9.25" Y="9.562" />
+        <Point X="10.5" Y="9.562" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAEgAAAAAAAAAAAIMAAAAAAAAAAAAA=</HashCode>
+      <FileName>Parser\SyntaxTree\NamespaceImportSpan.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Razor.Parser.SyntaxTree.RazorError" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEgAIAAABAAAAAAIAAAAAAIAAAAAA=</HashCode>
+      <FileName>Parser\SyntaxTree\RazorError.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="System.Razor.Parser.SyntaxTree.SectionHeaderSpan" Collapsed="true">
+    <Position X="13.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAEgAAAAAAAAAAAAMAAAAAAAAAAAAA=</HashCode>
+      <FileName>Parser\SyntaxTree\SectionHeaderSpan.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Razor.Parser.SyntaxTree.SingleLineMarkupSpan" Collapsed="true">
+    <Position X="13.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAAAAAAAAAAAMAAAAAAAAAAAAA=</HashCode>
+      <FileName>Parser\SyntaxTree\SingleLineMarkupSpan.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Razor.Parser.SyntaxTree.Span" Collapsed="true">
+    <Position X="8.5" Y="6" Width="1.5" />
+    <AssociationLine Name="Kind" Type="System.Razor.Parser.SyntaxTree.SpanKind" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.812" Y="6.63" />
+        <Point X="8.812" Y="7.875" />
+        <Point X="7.688" Y="7.875" />
+        <Point X="7.688" Y="8.25" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AoAAEAAABiBAgQAFkAAAAADAACAAAYCAEAIAAggEAAQ=</HashCode>
+      <FileName>Parser\SyntaxTree\Span.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Kind" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Razor.Parser.SyntaxTree.SyntaxTreeNode" Collapsed="true">
+    <Position X="6.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAACAAAAAAAAAAAABAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Parser\SyntaxTree\SyntaxTreeNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Razor.Parser.SyntaxTree.TransitionSpan" Collapsed="true">
+    <Position X="10.5" Y="8" Width="1.5" />
+    <InheritanceLine Type="System.Razor.Parser.SyntaxTree.Span" FixedToPoint="true">
+      <Path>
+        <Point X="9.25" Y="6.63" />
+        <Point X="9.25" Y="8.312" />
+        <Point X="10.5" Y="8.312" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Parser\SyntaxTree\TransitionSpan.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Razor.Parser.SyntaxTree.VBOptionSpan" Collapsed="true">
+    <Position X="13.25" Y="0.75" Width="1.5" />
+    <InheritanceLine Type="System.Razor.Parser.SyntaxTree.MetaCodeSpan" FixedToPoint="true">
+      <Path>
+        <Point X="11.25" Y="2" />
+        <Point X="11.25" Y="1" />
+        <Point X="13.25" Y="1" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEgAAAAAAAAAAAAMAAAAAiAAAAAAA=</HashCode>
+      <FileName>Parser\SyntaxTree\VBOptionSpan.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="System.Razor.Parser.SyntaxTree.SpanKind" Collapsed="true">
+    <Position X="7" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAACAAAAAgAAAAAABAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Parser\SyntaxTree\SpanKind.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="System.Razor.Parser.SyntaxTree.BlockType" Collapsed="true">
+    <Position X="6.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAEAEAABAAAAAAAAAICAAAAAAAQAAAAAYAAAAA=</HashCode>
+      <FileName>Parser\SyntaxTree\BlockType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>
