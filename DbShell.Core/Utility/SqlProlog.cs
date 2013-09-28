@@ -173,8 +173,9 @@ namespace DbShell.Core.Utility
                 parser.JumpWhite();
                 if (parser.Current != '#')
                 {
-                    LineCount -= emptyLines;
-                    return;
+                    // comment but not prolog comment
+                    LineCount++;
+                    continue;
                 }
 
                 emptyLines = 0;
