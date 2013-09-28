@@ -35,6 +35,12 @@ namespace DbShell.Driver.Common.AbstractDb
         void ChangeTableSchema(TableInfo obj, string schema);
         void RenameTable(TableInfo obj, string newname);
 
+        // key operations
+        void DropForeignKey(ForeignKeyInfo fk);
+        void CreateForeignKey(ForeignKeyInfo fk);
+        void DropPrimaryKey(PrimaryKeyInfo fk);
+        void CreatePrimaryKey(PrimaryKeyInfo fk);
+
         //// database operations
         //void AlterDatabaseOptions(string dbname, Dictionary<string, string> options);
 

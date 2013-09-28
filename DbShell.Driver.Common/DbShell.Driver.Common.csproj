@@ -97,6 +97,7 @@
     <Compile Include="FilterParser\antlr\StringFilterLexer.cs" />
     <Compile Include="FilterParser\antlr\StringFilterParser.cs" />
     <Compile Include="FilterParser\FilterParser.cs" />
+    <Compile Include="Structure\ForeignKeyActionExtension.cs" />
     <Compile Include="Structure\FunctionInfo.cs" />
     <Compile Include="Structure\ParameterInfo.cs" />
     <Compile Include="Structure\ProgrammableInfo.cs" />

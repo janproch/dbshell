@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.Structure;
 
 namespace DbShell.Driver.Common.Sql
@@ -193,10 +194,10 @@ namespace DbShell.Driver.Common.Sql
                 ColumnRefs(fk.RefColumns);
                 WriteRaw(")");
             }
-            //string ondelete = m_dialect.OnDeleteSqlName(fk.OnDeleteAction);
-            //string onupdate = m_dialect.OnUpdateSqlName(fk.OnUpdateAction);
-            //if (ondelete != null) Put(" ^on ^delete %k", ondelete);
-            //if (onupdate != null) Put(" ^on ^update %k", onupdate);
+            string ondelete = fk.OnDeleteAction.SqlName();
+            string onupdate = fk.OnUpdateAction.SqlName();
+            if (ondelete != null) Put(" ^on ^delete %k", ondelete);
+            if (onupdate != null) Put(" ^on ^update %k", onupdate);
         }
 
         protected virtual void ColumnRef(ColumnReference colref)
@@ -224,9 +225,13 @@ namespace DbShell.Driver.Common.Sql
                 if (col.Length == -1) Put("(^max)");
                 else Put("(%s)", col.Length);
             }
-            if (col.Precision > 0)
+            if (col.Precision > 0 && col.CommonType is DbTypeNumeric)
             {
                 Put("(%s,%s)", col.Precision, col.Scale);
+            }
+            if (col.AutoIncrement)
+            {
+                Put(" ^identity");
             }
             WriteRaw(" ");
             if (includeNullable)
@@ -237,6 +242,30 @@ namespace DbShell.Driver.Common.Sql
             //{
             //    ColumnDefinition_Default(col);
             //}
+        }
+
+        public virtual void DropForeignKey(ForeignKeyInfo fk)
+        {
+            PutCmd("^alter ^table %f ^drop ^constraint %i", fk.OwnerTable.FullName, fk.ConstraintName);
+        }
+
+        public virtual void CreateForeignKey(ForeignKeyInfo fk)
+        {
+            Put("^alter ^table %f ^add ", fk.OwnerTable);
+            CreateForeignKeyCore(fk);
+            EndCommand();
+        }
+        public virtual void DropPrimaryKey(PrimaryKeyInfo fk)
+        {
+            PutCmd("^alter ^table %f ^drop ^constraint %i", fk.OwnerTable.FullName, fk.ConstraintName);
+        }
+        public virtual void CreatePrimaryKey(PrimaryKeyInfo pk)
+        {
+            Put("^alter ^table %f ^add ^constraint %i ^primary ^key", pk.OwnerTable, pk.ConstraintName);
+            WriteRaw(" (");
+            ColumnRefs(pk.Columns);
+            WriteRaw(")");
+            EndCommand();
         }
 
         public virtual void DropTable(TableInfo obj, bool testIfExists)

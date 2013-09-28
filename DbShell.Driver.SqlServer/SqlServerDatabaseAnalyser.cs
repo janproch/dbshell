@@ -102,6 +102,9 @@ namespace DbShell.Driver.SqlServer
                         string pkschema = reader.SafeString("PK_Schema");
                         if (String.IsNullOrEmpty(pkschema)) pkschema = reader.SafeString("IX_Schema");
 
+                        string deleteAction = reader.SafeString("Delete_Action");
+                        string updateAction = reader.SafeString("Update_Action");
+
                         string cname = reader.SafeString("Constraint_Name");
 
                         var fkt = _tables[new NameWithSchema(fkschema, fktable)];
@@ -118,6 +121,8 @@ namespace DbShell.Driver.SqlServer
                                 {
                                     RefColumn = pkt.Columns[pkcolumn]
                                 });
+                            fk.OnDeleteAction = ForeignKeyActionExtension.FromSqlName(deleteAction);
+                            fk.OnUpdateAction = ForeignKeyActionExtension.FromSqlName(updateAction);
                             fkt.ForeignKeys.Add(fk);
                         }
                         ;
