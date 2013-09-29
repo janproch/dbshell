@@ -9,8 +9,19 @@ using DbShell.Driver.Common.DmlFramework;
 
 namespace DbShell.Driver.Common.FilterParser
 {
+    public enum FilterLineTransformation
+    {
+        IsOneOf,
+        BeginsWithOneOf,
+        EndsWithOneOf,
+        ContainsOneOf,
+        None
+    }
+
     public class FilterParser
     {
+        public const string LineTransformPrefix = "$LINE_TRANSFORM$=";
+
         public enum ExpressionType
         {
             Number,
@@ -94,8 +105,21 @@ namespace DbShell.Driver.Common.FilterParser
             return ExpressionType.None;
         }
 
+        public static FilterLineTransformation GetExpressionTransformation(string expression)
+        {
+            if (expression != null && expression.StartsWith(LineTransformPrefix))
+            {
+                string[] exprs = expression.Split(new char[] {'\n'}, 2);
+                string tran = exprs[0].Trim().Substring(LineTransformPrefix.Length);
+                return (FilterLineTransformation) Enum.Parse(typeof (FilterLineTransformation), tran);
+            }
+            return FilterLineTransformation.None;
+        }
+
         public static DmlfConditionBase ParseFilterExpression(DbTypeBase type, DmlfExpression columnValue, string expression)
         {
+            expression = TransformExpression(expression);
+
             switch (GetExpressionType(type))
             {
                 case ExpressionType.Number:
@@ -110,6 +134,38 @@ namespace DbShell.Driver.Common.FilterParser
                 LeftExpr = columnValue,
                 RightExpr = new DmlfStringExpression { Value = expression },
             };
+        }
+
+        private static string TransformExpression(string expression)
+        {
+            var tran = GetExpressionTransformation(expression);
+            switch (tran)
+            {
+                case FilterLineTransformation.IsOneOf:
+                    return TrasnformLines(expression, line => String.Format("='{0}'", line));
+                case FilterLineTransformation.ContainsOneOf:
+                    return TrasnformLines(expression, line => String.Format("'{0}'", line));
+                case FilterLineTransformation.BeginsWithOneOf:
+                    return TrasnformLines(expression, line => String.Format("^'{0}'", line));
+                case FilterLineTransformation.EndsWithOneOf:
+                    return TrasnformLines(expression, line => String.Format("$'{0}'", line));
+            }
+            return expression;
+        }
+
+        private static string TrasnformLines(string expression, Func<string, string> func)
+        {
+            var sb = new StringBuilder();
+            bool first = true;
+            foreach (string line in expression.Split('\n'))
+            {
+                if (!first)
+                {
+                    sb.AppendLine(func(line.Trim()));
+                }
+                first = false;
+            }
+            return sb.ToString();
         }
     }
 }
