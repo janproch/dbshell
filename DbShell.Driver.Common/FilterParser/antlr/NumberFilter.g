@@ -18,7 +18,7 @@ positive_number:
   num1=NUMBER { Push(Decimal.Parse($num1.text, CultureInfo.InvariantCulture)); };
   
 number_as_string:  
-  num1=Q_STRING | num1=A_STRING { string value=$num1.text; Push(Decimal.Parse(value.Substring(1, value.Length - 2), CultureInfo.InvariantCulture)); };
+  (num1=Q_STRING | num1=A_STRING) { string value=$num1.text; Push(Decimal.Parse(value.Substring(1, value.Length - 2), CultureInfo.InvariantCulture)); };
   
 number:
   positive_number | negative_number | number_as_string;
@@ -61,7 +61,8 @@ element_no_negative:
   
 element_maybe_negative:
   negative_number { AddEqualCondition(Pop<decimal>().ToString(CultureInfo.InvariantCulture)); }
-  | element_no_negative;
+  | element_no_negative
+;
   
 factor :
   element_maybe_negative element_no_negative*;

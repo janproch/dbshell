@@ -14,6 +14,7 @@ using System.Globalization;
 specification:
   y=YEAR { var d1=new DateTime(Int32.Parse($y.text), 1, 1); AddDateTimeIntervalCondition(d1, d1.AddYears(1)); }
   | d=DATE { AddDateCondition($d.text); }
+  //| d=DATE t=TIME { AddDateTimeCondition($d.text, $t.text); }
   | d=HOUR_ANY_MINUTE { AddAnyMinuteCondition($d.text); } 
   | d=FLOW_MONTH { AddFlowMonthCondition($d.text); }
   | d=FLOW_DAY { AddFlowDayCondition($d.text); }

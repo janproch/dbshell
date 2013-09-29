@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 NumberFilter.g 2013-05-18 20:35:14
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 NumberFilter.g 2013-09-29 10:59:49
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 168, 219
@@ -86,8 +86,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = T_NULL;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:74:7: ( N U L L )
-            // NumberFilter.g:74:9: N U L L
+            // NumberFilter.g:75:7: ( N U L L )
+            // NumberFilter.g:75:9: N U L L
             {
             	mN(); 
             	mU(); 
@@ -112,8 +112,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = T_NOT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:75:6: ( N O T )
-            // NumberFilter.g:75:8: N O T
+            // NumberFilter.g:76:6: ( N O T )
+            // NumberFilter.g:76:8: N O T
             {
             	mN(); 
             	mO(); 
@@ -137,8 +137,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = MINUS;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:77:6: ( '-' )
-            // NumberFilter.g:77:9: '-'
+            // NumberFilter.g:78:6: ( '-' )
+            // NumberFilter.g:78:9: '-'
             {
             	Match('-'); 
 
@@ -160,8 +160,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = LT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:78:3: ( '<' )
-            // NumberFilter.g:78:6: '<'
+            // NumberFilter.g:79:3: ( '<' )
+            // NumberFilter.g:79:6: '<'
             {
             	Match('<'); 
 
@@ -183,8 +183,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = GT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:79:3: ( '>' )
-            // NumberFilter.g:79:6: '>'
+            // NumberFilter.g:80:3: ( '>' )
+            // NumberFilter.g:80:6: '>'
             {
             	Match('>'); 
 
@@ -206,8 +206,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = GE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:80:3: ( '>=' )
-            // NumberFilter.g:80:6: '>='
+            // NumberFilter.g:81:3: ( '>=' )
+            // NumberFilter.g:81:6: '>='
             {
             	Match(">="); 
 
@@ -230,8 +230,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = LE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:81:3: ( '<=' )
-            // NumberFilter.g:81:6: '<='
+            // NumberFilter.g:82:3: ( '<=' )
+            // NumberFilter.g:82:6: '<='
             {
             	Match("<="); 
 
@@ -254,7 +254,7 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = NE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:82:3: ( '!=' | '<>' )
+            // NumberFilter.g:83:3: ( '!=' | '<>' )
             int alt1 = 2;
             int LA1_0 = input.LA(1);
 
@@ -276,7 +276,7 @@ public partial class NumberFilterLexer : Lexer {
             switch (alt1) 
             {
                 case 1 :
-                    // NumberFilter.g:82:6: '!='
+                    // NumberFilter.g:83:6: '!='
                     {
                     	Match("!="); 
 
@@ -284,7 +284,7 @@ public partial class NumberFilterLexer : Lexer {
                     }
                     break;
                 case 2 :
-                    // NumberFilter.g:82:13: '<>'
+                    // NumberFilter.g:83:13: '<>'
                     {
                     	Match("<>"); 
 
@@ -309,8 +309,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = EQ;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:83:3: ( '=' )
-            // NumberFilter.g:83:6: '='
+            // NumberFilter.g:84:3: ( '=' )
+            // NumberFilter.g:84:6: '='
             {
             	Match('='); 
 
@@ -332,8 +332,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = COMMA;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:84:6: ( ',' )
-            // NumberFilter.g:84:8: ','
+            // NumberFilter.g:85:6: ( ',' )
+            // NumberFilter.g:85:8: ','
             {
             	Match(','); 
 
@@ -355,10 +355,10 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = NUMBER;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:86:9: ( ( DIGIT )+ ( '.' ( DIGIT )+ )? )
-            // NumberFilter.g:86:11: ( DIGIT )+ ( '.' ( DIGIT )+ )?
+            // NumberFilter.g:87:9: ( ( DIGIT )+ ( '.' ( DIGIT )+ )? )
+            // NumberFilter.g:87:11: ( DIGIT )+ ( '.' ( DIGIT )+ )?
             {
-            	// NumberFilter.g:86:11: ( DIGIT )+
+            	// NumberFilter.g:87:11: ( DIGIT )+
             	int cnt2 = 0;
             	do 
             	{
@@ -374,7 +374,7 @@ public partial class NumberFilterLexer : Lexer {
             	    switch (alt2) 
             		{
             			case 1 :
-            			    // NumberFilter.g:86:12: DIGIT
+            			    // NumberFilter.g:87:12: DIGIT
             			    {
             			    	mDIGIT(); 
 
@@ -393,7 +393,7 @@ public partial class NumberFilterLexer : Lexer {
             	loop2:
             		;	// Stops C# compiler whining that label 'loop2' has no statements
 
-            	// NumberFilter.g:86:20: ( '.' ( DIGIT )+ )?
+            	// NumberFilter.g:87:20: ( '.' ( DIGIT )+ )?
             	int alt4 = 2;
             	int LA4_0 = input.LA(1);
 
@@ -404,10 +404,10 @@ public partial class NumberFilterLexer : Lexer {
             	switch (alt4) 
             	{
             	    case 1 :
-            	        // NumberFilter.g:86:21: '.' ( DIGIT )+
+            	        // NumberFilter.g:87:21: '.' ( DIGIT )+
             	        {
             	        	Match('.'); 
-            	        	// NumberFilter.g:86:25: ( DIGIT )+
+            	        	// NumberFilter.g:87:25: ( DIGIT )+
             	        	int cnt3 = 0;
             	        	do 
             	        	{
@@ -423,7 +423,7 @@ public partial class NumberFilterLexer : Lexer {
             	        	    switch (alt3) 
             	        		{
             	        			case 1 :
-            	        			    // NumberFilter.g:86:26: DIGIT
+            	        			    // NumberFilter.g:87:26: DIGIT
             	        			    {
             	        			    	mDIGIT(); 
 
@@ -467,10 +467,10 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = WHITESPACE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:88:12: ( ( '\\t' | ' ' | '\\u000C' )+ )
-            // NumberFilter.g:88:14: ( '\\t' | ' ' | '\\u000C' )+
+            // NumberFilter.g:89:12: ( ( '\\t' | ' ' | '\\u000C' )+ )
+            // NumberFilter.g:89:14: ( '\\t' | ' ' | '\\u000C' )+
             {
-            	// NumberFilter.g:88:14: ( '\\t' | ' ' | '\\u000C' )+
+            	// NumberFilter.g:89:14: ( '\\t' | ' ' | '\\u000C' )+
             	int cnt5 = 0;
             	do 
             	{
@@ -535,10 +535,10 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = ENDLINE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:89:8: ( ( '\\r' | '\\n' )+ )
-            // NumberFilter.g:89:10: ( '\\r' | '\\n' )+
+            // NumberFilter.g:90:8: ( ( '\\r' | '\\n' )+ )
+            // NumberFilter.g:90:10: ( '\\r' | '\\n' )+
             {
-            	// NumberFilter.g:89:10: ( '\\r' | '\\n' )+
+            	// NumberFilter.g:90:10: ( '\\r' | '\\n' )+
             	int cnt6 = 0;
             	do 
             	{
@@ -602,14 +602,14 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = A_STRING;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:91:9: ( ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' ) )
-            // NumberFilter.g:92:4: ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
+            // NumberFilter.g:92:9: ( ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' ) )
+            // NumberFilter.g:93:4: ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
             {
-            	// NumberFilter.g:92:4: ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
-            	// NumberFilter.g:92:5: '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\''
+            	// NumberFilter.g:93:4: ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
+            	// NumberFilter.g:93:5: '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\''
             	{
             		Match('\''); 
-            		// NumberFilter.g:93:5: ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )*
+            		// NumberFilter.g:94:5: ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )*
             		do 
             		{
             		    int alt7 = 3;
@@ -635,7 +635,7 @@ public partial class NumberFilterLexer : Lexer {
             		    switch (alt7) 
             			{
             				case 1 :
-            				    // NumberFilter.g:94:31: ~ ( '\\'' | '\\r' | '\\n' )
+            				    // NumberFilter.g:95:31: ~ ( '\\'' | '\\r' | '\\n' )
             				    {
             				    	if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t') || (input.LA(1) >= '\u000B' && input.LA(1) <= '\f') || (input.LA(1) >= '\u000E' && input.LA(1) <= '&') || (input.LA(1) >= '(' && input.LA(1) <= '\uFFFF') ) 
             				    	{
@@ -652,7 +652,7 @@ public partial class NumberFilterLexer : Lexer {
             				    }
             				    break;
             				case 2 :
-            				    // NumberFilter.g:94:56: '\\'' '\\''
+            				    // NumberFilter.g:95:56: '\\'' '\\''
             				    {
             				    	Match('\''); 
             				    	Match('\''); 
@@ -691,14 +691,14 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = Q_STRING;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:99:9: ( ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' ) )
-            // NumberFilter.g:100:4: ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' )
+            // NumberFilter.g:100:9: ( ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' ) )
+            // NumberFilter.g:101:4: ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' )
             {
-            	// NumberFilter.g:100:4: ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' )
-            	// NumberFilter.g:100:5: '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"'
+            	// NumberFilter.g:101:4: ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' )
+            	// NumberFilter.g:101:5: '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"'
             	{
             		Match('\"'); 
-            		// NumberFilter.g:101:5: ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )*
+            		// NumberFilter.g:102:5: ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )*
             		do 
             		{
             		    int alt8 = 3;
@@ -724,7 +724,7 @@ public partial class NumberFilterLexer : Lexer {
             		    switch (alt8) 
             			{
             				case 1 :
-            				    // NumberFilter.g:102:31: ~ ( '\\\"' | '\\r' | '\\n' )
+            				    // NumberFilter.g:103:31: ~ ( '\\\"' | '\\r' | '\\n' )
             				    {
             				    	if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t') || (input.LA(1) >= '\u000B' && input.LA(1) <= '\f') || (input.LA(1) >= '\u000E' && input.LA(1) <= '!') || (input.LA(1) >= '#' && input.LA(1) <= '\uFFFF') ) 
             				    	{
@@ -741,7 +741,7 @@ public partial class NumberFilterLexer : Lexer {
             				    }
             				    break;
             				case 2 :
-            				    // NumberFilter.g:102:56: '\\\"' '\\\"'
+            				    // NumberFilter.g:103:56: '\\\"' '\\\"'
             				    {
             				    	Match('\"'); 
             				    	Match('\"'); 
@@ -778,8 +778,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:107:17: ( '0' .. '9' )
-            // NumberFilter.g:107:19: '0' .. '9'
+            // NumberFilter.g:108:17: ( '0' .. '9' )
+            // NumberFilter.g:108:19: '0' .. '9'
             {
             	MatchRange('0','9'); 
 
@@ -797,8 +797,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:109:11: ( 'A' )
-            // NumberFilter.g:109:13: 'A'
+            // NumberFilter.g:110:11: ( 'A' )
+            // NumberFilter.g:110:13: 'A'
             {
             	Match('A'); 
 
@@ -816,8 +816,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:110:11: ( 'B' )
-            // NumberFilter.g:110:13: 'B'
+            // NumberFilter.g:111:11: ( 'B' )
+            // NumberFilter.g:111:13: 'B'
             {
             	Match('B'); 
 
@@ -835,8 +835,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:111:11: ( 'C' )
-            // NumberFilter.g:111:13: 'C'
+            // NumberFilter.g:112:11: ( 'C' )
+            // NumberFilter.g:112:13: 'C'
             {
             	Match('C'); 
 
@@ -854,8 +854,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:112:11: ( 'D' )
-            // NumberFilter.g:112:13: 'D'
+            // NumberFilter.g:113:11: ( 'D' )
+            // NumberFilter.g:113:13: 'D'
             {
             	Match('D'); 
 
@@ -873,8 +873,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:113:11: ( 'E' )
-            // NumberFilter.g:113:13: 'E'
+            // NumberFilter.g:114:11: ( 'E' )
+            // NumberFilter.g:114:13: 'E'
             {
             	Match('E'); 
 
@@ -892,8 +892,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:114:11: ( 'F' )
-            // NumberFilter.g:114:13: 'F'
+            // NumberFilter.g:115:11: ( 'F' )
+            // NumberFilter.g:115:13: 'F'
             {
             	Match('F'); 
 
@@ -911,8 +911,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:115:11: ( 'G' )
-            // NumberFilter.g:115:13: 'G'
+            // NumberFilter.g:116:11: ( 'G' )
+            // NumberFilter.g:116:13: 'G'
             {
             	Match('G'); 
 
@@ -930,8 +930,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:116:11: ( 'H' )
-            // NumberFilter.g:116:13: 'H'
+            // NumberFilter.g:117:11: ( 'H' )
+            // NumberFilter.g:117:13: 'H'
             {
             	Match('H'); 
 
@@ -949,8 +949,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:117:11: ( 'I' )
-            // NumberFilter.g:117:13: 'I'
+            // NumberFilter.g:118:11: ( 'I' )
+            // NumberFilter.g:118:13: 'I'
             {
             	Match('I'); 
 
@@ -968,8 +968,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:118:11: ( 'J' )
-            // NumberFilter.g:118:13: 'J'
+            // NumberFilter.g:119:11: ( 'J' )
+            // NumberFilter.g:119:13: 'J'
             {
             	Match('J'); 
 
@@ -987,8 +987,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:119:11: ( 'K' )
-            // NumberFilter.g:119:13: 'K'
+            // NumberFilter.g:120:11: ( 'K' )
+            // NumberFilter.g:120:13: 'K'
             {
             	Match('K'); 
 
@@ -1006,8 +1006,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:120:11: ( 'L' )
-            // NumberFilter.g:120:13: 'L'
+            // NumberFilter.g:121:11: ( 'L' )
+            // NumberFilter.g:121:13: 'L'
             {
             	Match('L'); 
 
@@ -1025,8 +1025,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:121:11: ( 'M' )
-            // NumberFilter.g:121:13: 'M'
+            // NumberFilter.g:122:11: ( 'M' )
+            // NumberFilter.g:122:13: 'M'
             {
             	Match('M'); 
 
@@ -1044,8 +1044,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:122:11: ( 'N' )
-            // NumberFilter.g:122:13: 'N'
+            // NumberFilter.g:123:11: ( 'N' )
+            // NumberFilter.g:123:13: 'N'
             {
             	Match('N'); 
 
@@ -1063,8 +1063,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:123:11: ( 'O' )
-            // NumberFilter.g:123:13: 'O'
+            // NumberFilter.g:124:11: ( 'O' )
+            // NumberFilter.g:124:13: 'O'
             {
             	Match('O'); 
 
@@ -1082,8 +1082,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:124:11: ( 'P' )
-            // NumberFilter.g:124:13: 'P'
+            // NumberFilter.g:125:11: ( 'P' )
+            // NumberFilter.g:125:13: 'P'
             {
             	Match('P'); 
 
@@ -1101,8 +1101,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:125:11: ( 'Q' )
-            // NumberFilter.g:125:13: 'Q'
+            // NumberFilter.g:126:11: ( 'Q' )
+            // NumberFilter.g:126:13: 'Q'
             {
             	Match('Q'); 
 
@@ -1120,8 +1120,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:126:11: ( 'R' )
-            // NumberFilter.g:126:13: 'R'
+            // NumberFilter.g:127:11: ( 'R' )
+            // NumberFilter.g:127:13: 'R'
             {
             	Match('R'); 
 
@@ -1139,8 +1139,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:127:11: ( 'S' )
-            // NumberFilter.g:127:13: 'S'
+            // NumberFilter.g:128:11: ( 'S' )
+            // NumberFilter.g:128:13: 'S'
             {
             	Match('S'); 
 
@@ -1158,8 +1158,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:128:11: ( 'T' )
-            // NumberFilter.g:128:13: 'T'
+            // NumberFilter.g:129:11: ( 'T' )
+            // NumberFilter.g:129:13: 'T'
             {
             	Match('T'); 
 
@@ -1177,8 +1177,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:129:11: ( 'U' )
-            // NumberFilter.g:129:13: 'U'
+            // NumberFilter.g:130:11: ( 'U' )
+            // NumberFilter.g:130:13: 'U'
             {
             	Match('U'); 
 
@@ -1196,8 +1196,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:130:11: ( 'V' )
-            // NumberFilter.g:130:13: 'V'
+            // NumberFilter.g:131:11: ( 'V' )
+            // NumberFilter.g:131:13: 'V'
             {
             	Match('V'); 
 
@@ -1215,8 +1215,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:131:11: ( 'W' )
-            // NumberFilter.g:131:13: 'W'
+            // NumberFilter.g:132:11: ( 'W' )
+            // NumberFilter.g:132:13: 'W'
             {
             	Match('W'); 
 
@@ -1234,8 +1234,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:132:11: ( 'X' )
-            // NumberFilter.g:132:13: 'X'
+            // NumberFilter.g:133:11: ( 'X' )
+            // NumberFilter.g:133:13: 'X'
             {
             	Match('X'); 
 
@@ -1253,8 +1253,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:133:11: ( 'Y' )
-            // NumberFilter.g:133:13: 'Y'
+            // NumberFilter.g:134:11: ( 'Y' )
+            // NumberFilter.g:134:13: 'Y'
             {
             	Match('Y'); 
 
@@ -1272,8 +1272,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:134:11: ( 'Z' )
-            // NumberFilter.g:134:13: 'Z'
+            // NumberFilter.g:135:11: ( 'Z' )
+            // NumberFilter.g:135:13: 'Z'
             {
             	Match('Z'); 
 
