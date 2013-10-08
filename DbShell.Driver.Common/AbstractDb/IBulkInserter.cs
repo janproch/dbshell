@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.AbstractDb
 {
@@ -16,5 +17,6 @@ namespace DbShell.Driver.Common.AbstractDb
         DbConnection Connection { get; set; }
         void Run(ICdlReader reader);
         CopyTableTargetOptions CopyOptions { get; set; }
+        event Action<LogRecord> Log;
     }
 }

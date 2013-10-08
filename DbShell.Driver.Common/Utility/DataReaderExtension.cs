@@ -70,9 +70,11 @@ namespace DbShell.Driver.Common.Utility
             foreach (DataRow row in schemaTable.Rows.SortedByKey<DataRow, int>(row => Int32.Parse(row["ColumnOrdinal"].ToString())))
             {
                 var col = new QueryResultColumnInfo();
+                int size = row.SafeString("ColumnSize").SafeIntParse();
                 col.Name = row.SafeString("ColumnName");
                 col.NotNull = !(bool)row["AllowDBNull"];
                 col.DataType = row["DataTypeName"].SafeToString();
+                col.Size = size;
                 col.CommonType = ReaderDataType(row);
 
                 col.BaseColumnName = row.SafeString("BaseColumnName");

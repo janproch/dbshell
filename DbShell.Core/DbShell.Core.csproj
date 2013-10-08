@@ -62,6 +62,7 @@
     <Compile Include="CdlFile.cs" />
     <Compile Include="CdlFileReader.cs" />
     <Compile Include="CdlFileWriter.cs" />
+    <Compile Include="CreateTable.cs" />
     <Compile Include="RazorModels\ColumnModel.cs" />
     <Compile Include="RazorModels\RazorTemplateBase.cs" />
     <Compile Include="RazorModels\RazorScripting.cs" />

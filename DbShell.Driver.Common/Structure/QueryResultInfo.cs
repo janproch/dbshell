@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.DmlFramework;
 using DbShell.Driver.Common.Utility;
 
@@ -63,6 +64,7 @@ namespace DbShell.Driver.Common.Structure
                         AutoIncrement = column.AutoIncrement,
                         PrimaryKey = column.IsKey,
                     };
+                if (col.CommonType is DbTypeString) col.Length = column.Size;
 
                 if (column.AutoIncrement && col.CommonType != null)
                 {

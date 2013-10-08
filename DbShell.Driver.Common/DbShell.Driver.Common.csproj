@@ -188,6 +188,7 @@
     <Compile Include="Utility\IOTool.cs" />
     <Compile Include="Utility\ListExtension.cs" />
     <Compile Include="Utility\ListProxy.cs" />
+    <Compile Include="Utility\LogRecord.cs" />
     <Compile Include="Utility\ObjectExtension.cs" />
     <Compile Include="Utility\PyList.cs" />
     <Compile Include="Utility\ReflTools.cs" />

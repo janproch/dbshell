@@ -31,6 +31,8 @@ namespace DbShell.Driver.Common.Structure
 
         public bool AutoIncrement { get; set; }
 
+        public int Size { get; set; }
+
         public string BaseServerName { get; set; }
         public string BaseCatalogName { get; set; }
         public string BaseColumnName { get; set; }

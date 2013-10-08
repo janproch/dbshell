@@ -22,13 +22,15 @@ namespace DbShell.Core.Utility
         private CdlDataQueue _queue;
         private IBulkInserter _inserter;
         private DbConnection _connection;
+        private IShellContext _context;
 
-        public TableWriter(IConnectionProvider connection, NameWithSchema name, TableInfo rowFormat, CopyTableTargetOptions options)
+        public TableWriter(IShellContext context, IConnectionProvider connection, NameWithSchema name, TableInfo rowFormat, CopyTableTargetOptions options)
         {
             _connectionProvider = connection;
             _name = name;
             _rowFormat = rowFormat;
             _queue = new CdlDataQueue(rowFormat);
+            _context = context;
 
             _inserter = connection.Factory.CreateBulkInserter();
             _connection = _connectionProvider.Connect();
@@ -36,9 +38,15 @@ namespace DbShell.Core.Utility
             _inserter.DestinationTable = rowFormat.Clone();
             _inserter.DestinationTable.FullName = name;
             _inserter.CopyOptions = options;
+            _inserter.Log += _inserter_Log;
 
             _thread = new Thread(Run);
             _thread.Start();
+        }
+
+        void _inserter_Log(Driver.Common.Utility.LogRecord obj)
+        {
+            _context.OutputMessage(obj.Message);
         }
 
         private void Run()

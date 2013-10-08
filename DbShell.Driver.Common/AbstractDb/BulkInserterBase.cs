@@ -57,7 +57,8 @@ namespace DbShell.Driver.Common.AbstractDb
                 }
                 catch (Exception err)
                 {
-                    _log.Error(String.Format("Error truncating table {0}", DestinationTable), err);
+                    //_log.Error(String.Format("Error truncating table {0}", DestinationTable), err);
+                    LogError(String.Format("Error truncating table:{0}", err.Message));
                 }
             }
             if (CopyOptions.DisableConstraints)
@@ -173,12 +174,12 @@ namespace DbShell.Driver.Common.AbstractDb
 
                     if (failRowCount > 0)
                     {
-                        _log.ErrorFormat("Error inserting into table {0}, correct inserts {1}, failed inserts {2}", DestinationTable, okRowCount, failRowCount);
-                        _log.Error(insertErrors.CreateDelimitedText("\n"));
+                        LogError(String.Format("Error inserting into table {0}, correct inserts {1}, failed inserts {2}", DestinationTable, okRowCount, failRowCount));
+                        LogError(insertErrors.CreateDelimitedText("\n"));
                     }
                     else
                     {
-                        _log.InfoFormat("{0} rows successfully inserted into table {1}", okRowCount, DestinationTable);
+                        LogInfo(String.Format("{0} rows successfully inserted into table {1}", okRowCount, DestinationTable));
                     }
                 }
                 catch (Exception)
@@ -194,5 +195,41 @@ namespace DbShell.Driver.Common.AbstractDb
             RunInserts(reader);
         }
 
+        public event Action<LogRecord> Log;
+
+        private void LogInfo(string msg)
+        {
+            DoLog(new LogRecord
+                {
+                    Message = msg,
+                    Severity = LogSeverity.Info,
+                });
+        }
+
+        private void LogError(string msg)
+        {
+            DoLog(new LogRecord
+            {
+                Message = msg,
+                Severity = LogSeverity.Error,
+            });
+        }
+
+        private void DoLog(LogRecord rec)
+        {
+            switch (rec.Severity)
+            {
+                case LogSeverity.Info:
+                    _log.Info(rec.Message);
+                    break;
+                case LogSeverity.Error:
+                    _log.Error(rec.Message);
+                    break;
+            }
+            if (Log!=null)
+            {
+                Log(rec);
+            }
+        }
     }
 }

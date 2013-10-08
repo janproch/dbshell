@@ -66,7 +66,7 @@ namespace DbShell.Core.Utility
 
         ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options)
         {
-            return new TableWriter(Connection, GetFullName(), rowFormat, options);
+            return new TableWriter(Context, Connection, GetFullName(), rowFormat, options);
         }
 
         TableInfo ITabularDataTarget.GetRowFormat()
