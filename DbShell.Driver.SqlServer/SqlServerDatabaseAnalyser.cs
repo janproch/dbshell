@@ -95,12 +95,12 @@ namespace DbShell.Driver.SqlServer
                         string fkcolumn = reader.SafeString("FK_Column");
                         string fkschema = reader.SafeString("FK_Schema");
 
-                        string pktable = reader.SafeString("PK_Table");
-                        if (String.IsNullOrEmpty(pktable)) pktable = reader.SafeString("IX_Table");
-                        string pkcolumn = reader.SafeString("PK_Column");
-                        if (String.IsNullOrEmpty(pkcolumn)) pkcolumn = reader.SafeString("IX_Column");
-                        string pkschema = reader.SafeString("PK_Schema");
-                        if (String.IsNullOrEmpty(pkschema)) pkschema = reader.SafeString("IX_Schema");
+                        string pktable = reader.SafeString("IX_Table");
+                        if (String.IsNullOrEmpty(pktable)) pktable = reader.SafeString("PK_Table");
+                        string pkcolumn = reader.SafeString("IX_Column");
+                        if (String.IsNullOrEmpty(pkcolumn)) pkcolumn = reader.SafeString("PK_Column");
+                        string pkschema = reader.SafeString("IX_Schema");
+                        if (String.IsNullOrEmpty(pkschema)) pkschema = reader.SafeString("PK_Schema");
 
                         string deleteAction = reader.SafeString("Delete_Action");
                         string updateAction = reader.SafeString("Update_Action");
