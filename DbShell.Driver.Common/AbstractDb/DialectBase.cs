@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Utility;
 
@@ -17,6 +18,23 @@ namespace DbShell.Driver.Common.AbstractDb
                 if (_keywords == null) _keywords = LoadKeywords();
                 return _keywords;
             }
+        }
+
+        public string StripComments(string content)
+        {
+            var sb = new StringBuilder();
+            foreach (string line in content.Split('\n'))
+            {
+                int commentPos = line.IndexOf("--", System.StringComparison.Ordinal);
+                string newLine = line;
+                if (commentPos >= 0)
+                {
+                    newLine = line.Substring(0, commentPos);
+                    if (String.IsNullOrWhiteSpace(newLine)) newLine = null;
+                }
+                if (newLine != null) sb.AppendLine(newLine);
+            }
+            return sb.ToString();
         }
 
         protected virtual HashSetEx<string> LoadKeywords()
