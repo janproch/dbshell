@@ -25,5 +25,6 @@ namespace DbShell.Driver.Common.AbstractDb
         string UnquoteName(string name);
 
         HashSetEx<string> Keywords { get; }
+        string StripComments(string content);
     }
 }
