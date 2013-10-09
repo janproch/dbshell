@@ -16,7 +16,14 @@ namespace DbShell.Driver.Common.CommonDataLayer
 
         public int FieldCount
         {
-            get { return RefObject.FieldCount; }
+            get
+            {
+                if (RefObject == null && Structure != null)
+                {
+                    return Structure.ColumnCount;
+                }
+                return RefObject.FieldCount;
+            }
         }
 
         public int GetOrdinal(string colName)

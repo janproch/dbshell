@@ -15,6 +15,7 @@ namespace DbShell.Driver.Common.AbstractDb
         int BatchSize { get; set; }
         string DatabaseName { get; set; }
         DbConnection Connection { get; set; }
+        IDatabaseFactory Factory { get; set; }
         void Run(ICdlReader reader);
         CopyTableTargetOptions CopyOptions { get; set; }
         event Action<LogRecord> Log;

@@ -71,5 +71,10 @@ namespace DbShell.Driver.SqlServer
         {
             return new SqlServerParsingService();
         }
+
+        public override IBulkInserter CreateBulkInserter()
+        {
+            return new SqlServerBulkInserter();
+        }
     }
 }

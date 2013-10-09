@@ -35,6 +35,7 @@ namespace DbShell.Core.Utility
             _inserter = connection.Factory.CreateBulkInserter();
             _connection = _connectionProvider.Connect();
             _inserter.Connection = _connection;
+            _inserter.Factory = connection.Factory;
             _inserter.DestinationTable = rowFormat.Clone();
             _inserter.DestinationTable.FullName = name;
             _inserter.CopyOptions = options;

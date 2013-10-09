@@ -69,6 +69,7 @@
     <Compile Include="CommonDataLayer\CdlDataQueue.cs" />
     <Compile Include="CommonDataLayer\CdlDataQueueAdapter.cs" />
     <Compile Include="CommonDataLayer\CdlFileStorageReader.cs" />
+    <Compile Include="CommonDataLayer\CdlReaderAdapter.cs" />
     <Compile Include="CommonDataLayer\CdlRecordProxy.cs" />
     <Compile Include="CommonDataLayer\StreamValueWriter.cs" />
     <Compile Include="CommonTypeSystem\DbDatetimeSubType.cs" />
@@ -193,6 +194,7 @@
     <Compile Include="Utility\PyList.cs" />
     <Compile Include="Utility\ReflTools.cs" />
     <Compile Include="Sql\SqlOutputStream.cs" />
+    <Compile Include="Utility\SchemaTools.cs" />
     <Compile Include="Utility\StreamExtension.cs" />
     <Compile Include="Utility\StringTool.cs" />
     <Compile Include="Utility\TypeTool.cs" />

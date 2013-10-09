@@ -22,6 +22,7 @@ namespace DbShell.Driver.Common.AbstractDb
         public string DatabaseName { get; set; }
         public DbConnection Connection { get; set; }
         public CopyTableTargetOptions CopyOptions { get; set; }
+        public IDatabaseFactory Factory { get; set; }
 
         public BulkInserterBase()
         {
@@ -197,7 +198,7 @@ namespace DbShell.Driver.Common.AbstractDb
 
         public event Action<LogRecord> Log;
 
-        private void LogInfo(string msg)
+        protected void LogInfo(string msg)
         {
             DoLog(new LogRecord
                 {
@@ -206,7 +207,7 @@ namespace DbShell.Driver.Common.AbstractDb
                 });
         }
 
-        private void LogError(string msg)
+        protected void LogError(string msg)
         {
             DoLog(new LogRecord
             {
@@ -215,7 +216,7 @@ namespace DbShell.Driver.Common.AbstractDb
             });
         }
 
-        private void DoLog(LogRecord rec)
+        protected void DoLog(LogRecord rec)
         {
             switch (rec.Severity)
             {
