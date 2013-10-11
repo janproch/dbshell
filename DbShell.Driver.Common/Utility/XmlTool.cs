@@ -474,6 +474,16 @@ namespace DbShell.Driver.Common.Utility
                     {
                         ((NameWithSchema)val).SaveToXml(xml.AddChild(attr.Name ?? prop.Name));
                     }
+                    else if (val is Dictionary<string,string>)
+                    {
+                        var elem = xml.AddChild(attr.Name ?? prop.Name);
+                        foreach(var item in (Dictionary<string,string>)val )
+                        {
+                            var itemXml = elem.AddChild("Item");
+                            itemXml.SetAttribute("Key", item.Key);
+                            itemXml.InnerText = item.Value;
+                        }
+                    }
                     else
                     {
                         string sval = PropertyToString(prop, val);
@@ -547,11 +557,25 @@ namespace DbShell.Driver.Common.Utility
                 }
                 foreach (XmlElemAttribute attr in prop.GetCustomAttributes(typeof(XmlElemAttribute), true))
                 {
-                    if (prop.PropertyType == typeof(NameWithSchema))
+                    if (prop.PropertyType == typeof (NameWithSchema))
                     {
                         propHandled = true;
                         var elem = xml.SelectSingleNode(attr.Name ?? prop.Name) as XmlElement;
                         if (elem != null) prop.CallSet(o, NameWithSchema.LoadFromXml(elem));
+                    }
+                    else if (prop.PropertyType == typeof (Dictionary<string, string>))
+                    {
+                        propHandled = true;
+                        var elem = xml.SelectSingleNode(attr.Name ?? prop.Name) as XmlElement;
+                        if (elem != null)
+                        {
+                            var dct = new Dictionary<string, string>();
+                            foreach(XmlElement itemXml in elem)
+                            {
+                                dct[itemXml.GetAttribute("Key")] = itemXml.InnerText;
+                            }
+                            prop.CallSet(o, dct);
+                        }
                     }
                     else
                     {
