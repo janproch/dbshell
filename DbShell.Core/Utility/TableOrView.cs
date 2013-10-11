@@ -46,6 +46,7 @@ namespace DbShell.Core.Utility
             var dda = Connection.Factory.CreateDataAdapter();
             var conn = Connection.Connect();
             var cmd = conn.CreateCommand();
+            cmd.CommandTimeout = 3600;
             var dialect = Connection.Factory.CreateDialect();
             cmd.CommandText = "SELECT * FROM " + dialect.QuoteFullName(fullName);
             var reader = cmd.ExecuteReader();

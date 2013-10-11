@@ -52,6 +52,7 @@ namespace DbShell.Core
             var dda = Connection.Factory.CreateDataAdapter();
             var conn = Connection.Connect();
             var cmd = conn.CreateCommand();
+            cmd.CommandTimeout = 3600;
             cmd.CommandText = Replace(Text);
             var reader = cmd.ExecuteReader();
             var result = dda.AdaptReader(reader);
