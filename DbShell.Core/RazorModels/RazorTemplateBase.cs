@@ -20,7 +20,7 @@ namespace DbShell.Core.RazorModels
         {
             get
             {
-                if (_sql == null) throw new Exception("DBSH-00000 Razor:Sql not set");
+                if (_sql == null) throw new Exception("DBSH-00108 Razor:Sql not set");
                 return _sql;
             }
             set { _sql = value; }
@@ -32,7 +32,7 @@ namespace DbShell.Core.RazorModels
         {
             get
             {
-                if (_tabularData == null) throw new Exception("DBSH-00000 Razor:TabularData not set");
+                if (_tabularData == null) throw new Exception("DBSH-00109 Razor:TabularData not set");
                 return _tabularData;
             }
             set { _tabularData = value; }
@@ -65,7 +65,7 @@ namespace DbShell.Core.RazorModels
                         var fmt = _tabularData.GetRowFormat();
                         Columns = new List<ColumnModel>(fmt.Columns.Select(c => new TableColumnModel(c)));
                     }
-                    if (_columns == null) throw new Exception("DBSH-00000 Razor:Columns not set");
+                    if (_columns == null) throw new Exception("DBSH-00110 Razor:Columns not set");
                 }
                 return _columns;
             }

@@ -169,34 +169,53 @@ namespace DbShell.Core.Utility
                     LineCount -= emptyLines;
                     return;
                 }
-                parser.Skip(2);
-                parser.JumpWhite();
-                if (parser.Current != '#')
-                {
-                    // comment but not prolog comment
-                    LineCount++;
-                    continue;
-                }
-
-                emptyLines = 0;
-                LineCount++;
-
-                parser.Skip(1);
-                string command = parser.ReadToken();
-                if (command == null) continue;
-                var item = new CommandItem
-                    {
-                        LineIndex = LineCount - 1,
-                        Command = command,
-                    };
+                var item = ParseLine(parser, ref emptyLines);
+                if (item == null) continue;
                 Commands.Add(item);
-                while (!parser.IsEof)
-                {
-                    string token = parser.ReadToken();
-                    if (token == null) break;
-                    item.Arguments.Add(token);
-                }
             }
+        }
+
+        private CommandItem ParseLine(string line)
+        {
+            int emptyLines = 0;
+            var parser = new Parser(line.Trim());
+            return ParseLine(parser, ref emptyLines);
+        }
+
+        private CommandItem ParseLine(Parser parser, ref int emptyLines)
+        {
+            if (parser.Current != '-' || parser.Next != '-')
+            {
+                return null;
+            }
+            parser.Skip(2);
+            parser.JumpWhite();
+            if (parser.Current != '#')
+            {
+                // comment but not prolog comment
+                LineCount++;
+                return null;
+            }
+
+            emptyLines = 0;
+            LineCount++;
+
+            parser.Skip(1);
+            string command = parser.ReadToken();
+            if (command == null) return null;
+            var item = new CommandItem
+                {
+                    LineIndex = LineCount - 1,
+                    Command = command,
+                };
+            Commands.Add(item);
+            while (!parser.IsEof)
+            {
+                string token = parser.ReadToken();
+                if (token == null) break;
+                item.Arguments.Add(token);
+            }
+            return item;
         }
 
         public string Replace(string content, Func<CommandItem, bool> removeItem, string newItem)
@@ -306,17 +325,29 @@ namespace DbShell.Core.Utility
                 var regs = Regions.ToList();
                 var sb = new StringBuilder();
                 bool isAllowed = true;
+                bool isInRegion = false;
                 foreach(string line in content.Split('\n'))
                 {
                     var mBegin = Regex.Match(line, @"^\s*--\s*#\s*region\s+([^s]+)");
                     if (mBegin.Success)
                     {
-                        string region = mBegin.Groups[1].Value.Trim();
+                        if (isInRegion)
+                        {
+                            throw new Exception("DBSH-00111 Nested regions are not allowed");
+                        }
+                        isInRegion = true;
+                        var item = ParseLine(line);
+                        string region = item.Arguments[0];
                         isAllowed = regs.Contains(region);
                     }
-                    var mEnd = Regex.Match(line, @"^\s*--\s*#\s*endregion\s+");
+                    var mEnd = Regex.Match(line, @"^\s*--\s*#\s*endregion");
                     if (mEnd.Success)
                     {
+                        if (!isInRegion)
+                        {
+                            throw new Exception("DBSH-00112 #endregion without region");
+                        }
+                        isInRegion = false;
                         isAllowed = true;
                     }
                     if (isAllowed)
@@ -325,8 +356,12 @@ namespace DbShell.Core.Utility
                     }
                     else
                     {
-                        sb.Append("-- OUT\r\n");
+                        sb.Append("\r\n");
                     }
+                }
+                if (isInRegion)
+                {
+                    throw new Exception("DBSH-00113 Unclosed region");
                 }
                 content = sb.ToString();
             }
