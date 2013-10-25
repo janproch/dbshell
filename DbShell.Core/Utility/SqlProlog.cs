@@ -328,7 +328,7 @@ namespace DbShell.Core.Utility
                 bool isInRegion = false;
                 foreach(string line in content.Split('\n'))
                 {
-                    var mBegin = Regex.Match(line, @"^\s*--\s*#\s*region\s+([^s]+)");
+                    var mBegin = Regex.Match(line, @"^\s*--\s*#\s*region\s+([^\s]+)");
                     if (mBegin.Success)
                     {
                         if (isInRegion)
