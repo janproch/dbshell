@@ -308,10 +308,10 @@ namespace DbShell.Core.Utility
                 bool isAllowed = true;
                 foreach(string line in content.Split('\n'))
                 {
-                    var mBegin = Regex.Match(line, @"^\s*--\s*#\s*region\s+([^s]+)");
+                    var mBegin = Regex.Match(line, @"^\s*--\s*#\s*region\s+([^\s]+)");
                     if (mBegin.Success)
                     {
-                        string region = mBegin.Groups[1].Value.Trim();
+                        string region = mBegin.Groups[1].Value;
                         isAllowed = regs.Contains(region);
                     }
                     var mEnd = Regex.Match(line, @"^\s*--\s*#\s*endregion\s+");
