@@ -246,6 +246,17 @@ namespace DbShell.Core.Utility
             get { return this["replace"].Where(c => c.Arguments.Count == 2); }
         }
 
+        public IEnumerable<string> Regions
+        {
+            get
+            {
+                foreach (var reg in this["addregion"])
+                {
+                    foreach (var arg in reg.Arguments) yield return arg;
+                }
+            }
+        }
+
         public bool IsRazor
         {
             get
@@ -288,6 +299,38 @@ namespace DbShell.Core.Utility
                 RazorScripting.ParseRazor(content, sw.Write, new object());
                 content = sw.ToString();
             }
+
+            if (Regex.Match(content, @"^\s*--\s*#\s*region\s", RegexOptions.Multiline).Success)
+            {
+                // process regions
+                var regs = Regions.ToList();
+                var sb = new StringBuilder();
+                bool isAllowed = true;
+                foreach(string line in content.Split('\n'))
+                {
+                    var mBegin = Regex.Match(line, @"^\s*--\s*#\s*region\s+([^s]+)");
+                    if (mBegin.Success)
+                    {
+                        string region = mBegin.Groups[1].Value.Trim();
+                        isAllowed = regs.Contains(region);
+                    }
+                    var mEnd = Regex.Match(line, @"^\s*--\s*#\s*endregion\s+");
+                    if (mEnd.Success)
+                    {
+                        isAllowed = true;
+                    }
+                    if (isAllowed)
+                    {
+                        sb.Append(line + "\n");
+                    }
+                    else
+                    {
+                        sb.Append("-- OUT\r\n");
+                    }
+                }
+                content = sb.ToString();
+            }
+
 
             foreach (var replace in Replaces)
             {

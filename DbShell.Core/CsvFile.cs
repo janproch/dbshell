@@ -185,8 +185,8 @@ namespace DbShell.Core
         {
             string file = Context.ResolveFile(GetName(), ResolveFileMode.Output);
             Context.OutputMessage("Writing file " + Path.GetFullPath(file));
-            var fs = System.IO.File.OpenWrite(file);
-            var fw = new StreamWriter(fs, Encoding);
+            //var fs = System.IO.File.OpenWrite(file);
+            var fw = new StreamWriter(file, false, Encoding);
             var writer = new CsvWriter(fw, Delimiter, Quote, Escape, Comment, QuotingMode, EndOfLine);
             if (HasHeaders)
             {
