@@ -180,7 +180,7 @@ namespace DbShell.Core.Utility
             }
         }
 
-        private CommandItem ParseLine(string line)
+        public static CommandItem ParseLine(string line)
         {
             int emptyLines = 0, lineCount = 0;
             var parser = new Parser(line.Trim());
@@ -295,14 +295,24 @@ namespace DbShell.Core.Utility
             return res;
         }
 
+        private List<string> _regions;
         public IEnumerable<string> Regions
         {
-            get { return GetRegions(false); }
+            get
+            {
+                if (_regions == null) _regions = GetRegions(false).ToList();
+                return _regions;
+            }
         }
 
+        private List<string> _mentionedRegions;
         public IEnumerable<string> MentionedRegions
         {
-            get { return GetRegions(true); }
+            get
+            {
+                if (_mentionedRegions == null) _mentionedRegions = GetRegions(true).ToList();
+                return _mentionedRegions;
+            }
         }
 
         public bool IsRazor
@@ -364,7 +374,7 @@ namespace DbShell.Core.Utility
             if (Regex.Match(content, @"^\s*--\s*#\s*region\s", RegexOptions.Multiline).Success)
             {
                 // process regions
-                var regs = Regions.ToList();
+                var regs = Regions;
                 var sb = new StringBuilder();
                 bool isAllowed = true;
                 bool isInRegion = false;
