@@ -59,6 +59,11 @@ namespace DbShell.Core.Utility
                     return null;
                 }
             }
+
+            public bool IsRegionCommand(string region)
+            {
+                return (Command == "addregion" || Command == "removeregion") && Arguments.Count == 1 && Arguments[0] == region;
+            }
         }
 
         public List<CommandItem> Commands = new List<CommandItem>();
@@ -169,7 +174,7 @@ namespace DbShell.Core.Utility
                     LineCount -= emptyLines;
                     return;
                 }
-                var item = ParseLine(parser, ref emptyLines);
+                var item = ParseLine(parser, ref emptyLines, ref LineCount);
                 if (item == null) continue;
                 Commands.Add(item);
             }
@@ -177,12 +182,12 @@ namespace DbShell.Core.Utility
 
         private CommandItem ParseLine(string line)
         {
-            int emptyLines = 0;
+            int emptyLines = 0, lineCount = 0;
             var parser = new Parser(line.Trim());
-            return ParseLine(parser, ref emptyLines);
+            return ParseLine(parser, ref emptyLines, ref lineCount);
         }
 
-        private CommandItem ParseLine(Parser parser, ref int emptyLines)
+        private static CommandItem ParseLine(Parser parser, ref int emptyLines, ref int lineCount)
         {
             if (parser.Current != '-' || parser.Next != '-')
             {
@@ -193,22 +198,21 @@ namespace DbShell.Core.Utility
             if (parser.Current != '#')
             {
                 // comment but not prolog comment
-                LineCount++;
+                lineCount++;
                 return null;
             }
 
             emptyLines = 0;
-            LineCount++;
+            lineCount++;
 
             parser.Skip(1);
             string command = parser.ReadToken();
             if (command == null) return null;
             var item = new CommandItem
                 {
-                    LineIndex = LineCount - 1,
+                    LineIndex = lineCount - 1,
                     Command = command,
                 };
-            Commands.Add(item);
             while (!parser.IsEof)
             {
                 string token = parser.ReadToken();
@@ -230,7 +234,7 @@ namespace DbShell.Core.Utility
             bool shouldAddNewItem = newItem != null;
             foreach (var cmd in Commands.OrderByDescending(c => c.LineIndex))
             {
-                if (removeItem(cmd))
+                if (removeItem != null && removeItem(cmd))
                 {
                     prologLines.RemoveAt(cmd.LineIndex);
                     if (shouldAddNewItem)
@@ -260,20 +264,45 @@ namespace DbShell.Core.Utility
             get { return HasCommand("view"); }
         }
 
+        public bool IsEmpty
+        {
+            get { return Commands.Count == 0; }
+        }
+
         public IEnumerable<CommandItem> Replaces
         {
             get { return this["replace"].Where(c => c.Arguments.Count == 2); }
         }
 
-        public IEnumerable<string> Regions
+        private List<string>  GetRegions(bool rawUsages)
         {
-            get
+            var res = new List<string>();
+            foreach (var item in Commands)
             {
-                foreach (var reg in this["addregion"])
+                if (item.Command == "addregion")
                 {
-                    foreach (var arg in reg.Arguments) yield return arg;
+                    foreach (var arg in item.Arguments) res.Add(arg);
+                }
+                if (item.Command == "removeregion")
+                {
+                    foreach (var arg in item.Arguments)
+                    {
+                        if (rawUsages) res.Add(arg);
+                        else res.Remove(arg);
+                    }
                 }
             }
+            return res;
+        }
+
+        public IEnumerable<string> Regions
+        {
+            get { return GetRegions(false); }
+        }
+
+        public IEnumerable<string> MentionedRegions
+        {
+            get { return GetRegions(true); }
         }
 
         public bool IsRazor
@@ -305,13 +334,26 @@ namespace DbShell.Core.Utility
 
         public string PreprocessScript(string content)
         {
+            if (IsEmpty) return content;
+            {
+                var sb = new StringBuilder();
+                int index = 0;
+                foreach (string line in content.Split('\n'))
+                {
+                    if (index < LineCount) sb.Append("\r\n");
+                    else sb.Append(line + "\n");
+                    index++;
+                }
+                content = sb.ToString();
+            }
+
             if (IsRazor)
             {
                 char ch = RazorChar ?? '\0';
                 if (ch != '\0')
                 {
-                    content = Regex.Replace(content, @"^\s*--\s*#\s*razor" + ch, "", RegexOptions.Multiline | RegexOptions.IgnoreCase);
-                    content = Regex.Replace(content, @"^\s*--\s*#", "--", RegexOptions.Multiline | RegexOptions.IgnoreCase);
+                    //content = Regex.Replace(content, @"^\s*--\s*#\s*razor" + ch, "", RegexOptions.Multiline | RegexOptions.IgnoreCase);
+                    //content = Regex.Replace(content, @"^\s*--\s*#", "--", RegexOptions.Multiline | RegexOptions.IgnoreCase);
                     content = content.Replace("@", "@@").Replace(ch, '@');
                 }
                 var sw = new StringWriter();
@@ -326,8 +368,9 @@ namespace DbShell.Core.Utility
                 var sb = new StringBuilder();
                 bool isAllowed = true;
                 bool isInRegion = false;
-                foreach(string line in content.Split('\n'))
+                foreach (string line in content.Split('\n'))
                 {
+                    bool isControlLine = false;
                     var mBegin = Regex.Match(line, @"^\s*--\s*#\s*region\s+([^\s]+)");
                     if (mBegin.Success)
                     {
@@ -339,6 +382,7 @@ namespace DbShell.Core.Utility
                         var item = ParseLine(line);
                         string region = item.Arguments[0];
                         isAllowed = regs.Contains(region);
+                        isControlLine = true;
                     }
                     var mEnd = Regex.Match(line, @"^\s*--\s*#\s*endregion");
                     if (mEnd.Success)
@@ -349,8 +393,10 @@ namespace DbShell.Core.Utility
                         }
                         isInRegion = false;
                         isAllowed = true;
+                        isControlLine = true;
                     }
-                    if (isAllowed)
+
+                    if (isAllowed && !isControlLine)
                     {
                         sb.Append(line + "\n");
                     }
@@ -365,7 +411,6 @@ namespace DbShell.Core.Utility
                 }
                 content = sb.ToString();
             }
-
 
             foreach (var replace in Replaces)
             {
