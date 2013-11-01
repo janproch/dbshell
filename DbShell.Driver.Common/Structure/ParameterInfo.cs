@@ -33,5 +33,10 @@ namespace DbShell.Driver.Common.Structure
         {
             
         }
+
+        public override DatabaseObjectType ObjectType
+        {
+            get { return DatabaseObjectType.Parameter; }
+        }
     }
 }

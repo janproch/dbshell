@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace DbShell.Driver.Common.Structure
 {
-    public class ColumnsConstraintInfo : TableObjectInfo
+    public abstract class ColumnsConstraintInfo : TableObjectInfo
     {
         private List<ColumnReference> _columns = new List<ColumnReference>();
         public List<ColumnReference> Columns { get { return _columns; } }

@@ -1,6 +1,6 @@
 namespace DbShell.Driver.Common.Structure
 {
-    public class TableObjectInfo : DatabaseObjectInfo
+    public abstract class TableObjectInfo : DatabaseObjectInfo
     {
         public TableInfo OwnerTable { get; private set; }
 

@@ -67,9 +67,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="identity_columns.sql" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="foreign_keys.sql" />
     <EmbeddedResource Include="primary_keys.sql" />
   </ItemGroup>
@@ -88,6 +85,21 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="tables.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="programmables.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="modifications.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="columns.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="parameters.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

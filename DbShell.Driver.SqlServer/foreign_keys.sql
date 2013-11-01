@@ -13,7 +13,9 @@ IX_Column = IXCC.name,
 
 Constraint_Name = C.CONSTRAINT_NAME,
 Update_Action = rc.UPDATE_RULE,
-Delete_Action = rc.DELETE_RULE
+Delete_Action = rc.DELETE_RULE,
+
+o.object_id
 
 FROM INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS C
 INNER JOIN INFORMATION_SCHEMA.TABLE_CONSTRAINTS FK ON C.CONSTRAINT_NAME = FK.CONSTRAINT_NAME
@@ -33,3 +35,8 @@ LEFT JOIN sys.objects IXT ON IXT.object_id = IX.object_id
 LEFT JOIN sys.index_columns IXC ON IX.index_id = IXC.index_id and IX.object_id = IXC.object_id
 LEFT JOIN sys.columns IXCC ON IXCC.column_id = IXC.column_id AND IXCC.object_id = IXC.object_id
 LEFT JOIN sys.schemas IXS ON IXT.schema_id = IXS.schema_id
+
+inner join sys.objects o on fk.table_name = o.name
+inner join sys.schemas s on o.schema_id = s.schema_id and fk.table_schema = s.name
+
+where o.object_id =[OBJECT_ID_CONDITION]

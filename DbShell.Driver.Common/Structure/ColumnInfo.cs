@@ -78,6 +78,24 @@ namespace DbShell.Driver.Common.Structure
         public string Comment { get; set; }
 
         /// <summary>
+        /// name of default constraint
+        /// </summary>
+        [XmlAttrib("default_constraint")]
+        public string DefaultConstraint { get; set; }
+
+        /// <summary>
+        /// expression for computed column
+        /// </summary>
+        [XmlAttrib("computed_expression")]
+        public string ComputedExpression { get; set; }
+
+        /// <summary>
+        /// whether computed column is persisted
+        /// </summary>
+        [XmlAttrib("is_persisted")]
+        public bool IsPersisted { get; set; }
+
+        /// <summary>
         /// Portable data type
         /// </summary>
         public DbTypeBase CommonType { get; set; }
@@ -160,6 +178,11 @@ namespace DbShell.Driver.Common.Structure
                 }
                 return res;
             }
+        }
+
+        public override DatabaseObjectType ObjectType
+        {
+            get { return DatabaseObjectType.Column; }
         }
     }
 }

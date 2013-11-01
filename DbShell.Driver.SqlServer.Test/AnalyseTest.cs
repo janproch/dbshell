@@ -20,8 +20,9 @@ namespace DbShell.Driver.SqlServer.Test
                 }
                 var factory = new SqlServerDatabaseFactory();
                 var analyser = factory.CreateAnalyser();
-                analyser.Run(conn, conn.Database);
-                var result = analyser.Result;
+                analyser.Connection = conn;
+                analyser.FullAnalysis();
+                var result = analyser.Structure;
                 Assert.AreEqual(1, result.Tables.Count);
                 var table = result.Tables[0];
                 Assert.AreEqual(2, table.Columns.Count);
@@ -47,8 +48,9 @@ namespace DbShell.Driver.SqlServer.Test
                 }
                 var factory = new SqlServerDatabaseFactory();
                 var analyser = factory.CreateAnalyser();
-                analyser.Run(conn, conn.Database);
-                var result = analyser.Result;
+                analyser.Connection = conn;
+                analyser.FullAnalysis();
+                var result = analyser.Structure;
 
                 Assert.AreEqual(2, result.Tables.Count);
                 var table = result.Tables.Find(t => t.Name == "Test2");

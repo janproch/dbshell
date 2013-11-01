@@ -40,8 +40,9 @@ namespace DbShell.Core.Runtime
                 var analyser = connection.Factory.CreateAnalyser();
                 using (var conn = connection.Connect())
                 {
-                    analyser.Run(conn, conn.Database);
-                    _dbCache[key] = analyser.Result;
+                    analyser.Connection = conn;
+                    analyser.FullAnalysis();
+                    _dbCache[key] = analyser.Structure;
                 }
             }
             return _dbCache[key];

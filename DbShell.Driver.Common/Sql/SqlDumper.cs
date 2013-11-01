@@ -219,8 +219,15 @@ namespace DbShell.Driver.Common.Sql
 
         public virtual void ColumnDefinition(ColumnInfo col, bool includeDefault, bool includeNullable, bool includeCollate)
         {
+            if (col.ComputedExpression != null)
+            {
+                Put("^as %s", col.ComputedExpression);
+                if (col.IsPersisted) Put(" ^persisted");
+                return;
+            }
+
             Put("%k", col.DataType);
-            if (col.Length !=0)
+            if (col.Length != 0)
             {
                 if (col.Length == -1) Put("(^max)");
                 else Put("(%s)", col.Length);
@@ -238,10 +245,23 @@ namespace DbShell.Driver.Common.Sql
             {
                 Put(col.NotNull ? "^not ^null" : "^null");
             }
-            //if (includeDefault && col.DefaultValue != null)
-            //{
-            //    ColumnDefinition_Default(col);
-            //}
+            if (includeDefault && col.DefaultValue != null)
+            {
+                ColumnDefinition_Default(col);
+            }
+        }
+
+        private void ColumnDefinition_Default(ColumnInfo col)
+        {
+            string defsql = col.DefaultValue;
+            if (col.DefaultConstraint != null)
+            {
+                Put(" ^constraint %i ^default %s ", col.DefaultConstraint, defsql);
+            }
+            else
+            {
+                Put(" ^default %s ", defsql);
+            }
         }
 
         public virtual void DropForeignKey(ForeignKeyInfo fk)

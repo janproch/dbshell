@@ -8,20 +8,63 @@ namespace DbShell.Driver.Common.AbstractDb
     {
         protected DbConnection _conn;
         protected string _dbname;
-        DatabaseInfo _result;
+        public DatabaseInfo Structure;
+        public DatabaseChangeSet ChangeSet;
+        public DatabaseAnalyserFilterOptions FilterOptions;
 
-        public void Run(DbConnection conn, string dbname)
+        public void FullAnalysis()
         {
-            _conn = conn;
-            _dbname = dbname;
-            _result = new DatabaseInfo();
-            DoRun();
-            _result.Tables.Sort((a, b) => String.Compare(a.FullName.ToString(), b.FullName.ToString(), true));
+            CheckInput();
+            if (Structure != null) throw new Exception("DBSH-00000 Structure must not be filled");
+            if (ChangeSet != null) throw new Exception("DBSH-00000 ChangeSet must not be filled");
+            Structure = new DatabaseInfo();
+            DoRunAnalysis();
+            Structure.Tables.Sort((a, b) => System.String.Compare(a.FullName.ToString(), b.FullName.ToString(), System.StringComparison.OrdinalIgnoreCase));
         }
 
-        protected abstract void DoRun();
+        public void IncrementalAnalysis()
+        {
+            CheckInput();
+            if (Structure == null) throw new Exception("DBSH-00000 Structure required");
+            if (ChangeSet == null) throw new Exception("DBSH-00000 ChangeSet required");
+            if (FilterOptions == null) throw new Exception("DBSH-00000 FilterOptions must not be filled");
+            FilterOptions = ChangeSet.CreateFilter();
+            DoRunAnalysis();
+            Structure.Tables.Sort((a, b) => System.String.Compare(a.FullName.ToString(), b.FullName.ToString(), System.StringComparison.OrdinalIgnoreCase));
+        }
 
-        public DatabaseInfo Result { get { return _result; } }
+        private void CheckInput()
+        {
+            if (_conn == null) throw new Exception("DBSH-00000 DatabaseAnalyse.Connection is null");
+            if (_dbname == null)
+            {
+                _dbname = _conn.Database;
+            }
+        }
+
+        public void GetModifications()
+        {
+            CheckInput();
+            if (Structure == null) throw new Exception("DBSH-00000 Structure required");
+            if (ChangeSet != null) throw new Exception("DBSH-00000 ChangeSet must not be filled");
+            ChangeSet = new DatabaseChangeSet();
+            DoGetModifications();
+        }
+
+        public DbConnection Connection
+        {
+            get { return _conn; }
+            set { _conn = value; }
+        }
+
+        public string DatabaseName
+        {
+            get { return _dbname; }
+            set { _dbname = value; }
+        }
+
+        protected abstract void DoRunAnalysis();
+        protected abstract void DoGetModifications();
 
         public virtual void Dispose()
         {

@@ -138,5 +138,23 @@ namespace DbShell.Driver.Common.Structure
         //    if (tbl == null) return null;
         //    return tbl.Columns.FirstOrDefault(c => String.Compare(c.Name, column, true) == 0);
         //}
+        public DatabaseObjectInfo FindObjectById(string id)
+        {
+            DatabaseObjectInfo res;
+
+            res = Tables.FirstOrDefault(o => o.ObjectId == id);
+            if (res != null) return res;
+
+            res = Views.FirstOrDefault(o => o.ObjectId == id);
+            if (res != null) return res;
+
+            res = StoredProcedures.FirstOrDefault(o => o.ObjectId == id);
+            if (res != null) return res;
+
+            res = Functions.FirstOrDefault(o => o.ObjectId == id);
+            if (res != null) return res;
+
+            return null;
+        }
     }
 }

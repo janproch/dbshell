@@ -13,5 +13,10 @@ namespace DbShell.Driver.Common.Structure
             : base(database)
         {
         }
+
+        public override DatabaseObjectType ObjectType
+        {
+            get { return DatabaseObjectType.Function; }
+        }
     }
 }

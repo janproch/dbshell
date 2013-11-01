@@ -83,5 +83,10 @@ namespace DbShell.Driver.Common.Structure
         {
             return Columns.FirstOrDefault(c => String.Compare(c.Name, column, true) == 0);
         }
+
+        public override DatabaseObjectType ObjectType
+        {
+            get { return DatabaseObjectType.Table; }
+        }
     }
 }
