@@ -1,3 +1,5 @@
+using DbShell.Driver.Common.Utility;
+
 namespace DbShell.Driver.Common.Structure
 {
     public class ColumnReference
@@ -12,6 +14,43 @@ namespace DbShell.Driver.Common.Structure
                 return RefColumn.Name;
             }
         }
-        //public string ColumnName { get; set; }
+
+        private string _refColumnName;
+
+        [XmlAttrib("name")]
+        public string RefColumnName
+        {
+            get
+            {
+                if (RefColumn != null) return RefColumn.Name;
+                return _refColumnName;
+            }
+            set
+            {
+                _refColumnName = value;
+                RefColumn = null;
+            }
+        }
+
+        public ColumnReference Clone()
+        {
+            var res = new ColumnReference();
+            res.Assign(this);
+            return res;
+        }
+
+        private void Assign(ColumnReference src)
+        {
+            RefColumnName = src.RefColumnName;
+        }
+
+        public void AfterLoadLink(TableInfo table)
+        {
+            if (_refColumnName != null)
+            {
+                RefColumn = table.Columns.Find(c => c.Name == _refColumnName);
+                _refColumnName = null;
+            }
+        }
     }
 }

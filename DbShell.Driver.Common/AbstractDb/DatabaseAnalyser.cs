@@ -27,7 +27,7 @@ namespace DbShell.Driver.Common.AbstractDb
             CheckInput();
             if (Structure == null) throw new Exception("DBSH-00000 Structure required");
             if (ChangeSet == null) throw new Exception("DBSH-00000 ChangeSet required");
-            if (FilterOptions == null) throw new Exception("DBSH-00000 FilterOptions must not be filled");
+            if (FilterOptions != null) throw new Exception("DBSH-00000 FilterOptions must not be filled");
             FilterOptions = ChangeSet.CreateFilter();
             DoRunAnalysis();
             Structure.Tables.Sort((a, b) => System.String.Compare(a.FullName.ToString(), b.FullName.ToString(), System.StringComparison.OrdinalIgnoreCase));

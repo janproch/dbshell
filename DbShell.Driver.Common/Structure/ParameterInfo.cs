@@ -31,12 +31,28 @@ namespace DbShell.Driver.Common.Structure
         public ParameterInfo(ProgrammableInfo programmable)
             : base(programmable != null ? programmable.OwnerDatabase : null)
         {
-            
+            Programmable = programmable;
         }
 
         public override DatabaseObjectType ObjectType
         {
             get { return DatabaseObjectType.Parameter; }
+        }
+
+        public ParameterInfo Clone(ProgrammableInfo owner)
+        {
+            var res = new ParameterInfo(owner);
+            res.Assign(this);
+            return res;
+        }
+
+        protected override void Assign(DbShell.Driver.Common.Structure.DatabaseObjectInfo source)
+        {
+            base.Assign(source);
+            var src = (ParameterInfo) source;
+            Name = src.Name;
+            DataType = src.DataType;
+            IsOutput = src.IsOutput;
         }
     }
 }

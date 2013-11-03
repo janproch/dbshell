@@ -100,9 +100,9 @@ namespace DbShell.Driver.Common.Structure
         /// </summary>
         public DbTypeBase CommonType { get; set; }
 
-        public ColumnInfo Clone()
+        public ColumnInfo Clone(TableInfo ownTable = null)
         {
-            var res = new ColumnInfo(OwnerTable);
+            var res = new ColumnInfo(ownTable ?? OwnerTable);
             res.Assign(this);
             return res;
         }
@@ -121,6 +121,9 @@ namespace DbShell.Driver.Common.Structure
             AutoIncrement = src.AutoIncrement;
             PrimaryKey = src.PrimaryKey;
             Comment = src.Comment;
+            DefaultConstraint = src.DefaultValue;
+            IsPersisted = src.IsPersisted;
+            ComputedExpression = src.ComputedExpression;
             if (src.CommonType != null) CommonType = src.CommonType.Clone();
             else CommonType = null;
         }

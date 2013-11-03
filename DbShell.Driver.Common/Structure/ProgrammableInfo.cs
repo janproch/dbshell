@@ -13,6 +13,7 @@ namespace DbShell.Driver.Common.Structure
 
         private List<ParameterInfo> _parameters = new List<ParameterInfo>();
 
+        [XmlCollection(typeof(ParameterInfo))]
         public List<ParameterInfo> Parameters { get { return _parameters; } }
 
         public ProgrammableInfo(DatabaseInfo database)
@@ -25,6 +26,10 @@ namespace DbShell.Driver.Common.Structure
             base.Assign(source);
             var src = (ProgrammableInfo)source;
             SqlText = src.SqlText;
+            foreach(var par in src.Parameters)
+            {
+                Parameters.Add(par.Clone(this));
+            }
         }
     }
 }

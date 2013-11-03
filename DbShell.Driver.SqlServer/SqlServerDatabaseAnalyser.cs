@@ -56,6 +56,7 @@ namespace DbShell.Driver.SqlServer
             }
             if (res != null)
             {
+                if (res.Count == 0) return " = 0";
                 return " in (" + res.CreateDelimitedText(",") + ")";
             }
             return " is not null";
@@ -559,11 +560,11 @@ namespace DbShell.Driver.SqlServer
                         }
                         else
                         {
-                            if (obj.ModifyDate != modify)
+                            if (obj.ModifyDate == null || obj.ModifyDate - modify > TimeSpan.FromSeconds(1))
                             {
                                 var item = new DatabaseChangeItem
                                     {
-                                        Action = DatabaseChangeAction.Add,
+                                        Action = DatabaseChangeAction.Change,
                                         ObjectId = id,
                                         ObjectType = type,
                                         OldName = ((NamedObjectInfo) obj).FullName,

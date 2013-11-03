@@ -416,7 +416,7 @@ namespace DbShell.Driver.Common.Utility
                 }
                 return col;
             }
-            else if (type == typeof(DateTime))
+            else if (type == typeof(DateTime) || type == typeof(DateTime?))
             {
                 return DateTime.ParseExact(sval, "s", CultureInfo.InvariantCulture);
             }

@@ -16,5 +16,12 @@ namespace DbShell.Driver.Common.Structure
         {
             get { return DatabaseObjectType.Procedure; }
         }
+
+        public StoredProcedureInfo Clone(DatabaseInfo ownerDb = null)
+        {
+            var res = new StoredProcedureInfo(ownerDb ?? OwnerDatabase);
+            res.Assign(this);
+            return res;
+        }
     }
 }

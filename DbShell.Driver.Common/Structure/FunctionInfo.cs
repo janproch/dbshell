@@ -18,5 +18,12 @@ namespace DbShell.Driver.Common.Structure
         {
             get { return DatabaseObjectType.Function; }
         }
+
+        public FunctionInfo Clone(DatabaseInfo ownerDb = null)
+        {
+            var res = new FunctionInfo(ownerDb ?? OwnerDatabase);
+            res.Assign(this);
+            return res;
+        }
     }
 }

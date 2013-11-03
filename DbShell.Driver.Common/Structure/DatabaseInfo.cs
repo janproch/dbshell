@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.Structure
 {
     /// <summary>
     /// Information about database structure
     /// </summary>
-    public class DatabaseInfo
+    public class DatabaseInfo : IExplicitXmlPersistent
     {
         private List<TableInfo> _tables = new List<TableInfo>();
         private List<ViewInfo> _views = new List<ViewInfo>();
@@ -17,15 +19,20 @@ namespace DbShell.Driver.Common.Structure
         /// <summary>
         /// List of tables
         /// </summary>
+        [XmlCollection(typeof(TableInfo))]
         public List<TableInfo> Tables { get { return _tables; } }
 
+        [XmlCollection(typeof(ViewInfo))]
         public List<ViewInfo> Views { get { return _views; } }
 
+        [XmlCollection(typeof(StoredProcedureInfo))]
         public List<StoredProcedureInfo> StoredProcedures { get { return _storedProcedures; } }
 
+        [XmlCollection(typeof(FunctionInfo))]
         public List<FunctionInfo> Functions { get { return _functions; } }
 
-        public string DefaultSchema;
+        [XmlElem]
+        public string DefaultSchema { get; set; }
 
         private T FindObject<T>(IEnumerable<T> objs, string name )
             where T : NamedObjectInfo
@@ -155,6 +162,42 @@ namespace DbShell.Driver.Common.Structure
             if (res != null) return res;
 
             return null;
+        }
+
+        public void Assign(DatabaseInfo source)
+        {
+            foreach (var obj in source.Tables) Tables.Add(obj.Clone(this));
+            foreach (var obj in source.Views) Views.Add(obj.Clone(this));
+            foreach (var obj in source.StoredProcedures) StoredProcedures.Add(obj.Clone(this));
+            foreach (var obj in source.Functions) Functions.Add(obj.Clone(this));
+            DefaultSchema = source.DefaultSchema;
+            AfterLoadLink();
+        }
+
+        public void SaveToXml(XmlElement xml)
+        {
+            this.SavePropertiesCore(xml);
+        }
+
+        public void LoadFromXml(XmlElement xml)
+        {
+            this.LoadPropertiesCore(xml);
+            AfterLoadLink();
+        }
+
+        private void AfterLoadLink()
+        {
+            foreach (var obj in Tables) obj.AfterLoadLink();
+            foreach (var obj in Views) obj.AfterLoadLink();
+            foreach (var obj in StoredProcedures) obj.AfterLoadLink();
+            foreach (var obj in Tables) obj.AfterLoadLink();
+        }
+
+        public DatabaseInfo Clone()
+        {
+            var res = new DatabaseInfo();
+            res.Assign(this);
+            return res;
         }
     }
 }

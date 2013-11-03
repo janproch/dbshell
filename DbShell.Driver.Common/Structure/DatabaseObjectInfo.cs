@@ -43,5 +43,9 @@ namespace DbShell.Driver.Common.Structure
                 Properties.Add(item.Key, item.Value);
             }
         }
+
+        public virtual void AfterLoadLink()
+        {
+        }
     }
 }

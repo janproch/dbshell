@@ -11,7 +11,13 @@ namespace DbShell.Driver.Common.Structure
 {
     public class QueryResultInfo
     {
-        public List<QueryResultColumnInfo> Columns = new List<QueryResultColumnInfo>();
+        [XmlCollection(typeof (QueryResultColumnInfo))]
+        public List<QueryResultColumnInfo> Columns { get; set; } 
+
+        public QueryResultInfo()
+        {
+            Columns = new List<QueryResultColumnInfo>();
+        }
 
         public TableInfo ToTableInfo()
         {
@@ -79,6 +85,21 @@ namespace DbShell.Driver.Common.Structure
             }
             if (pk.Columns.Count > 0) res.PrimaryKey = pk;
             return res;
+        }
+
+        public QueryResultInfo Clone()
+        {
+            var res = new QueryResultInfo();
+            res.Assign(this);
+            return res;
+        }
+
+        private void Assign(QueryResultInfo source)
+        {
+            foreach(var item in source.Columns)
+            {
+                Columns.Add(item.Clone());
+            }
         }
     }
 }

@@ -30,9 +30,9 @@ namespace DbShell.Driver.Common.Structure
         [XmlCollection(typeof(ForeignKeyInfo))]
         public List<ForeignKeyInfo> ForeignKeys { get { return _foreignKeys; } }
 
-        public TableInfo Clone()
+        public TableInfo Clone(DatabaseInfo ownerDb = null)
         {
-            var res = new TableInfo(OwnerDatabase);
+            var res = new TableInfo(ownerDb ?? OwnerDatabase);
             res.Assign(this);
             return res;
         }
@@ -87,6 +87,28 @@ namespace DbShell.Driver.Common.Structure
         public override DatabaseObjectType ObjectType
         {
             get { return DatabaseObjectType.Table; }
+        }
+
+        protected override void Assign(DatabaseObjectInfo source)
+        {
+            base.Assign(source);
+            var src = (TableInfo) source;
+            if (src.PrimaryKey != null) PrimaryKey = src.PrimaryKey.Clone(this);
+            foreach(var fk in src.ForeignKeys)
+            {
+                ForeignKeys.Add(fk.Clone(this));
+            }
+        }
+
+        public override void AfterLoadLink()
+        {
+            base.AfterLoadLink();
+
+            if (PrimaryKey!=null) PrimaryKey.AfterLoadLink();
+            foreach (var fk in ForeignKeys)
+            {
+                fk.AfterLoadLink();
+            }
         }
     }
 }

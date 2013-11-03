@@ -6,10 +6,16 @@ namespace DbShell.Driver.Common.Structure
     {
         private ColumnList _columns = new ColumnList();
 
-        [XmlCollection(typeof(ColumnInfo))]
-        public ColumnList Columns { get { return _columns; } }
+        [XmlCollection(typeof (ColumnInfo))]
+        public ColumnList Columns
+        {
+            get { return _columns; }
+        }
 
-        public int ColumnCount { get { return Columns.Count; } }
+        public int ColumnCount
+        {
+            get { return Columns.Count; }
+        }
 
         public ColumnListInfo(DatabaseInfo database)
             : base(database)
@@ -20,7 +26,7 @@ namespace DbShell.Driver.Common.Structure
         {
             base.Assign(source);
             var src = (ColumnListInfo) source;
-            foreach (var col in src.Columns) Columns.Add(col.Clone());
+            foreach (var col in src.Columns) Columns.Add(col.Clone((TableInfo) this));
         }
     }
 }
