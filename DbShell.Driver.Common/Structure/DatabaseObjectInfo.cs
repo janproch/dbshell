@@ -42,6 +42,9 @@ namespace DbShell.Driver.Common.Structure
             {
                 Properties.Add(item.Key, item.Value);
             }
+            ObjectId = source.ObjectId;
+            CreateDate = source.CreateDate;
+            ModifyDate = source.ModifyDate;
         }
 
         public virtual void AfterLoadLink()

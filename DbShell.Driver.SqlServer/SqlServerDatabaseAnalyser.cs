@@ -72,6 +72,12 @@ namespace DbShell.Driver.SqlServer
 
         protected override void DoRunAnalysis()
         {
+            foreach(var table in Structure.Tables)
+            {
+                _tables[table.FullName] = table;
+                _tablesById[table.ObjectId] = table;
+            }
+
             var dialect = SqlServerDatabaseFactory.Instance.CreateDialect();
 
             Timer("tables...");
@@ -560,7 +566,7 @@ namespace DbShell.Driver.SqlServer
                         }
                         else
                         {
-                            if (obj.ModifyDate == null || obj.ModifyDate - modify > TimeSpan.FromSeconds(1))
+                            if (obj.ModifyDate == null || Math.Abs((obj.ModifyDate.Value - modify).TotalSeconds) >= 1)
                             {
                                 var item = new DatabaseChangeItem
                                     {

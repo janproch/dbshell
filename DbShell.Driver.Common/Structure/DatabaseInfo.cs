@@ -164,6 +164,39 @@ namespace DbShell.Driver.Common.Structure
             return null;
         }
 
+        public DatabaseObjectInfo RemoveObjectById(string id)
+        {
+            var tres = Tables.FirstOrDefault(o => o.ObjectId == id);
+            if (tres != null)
+            {
+                Tables.Remove(tres);
+                return tres;
+            }
+
+            var vres = Views.FirstOrDefault(o => o.ObjectId == id);
+            if (vres != null)
+            {
+                Views.Remove(vres);
+                return vres;
+            }
+
+            var pres = StoredProcedures.FirstOrDefault(o => o.ObjectId == id);
+            if (pres != null)
+            {
+                StoredProcedures.Remove(pres);
+                return pres;
+            }
+
+            var fres = Functions.FirstOrDefault(o => o.ObjectId == id);
+            if (fres != null)
+            {
+                Functions.Remove(fres);
+                return fres;
+            }
+
+            return null;
+        }
+
         public void Assign(DatabaseInfo source)
         {
             foreach (var obj in source.Tables) Tables.Add(obj.Clone(this));

@@ -29,6 +29,33 @@ namespace DbShell.Driver.Common.AbstractDb
             if (ChangeSet == null) throw new Exception("DBSH-00000 ChangeSet required");
             if (FilterOptions != null) throw new Exception("DBSH-00000 FilterOptions must not be filled");
             FilterOptions = ChangeSet.CreateFilter();
+
+            foreach(var item in ChangeSet.Items)
+            {
+                switch (item.Action)
+                {
+                    case DatabaseChangeAction.Remove:
+                        Structure.RemoveObjectById(item.ObjectId);
+                        break;
+                    case DatabaseChangeAction.Change:
+                        if (item.ObjectType == DatabaseObjectType.Table)
+                        {
+                            var tbl = Structure.FindObjectById(item.ObjectId) as TableInfo;
+                            if (tbl != null)
+                            {
+                                tbl.Columns.Clear();
+                                tbl.ForeignKeys.Clear();
+                                tbl.PrimaryKey = null;
+                            }
+                        }
+                        else
+                        {
+                            Structure.RemoveObjectById(item.ObjectId);
+                        }
+                        break;
+                }
+            }
+
             DoRunAnalysis();
             Structure.Tables.Sort((a, b) => System.String.Compare(a.FullName.ToString(), b.FullName.ToString(), System.StringComparison.OrdinalIgnoreCase));
         }
