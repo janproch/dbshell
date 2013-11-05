@@ -18,6 +18,7 @@ namespace DbShell.Driver.Common.AbstractDb
             if (Structure != null) throw new Exception("DBSH-00000 Structure must not be filled");
             if (ChangeSet != null) throw new Exception("DBSH-00000 ChangeSet must not be filled");
             Structure = new DatabaseInfo();
+            if (FilterOptions == null) FilterOptions = new DatabaseAnalyserFilterOptions();
             DoRunAnalysis();
             Structure.Tables.Sort((a, b) => System.String.Compare(a.FullName.ToString(), b.FullName.ToString(), System.StringComparison.OrdinalIgnoreCase));
         }
@@ -46,6 +47,7 @@ namespace DbShell.Driver.Common.AbstractDb
                                 tbl.Columns.Clear();
                                 tbl.ForeignKeys.Clear();
                                 tbl.PrimaryKey = null;
+                                tbl.FullName = item.NewName;
                             }
                         }
                         else

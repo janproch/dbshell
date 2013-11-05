@@ -12,6 +12,7 @@ namespace DbShell.Driver.Common.AbstractDb
         public List<string> ViewFilter;
         public List<string> StoredProcedureFilter;
         public List<string> FunctionFilter;
+        public bool GlobalSettings = true;
 
         public List<string> this[DatabaseObjectType type]
         {
@@ -38,6 +39,27 @@ namespace DbShell.Driver.Common.AbstractDb
             ViewFilter = new List<string>();
             StoredProcedureFilter = new List<string>();
             FunctionFilter = new List<string>();
+            GlobalSettings = false;
+        }
+
+        public bool AnyTables
+        {
+            get { return TableFilter == null || TableFilter.Count > 0; }
+        }
+
+        public bool AnyViews
+        {
+            get { return ViewFilter == null || ViewFilter.Count > 0; }
+        }
+
+        public bool AnyStoredProcedures
+        {
+            get { return StoredProcedureFilter == null || StoredProcedureFilter.Count > 0; }
+        }
+
+        public bool AnyFunctions
+        {
+            get { return FunctionFilter == null || FunctionFilter.Count > 0; }
         }
     }
 }
