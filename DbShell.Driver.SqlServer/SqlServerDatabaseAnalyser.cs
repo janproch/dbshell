@@ -135,7 +135,7 @@ namespace DbShell.Driver.SqlServer
                             var table = _tablesById[tid];
                             var col = new ColumnInfo(table);
                             col.Name = reader.SafeString("column_name");
-                            col.NotNull = reader.SafeString("is_nullable") == "True";
+                            col.NotNull = reader.SafeString("is_nullable") != "True";
                             col.DataType = reader.SafeString("type_name");
                             col.Length = reader.SafeString("max_length").SafeIntParse();
                             col.Precision = reader.SafeString("precision").SafeIntParse();
