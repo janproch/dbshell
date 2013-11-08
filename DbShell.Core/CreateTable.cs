@@ -45,6 +45,7 @@ namespace DbShell.Core
                 var tbl = rowFormat.Clone();
                 tbl.FullName = GetFullName();
                 foreach(var col in tbl.Columns) col.AutoIncrement = false;
+                tbl.AfterLoadLink();
                 var sw = new StringWriter();
                 var so = new SqlOutputStream(Connection.Factory.CreateDialect(), sw, new SqlFormatProperties());
                 var dmp = Connection.Factory.CreateDumper(so, new SqlFormatProperties());
