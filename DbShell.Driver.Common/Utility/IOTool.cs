@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Text;
 
@@ -59,7 +60,7 @@ namespace DbShell.Driver.Common.Utility
 
             if (isRooted)
             {
-                bool isDifferentRoot = string.Compare(
+                bool isDifferentRoot = String.Compare(
                     Path.GetPathRoot(fromDirectory),
                     Path.GetPathRoot(toPath), true) != 0;
 
@@ -83,7 +84,7 @@ namespace DbShell.Driver.Common.Utility
             // find common root
             for (int x = 0; x < length; x++)
             {
-                if (string.Compare(fromDirectories[x],
+                if (String.Compare(fromDirectories[x],
                     toDirectories[x], true) != 0)
                     break;
 
@@ -105,7 +106,7 @@ namespace DbShell.Driver.Common.Utility
             string[] relativeParts = new string[relativePath.Count];
             relativePath.CopyTo(relativeParts, 0);
 
-            string newPath = string.Join(
+            string newPath = String.Join(
                 Path.DirectorySeparatorChar.ToString(),
                 relativeParts);
 
@@ -212,14 +213,14 @@ namespace DbShell.Driver.Common.Utility
         public static string ImageToText(Bitmap image)
         {
             var ms = new MemoryStream();
-            image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+            image.Save(ms, ImageFormat.Png);
             return Convert.ToBase64String(ms.ToArray());
         }
 
         public static Bitmap ImageFromText(string text)
         {
             var ms = new MemoryStream(Convert.FromBase64String(text));
-            return new Bitmap(Bitmap.FromStream(ms));
+            return new Bitmap(Image.FromStream(ms));
         }
 
         public static void SaveLines(string path, HashSetEx<string> lines)
@@ -248,16 +249,16 @@ namespace DbShell.Driver.Common.Utility
 
         public static void CopyFile(string srcfile, string dstfile, CopyFileMode mode)
         {
-            try { Directory.CreateDirectory(System.IO.Path.GetDirectoryName(dstfile)); }
+            try { Directory.CreateDirectory(Path.GetDirectoryName(dstfile)); }
             catch { }
             switch (mode)
             {
                 case CopyFileMode.Copy:
-                    System.IO.File.Copy(srcfile, dstfile, true);
+                    File.Copy(srcfile, dstfile, true);
                     break;
                 case CopyFileMode.Move:
                     if (File.Exists(dstfile)) File.Delete(dstfile);
-                    System.IO.File.Move(srcfile, dstfile);
+                    File.Move(srcfile, dstfile);
                     break;
             }
         }
@@ -321,6 +322,17 @@ namespace DbShell.Driver.Common.Utility
             }
 
             return name + "." + exts[0];
+        }
+
+        public static string GenerateFileName(string directory, string name)
+        {
+            string ext = Path.GetExtension(name);
+            string nameNoExt = Path.GetFileNameWithoutExtension(name);
+
+            if (!File.Exists(Path.Combine(directory, nameNoExt + ext))) return Path.Combine(directory, nameNoExt + ext);
+            int i = 1;
+            while (File.Exists(Path.Combine(directory, nameNoExt + i.ToString() + ext))) i++;
+            return Path.Combine(directory, nameNoExt + i.ToString() + ext);
         }
     }
 }
