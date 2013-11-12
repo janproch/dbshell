@@ -11,6 +11,8 @@ namespace DbShell.Driver.Common.Structure
     /// </summary>
     public class DatabaseInfo : IExplicitXmlPersistent
     {
+        public static readonly DatabaseInfo Empty = new DatabaseInfo();
+
         private List<TableInfo> _tables = new List<TableInfo>();
         private List<ViewInfo> _views = new List<ViewInfo>();
         private List<FunctionInfo> _functions = new List<FunctionInfo>();
