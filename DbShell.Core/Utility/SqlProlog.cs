@@ -342,9 +342,10 @@ namespace DbShell.Core.Utility
             get { return Commands.Select(cmd => cmd.Transformation).FirstOrDefault(tran => tran != null); }
         }
 
-        public string PreprocessScript(string content)
+        public string PreprocessScript(string content, bool queryContainsProlog)
         {
             if (IsEmpty) return content;
+            if (queryContainsProlog)
             {
                 var sb = new StringBuilder();
                 int index = 0;
