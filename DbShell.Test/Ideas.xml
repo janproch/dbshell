@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <Batch
     xmlns="http://schemas.dbshell.com/core"
     xmlns:ds="http://schemas.dbshell.com/dataset"
@@ -26,11 +26,11 @@
   <Batch Connection="var://s1">
     
   </Batch>
-
+ 
   
-  
-  <ds:DataSet VariableName="ds1">
-    <ds:AddRow Table="Album" Condition="AlbumId=1" />
+  <ds:DataSet VariableName="ds1" Connection="TARGET_CONNECTION">
+    <ds:LoadFile File="test.cdl" />
+    <ds:AddRow Table="Album" Condition="AlbumId=1" Connection="SOURCE_CONNECTION" />
     <ds:LoadReference FkTable="Track" PkTable="Album" />
     <ds:LoadMissing Table="Genre" />
     <ds:LoadMissing Table="MediaType" />
@@ -39,4 +39,7 @@
   <ds:WriteSql DataSet="{Eval ds1}" File="test1.sql" >
     <ds:Lookup Table="Genre" IdColumn="GenreId" ValueColumn="Name" />
   </ds:WriteSql>
+  
+  <ds:WriteFiles File="index.dsi">
+  </ds:WriteFiles>
 </Batch>

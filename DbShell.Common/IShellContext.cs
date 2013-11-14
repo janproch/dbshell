@@ -11,6 +11,7 @@ namespace DbShell.Common
     {
         DatabaseInfo GetDatabaseStructure(IConnectionProvider connection);
         void SetVariable(string name, object value);
+        object GetVariable(string name);
         object Evaluate(string expression);
         void EnterScope();
         void LeaveScope();

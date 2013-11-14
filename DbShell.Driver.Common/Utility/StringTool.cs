@@ -35,6 +35,14 @@ namespace DbShell.Driver.Common.Utility
             sb.Append(HEXCHARS[value]);
         }
 
+        public static void EncodeHex(byte[] data, StringBuilder sb)
+        {
+            foreach (byte b in data)
+            {
+                EncodeHex(b, sb);
+            }
+        }
+
         public static string EncodeHex(byte[] data, int linewi)
         {
             StringBuilder sb = new StringBuilder();

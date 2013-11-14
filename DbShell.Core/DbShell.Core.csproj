@@ -63,6 +63,24 @@
     <Compile Include="CdlFileReader.cs" />
     <Compile Include="CdlFileWriter.cs" />
     <Compile Include="CreateTable.cs" />
+    <Compile Include="DataSetModels\DataSetClass.cs" />
+    <Compile Include="DataSetModels\DataSetInstance.cs" />
+    <Compile Include="DataSetModels\DataSetModel.cs" />
+    <Compile Include="DataSetModels\DataSetReference.cs" />
+    <Compile Include="DataSetModels\LoadedReferenceDefinition.cs" />
+    <Compile Include="DataSetModels\SqlDumpWriter.cs" />
+    <Compile Include="DataSetModels\SqlRewriter.cs" />
+    <Compile Include="DataSetModels\UndefinedReferenceReport.cs" />
+    <Compile Include="DataSetModels\VariableRegistry.cs" />
+    <Compile Include="DataSet\AddRows.cs" />
+    <Compile Include="DataSet\DataSet.cs" />
+    <Compile Include="DataSet\DataSetItemBase.cs" />
+    <Compile Include="DataSet\KeepKey.cs" />
+    <Compile Include="DataSet\LoadFile.cs" />
+    <Compile Include="DataSet\LoadMissing.cs" />
+    <Compile Include="DataSet\LoadReference.cs" />
+    <Compile Include="DataSet\Prepare.cs" />
+    <Compile Include="DataSet\WriteSql.cs" />
     <Compile Include="RazorModels\ColumnModel.cs" />
     <Compile Include="RazorModels\RazorTemplateBase.cs" />
     <Compile Include="RazorModels\RazorScripting.cs" />
@@ -133,6 +151,7 @@
       <Name>LumenWorks.Framework.IO</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

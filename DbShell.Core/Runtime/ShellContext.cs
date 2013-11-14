@@ -67,6 +67,10 @@ namespace DbShell.Core.Runtime
             return _engine.Execute(expression, Scope);
         }
 
+        public object GetVariable(string name)
+        {
+            return Scope.GetVariable(name);
+        }
 
         public void SetVariable(string name, object value)
         {

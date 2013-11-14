@@ -15,8 +15,8 @@ namespace DbShell.Driver.Common.AbstractDb
         public void FullAnalysis()
         {
             CheckInput();
-            if (Structure != null) throw new Exception("DBSH-00000 Structure must not be filled");
-            if (ChangeSet != null) throw new Exception("DBSH-00000 ChangeSet must not be filled");
+            if (Structure != null) throw new Exception("DBSH-00126 Structure must not be filled");
+            if (ChangeSet != null) throw new Exception("DBSH-00127 ChangeSet must not be filled");
             Structure = new DatabaseInfo();
             if (FilterOptions == null) FilterOptions = new DatabaseAnalyserFilterOptions();
             DoRunAnalysis();
@@ -26,9 +26,9 @@ namespace DbShell.Driver.Common.AbstractDb
         public void IncrementalAnalysis()
         {
             CheckInput();
-            if (Structure == null) throw new Exception("DBSH-00000 Structure required");
-            if (ChangeSet == null) throw new Exception("DBSH-00000 ChangeSet required");
-            if (FilterOptions != null) throw new Exception("DBSH-00000 FilterOptions must not be filled");
+            if (Structure == null) throw new Exception("DBSH-00128 Structure required");
+            if (ChangeSet == null) throw new Exception("DBSH-00129 ChangeSet required");
+            if (FilterOptions != null) throw new Exception("DBSH-00130 FilterOptions must not be filled");
             FilterOptions = ChangeSet.CreateFilter();
 
             foreach(var item in ChangeSet.Items)
@@ -64,7 +64,7 @@ namespace DbShell.Driver.Common.AbstractDb
 
         private void CheckInput()
         {
-            if (_conn == null) throw new Exception("DBSH-00000 DatabaseAnalyse.Connection is null");
+            if (_conn == null) throw new Exception("DBSH-00131 DatabaseAnalyse.Connection is null");
             if (_dbname == null)
             {
                 _dbname = _conn.Database;
@@ -74,8 +74,8 @@ namespace DbShell.Driver.Common.AbstractDb
         public void GetModifications()
         {
             CheckInput();
-            if (Structure == null) throw new Exception("DBSH-00000 Structure required");
-            if (ChangeSet != null) throw new Exception("DBSH-00000 ChangeSet must not be filled");
+            if (Structure == null) throw new Exception("DBSH-00132 Structure required");
+            if (ChangeSet != null) throw new Exception("DBSH-00133 ChangeSet must not be filled");
             ChangeSet = new DatabaseChangeSet();
             DoGetModifications();
         }

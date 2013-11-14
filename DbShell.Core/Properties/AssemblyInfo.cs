@@ -36,3 +36,4 @@ using System.Windows.Markup;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: XmlnsDefinition("http://schemas.dbshell.com/core", "DbShell.Core")]
+[assembly: XmlnsDefinition("http://schemas.dbshell.com/dataset", "DbShell.Core.DataSet")]

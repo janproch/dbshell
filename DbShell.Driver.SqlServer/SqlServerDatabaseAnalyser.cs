@@ -172,8 +172,8 @@ namespace DbShell.Driver.SqlServer
                             {
                                 t.PrimaryKey = new PrimaryKeyInfo(t);
                                 t.PrimaryKey.ConstraintName = cnt;
-                                t.PrimaryKey.Columns.Add(new ColumnReference {RefColumn = t.Columns[column]});
                             }
+                            t.PrimaryKey.Columns.Add(new ColumnReference { RefColumn = t.Columns[column] });
                         }
                     }
                 }
