@@ -86,11 +86,11 @@ namespace DbShell.Core.Runtime
 
         public void Start()
         {
-            _thread = new Thread(RunFromThread);
+            _thread = new Thread(RunWithEvents);
             _thread.Start();
         }
 
-        private void RunFromThread()
+        public void RunWithEvents()
         {
             try
             {
