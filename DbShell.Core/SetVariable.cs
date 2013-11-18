@@ -25,7 +25,7 @@ namespace DbShell.Core
         /// <value>
         /// The variable value.
         /// </value>
-        public string Value { get; set; }
+        public object Value { get; set; }
 
         /// <summary>
         /// Gets or sets the expression.
@@ -40,7 +40,14 @@ namespace DbShell.Core
             if (Value != null && Expression != null) throw new Exception("DBSH-00006 Both Value and Expression is set");
             if (Value != null)
             {
-                Context.SetVariable(Replace(Name), Replace(Value));
+                if (Value is string)
+                {
+                    Context.SetVariable(Replace(Name), Replace(Value.ToString()));
+                }
+                else
+                {
+                    Context.SetVariable(Replace(Name), Value);
+                }
             }
             if (Expression != null)
             {
@@ -50,6 +57,12 @@ namespace DbShell.Core
             {
                 Context.SetVariable(Replace(Name), null);
             }
+        }
+
+        public override void EnumChildren(Action<Common.IShellElement> enumFunc)
+        {
+            base.EnumChildren(enumFunc);
+            YieldChild(enumFunc, Value);
         }
     }
 }

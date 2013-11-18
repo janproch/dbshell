@@ -41,7 +41,7 @@ namespace DbShell.Core.Runtime
         public void LoadObject(object obj, string folder = null)
         {
             _rootFolder = folder;
-            if (_context != null) throw new Exception("Load function already called");
+            if (_context != null) throw new Exception("DBSH-00000 Load function already called");
             _main = (IRunnable)obj;
             _context = new ShellContext(this);
             var element = _main as IShellElement;
@@ -65,7 +65,7 @@ namespace DbShell.Core.Runtime
 
         public void Run()
         {
-            if (_context == null) throw new Exception("Load function not called");
+            if (_context == null) throw new Exception("DBSH-00000 Load function not called");
             if (_rootFolder != null) _context.PushExecutingFolder(_rootFolder);
             _main.Run();
             if (_rootFolder != null) _context.PopExecutingFolder();
@@ -86,11 +86,12 @@ namespace DbShell.Core.Runtime
 
         public void Start()
         {
-            _thread = new Thread(RunWithEvents);
+            _thread = new Thread(RunInThread);
+            _thread.IsBackground = true;
             _thread.Start();
         }
 
-        public void RunWithEvents()
+        private void RunInThread()
         {
             try
             {
