@@ -30,6 +30,7 @@ namespace DbShell.Core
         /// <value>
         /// The property name. If property is not set, items of collection must provide named properties.
         /// </value>
+        [XamlProperty]
         public string Property { get; set; }
 
         /// <summary>
@@ -38,6 +39,7 @@ namespace DbShell.Core
         /// <value>
         /// Data source, eg. Tables collection
         /// </value>
+        [XamlProperty]
         public IListProvider Source { get; set; }
 
         protected override void DoRun()

@@ -25,6 +25,7 @@ namespace DbShell.Core
         /// <value>
         /// The SQL file name. If this property is set, Command cannot be set.
         /// </value>
+        [XamlProperty]
         public string File { get; set; }
 
         /// <summary>
@@ -33,6 +34,7 @@ namespace DbShell.Core
         /// <value>
         /// The SQL command. If this property is set, File cannot be set.
         /// </value>
+        [XamlProperty]
         public string Command { get; set; }
 
 
@@ -42,6 +44,7 @@ namespace DbShell.Core
         /// <value>
         /// The regular expression, which is used for replacing in scripts. By default, it is @"\$\{([^\}]+)\}"
         /// </value>
+        [XamlProperty]
         public string ReplacePattern { get; set; }
 
         /// <summary>
@@ -50,6 +53,7 @@ namespace DbShell.Core
         /// <value>
         ///   <c>true</c> if use replacements using ReplacePattern; otherwise, <c>false</c>. By default, true for inline Command, false for File
         /// </value>
+        [XamlProperty]
         public bool? UseReplacements { get; set; }
 
         /// <summary>
@@ -58,6 +62,7 @@ namespace DbShell.Core
         /// <value>
         ///   <c>true</c> if command executing is encosed in transaction; otherwise, <c>false</c>. Default is <c>false</c>
         /// </value>
+        [XamlProperty]
         public bool UseTransactions { get; set; }
 
         private void RunScript(TextReader reader, DbConnection conn, DbTransaction tran, bool replace, bool logEachQuery, bool logCount)

@@ -38,6 +38,7 @@ namespace DbShell.Core
         /// <value>
         /// Name of output file.
         /// </value>
+        [XamlProperty]
         public string File { get; set; }
 
         /// <summary>
@@ -46,6 +47,7 @@ namespace DbShell.Core
         /// <value>
         /// The model expression or model value for razor template engine. It can be also of type <see cref="IModelProvider"/>
         /// </value>
+        [XamlProperty]
         public object Model { get; set; }
 
         protected override void DoRun()

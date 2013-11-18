@@ -15,6 +15,7 @@ namespace DbShell.Core
     /// </summary>
     public class File : ElementBase, ITabularDataSource, ITabularDataTarget
     {
+        [XamlProperty]
         public string Name { get; set; }
 
         private string GetName()

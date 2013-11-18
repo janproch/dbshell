@@ -20,11 +20,13 @@ namespace DbShell.Core.Utility
         /// <summary>
         /// Table schema, can be ommited (eg. "dbo" on SQL server)
         /// </summary>
+        [XamlProperty]
         public string Schema { get; set; }
 
         /// <summary>
         /// Table name
         /// </summary>
+        [XamlProperty]
         public string Name { get; set; }
 
         protected abstract TableInfo GetRowFormat();

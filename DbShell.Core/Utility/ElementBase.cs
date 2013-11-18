@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Xml;
 using DbShell.Common;
 using DbShell.Driver.Common.Structure;
 
@@ -14,7 +15,8 @@ namespace DbShell.Core.Utility
         /// <value>
         /// The connection in format sqlserver://connection_string for SQL Server
         /// </value>
-        [TypeConverter(typeof (ConnectionTypeConverter))]
+        [TypeConverter(typeof(ConnectionTypeConverter))]
+        [XamlProperty]
         public IConnectionProvider Connection
         {
             get

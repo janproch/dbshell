@@ -17,6 +17,7 @@ namespace DbShell.Core
         /// <value>
         /// The variable name.
         /// </value>
+        [XamlProperty]
         public string Name { get; set; }
 
         /// <summary>
@@ -25,6 +26,7 @@ namespace DbShell.Core
         /// <value>
         /// The variable value.
         /// </value>
+        [XamlProperty]
         public object Value { get; set; }
 
         /// <summary>
@@ -33,6 +35,7 @@ namespace DbShell.Core
         /// <value>
         /// The expression.
         /// </value>
+        [XamlProperty]
         public string Expression { get; set; }
 
         protected override void DoRun()

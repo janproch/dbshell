@@ -20,6 +20,7 @@ namespace DbShell.Core
         /// <value>
         /// The name of source column.
         /// </value>
+        [XamlProperty]
         public string Name { get; set; }
 
         /// <summary>
@@ -28,6 +29,7 @@ namespace DbShell.Core
         /// <value>
         /// The name of output column.
         /// </value>
+        [XamlProperty]
         public string OutputName { get; set; }
 
         void IColumnMapping.ProcessMapping(int column, ICdlRecord record, ICdlValueWriter writer)

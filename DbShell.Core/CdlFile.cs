@@ -21,6 +21,7 @@ namespace DbShell.Core
         /// <summary>
         /// File name (should have .cdl extension)
         /// </summary>
+        [XamlProperty]
         public string Name { get; set; }
 
         private string GetName()

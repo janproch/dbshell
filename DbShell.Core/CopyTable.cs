@@ -25,11 +25,13 @@ namespace DbShell.Core
         /// <value>
         /// Table or data file
         /// </value>
+        [XamlProperty]
         public ITabularDataSource Source { get; set; }
 
         /// <summary>
         /// Expression to obtain source of copy operation
         /// </summary>
+        [XamlProperty]
         public string SourceExpression { get; set; }
 
         /// <summary>
@@ -38,11 +40,13 @@ namespace DbShell.Core
         /// <value>
         /// Table or data file
         /// </value>
+        [XamlProperty]
         public ITabularDataTarget Target { get; set; }
 
         /// <summary>
         /// Expression to obtain source of copy operation
         /// </summary>
+        [XamlProperty]
         public string TargetExpression { get; set; }
 
         /// <summary>
@@ -51,6 +55,7 @@ namespace DbShell.Core
         /// <value>
         ///   <c>true</c> if clean target; otherwise, <c>false</c>. Default is <c>false</c>
         /// </value>
+        [XamlProperty]
         public bool CleanTarget { get; set; }
 
 
@@ -60,6 +65,7 @@ namespace DbShell.Core
         /// <value>
         /// The column map.
         /// </value>
+        [XamlProperty]
         public List<IColumnMapping> ColumnMap { get; set; }
 
         protected override void DoRun()

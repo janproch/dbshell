@@ -18,41 +18,49 @@ namespace DbShell.Core
         /// <summary>
         /// Name of property
         /// </summary>
+        [XamlProperty]
         public string Name { get; set; }
 
         /// <summary>
         /// Table, which property should be set
         /// </summary>
+        [XamlProperty]
         public string Table { get; set; }
 
         /// <summary>
         /// Regular expression. All matched tables will be processed.
         /// </summary>
+        [XamlProperty]
         public string Tables { get; set; }
 
         /// <summary>
         /// Column, which property should be set
         /// </summary>
+        [XamlProperty]
         public string Column { get; set; }
 
         /// <summary>
         /// Regular expressions. All matched columns will be set.
         /// </summary>
+        [XamlProperty]
         public string Columns { get; set; }
 
         /// <summary>
         /// Value, which will be set
         /// </summary>
+        [XamlProperty]
         public string Value { get; set; }
 
         /// <summary>
         /// If true, only primary key columns are processed
         /// </summary>
+        [XamlProperty]
         public bool IsPrimaryKey { get; set; }
 
         /// <summary>
         /// If true, only identity columns are processed
         /// </summary>
+        [XamlProperty]
         public bool IsIdentity { get; set; }
 
         private void ProcessTable(TableInfo table)

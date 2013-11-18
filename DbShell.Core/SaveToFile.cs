@@ -19,6 +19,7 @@ namespace DbShell.Core
         /// <value>
         /// The file name.
         /// </value>
+        [XamlProperty]
         public string File { get; set; }
 
         /// <summary>
@@ -28,6 +29,7 @@ namespace DbShell.Core
         /// The value to be saved. Can contain replace expressions. If set, Expression cannot be set. Can be used only for textual data.
         /// When saving binary data, use Expression instead.
         /// </value>
+        [XamlProperty]
         public string Value { get; set; }
 
         /// <summary>
@@ -36,6 +38,7 @@ namespace DbShell.Core
         /// <value>
         /// The expression to be saved. If set, Value cannot be set.
         /// </value>
+        [XamlProperty]
         public string Expression { get; set; }
 
 
@@ -45,6 +48,7 @@ namespace DbShell.Core
         /// <value>
         /// The encoding.
         /// </value>
+        [XamlProperty]
         public Encoding Encoding { get; set; }
 
         protected override void DoRun()

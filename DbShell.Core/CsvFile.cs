@@ -20,6 +20,7 @@ namespace DbShell.Core
         /// <summary>
         /// File name (should have .csv extension)
         /// </summary>
+        [XamlProperty]
         public string Name { get; set; }
 
         private char _delimiter = ',';
@@ -30,6 +31,7 @@ namespace DbShell.Core
         /// <value>
         /// The column delimiter, by default ','
         /// </value>
+        [XamlProperty]
         public char Delimiter
         {
             get { return _delimiter; }
@@ -44,6 +46,7 @@ namespace DbShell.Core
         /// <value>
         /// The quoting character, by default '"'
         /// </value>
+        [XamlProperty]
         public char Quote
         {
             get { return _quote; }
@@ -58,6 +61,7 @@ namespace DbShell.Core
         /// <value>
         /// The end of line string, by default "\r\n"
         /// </value>
+        [XamlProperty]
         public string EndOfLine
         {
             get { return _endOfLine; }
@@ -72,6 +76,7 @@ namespace DbShell.Core
         /// <value>
         /// The escape character, used in quoted strings. By default '"'
         /// </value>
+        [XamlProperty]
         public char Escape
         {
             get { return _escape; }
@@ -86,6 +91,7 @@ namespace DbShell.Core
         /// <value>
         /// The line comment prefix. By default '#'
         /// </value>
+        [XamlProperty]
         public char Comment
         {
             get { return _comment; }
@@ -100,6 +106,7 @@ namespace DbShell.Core
         /// <value>
         /// <c>true</c> if this instance has header row; otherwise, <c>false</c>.
         /// </value>
+        [XamlProperty]
         public bool HasHeaders
         {
             get { return _hasHeaders; }
@@ -114,6 +121,7 @@ namespace DbShell.Core
         /// <value>
         /// The quoting mode.
         /// </value>
+        [XamlProperty]
         public CsvQuotingMode QuotingMode
         {
             get { return _quotingMode; }
@@ -128,6 +136,7 @@ namespace DbShell.Core
         /// <value>
         /// The encoding, by default UTF-8
         /// </value>
+        [XamlProperty]
         public Encoding Encoding
         {
             get { return _encoding; }
@@ -142,6 +151,7 @@ namespace DbShell.Core
         /// <value>
         ///   <c>true</c> if trim spaces; otherwise, <c>false</c>.
         /// </value>
+        [XamlProperty]
         public bool TrimSpaces
         {
             get { return _trimSpaces; }

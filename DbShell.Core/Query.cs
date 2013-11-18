@@ -26,6 +26,7 @@ namespace DbShell.Core
         /// <value>
         /// The query text. This text cannot contain GO separated commands. It should be query returning one result set (eg. table)
         /// </value>
+        [XamlProperty]
         public string Text { get; set; }
 
         private TableInfo GetRowFormat()

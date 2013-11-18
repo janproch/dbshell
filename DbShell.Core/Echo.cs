@@ -20,6 +20,7 @@ namespace DbShell.Core
         /// <value>
         /// The printed message.
         /// </value>
+        [XamlProperty]
         public string Message { get; set; }
 
         protected override void DoRun()

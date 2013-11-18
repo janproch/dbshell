@@ -26,6 +26,7 @@ namespace DbShell.Core
         /// <value>
         /// The name of output column.
         /// </value>
+        [XamlProperty]
         public string Name { get; set; }
 
         /// <summary>
@@ -34,6 +35,7 @@ namespace DbShell.Core
         /// <value>
         /// The expression value.
         /// </value>
+        [XamlProperty]
         public string Value { get; set; }
 
         /// <summary>
@@ -42,6 +44,7 @@ namespace DbShell.Core
         /// <value>
         ///   if <c>true</c>, replace expressions are available. By default it is <c>true</c>. Change it to false for performance reasons.
         /// </value>
+        [XamlProperty]
         public bool NeedColumnValues { get; set; }
 
         /// <summary>
@@ -50,6 +53,7 @@ namespace DbShell.Core
         /// <value>
         /// The expression.
         /// </value>
+        [XamlProperty]
         public string Expression { get; set; }
 
         ColumnInfo[] IColumnMapping.GetOutputColumns(TableInfo inputTable)

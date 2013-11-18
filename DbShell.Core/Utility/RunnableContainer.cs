@@ -13,6 +13,7 @@ namespace DbShell.Core.Utility
             Commands = new List<IRunnable>();
         }
 
+        [XamlProperty]
         public List<IRunnable> Commands { get; set; }
 
         public override void EnumChildren(Action<IShellElement> enumFunc)
