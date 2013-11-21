@@ -16,7 +16,7 @@ namespace DbShell.Core
     /// <summary>
     /// Binary file holding table data. Can be used for temporary storage of table contents.
     /// </summary>
-    public class CdlFile : ElementBase, ITabularDataSource, ITabularDataTarget
+    public class CdlFile : ElementBase, ITabularDataSource, ITabularDataTarget, IModelProvider
     {
         /// <summary>
         /// File name (should have .cdl extension)
@@ -77,6 +77,16 @@ namespace DbShell.Core
         TableInfo ITabularDataTarget.GetRowFormat()
         {
             return null;
+        }
+
+        object IModelProvider.GetModel()
+        {
+            return this;
+        }
+
+        void IModelProvider.InitializeTemplate(IRazorTemplate template)
+        {
+            template.TabularData = this;
         }
 
         /// <summary>
