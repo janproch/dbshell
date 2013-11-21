@@ -16,15 +16,21 @@ namespace DbShell.Core.Utility
     {
     }
 
+    [AttributeUsage(AttributeTargets.Class)]
+    public class XamlUnfriendlyAttribute : Attribute
+    {
+    }
 
     public class XamlSerializer
     {
         private XmlDocument _doc;
+        private bool _isUnfriendly;
         //private HashSet<object> _serialized = new HashSet<object>();
 
         public XamlSerializer()
         {
             _doc = new XmlDocument();
+            _isUnfriendly = false;
         }
 
         public static string GetXmlNs(string codeNs)
@@ -42,20 +48,28 @@ namespace DbShell.Core.Utility
         }
 
 
-        private XmlNode SerializeCore(object o)
+        private object SerializeCore(object o)
         {
             if (o == null) return null;
             //if (_serialized.Contains(o)) return null;
             //_serialized.Add(o);
             var type = o.GetType();
+            if (type.GetCustomAttributes(typeof(XamlUnfriendlyAttribute), true).Any())
+            {
+                _isUnfriendly = true;
+                return null;
+            }
             if (type.IsGenericType) return null;
             if (type.IsArray) return null;
-            if (type == typeof (string)) return _doc.CreateTextNode(o.ToString());
-            if (type == typeof(char)) return _doc.CreateTextNode(o.ToString());
-            if (type == typeof(bool)) return _doc.CreateTextNode((bool)o ? "True" : "False");
-            if (type.IsEnum) return _doc.CreateTextNode(o.ToString());
-            if (o is Encoding) return _doc.CreateTextNode(((Encoding)o).EncodingName);
-            if (o is IConnectionProvider) return _doc.CreateTextNode(((IConnectionProvider)o).ProviderString);
+            if (type == typeof (string)) return o.ToString();
+            if (type == typeof(char)) return o.ToString();
+            if (type == typeof(bool)) return (bool)o ? "True" : "False";
+            if (type.IsEnum) return o.ToString();
+            if (o is Encoding) return ((Encoding)o).WebName;
+            if (o is IConnectionProvider)
+            {
+                return ((IConnectionProvider)o).ProviderString;
+            }
             string name = type.FullName;
             int index = name.LastIndexOf('.');
             string ns = name.Substring(0, index);
@@ -65,18 +79,31 @@ namespace DbShell.Core.Utility
 
             foreach (PropertyInfo prop in type.GetProperties())
             {
-                if (!prop.GetCustomAttributes(typeof(XamlPropertyAttribute), true).Any()) continue;
+                if (!prop.GetCustomAttributes(typeof (XamlPropertyAttribute), true).Any()) continue;
                 object value = prop.CallGet(o);
                 if (value == null) continue;
-                var propElem = _doc.CreateElement(tname + "." + prop.Name, tns);
-                root.AppendChild(propElem);
                 if (!(value is string) && value is IEnumerable && !(value is DbShell.Common.IShellElement))
                 {
+                    if (value.GetType().GetCustomAttributes(typeof(XamlUnfriendlyAttribute), true).Any())
+                    {
+                        _isUnfriendly = true;
+                        continue;
+                    }
+                    var propElem = _doc.CreateElement(tname + "." + prop.Name, tns);
+                    root.AppendChild(propElem);
+
                     foreach (var item in ((IEnumerable) value))
                     {
                         var obj = SerializeCore(item);
                         if (obj == null) continue;
-                        propElem.AppendChild(obj);
+                        if (obj is XmlNode)
+                        {
+                            propElem.AppendChild((XmlNode) obj);
+                        }
+                        else
+                        {
+                            propElem.AppendChild(_doc.CreateTextNode(obj.ToString()));
+                        }
                     }
                 }
                 else
@@ -84,7 +111,16 @@ namespace DbShell.Core.Utility
                     var valueSer = SerializeCore(value);
                     if (valueSer != null)
                     {
-                        propElem.AppendChild(valueSer);
+                        if (valueSer is XmlNode)
+                        {
+                            var propElem = _doc.CreateElement(tname + "." + prop.Name, tns);
+                            root.AppendChild(propElem);
+                            propElem.AppendChild((XmlNode)valueSer);
+                        }
+                        else
+                        {
+                            root.SetAttribute(prop.Name, valueSer.ToString());
+                        }
                     }
                 }
             }
@@ -92,11 +128,32 @@ namespace DbShell.Core.Utility
             return root;
         }
 
-        public static string Serialize(object o)
+        private static void RemoveConnectionTag(XmlElement xml, string contextConnection)
+        {
+            if (!String.IsNullOrEmpty(contextConnection) && xml.GetAttribute("Connection") == contextConnection)
+            {
+                xml.RemoveAttribute("Connection");
+            }
+            string current = xml.GetAttribute("Connection");
+            if (String.IsNullOrEmpty(current)) current = contextConnection;
+            foreach (var child in xml.ChildNodes)
+            {
+                var elem = child as XmlElement;
+                if (elem == null) continue;
+                RemoveConnectionTag(elem, current);
+            }
+        }
+
+        public static string Serialize(object o, string rootConnection = null, bool allowUnfriendly = true)
         {
             var ser = new XamlSerializer();
             var root = ser.SerializeCore(o);
-            ser._doc.AppendChild(root);
+            if (!allowUnfriendly && ser._isUnfriendly) return null;
+            if (root is XmlElement)
+            {
+                RemoveConnectionTag((XmlElement) root, rootConnection);
+                ser._doc.AppendChild((XmlNode) root);
+            }
             var sw = new StringWriter();
             ser._doc.Save(sw);
             return sw.ToString();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,7 @@ using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core
 {
@@ -61,7 +63,6 @@ namespace DbShell.Core
         /// <value>
         /// The end of line string, by default "\r\n"
         /// </value>
-        [XamlProperty]
         public string EndOfLine
         {
             get { return _endOfLine; }
@@ -137,6 +138,7 @@ namespace DbShell.Core
         /// The encoding, by default UTF-8
         /// </value>
         [XamlProperty]
+        [TypeConverter(typeof(EncodingTypeConverter))]
         public Encoding Encoding
         {
             get { return _encoding; }

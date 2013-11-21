@@ -20,11 +20,13 @@ namespace DbShell.Core.Utility
         /// <value>
         /// File name of Razor template (cshtml file)
         /// </value>
+        [XamlProperty]
         public string TemplateFile { get; set; }
 
         /// <summary>
         /// Inlined template data
         /// </summary>
+        [XamlProperty]
         public string TemplateData { get; set; }
 
         protected string LoadTemplate()
