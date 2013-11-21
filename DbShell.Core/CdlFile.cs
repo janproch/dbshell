@@ -38,6 +38,7 @@ namespace DbShell.Core
             doc.LoadXml(s);
             table = new TableInfo(null);
             table.LoadFromXml(doc.DocumentElement);
+            table.AfterLoadLink();
         }
 
         TableInfo ITabularDataSource.GetRowFormat()
