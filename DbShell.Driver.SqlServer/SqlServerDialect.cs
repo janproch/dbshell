@@ -62,5 +62,10 @@ namespace DbShell.Driver.SqlServer
                 };
             }
         }
+
+        public override Type SpecificTypeEnum
+        {
+            get { return typeof (SqlTypeCode); }
+        }
     }
 }

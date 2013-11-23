@@ -1,4 +1,5 @@
-﻿using DbShell.Driver.Common.DbDiff;
+﻿using System;
+using DbShell.Driver.Common.DbDiff;
 using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.AbstractDb
@@ -30,5 +31,6 @@ namespace DbShell.Driver.Common.AbstractDb
 
         SqlDumperCaps DumperCaps { get; }
         SqlDialectCaps DialectCaps { get; }
+        Type SpecificTypeEnum { get; }
     }
 }

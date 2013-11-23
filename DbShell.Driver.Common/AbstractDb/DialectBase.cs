@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.DbDiff;
 using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Utility;
@@ -46,6 +47,11 @@ namespace DbShell.Driver.Common.AbstractDb
         public virtual SqlDialectCaps DialectCaps
         {
             get { return new SqlDialectCaps(); }
+        }
+
+        public virtual Type SpecificTypeEnum
+        {
+            get { return typeof(DbTypeCode); }
         }
 
         protected virtual HashSetEx<string> LoadKeywords()

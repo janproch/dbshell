@@ -59,6 +59,7 @@
     <Compile Include="SqlServerParsingService.cs" />
     <Compile Include="SqlServerSqlDumper.cs" />
     <Compile Include="SqlServerStatisticsProvider.cs" />
+    <Compile Include="SqlTypeCode.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DbShell.Driver.Common\DbShell.Driver.Common.csproj">

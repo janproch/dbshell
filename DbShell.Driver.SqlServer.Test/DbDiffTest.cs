@@ -133,60 +133,60 @@ namespace DbShell.Driver.SqlServer.Test
         public void ChangeColumnTest()
         {
             TestDiff(db =>
-            {
-                var t1 = db.FindTableLike("t1");
-                t1.Columns["c2"].NotNull = false;
-            }, "ALTER TABLE [dbo].[t1] ALTER COLUMN [c2] INT NULL");
+                {
+                    var t1 = db.FindTableLike("t1");
+                    t1.Columns["c2"].NotNull = false;
+                }, "ALTER TABLE [dbo].[t1] ALTER COLUMN [c2] INT NULL");
         }
 
         [TestMethod]
         public void RenameColumn()
         {
             TestDiff(db =>
-            {
-                var t1 = db.FindTableLike("t1");
-                t1.Columns["c1"].Name = "c1new";
-            }, "EXECUTE sp_rename '[dbo].[t1].[c1]', 'c1new', 'COLUMN'");
+                {
+                    var t1 = db.FindTableLike("t1");
+                    t1.Columns["c1"].Name = "c1new";
+                }, "EXECUTE sp_rename '[dbo].[t1].[c1]', 'c1new', 'COLUMN'");
         }
 
         [TestMethod]
         public void RenameView()
         {
             TestDiff(db =>
-            {
-                var v1 = db.FindViewLike("v1");
-                v1.Name = "v1new";
-            }, "EXECUTE sp_rename '[dbo].[v1]', 'v1new', 'OBJECT'");
+                {
+                    var v1 = db.FindViewLike("v1");
+                    v1.Name = "v1new";
+                }, "EXECUTE sp_rename '[dbo].[v1]', 'v1new', 'OBJECT'");
         }
 
         [TestMethod]
         public void ChangeViewSchema()
         {
             TestDiff(db =>
-            {
-                var v1 = db.FindViewLike("v1");
-                v1.Schema = "dbonew";
-            }, "EXECUTE sp_changeobjectowner '[dbo].[v1]', 'dbonew'");
+                {
+                    var v1 = db.FindViewLike("v1");
+                    v1.Schema = "dbonew";
+                }, "EXECUTE sp_changeobjectowner '[dbo].[v1]', 'dbonew'");
         }
 
         [TestMethod]
         public void RenameTable()
         {
             TestDiff(db =>
-            {
-                var t1 = db.FindTableLike("t1");
-                t1.Name = "t1new";
-            }, "EXECUTE sp_rename '[dbo].[t1]', 't1new', 'OBJECT'");
+                {
+                    var t1 = db.FindTableLike("t1");
+                    t1.Name = "t1new";
+                }, "EXECUTE sp_rename '[dbo].[t1]', 't1new', 'OBJECT'");
         }
 
         [TestMethod]
         public void ChangeTableSchema()
         {
             TestDiff(db =>
-            {
-                var t1 = db.FindTableLike("t1");
-                t1.Schema = "dbonew";
-            }, "EXECUTE sp_changeobjectowner '[dbo].[t1]', 'dbonew'");
+                {
+                    var t1 = db.FindTableLike("t1");
+                    t1.Schema = "dbonew";
+                }, "EXECUTE sp_changeobjectowner '[dbo].[t1]', 'dbonew'");
         }
 
         [TestMethod]
@@ -199,10 +199,10 @@ ALTER TABLE [dbo].[t1] ALTER COLUMN [c1] FLOAT NOT NULL
 GO
 ALTER TABLE [dbo].[t1] ADD CONSTRAINT [pk_t1] PRIMARY KEY ([c1])";
             TestDiff(db =>
-            {
-                var t1 = db.FindTableLike("t1");
-                t1.Columns["c1"].DataType = "float";
-            }, sql);
+                {
+                    var t1 = db.FindTableLike("t1");
+                    t1.Columns["c1"].DataType = "float";
+                }, sql);
         }
 
         [TestMethod]
@@ -226,10 +226,26 @@ GO
 SET IDENTITY_INSERT [dbo].[t1] OFF;
 DROP TABLE [TMP0]";
             TestDiff(db =>
-            {
-                var t1 = db.FindTableLike("t1");
-                t1.Columns["c1"].AutoIncrement = true;
-            }, sql);
+                {
+                    var t1 = db.FindTableLike("t1");
+                    t1.Columns["c1"].AutoIncrement = true;
+                }, sql);
+        }
+
+        [TestMethod]
+        public void CreateTableTest()
+        {
+            TestDiff(db =>
+                {
+                    var t2 = new TableInfo(db);
+                    t2.Name = "t2";
+                    t2.Schema = "dbo";
+                    var c1 = new ColumnInfo(t2);
+                    c1.Name = "c1";
+                    c1.DataType = "int";
+                    t2.Columns.Add(c1);
+                    db.Tables.Add(t2);
+                }, "CREATE TABLE [dbo].[t2] ([c1] INT NULL) ");
         }
     }
 }
