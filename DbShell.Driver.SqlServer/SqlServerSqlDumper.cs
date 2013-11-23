@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.DbDiff;
 using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Structure;
 
@@ -22,12 +23,12 @@ namespace DbShell.Driver.SqlServer
 
         private void RenameObject(NamedObjectInfo obj, string newname)
         {
-            PutCmd("execute sp_rename '%f', '%s', 'OBJECT'", obj.FullName, newname);
+            PutCmd("^execute sp_rename '%f', '%s', 'OBJECT'", obj.FullName, newname);
         }
 
         private void ChangeObjectSchema(NamedObjectInfo obj, string newschema)
         {
-            PutCmd("execute sp_changeobjectowner '%f', '%s'", obj.FullName, newschema);
+            PutCmd("^execute sp_changeobjectowner '%f', '%s'", obj.FullName, newschema);
         }
 
         public override void RenameView(ViewInfo obj, string newname)
@@ -77,6 +78,52 @@ namespace DbShell.Driver.SqlServer
         public override void ChangeTableSchema(TableInfo obj, string schema)
         {
             ChangeObjectSchema(obj, schema);
+        }
+
+        private void DropDefault(ColumnInfo col)
+        {
+            if (col.DefaultConstraint != null) PutCmd("^alter ^table %f ^drop ^constraint %i", col.OwnerTable.FullName, col.DefaultConstraint);
+        }
+
+        private string GuessDefaultName(ColumnInfo col)
+        {
+            string defname = col.DefaultConstraint;
+            if (defname == null)
+            {
+                defname = String.Format("DF_{0}_{1}_{2}", col.OwnerTable.FullName.Schema ?? "dbo", col.OwnerTable.FullName.Name, col.Name);
+            }
+            return defname;
+        }
+
+        private void CreateDefault(ColumnInfo col)
+        {
+            if (col.DefaultValue == null) return;
+            string defsql = col.DefaultValue;
+            if (defsql != null)
+            {
+                var defname = GuessDefaultName(col);
+                PutCmd("^alter ^table %f ^add ^constraint %i ^default %s for %i", col.OwnerTable.FullName, defname, defsql, col.Name);
+            }
+        }
+
+        public override void RenameColumn(ColumnInfo column, string newcol)
+        {
+            PutCmd("^execute sp_rename '%f.%i', '%s', 'COLUMN'", column.OwnerTable.FullName, column.Name, newcol);
+        }
+
+        public override void ChangeColumn(ColumnInfo oldcol, ColumnInfo newcol, IEnumerable<ConstraintInfo> constraints)
+        {
+            DropDefault(oldcol);
+            if (oldcol.Name != newcol.Name) RenameColumn(oldcol, newcol.Name);
+            Put("^alter ^table %f ^alter ^column %i ", newcol.OwnerTable.FullName, newcol.Name);
+            // remove autoincrement flag
+            var newcol2 = newcol.CloneColumn();
+            newcol2.SetDummyTable(newcol.OwnerTable.FullName);
+            newcol2.AutoIncrement = false;
+            ColumnDefinition(newcol2, false, true, true);
+            EndCommand();
+            CreateDefault(newcol);
+            this.CreateConstraints(constraints);
         }
     }
 }

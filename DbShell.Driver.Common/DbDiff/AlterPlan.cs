@@ -42,9 +42,9 @@ namespace DbShell.Driver.Common.DbDiff
         {
             get
             {
-                //if (RecreatedObject is SpecificObjectInfo) return RecreateItemClass.SpecificObject;
-                //if (RecreatedObject is IForeignKey) return RecreateItemClass.Reference;
-                //if (RecreatedObject is ConstraintInfo) return RecreateItemClass.Constraint;
+                if (RecreatedObject is SpecificObjectInfo) return RecreateItemClass.SpecificObject;
+                if (RecreatedObject is ForeignKeyInfo) return RecreateItemClass.Reference;
+                if (RecreatedObject is ConstraintInfo) return RecreateItemClass.Constraint;
                 return RecreateItemClass.Unknown;
             }
         }
@@ -84,15 +84,27 @@ namespace DbShell.Driver.Common.DbDiff
 
     public class AlterPlanBase
     {
-        public DatabaseInfo Structure = new DatabaseInfo();
+        public readonly DatabaseInfo Structure;
         public List<AlterOperation> Operations = new List<AlterOperation>();
         public List<RecreatedItem> RecreatedItems = new List<RecreatedItem>();
+
+        public AlterPlanBase(DatabaseInfo db)
+        {
+            Structure = db.CloneDatabase();
+        }
     }
 
     public class AlterPlan : AlterPlanBase
     {
+
         public static int BEFORE_ORDERGROUP = -10;
         public static int AFTER_ORDERGROUP = 10;
+
+        public AlterPlan(DatabaseInfo db)
+            : base(db)
+        {
+        }
+
         public bool DenyTransaction { get; private set; }
 
         // this structure is incrementally loaded, when needed
@@ -283,10 +295,7 @@ namespace DbShell.Driver.Common.DbDiff
 
         public AlterPlanRunner CreateRunner()
         {
-            var res = new AlterPlanRunner
-            {
-                Structure = Structure.CloneDatabase(),
-            };
+            var res = new AlterPlanRunner(Structure);
             foreach (var op in Operations)
             {
                 res.Operations.Add(op.CloneForStructure(res.Structure));
@@ -492,6 +501,11 @@ namespace DbShell.Driver.Common.DbDiff
 
     public class AlterPlanRunner : AlterPlanBase
     {
+        public AlterPlanRunner(DatabaseInfo db)
+            : base(db)
+        {
+        }
+
         public void Run(IAlterProcessor proc, DbDiffOptions opts)
         {
             //foreach (var dep in RecreatedItems)
@@ -519,19 +533,6 @@ namespace DbShell.Driver.Common.DbDiff
                     }
                 }
             }
-            //foreach (var cls in RecreatedItem.CreateClassOrder)
-            //{
-            //    foreach (var dep in RecreatedItems)
-            //    {
-            //        if (dep.ItemClass != cls) continue;
-            //        if (Structure.FindByGroupId(dep.RecreatedObject.GroupId) == null)
-            //        {
-            //            // object was dropped
-            //            continue;
-            //        }
-            //        dep.RunCreate(proc, opts);
-            //    }
-            //}
         }
     }
 }

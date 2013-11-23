@@ -203,7 +203,7 @@ namespace DbShell.Driver.Common.Sql
 
         protected virtual void ColumnRef(ColumnReference colref)
         {
-            Put("%i", colref.Name);
+            Put("%i", colref.RefColumnName);
             //WriteRaw(QuoteIdentifier(colref.Name, null));
         }
 
@@ -276,9 +276,9 @@ namespace DbShell.Driver.Common.Sql
             CreateForeignKeyCore(fk);
             EndCommand();
         }
-        public virtual void DropPrimaryKey(PrimaryKeyInfo fk)
+        public virtual void DropPrimaryKey(PrimaryKeyInfo pk)
         {
-            PutCmd("^alter ^table %f ^drop ^constraint %i", fk.OwnerTable.FullName, fk.ConstraintName);
+            PutCmd("^alter ^table %f ^drop ^constraint %i", pk.OwnerTable.FullName, pk.ConstraintName);
         }
         public virtual void CreatePrimaryKey(PrimaryKeyInfo pk)
         {

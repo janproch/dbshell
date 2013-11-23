@@ -1,10 +1,12 @@
 ﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.DbDiff
 {
@@ -136,7 +138,7 @@ namespace DbShell.Driver.Common.DbDiff
         public override void ChangeStructure(DatabaseInfo s)
         {
             base.ChangeStructure(s);
-            OldObject = s.FindByGroupId(OldObject.GroupId) as DatabaseObjectInfo;
+            OldObject = s.FindByGroupId(OldObject.GroupId);
         }
 
         public override void AssignFrom(AlterOperation src)
@@ -358,8 +360,8 @@ namespace DbShell.Driver.Common.DbDiff
             var oldcol = OldObject as ColumnInfo;
             var newcol = NewObject as ColumnInfo;
 
-            var recreateFks = new List<ForeignKeyInfo>();
-            var changeCols = new List<Tuple<ColumnInfo, ColumnInfo>>();
+            //var recreateFks = new List<ForeignKeyInfo>();
+            //var changeCols = new List<Tuple<ColumnInfo, ColumnInfo>>();
 
             foreach (var fk in ParentTable.GetReferences())
             {
@@ -376,61 +378,65 @@ namespace DbShell.Driver.Common.DbDiff
                         var opts2 = opts.Clone();
                         opts2.IgnoreSpecificData = true;
 
-                        //TODO
-
-                        //DbTypeBase dt1 = othercol.DataType.Clone(), dt2 = newcol.DataType.Clone();
-                        //dt1.SetAutoincrement(false);
-                        //dt2.SetAutoincrement(false);
-                        //if (!DbDiffTool.EqualTypes(dt1, dt2, opts2))
-                        //{
-                        //    after.Add(new AlterOperation_ChangeColumn
-                        //    {
-                        //        ParentTable = table,
-                        //        OldObject = othercol,
-                        //        NewObject = new ColumnStructure(othercol) { DataType = dt2 }
-                        //    });
-                        //}
-                        //opts.AlterLogger.Warning(Texts.Get("s_changed_referenced_column$table$column", "table", fk.Table.FullName, "column", othercol.ColumnName));
+                        if (!DbDiffTool.EqualTypes(othercol, newcol, opts2))
+                        {
+                            var othercolNewType = othercol.CloneColumn();
+                            CopyDataType(othercolNewType, newcol);
+                            after.Add(new AlterOperation_ChangeColumn
+                            {
+                                ParentTable = table,
+                                OldObject = othercol,
+                                NewObject = othercolNewType,
+                            });
+                        }
+                        opts.AlterLogger.Warning(String.Format("Changed referenced column {0}.{1}", fk.OwnerTable.FullName, othercol.Name));
                     }
                 }
             }
         }
+
+        private void CopyDataType(ColumnInfo dst, ColumnInfo src)
+        {
+            dst.DataType = src.DataType;
+            dst.Length = src.Length;
+            dst.Precision = src.Precision;
+            dst.Scale = src.Scale;
+            dst.CommonType = src.CommonType;
+        }
+
         public override void AddPhysicalDependencies(AlterProcessorCaps caps, DbDiffOptions opts, List<AlterOperation> before, List<AlterOperation> after, AlterPlan plan)
         {
-            //var oldcol = OldObject as ColumnStructure;
-            //if (caps.DepCaps.ChangeColumn_Constraint || caps.DepCaps.ChangeColumn_Index)
-            //{
-            //    ParentTable.LoadStructure(TableStructureMembers.Constraints, targetDb);
-            //    foreach (var cnt in ParentTable.Constraints)
-            //    {
-            //        var cc = cnt as ColumnsConstraint;
-            //        if (cc == null) continue;
-            //        if (cc.Columns.Any(c => c.ColumnName == oldcol.ColumnName))
-            //        {
-            //            if (
-            //                (cc is IIndex && caps.DepCaps.ChangeColumn_Index) ||
-            //                (!(cc is IIndex) && caps.DepCaps.ChangeColumn_Constraint))
-            //            {
-            //                plan.RecreateObject(cc, null);
-            //            }
-            //        }
-            //    }
-            //}
-            //if (caps.DepCaps.ChangeColumn_Reference)
-            //{
-            //    ParentTable.LoadStructure(TableStructureMembers.ReferencedFrom, targetDb);
-
-            //    foreach (ForeignKey fk in ParentTable.GetReferencedFrom())
-            //    {
-            //        for (int i = 0; i < fk.PrimaryKeyColumns.Count; i++)
-            //        {
-            //            if (fk.PrimaryKeyColumns[i].ColumnName == oldcol.ColumnName)
-            //            {
-            //                plan.RecreateObject(fk, null);
-            //            }
-            //        }
-            //    }
-            //}
+            var oldcol = OldObject as ColumnInfo;
+            if (caps.DepCaps.ChangeColumn_Constraint || caps.DepCaps.ChangeColumn_Index)
+            {
+                foreach (var cnt in ParentTable.Constraints)
+                {
+                    var cc = cnt as ColumnsConstraintInfo;
+                    if (cc == null) continue;
+                    if (cc.Columns.Any(c => c.Name == oldcol.Name))
+                    {
+                        if (
+                            (cc is IndexInfo && caps.DepCaps.ChangeColumn_Index) ||
+                            (!(cc is IndexInfo) && caps.DepCaps.ChangeColumn_Constraint))
+                        {
+                            plan.RecreateObject(cc, null);
+                        }
+                    }
+                }
+            }
+            if (caps.DepCaps.ChangeColumn_Reference)
+            {
+                foreach (ForeignKeyInfo fk in ParentTable.GetReferences())
+                {
+                    for (int i = 0; i < fk.RefColumns.Count; i++)
+                    {
+                        if (fk.RefColumns[i].Name == oldcol.Name)
+                        {
+                            plan.RecreateObject(fk, null);
+                        }
+                    }
+                }
+            }
         }
         public override bool MustRunAbsorbTest(AlterProcessorCaps caps)
         {

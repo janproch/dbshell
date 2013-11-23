@@ -76,27 +76,8 @@ namespace DbShell.Driver.Common.DbDiff
                 return false;
             }
 
-            if (a.DataType != b.DataType)
+            if (!EqualTypes(a,b,opts))
             {
-                opts.DiffLogger.Trace("Column {0}, {1}: different types: {2}; {3}", a, b, a.DataType, b.DataType);
-                return false;
-            }
-
-            if (a.Length != b.Length)
-            {
-                opts.DiffLogger.Trace("Column {0}, {1}: different lengths: {2}; {3}", a, b, a.Length, b.Length);
-                return false;
-            }
-
-            if (a.Precision != b.Precision)
-            {
-                opts.DiffLogger.Trace("Column {0}, {1}: different lengths: {2}; {3}", a, b, a.Precision, b.Precision);
-                return false;
-            }
-
-            if (a.Scale != b.Scale)
-            {
-                opts.DiffLogger.Trace("Column {0}, {1}: different scale: {2}; {3}", a, b, a.Scale, b.Scale);
                 return false;
             }
 
@@ -125,6 +106,35 @@ namespace DbShell.Driver.Common.DbDiff
             //    opts.DiffLogger.Trace("Column {0}, {1}: different character sets: {2}; {3}", a, b, a.CharacterSet, b.CharacterSet);
             //    return false;
             //}
+            return true;
+        }
+
+        public static bool EqualTypes(ColumnInfo a, ColumnInfo b, DbDiffOptions opts)
+        {
+            if (a.DataType != b.DataType)
+            {
+                opts.DiffLogger.Trace("Column {0}, {1}: different types: {2}; {3}", a, b, a.DataType, b.DataType);
+                return false;
+            }
+
+            if (a.Length != b.Length)
+            {
+                opts.DiffLogger.Trace("Column {0}, {1}: different lengths: {2}; {3}", a, b, a.Length, b.Length);
+                return false;
+            }
+
+            if (a.Precision != b.Precision)
+            {
+                opts.DiffLogger.Trace("Column {0}, {1}: different lengths: {2}; {3}", a, b, a.Precision, b.Precision);
+                return false;
+            }
+
+            if (a.Scale != b.Scale)
+            {
+                opts.DiffLogger.Trace("Column {0}, {1}: different scale: {2}; {3}", a, b, a.Scale, b.Scale);
+                return false;
+            }
+
             return true;
         }
 

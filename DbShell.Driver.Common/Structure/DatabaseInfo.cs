@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.DbDiff;
 using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.Structure
@@ -27,22 +28,34 @@ namespace DbShell.Driver.Common.Structure
         /// <summary>
         /// List of tables
         /// </summary>
-        [XmlCollection(typeof(TableInfo))]
-        public List<TableInfo> Tables { get { return _tables; } }
+        [XmlCollection(typeof (TableInfo))]
+        public List<TableInfo> Tables
+        {
+            get { return _tables; }
+        }
 
-        [XmlCollection(typeof(ViewInfo))]
-        public List<ViewInfo> Views { get { return _views; } }
+        [XmlCollection(typeof (ViewInfo))]
+        public List<ViewInfo> Views
+        {
+            get { return _views; }
+        }
 
-        [XmlCollection(typeof(StoredProcedureInfo))]
-        public List<StoredProcedureInfo> StoredProcedures { get { return _storedProcedures; } }
+        [XmlCollection(typeof (StoredProcedureInfo))]
+        public List<StoredProcedureInfo> StoredProcedures
+        {
+            get { return _storedProcedures; }
+        }
 
-        [XmlCollection(typeof(FunctionInfo))]
-        public List<FunctionInfo> Functions { get { return _functions; } }
+        [XmlCollection(typeof (FunctionInfo))]
+        public List<FunctionInfo> Functions
+        {
+            get { return _functions; }
+        }
 
         [XmlElem]
         public string DefaultSchema { get; set; }
 
-        private T FindObjectLike<T>(IEnumerable<T> objs, string name )
+        private T FindObjectLike<T>(IEnumerable<T> objs, string name)
             where T : NamedObjectInfo
         {
             return objs.FirstOrDefault(t => String.Compare(t.Name, name, true) == 0);
@@ -109,6 +122,11 @@ namespace DbShell.Driver.Common.Structure
         public ViewInfo FindViewLike(string schema, string view)
         {
             return FindObjectLike(_views, schema, view);
+        }
+
+        public ColumnInfo FindColumn(ColumnInfo column)
+        {
+            return FindTable(column.OwnerTable.FullName).Columns.First(c => c.Name == column.Name);
         }
 
         public ProgrammableInfo FindProgrammableLike(string name, bool procedure = true, bool function = true)
@@ -320,7 +338,7 @@ namespace DbShell.Driver.Common.Structure
 
         public T FindByGroupId<T>(T obj) where T : DatabaseObjectInfo
         {
-            return (T)FindByGroupId(obj.GroupId);
+            return (T) FindByGroupId(obj.GroupId);
         }
 
         public TableInfo AddTable(NameWithSchema name)
@@ -384,13 +402,13 @@ namespace DbShell.Driver.Common.Structure
             switch (obj.ObjectType)
             {
                 case DatabaseObjectType.View:
-                    Views.Add((ViewInfo) obj);
+                    Views.Add((ViewInfo) res);
                     break;
                 case DatabaseObjectType.StoredProcedure:
-                    StoredProcedures.Add((StoredProcedureInfo) obj);
+                    StoredProcedures.Add((StoredProcedureInfo) res);
                     break;
                 case DatabaseObjectType.Function:
-                    Functions.Add((FunctionInfo) obj);
+                    Functions.Add((FunctionInfo) res);
                     break;
             }
             return res;
@@ -453,6 +471,11 @@ namespace DbShell.Driver.Common.Structure
             res.AddRange(StoredProcedures);
             res.AddRange(Functions);
             return res;
+        }
+
+        public IAlterProcessor AlterProcessor
+        {
+            get { return new DatabaseInfoAlterProcessor(this); }
         }
     }
 }

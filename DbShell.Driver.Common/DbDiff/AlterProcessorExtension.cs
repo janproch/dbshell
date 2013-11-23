@@ -15,7 +15,7 @@ namespace DbShell.Driver.Common.DbDiff
             var tbl = obj as TableInfo;
             if (tbl != null)
             {
-                proc.DropTable(tbl, true);
+                proc.DropTable(tbl, false);
                 return;
             }
             var col = obj as ColumnInfo;
@@ -248,14 +248,14 @@ namespace DbShell.Driver.Common.DbDiff
             //}
         }
 
-        public static void AlterDatabase(this IAlterProcessor proc, DatabaseInfo src, DatabaseInfo dst, DbDiffOptions opts)
+        public static void AlterDatabase(this IAlterProcessor proc, DatabaseInfo src, DatabaseInfo dst, DatabaseInfo targetDb, DbDiffOptions opts)
         {
-            proc.AlterDatabase(src, dst, opts, null);
+            proc.AlterDatabase(src, dst, targetDb, opts, null);
         }
 
-        public static void AlterDatabase(this IAlterProcessor proc, DatabaseInfo src, DatabaseInfo dst, DbDiffOptions opts, Action<AlterPlan> extendPlan)
+        public static void AlterDatabase(this IAlterProcessor proc, DatabaseInfo src, DatabaseInfo dst, DatabaseInfo targetDb, DbDiffOptions opts, Action<AlterPlan> extendPlan)
         {
-            AlterPlan plan = new AlterPlan();
+            AlterPlan plan = new AlterPlan(targetDb);
             DbDiffTool.AlterDatabase(plan, src, dst, opts);
             if (extendPlan != null) extendPlan(plan);
             plan.Transform(proc.AlterCaps, opts);

@@ -145,7 +145,7 @@ namespace DbShell.Driver.Common.DbDiff
 
         public void DropTable(TableInfo obj, bool testIfExists)
         {
-            _database.Functions.RemoveAll(v => v.FullName == obj.FullName);
+            _database.Tables.RemoveAll(v => v.FullName == obj.FullName);
             foreach (var t in _database.Tables)
             {
                 t.DropReferencesTo(obj.FullName);
@@ -207,12 +207,14 @@ namespace DbShell.Driver.Common.DbDiff
 
         public void RenameColumn(ColumnInfo column, string newcol)
         {
-            throw new NotImplementedException();
+            _database.FindColumn(column).Name = newcol;
         }
 
         public void ChangeColumn(ColumnInfo oldcol, ColumnInfo newcol, IEnumerable<ConstraintInfo> constraints)
         {
-            throw new NotImplementedException();
+            var col = _database.FindColumn(oldcol);
+            col.Assign(newcol);
+            this.CreateConstraints(constraints);
         }
 
         public void RecreateTable(TableInfo src, TableInfo dst)
@@ -220,10 +222,10 @@ namespace DbShell.Driver.Common.DbDiff
             throw new NotImplementedException();
         }
 
-        public void ChangeColumn(ColumnInfo oldcol, ColumnInfo newcol)
-        {
-            throw new NotImplementedException();
-        }
+        //public void ChangeColumn(ColumnInfo oldcol, ColumnInfo newcol)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public AlterProcessorCaps AlterCaps
         {

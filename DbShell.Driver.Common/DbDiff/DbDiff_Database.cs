@@ -238,31 +238,31 @@ namespace DbShell.Driver.Common.DbDiff
             return pairing;
         }
 
-        /// alters table, decomposes to alter actions; doesn't transform alter plan
-        /// proc must be able to run all logical operations
-        public static void DecomposeAlterTable(this IAlterProcessor proc, TableInfo oldTable, TableInfo newTable, DbDiffOptions options)
-        {
-            DbObjectPairing pairing = CreateTablePairing(oldTable, newTable);
-            // decompose to alter actions
-            AlterPlan plan = new AlterPlan();
-            AlterTable(plan, oldTable, newTable, options, pairing);
-            var run = plan.CreateRunner();
-            run.Run(proc, options);
-        }
+        ///// alters table, decomposes to alter actions; doesn't transform alter plan
+        ///// proc must be able to run all logical operations
+        //public static void DecomposeAlterTable(this IAlterProcessor proc, TableInfo oldTable, TableInfo newTable, DbDiffOptions options)
+        //{
+        //    DbObjectPairing pairing = CreateTablePairing(oldTable, newTable);
+        //    // decompose to alter actions
+        //    AlterPlan plan = new AlterPlan(oldTable);
+        //    AlterTable(plan, oldTable, newTable, options, pairing);
+        //    var run = plan.CreateRunner();
+        //    run.Run(proc, options);
+        //}
 
-        public static AlterPlan PlanAlterTable(TableInfo oldTable, TableInfo newTable, DbDiffOptions opts)
-        {
-            AlterPlan plan = new AlterPlan();
-            if (oldTable == null)
-            {
-                plan.CreateTable(newTable);
-            }
-            else
-            {
-                DbObjectPairing pairing = CreateTablePairing(oldTable, newTable);
-                AlterTable(plan, oldTable, newTable, opts, pairing);
-            }
-            return plan;
-        }
+        //public static AlterPlan PlanAlterTable(TableInfo oldTable, TableInfo newTable, DbDiffOptions opts)
+        //{
+        //    AlterPlan plan = new AlterPlan(oldTable.OwnerDatabase);
+        //    if (oldTable == null)
+        //    {
+        //        plan.CreateTable(newTable);
+        //    }
+        //    else
+        //    {
+        //        DbObjectPairing pairing = CreateTablePairing(oldTable, newTable);
+        //        AlterTable(plan, oldTable, newTable, opts, pairing);
+        //    }
+        //    return plan;
+        //}
     }
 }
