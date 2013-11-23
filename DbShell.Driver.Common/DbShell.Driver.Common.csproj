@@ -92,6 +92,18 @@
     <Compile Include="CommonTypeSystem\DbTypeText.cs" />
     <Compile Include="CommonTypeSystem\DbTypeXml.cs" />
     <Compile Include="CommonTypeSystem\IsIdentityAttribute.cs" />
+    <Compile Include="DbDiff\AlterNotPossibleError.cs" />
+    <Compile Include="DbDiff\AlterOps.cs" />
+    <Compile Include="DbDiff\AlterPlan.cs" />
+    <Compile Include="DbDiff\AlterProcessorExtension.cs" />
+    <Compile Include="DbDiff\Capabilities.cs" />
+    <Compile Include="DbDiff\DatabaseInfoAlterProcessor.cs" />
+    <Compile Include="DbDiff\DbDiffOptions.cs" />
+    <Compile Include="DbDiff\DbDiffTool.cs" />
+    <Compile Include="DbDiff\DbDiff_Database.cs" />
+    <Compile Include="DbDiff\DbDiff_Table.cs" />
+    <Compile Include="DbDiff\DbObjectPairing.cs" />
+    <Compile Include="DbDiff\INameTramsformation.cs" />
     <Compile Include="FilterParser\antlr\DateTimeFilterLexer.cs" />
     <Compile Include="FilterParser\antlr\DateTimeFilterParser.cs" />
     <Compile Include="FilterParser\antlr\DbShellFilterAntlrParser.cs" />
@@ -100,8 +112,10 @@
     <Compile Include="FilterParser\antlr\StringFilterLexer.cs" />
     <Compile Include="FilterParser\antlr\StringFilterParser.cs" />
     <Compile Include="FilterParser\FilterParser.cs" />
+    <Compile Include="Structure\ConstraintInfo.cs" />
     <Compile Include="Structure\ForeignKeyActionExtension.cs" />
     <Compile Include="Structure\FunctionInfo.cs" />
+    <Compile Include="Structure\IndexInfo.cs" />
     <Compile Include="Structure\ParameterInfo.cs" />
     <Compile Include="Structure\ProgrammableInfo.cs" />
     <Compile Include="Sql\SqlDumper.cs" />
@@ -162,6 +176,7 @@
     <Compile Include="Structure\PropertyBag.cs" />
     <Compile Include="Structure\QueryResultColumnInfo.cs" />
     <Compile Include="Structure\QueryResultInfo.cs" />
+    <Compile Include="Structure\SpecificObjectInfo.cs" />
     <Compile Include="Structure\StoredProcedureInfo.cs" />
     <Compile Include="Structure\TableObjectInfo.cs" />
     <Compile Include="Structure\ViewInfo.cs" />
@@ -193,6 +208,7 @@
     <Compile Include="Utility\ListExtension.cs" />
     <Compile Include="Utility\ListProxy.cs" />
     <Compile Include="Utility\LogRecord.cs" />
+    <Compile Include="Utility\MessageLogger.cs" />
     <Compile Include="Utility\ObjectExtension.cs" />
     <Compile Include="Utility\PyList.cs" />
     <Compile Include="Utility\ReflTools.cs" />

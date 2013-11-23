@@ -14,14 +14,19 @@ namespace DbShell.Driver.Common.Structure
 
         public override DatabaseObjectType ObjectType
         {
-            get { return DatabaseObjectType.Procedure; }
+            get { return DatabaseObjectType.StoredProcedure; }
         }
 
-        public StoredProcedureInfo Clone(DatabaseInfo ownerDb = null)
+        public StoredProcedureInfo CloneStoredProcedure(DatabaseInfo ownerDb = null)
         {
             var res = new StoredProcedureInfo(ownerDb ?? OwnerDatabase);
             res.Assign(this);
             return res;
+        }
+
+        public override DatabaseObjectInfo CloneObject(DatabaseObjectInfo owner)
+        {
+            return CloneStoredProcedure(owner as DatabaseInfo);
         }
     }
 }

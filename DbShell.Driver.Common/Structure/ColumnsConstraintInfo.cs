@@ -3,7 +3,7 @@ using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.Structure
 {
-    public abstract class ColumnsConstraintInfo : TableObjectInfo
+    public abstract class ColumnsConstraintInfo : ConstraintInfo
     {
         private List<ColumnReference> _columns = new List<ColumnReference>();
 
@@ -16,7 +16,7 @@ namespace DbShell.Driver.Common.Structure
             
         }
 
-        protected override void Assign(DatabaseObjectInfo source)
+        public override void Assign(DatabaseObjectInfo source)
         {
             base.Assign(source);
             var src = (ColumnsConstraintInfo) source;

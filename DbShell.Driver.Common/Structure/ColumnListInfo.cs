@@ -22,11 +22,11 @@ namespace DbShell.Driver.Common.Structure
         {
         }
 
-        protected override void Assign(DatabaseObjectInfo source)
+        public override void Assign(DatabaseObjectInfo source)
         {
             base.Assign(source);
             var src = (ColumnListInfo) source;
-            foreach (var col in src.Columns) Columns.Add(col.Clone((TableInfo) this));
+            foreach (var col in src.Columns) Columns.Add(col.CloneColumn((TableInfo) this));
         }
     }
 }

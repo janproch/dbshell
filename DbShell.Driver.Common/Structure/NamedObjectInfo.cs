@@ -50,7 +50,7 @@ namespace DbShell.Driver.Common.Structure
         {
         }
 
-        protected override void Assign(DatabaseObjectInfo source)
+        public override void Assign(DatabaseObjectInfo source)
         {
             base.Assign(source);
             var src = (NamedObjectInfo) source;

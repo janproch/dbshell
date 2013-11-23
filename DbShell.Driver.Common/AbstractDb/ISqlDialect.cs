@@ -1,4 +1,5 @@
-﻿using DbShell.Driver.Common.Utility;
+﻿using DbShell.Driver.Common.DbDiff;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.AbstractDb
 {
@@ -26,5 +27,8 @@ namespace DbShell.Driver.Common.AbstractDb
 
         HashSetEx<string> Keywords { get; }
         string StripComments(string content);
+
+        SqlDumperCaps DumperCaps { get; }
+        SqlDialectCaps DialectCaps { get; }
     }
 }

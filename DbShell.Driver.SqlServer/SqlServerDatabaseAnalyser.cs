@@ -280,7 +280,7 @@ namespace DbShell.Driver.SqlServer
                                     ModifyDate = modify,
                                     CreateDate = create,
                                 };
-                            if (objs.ContainsKey(name)) view.QueryText = objs[name];
+                            if (objs.ContainsKey(name)) view.CreateSql = objs[name];
                             Structure.Views.Add(view);
                         }
                     }
@@ -325,7 +325,7 @@ namespace DbShell.Driver.SqlServer
                             info.ModifyDate = modify;
                             programmables[name] = info;
                             info.FullName = name;
-                            if (objs.ContainsKey(name)) info.SqlText = objs[name];
+                            if (objs.ContainsKey(name)) info.CreateSql = objs[name];
                             if (info is StoredProcedureInfo) Structure.StoredProcedures.Add((StoredProcedureInfo) info);
                             if (info is FunctionInfo) Structure.Functions.Add((FunctionInfo) info);
                         }
@@ -573,7 +573,7 @@ namespace DbShell.Driver.SqlServer
                                 type = DatabaseObjectType.View;
                                 break;
                             case "P":
-                                type = DatabaseObjectType.Procedure;
+                                type = DatabaseObjectType.StoredProcedure;
                                 break;
                             case "IF":
                             case "FN":

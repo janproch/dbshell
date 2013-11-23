@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using DbShell.Driver.Common.DbDiff;
 using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Utility;
 
@@ -35,6 +36,16 @@ namespace DbShell.Driver.Common.AbstractDb
                 if (newLine != null) sb.AppendLine(newLine);
             }
             return sb.ToString();
+        }
+
+        public virtual SqlDumperCaps DumperCaps
+        {
+            get { return new SqlDumperCaps(); }
+        }
+
+        public virtual SqlDialectCaps DialectCaps
+        {
+            get { return new SqlDialectCaps(); }
         }
 
         protected virtual HashSetEx<string> LoadKeywords()

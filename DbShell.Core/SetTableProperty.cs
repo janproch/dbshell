@@ -46,7 +46,7 @@ namespace DbShell.Core
 
             if (Table != null)
             {
-                var table = db.FindTable(Table);
+                var table = db.FindTableLike(Table);
                 if (table != null)
                 {
                     table.Properties[Name] = Value;

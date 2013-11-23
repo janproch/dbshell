@@ -46,7 +46,7 @@ namespace DbShell.Driver.Common.Structure
             return res;
         }
 
-        protected override void Assign(DbShell.Driver.Common.Structure.DatabaseObjectInfo source)
+        public override void Assign(DbShell.Driver.Common.Structure.DatabaseObjectInfo source)
         {
             base.Assign(source);
             var src = (ParameterInfo) source;

@@ -4,9 +4,6 @@ namespace DbShell.Driver.Common.Structure
 {
     public class PrimaryKeyInfo : ColumnsConstraintInfo
     {
-        [XmlElem]
-        public string ConstraintName { get; set; }
-
         public PrimaryKeyInfo(TableInfo table)
             :base(table)
         {
@@ -18,19 +15,29 @@ namespace DbShell.Driver.Common.Structure
             get { return DatabaseObjectType.PrimaryKey; }
         }
 
-        public PrimaryKeyInfo Clone(TableInfo ownTable = null)
+        public PrimaryKeyInfo ClonePrimaryKey(TableInfo ownTable = null)
         {
             var res = new PrimaryKeyInfo(ownTable ?? OwnerTable);
             res.Assign(this);
             return res;
         }
 
-        protected override void Assign(DatabaseObjectInfo source)
+        public override DatabaseObjectInfo CloneObject(DatabaseObjectInfo owner)
+        {
+            return ClonePrimaryKey(owner as TableInfo);
+        }
+
+        public override void Assign(DatabaseObjectInfo source)
         {
             base.Assign(source);
             var src = (PrimaryKeyInfo) source;
-            ConstraintName = src.ConstraintName;
         }
 
+        public override void SetDummyTable(NameWithSchema name)
+        {
+            var table = new TableInfo(null);
+            table.FullName = name;
+            table.PrimaryKey = this;
+        }
     }
 }

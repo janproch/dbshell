@@ -22,7 +22,7 @@ namespace DbShell.Core
         {
             var fullName = GetFullName();
             var db = GetDatabaseStructure();
-            var table = db.FindTable(fullName.Schema, fullName.Name);
+            var table = db.FindTableLike(fullName.Schema, fullName.Name);
             if (table == null)
             {
                 throw new Exception(String.Format("DBSH-00007 Table {0} not found", fullName));

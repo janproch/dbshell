@@ -18,7 +18,7 @@ namespace DbShell.Core
             var fw = new FileInfo(file).OpenWrite();
             _bw = new BinaryWriter(fw);
             var doc = XmlTool.CreateDocument("Table");
-            var tcopy = table.Clone();
+            var tcopy = table.CloneTable();
             tcopy.ForeignKeys.Clear();
             if (tcopy.PrimaryKey != null) tcopy.PrimaryKey.ConstraintName = null;
             tcopy.SaveToXml(doc.DocumentElement);

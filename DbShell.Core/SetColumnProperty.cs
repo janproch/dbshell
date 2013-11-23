@@ -96,7 +96,7 @@ namespace DbShell.Core
 
             if (Table != null)
             {
-                var table = db.FindTable(Table);
+                var table = db.FindTableLike(Table);
                 if (table == null) throw new Exception(String.Format("DBSH-00084 Table {0} not found", Table));
                 ProcessTable(table);
             }

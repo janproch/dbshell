@@ -100,14 +100,19 @@ namespace DbShell.Driver.Common.Structure
         /// </summary>
         public DbTypeBase CommonType { get; set; }
 
-        public ColumnInfo Clone(TableInfo ownTable = null)
+        public ColumnInfo CloneColumn(TableInfo ownTable = null)
         {
             var res = new ColumnInfo(ownTable ?? OwnerTable);
             res.Assign(this);
             return res;
         }
 
-        protected override void Assign(DatabaseObjectInfo source)
+        public override DatabaseObjectInfo CloneObject(DatabaseObjectInfo owner)
+        {
+            return CloneColumn(owner as TableInfo);
+        }
+
+        public override void Assign(DatabaseObjectInfo source)
         {
             base.Assign(source);
             var src = (ColumnInfo) source;
@@ -186,6 +191,13 @@ namespace DbShell.Driver.Common.Structure
         public override DatabaseObjectType ObjectType
         {
             get { return DatabaseObjectType.Column; }
+        }
+
+        public override void SetDummyTable(NameWithSchema name)
+        {
+            var table = new TableInfo(null);
+            table.FullName = name;
+            table.Columns.Add(this);
         }
     }
 }

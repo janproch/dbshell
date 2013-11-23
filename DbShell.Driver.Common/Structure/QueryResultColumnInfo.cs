@@ -68,11 +68,11 @@ namespace DbShell.Driver.Common.Structure
             TableInfo table = null;
             if (!String.IsNullOrEmpty(BaseTableName))
             {
-                table = db.FindTable(String.IsNullOrWhiteSpace(BaseSchemaName) ? null : BaseSchemaName, BaseTableName);
+                table = db.FindTableLike(String.IsNullOrWhiteSpace(BaseSchemaName) ? null : BaseSchemaName, BaseTableName);
             }
             else
             {
-                if (baseName != null) table = db.FindTable(baseName.Schema, baseName.Name);
+                if (baseName != null) table = db.FindTableLike(baseName.Schema, baseName.Name);
             }
             if (table == null) return null;
 

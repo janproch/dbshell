@@ -37,7 +37,7 @@ namespace DbShell.Core.DataSetModels
         {
             name = name.ToLower();
             if (Classes.ContainsKey(name)) return Classes[name];
-            var tbl = _targetDatabase.FindTable(name);
+            var tbl = _targetDatabase.FindTableLike(name);
             if (tbl == null) throw new Exception("DBSH-00120 Unknown target table in data set:" + name);
             var cls = new DataSetClass(this, tbl);
             Classes[name] = cls;

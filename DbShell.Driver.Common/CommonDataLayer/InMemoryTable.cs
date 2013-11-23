@@ -36,13 +36,13 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public InMemoryTable(TableInfo table)
         {
             Initialize();
-            m_structure = table.Clone();
+            m_structure = table.CloneTable();
         }
 
         public InMemoryTable(InMemoryTable oldTable, SingleTableDataScript script)
         {
             Initialize();
-            m_structure = oldTable.Structure.Clone();
+            m_structure = oldTable.Structure.CloneTable();
             CdlTable bt = new CdlTable(oldTable);
             bt.RunScript(script);
             foreach (ICdlRecord rec in bt.Rows)
@@ -54,7 +54,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public InMemoryTable(TableInfo table, XmlElement xml)
         {
             Initialize();
-            m_structure = table.Clone();
+            m_structure = table.CloneTable();
             using (XmlNodeReader xr = new XmlNodeReader(xml))
             {
                 foreach (var rec in CdlTool.LoadFromXml(m_structure, xr))
@@ -73,7 +73,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
             where T : ICdlRecord
         {
             var res = new InMemoryTable();
-            res.m_structure = table.Clone();
+            res.m_structure = table.CloneTable();
             foreach (ICdlRecord rec in rows)
             {
                 res.m_rows.Add(new ArrayDataRecord(rec));
@@ -84,7 +84,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public InMemoryTable(TableInfo table, ICdlReader reader)
         {
             Initialize();
-            m_structure = table.Clone();
+            m_structure = table.CloneTable();
             while (reader.Read())
             {
                 m_rows.Add(new ArrayDataRecord(reader));

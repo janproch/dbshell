@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DbShell.Driver.Common.DbDiff;
 using DbShell.Driver.Common.Structure;
 
 namespace DbShell.Driver.Common.AbstractDb
@@ -38,35 +39,37 @@ namespace DbShell.Driver.Common.AbstractDb
         // key operations
         void DropForeignKey(ForeignKeyInfo fk);
         void CreateForeignKey(ForeignKeyInfo fk);
-        void DropPrimaryKey(PrimaryKeyInfo fk);
-        void CreatePrimaryKey(PrimaryKeyInfo fk);
+        void DropPrimaryKey(PrimaryKeyInfo pk);
+        void CreatePrimaryKey(PrimaryKeyInfo pk);
+
+        void RenameConstraint(ConstraintInfo constraint, string newname);
 
         //// database operations
         //void AlterDatabaseOptions(string dbname, Dictionary<string, string> options);
 
         //// column operations
-        //void CreateColumn(IColumnStructure column, IEnumerable<IConstraint> constraints);
-        //void DropColumn(IColumnStructure column);
-        //void RenameColumn(IColumnStructure column, string newcol);
-        //void ChangeColumn(IColumnStructure oldcol, IColumnStructure newcol, IEnumerable<IConstraint> constraints);
+        void CreateColumn(ColumnInfo column, IEnumerable<ConstraintInfo> constraints);
+        void DropColumn(ColumnInfo column);
+        void RenameColumn(ColumnInfo column, string newcol);
+        void ChangeColumn(ColumnInfo oldcol, ColumnInfo newcol, IEnumerable<ConstraintInfo> constraints);
         //void ReorderColumns(NameWithSchema table, List<string> newColumnOrder);
 
-        //// constraint operations
+        // constraint operations
         //void CreateConstraint(IConstraint constraint);
         //void DropConstraint(IConstraint constraint);
         //void RenameConstraint(IConstraint constraint, string newname);
         //void ChangeConstraint(IConstraint csrc, IConstraint cdst);
 
-        //// generates physical recreate of table
-        //void RecreateTable(ITableStructure src, ITableStructure dst);
+        // generates physical recreate of table
+        void RecreateTable(TableInfo src, TableInfo dst);
 
         //// table operations
-        ////void AlterTable(ITableStructure src, ITableStructure dst, out bool processed);
-        //void CreateTable(ITableStructure tsrc);
-        //void DropTable(ITableStructure tdst);
+        ////void AlterTable(TableInfo src, TableInfo dst, out bool processed);
+        //void CreateTable(TableInfo tsrc);
+        //void DropTable(TableInfo tdst);
         //void ChangeTableSchema(NameWithSchema obj, string schema);
         //void RenameTable(NameWithSchema obj, string newname);
-        //void AlterTableOptions(ITableStructure table, Dictionary<string, string> options);
+        //void AlterTableOptions(TableInfo table, Dictionary<string, string> options);
 
         //// specific object operations
         //void CreateSpecificObject(ISpecificObjectStructure osrc);
@@ -81,7 +84,7 @@ namespace DbShell.Driver.Common.AbstractDb
         //void RenameSchema(ISchemaStructure schema, string newname);
         //void ChangeSchema(ISchemaStructure ssrc, ISchemaStructure sdst);
 
-        //AlterProcessorCaps AlterCaps { get; }
+        AlterProcessorCaps AlterCaps { get; }
 
         //// domain operations
         //void DropDomain(IDomainStructure domain);
@@ -90,7 +93,7 @@ namespace DbShell.Driver.Common.AbstractDb
         //void RenameDomain(NameWithSchema domain, string newname);
         //void ChangeDomainSchema(NameWithSchema domain, string newschema);
 
-        //void UpdateData(ITableStructure table, DataScript script, ISaveDataProgress progress);
+        //void UpdateData(TableInfo table, DataScript script, ISaveDataProgress progress);
         //void UpdateData(MultiTableUpdateScript script, ISaveDataProgress progress);
 
         ///// <summary>

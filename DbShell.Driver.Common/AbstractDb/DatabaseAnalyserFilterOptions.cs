@@ -24,7 +24,7 @@ namespace DbShell.Driver.Common.AbstractDb
                         return TableFilter;
                     case DatabaseObjectType.View:
                         return ViewFilter;
-                    case DatabaseObjectType.Procedure:
+                    case DatabaseObjectType.StoredProcedure:
                         return StoredProcedureFilter;
                     case DatabaseObjectType.Function:
                         return FunctionFilter;

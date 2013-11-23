@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.Structure
@@ -9,7 +10,7 @@ namespace DbShell.Driver.Common.Structure
     /// <summary>
     /// Information about database structure
     /// </summary>
-    public class DatabaseInfo : IExplicitXmlPersistent
+    public class DatabaseInfo : DatabaseObjectInfo, IExplicitXmlPersistent
     {
         public static readonly DatabaseInfo Empty = new DatabaseInfo();
 
@@ -17,6 +18,11 @@ namespace DbShell.Driver.Common.Structure
         private List<ViewInfo> _views = new List<ViewInfo>();
         private List<FunctionInfo> _functions = new List<FunctionInfo>();
         private List<StoredProcedureInfo> _storedProcedures = new List<StoredProcedureInfo>();
+
+        public DatabaseInfo()
+            : base(null)
+        {
+        }
 
         /// <summary>
         /// List of tables
@@ -36,13 +42,13 @@ namespace DbShell.Driver.Common.Structure
         [XmlElem]
         public string DefaultSchema { get; set; }
 
-        private T FindObject<T>(IEnumerable<T> objs, string name )
+        private T FindObjectLike<T>(IEnumerable<T> objs, string name )
             where T : NamedObjectInfo
         {
             return objs.FirstOrDefault(t => String.Compare(t.Name, name, true) == 0);
         }
 
-        private T FindObject<T>(IEnumerable<T> objs, string schema, string name)
+        private T FindObjectLike<T>(IEnumerable<T> objs, string schema, string name)
             where T : NamedObjectInfo
         {
             if (schema == null)
@@ -65,54 +71,94 @@ namespace DbShell.Driver.Common.Structure
             return _views.FirstOrDefault(v => v.FullName == table);
         }
 
-        public TableInfo FindTable(string table)
+        public TableInfo FindTableLike(string table)
         {
-            return FindObject(_tables, table);
+            return FindObjectLike(_tables, table);
         }
 
-        public TableInfo FindTable(string schema, string table)
+        public TableInfo FindTable(NameWithSchema fullName)
         {
-            return FindObject(_tables, schema, table);
+            return Tables.FirstOrDefault(t => t.FullName == fullName);
         }
 
-        public ViewInfo FindView(string view)
+        public TableInfo FindTable(TableInfo table)
         {
-            return FindObject(_views, view);
+            return FindTableLike(table.Name);
         }
 
-        public ViewInfo FindView(string schema, string view)
+        public TableInfo FindTableLike(string schema, string table)
         {
-            return FindObject(_views, schema, view);
+            return FindObjectLike(_tables, schema, table);
         }
 
-        public ProgrammableInfo FindProgrammable(string name, bool procedure = true, bool function = true)
+        public ViewInfo FindViewLike(string view)
+        {
+            return FindObjectLike(_views, view);
+        }
+
+        public ViewInfo FindView(NameWithSchema fullName)
+        {
+            return _views.FirstOrDefault(v => v.FullName == fullName);
+        }
+
+        public ViewInfo FindView(ViewInfo view)
+        {
+            return FindView(view.FullName);
+        }
+
+        public ViewInfo FindViewLike(string schema, string view)
+        {
+            return FindObjectLike(_views, schema, view);
+        }
+
+        public ProgrammableInfo FindProgrammableLike(string name, bool procedure = true, bool function = true)
         {
             if (procedure)
             {
-                var res = FindObject(_storedProcedures, name);
+                var res = FindObjectLike(_storedProcedures, name);
                 if (res != null) return res;
             }
             if (function)
             {
-                var res = FindObject(_functions, name);
+                var res = FindObjectLike(_functions, name);
                 if (res != null) return res;
             }
             return null;
         }
 
-        public ProgrammableInfo FindProgrammable(string schema, string name, bool procedure = true, bool function = true)
+        public ProgrammableInfo FindProgrammableLike(string schema, string name, bool procedure = true, bool function = true)
         {
             if (procedure)
             {
-                var res = FindObject(_storedProcedures, schema, name);
+                var res = FindObjectLike(_storedProcedures, schema, name);
                 if (res != null) return res;
             }
             if (function)
             {
-                var res = FindObject(_functions, schema, name);
+                var res = FindObjectLike(_functions, schema, name);
                 if (res != null) return res;
             }
             return null;
+        }
+
+        public StoredProcedureInfo FindStoredProcedure(NameWithSchema fullName)
+        {
+            return StoredProcedures.FirstOrDefault(x => x.FullName == fullName);
+        }
+
+        public FunctionInfo FindFunction(NameWithSchema fullName)
+        {
+            return Functions.FirstOrDefault(x => x.FullName == fullName);
+        }
+
+        public StoredProcedureInfo FindStoredProcedure(StoredProcedureInfo obj)
+        {
+            return FindStoredProcedure(obj.FullName);
+        }
+
+        public FunctionInfo FindFunction(FunctionInfo obj)
+        {
+            return FindFunction(obj.FullName);
         }
 
         private bool? _isSingleSchema;
@@ -199,13 +245,15 @@ namespace DbShell.Driver.Common.Structure
             return null;
         }
 
-        public void Assign(DatabaseInfo source)
+        public override void Assign(DatabaseObjectInfo source)
         {
-            foreach (var obj in source.Tables) Tables.Add(obj.Clone(this));
-            foreach (var obj in source.Views) Views.Add(obj.Clone(this));
-            foreach (var obj in source.StoredProcedures) StoredProcedures.Add(obj.Clone(this));
-            foreach (var obj in source.Functions) Functions.Add(obj.Clone(this));
-            DefaultSchema = source.DefaultSchema;
+            base.Assign(source);
+            var src = (DatabaseInfo) source;
+            foreach (var obj in src.Tables) Tables.Add(obj.CloneTable(this));
+            foreach (var obj in src.Views) Views.Add(obj.CloneView(this));
+            foreach (var obj in src.StoredProcedures) StoredProcedures.Add(obj.CloneStoredProcedure(this));
+            foreach (var obj in src.Functions) Functions.Add(obj.CloneFunction(this));
+            DefaultSchema = src.DefaultSchema;
             AfterLoadLink();
         }
 
@@ -220,18 +268,190 @@ namespace DbShell.Driver.Common.Structure
             AfterLoadLink();
         }
 
+        public override DatabaseObjectType ObjectType
+        {
+            get { return DatabaseObjectType.Database; }
+        }
+
         private void AfterLoadLink()
         {
             foreach (var obj in Tables) obj.AfterLoadLink();
             foreach (var obj in Views) obj.AfterLoadLink();
             foreach (var obj in StoredProcedures) obj.AfterLoadLink();
-            foreach (var obj in Tables) obj.AfterLoadLink();
+            foreach (var obj in Functions) obj.AfterLoadLink();
         }
 
-        public DatabaseInfo Clone()
+        public DatabaseInfo CloneDatabase()
         {
             var res = new DatabaseInfo();
             res.Assign(this);
+            return res;
+        }
+
+        public override DatabaseObjectInfo CloneObject(DatabaseObjectInfo owner)
+        {
+            return CloneDatabase();
+        }
+
+        public override void AddAllObjects(List<DatabaseObjectInfo> res)
+        {
+            base.AddAllObjects(res);
+            foreach (var x in Tables) x.AddAllObjects(res);
+            foreach (var x in Views) x.AddAllObjects(res);
+            foreach (var x in StoredProcedures) x.AddAllObjects(res);
+            foreach (var x in Functions) x.AddAllObjects(res);
+        }
+
+        public List<DatabaseObjectInfo> GetAllObjects()
+        {
+            var res = new List<DatabaseObjectInfo>();
+            AddAllObjects(res);
+            return res;
+        }
+
+        public DatabaseObjectInfo FindByGroupId(string groupid)
+        {
+            foreach (var obj in GetAllObjects())
+            {
+                if (obj.GroupId == groupid) return obj;
+            }
+            return null;
+        }
+
+        public T FindByGroupId<T>(T obj) where T : DatabaseObjectInfo
+        {
+            return (T)FindByGroupId(obj.GroupId);
+        }
+
+        public TableInfo AddTable(NameWithSchema name)
+        {
+            var res = new TableInfo(this);
+            res.FullName = name;
+            Tables.Add(res);
+            return res;
+        }
+
+        public TableInfo AddTable(TableInfo table, bool reuseGroupId)
+        {
+            var res = table.CloneTable(this);
+            if (!reuseGroupId) res.GroupId = Guid.NewGuid().ToString();
+            Tables.Add(res);
+            return res;
+        }
+
+        public TableInfo FindOrCreateTable(NameWithSchema name)
+        {
+            var res = FindTable(name);
+            if (res == null) res = AddTable(name);
+            return res;
+        }
+
+        public ConstraintInfo FindOrCreateConstraint(ConstraintInfo cnt)
+        {
+            var t = FindOrCreateTable(cnt.OwnerTable.FullName);
+            var res = t.FindConstraint(cnt);
+            if (res == null)
+            {
+                t.AddConstraint(cnt);
+            }
+            return res;
+        }
+
+        public ColumnInfo FindOrCreateColumn(ColumnInfo col)
+        {
+            var t = FindOrCreateTable(col.OwnerTable.FullName);
+            var res = t.FindColumn(col.Name);
+            if (res == null)
+            {
+                res = col.CloneColumn(t);
+                res.GroupId = Guid.NewGuid().ToString();
+                t.Columns.Add(res);
+            }
+            return res;
+        }
+
+        public SpecificObjectInfo FindOrCreateSpecificObject(SpecificObjectInfo obj)
+        {
+            var res = FindSpecificObject(obj);
+            if (res == null) res = AddSpecificObject(obj, false);
+            return res;
+        }
+
+        private SpecificObjectInfo AddSpecificObject(SpecificObjectInfo obj, bool reuseGroupId)
+        {
+            var res = obj.CloneSpecificObject(this);
+            if (!reuseGroupId) res.GroupId = Guid.NewGuid().ToString();
+            switch (obj.ObjectType)
+            {
+                case DatabaseObjectType.View:
+                    Views.Add((ViewInfo) obj);
+                    break;
+                case DatabaseObjectType.StoredProcedure:
+                    StoredProcedures.Add((StoredProcedureInfo) obj);
+                    break;
+                case DatabaseObjectType.Function:
+                    Functions.Add((FunctionInfo) obj);
+                    break;
+            }
+            return res;
+        }
+
+        private SpecificObjectInfo FindSpecificObject(SpecificObjectInfo obj)
+        {
+            return
+                (SpecificObjectInfo) FindStoredProcedure(obj.FullName)
+                ?? (SpecificObjectInfo) FindFunction(obj.FullName)
+                ?? (SpecificObjectInfo) FindView(obj.FullName);
+        }
+
+        public void AddObject(DatabaseObjectInfo obj, bool reuseGrouId)
+        {
+            var col = obj as ColumnInfo;
+            if (col != null)
+            {
+                var t = FindOrCreateTable(col.OwnerTable.FullName);
+                t.AddColumn(col, reuseGrouId);
+                return;
+            }
+            var cnt = obj as ConstraintInfo;
+            if (cnt != null)
+            {
+                var t = FindOrCreateTable(col.OwnerTable.FullName);
+                t.AddConstraint(cnt, reuseGrouId);
+                return;
+            }
+            var tbl = obj as TableInfo;
+            if (tbl != null)
+            {
+                AddTable(tbl, reuseGrouId);
+                return;
+            }
+            var spe = obj as SpecificObjectInfo;
+            if (spe != null)
+            {
+                AddSpecificObject(spe, reuseGrouId);
+                return;
+            }
+            //var sch = obj as ISchemaStructure;
+            //if (sch != null)
+            //{
+            //    AddSchema(sch, reuseGrouId);
+            //    return;
+            //}
+            //var dom = obj as IDomainStructure;
+            //if (dom != null)
+            //{
+            //    AddDomain(dom, reuseGrouId);
+            //    return;
+            //}
+        }
+
+        public List<SpecificObjectInfo> GetAllSpecificObjects()
+        {
+            var res = new List<SpecificObjectInfo>();
+            res.AddRange(Views);
+            res.AddRange(StoredProcedures);
+            res.AddRange(Functions);
             return res;
         }
     }

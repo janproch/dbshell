@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonTypeSystem;
+using DbShell.Driver.Common.DbDiff;
 using DbShell.Driver.Common.Structure;
 
 namespace DbShell.Driver.Common.Sql
@@ -73,7 +74,7 @@ namespace DbShell.Driver.Common.Sql
 
         public virtual void CreateView(ViewInfo obj)
         {
-            WriteRaw(obj.QueryText);
+            WriteRaw(obj.CreateSql);
             EndCommand();
         }
 
@@ -84,7 +85,7 @@ namespace DbShell.Driver.Common.Sql
 
         public virtual void AlterView(ViewInfo obj)
         {
-            WriteRaw(Regex.Replace(obj.QueryText, @"create\s+view", "ALTER VIEW", RegexOptions.IgnoreCase));
+            WriteRaw(Regex.Replace(obj.CreateSql, @"create\s+view", "ALTER VIEW", RegexOptions.IgnoreCase));
             EndCommand();
         }
 
@@ -100,7 +101,7 @@ namespace DbShell.Driver.Common.Sql
 
         public virtual void CreateStoredProcedure(StoredProcedureInfo obj)
         {
-            WriteRaw(obj.SqlText);
+            WriteRaw(obj.CreateSql);
             EndCommand();
         }
 
@@ -111,7 +112,7 @@ namespace DbShell.Driver.Common.Sql
 
         public virtual void AlterStoredProcedure(StoredProcedureInfo obj)
         {
-            WriteRaw(Regex.Replace(obj.SqlText, @"create\s+procedure", "ALTER PROCEDURE", RegexOptions.IgnoreCase));
+            WriteRaw(Regex.Replace(obj.CreateSql, @"create\s+procedure", "ALTER PROCEDURE", RegexOptions.IgnoreCase));
             EndCommand();
         }
 
@@ -127,7 +128,7 @@ namespace DbShell.Driver.Common.Sql
 
         public virtual void CreateFunction(FunctionInfo obj)
         {
-            WriteRaw(obj.SqlText);
+            WriteRaw(obj.CreateSql);
             EndCommand();
         }
 
@@ -138,7 +139,7 @@ namespace DbShell.Driver.Common.Sql
 
         public virtual void AlterFunction(FunctionInfo obj)
         {
-            WriteRaw(Regex.Replace(obj.SqlText, @"create\s+function", "ALTER FUNCTION", RegexOptions.IgnoreCase));
+            WriteRaw(Regex.Replace(obj.CreateSql, @"create\s+function", "ALTER FUNCTION", RegexOptions.IgnoreCase));
             EndCommand();
         }
 
@@ -286,6 +287,60 @@ namespace DbShell.Driver.Common.Sql
             ColumnRefs(pk.Columns);
             WriteRaw(")");
             EndCommand();
+        }
+
+        public virtual void RenameConstraint(ConstraintInfo constraint, string newname)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public virtual void CreateColumn(ColumnInfo column, IEnumerable<ConstraintInfo> constraints)
+        {
+            Put("^alter ^table %f ^add %i ", column.OwnerTable, column.Name);
+            ColumnDefinition(column, true, true, true);
+            InlineConstraints(constraints);
+            EndCommand();
+        }
+
+        protected virtual void InlineConstraints(IEnumerable<ConstraintInfo> constrains)
+        {
+            if (constrains == null) return;
+            foreach (var cnt in constrains)
+            {
+                if (cnt is PrimaryKeyInfo)
+                {
+                    if (cnt.ConstraintName != null && !m_dialect.DialectCaps.AnonymousPrimaryKey)
+                    {
+                        Put(" ^constraint %i", cnt.ConstraintName);
+                    }
+                    Put(" ^primary ^key ");
+                }
+            }
+        }
+
+        public virtual void DropColumn(ColumnInfo column)
+        {
+            PutCmd("^alter ^table %f ^drop ^column %i", column.OwnerTable.FullName, column.Name);
+        }
+
+        public virtual void RenameColumn(ColumnInfo column, string newcol)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public virtual void ChangeColumn(ColumnInfo oldcol, ColumnInfo newcol, IEnumerable<ConstraintInfo> constraints)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public virtual void RecreateTable(TableInfo src, TableInfo dst)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public AlterProcessorCaps AlterCaps
+        {
+            get { return m_factory.CreateDialect().DumperCaps; }
         }
 
         public virtual void DropTable(TableInfo obj, bool testIfExists)

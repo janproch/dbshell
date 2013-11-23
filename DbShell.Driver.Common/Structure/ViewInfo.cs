@@ -2,7 +2,7 @@ using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.Structure
 {
-    public class ViewInfo : NamedObjectInfo
+    public class ViewInfo : SpecificObjectInfo
     {
         public ViewInfo(DatabaseInfo database)
             : base(database)
@@ -12,26 +12,27 @@ namespace DbShell.Driver.Common.Structure
         [XmlSubElem]
         public QueryResultInfo QueryInfo { get; set; }
 
-        [XmlElem]
-        public string QueryText { get; set; }
-
         public override DatabaseObjectType ObjectType
         {
             get { return DatabaseObjectType.View; }
         }
 
-        public ViewInfo Clone(DatabaseInfo ownerDb = null)
+        public ViewInfo CloneView(DatabaseInfo ownerDb = null)
         {
             var res = new ViewInfo(ownerDb ?? OwnerDatabase);
             res.Assign(this);
             return res;
         }
 
-        protected override void Assign(DatabaseObjectInfo source)
+        public override DatabaseObjectInfo CloneObject(DatabaseObjectInfo owner)
+        {
+            return CloneView(owner as DatabaseInfo);
+        }
+
+        public override void Assign(DatabaseObjectInfo source)
         {
             base.Assign(source);
             var src = (ViewInfo) source;
-            QueryText = src.QueryText;
             if (src.QueryInfo != null) QueryInfo = src.QueryInfo.Clone();
         }
     }

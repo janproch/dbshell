@@ -6,11 +6,8 @@ using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.Structure
 {
-    public abstract class ProgrammableInfo : NamedObjectInfo
+    public abstract class ProgrammableInfo : SpecificObjectInfo
     {
-        [XmlElem]
-        public string SqlText { get; set; }
-
         private List<ParameterInfo> _parameters = new List<ParameterInfo>();
 
         [XmlCollection(typeof(ParameterInfo))]
@@ -21,11 +18,10 @@ namespace DbShell.Driver.Common.Structure
         {
         }
 
-        protected override void Assign(DatabaseObjectInfo source)
+        public override void Assign(DatabaseObjectInfo source)
         {
             base.Assign(source);
             var src = (ProgrammableInfo)source;
-            SqlText = src.SqlText;
             foreach(var par in src.Parameters)
             {
                 Parameters.Add(par.Clone(this));

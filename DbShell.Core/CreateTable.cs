@@ -44,7 +44,7 @@ namespace DbShell.Core
         {
             using (var conn = Connection.Connect())
             {
-                var tbl = rowFormat.Clone();
+                var tbl = rowFormat.CloneTable();
                 tbl.FullName = GetFullName();
                 foreach(var col in tbl.Columns) col.AutoIncrement = false;
                 tbl.ForeignKeys.Clear();

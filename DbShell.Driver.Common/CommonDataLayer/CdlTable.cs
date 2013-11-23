@@ -55,14 +55,14 @@ namespace DbShell.Driver.Common.CommonDataLayer
 
         public CdlTable(TableInfo structure)
         {
-            m_structure = structure.Clone();
+            m_structure = structure.CloneTable();
             Rows = new CdlRowCollection(this);
             m_defConvertor = new CdlValueConvertor(new DataFormatSettings());
         }
 
         public CdlTable(InMemoryTable table)
         {
-            m_structure = table.Structure.Clone();
+            m_structure = table.Structure.CloneTable();
             Rows = new CdlRowCollection(this);
             foreach (var row in table.Rows) Rows.AddInternal(new CdlRow(this, row, CdlRowState.Unchanged, m_structure));
             m_defConvertor = new CdlValueConvertor(new DataFormatSettings());

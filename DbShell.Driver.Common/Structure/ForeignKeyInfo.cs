@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DbShell.Driver.Common.DbDiff;
 using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.Structure
@@ -14,9 +15,6 @@ namespace DbShell.Driver.Common.Structure
 
     public class ForeignKeyInfo : ColumnsConstraintInfo
     {
-        [XmlAttrib("constraint_name")]
-        public string ConstraintName { get; set; }
-
         [XmlAttrib("update_action")]
         public ForeignKeyAction OnUpdateAction { get; set; }
 
@@ -68,12 +66,11 @@ namespace DbShell.Driver.Common.Structure
             
         }
 
-        protected override void Assign(DatabaseObjectInfo source)
+        public override void Assign(DatabaseObjectInfo source)
         {
             base.Assign(source);
 
             var src = (ForeignKeyInfo) source;
-            ConstraintName = src.ConstraintName;
             OnUpdateAction = src.OnUpdateAction;
             OnDeleteAction = src.OnDeleteAction;
             RefTableName = src.RefTableName;
@@ -85,11 +82,16 @@ namespace DbShell.Driver.Common.Structure
             }
         }
 
-        public ForeignKeyInfo Clone(TableInfo ownTable = null)
+        public ForeignKeyInfo CloneForeignKey(TableInfo ownTable = null)
         {
             var res = new ForeignKeyInfo(ownTable ?? OwnerTable);
             res.Assign(this);
             return res;
+        }
+
+        public override DatabaseObjectInfo CloneObject(DatabaseObjectInfo owner)
+        {
+            return CloneForeignKey(owner as TableInfo);
         }
 
         public override DatabaseObjectType ObjectType
@@ -112,6 +114,13 @@ namespace DbShell.Driver.Common.Structure
             {
                 col.AfterLoadLink(RefTable);
             }
+        }
+
+        public override void SetDummyTable(NameWithSchema name)
+        {
+            var table = new TableInfo(null);
+            table.FullName = name;
+            table.ForeignKeys.Add(this);
         }
     }
 }

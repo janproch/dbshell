@@ -9,5 +9,7 @@ namespace DbShell.Driver.Common.Structure
         {
             OwnerTable = table;
         }
+
+        public abstract void SetDummyTable(NameWithSchema name);
     }
 }

@@ -22,7 +22,7 @@ namespace DbShell.Core
         {
             var fullName = GetFullName();
             var db = GetDatabaseStructure();
-            var view = db.FindView(fullName.Schema, fullName.Name);
+            var view = db.FindViewLike(fullName.Schema, fullName.Name);
             if (view == null)
             {
                 throw new Exception(String.Format("DBSH-00091 View {0} not found", fullName));
