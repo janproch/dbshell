@@ -219,7 +219,7 @@ namespace DbShell.Driver.Common.DbDiff
 
         public void RecreateTable(TableInfo src, TableInfo dst)
         {
-            throw new NotImplementedException();
+            DbDiffTool.DecomposeAlterTable(this, src, dst, new DbDiffOptions());
         }
 
         //public void ChangeColumn(ColumnInfo oldcol, ColumnInfo newcol)

@@ -15,6 +15,16 @@ namespace DbShell.Driver.SqlServer.Test
     [TestClass]
     public class DbDiffTest
     {
+        private static string TransformSql(string sql)
+        {
+            sql = sql.Replace("GO", ";");
+            sql = sql.Replace("\r", " ");
+            sql = sql.Replace("\n", " ");
+            sql = sql.Replace(";;", ";");
+            sql = sql.Replace(" ", "");
+            return sql;
+        }
+
         private void TestDiff(Action<DatabaseInfo> mangle, string expectedResult)
         {
             var db1 = new DatabaseInfo();
@@ -69,14 +79,7 @@ namespace DbShell.Driver.SqlServer.Test
             runner.Run(dmp, new DbDiffOptions());
             string sql = sw.ToString();
             Assert.IsNotNull(sql);
-            expectedResult = expectedResult.Replace(" ", "");
-
-            sql = sql.Replace("GO", ";");
-            sql = sql.Replace("\r", " ");
-            sql = sql.Replace("\n", " ");
-            sql = sql.Replace(";;", ";");
-            sql = sql.Replace(" ", "");
-            Assert.AreEqual(expectedResult, sql);
+            Assert.AreEqual(TransformSql(expectedResult), TransformSql(sql));
         }
 
         [TestMethod]
@@ -189,11 +192,44 @@ namespace DbShell.Driver.SqlServer.Test
         [TestMethod]
         public void ChangePkColumnTest()
         {
+            const string sql = @"
+ALTER TABLE [dbo].[t1] DROP CONSTRAINT [pk_t1]
+GO
+ALTER TABLE [dbo].[t1] ALTER COLUMN [c1] FLOAT NOT NULL
+GO
+ALTER TABLE [dbo].[t1] ADD CONSTRAINT [pk_t1] PRIMARY KEY ([c1])";
             TestDiff(db =>
             {
                 var t1 = db.FindTableLike("t1");
                 t1.Columns["c1"].DataType = "float";
-            }, "ALTER TABLE [dbo].[t1] DROP CONSTRAINT [pk_t1];ALTER TABLE [dbo].[t1] ALTER COLUMN [c1] FLOAT NOT NULL;ALTER TABLE [dbo].[t1] ADD CONSTRAINT [pk_t1] PRIMARY KEY ([c1])");
+            }, sql);
+        }
+
+        [TestMethod]
+        public void ChangeIdentityTest()
+        {
+            SqlDumper.TempTableNameOverride = "TMP0";
+            string sql = @"
+ALTER TABLE [dbo].[t1] DROP CONSTRAINT [pk_t1]
+GO
+EXECUTE sp_rename '[dbo].[t1]', 'TMP0', 'OBJECT'
+GO
+CREATE TABLE [dbo].[t1] ( 
+    [c1] INT IDENTITY NOT NULL, 
+    [c2] INT NOT NULL, 
+    CONSTRAINT [pk_t1] PRIMARY KEY ([c1])
+)
+GO
+SET IDENTITY_INSERT [dbo].[t1] ON;
+INSERT INTO [dbo].[t1] ([c1], [c2]) select [c1] AS [c1], [c2] AS [c2] FROM [dbo].[TMP0]
+GO
+SET IDENTITY_INSERT [dbo].[t1] OFF;
+DROP TABLE [TMP0]";
+            TestDiff(db =>
+            {
+                var t1 = db.FindTableLike("t1");
+                t1.Columns["c1"].AutoIncrement = true;
+            }, sql);
         }
     }
 }

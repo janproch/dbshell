@@ -75,6 +75,11 @@ namespace DbShell.Driver.Common.DbDiff
                 opts.DiffLogger.Trace("Column {0}, {1}: different nullable: {2}; {3}", a, b, a.NotNull, b.NotNull);
                 return false;
             }
+            if (a.AutoIncrement != b.AutoIncrement)
+            {
+                opts.DiffLogger.Trace("Column {0}, {1}: different autoincrement: {2}; {3}", a, b, a.AutoIncrement, b.AutoIncrement);
+                return false;
+            }
 
             if (!EqualTypes(a,b,opts))
             {

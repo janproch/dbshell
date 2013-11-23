@@ -100,6 +100,15 @@ namespace DbShell.Driver.Common.Structure
         /// </summary>
         public DbTypeBase CommonType { get; set; }
 
+        public int ColumnOrder
+        {
+            get
+            {
+                if (OwnerTable == null) return -1;
+                return OwnerTable.Columns.IndexOf(this);
+            }
+        }
+
         public ColumnInfo CloneColumn(TableInfo ownTable = null)
         {
             var res = new ColumnInfo(ownTable ?? OwnerTable);

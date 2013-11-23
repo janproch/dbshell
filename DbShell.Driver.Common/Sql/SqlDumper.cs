@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.DbDiff;
 using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.Utility;
+using System.Linq;
 
 namespace DbShell.Driver.Common.Sql
 {
@@ -153,8 +156,10 @@ namespace DbShell.Driver.Common.Sql
             throw new System.NotImplementedException();
         }
 
-        public virtual void CreateTable(TableInfo table)
+        public virtual void CreateTable(TableInfo tableSrc)
         {
+            var table = tableSrc.CloneTable();
+            table.AfterLoadLink();
             Put("^create ^table %f ( &>&n", table.FullName);
             bool first = true;
             foreach (var col in table.Columns)
@@ -181,6 +186,7 @@ namespace DbShell.Driver.Common.Sql
                 CreateForeignKeyCore(cnt);
             }
             Put("&<&n)");
+            EndCommand();
         }
 
         protected virtual void CreateForeignKeyCore(ForeignKeyInfo fk)
@@ -333,9 +339,70 @@ namespace DbShell.Driver.Common.Sql
             throw new System.NotImplementedException();
         }
 
-        public virtual void RecreateTable(TableInfo src, TableInfo dst)
+        private static List<int> GetColumnMap(TableInfo oldTable, TableInfo newTable)
         {
-            throw new System.NotImplementedException();
+            List<int> columnMap = new List<int>();
+
+            foreach (var col in newTable.Columns)
+            {
+                columnMap.Add(oldTable.Columns.IndexOfIf(c => c.GroupId == col.GroupId));
+            }
+
+            return columnMap;
+        }
+
+        public static string TempTableNameOverride;
+        private static string GenerateTempTableName(int id)
+        {
+            if (TempTableNameOverride != null) return TempTableNameOverride;
+            return "temp_table_" + id.ToString() + "_" + DateTime.UtcNow.ToFileTime().ToString();
+        }
+
+        public static int _lastAlterTableId = 0;
+        public virtual void RecreateTable(TableInfo oldTable, TableInfo newTable)
+        {
+            if (oldTable.GroupId != newTable.GroupId) throw new InternalError("DAE-00040 Recreate is not possible: oldTable.GroupId != newTable.GroupId");
+            var columnMap = GetColumnMap(oldTable, newTable);
+            int id = System.Threading.Interlocked.Increment(ref _lastAlterTableId);
+            string tmptable = GenerateTempTableName(id);
+
+            // remove constraints
+            //DropConstraints(oldTable.GetReferencedFrom(), DropFlags.None);
+            this.DropConstraints(oldTable.Constraints);
+
+            RenameTable(oldTable, tmptable);
+
+            var old = oldTable.CloneTable();
+            old.FullName = new NameWithSchema(oldTable.FullName.Schema, tmptable);
+
+            CreateTable(newTable);
+
+            var idcol = newTable.FindAutoIncrementColumn();
+            bool hasident = idcol != null && columnMap[idcol.ColumnOrder] >= 0;
+            if (hasident) AllowIdentityInsert(newTable.FullName, true);
+            PutCmd("^insert ^into %f (%,i) select %,s ^from %f", newTable.FullName,
+                from c in newTable.Columns
+                where columnMap[c.ColumnOrder] >= 0
+                select c.Name,
+                from dstindex in
+                    (
+                    from i in PyList.Range(newTable.Columns.Count)
+                    where columnMap[i] >= 0
+                    select i
+                    )
+                let srcindex = columnMap[dstindex]
+                select
+                    (srcindex < 0
+                    // srcindex < 0 should not occur thanks to filtering
+                    ? Format("^null ^as %i", newTable.Columns[dstindex].Name)
+                    : Format("^%i ^as %i", old.Columns[srcindex].Name, newTable.Columns[dstindex].Name)),
+                old.FullName);
+            if (hasident) AllowIdentityInsert(newTable.FullName, false);
+
+            // newTable.Constraints are allready created
+            //CreateConstraints(newTable.GetReferencedFrom());
+
+            PutCmd("^drop ^table %i", tmptable);
         }
 
         public AlterProcessorCaps AlterCaps

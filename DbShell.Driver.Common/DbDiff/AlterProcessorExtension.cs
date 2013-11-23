@@ -271,5 +271,13 @@ namespace DbShell.Driver.Common.DbDiff
                 proc.CreateConstraint(cnt);
             }
         }
+
+        public static void DropConstraints(this ISqlDumper fmt, IEnumerable constraints)
+        {
+            foreach (ConstraintInfo cnt in constraints)
+            {
+                fmt.DropConstraint(cnt);
+            }
+        }
     }
 }
