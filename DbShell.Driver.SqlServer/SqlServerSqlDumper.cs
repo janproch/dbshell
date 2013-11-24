@@ -125,5 +125,11 @@ namespace DbShell.Driver.SqlServer
             CreateDefault(newcol);
             this.CreateConstraints(constraints);
         }
+
+        public override void RenameConstraint(ConstraintInfo cnt, string newname)
+        {
+            if (cnt.ObjectType == DatabaseObjectType.Index) PutCmd("^execute sp_rename '%f.%i', '%s', 'INDEX'", cnt.OwnerTable.FullName, cnt.ConstraintName, newname);
+            else PutCmd("^execute sp_rename '%f', '%s', 'OBJECT'", new NameWithSchema(cnt.OwnerTable.FullName.Schema, cnt.ConstraintName), newname);
+        }
     }
 }

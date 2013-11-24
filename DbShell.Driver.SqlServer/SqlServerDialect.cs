@@ -67,5 +67,10 @@ namespace DbShell.Driver.SqlServer
         {
             get { return typeof (SqlTypeCode); }
         }
+
+        public override Common.CommonTypeSystem.DbTypeBase CreateCommonType(Common.Structure.ColumnInfo column)
+        {
+            return SqlServerDatabaseAnalyser.AnalyseType(column.DataType, column.Length, column.Precision, column.Scale);
+        }
     }
 }

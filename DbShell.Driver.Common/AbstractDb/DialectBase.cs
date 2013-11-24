@@ -3,6 +3,7 @@ using System.Text;
 using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.DbDiff;
 using DbShell.Driver.Common.Sql;
+using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.AbstractDb
@@ -52,6 +53,11 @@ namespace DbShell.Driver.Common.AbstractDb
         public virtual Type SpecificTypeEnum
         {
             get { return typeof(DbTypeCode); }
+        }
+
+        public virtual DbTypeBase CreateCommonType(ColumnInfo column)
+        {
+            return new DbTypeString();
         }
 
         protected virtual HashSetEx<string> LoadKeywords()

@@ -410,7 +410,7 @@ namespace DbShell.Driver.SqlServer
             //Structure.FixPrimaryKeys();
         }
 
-        private DbTypeBase AnalyseType(string dt, int len, int prec, int scale)
+        public static DbTypeBase AnalyseType(string dt, int len, int prec, int scale)
         {
             switch (dt)
             {

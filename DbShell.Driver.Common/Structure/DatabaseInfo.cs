@@ -477,5 +477,10 @@ namespace DbShell.Driver.Common.Structure
         {
             get { return new DatabaseInfoAlterProcessor(this); }
         }
+
+        public ConstraintInfo FindConstraint(ConstraintInfo constraint)
+        {
+            return FindTable(constraint.OwnerTable.FullName).Constraints.First(c => c.ConstraintName == constraint.ConstraintName);
+        }
     }
 }

@@ -229,11 +229,11 @@ namespace DbShell.Driver.Common.DbDiff
             if (tsrc == null || tdst == null) return srcRefs.EqualSequence(dstRefs);
             for (int i = 0; i < srcRefs.Count; i++)
             {
-                var scol = tsrc.Columns.FirstOrDefault(c => c.Name == srcRefs[i].Name);
-                var dcol = tdst.Columns.FirstOrDefault(c => c.Name == dstRefs[i].Name);
+                var scol = tsrc.Columns.FirstOrDefault(c => c.Name == srcRefs[i].RefColumnName);
+                var dcol = tdst.Columns.FirstOrDefault(c => c.Name == dstRefs[i].RefColumnName);
                 if (scol == null || dcol == null)
                 {
-                    if (srcRefs[i].Name != dstRefs[i].Name) return false;
+                    if (srcRefs[i].RefColumnName != dstRefs[i].RefColumnName) return false;
                 }
                 else
                 {

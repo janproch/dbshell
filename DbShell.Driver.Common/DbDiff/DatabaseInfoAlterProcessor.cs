@@ -192,7 +192,7 @@ namespace DbShell.Driver.Common.DbDiff
 
         public void RenameConstraint(ConstraintInfo constraint, string newname)
         {
-            throw new NotImplementedException();
+            _database.FindConstraint(constraint).ConstraintName = newname;
         }
 
         public void CreateColumn(ColumnInfo column, IEnumerable<ConstraintInfo> constraints)

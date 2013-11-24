@@ -39,7 +39,10 @@ namespace DbShell.Driver.SqlServer
         Xml, // 2005
         Numeric,
 
-        Generic,
+        Geometry, // 2008
+        Geography, // 2008
+
+        //Generic,
         //Udt = 29,
         //Structured = 30,
         //Date = 31,
