@@ -226,7 +226,15 @@ namespace DbShell.Driver.Common.DbDiff
         public static bool EqualsColumnRefs(TableInfo tsrc, TableInfo tdst, List<ColumnReference> srcRefs, List<ColumnReference> dstRefs)
         {
             if (srcRefs.Count != dstRefs.Count) return false;
-            if (tsrc == null || tdst == null) return srcRefs.EqualSequence(dstRefs);
+            if (tsrc == null || tdst == null)
+            {
+                if (srcRefs.Count != dstRefs.Count) return false;
+                for (int i = 0; i < srcRefs.Count; i++)
+                {
+                    if (srcRefs[i].RefColumnName != dstRefs[i].RefColumnName) return false;
+                }
+                return true;
+            }
             for (int i = 0; i < srcRefs.Count; i++)
             {
                 var scol = tsrc.Columns.FirstOrDefault(c => c.Name == srcRefs[i].RefColumnName);
@@ -271,9 +279,9 @@ namespace DbShell.Driver.Common.DbDiff
                 {
                     var fsrc = (ForeignKeyInfo)csrc;
                     var fdst = (ForeignKeyInfo)cdst;
-                    if (!EqualFullNames(fsrc.RefTable.FullName, fdst.RefTable.FullName, options)) return false;
-                    TableInfo psrc = pairing.Source.FindTable(fsrc.RefTable.FullName);
-                    TableInfo pdst = pairing.Target.FindTable(fdst.RefTable.FullName);
+                    if (!EqualFullNames(fsrc.RefTableFullName, fdst.RefTableFullName, options)) return false;
+                    TableInfo psrc = pairing.Source.FindTable(fsrc.RefTableFullName);
+                    TableInfo pdst = pairing.Target.FindTable(fdst.RefTableFullName);
                     if (!EqualsColumnRefs(psrc, pdst, fsrc.RefColumns, fdst.RefColumns)) return false;
                     if (fsrc.OnDeleteAction != fdst.OnDeleteAction) return false;
                     if (fsrc.OnUpdateAction != fdst.OnUpdateAction) return false;

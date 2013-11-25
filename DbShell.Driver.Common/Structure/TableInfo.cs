@@ -181,5 +181,17 @@ namespace DbShell.Driver.Common.Structure
             if (cnt is PrimaryKeyInfo) PrimaryKey = null;
             if (cnt is ForeignKeyInfo) ForeignKeys.RemoveAll(x => x.ConstraintName == cnt.ConstraintName);
         }
+
+        public ColumnInfo FindOrCreateColumn(ColumnInfo col)
+        {
+            var res = FindColumn(col.Name);
+            if (res == null)
+            {
+                res = col.CloneColumn(this);
+                res.GroupId = Guid.NewGuid().ToString();
+                Columns.Add(res);
+            }
+            return res;
+        }
     }
 }

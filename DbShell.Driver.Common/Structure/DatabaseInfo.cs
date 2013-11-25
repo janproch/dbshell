@@ -378,14 +378,7 @@ namespace DbShell.Driver.Common.Structure
         public ColumnInfo FindOrCreateColumn(ColumnInfo col)
         {
             var t = FindOrCreateTable(col.OwnerTable.FullName);
-            var res = t.FindColumn(col.Name);
-            if (res == null)
-            {
-                res = col.CloneColumn(t);
-                res.GroupId = Guid.NewGuid().ToString();
-                t.Columns.Add(res);
-            }
-            return res;
+            return t.FindOrCreateColumn(col);
         }
 
         public SpecificObjectInfo FindOrCreateSpecificObject(SpecificObjectInfo obj)

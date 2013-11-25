@@ -184,5 +184,13 @@ namespace DbShell.Driver.Common.Structure
             }
             return this;
         }
+
+        public static NameWithSchema Parse(string value)
+        {
+            if (value == null) return null;
+            int dotPos = value.IndexOf('.');
+            if (dotPos >= 0) return new NameWithSchema(value.Substring(0, dotPos), value.Substring(dotPos + 1));
+            else return new NameWithSchema(value);
+        }
     }
 }

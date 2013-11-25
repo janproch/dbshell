@@ -194,7 +194,7 @@ namespace DbShell.Driver.Common.Sql
             if (fk.ConstraintName != null) Put("^constraint %i ", fk.ConstraintName);
             Put("^foreign ^key (");
             ColumnRefs(fk.Columns);
-            Put(") ^references %f", fk.RefTable);
+            Put(") ^references %f", fk.RefTableFullName);
             if (fk.RefColumns != null)
             {
                 WriteRaw("(");

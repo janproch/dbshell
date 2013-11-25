@@ -60,6 +60,11 @@ namespace DbShell.Driver.Common.Structure
             }
         }
 
+        public NameWithSchema RefTableFullName
+        {
+            get { return new NameWithSchema(RefSchemaName, RefTableName); }
+        }
+
         public ForeignKeyInfo(TableInfo table)
             :base(table)
         {
