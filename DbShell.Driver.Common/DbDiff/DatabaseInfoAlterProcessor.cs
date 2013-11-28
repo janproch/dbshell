@@ -190,6 +190,16 @@ namespace DbShell.Driver.Common.DbDiff
             _database.FindTable(pk.OwnerTable).AddConstraint(pk);
         }
 
+        public void DropIndex(IndexInfo ix)
+        {
+            _database.FindTable(ix.OwnerTable).DropConstraint(ix);
+        }
+
+        public void CreateIndex(IndexInfo ix)
+        {
+            _database.FindTable(ix.OwnerTable).AddConstraint(ix);
+        }
+
         public void RenameConstraint(ConstraintInfo constraint, string newname)
         {
             _database.FindConstraint(constraint).ConstraintName = newname;

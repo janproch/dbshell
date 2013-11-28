@@ -295,6 +295,16 @@ namespace DbShell.Driver.Common.Sql
             EndCommand();
         }
 
+        public virtual void DropIndex(IndexInfo ix)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void CreateIndex(IndexInfo ix)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual void RenameConstraint(ConstraintInfo constraint, string newname)
         {
             throw new System.NotImplementedException();

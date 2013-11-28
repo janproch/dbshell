@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
 using System.Diagnostics;
+using System.Linq;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.Structure;
@@ -145,6 +146,7 @@ namespace DbShell.Driver.SqlServer
                             col.AutoIncrement = reader.SafeString("is_identity") == "True";
                             col.ComputedExpression = reader.SafeString("computed_expression");
                             col.IsPersisted = reader.SafeString("is_persisted") == "True";
+                            col.ObjectId = reader.SafeString("column_id");
                             col.CommonType = AnalyseType(col.DataType, col.Length, col.Precision, col.Scale);
                             table.Columns.Add(col);
                             if (String.IsNullOrWhiteSpace(col.ComputedExpression)) col.ComputedExpression = null;
@@ -173,7 +175,7 @@ namespace DbShell.Driver.SqlServer
                                 t.PrimaryKey = new PrimaryKeyInfo(t);
                                 t.PrimaryKey.ConstraintName = cnt;
                             }
-                            t.PrimaryKey.Columns.Add(new ColumnReference { RefColumn = t.Columns[column] });
+                            t.PrimaryKey.Columns.Add(new ColumnReference {RefColumn = t.Columns[column]});
                         }
                     }
                 }
@@ -224,7 +226,66 @@ namespace DbShell.Driver.SqlServer
                         }
                     }
                 }
+
+                var indexById = new Dictionary<string, IndexInfo>();
+
+                Timer("indexes...");
+                using (var cmd = Connection.CreateCommand())
+                {
+                    cmd.CommandText = CreateQuery("getindexes.sql", tables: true);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string oid = reader.SafeString("object_id");
+                            string ixname = reader.SafeString("ix_name");
+                            string typedesc = reader.SafeString("type_desc");
+                            bool isunique = reader.SafeString("is_unique") == "True";
+                            string indexid = reader.SafeString("index_id");
+
+                            var table = _tablesById.Get(oid);
+                            if (table == null) continue;
+                            var index = new IndexInfo(table);
+                            index.ObjectId = indexid;
+                            index.IsUnique = isunique;
+                            index.ConstraintName = ixname;
+                            index.IndexType = typedesc;
+                            indexById[oid + "|" + indexid] = index;
+                            table.Indexes.Add(index);
+                        }
+                    }
+                }
+
+                Timer("index columns...");
+                using (var cmd = Connection.CreateCommand())
+                {
+                    cmd.CommandText = CreateQuery("getindexcols.sql", tables: true);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string oid = reader.SafeString("object_id");
+                            string indexid = reader.SafeString("index_id");
+                            string colid = reader.SafeString("column_id");
+                            bool desc = reader.SafeString("is_descending_key") == "True";
+                            bool inc = reader.SafeString("is_included_column") == "True";
+
+                            var index = indexById.Get(oid + "|" + indexid);
+                            if (index == null) continue;
+                            var col = index.OwnerTable.Columns.FirstOrDefault(x => x.ObjectId == colid);
+                            if (col == null) continue;
+
+                            index.Columns.Add(new ColumnReference
+                                {
+                                    RefColumn = col,
+                                    IsDescending = desc,
+                                    IsIncluded = inc,
+                                });
+                        }
+                    }
+                }
             }
+
 
             var objs = new Dictionary<NameWithSchema, string>();
             if (FilterOptions.AnyFunctions || FilterOptions.AnyStoredProcedures || FilterOptions.AnyViews)

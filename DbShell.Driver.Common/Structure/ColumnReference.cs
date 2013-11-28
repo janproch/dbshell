@@ -32,6 +32,12 @@ namespace DbShell.Driver.Common.Structure
             }
         }
 
+        [XmlAttrib("is_descending")]
+        public bool IsDescending { get; set; }
+
+        [XmlAttrib("is_included")]
+        public bool IsIncluded { get; set; }
+
         public ColumnReference Clone()
         {
             var res = new ColumnReference();
@@ -42,6 +48,8 @@ namespace DbShell.Driver.Common.Structure
         private void Assign(ColumnReference src)
         {
             RefColumnName = src.RefColumnName;
+            IsDescending = src.IsDescending;
+            IsIncluded = src.IsIncluded;
         }
 
         public void AfterLoadLink(TableInfo table)

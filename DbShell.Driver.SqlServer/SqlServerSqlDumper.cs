@@ -131,5 +131,37 @@ namespace DbShell.Driver.SqlServer
             if (cnt.ObjectType == DatabaseObjectType.Index) PutCmd("^execute sp_rename '%f.%i', '%s', 'INDEX'", cnt.OwnerTable.FullName, cnt.ConstraintName, newname);
             else PutCmd("^execute sp_rename '%f', '%s', 'OBJECT'", new NameWithSchema(cnt.OwnerTable.FullName.Schema, cnt.ConstraintName), newname);
         }
+
+        public override void CreateIndex(IndexInfo ix)
+        {
+            Put("^create %k %k ^index %i on %f (", ix.IsUnique ? "UNIQUE" : "", ix.IndexType ?? "NONCLUSTERED", ix.ConstraintName, ix.OwnerTable.FullName);
+            bool was = false;
+            foreach (var col in ix.Columns.Where(x => !x.IsIncluded))
+            {
+                if (was) Put(" ,");
+                Put("%i %k", col.RefColumnName, col.IsDescending ? "DESC" : "ASC");
+                was = true;
+            }
+            Put(")");
+            was = false;
+            if (ix.Columns.Any(x => x.IsIncluded))
+            {
+                Put(") ^include (");
+                foreach (var col in ix.Columns.Where(x => x.IsIncluded))
+                {
+                    if (was) Put(" ,");
+                    Put("%i", col.RefColumnName);
+                    was = true;
+                }
+                Put(")");
+            }
+            EndCommand();
+        }
+
+        public override void DropIndex(IndexInfo ix)
+        {
+            Put("^drop ^index %i ^on %f", ix.ConstraintName, ix.OwnerTable.FullName);
+            EndCommand();
+        }
     }
 }

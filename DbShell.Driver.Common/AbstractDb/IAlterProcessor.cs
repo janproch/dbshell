@@ -39,8 +39,12 @@ namespace DbShell.Driver.Common.AbstractDb
         // key operations
         void DropForeignKey(ForeignKeyInfo fk);
         void CreateForeignKey(ForeignKeyInfo fk);
+
         void DropPrimaryKey(PrimaryKeyInfo pk);
         void CreatePrimaryKey(PrimaryKeyInfo pk);
+
+        void DropIndex(IndexInfo ix);
+        void CreateIndex(IndexInfo ix);
 
         void RenameConstraint(ConstraintInfo constraint, string newname);
 

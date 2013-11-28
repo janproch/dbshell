@@ -18,6 +18,8 @@ namespace DbShell.Driver.Common.Structure
 
         private List<ForeignKeyInfo> _foreignKeys = new List<ForeignKeyInfo>();
 
+        private List<IndexInfo> _indexes = new List<IndexInfo>();
+
         /// <summary>
         /// Table primary key
         /// </summary>
@@ -29,6 +31,9 @@ namespace DbShell.Driver.Common.Structure
         /// </summary>
         [XmlCollection(typeof(ForeignKeyInfo))]
         public List<ForeignKeyInfo> ForeignKeys { get { return _foreignKeys; } }
+
+        [XmlCollection(typeof(IndexInfo))]
+        public List<IndexInfo> Indexes { get { return _indexes; } }
 
         public TableInfo CloneTable(DatabaseInfo ownerDb = null)
         {
@@ -101,6 +106,7 @@ namespace DbShell.Driver.Common.Structure
                 var res = new List<ConstraintInfo>();
                 if (PrimaryKey != null) res.Add(PrimaryKey);
                 res.AddRange(ForeignKeys);
+                res.AddRange(Indexes);
                 return res;
             }
         }
@@ -114,6 +120,10 @@ namespace DbShell.Driver.Common.Structure
             {
                 ForeignKeys.Add(fk.CloneForeignKey(this));
             }
+            foreach(var ix in src.Indexes)
+            {
+                Indexes.Add(ix.CloneIndex(this));
+            }
         }
 
         public override void AfterLoadLink()
@@ -125,6 +135,10 @@ namespace DbShell.Driver.Common.Structure
             {
                 fk.AfterLoadLink();
             }
+            foreach (var ix in Indexes)
+            {
+                ix.AfterLoadLink();
+            }
         }
 
         public override void AddAllObjects(List<DatabaseObjectInfo> res)
@@ -133,6 +147,7 @@ namespace DbShell.Driver.Common.Structure
             if (PrimaryKey != null) PrimaryKey.AddAllObjects(res);
             foreach (var x in ForeignKeys) x.AddAllObjects(res);
             foreach (var x in Columns) x.AddAllObjects(res);
+            foreach (var x in Indexes) x.AddAllObjects(res);
         }
 
         public void DropReferencesTo(NameWithSchema fullName)
@@ -144,6 +159,7 @@ namespace DbShell.Driver.Common.Structure
         {
             if (cnt is PrimaryKeyInfo) return PrimaryKey;
             if (cnt is ForeignKeyInfo) return ForeignKeys.FirstOrDefault(x => x.ConstraintName == cnt.ConstraintName);
+            if (cnt is IndexInfo) return Indexes.FirstOrDefault(x => x.ConstraintName == cnt.ConstraintName);
             return null;
         }
 
@@ -161,6 +177,13 @@ namespace DbShell.Driver.Common.Structure
                 var fknew = foreignKeyInfo.CloneForeignKey(this);
                 if (!reuseGrouId) fknew.GroupId = Guid.NewGuid().ToString();
                 ForeignKeys.Add(fknew);
+            }
+            var indexInfo = cnt as IndexInfo;
+            if (indexInfo != null)
+            {
+                var ixnew = indexInfo.CloneIndex(this);
+                if (!reuseGrouId) ixnew.GroupId = Guid.NewGuid().ToString();
+                Indexes.Add(ixnew);
             }
         }
 
@@ -180,6 +203,7 @@ namespace DbShell.Driver.Common.Structure
         {
             if (cnt is PrimaryKeyInfo) PrimaryKey = null;
             if (cnt is ForeignKeyInfo) ForeignKeys.RemoveAll(x => x.ConstraintName == cnt.ConstraintName);
+            if (cnt is IndexInfo) Indexes.RemoveAll(x => x.ConstraintName == cnt.ConstraintName);
         }
 
         public ColumnInfo FindOrCreateColumn(ColumnInfo col)
