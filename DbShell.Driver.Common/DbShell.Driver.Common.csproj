@@ -179,6 +179,7 @@
     <Compile Include="Structure\SpecificObjectInfo.cs" />
     <Compile Include="Structure\StoredProcedureInfo.cs" />
     <Compile Include="Structure\TableObjectInfo.cs" />
+    <Compile Include="Structure\UniqueInfo.cs" />
     <Compile Include="Structure\ViewInfo.cs" />
     <Compile Include="CommonDataLayer\CdlFileStorage.cs" />
     <Compile Include="Utility\DepsCollector.cs" />

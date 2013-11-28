@@ -16,6 +16,7 @@ namespace DbShell.Driver.Common.Structure
         Column,
         ForeignKey,
         Index,
+        Unique,
     }
 
     public abstract class DatabaseObjectInfo
