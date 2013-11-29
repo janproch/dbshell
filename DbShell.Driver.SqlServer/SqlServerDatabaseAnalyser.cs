@@ -15,6 +15,7 @@ namespace DbShell.Driver.SqlServer
     {
         private Dictionary<NameWithSchema, TableInfo> _tables = new Dictionary<NameWithSchema, TableInfo>();
         private Dictionary<string, TableInfo> _tablesById = new Dictionary<string, TableInfo>();
+        private Dictionary<string, ViewInfo> _viewsById = new Dictionary<string, ViewInfo>();
 
         private SqlConnection Connection
         {
@@ -73,10 +74,15 @@ namespace DbShell.Driver.SqlServer
 
         protected override void DoRunAnalysis()
         {
-            foreach(var table in Structure.Tables)
+            foreach (var table in Structure.Tables)
             {
                 _tables[table.FullName] = table;
                 _tablesById[table.ObjectId] = table;
+            }
+
+            foreach (var view in Structure.Views)
+            {
+                _viewsById[view.ObjectId] = view;
             }
 
             var dialect = SqlServerDatabaseFactory.Instance.CreateDialect();
@@ -227,7 +233,7 @@ namespace DbShell.Driver.SqlServer
                     }
                 }
 
-                var indexById = new Dictionary<string, IndexInfo>();
+                var indexById = new Dictionary<string, ColumnsConstraintInfo>();
 
                 Timer("indexes...");
                 using (var cmd = Connection.CreateCommand())
@@ -242,16 +248,28 @@ namespace DbShell.Driver.SqlServer
                             string typedesc = reader.SafeString("type_desc");
                             bool isunique = reader.SafeString("is_unique") == "True";
                             string indexid = reader.SafeString("index_id");
+                            bool isUniqueConstraint = reader.SafeString("is_unique_constraint") == "True";
 
                             var table = _tablesById.Get(oid);
                             if (table == null) continue;
-                            var index = new IndexInfo(table);
-                            index.ObjectId = indexid;
-                            index.IsUnique = isunique;
-                            index.ConstraintName = ixname;
-                            index.IndexType = typedesc;
-                            indexById[oid + "|" + indexid] = index;
-                            table.Indexes.Add(index);
+                            if (isUniqueConstraint)
+                            {
+                                var unique = new UniqueInfo(table);
+                                unique.ObjectId = indexid;
+                                unique.ConstraintName = ixname;
+                                indexById[oid + "|" + indexid] = unique;
+                                table.Uniques.Add(unique);
+                            }
+                            else
+                            {
+                                var index = new IndexInfo(table);
+                                index.ObjectId = indexid;
+                                index.IsUnique = isunique;
+                                index.ConstraintName = ixname;
+                                index.IndexType = typedesc;
+                                indexById[oid + "|" + indexid] = index;
+                                table.Indexes.Add(index);
+                            }
                         }
                     }
                 }
@@ -281,6 +299,32 @@ namespace DbShell.Driver.SqlServer
                                     IsDescending = desc,
                                     IsIncluded = inc,
                                 });
+                        }
+                    }
+                }
+
+                Timer("check constraints...");
+                using (var cmd = Connection.CreateCommand())
+                {
+                    cmd.CommandText = CreateQuery("getchecks.sql", tables: true);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string oid = reader.SafeString("object_id");
+                            string name = reader.SafeString("name");
+                            string def = reader.SafeString("definition");
+
+                            var table = _tablesById.Get(oid);
+                            if (table == null) continue;
+
+                            var check = new CheckInfo(table)
+                                {
+                                    ConstraintName = name,
+                                    Definition = def,
+                                };
+
+                            table.Checks.Add(check);
                         }
                     }
                 }
@@ -343,6 +387,42 @@ namespace DbShell.Driver.SqlServer
                                 };
                             if (objs.ContainsKey(name)) view.CreateSql = objs[name];
                             Structure.Views.Add(view);
+                            _viewsById[view.ObjectId] = view;
+                        }
+                    }
+                }
+            }
+
+            if (FilterOptions.AnyTriggers)
+            {
+                Timer("triggers...");
+                // load triggers
+                using (var cmd = Connection.CreateCommand())
+                {
+                    cmd.CommandText = CreateQuery("gettriggers.sql", views: true);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        int modifyIndex = reader.GetOrdinal("modify_date");
+                        int createIndex = reader.GetOrdinal("modify_date");
+                        while (reader.Read())
+                        {
+                            var name = new NameWithSchema(reader.SafeString("schema"), reader.SafeString("name"));
+                            string id = reader.SafeString("object_id");
+                            string parentId = reader.SafeString("parent_id");
+                            DateTime modify = reader.GetDateTime(modifyIndex);
+                            DateTime create = reader.GetDateTime(createIndex);
+
+                            var trg = new TriggerInfo(Structure)
+                                {
+                                    FullName = name,
+                                    ObjectId = id,
+                                    ModifyDate = modify,
+                                    CreateDate = create,
+                                };
+                            if (objs.ContainsKey(name)) trg.CreateSql = objs[name];
+                            trg.RelatedTable = _tablesById.Get(parentId);
+                            trg.RelatedView = _viewsById.Get(parentId);
+                            Structure.Triggers.Add(trg);
                         }
                     }
                 }
@@ -463,6 +543,28 @@ namespace DbShell.Driver.SqlServer
                 {
                     cmd.CommandText = "SELECT SCHEMA_NAME()";
                     Structure.DefaultSchema = cmd.ExecuteScalar().ToString();
+                }
+            }
+
+            Timer("schemas...");
+
+            // load schemas
+            using (var cmd = Connection.CreateCommand())
+            {
+                Structure.Schemas.Clear();
+                cmd.CommandText = CreateQuery("getschemas.sql");
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string name = reader.SafeString("name");
+                        string id = reader.SafeString("object_id");
+                        Structure.Schemas.Add(new SchemaInfo(Structure)
+                            {
+                                ObjectId = id,
+                                Name = name,
+                            });
+                    }
                 }
             }
 

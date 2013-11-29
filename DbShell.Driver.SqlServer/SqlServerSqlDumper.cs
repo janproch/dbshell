@@ -61,6 +61,17 @@ namespace DbShell.Driver.SqlServer
             ChangeObjectSchema(obj, newschema);
         }
 
+        public override void RenameTrigger(TriggerInfo obj, string newname)
+        {
+            RenameObject(obj, newname);
+        }
+
+        public override void ChangeTriggerSchema(TriggerInfo obj, string newschema)
+        {
+            ChangeObjectSchema(obj, newschema);
+        }
+
+
         public override void DropTable(TableInfo obj, bool testIfExists)
         {
             if (testIfExists)

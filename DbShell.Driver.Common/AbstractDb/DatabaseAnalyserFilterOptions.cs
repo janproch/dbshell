@@ -12,6 +12,7 @@ namespace DbShell.Driver.Common.AbstractDb
         public List<string> ViewFilter;
         public List<string> StoredProcedureFilter;
         public List<string> FunctionFilter;
+        public List<string> TriggerFilter;
         public bool GlobalSettings = true;
 
         public List<string> this[DatabaseObjectType type]
@@ -28,8 +29,10 @@ namespace DbShell.Driver.Common.AbstractDb
                         return StoredProcedureFilter;
                     case DatabaseObjectType.Function:
                         return FunctionFilter;
+                    case DatabaseObjectType.Trigger:
+                        return TriggerFilter;
                 }
-                throw new Exception("DBSH-0000 Invalid database object type:" + type.ToString());
+                throw new Exception("DBSH-00000 Invalid database object type:" + type.ToString());
             }
         }
 
@@ -39,6 +42,7 @@ namespace DbShell.Driver.Common.AbstractDb
             ViewFilter = new List<string>();
             StoredProcedureFilter = new List<string>();
             FunctionFilter = new List<string>();
+            TriggerFilter = new List<string>();
             GlobalSettings = false;
         }
 
@@ -50,6 +54,11 @@ namespace DbShell.Driver.Common.AbstractDb
         public bool AnyViews
         {
             get { return ViewFilter == null || ViewFilter.Count > 0; }
+        }
+
+        public bool AnyTriggers
+        {
+            get { return TriggerFilter == null || TriggerFilter.Count > 0; }
         }
 
         public bool AnyStoredProcedures

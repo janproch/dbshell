@@ -113,6 +113,9 @@
     <Compile Include="FilterParser\antlr\StringFilterParser.cs" />
     <Compile Include="FilterParser\FilterParser.cs" />
     <Compile Include="Structure\ConstraintInfo.cs" />
+    <Compile Include="Structure\CheckInfo.cs" />
+    <Compile Include="Structure\SchemaInfo.cs" />
+    <Compile Include="Structure\TriggerInfo.cs" />
     <Compile Include="Structure\ForeignKeyActionExtension.cs" />
     <Compile Include="Structure\FunctionInfo.cs" />
     <Compile Include="Structure\IndexInfo.cs" />

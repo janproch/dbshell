@@ -17,6 +17,9 @@ namespace DbShell.Driver.Common.Structure
         ForeignKey,
         Index,
         Unique,
+        Check,
+        Trigger,
+        Schema,
     }
 
     public abstract class DatabaseObjectInfo

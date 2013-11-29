@@ -20,6 +20,10 @@ namespace DbShell.Driver.Common.Structure
 
         private List<IndexInfo> _indexes = new List<IndexInfo>();
 
+        private List<UniqueInfo> _uniques = new List<UniqueInfo>();
+
+        private List<CheckInfo> _checks = new List<CheckInfo>();
+
         /// <summary>
         /// Table primary key
         /// </summary>
@@ -34,6 +38,12 @@ namespace DbShell.Driver.Common.Structure
 
         [XmlCollection(typeof(IndexInfo))]
         public List<IndexInfo> Indexes { get { return _indexes; } }
+
+        [XmlCollection(typeof(UniqueInfo))]
+        public List<UniqueInfo> Uniques { get { return _uniques; } }
+
+        [XmlCollection(typeof(CheckInfo))]
+        public List<CheckInfo> Checks { get { return _checks; } }
 
         public TableInfo CloneTable(DatabaseInfo ownerDb = null)
         {
@@ -107,6 +117,8 @@ namespace DbShell.Driver.Common.Structure
                 if (PrimaryKey != null) res.Add(PrimaryKey);
                 res.AddRange(ForeignKeys);
                 res.AddRange(Indexes);
+                res.AddRange(Uniques);
+                res.AddRange(Checks);
                 return res;
             }
         }
@@ -124,6 +136,14 @@ namespace DbShell.Driver.Common.Structure
             {
                 Indexes.Add(ix.CloneIndex(this));
             }
+            foreach (var ix in src.Uniques)
+            {
+                Uniques.Add(ix.CloneUnique(this));
+            }
+            foreach (var ch in src.Checks)
+            {
+                Checks.Add(ch.CloneCheck(this));
+            }
         }
 
         public override void AfterLoadLink()
@@ -139,6 +159,14 @@ namespace DbShell.Driver.Common.Structure
             {
                 ix.AfterLoadLink();
             }
+            foreach (var uq in Uniques)
+            {
+                uq.AfterLoadLink();
+            }
+            foreach (var ch in Checks)
+            {
+                ch.AfterLoadLink();
+            }
         }
 
         public override void AddAllObjects(List<DatabaseObjectInfo> res)
@@ -148,6 +176,8 @@ namespace DbShell.Driver.Common.Structure
             foreach (var x in ForeignKeys) x.AddAllObjects(res);
             foreach (var x in Columns) x.AddAllObjects(res);
             foreach (var x in Indexes) x.AddAllObjects(res);
+            foreach (var x in Uniques) x.AddAllObjects(res);
+            foreach (var x in Checks) x.AddAllObjects(res);
         }
 
         public void DropReferencesTo(NameWithSchema fullName)
@@ -160,6 +190,8 @@ namespace DbShell.Driver.Common.Structure
             if (cnt is PrimaryKeyInfo) return PrimaryKey;
             if (cnt is ForeignKeyInfo) return ForeignKeys.FirstOrDefault(x => x.ConstraintName == cnt.ConstraintName);
             if (cnt is IndexInfo) return Indexes.FirstOrDefault(x => x.ConstraintName == cnt.ConstraintName);
+            if (cnt is UniqueInfo) return Uniques.FirstOrDefault(x => x.ConstraintName == cnt.ConstraintName);
+            if (cnt is CheckInfo) return Checks.FirstOrDefault(x => x.ConstraintName == cnt.ConstraintName);
             return null;
         }
 
@@ -185,6 +217,20 @@ namespace DbShell.Driver.Common.Structure
                 if (!reuseGrouId) ixnew.GroupId = Guid.NewGuid().ToString();
                 Indexes.Add(ixnew);
             }
+            var uniqueInfo = cnt as UniqueInfo;
+            if (uniqueInfo != null)
+            {
+                var uqnew = uniqueInfo.CloneUnique(this);
+                if (!reuseGrouId) uqnew.GroupId = Guid.NewGuid().ToString();
+                Uniques.Add(uqnew);
+            }
+            var checkInfo = cnt as CheckInfo;
+            if (checkInfo != null)
+            {
+                var chnew = checkInfo.CloneCheck(this);
+                if (!reuseGrouId) chnew.GroupId = Guid.NewGuid().ToString();
+                Checks.Add(chnew);
+            }
         }
 
         public void AddColumn(ColumnInfo col, bool reuseGrouId = false)
@@ -204,6 +250,8 @@ namespace DbShell.Driver.Common.Structure
             if (cnt is PrimaryKeyInfo) PrimaryKey = null;
             if (cnt is ForeignKeyInfo) ForeignKeys.RemoveAll(x => x.ConstraintName == cnt.ConstraintName);
             if (cnt is IndexInfo) Indexes.RemoveAll(x => x.ConstraintName == cnt.ConstraintName);
+            if (cnt is UniqueInfo) Uniques.RemoveAll(x => x.ConstraintName == cnt.ConstraintName);
+            if (cnt is CheckInfo) Checks.RemoveAll(x => x.ConstraintName == cnt.ConstraintName);
         }
 
         public ColumnInfo FindOrCreateColumn(ColumnInfo col)

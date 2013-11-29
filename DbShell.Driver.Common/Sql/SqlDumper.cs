@@ -156,6 +156,32 @@ namespace DbShell.Driver.Common.Sql
             throw new System.NotImplementedException();
         }
 
+        public virtual void CreateTrigger(TriggerInfo obj)
+        {
+            WriteRaw(obj.CreateSql);
+            EndCommand();
+        }
+
+        public virtual void DropTrigger(TriggerInfo obj, bool testIfExists)
+        {
+            PutCmd("^drop ^trigger %f", obj.FullName);
+        }
+
+        public virtual void AlterTrigger(TriggerInfo obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void ChangeTriggerSchema(TriggerInfo obj, string newschema)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void RenameTrigger(TriggerInfo obj, string newname)
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual void CreateTable(TableInfo tableSrc)
         {
             var table = tableSrc.CloneTable();
@@ -271,9 +297,14 @@ namespace DbShell.Driver.Common.Sql
             }
         }
 
+        protected virtual void DropConstraint(ConstraintInfo cnt)
+        {
+            PutCmd("^alter ^table %f ^drop ^constraint %i", cnt.OwnerTable.FullName, cnt.ConstraintName);
+        }
+
         public virtual void DropForeignKey(ForeignKeyInfo fk)
         {
-            PutCmd("^alter ^table %f ^drop ^constraint %i", fk.OwnerTable.FullName, fk.ConstraintName);
+            DropConstraint(fk);
         }
 
         public virtual void CreateForeignKey(ForeignKeyInfo fk)
@@ -284,7 +315,7 @@ namespace DbShell.Driver.Common.Sql
         }
         public virtual void DropPrimaryKey(PrimaryKeyInfo pk)
         {
-            PutCmd("^alter ^table %f ^drop ^constraint %i", pk.OwnerTable.FullName, pk.ConstraintName);
+            DropConstraint(pk);
         }
         public virtual void CreatePrimaryKey(PrimaryKeyInfo pk)
         {
@@ -303,6 +334,30 @@ namespace DbShell.Driver.Common.Sql
         public virtual void CreateIndex(IndexInfo ix)
         {
             throw new NotImplementedException();
+        }
+
+        public virtual void DropUnique(UniqueInfo uq)
+        {
+            DropConstraint(uq);
+        }
+
+        public virtual void CreateUnique(UniqueInfo uq)
+        {
+            Put("^alter ^table %f ^add ^constraint %i ^unique", uq.OwnerTable, uq.ConstraintName);
+            WriteRaw(" (");
+            ColumnRefs(uq.Columns);
+            WriteRaw(")");
+            EndCommand();
+        }
+
+        public virtual void DropCheck(CheckInfo ch)
+        {
+            DropConstraint(ch);
+        }
+
+        public virtual void CreateCheck(CheckInfo ch)
+        {
+            PutCmd("^alter ^table %f ^add ^constraint %i ^check (%s)", ch.OwnerTable, ch.ConstraintName, ch.Definition);
         }
 
         public virtual void RenameConstraint(ConstraintInfo constraint, string newname)

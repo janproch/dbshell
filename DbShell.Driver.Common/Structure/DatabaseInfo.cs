@@ -18,7 +18,9 @@ namespace DbShell.Driver.Common.Structure
         private List<TableInfo> _tables = new List<TableInfo>();
         private List<ViewInfo> _views = new List<ViewInfo>();
         private List<FunctionInfo> _functions = new List<FunctionInfo>();
+        private List<TriggerInfo> _triggers = new List<TriggerInfo>();
         private List<StoredProcedureInfo> _storedProcedures = new List<StoredProcedureInfo>();
+        private List<SchemaInfo> _schemas = new List<SchemaInfo>();
 
         public DatabaseInfo()
             : base(null)
@@ -50,6 +52,18 @@ namespace DbShell.Driver.Common.Structure
         public List<FunctionInfo> Functions
         {
             get { return _functions; }
+        }
+
+        [XmlCollection(typeof(TriggerInfo))]
+        public List<TriggerInfo> Triggers
+        {
+            get { return _triggers; }
+        }
+
+        [XmlCollection(typeof(SchemaInfo))]
+        public List<SchemaInfo> Schemas
+        {
+            get { return _schemas; }
         }
 
         [XmlElem]
@@ -169,6 +183,11 @@ namespace DbShell.Driver.Common.Structure
             return Functions.FirstOrDefault(x => x.FullName == fullName);
         }
 
+        public TriggerInfo FindTrigger(NameWithSchema fullName)
+        {
+            return Triggers.FirstOrDefault(x => x.FullName == fullName);
+        }
+
         public StoredProcedureInfo FindStoredProcedure(StoredProcedureInfo obj)
         {
             return FindStoredProcedure(obj.FullName);
@@ -178,6 +197,12 @@ namespace DbShell.Driver.Common.Structure
         {
             return FindFunction(obj.FullName);
         }
+
+        public TriggerInfo FindTrigger(TriggerInfo obj)
+        {
+            return FindTrigger(obj.FullName);
+        }
+
 
         private bool? _isSingleSchema;
 
@@ -202,6 +227,7 @@ namespace DbShell.Driver.Common.Structure
             if (Views.Any(o => o.Schema != DefaultSchema)) return false;
             if (StoredProcedures.Any(o => o.Schema != DefaultSchema)) return false;
             if (Functions.Any(o => o.Schema != DefaultSchema)) return false;
+            if (Triggers.Any(o => o.Schema != DefaultSchema)) return false;
             return true;
         }
 
@@ -225,6 +251,9 @@ namespace DbShell.Driver.Common.Structure
             if (res != null) return res;
 
             res = Functions.FirstOrDefault(o => o.ObjectId == id);
+            if (res != null) return res;
+
+            res = Triggers.FirstOrDefault(o => o.ObjectId == id);
             if (res != null) return res;
 
             return null;
@@ -260,6 +289,13 @@ namespace DbShell.Driver.Common.Structure
                 return fres;
             }
 
+            var rres = Triggers.FirstOrDefault(o => o.ObjectId == id);
+            if (rres != null)
+            {
+                Triggers.Remove(rres);
+                return rres;
+            }
+
             return null;
         }
 
@@ -271,6 +307,8 @@ namespace DbShell.Driver.Common.Structure
             foreach (var obj in src.Views) Views.Add(obj.CloneView(this));
             foreach (var obj in src.StoredProcedures) StoredProcedures.Add(obj.CloneStoredProcedure(this));
             foreach (var obj in src.Functions) Functions.Add(obj.CloneFunction(this));
+            foreach (var obj in src.Triggers) Triggers.Add(obj.CloneTrigger(this));
+            foreach (var obj in src.Schemas) Schemas.Add(obj.CloneSchema(this));
             DefaultSchema = src.DefaultSchema;
             AfterLoadLink();
         }
@@ -297,6 +335,8 @@ namespace DbShell.Driver.Common.Structure
             foreach (var obj in Views) obj.AfterLoadLink();
             foreach (var obj in StoredProcedures) obj.AfterLoadLink();
             foreach (var obj in Functions) obj.AfterLoadLink();
+            foreach (var obj in Triggers) obj.AfterLoadLink();
+            foreach (var obj in Schemas) obj.AfterLoadLink();
         }
 
         public DatabaseInfo CloneDatabase()
@@ -318,6 +358,8 @@ namespace DbShell.Driver.Common.Structure
             foreach (var x in Views) x.AddAllObjects(res);
             foreach (var x in StoredProcedures) x.AddAllObjects(res);
             foreach (var x in Functions) x.AddAllObjects(res);
+            foreach (var x in Triggers) x.AddAllObjects(res);
+            foreach (var x in Schemas) x.AddAllObjects(res);
         }
 
         public List<DatabaseObjectInfo> GetAllObjects()
@@ -403,6 +445,9 @@ namespace DbShell.Driver.Common.Structure
                 case DatabaseObjectType.Function:
                     Functions.Add((FunctionInfo) res);
                     break;
+                case DatabaseObjectType.Trigger:
+                    Triggers.Add((TriggerInfo)res);
+                    break;
             }
             return res;
         }
@@ -412,7 +457,8 @@ namespace DbShell.Driver.Common.Structure
             return
                 (SpecificObjectInfo) FindStoredProcedure(obj.FullName)
                 ?? (SpecificObjectInfo) FindFunction(obj.FullName)
-                ?? (SpecificObjectInfo) FindView(obj.FullName);
+                ?? (SpecificObjectInfo) FindView(obj.FullName)
+                ?? (SpecificObjectInfo) FindTrigger(obj.FullName);
         }
 
         public void AddObject(DatabaseObjectInfo obj, bool reuseGrouId)
@@ -463,6 +509,7 @@ namespace DbShell.Driver.Common.Structure
             res.AddRange(Views);
             res.AddRange(StoredProcedures);
             res.AddRange(Functions);
+            res.AddRange(Triggers);
             return res;
         }
 

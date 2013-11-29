@@ -23,12 +23,19 @@ namespace DbShell.Driver.Common.AbstractDb
         void ChangeStoredProcedureSchema(StoredProcedureInfo obj, string newschema);
         void RenameStoredProcedure(StoredProcedureInfo obj, string newname);
 
-        // stored function operations
+        // function operations
         void CreateFunction(FunctionInfo obj);
         void DropFunction(FunctionInfo obj, bool testIfExists);
         void AlterFunction(FunctionInfo obj);
         void ChangeFunctionSchema(FunctionInfo obj, string newschema);
         void RenameFunction(FunctionInfo obj, string newname);
+
+        // trigger operations
+        void CreateTrigger(TriggerInfo obj);
+        void DropTrigger(TriggerInfo obj, bool testIfExists);
+        void AlterTrigger(TriggerInfo obj);
+        void ChangeTriggerSchema(TriggerInfo obj, string newschema);
+        void RenameTrigger(TriggerInfo obj, string newname);
 
         // table operations
         void CreateTable(TableInfo obj);
@@ -45,6 +52,12 @@ namespace DbShell.Driver.Common.AbstractDb
 
         void DropIndex(IndexInfo ix);
         void CreateIndex(IndexInfo ix);
+
+        void DropUnique(UniqueInfo uq);
+        void CreateUnique(UniqueInfo uq);
+
+        void DropCheck(CheckInfo ch);
+        void CreateCheck(CheckInfo ch);
 
         void RenameConstraint(ConstraintInfo constraint, string newname);
 

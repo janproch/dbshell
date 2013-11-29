@@ -45,5 +45,10 @@ namespace DbShell.Driver.Common.Structure
             res.Assign(this);
             return res;
         }
+
+        public override DatabaseObjectInfo CloneObject(DatabaseObjectInfo owner)
+        {
+            return CloneIndex(owner as TableInfo);
+        }
     }
 }

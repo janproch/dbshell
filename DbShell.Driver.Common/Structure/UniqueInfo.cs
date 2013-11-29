@@ -19,6 +19,21 @@ namespace DbShell.Driver.Common.Structure
 
         public override void SetDummyTable(NameWithSchema name)
         {
+            var table = new TableInfo(null);
+            table.FullName = name;
+            table.Uniques.Add(this);
+        }
+
+        public UniqueInfo CloneUnique(TableInfo ownTable = null)
+        {
+            var res = new UniqueInfo(ownTable ?? OwnerTable);
+            res.Assign(this);
+            return res;
+        }
+
+        public override DatabaseObjectInfo CloneObject(DatabaseObjectInfo owner)
+        {
+            return CloneUnique(owner as TableInfo);
         }
     }
 }

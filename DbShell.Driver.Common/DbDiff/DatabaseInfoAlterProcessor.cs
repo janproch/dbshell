@@ -17,7 +17,7 @@ namespace DbShell.Driver.Common.DbDiff
 
         public void CreateView(ViewInfo obj)
         {
-            _database.Views.Add(obj.CloneView());
+            _database.Views.Add(obj.CloneView(_database));
         }
 
         public void DropView(ViewInfo obj, bool testIfExists)
@@ -57,7 +57,7 @@ namespace DbShell.Driver.Common.DbDiff
 
         public void CreateStoredProcedure(StoredProcedureInfo obj)
         {
-            _database.StoredProcedures.Add(obj.CloneStoredProcedure());
+            _database.StoredProcedures.Add(obj.CloneStoredProcedure(_database));
         }
 
         public void DropStoredProcedure(StoredProcedureInfo obj, bool testIfExists)
@@ -99,7 +99,7 @@ namespace DbShell.Driver.Common.DbDiff
 
         public void CreateFunction(FunctionInfo obj)
         {
-            _database.Functions.Add(obj.CloneFunction());
+            _database.Functions.Add(obj.CloneFunction(_database));
         }
 
         public void DropFunction(FunctionInfo obj, bool testIfExists)
@@ -130,6 +130,45 @@ namespace DbShell.Driver.Common.DbDiff
         public void RenameFunction(FunctionInfo obj, string newname)
         {
             var oldObj = _database.FindFunction(obj);
+            if (oldObj != null)
+            {
+                oldObj.FullName = new NameWithSchema(oldObj.FullName.Schema, newname);
+            }
+        }
+
+        public void CreateTrigger(TriggerInfo obj)
+        {
+            _database.Triggers.Add(obj.CloneTrigger(_database));
+        }
+
+        public void DropTrigger(TriggerInfo obj, bool testIfExists)
+        {
+            _database.Functions.RemoveAll(v => v.FullName == obj.FullName);
+        }
+
+        public void AlterTrigger(TriggerInfo obj)
+        {
+            var oldObj = _database.FindTrigger(obj);
+            if (oldObj != null)
+            {
+                string gid = oldObj.GroupId;
+                oldObj.Assign(obj);
+                oldObj.GroupId = gid;
+            }
+        }
+
+        public void ChangeTriggerSchema(TriggerInfo obj, string newschema)
+        {
+            var oldObj = _database.FindTrigger(obj);
+            if (oldObj != null)
+            {
+                oldObj.FullName = new NameWithSchema(newschema, oldObj.FullName.Name);
+            }
+        }
+
+        public void RenameTrigger(TriggerInfo obj, string newname)
+        {
+            var oldObj = _database.FindTrigger(obj);
             if (oldObj != null)
             {
                 oldObj.FullName = new NameWithSchema(oldObj.FullName.Schema, newname);
@@ -198,6 +237,26 @@ namespace DbShell.Driver.Common.DbDiff
         public void CreateIndex(IndexInfo ix)
         {
             _database.FindTable(ix.OwnerTable).AddConstraint(ix);
+        }
+
+        public void DropUnique(UniqueInfo uq)
+        {
+            _database.FindTable(uq.OwnerTable).DropConstraint(uq);
+        }
+
+        public void CreateUnique(UniqueInfo uq)
+        {
+            _database.FindTable(uq.OwnerTable).AddConstraint(uq);
+        }
+
+        public void DropCheck(CheckInfo ch)
+        {
+            _database.FindTable(ch.OwnerTable).DropConstraint(ch);
+        }
+
+        public void CreateCheck(CheckInfo ch)
+        {
+            _database.FindTable(ch.OwnerTable).AddConstraint(ch);
         }
 
         public void RenameConstraint(ConstraintInfo constraint, string newname)
