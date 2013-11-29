@@ -169,7 +169,8 @@ namespace DbShell.Driver.Common.Sql
 
         public virtual void AlterTrigger(TriggerInfo obj)
         {
-            throw new NotImplementedException();
+            WriteRaw(Regex.Replace(obj.CreateSql, @"create\s+trigger", "ALTER TRIGGER", RegexOptions.IgnoreCase));
+            EndCommand();
         }
 
         public virtual void ChangeTriggerSchema(TriggerInfo obj, string newschema)

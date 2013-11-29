@@ -49,8 +49,8 @@ namespace DbShell.Driver.Common.Structure
         {
             get
             {
-                if (_tableOrViewName == null) return null;
-                return new NameWithSchema(_tableOrViewSchema, _tableOrViewName);
+                if (TableOrViewName == null) return null;
+                return new NameWithSchema(TableOrViewSchema, TableOrViewName);
             }
             set
             {

@@ -32,7 +32,7 @@ namespace DbShell.Driver.Common.Structure
         public override void Assign(DatabaseObjectInfo source)
         {
             base.Assign(source);
-            var src = (ViewInfo) source;
+            var src = (SchemaInfo) source;
             Name = src.Name;
         }
     }

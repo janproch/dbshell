@@ -33,7 +33,7 @@ namespace DbShell.Driver.SqlServer
         }
 
         private string CreateFilterExpression(bool tables = false, bool views = false,
-            bool procedures = false, bool functions = false)
+            bool procedures = false, bool functions = false, bool triggers = false)
         {
             List<string> res = null;
             if (tables && FilterOptions.TableFilter != null)
@@ -56,6 +56,11 @@ namespace DbShell.Driver.SqlServer
                 if (res == null) res = new List<string>();
                 res.AddRange(FilterOptions.FunctionFilter);
             }
+            if (triggers && FilterOptions.TriggerFilter != null)
+            {
+                if (res == null) res = new List<string>();
+                res.AddRange(FilterOptions.TriggerFilter);
+            }
             if (res != null)
             {
                 if (res.Count == 0) return " = 0";
@@ -65,10 +70,10 @@ namespace DbShell.Driver.SqlServer
         }
 
         private string CreateQuery(string resFileName, bool tables = false, bool views = false,
-            bool procedures = false, bool functions = false)
+            bool procedures = false, bool functions = false, bool triggers = false)
         {
             string res = SqlServerDatabaseFactory.LoadEmbeddedResource(resFileName);
-            res = res.Replace("=[OBJECT_ID_CONDITION]", CreateFilterExpression(tables, views, procedures, functions));
+            res = res.Replace("=[OBJECT_ID_CONDITION]", CreateFilterExpression(tables, views, procedures, functions, triggers));
             return res;
         }
 
@@ -332,13 +337,13 @@ namespace DbShell.Driver.SqlServer
 
 
             var objs = new Dictionary<NameWithSchema, string>();
-            if (FilterOptions.AnyFunctions || FilterOptions.AnyStoredProcedures || FilterOptions.AnyViews)
+            if (FilterOptions.AnyFunctions || FilterOptions.AnyStoredProcedures || FilterOptions.AnyViews || FilterOptions.AnyTriggers)
             {
                 Timer("sql code...");
                 // load code text
                 using (var cmd = Connection.CreateCommand())
                 {
-                    cmd.CommandText = CreateQuery("loadsqlcode.sql", views: true, procedures: true, functions: true);
+                    cmd.CommandText = CreateQuery("loadsqlcode.sql", views: true, procedures: true, functions: true, triggers: true);
                     using (var reader = cmd.ExecuteReader())
                     {
                         NameWithSchema lastName = null;
@@ -399,7 +404,7 @@ namespace DbShell.Driver.SqlServer
                 // load triggers
                 using (var cmd = Connection.CreateCommand())
                 {
-                    cmd.CommandText = CreateQuery("gettriggers.sql", views: true);
+                    cmd.CommandText = CreateQuery("gettriggers.sql", triggers: true);
                     using (var reader = cmd.ExecuteReader())
                     {
                         int modifyIndex = reader.GetOrdinal("modify_date");
@@ -741,6 +746,9 @@ namespace DbShell.Driver.SqlServer
                             case "IF":
                             case "FN":
                                 type = DatabaseObjectType.Function;
+                                break;
+                            case "TR":
+                                type = DatabaseObjectType.Trigger;
                                 break;
                             default:
                                 continue;
