@@ -56,6 +56,12 @@ namespace DbShell.Driver.Common.DbDiff
             if (pk != null) proc.DropPrimaryKey(pk);
             var fk = cnt as ForeignKeyInfo;
             if (fk != null) proc.DropForeignKey(fk);
+            var uq = cnt as UniqueInfo;
+            if (uq != null) proc.DropUnique(uq);
+            var ix = cnt as IndexInfo;
+            if (ix != null) proc.DropIndex(ix);
+            var ch = cnt as CheckInfo;
+            if (ch != null) proc.DropCheck(ch);
         }
 
         public static void DropSpecificObject(this IAlterProcessor proc, SpecificObjectInfo obj)
@@ -66,6 +72,8 @@ namespace DbShell.Driver.Common.DbDiff
             if (sp != null) proc.DropStoredProcedure(sp, true);
             var func = obj as FunctionInfo;
             if (func != null) proc.DropFunction(func, true);
+            var trg = obj as TriggerInfo;
+            if (trg != null) proc.DropTrigger(trg, true);
         }
 
         public static void CreateConstraint(this IAlterProcessor proc, ConstraintInfo cnt)
@@ -74,6 +82,12 @@ namespace DbShell.Driver.Common.DbDiff
             if (pk != null) proc.CreatePrimaryKey(pk);
             var fk = cnt as ForeignKeyInfo;
             if (fk != null) proc.CreateForeignKey(fk);
+            var uq = cnt as UniqueInfo;
+            if (uq != null) proc.CreateUnique(uq);
+            var ix = cnt as IndexInfo;
+            if (ix != null) proc.CreateIndex(ix);
+            var ch = cnt as CheckInfo;
+            if (ch != null) proc.CreateCheck(ch);
         }
 
         public static void CreateSpecificObject(this IAlterProcessor proc, SpecificObjectInfo obj)
@@ -84,6 +98,8 @@ namespace DbShell.Driver.Common.DbDiff
             if (sp != null) proc.CreateStoredProcedure(sp);
             var func = obj as FunctionInfo;
             if (func != null) proc.CreateFunction(func);
+            var trg = obj as TriggerInfo;
+            if (trg != null) proc.CreateTrigger(trg);
         }
 
 
