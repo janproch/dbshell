@@ -48,6 +48,11 @@ namespace DbShell.Driver.SqlServer.Test
                     CommonType = new DbTypeInt(),
                 });
 
+            var ix = new IndexInfo(t1);
+            ix.Columns.Add(new ColumnReference { RefColumn = t1.Columns[0] });
+            ix.ConstraintName = "ix1";
+            t1.Indexes.Add(ix);
+
             var pk = new PrimaryKeyInfo(t1);
             pk.Columns.Add(new ColumnReference {RefColumn = t1.Columns[0]});
             pk.ConstraintName = "pk_t1";
@@ -193,11 +198,15 @@ namespace DbShell.Driver.SqlServer.Test
         public void ChangePkColumnTest()
         {
             const string sql = @"
+DROP INDEX [ix1] ON [dbo].[t1]
+GO
 ALTER TABLE [dbo].[t1] DROP CONSTRAINT [pk_t1]
 GO
 ALTER TABLE [dbo].[t1] ALTER COLUMN [c1] FLOAT NOT NULL
 GO
-ALTER TABLE [dbo].[t1] ADD CONSTRAINT [pk_t1] PRIMARY KEY ([c1])";
+ALTER TABLE [dbo].[t1] ADD CONSTRAINT [pk_t1] PRIMARY KEY ([c1])
+GO
+CREATE  NONCLUSTERED INDEX [ix1] on [dbo].[t1] ([c1] ASC)";
             TestDiff(db =>
                 {
                     var t1 = db.FindTableLike("t1");
@@ -212,6 +221,8 @@ ALTER TABLE [dbo].[t1] ADD CONSTRAINT [pk_t1] PRIMARY KEY ([c1])";
             string sql = @"
 ALTER TABLE [dbo].[t1] DROP CONSTRAINT [pk_t1]
 GO
+DROP INDEX [ix1] ON [dbo].[t1]
+GO
 EXECUTE sp_rename '[dbo].[t1]', 'TMP0', 'OBJECT'
 GO
 CREATE TABLE [dbo].[t1] ( 
@@ -219,6 +230,8 @@ CREATE TABLE [dbo].[t1] (
     [c2] INT NOT NULL, 
     CONSTRAINT [pk_t1] PRIMARY KEY ([c1])
 )
+GO
+CREATE  NONCLUSTERED INDEX [ix1] on [dbo].[t1] ([c1] ASC)
 GO
 SET IDENTITY_INSERT [dbo].[t1] ON;
 INSERT INTO [dbo].[t1] ([c1], [c2]) select [c1] AS [c1], [c2] AS [c2] FROM [dbo].[TMP0]

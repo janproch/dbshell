@@ -212,8 +212,24 @@ namespace DbShell.Driver.Common.Sql
                 first = false;
                 CreateForeignKeyCore(cnt);
             }
+            foreach (var cnt in table.Uniques)
+            {
+                if (!first) Put(", &n");
+                first = false;
+                CreateUniqueCore(cnt);
+            }
+            foreach (var cnt in table.Checks)
+            {
+                if (!first) Put(", &n");
+                first = false;
+                CreateCheckCore(cnt);
+            }
             Put("&<&n)");
             EndCommand();
+            foreach(var ix in table.Indexes)
+            {
+                CreateIndex(ix);
+            }
         }
 
         protected virtual void CreateForeignKeyCore(ForeignKeyInfo fk)
@@ -342,12 +358,18 @@ namespace DbShell.Driver.Common.Sql
             DropConstraint(uq);
         }
 
-        public virtual void CreateUnique(UniqueInfo uq)
+        protected virtual void CreateUniqueCore(UniqueInfo uq)
         {
-            Put("^alter ^table %f ^add ^constraint %i ^unique", uq.OwnerTable, uq.ConstraintName);
+            Put("^constraint %i ^unique", uq.ConstraintName);
             WriteRaw(" (");
             ColumnRefs(uq.Columns);
             WriteRaw(")");
+        }
+
+        public virtual void CreateUnique(UniqueInfo uq)
+        {
+            Put("^alter ^table %f ^add ", uq.OwnerTable);
+            CreateUniqueCore(uq);
             EndCommand();
         }
 
@@ -356,9 +378,16 @@ namespace DbShell.Driver.Common.Sql
             DropConstraint(ch);
         }
 
+        protected virtual void CreateCheckCore(CheckInfo ch)
+        {
+            PutCmd("^constraint %i ^check (%s)", ch.ConstraintName, ch.Definition);
+        }
+
         public virtual void CreateCheck(CheckInfo ch)
         {
-            PutCmd("^alter ^table %f ^add ^constraint %i ^check (%s)", ch.OwnerTable, ch.ConstraintName, ch.Definition);
+            Put("^alter ^table %f ^add ", ch.OwnerTable);
+            CreateCheckCore(ch);
+            EndCommand();
         }
 
         public virtual void RenameConstraint(ConstraintInfo constraint, string newname)
