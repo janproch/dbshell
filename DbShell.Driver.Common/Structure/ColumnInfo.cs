@@ -96,6 +96,12 @@ namespace DbShell.Driver.Common.Structure
         public bool IsPersisted { get; set; }
 
         /// <summary>
+        /// whether computed column is sparse
+        /// </summary>
+        [XmlAttrib("is_sparse")]
+        public bool IsSparse { get; set; }
+
+        /// <summary>
         /// Portable data type
         /// </summary>
         public DbTypeBase CommonType { get; set; }
@@ -138,6 +144,7 @@ namespace DbShell.Driver.Common.Structure
             DefaultConstraint = src.DefaultValue;
             IsPersisted = src.IsPersisted;
             ComputedExpression = src.ComputedExpression;
+            IsSparse = src.IsSparse;
             if (src.CommonType != null) CommonType = src.CommonType.Clone();
             else CommonType = null;
         }

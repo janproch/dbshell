@@ -56,12 +56,15 @@
     <Compile Include="AbstractDb\DatabaseAnalyserFilterOptions.cs" />
     <Compile Include="AbstractDb\DatabaseChangeSet.cs" />
     <Compile Include="AbstractDb\DatabaseFactoryBase.cs" />
+    <Compile Include="AbstractDb\DatabaseServerInterfaceBase.cs" />
+    <Compile Include="AbstractDb\DatabaseServerVersion.cs" />
     <Compile Include="AbstractDb\DialectBase.cs" />
     <Compile Include="AbstractDb\DialectExtension.cs" />
     <Compile Include="AbstractDb\FactoryProvider.cs" />
     <Compile Include="AbstractDb\GenericDatabase.cs" />
     <Compile Include="AbstractDb\IAlterProcessor.cs" />
     <Compile Include="AbstractDb\IBulkInserter.cs" />
+    <Compile Include="AbstractDb\IDatabaseServerInterface.cs" />
     <Compile Include="AbstractDb\ILiteralFormatter.cs" />
     <Compile Include="AbstractDb\IParsingService.cs" />
     <Compile Include="AbstractDb\IStatisticsProvider.cs" />

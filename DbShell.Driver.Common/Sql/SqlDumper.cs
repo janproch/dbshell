@@ -291,6 +291,10 @@ namespace DbShell.Driver.Common.Sql
                 Put(" ^identity");
             }
             WriteRaw(" ");
+            if (col.IsSparse)
+            {
+                Put(" ^sparse ");
+            }
             if (includeNullable)
             {
                 Put(col.NotNull ? "^not ^null" : "^null");

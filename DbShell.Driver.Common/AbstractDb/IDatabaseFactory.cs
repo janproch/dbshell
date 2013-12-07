@@ -16,5 +16,6 @@ namespace DbShell.Driver.Common.AbstractDb
         ILiteralFormatter CreateLiteralFormatter();
         IStatisticsProvider CreateStatisticsProvider();
         IParsingService CreateParsingService();
+        IDatabaseServerInterface CreateDatabaseServerInterface();
     }
 }

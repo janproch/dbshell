@@ -11,6 +11,7 @@ namespace DbShell.Driver.Common.AbstractDb
         public DatabaseInfo Structure;
         public DatabaseChangeSet ChangeSet;
         public DatabaseAnalyserFilterOptions FilterOptions;
+        public DatabaseServerVersion ServerVersion;
 
         public void FullAnalysis()
         {

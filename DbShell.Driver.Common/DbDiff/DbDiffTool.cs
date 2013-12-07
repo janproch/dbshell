@@ -80,8 +80,13 @@ namespace DbShell.Driver.Common.DbDiff
                 opts.DiffLogger.Trace("Column {0}, {1}: different autoincrement: {2}; {3}", a, b, a.AutoIncrement, b.AutoIncrement);
                 return false;
             }
+            if (a.IsSparse != b.IsSparse)
+            {
+                opts.DiffLogger.Trace("Column {0}, {1}: different is_sparse: {2}; {3}", a, b, a.IsSparse, b.IsSparse);
+                return false;
+            }
 
-            if (!EqualTypes(a,b,opts))
+            if (!EqualTypes(a, b, opts))
             {
                 return false;
             }

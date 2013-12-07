@@ -11,6 +11,12 @@ using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.SqlServer
 {
+    public static class MsSqlServerVersion
+    {
+        public static bool Is_2005(this DatabaseServerVersion version) { return version != null && version.IsMinimally(9, 0, 0); }
+        public static bool Is_2008(this DatabaseServerVersion version) { return version != null && version.IsMinimally(10, 0, 0); }
+    }
+
     public class SqlServerDatabaseAnalyser : DatabaseAnalyser
     {
         private Dictionary<NameWithSchema, TableInfo> _tables = new Dictionary<NameWithSchema, TableInfo>();
@@ -137,7 +143,10 @@ namespace DbShell.Driver.SqlServer
 
                 using (var cmd = Connection.CreateCommand())
                 {
-                    cmd.CommandText = CreateQuery("columns.sql", tables: true);
+                    string sql=CreateQuery("columns.sql", tables: true);
+                    if (ServerVersion.Is_2008()) sql = sql.Replace("#2008#", ",c.is_sparse");
+                    else sql = sql.Replace("#2008#", "");
+                    cmd.CommandText = sql;
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -157,6 +166,7 @@ namespace DbShell.Driver.SqlServer
                             col.AutoIncrement = reader.SafeString("is_identity") == "True";
                             col.ComputedExpression = reader.SafeString("computed_expression");
                             col.IsPersisted = reader.SafeString("is_persisted") == "True";
+                            col.IsSparse = reader.SafeString("is_sparse") == "True";
                             col.ObjectId = reader.SafeString("column_id");
                             col.CommonType = AnalyseType(col.DataType, col.Length, col.Precision, col.Scale);
                             table.Columns.Add(col);

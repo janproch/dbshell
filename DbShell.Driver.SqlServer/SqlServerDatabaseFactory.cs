@@ -76,5 +76,10 @@ namespace DbShell.Driver.SqlServer
         {
             return new SqlServerBulkInserter();
         }
+
+        public override IDatabaseServerInterface CreateDatabaseServerInterface()
+        {
+            return new SqlServerInterface();
+        }
     }
 }
