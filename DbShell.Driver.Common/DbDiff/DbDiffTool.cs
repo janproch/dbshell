@@ -16,9 +16,9 @@ namespace DbShell.Driver.Common.DbDiff
             return a.Columns.EqualSequence(b.Columns, (c1, c2) => c1.Name == c2.Name);
         }
 
-        public static bool EqualsColumns(ColumnInfo a, ColumnInfo b, bool checkName)
+        public static bool EqualsColumns(ColumnInfo a, ColumnInfo b, bool checkName, bool checkDefault)
         {
-            return EqualsColumns(a, b, checkName, new DbDiffOptions(), null);
+            return EqualsColumns(a, b, checkName,checkDefault, new DbDiffOptions(), null);
         }
         public static bool EqualDefaultValues(ColumnInfo a, ColumnInfo b)
         {
@@ -42,24 +42,8 @@ namespace DbShell.Driver.Common.DbDiff
         {
             return String.Compare(a, b, opts.IgnoreCase) == 0;
         }
-        public static bool EqualsColumns(ColumnInfo a, ColumnInfo b, bool checkName, DbDiffOptions opts, DbObjectPairing pairing)
+        public static bool EqualsColumns(ColumnInfo a, ColumnInfo b, bool checkName, bool checkDefault, DbDiffOptions opts, DbObjectPairing pairing)
         {
-            if (a.DefaultValue == null)
-            {
-                if (a.DefaultValue != b.DefaultValue)
-                {
-                    opts.DiffLogger.Trace("Column {0}, {1}: different default values: {2}; {3}", a, b, a.DefaultValue, b.DefaultValue);
-                    return false;
-                }
-            }
-            else
-            {
-                if (!a.DefaultValue.Equals(b.DefaultValue))
-                {
-                    opts.DiffLogger.Trace("Column {0}, {1}: different default values: {2}; {3}", a, b, a.DefaultValue, b.DefaultValue);
-                    return false;
-                }
-            }
             if (checkName && !DbDiffTool.EqualNames(a.Name, b.Name, opts))
             {
                 opts.DiffLogger.Trace("Column, different name: {0}; {1}", a, b);
@@ -70,6 +54,39 @@ namespace DbShell.Driver.Common.DbDiff
             //    opts.DiffLogger.Trace("Column {0}, {1}: different domain: {2}; {3}", a, b, a.Domain, b.Domain);
             //    return false;
             //}
+            if (a.ComputedExpression != b.ComputedExpression)
+            {
+                opts.DiffLogger.Trace("Column {0}, {1}: different computed expression: {2}; {3}", a, b, a.ComputedExpression, b.ComputedExpression);
+                return false;
+            }
+            if (a.ComputedExpression != null)
+            {
+                return true;
+            }
+            if (checkDefault)
+            {
+                if (a.DefaultValue == null)
+                {
+                    if (a.DefaultValue != b.DefaultValue)
+                    {
+                        opts.DiffLogger.Trace("Column {0}, {1}: different default values: {2}; {3}", a, b, a.DefaultValue, b.DefaultValue);
+                        return false;
+                    }
+                }
+                else
+                {
+                    if (!a.DefaultValue.Equals(b.DefaultValue))
+                    {
+                        opts.DiffLogger.Trace("Column {0}, {1}: different default values: {2}; {3}", a, b, a.DefaultValue, b.DefaultValue);
+                        return false;
+                    }
+                }
+                if (a.DefaultConstraint != b.DefaultConstraint)
+                {
+                    opts.DiffLogger.Trace("Column {0}, {1}: different default constraint names: {2}; {3}", a, b, a.DefaultConstraint, b.DefaultConstraint);
+                    return false;
+                }
+            }
             if (a.NotNull != b.NotNull)
             {
                 opts.DiffLogger.Trace("Column {0}, {1}: different nullable: {2}; {3}", a, b, a.NotNull, b.NotNull);
@@ -180,7 +197,7 @@ namespace DbShell.Driver.Common.DbDiff
                     if (dcol == null) return false;
                     using (var ctx = new DbDiffChangeLoggerContext(options, NopMessageLogger.Instance, DbDiffOptsLogger.DiffLogger))
                     {
-                        if (!EqualsColumns(scol, dcol, true, options, pairing)) return false;
+                        if (!EqualsColumns(scol, dcol, true, true, options, pairing)) return false;
                     }
                 }
             }
@@ -188,7 +205,7 @@ namespace DbShell.Driver.Common.DbDiff
             {
                 using (var ctx = new DbDiffChangeLoggerContext(options, NopMessageLogger.Instance, DbDiffOptsLogger.DiffLogger))
                 {
-                    if (!tsrc.Columns.EqualSequence(tdst.Columns, (c1, c2) => EqualsColumns(c1, c2, true, options, pairing))) return false;
+                    if (!tsrc.Columns.EqualSequence(tdst.Columns, (c1, c2) => EqualsColumns(c1, c2, true, true, options, pairing))) return false;
                 }
             }
 

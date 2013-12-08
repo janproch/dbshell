@@ -78,6 +78,7 @@ namespace DbShell.Driver.Common.DbDiff
         public bool RenameColumn;
         public bool ChangeColumnDefaultValue;
         public bool ChangeAutoIncrement;
+        public bool ChangeComputedColumnExpression;
 
         public bool CreateSchema;
         public bool DropSchema;
@@ -130,6 +131,7 @@ namespace DbShell.Driver.Common.DbDiff
                 RecreateTable = value;
                 ChangeColumnDefaultValue = value;
                 ChangeAutoIncrement = value;
+                ChangeComputedColumnExpression = value;
                 ChangeColumnType = value;
                 RenameColumn = value;
                 ChangeTableSchema = value;

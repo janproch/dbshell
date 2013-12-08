@@ -114,11 +114,11 @@ namespace DbShell.Driver.Common.DbDiff
                 if (columnMap[index] >= 0)
                 {
                     var src = oldTable.Columns[columnMap[index]];
-                    if (!DbDiffTool.EqualsColumns(src, col, true, opts, pairing))
+                    if (!DbDiffTool.EqualsColumns(src, col, true, true, opts, pairing))
                     {
                         using (var ctx = new DbDiffChangeLoggerContext(opts, NopMessageLogger.Instance, DbDiffOptsLogger.DiffLogger))
                         {
-                            if (DbDiffTool.EqualsColumns(src, col, false, opts, pairing))
+                            if (DbDiffTool.EqualsColumns(src, col, false, true, opts, pairing))
                             {
                                 plan.RenameColumn(src, col.Name);
                             }

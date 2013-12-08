@@ -9,7 +9,7 @@ using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.DbDiff
 {
-    public enum RecreateItemClass { Unknown, SpecificObject, Reference, Constraint }
+    public enum RecreateItemClass { Unknown, SpecificObject, Reference, Constraint, Column }
     public enum PlanPosition { Begin, End }
 
     public class RecreatedItem
@@ -34,6 +34,7 @@ namespace DbShell.Driver.Common.DbDiff
                     RecreateItemClass.Constraint,
                     RecreateItemClass.SpecificObject,
                     RecreateItemClass.Reference,
+                    RecreateItemClass.Column,
                 };
             }
         }
@@ -45,6 +46,7 @@ namespace DbShell.Driver.Common.DbDiff
                 if (RecreatedObject is SpecificObjectInfo) return RecreateItemClass.SpecificObject;
                 if (RecreatedObject is ForeignKeyInfo) return RecreateItemClass.Reference;
                 if (RecreatedObject is ConstraintInfo) return RecreateItemClass.Constraint;
+                if (RecreatedObject is ColumnInfo) return RecreateItemClass.Column;
                 return RecreateItemClass.Unknown;
             }
         }
@@ -124,12 +126,7 @@ namespace DbShell.Driver.Common.DbDiff
             RecreatedItems.Add(new RecreatedItem { RecreatedObject = recreatedObject, NewVersion = newVersion });
         }
 
-        private void AddOperation(AlterOperation op)
-        {
-            AddOperation(op, PlanPosition.End);
-        }
-
-        private void AddOperation(AlterOperation op, PlanPosition position)
+        private void AddOperation(AlterOperation op, PlanPosition position = PlanPosition.End)
         {
             switch (position)
             {
@@ -168,16 +165,15 @@ namespace DbShell.Driver.Common.DbDiff
             TableInfo tbl = Structure.FindOrCreateTable(table.FullName);
             AddOperation(new AlterOperation_DropTable { OldObject = tbl });
         }
-        public void DropConstraint(ConstraintInfo constraint) { DropConstraint(constraint, PlanPosition.End); }
-        public void DropConstraint(ConstraintInfo constraint, PlanPosition pos)
+        public void DropConstraint(ConstraintInfo constraint, PlanPosition pos = PlanPosition.End)
         {
             ConstraintInfo cnt = Structure.FindOrCreateConstraint(constraint);
             AddOperation(new AlterOperation_DropConstraint { ParentTable = cnt.OwnerTable, OldObject = cnt }, pos);
         }
-        public void DropColumn(ColumnInfo column)
+        public void DropColumn(ColumnInfo column, PlanPosition pos = PlanPosition.End)
         {
             var col = Structure.FindOrCreateColumn(column);
-            AddOperation(new AlterOperation_DropColumn { ParentTable = col.OwnerTable, OldObject = col });
+            AddOperation(new AlterOperation_DropColumn { ParentTable = col.OwnerTable, OldObject = col }, pos);
         }
         public void RenameTable(TableInfo table, NameWithSchema name)
         {
@@ -223,13 +219,12 @@ namespace DbShell.Driver.Common.DbDiff
         {
             AddOperation(new AlterOperation_ChangeDatabaseOptions { DbName = dbname, Options = options });
         }
-        public void CreateColumn(TableInfo table, ColumnInfo newcol)
+        public void CreateColumn(TableInfo table, ColumnInfo newcol, PlanPosition pos = PlanPosition.End)
         {
             TableInfo tbl = Structure.FindOrCreateTable(table.FullName);
-            AddOperation(new AlterOperation_CreateColumn { ParentTable = tbl, NewObject = newcol.CloneColumn() });
+            AddOperation(new AlterOperation_CreateColumn { ParentTable = tbl, NewObject = newcol.CloneColumn() }, pos);
         }
-        public void CreateConstraint(TableInfo table, ConstraintInfo newcnt) { CreateConstraint(table, newcnt, PlanPosition.End); }
-        public void CreateConstraint(TableInfo table, ConstraintInfo newcnt, PlanPosition pos)
+        public void CreateConstraint(TableInfo table, ConstraintInfo newcnt, PlanPosition pos = PlanPosition.End)
         {
             TableInfo tbl = Structure.FindOrCreateTable(table.FullName);
             AddOperation(new AlterOperation_CreateConstraint { ParentTable = tbl, NewObject = newcnt.CloneConstraint() }, pos);
@@ -244,15 +239,13 @@ namespace DbShell.Driver.Common.DbDiff
             AddOperation(new AlterOperation_CreateTable { NewObject = tbl, Data = data });
         }
 
-        public void CreateSpecificObject(SpecificObjectInfo obj) { CreateSpecificObject(obj, PlanPosition.End); }
-        public void CreateSpecificObject(SpecificObjectInfo obj, PlanPosition pos)
+        public void CreateSpecificObject(SpecificObjectInfo obj, PlanPosition pos = PlanPosition.End)
         {
             var o = obj.CloneSpecificObject();
             AddOperation(new AlterOperation_CreateSpecificObject { NewObject = o }, pos);
         }
 
-        public void DropSpecificObject(SpecificObjectInfo obj) { DropSpecificObject(obj, PlanPosition.End); }
-        public void DropSpecificObject(SpecificObjectInfo obj, PlanPosition pos)
+        public void DropSpecificObject(SpecificObjectInfo obj, PlanPosition pos = PlanPosition.End)
         {
             var o = Structure.FindOrCreateSpecificObject(obj);
             AddOperation(new AlterOperation_DropSpecificObject { OldObject = o }, pos);
@@ -480,6 +473,8 @@ namespace DbShell.Driver.Common.DbDiff
             if (cnt != null) DropConstraint(cnt, PlanPosition.Begin);
             var spec = obj as SpecificObjectInfo;
             if (spec != null) DropSpecificObject(spec, PlanPosition.Begin);
+            var col = obj as ColumnInfo;
+            if (col != null) DropColumn(col, PlanPosition.Begin);
         }
 
         public void RecreateObject_Create(DatabaseObjectInfo recreated, DatabaseObjectInfo newobj)
@@ -488,6 +483,8 @@ namespace DbShell.Driver.Common.DbDiff
             if (cnt != null) CreateConstraint(((ConstraintInfo)recreated).OwnerTable, cnt, PlanPosition.End);
             var spec = newobj as SpecificObjectInfo;
             if (spec != null) CreateSpecificObject(spec, PlanPosition.End);
+            var col = newobj as ColumnInfo;
+            if (col != null) CreateColumn(((ColumnInfo)recreated).OwnerTable, col, PlanPosition.End);
         }
 
         public void RunNameTransformation(INameTransformation transform)

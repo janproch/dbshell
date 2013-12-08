@@ -206,7 +206,7 @@ ALTER TABLE [dbo].[t1] ALTER COLUMN [c1] FLOAT NOT NULL
 GO
 ALTER TABLE [dbo].[t1] ADD CONSTRAINT [pk_t1] PRIMARY KEY ([c1])
 GO
-CREATE  NONCLUSTERED INDEX [ix1] on [dbo].[t1] ([c1] ASC)";
+CREATE INDEX [ix1] on [dbo].[t1] ([c1] ASC)";
             TestDiff(db =>
                 {
                     var t1 = db.FindTableLike("t1");
@@ -231,7 +231,7 @@ CREATE TABLE [dbo].[t1] (
     CONSTRAINT [pk_t1] PRIMARY KEY ([c1])
 )
 GO
-CREATE  NONCLUSTERED INDEX [ix1] on [dbo].[t1] ([c1] ASC)
+CREATE INDEX [ix1] on [dbo].[t1] ([c1] ASC)
 GO
 SET IDENTITY_INSERT [dbo].[t1] ON;
 INSERT INTO [dbo].[t1] ([c1], [c2]) select [c1] AS [c1], [c2] AS [c2] FROM [dbo].[TMP0]

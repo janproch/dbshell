@@ -83,6 +83,15 @@ namespace DbShell.Driver.SqlServer
             return res;
         }
 
+        public string SimplifyExpression(string expr)
+        {
+            while (expr != null && expr.StartsWith("(") && expr.EndsWith(")"))
+            {
+                expr = expr.Substring(1, expr.Length - 2);
+            }
+            return expr;
+        }
+
         protected override void DoRunAnalysis()
         {
             foreach (var table in Structure.Tables)
@@ -161,17 +170,21 @@ namespace DbShell.Driver.SqlServer
                             col.Length = reader.SafeString("max_length").SafeIntParse();
                             col.Precision = reader.SafeString("precision").SafeIntParse();
                             col.Scale = reader.SafeString("scale").SafeIntParse();
-                            col.DefaultValue = reader.SafeString("default_value");
+                            col.DefaultValue = SimplifyExpression(reader.SafeString("default_value"));
                             col.DefaultConstraint = reader.SafeString("default_constraint");
                             col.AutoIncrement = reader.SafeString("is_identity") == "True";
-                            col.ComputedExpression = reader.SafeString("computed_expression");
+                            col.ComputedExpression = SimplifyExpression(reader.SafeString("computed_expression"));
                             col.IsPersisted = reader.SafeString("is_persisted") == "True";
                             col.IsSparse = reader.SafeString("is_sparse") == "True";
                             col.ObjectId = reader.SafeString("column_id");
                             col.CommonType = AnalyseType(col.DataType, col.Length, col.Precision, col.Scale);
                             table.Columns.Add(col);
                             if (String.IsNullOrWhiteSpace(col.ComputedExpression)) col.ComputedExpression = null;
-                            if (String.IsNullOrWhiteSpace(col.DefaultValue)) col.DefaultValue = null;
+                            if (String.IsNullOrWhiteSpace(col.DefaultValue))
+                            {
+                                col.DefaultValue = null;
+                                col.DefaultConstraint = null;
+                            }
                         }
                     }
                 }
@@ -260,7 +273,7 @@ namespace DbShell.Driver.SqlServer
                         {
                             string oid = reader.SafeString("object_id");
                             string ixname = reader.SafeString("ix_name");
-                            string typedesc = reader.SafeString("type_desc");
+                            string typedesc = (reader.SafeString("type_desc") ?? "").ToLower();
                             bool isunique = reader.SafeString("is_unique") == "True";
                             string indexid = reader.SafeString("index_id");
                             bool isUniqueConstraint = reader.SafeString("is_unique_constraint") == "True";
@@ -281,7 +294,21 @@ namespace DbShell.Driver.SqlServer
                                 index.ObjectId = indexid;
                                 index.IsUnique = isunique;
                                 index.ConstraintName = ixname;
-                                index.IndexType = typedesc;
+                                switch (typedesc)
+                                {
+                                    case "clustered":
+                                        index.IndexType = DbIndexType.Clustered;
+                                        break;
+                                    case "xml":
+                                        index.IndexType = DbIndexType.Xml;
+                                        break;
+                                    case "spatial":
+                                        index.IndexType = DbIndexType.Spatial;
+                                        break;
+                                    case "fulltext":
+                                        index.IndexType = DbIndexType.Fulltext;
+                                        break;
+                                }
                                 indexById[oid + "|" + indexid] = index;
                                 table.Indexes.Add(index);
                             }
@@ -328,7 +355,7 @@ namespace DbShell.Driver.SqlServer
                         {
                             string oid = reader.SafeString("object_id");
                             string name = reader.SafeString("name");
-                            string def = reader.SafeString("definition");
+                            string def = SimplifyExpression(reader.SafeString("definition"));
 
                             var table = _tablesById.Get(oid);
                             if (table == null) continue;

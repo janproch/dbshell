@@ -6,13 +6,22 @@ using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.Structure
 {
+    public enum DbIndexType
+    {
+        Normal,
+        Clustered,
+        Xml,
+        Spatial,
+        Fulltext
+    }
+
     public class IndexInfo : ColumnsConstraintInfo
     {
         [XmlAttrib("is_unique")]
         public bool IsUnique { get; set; }
 
         [XmlAttrib("index_type")]
-        public string IndexType { get; set; }
+        public DbIndexType IndexType { get; set; }
 
         public IndexInfo(TableInfo table)
             : base(table)

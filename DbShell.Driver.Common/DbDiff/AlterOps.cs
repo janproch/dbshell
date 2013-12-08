@@ -349,12 +349,18 @@ namespace DbShell.Driver.Common.DbDiff
                 TransformToRecreateTable(replacement, plan);
                 return;
             }
-            if (!caps.ChangeAutoIncrement && ((ColumnInfo)OldObject).AutoIncrement != ((ColumnInfo)NewObject).AutoIncrement)
+            if (!caps.ChangeAutoIncrement && ((ColumnInfo) OldObject).AutoIncrement != ((ColumnInfo) NewObject).AutoIncrement)
             {
                 TransformToRecreateTable(replacement, plan);
                 return;
             }
+            if (!caps.ChangeComputedColumnExpression && ((ColumnInfo) NewObject).ComputedExpression != null)
+            {
+                plan.RecreateObject(OldObject, NewObject);
+                replacement.Clear();
+            }
         }
+
         public override void AddLogicalDependencies(AlterProcessorCaps caps, DbDiffOptions opts, List<AlterOperation> before, List<AlterOperation> after, AlterPlan plan)
         {
             var oldcol = OldObject as ColumnInfo;

@@ -93,7 +93,7 @@ namespace DbShell.Driver.SqlServer
 
         private void DropDefault(ColumnInfo col)
         {
-            if (col.DefaultConstraint != null) PutCmd("^alter ^table %f ^drop ^constraint %i", col.OwnerTable.FullName, col.DefaultConstraint);
+            if (!String.IsNullOrEmpty(col.DefaultConstraint)) PutCmd("^alter ^table %f ^drop ^constraint %i", col.OwnerTable.FullName, col.DefaultConstraint);
         }
 
         private string GuessDefaultName(ColumnInfo col)
@@ -124,17 +124,26 @@ namespace DbShell.Driver.SqlServer
 
         public override void ChangeColumn(ColumnInfo oldcol, ColumnInfo newcol, IEnumerable<ConstraintInfo> constraints)
         {
-            DropDefault(oldcol);
-            if (oldcol.Name != newcol.Name) RenameColumn(oldcol, newcol.Name);
-            Put("^alter ^table %f ^alter ^column %i ", newcol.OwnerTable.FullName, newcol.Name);
-            // remove autoincrement flag
-            var newcol2 = newcol.CloneColumn();
-            newcol2.SetDummyTable(newcol.OwnerTable.FullName);
-            newcol2.AutoIncrement = false;
-            ColumnDefinition(newcol2, false, true, true);
-            EndCommand();
-            CreateDefault(newcol);
-            this.CreateConstraints(constraints);
+            if (DbDiffTool.EqualsColumns(oldcol, newcol, false, false))
+            {
+                DropDefault(oldcol);
+                if (oldcol.Name != newcol.Name) RenameColumn(oldcol, newcol.Name);
+                CreateDefault(newcol);
+            }
+            else
+            {
+                DropDefault(oldcol);
+                if (oldcol.Name != newcol.Name) RenameColumn(oldcol, newcol.Name);
+                Put("^alter ^table %f ^alter ^column %i ", newcol.OwnerTable.FullName, newcol.Name);
+                // remove autoincrement flag
+                var newcol2 = newcol.CloneColumn();
+                newcol2.SetDummyTable(newcol.OwnerTable.FullName);
+                newcol2.AutoIncrement = false;
+                ColumnDefinition(newcol2, false, true, true);
+                EndCommand();
+                CreateDefault(newcol);
+                this.CreateConstraints(constraints);
+            }
         }
 
         public override void RenameConstraint(ConstraintInfo cnt, string newname)
@@ -145,7 +154,24 @@ namespace DbShell.Driver.SqlServer
 
         public override void CreateIndex(IndexInfo ix)
         {
-            Put("^create %k %k ^index %i on %f (", ix.IsUnique ? "UNIQUE" : "", ix.IndexType ?? "NONCLUSTERED", ix.ConstraintName, ix.OwnerTable.FullName);
+            Put("^create");
+            switch (ix.IndexType)
+            {
+                case DbIndexType.Fulltext:
+                    Put(" ^fulltext");
+                    break;
+                case DbIndexType.Xml:
+                    Put(" ^xml");
+                    break;
+                case DbIndexType.Spatial:
+                    Put(" ^spatial");
+                    break;
+                case DbIndexType.Clustered:
+                    Put(" ^clustered");
+                    break;
+            }
+            if (ix.IsUnique) Put(" ^unique");
+            Put(" ^index %i on %f (", ix.ConstraintName, ix.OwnerTable.FullName);
             bool was = false;
             foreach (var col in ix.Columns.Where(x => !x.IsIncluded))
             {
@@ -157,7 +183,7 @@ namespace DbShell.Driver.SqlServer
             was = false;
             if (ix.Columns.Any(x => x.IsIncluded))
             {
-                Put(") ^include (");
+                Put(" ^include (");
                 foreach (var col in ix.Columns.Where(x => x.IsIncluded))
                 {
                     if (was) Put(" ,");

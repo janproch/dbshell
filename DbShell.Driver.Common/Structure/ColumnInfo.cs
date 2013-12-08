@@ -134,6 +134,7 @@ namespace DbShell.Driver.Common.Structure
             Name = src.Name;
             DataType = src.DataType;
             DefaultValue = src.DefaultValue;
+            DefaultConstraint = src.DefaultConstraint;
             Length = src.Length;
             NotNull = src.NotNull;
             Precision = src.Precision;
@@ -141,7 +142,6 @@ namespace DbShell.Driver.Common.Structure
             AutoIncrement = src.AutoIncrement;
             PrimaryKey = src.PrimaryKey;
             Comment = src.Comment;
-            DefaultConstraint = src.DefaultValue;
             IsPersisted = src.IsPersisted;
             ComputedExpression = src.ComputedExpression;
             IsSparse = src.IsSparse;
