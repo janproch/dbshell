@@ -32,7 +32,7 @@ namespace DbShell.Driver.Common.AbstractDb
                     case DatabaseObjectType.Trigger:
                         return TriggerFilter;
                 }
-                throw new Exception("DBSH-00000 Invalid database object type:" + type.ToString());
+                throw new Exception("DBSH-00139 Invalid database object type:" + type.ToString());
             }
         }
 

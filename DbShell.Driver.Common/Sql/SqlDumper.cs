@@ -460,7 +460,7 @@ namespace DbShell.Driver.Common.Sql
         public static int _lastAlterTableId = 0;
         public virtual void RecreateTable(TableInfo oldTable, TableInfo newTable)
         {
-            if (oldTable.GroupId != newTable.GroupId) throw new InternalError("DAE-00040 Recreate is not possible: oldTable.GroupId != newTable.GroupId");
+            if (oldTable.GroupId != newTable.GroupId) throw new InternalError("DBSH-00143 Recreate is not possible: oldTable.GroupId != newTable.GroupId");
             var columnMap = GetColumnMap(oldTable, newTable);
             int id = System.Threading.Interlocked.Increment(ref _lastAlterTableId);
             string tmptable = GenerateTempTableName(id);

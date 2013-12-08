@@ -118,7 +118,7 @@ namespace DbShell.Driver.Common.DbDiff
             {
                 if (it.RecreatedObject == recreatedObject)
                 {
-                    if (it.NewVersion != null && newVersion != null) throw new InternalError("DAE-00033 Two new versions of object " + recreatedObject.ToString());
+                    if (it.NewVersion != null && newVersion != null) throw new InternalError("DBSH-00140 Two new versions of object " + recreatedObject.ToString());
                     it.NewVersion = newVersion ?? it.NewVersion;
                     return;
                 }

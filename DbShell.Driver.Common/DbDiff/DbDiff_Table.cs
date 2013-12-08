@@ -13,8 +13,8 @@ namespace DbShell.Driver.Common.DbDiff
         public static void AlterTable(AlterPlan plan, TableInfo oldTable, TableInfo newTable, DbDiffOptions opts, DbObjectPairing pairing)
         {
             //plan.BeginFixedOrder();
-            if (oldTable == null) throw new ArgumentNullException("oldTable", "DAE-00240 oldTable is null");
-            if (newTable == null) throw new ArgumentNullException("newTable", "DAE-00241 newTable is null");
+            if (oldTable == null) throw new ArgumentNullException("oldTable", "DBSH-00141 oldTable is null");
+            if (newTable == null) throw new ArgumentNullException("newTable", "DBSH-00142 newTable is null");
 
             //bool processed;
             //proc.AlterTable(oldTable, newTable, out processed);
