@@ -30,7 +30,7 @@ namespace DbShell.Core.Runtime
         {
             using (var fr = new StringReader(content))
             {
-                using (var reader = XmlReader.Create(fr))
+                using (var reader = System.Xml.XmlReader.Create(fr))
                 {
                     object obj = XamlReader.Load(reader);
                     LoadObject(obj, folder);

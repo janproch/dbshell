@@ -129,6 +129,9 @@
     <Compile Include="RazorModels\TableDataModel.cs" />
     <Compile Include="Utility\TableWriter.cs" />
     <Compile Include="Utility\TemplateHolderBase.cs" />
+    <Compile Include="XmlColumn.cs" />
+    <Compile Include="XmlDocumentReader.cs" />
+    <Compile Include="XmlReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DbShell.Common\DbShell.Common.csproj">
