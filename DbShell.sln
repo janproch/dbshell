@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbShell.Extension.DataSet",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbShell.RazorEngine", "DbShell.RazorEngine\DbShell.RazorEngine.csproj", "{64128C85-B9AF-4B4C-BE83-04983EF7F8C9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Web.Razor", "System.Web.Razor\System.Web.Razor.csproj", "{8F18041B-9410-4C36-A9C5-067813DF5F31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -162,6 +164,16 @@ Global
 		{64128C85-B9AF-4B4C-BE83-04983EF7F8C9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{64128C85-B9AF-4B4C-BE83-04983EF7F8C9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{64128C85-B9AF-4B4C-BE83-04983EF7F8C9}.Release|x86.ActiveCfg = Release|Any CPU
+		{8F18041B-9410-4C36-A9C5-067813DF5F31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F18041B-9410-4C36-A9C5-067813DF5F31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F18041B-9410-4C36-A9C5-067813DF5F31}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8F18041B-9410-4C36-A9C5-067813DF5F31}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8F18041B-9410-4C36-A9C5-067813DF5F31}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8F18041B-9410-4C36-A9C5-067813DF5F31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F18041B-9410-4C36-A9C5-067813DF5F31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F18041B-9410-4C36-A9C5-067813DF5F31}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8F18041B-9410-4C36-A9C5-067813DF5F31}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8F18041B-9410-4C36-A9C5-067813DF5F31}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

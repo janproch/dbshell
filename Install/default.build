@@ -29,7 +29,7 @@ Visual Studio 2010 (including MS-BUILD)
   <property name="devenv" value="c:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv" />
 
   <!-- SVN repository path and user credentials-->
-  <property name="git_repository" value="c:\jenasoft\dbshell" />
+  <property name="git_repository" value="https://git01.codeplex.com/dbshell" />
 
 	<property name="nant.settings.currentframework" value="net-4.0" />
 
