@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using DbShell.Runtime;
+using DbShell.Core.Runtime;
 using log4net;
 using log4net.Config;
 
