@@ -1,0 +1,10 @@
+====== Echo element ======
+
+Echo element sprints out given message. Message is writted to standard output (when running from [[http://dbmouse.com|DbMouse]] , it is catched in shown in execution log).
+
+  * Implements: **IRunnable**
+  * Attribute **Message**: message to be printed out
+
+===== Examples =====
+
+{{page>samples:print_message}}

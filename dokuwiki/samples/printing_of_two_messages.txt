@@ -1,0 +1,14 @@
+===== Printing of two messages =====
+
+This example prints out text "First message", than text "Second message". Texts are printed on standard output or to execution log, when executed from DbMouse.
+
+<code xml>
+<?xml version="1.0" encoding="utf-8" ?>
+<Batch 
+  xmlns="http://schemas.dbshell.com/core"
+>
+  <Echo Message="First message" />
+  <Echo Message="Seconds message" />
+</Batch>
+</code>
+

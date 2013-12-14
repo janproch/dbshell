@@ -1,0 +1,26 @@
+====== Run script - create database ======
+This sample shows runnign SQL script. It creates database Chinook (using inlined command), and executes script on this database.
+
+<code xml>
+<?xml version="1.0" encoding="utf-8" ?>
+<Batch 
+  xmlns="http://schemas.dbshell.com/core"
+>
+  <!-- define connection string here -->
+  <SetVariable Name="ConnectionNoDb" Value="sqlserver://Data Source=localhost\SQLEXPRESS;MultipleActiveResultSets=True;Integrated Security=SSPI" />
+  
+  <!-- define database name -->
+  <SetVariable Name="DbName" Value="Chinook" />
+  
+  <!-- compose full connection string -->
+  <SetVariable Name="Connection" Value="${ConnectionNoDb};Initial Catalog=${DbName}" />
+  
+  <!-- create database -->
+  <Script Command="CREATE DATABASE ${DbName}" Connection="${ConnectionNoDb}"/>
+  
+  <!-- fill database with sample data -->
+  <Script File="Chinook.sql" Connection="${Connection}"/>
+  
+  <Echo Message="Your samples database was succesfully created" />
+</Batch>
+</code>

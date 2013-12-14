@@ -1,0 +1,34 @@
+====== DataSet module ======
+
+This module is used from exporting related data from database.
+
+It solves common problem, how to move data from one database to another with preserving relationships between objects. DataSet module loads all marked rows, it searches for relationsships and it creates INSERT SQL script, which preserves relationships.
+
+===== Example =====
+
+Assume following database model:
+{{::diagram_points.png|}}
+
+Than following code exports all parkings with related polygons and points.
+
+<code xml>
+<?xml version="1.0" encoding="utf-8" ?>
+<Batch
+    xmlns="http://schemas.dbshell.com/core"
+    xmlns:dbmouse="http://schemas.dbmouse.com/dbshell"
+    xmlns:ds="http://schemas.dbshell.com/dataset"
+>
+	<ds:DataSet />
+	
+	<ds:AddRows Table='Parking' />
+	<ds:LoadMissing Table='Polygon' />
+	<ds:LoadReference Table='PolygonPoint' Column='ID_POLYGON' RefTable='Polygon' />
+	<ds:LoadMissing Table='Point' />
+	<ds:KeepKey Table='PointType' />
+	
+	<ds:Prepare />
+	
+	<ds:WriteSql File='ds1.sql' />	
+</Batch>
+
+</code>

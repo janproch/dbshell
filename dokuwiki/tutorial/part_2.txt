@@ -1,0 +1,41 @@
+====== Part 2 – basic database operations ======
+
+In this article, I will show how to connect database, and how export some data. Connection is made throw Connection attribute. It has form %%driver://connection_string%%. Table data are available throught [[http://dbshell.com/docs/?topic=html/T_DbShell_Core_TableExtension.htm|Table]] element. [[http://dbshell.com/docs/?topic=html/AllMembers_T_DbShell_Core_CopyTable.htm|CopyTable]] element provides export operation. Target is defined using [[http://dbshell.com/docs/?topic=html/AllMembers_T_DbShell_Core_File.htm|File]] element.
+
+
+<code xml>
+<CopyTable
+xmlns="http://schemas.dbshell.com/core"
+Connection="sqlserver://MultipleActiveResultSets=True;Data Source=localhost\SQLEXPRESS;Integrated Security=SSPI;Initial Catalog=Chinook"
+Source="{Table Album}"
+Target="{File album.csv}"
+/>
+</code>
+
+
+In fact, we are not using Table and File classes, but their “syntax extensions” (it’s XAML language feature). If we want to configure them in more detail, we can use full syntax. Below is the some sample without syntax extensions:
+
+
+<code xml>
+<?xml version="1.0" encoding="utf-8" ?>
+<CopyTable
+xmlns="http://schemas.dbshell.com/core"
+Connection="sqlserver://MultipleActiveResultSets=True;Data Source=localhost\SQLEXPRESS;Integrated Security=SSPI;Initial Catalog=Chinook"
+Source="{Table Album}"
+Target="{File album.csv}"
+>
+  <CopyTable.Source>
+    <Table Name="Album" />
+  </CopyTable.Source>
+  <CopyTable.Target>
+    <CsvFile Name="album.csv" Delimiter=";" />
+  </CopyTable.Target>
+</CopyTable>
+</code>
+
+The only difference is setting of column Delimiter. We are setting delimiter to semicolor instead of default command.
+
+===== Syntax extensions =====
+
+
+Let’s explain more in detail syntax of some attributes using braces, eg. Source=”{Table Album}”. In fact, this syntax invokes class [[http://dbshell.com/docs/?topic=html/T_DbShell_Core_TableExtension.htm|TableExtension]], you can set it’s properties. Extension suffix is automatically used as defined in XAML.

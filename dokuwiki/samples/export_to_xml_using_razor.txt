@@ -1,0 +1,20 @@
+====== Export to XML using Razor ======
+
+This example exports rows from table ''Album'' to XML file ''album.xml''.
+
+<code xml>
+<?xml version="1.0" encoding="utf-8" ?>
+<Batch
+  xmlns="http://schemas.dbshell.com/core"
+  >
+    <Razor Model="{Query 'select AlbumId, Title from Album'}" File='album.xml'>
+      <![CDATA[
+        <ROOT>
+          @foreach(var row in @Rows) {
+            <Album id='@row["AlbumId"]' title='@row["Title"]' />
+          }
+        </ROOT>
+      ]]>
+   </Razor>
+</Batch>    
+</code>

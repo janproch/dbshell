@@ -1,0 +1,17 @@
+====== Export table to CSV using without extensions ======
+
+This script exports table ''Album'' to file ''album.csv''.
+
+<code xml>
+<?xml version="1.0" encoding="utf-8" ?>
+<CopyTable 
+  xmlns="http://schemas.dbshell.com/core"
+/>
+  <CopyTable.Source>
+    <Table Name="Album" />
+  </CopyTable.Source>
+  <CopyTable.Target>
+    <File Name="album.csv" />
+  </CopyTable.Target>
+</CopyTable>
+</code>

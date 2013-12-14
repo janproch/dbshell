@@ -1,0 +1,21 @@
+====== XmlReader element ======
+
+Providers tabular data readed from XML file.
+
+  * Implements: **ITabularDataSource**, **IModelProvider**
+  * Attribute **XPath**: xpath, where rows are stored
+  * Subelement **XmlReader.Columns**: collection of column definitions
+  * Attribtue **File**: name of input file
+
+===== XmlReader.Columns subelement =====
+Is collection of **XmlColumn** elements.
+
+==== XmlColumn element ====
+Definition of column saved in XML
+
+  * Attribute **Name**: column name
+  * Attribute **XPath**: XPath (relative to row XML element), where columns date are stored
+
+===== Examples =====
+
+{{page>samples:import_all_xml_files_in_directory}}

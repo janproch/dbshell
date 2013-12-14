@@ -1,0 +1,11 @@
+====== Query element ======
+
+Query element providers acces to result of query execution.
+
+  * Implements: **ITabularDataSource**, **IListProvider**, **IEnumerable**, **IModelProvider**
+  * Attribute **Text**: query text (could be written also directly as as content)
+  * Extesion syntax: ''Property="{Query 'select * from Album'}"''
+
+===== Example =====
+
+{{page>samples:export_query_result_to_csv_using_custom_mapping}}

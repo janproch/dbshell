@@ -1,0 +1,6 @@
+This introduction shows and explains basic concepts of DB Shell. If you want to see working examples, please have a look into “Samples” folder in DB Shell distribution.
+
+  * [[tutorial:part_1|Part 1 – Hello World]]
+  * [[tutorial:part_2|Part 2 – Basic database operations]]
+  * [[tutorial:part_3|Part 3 – export all tables, for-each cycle]]
+

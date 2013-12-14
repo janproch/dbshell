@@ -1,0 +1,10 @@
+====== TablesProvider element ======
+
+Provides acccess to all tables in database.
+
+  * Implements: **IListProvider**
+  * Extension syntax: ''Property="{Tables}"''
+
+===== Examples =====
+
+{{page>samples:export_all_tables_to_csv}}

@@ -1,0 +1,43 @@
+====== Home ======
+
+DB Shell is toolkit for automation of database operations. It uses XAML subset of XML language, so there are many editors allowing comfortably edit DB shell code. It is licensed under LGPL license.
+
+  * Browse [[http://dbshell.codeplex.com|source code]] in CodePlex
+  * Browse DbShell [[manual:index|Manual]]
+  * Browse [[samples:index|Samples]]
+  * [[http://dbshell.codeplex.com/releases/|Download]] binary distribution and samples
+  * Browse generated [[http://dbshell.com/docs|online documentation]] of supported classes
+  * How to export related data using [[DataSet module]]
+  * See documentation on [[filter expressions]]
+  * Read [[http://msdn.microsoft.com/en-us/library/ms752059.aspx|tutorial]] of XAML on MSDN
+
+===== Simple example =====
+
+This very simple example exports data of table Album into CSV file.
+
+<code xml>
+<?xml version="1.0" encoding="utf-8" ?>
+<CopyTable
+  xmlns="http://schemas.dbshell.com/core"
+  Connection="sqlserver://MultipleActiveResultSets=True;Data Source=localhost\SQLEXPRESS;Integrated Security=SSPI;Initial Catalog=Chinook"
+  Source="{Table Album}"
+  Target="{File album.csv}"
+/>
+</code>
+
+The explanation can be found in [[tutorial:index|introduction]] to DbShell. \\
+More examples are available in [[samples:index|Samples]] directory.
+
+===== DbMouse Tool =====
+DbShell is heavily used by database-management tool called [[http://dbmouse.com|DbMouse]] . This tool offers also free version, this free version could be used as unlimited graphics console for DbShell. DbMouse has already connection to database, so you can omit it in jon definition, so previous example will look like following:
+
+<code xml>
+<?xml version="1.0" encoding="utf-8" ?>
+<CopyTable
+  xmlns="http://schemas.dbshell.com/core"
+  Source="{Table Album}"
+  Target="{File album.csv}"
+/>
+</code>
+
+{{::dbmouse-dbshell.png|}}

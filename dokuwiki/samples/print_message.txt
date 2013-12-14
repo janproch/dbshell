@@ -1,0 +1,8 @@
+====== Print message ======
+
+This example prints out text "Hello world".
+
+<code xml>
+<?xml version="1.0" encoding="utf-8" ?>
+<Echo Message="Hello world" xmlns="http://schemas.dbshell.com/core"/>
+</code>

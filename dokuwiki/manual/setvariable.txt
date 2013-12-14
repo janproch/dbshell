@@ -1,0 +1,13 @@
+====== SetVariable element ======
+
+SetVariable element assigns global variable value.
+
+  * Implements: **IRunnable**
+  * Attribute **Name**: the variable name
+  * Attribute **Value**: the variable value
+  * Attribute **Expression**: expression to evaluate variable value
+  * Exactly one of **Value** or **Expression** attributes should be set
+
+===== Examples =====
+
+{{page>samples:runs_script_-_create_database}}

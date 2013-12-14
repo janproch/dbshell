@@ -1,0 +1,14 @@
+====== Export binary fields ======
+This script exports binary column named ''BlobData'' from table ''Genre''. For each row is created separate file
+names ''genre${GenreId}.txt'' , where ''${GenreId}'' is replaced with value of GenreId column.
+
+<code xml>
+<?xml version="1.0" encoding="utf-8" ?>
+<Batch
+    xmlns="http://schemas.dbshell.com/core"
+    >
+    <ForEach Source="{Query 'SELECT GenreId, BlobData FROM Genre'}">
+        <SaveToFile File="genre${GenreId}.txt" Expression="${BlobData}" />
+    </ForEach>
+</Batch>    
+</code>
