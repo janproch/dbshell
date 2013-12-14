@@ -10,7 +10,7 @@ namespace DbShell.Core.Utility
         /// </summary>
         Always,
         /// <summary>
-        /// Al fields except numbers are quoted
+        /// All fields except numbers are quoted
         /// </summary>
         AlwaysExceptNumbers,
         /// <summary>

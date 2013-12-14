@@ -34,7 +34,7 @@ namespace DbShell.Core.DataSetModels
         }
         string ProcessExprElem(Match m)
         {
-            var curtable = _model.Classes[_table];
+            var curtable = _model.GetClass(_table);
             string curalias = "tmain";
             string[] items = m.Value.Split('.');
             for (int i = 0; i < items.Length - 1; i++)

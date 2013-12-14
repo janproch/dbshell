@@ -7,7 +7,6 @@ DB Shell is toolkit for automation of database operations. It uses XAML subset o
   * Browse [[samples:index|Samples]]
   * [[http://dbshell.codeplex.com/releases/|Download]] binary distribution and samples
   * Browse generated [[http://dbshell.com/docs|online documentation]] of supported classes
-  * How to export related data using [[DataSet module]]
   * See documentation on [[filter expressions]]
   * Read [[http://msdn.microsoft.com/en-us/library/ms752059.aspx|tutorial]] of XAML on MSDN
 

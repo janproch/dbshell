@@ -1,0 +1,10 @@
+====== Prepare element ======
+
+Prepare elemnt preparse data set for exporting into SQL. It must be called after all definig statements and before [[WriteSql]]
+
+  * Attribute **Name**: dataset (by default "DefaultDataSet")
+
+
+===== Examples =====
+
+{{page>samples:trivial_data_set}}

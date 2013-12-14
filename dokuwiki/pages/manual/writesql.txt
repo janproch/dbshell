@@ -1,0 +1,11 @@
+====== WriteSql element ======
+
+WriteSql element writes data of data set to SQL file. It must be called after [[Prepare]] element.
+
+  * Attribute **Name**: dataset (by default "DefaultDataSet")
+  * Attribute **File**: name of output file
+
+
+===== Examples =====
+
+{{page>samples:trivial_data_set}}

@@ -2,6 +2,9 @@
 
 This is reference manual of DbShell elements. Basic principles you can see in [[tutorial:index|introduction]].
 
+===== Common principles =====
+  * [[Common attributes]]
+
 ===== DbShell Core elements =====
   * [[Batch]] - enapsulates sequence of commands
   * [[CdlFile]] - read/write access to CDL file (binary format for storing table data, defined by DbShell)
@@ -34,3 +37,18 @@ Markup extensions are used in attribute values, it is a shortcut to equivalent e
   * {Query 'select * from Album'} - syntax sugar of [[Query]] element
   * {Table Genre} - syntax sugar of [[Table]] element
   * {Tables} - syntax sugar of [[TablesProvider]] element
+
+===== DataSet module elements =====
+
+This module is used from exporting related data from database.
+
+It solves common problem, how to move data from one database to another with preserving relationships between objects. DataSet module loads all marked rows, it searches for relationsships and it creates INSERT SQL script, which preserves relationships.
+
+  * [[AddRows]] - adds rows from table
+  * [[DataSet]] - initializes dataset
+  * [[KeepKey]] - marks key as keep (inserted values are the some as in original database)
+  * [[LoadFile]] - loads CDL file into dataset
+  * [[LoadMissing]] - marks entity to load missing rows
+  * [[LoadReferences]] - load marked references from table
+  * [[Prepare]] - prepares dataset (analyse relations, load missing data)
+  * [[WriteSql]] - write SQL inserting data

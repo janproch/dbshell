@@ -1,0 +1,32 @@
+====== Require and Connection attributes ======
+
+Require attribute is used for including dbsh files. Connection attribute is used for defining connection.
+
+file Configuration.dbsh:
+<code xml>
+<?xml version="1.0" encoding="utf-8" ?>
+<Batch 
+  xmlns="http://schemas.dbshell.com/core"
+>
+  <!-- define connection string here -->
+  <SetVariable Name="ConnectionNoDb" Value="sqlserver://Data Source=localhost\SQLEXPRESS;MultipleActiveResultSets=True;Integrated Security=SSPI" />
+  
+  <!-- define database name -->
+  <SetVariable Name="DbName" Value="Chinook" />
+  
+  <!-- compose full connection string -->
+  <SetVariable Name="Connection" Value="${ConnectionNoDb};Initial Catalog=${DbName}" />
+</Batch>
+</code>
+
+file test.dbsh:
+<code xml>
+<?xml version="1.0" encoding="utf-8" ?>
+<CopyTable 
+  xmlns="http://schemas.dbshell.com/core"
+  Requires="Configuration.dbsh"
+  Connection="${Connection}"
+  Source="{Table Album}"
+  Target="{File album.csv}"
+/>
+</code>

@@ -1,0 +1,10 @@
+====== DataSet element ======
+
+Initializes data set. Must be first of commends working with data set.
+
+  * Attribute **Name**: dataset (by default "DefaultDataSet")
+
+===== Examples =====
+
+
+{{page>samples:trivial_data_set}}

@@ -44,12 +44,13 @@ namespace DbShell.Core
             if (Table != null && Tables != null) throw new Exception("DBSH-00085 SetTableProperty: both of Table and tables attribute is set");
             if (Table == null && Tables == null) throw new Exception("DBSH-00086 SetTableProperty: none of Table and tables attribute is set");
 
+            string value = Replace(Value);
             if (Table != null)
             {
                 var table = db.FindTableLike(Table);
                 if (table != null)
                 {
-                    table.Properties[Name] = Value;
+                    table.Properties[Name] = value;
                 }
             }
             if (Tables != null)
@@ -58,7 +59,7 @@ namespace DbShell.Core
                 {
                     if (Regex.Match(table.Name, Tables).Success)
                     {
-                        table.Properties[Name] = Value;
+                        table.Properties[Name] = value;
                     }
                 }
             }

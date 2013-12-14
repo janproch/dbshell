@@ -5,7 +5,6 @@
   * [[tutorial:index|Introduction]]
   * [[Download]]
   * [[Filter expressions]]
-  * [[DataSet module]]
   * [[http://dbshell.com/docs|Generated class documentation]]
 
 ===DbMouse===

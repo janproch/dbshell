@@ -1,0 +1,12 @@
+====== LoadReferences element ======
+
+LoadReferences elements marks referenced tables to be loaded. If table, which is marked by LoadReference element and refers to row in dataset, it is laso added to dataset.
+
+  * Attribute **Name**: dataset (by default "DefaultDataSet")
+  * Attribute **Table**: source table name
+  * Attribute **Column**: column of source table
+  * Attribute **RefTable**: referenced table name
+
+===== Examples =====
+
+{{page>samples:export_albums_with_related_track_and_genre}}

@@ -1,4 +1,6 @@
 ====== Example directory ======
+
+===== DbShell Core =====
   * [[Print message]]
   * [[Printing of two messages]]
   * [[Export binary fields]]
@@ -12,3 +14,10 @@
   * [[Export to XML using Razor]]
   * [[Import CSV file to new table]]
   * [[Export table and column list to XML]]
+  * [[Require and Connection attributes]]
+
+===== DataSet module =====
+  * [[Trivial data set]]
+  * [[One table with related condition]]
+  * [[Export Albums with related Track and Genre]]
+  * [[Export from CDL file]]

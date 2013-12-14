@@ -1,0 +1,11 @@
+====== LoadFile element ======
+
+Loads content of CDL file into dataset.
+
+  * Attribute **Name**: dataset (by default "DefaultDataSet")
+  * Attribute **Table**: target table name
+  * Attribute **File**: source file name
+
+===== Examples =====
+
+{{page>samples:export_from_cdl_file}}
