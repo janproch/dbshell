@@ -42,6 +42,15 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
             });
     }
 
+    public void AddNumberEqualCondition(decimal number)
+    {
+        Conditions.Add(new DmlfEqualCondition
+        {
+            LeftExpr = ColumnValue,
+            RightExpr = new DmlfLiteralExpression { Value = number },
+        });
+    }
+
     public void AddLikeCondition(bool prefix, string term, bool postfix)
     {
         Conditions.Add(new DmlfLikeCondition

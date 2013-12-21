@@ -46,8 +46,8 @@ number MINUS num2=NUMBER {
 };
  
 element_no_negative:
-  positive_number { AddEqualCondition(Pop<decimal>().ToString(CultureInfo.InvariantCulture)); } 
-  | number_as_string { AddEqualCondition(Pop<decimal>().ToString(CultureInfo.InvariantCulture)); } 
+  positive_number { AddNumberEqualCondition(Pop<decimal>()); } 
+  | number_as_string { AddNumberEqualCondition(Pop<decimal>()); } 
   | interval
   | LT num1=number { AddNumberRelation(Pop<decimal>(), "<"); } 
   | GT num1=number { AddNumberRelation(Pop<decimal>(), ">"); } 
@@ -60,7 +60,7 @@ element_no_negative:
   ;
   
 element_maybe_negative:
-  negative_number { AddEqualCondition(Pop<decimal>().ToString(CultureInfo.InvariantCulture)); }
+  negative_number { AddNumberEqualCondition(Pop<decimal>()); }
   | element_no_negative
 ;
   

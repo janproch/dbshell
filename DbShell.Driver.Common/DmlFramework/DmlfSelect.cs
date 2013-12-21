@@ -26,6 +26,12 @@ namespace DbShell.Driver.Common.DmlFramework
         public int? TopRecords { get; set; }
 
         [XmlElem]
+        public int? LimitCount { get; set; }
+
+        [XmlElem]
+        public int Offset { get; set; }
+
+        [XmlElem]
         public bool SelectAll { get; set; }
 
         public DmlfSelect()
@@ -143,6 +149,10 @@ namespace DbShell.Driver.Common.DmlFramework
             {
                 dmp.Put(" ^order ^by ");
                 OrderBy.GenSql(dmp, handler);
+            }
+            if (LimitCount != null)
+            {
+                dmp.Put(" ^limit %s,%s", Offset, LimitCount);
             }
         }
 

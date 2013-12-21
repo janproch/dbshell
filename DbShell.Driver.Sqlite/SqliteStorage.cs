@@ -19,7 +19,7 @@ namespace DbShell.Driver.Sqlite
         private SQLiteConnection _conn;
         private string _file;
         private TableInfo _table;
-        private const string TABLE_NAME = "_data";
+        public const string TABLE_NAME = "_data";
         private int _rowCount;
         private SQLiteTransaction _tran;
 
@@ -105,20 +105,20 @@ namespace DbShell.Driver.Sqlite
             }
         }
 
-        private string CreateQuery(int start = 0, int? count = null)
-        {
-            var sb = new StringBuilder();
-            sb.AppendFormat("select {0} from {1} order by rowid", ColumnsText, TABLE_NAME);
-            if (count != null) sb.AppendFormat(" limit {0},{1}", start, count);
-            return sb.ToString();
-        }
+        //private string CreateQuery(int start = 0, int? count = null)
+        //{
+        //    var sb = new StringBuilder();
+        //    sb.AppendFormat("select {0} from {1} order by rowid", ColumnsText, TABLE_NAME);
+        //    if (count != null) sb.AppendFormat(" limit {0},{1}", start, count);
+        //    return sb.ToString();
+        //}
 
-        public CdlTable LoadTableData(int start = 0, int? count = null)
+        public CdlTable LoadTableData(string query)
         {
             var table = new CdlTable(_table);
             using (var selcmd = _conn.CreateCommand())
             {
-                selcmd.CommandText = CreateQuery(start, count);
+                selcmd.CommandText = query;
                 using (var reader = selcmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -137,28 +137,31 @@ namespace DbShell.Driver.Sqlite
             return table;
         }
 
-        public IEnumerable<ICdlRecord> EnumRows(ArrayDataRecord record)
+        public IEnumerable<ICdlRecord> EnumRows(ArrayDataRecord record, string query)
         {
             using (var selcmd = _conn.CreateCommand())
             {
-                selcmd.CommandText = CreateQuery();
+                selcmd.CommandText = query;
                 using (var reader = selcmd.ExecuteReader())
                 {
-                    for (int i = 0; i < _table.ColumnCount; i++)
+                    while (reader.Read())
                     {
-                        record.SeekValue(i);
-                        var type = (TypeStorage) reader.GetInt32(i*2);
-                        StorageTool.ReadValue(reader, i*2 + 1, type, record);
+                        for (int i = 0; i < _table.ColumnCount; i++)
+                        {
+                            record.SeekValue(i);
+                            var type = (TypeStorage) reader.GetInt32(i*2);
+                            StorageTool.ReadValue(reader, i*2 + 1, type, record);
+                        }
+                        yield return record;
                     }
-                    yield return record;
                 }
             }
         }
 
-        public ICdlReader CreateReader()
+        public ICdlReader CreateReader(string query)
         {
             var reader = new CdlStorageReader(Structure);
-            reader.SetEnumerator(EnumRows(reader));
+            reader.SetEnumerator(EnumRows(reader, query));
             return reader;
         }
 
@@ -168,6 +171,16 @@ namespace DbShell.Driver.Sqlite
             {
                 _tran.Commit();
                 _tran = null;
+            }
+        }
+
+        public object ExecuteScalar(string sql)
+        {
+            using (var cmd = _conn.CreateCommand())
+            {
+                cmd.CommandText = sql;
+                var res = cmd.ExecuteScalar();
+                return res;
             }
         }
     }
