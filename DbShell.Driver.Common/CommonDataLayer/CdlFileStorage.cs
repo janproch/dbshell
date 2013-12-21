@@ -213,7 +213,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
 
         public ICdlReader CreateReader()
         {
-            var reader = new CdlFileStorageReader(Structure);
+            var reader = new CdlStorageReader(Structure);
             reader.SetEnumerator(EnumRows(reader));
             return reader;
         }

@@ -73,7 +73,7 @@
     <Compile Include="CommonDataLayer\CdlChangeSet.cs" />
     <Compile Include="CommonDataLayer\CdlDataQueue.cs" />
     <Compile Include="CommonDataLayer\CdlDataQueueAdapter.cs" />
-    <Compile Include="CommonDataLayer\CdlFileStorageReader.cs" />
+    <Compile Include="CommonDataLayer\CdlStorageReader.cs" />
     <Compile Include="CommonDataLayer\CdlReaderAdapter.cs" />
     <Compile Include="CommonDataLayer\CdlRecordProxy.cs" />
     <Compile Include="CommonDataLayer\StreamValueWriter.cs" />

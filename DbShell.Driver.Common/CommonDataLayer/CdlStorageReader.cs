@@ -8,11 +8,11 @@ using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.CommonDataLayer
 {
-    public class CdlFileStorageReader : ArrayDataRecord, ICdlReader
+    public class CdlStorageReader : ArrayDataRecord, ICdlReader
     {
         private IEnumerator<ICdlRecord> _reader;
 
-        public CdlFileStorageReader(TableInfo structure)
+        public CdlStorageReader(TableInfo structure)
             : base(structure)
         {
         }

@@ -96,7 +96,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
             return row;
         }
 
-        internal void AddRowInternal(ArrayDataRecord rec)
+        public void AddRowInternal(ArrayDataRecord rec)
         {
             Rows.AddInternal(new CdlRow(this, rec, CdlRowState.Unchanged, m_structure));
         }

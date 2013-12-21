@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
@@ -97,6 +98,15 @@ namespace DbShell.Driver.Common.Sql
             {
                 sb.Append(" ");
             }
+        }
+
+        public static string GenerateSql(IDatabaseFactory factory, Action<ISqlDumper> func)
+        {
+            var sw = new StringWriter();
+            var so = new SqlOutputStream(factory.CreateDialect(), sw, new SqlFormatProperties());
+            var dmp = factory.CreateDumper(so, new SqlFormatProperties());
+            func(dmp);
+            return sw.ToString();
         }
 
         public static string Format(IDatabaseFactory factory, SqlFormatProperties props, SqlFormatterState state, string format, params object[] args)
