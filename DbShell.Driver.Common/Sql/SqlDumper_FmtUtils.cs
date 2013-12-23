@@ -403,6 +403,7 @@ namespace DbShell.Driver.Common.Sql
 
         public static string GetSqlLiteralAndRead(SqlFormatProperties props, IDialectDataAdapter dda, SqlFormatterState state, object val, DbTypeBase dsttype)
         {
+            if (state == null) state = new SqlFormatterState();
             state._Holder.ReadFrom(val);
             return GetSqlLiteral(props, dda, state, state._Holder, dsttype);
         }

@@ -217,6 +217,7 @@
     <Compile Include="Utility\LogRecord.cs" />
     <Compile Include="Utility\MessageLogger.cs" />
     <Compile Include="Utility\MessageLoggerExtension.cs" />
+    <Compile Include="Utility\NeutralCultureObject.cs" />
     <Compile Include="Utility\ObjectExtension.cs" />
     <Compile Include="Utility\PyList.cs" />
     <Compile Include="Utility\ReflTools.cs" />
