@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
@@ -15,16 +16,15 @@ namespace DbShell.Driver.Common.Utility
             list[i2] = tmp;
         }
 
-
         public static void SortByKey<ElementType, KeyType>(this List<ElementType> lst, Func<ElementType, KeyType> key)
             where KeyType : IComparable
         {
-            lst.Sort((Comparison<ElementType>)(delegate(ElementType a, ElementType b) { return key(a).CompareTo(key(b)); }));
+            lst.Sort((Comparison<ElementType>) (delegate(ElementType a, ElementType b) { return key(a).CompareTo(key(b)); }));
         }
 
         public static void RemoveIf<T>(this IList<T> list, Func<T, bool> testFunc)
         {
-            for (int i = 0; i < list.Count; )
+            for (int i = 0; i < list.Count;)
             {
                 if (testFunc(list[i])) list.RemoveAt(i);
                 else i++;
@@ -43,6 +43,13 @@ namespace DbShell.Driver.Common.Utility
         {
             for (int i = 0; i < list.Count; i++) if (Object.Equals(list[i], item)) return i;
             return -1;
+        }
+
+        public static void Exchange<T>(this ObservableCollection<T> list, int i1, int i2)
+        {
+            T tmp = list[i1];
+            list[i1] = list[i2];
+            list[i2] = tmp;
         }
     }
 }
