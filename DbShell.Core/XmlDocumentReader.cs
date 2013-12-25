@@ -50,5 +50,10 @@ namespace DbShell.Core
             }
             return true;
         }
+
+        public bool NextResult()
+        {
+            return false;
+        }
     }
 }

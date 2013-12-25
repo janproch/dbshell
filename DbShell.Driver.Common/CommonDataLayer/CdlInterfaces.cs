@@ -103,6 +103,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
     public interface ICdlReader : ICdlRecord, IHookableDisposable
     {
         bool Read();
+        bool NextResult();
     }
 
     public interface ICdlWriter : IHookableDisposable

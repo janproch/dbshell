@@ -33,6 +33,11 @@ namespace DbShell.Driver.Common.CommonDataLayer
             return _reader.MoveNext();
         }
 
+        public bool NextResult()
+        {
+            return false;
+        }
+
         public void SetEnumerator(IEnumerable<ICdlRecord> enumerator)
         {
             _reader = enumerator.GetEnumerator();

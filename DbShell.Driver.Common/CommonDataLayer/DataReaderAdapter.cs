@@ -9,28 +9,28 @@ namespace DbShell.Driver.Common.CommonDataLayer
     public abstract class DataRecordAdapterBase : CdlValueHolder, ICdlRecord
     {
         protected IDataRecord m_record;
-        protected TableInfo m_structure;
+        protected TableInfo _structure;
 
         #region IBedRecord Members
 
         public TableInfo Structure
         {
-            get { return m_structure; }
+            get { return _structure; }
         }
 
         public int FieldCount
         {
-            get { return m_structure.Columns.Count; }
+            get { return _structure.Columns.Count; }
         }
 
         public int GetOrdinal(string colName)
         {
-            return m_structure.Columns.GetIndex(colName);
+            return _structure.Columns.GetIndex(colName);
         }
 
         public string GetName(int i)
         {
-            return m_structure.Columns[i].Name;
+            return _structure.Columns[i].Name;
         }
 
         public virtual void ReadValue(int i)
@@ -56,7 +56,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public DataRecordAdapter(IDataRecord record, TableInfo table)
         {
             m_record = record;
-            m_structure = table;
+            _structure = table;
         }
 
         public IDataRecord Record
@@ -67,30 +67,30 @@ namespace DbShell.Driver.Common.CommonDataLayer
 
         public new TableInfo Structure
         {
-            get { return m_structure; }
-            set { m_structure = value; }
+            get { return _structure; }
+            set { _structure = value; }
         }
     }
 
     public class DataReaderAdapter : DataRecordAdapterBase, ICdlReader
     {
-        IDataReader m_reader;
-        IDatabaseFactory m_factory;
+        IDataReader _reader;
+        IDatabaseFactory _factory;
 
         public DataReaderAdapter(IDataReader reader, IDatabaseFactory factory)
         {
-            m_reader = reader;
-            m_factory = factory;
-            m_structure = reader.GetTableInfo();
+            _reader = reader;
+            _factory = factory;
+            _structure = reader.GetTableInfo();
         }
 
         #region ICdlReader Members
 
         public bool Read()
         {
-            if (m_reader.Read())
+            if (_reader.Read())
             {
-                m_record = m_reader;
+                m_record = _reader;
                 return true;
             }
             else
@@ -98,6 +98,16 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 m_record = null;
                 return false;
             }
+        }
+
+        public bool NextResult()
+        {
+            bool res = _reader.NextResult();
+            if (res)
+            {
+                _structure = _reader.GetTableInfo();
+            }
+            return res;
         }
 
         #endregion

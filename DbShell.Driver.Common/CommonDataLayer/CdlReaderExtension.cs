@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using DbShell.Driver.Common.DmlFramework;
 using DbShell.Driver.Common.Utility;
 
@@ -123,6 +124,28 @@ namespace DbShell.Driver.Common.CommonDataLayer
                     index++;
                 }
             }
+        }
+
+        public static double SafeDouble(this ICdlReader row, int ord)
+        {
+            string sval = row.SafeString(ord);
+            if (sval == null) return 0;
+            double res;
+            if (Double.TryParse(sval, NumberStyles.Any, CultureInfo.InvariantCulture, out res)) return res;
+            return res;
+        }
+
+        public static string SafeString(this ICdlReader row, int ord)
+        {
+            if (ord < 0) return null;
+            row.ReadValue(ord);
+            return row.GetValue().SafeToString();
+        }
+
+        public static string SafeString(this ICdlReader row, string field)
+        {
+            int ord = row.Structure.Columns.IndexOfIf(x => x.Name == field);
+            return row.SafeString(ord);
         }
 
         //public static int GetValues(this ICdlRecord record, object[] values)

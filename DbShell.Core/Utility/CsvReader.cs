@@ -34,6 +34,11 @@ namespace DbShell.Core.Utility
             return false;
         }
 
+        public bool NextResult()
+        {
+            return false;
+        }
+
         public event Action Disposing;
 
         public void Dispose()
