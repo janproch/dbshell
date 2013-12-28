@@ -390,5 +390,16 @@ namespace DbShell.Driver.Common.Utility
             if (value == 0) return "0";
             return value.ToString("#,#");
         }
+
+        public static string DisplayNameFromCamelCase(string s, bool makeLower = false)
+        {
+            var sb = new StringBuilder();
+            foreach (char ch in s)
+            {
+                if (sb.Length > 0 && Char.IsUpper(ch)) sb.Append(" ");
+                sb.Append(makeLower && sb.Length > 0 ? Char.ToLower(ch) : ch);
+            }
+            return sb.ToString();
+        }
     }
 }
