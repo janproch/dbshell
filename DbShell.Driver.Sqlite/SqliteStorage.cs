@@ -4,6 +4,8 @@ using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.CommonTypeSystem;
@@ -60,7 +62,27 @@ namespace DbShell.Driver.Sqlite
         public void Dispose()
         {
             _conn.Close();
-            System.IO.File.Delete(_file);
+            _conn.Dispose();
+            try
+            {
+                System.IO.File.Delete(_file);
+            }
+            catch
+            {
+                // file probably in use, try to delete in 5 seconds
+                var thread = new Thread(() =>
+                    {
+                        Thread.Sleep(5000);
+                        try
+                        {
+                            System.IO.File.Delete(_file);
+                        }
+                        catch
+                        {
+                        }
+                    });
+                thread.Start();
+            }
 
             if (Disposing != null)
             {
