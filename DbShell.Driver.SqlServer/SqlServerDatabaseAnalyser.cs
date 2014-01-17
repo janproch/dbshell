@@ -167,7 +167,15 @@ namespace DbShell.Driver.SqlServer
                             col.Name = reader.SafeString("column_name");
                             col.NotNull = reader.SafeString("is_nullable") != "True";
                             col.DataType = reader.SafeString("type_name");
-                            col.Length = reader.SafeString("max_length").SafeIntParse();
+                            int bytelen = reader.SafeString("max_length").SafeIntParse();
+                            if (col.DataType.ToLower().Contains("nchar") || col.DataType.ToLower().Contains("nvarchar"))
+                            {
+                                col.Length = bytelen >= 0 ? bytelen/2 : bytelen;
+                            }
+                            else if (col.DataType.ToLower().Contains("char") || col.DataType.ToLower().Contains("binary"))
+                            {
+                                col.Length = bytelen;
+                            }
                             col.Precision = reader.SafeString("precision").SafeIntParse();
                             col.Scale = reader.SafeString("scale").SafeIntParse();
                             col.DefaultValue = SimplifyExpression(reader.SafeString("default_value"));
