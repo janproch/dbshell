@@ -57,6 +57,21 @@ namespace DbShell.Driver.Common.DmlFramework
         }
     }
 
+    public class DmlfLiteralCondition : DmlfConditionBase
+    {
+        private string _literal;
+
+        public DmlfLiteralCondition(string literal)
+        {
+            _literal = literal;
+        }
+
+        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        {
+            dmp.WriteRaw(_literal);
+        }
+    }
+
     public class DmlfBinaryCondition : DmlfConditionBase
     {
         public DmlfExpression LeftExpr { get; set; }
