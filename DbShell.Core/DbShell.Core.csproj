@@ -88,6 +88,8 @@
     <Compile Include="RazorModels\RazorScripting.cs" />
     <Compile Include="Runtime\ShellContext.cs" />
     <Compile Include="Runtime\ShellRunner.cs" />
+    <Compile Include="SqlDataWriter.cs" />
+    <Compile Include="Utility\SqlFileWriter.cs" />
     <Compile Include="Utility\SqlProlog.cs" />
     <Compile Include="Utility\TableOrView.cs" />
     <Compile Include="Utility\XamlSerializer.cs" />
