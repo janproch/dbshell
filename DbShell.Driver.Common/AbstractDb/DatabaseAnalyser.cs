@@ -47,6 +47,9 @@ namespace DbShell.Driver.Common.AbstractDb
                             {
                                 tbl.Columns.Clear();
                                 tbl.ForeignKeys.Clear();
+                                tbl.Indexes.Clear();
+                                tbl.Uniques.Clear();
+                                tbl.Checks.Clear();
                                 tbl.PrimaryKey = null;
                                 tbl.FullName = item.NewName;
                             }
