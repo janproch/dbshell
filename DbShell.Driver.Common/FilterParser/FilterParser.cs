@@ -12,6 +12,7 @@ namespace DbShell.Driver.Common.FilterParser
     public enum FilterLineTransformation
     {
         IsOneOf,
+        IsNotOneOf,
         BeginsWithOneOf,
         EndsWithOneOf,
         ContainsOneOf,
@@ -143,6 +144,8 @@ namespace DbShell.Driver.Common.FilterParser
             {
                 case FilterLineTransformation.IsOneOf:
                     return TrasnformLines(expression, line => String.Format("='{0}'", line));
+                case FilterLineTransformation.IsNotOneOf:
+                    return TrasnformLines(expression, line => String.Format("<>'{0}'", line), true);
                 case FilterLineTransformation.ContainsOneOf:
                     return TrasnformLines(expression, line => String.Format("'{0}'", line));
                 case FilterLineTransformation.BeginsWithOneOf:
@@ -153,15 +156,23 @@ namespace DbShell.Driver.Common.FilterParser
             return expression;
         }
 
-        private static string TrasnformLines(string expression, Func<string, string> func)
+        private static string TrasnformLines(string expression, Func<string, string> func, bool singleLine = false)
         {
             var sb = new StringBuilder();
             bool first = true;
             foreach (string line in expression.Split('\n'))
             {
+                string item = func(line.Trim());
                 if (!first)
                 {
-                    sb.AppendLine(func(line.Trim()));
+                    if (singleLine)
+                    {
+                        sb.Append(item + " ");
+                    }
+                    else
+                    {
+                        sb.AppendLine(item);
+                    }
                 }
                 first = false;
             }
