@@ -1,4 +1,4 @@
-SELECT
+﻿SELECT
 FK_Schema = FK.TABLE_SCHEMA,
 FK_Table = FK.TABLE_NAME,
 FK_Column = CU.COLUMN_NAME,
@@ -36,7 +36,7 @@ LEFT JOIN sys.index_columns IXC ON IX.index_id = IXC.index_id and IX.object_id =
 LEFT JOIN sys.columns IXCC ON IXCC.column_id = IXC.column_id AND IXCC.object_id = IXC.object_id
 LEFT JOIN sys.schemas IXS ON IXT.schema_id = IXS.schema_id
 
-inner join sys.objects o on fk.table_name = o.name
-inner join sys.schemas s on o.schema_id = s.schema_id and fk.table_schema = s.name
+inner join sys.objects o on FK.TABLE_NAME = o.name
+inner join sys.schemas s on o.schema_id = s.schema_id and FK.TABLE_SCHEMA = s.name
 
 where o.object_id =[OBJECT_ID_CONDITION]
