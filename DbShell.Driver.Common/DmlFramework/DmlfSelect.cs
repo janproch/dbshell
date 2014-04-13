@@ -14,7 +14,7 @@ namespace DbShell.Driver.Common.DmlFramework
         public DmlfResultFieldCollection Columns { get; set; }
 
         [XmlSubElem]
-        public DmlfFrom From { get; set; }
+        public List<DmlfFromItem> From { get; set; }
 
         [XmlSubElem]
         public DmlfSortOrderCollection OrderBy { get; set; }
@@ -34,10 +34,25 @@ namespace DbShell.Driver.Common.DmlFramework
         [XmlElem]
         public bool SelectAll { get; set; }
 
+        public DmlfFromItem SingleFrom
+        {
+            get
+            {
+                if (From.Count == 0) From.Add(new DmlfFromItem());
+                if (From.Count > 1) throw new Exception("DBSH-00000 internal error");
+                return From[0];
+            }
+            set
+            {
+                From.Clear();
+                From.Add(value);
+            }
+        }
+
         public DmlfSelect()
         {
             Columns = new DmlfResultFieldCollection();
-            From = new DmlfFrom();
+            From = new List<DmlfFromItem>();
         }
 
         ///// <summary>
@@ -143,7 +158,17 @@ namespace DbShell.Driver.Common.DmlFramework
             {
                 Columns.GenSql(dmp, handler);
             }
-            From.GenSql(dmp, handler);
+            dmp.Put("&n^from &>");
+
+            bool wasfromItem = false;
+            foreach (var fromItem in From)
+            {
+                if (wasfromItem) dmp.Put(",&n");
+                fromItem.GenSql(dmp, handler);
+                wasfromItem = true;
+            }
+            dmp.Put("&<");
+
             if (Where != null) Where.GenSql(dmp, handler);
             if (OrderBy != null && OrderBy.Count > 0)
             {
@@ -156,11 +181,11 @@ namespace DbShell.Driver.Common.DmlFramework
             }
         }
 
-        public void GenSqlCount(ISqlDumper dmp, IDmlfHandler handler)
-        {
-            dmp.Put("^select ^count(*) ");
-            From.GenSql(dmp, handler);
-        }
+        //public void GenSqlCount(ISqlDumper dmp, IDmlfHandler handler)
+        //{
+        //    dmp.Put("^select ^count(*) ");
+        //    From.GenSql(dmp, handler);
+        //}
 
         public void AddAndCondition(DmlfConditionBase cond)
         {
@@ -385,9 +410,9 @@ namespace DbShell.Driver.Common.DmlFramework
         }
     }
 
-    public class DmlfFrom : DmlfBase
+    public class DmlfFromItem : DmlfBase
     {
-        public DmlfFrom()
+        public DmlfFromItem()
         {
             Relations = new DmlfRelationCollection();
         }
@@ -421,11 +446,9 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             var src = Source;
             if (src == null) src = handler.BaseTable;
-            dmp.Put("&n^from &>");
             src.GenSqlDef(dmp, handler);
             dmp.Put(" ");
             Relations.GenSql(dmp, handler);
-            dmp.Put("&<");
         }
 
         public DmlfSource FindSourceWithAlias(string alias)
