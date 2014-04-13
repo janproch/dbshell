@@ -21,7 +21,15 @@ namespace DbShell.Driver.Common.AbstractDb
             Structure = new DatabaseInfo();
             if (FilterOptions == null) FilterOptions = new DatabaseAnalyserFilterOptions();
             DoRunAnalysis();
+            SortStructureItems();
+        }
+
+        private void SortStructureItems()
+        {
             Structure.Tables.Sort((a, b) => System.String.Compare(a.FullName.ToString(), b.FullName.ToString(), System.StringComparison.OrdinalIgnoreCase));
+            Structure.StoredProcedures.Sort((a, b) => System.String.Compare(a.FullName.ToString(), b.FullName.ToString(), System.StringComparison.OrdinalIgnoreCase));
+            Structure.Functions.Sort((a, b) => System.String.Compare(a.FullName.ToString(), b.FullName.ToString(), System.StringComparison.OrdinalIgnoreCase));
+            Structure.Triggers.Sort((a, b) => System.String.Compare(a.FullName.ToString(), b.FullName.ToString(), System.StringComparison.OrdinalIgnoreCase));
         }
 
         public void IncrementalAnalysis()
@@ -63,7 +71,7 @@ namespace DbShell.Driver.Common.AbstractDb
             }
 
             DoRunAnalysis();
-            Structure.Tables.Sort((a, b) => System.String.Compare(a.FullName.ToString(), b.FullName.ToString(), System.StringComparison.OrdinalIgnoreCase));
+            SortStructureItems();
         }
 
         private void CheckInput()
