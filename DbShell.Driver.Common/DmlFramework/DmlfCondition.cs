@@ -101,7 +101,7 @@ namespace DbShell.Driver.Common.DmlFramework
         }
     }
 
-    public class DmlfBetweenCondition : DmlfConditionBase
+    public abstract class DmlfBetweenConditionBase : DmlfConditionBase
     {
         public DmlfExpression Expr { get; set; }
         public DmlfExpression LowerBound { get; set; }
@@ -134,13 +134,31 @@ namespace DbShell.Driver.Common.DmlFramework
             if (xu != null) UpperBound = DmlfExpression.Load(xu);
         }
 
+        protected abstract void DumpOperator(ISqlDumper dmp);
+
         public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
         {
             Expr.GenSql(dmp, handler);
-            dmp.Put(" ^between "); 
+            DumpOperator(dmp);
             LowerBound.GenSql(dmp, handler);
             dmp.Put(" ^and ");
             UpperBound.GenSql(dmp, handler);
+        }
+    }
+
+    public class DmlfBetweenCondition : DmlfBetweenConditionBase
+    {
+        protected override void DumpOperator(ISqlDumper dmp)
+        {
+            dmp.Put(" ^between ");
+        }
+    }
+
+    public class DmlfNotBetweenCondition : DmlfBetweenConditionBase
+    {
+        protected override void DumpOperator(ISqlDumper dmp)
+        {
+            dmp.Put(" ^not ^between ");
         }
     }
 
@@ -150,6 +168,56 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             LeftExpr.GenSql(dmp, handler);
             dmp.Put("=");
+            RightExpr.GenSql(dmp, handler);
+        }
+    }
+
+    public class DmlfNotEqualCondition : DmlfBinaryCondition
+    {
+        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        {
+            LeftExpr.GenSql(dmp, handler);
+            dmp.Put("<>");
+            RightExpr.GenSql(dmp, handler);
+        }
+    }
+
+    public class DmlfGreaterCondition : DmlfBinaryCondition
+    {
+        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        {
+            LeftExpr.GenSql(dmp, handler);
+            dmp.Put(">");
+            RightExpr.GenSql(dmp, handler);
+        }
+    }
+
+    public class DmlfGreaterEqualCondition : DmlfBinaryCondition
+    {
+        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        {
+            LeftExpr.GenSql(dmp, handler);
+            dmp.Put(">=");
+            RightExpr.GenSql(dmp, handler);
+        }
+    }
+
+    public class DmlfLessCondition : DmlfBinaryCondition
+    {
+        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        {
+            LeftExpr.GenSql(dmp, handler);
+            dmp.Put("<");
+            RightExpr.GenSql(dmp, handler);
+        }
+    }
+
+    public class DmlfLessEqualCondition : DmlfBinaryCondition
+    {
+        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        {
+            LeftExpr.GenSql(dmp, handler);
+            dmp.Put("<=");
             RightExpr.GenSql(dmp, handler);
         }
     }
@@ -176,6 +244,16 @@ namespace DbShell.Driver.Common.DmlFramework
         }
     }
 
+    public class DmlfNotLikeCondition : DmlfBinaryCondition
+    {
+        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        {
+            LeftExpr.GenSql(dmp, handler);
+            dmp.Put(" ^not ^like ");
+            RightExpr.GenSql(dmp, handler);
+        }
+    }
+
     public class DmlfInCondition : DmlfBinaryCondition
     {
         public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
@@ -186,27 +264,43 @@ namespace DbShell.Driver.Common.DmlFramework
         }
     }
 
+    public class DmlfNotInCondition : DmlfBinaryCondition
+    {
+        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        {
+            LeftExpr.GenSql(dmp, handler);
+            dmp.Put(" ^not ^in ");
+            RightExpr.GenSql(dmp, handler);
+        }
+    }
+
     public abstract class DmlfCompoudCondition : DmlfConditionBase
     {
         public DmlfList<DmlfConditionBase> Conditions { get; set; }
+
         public DmlfCompoudCondition()
         {
             Conditions = new DmlfList<DmlfConditionBase>();
         }
+
         public virtual void GenSqlBegin(ISqlDumper dmp)
         {
             dmp.Put("(");
         }
+
         public virtual void GenSqlEnd(ISqlDumper dmp)
         {
             dmp.Put(")");
         }
+
         public abstract void GenSqlConjuction(ISqlDumper dmp);
         public abstract void GenSqlEmpty(ISqlDumper dmp);
+
         public virtual void GenSqlItem(DmlfConditionBase item, ISqlDumper dmp, IDmlfHandler handler)
         {
             item.GenSql(dmp, handler);
         }
+
         public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
         {
             if (Conditions.Count == 0)
@@ -234,6 +328,7 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             dmp.Put(" ^and ");
         }
+
         public override void GenSqlEmpty(ISqlDumper dmp)
         {
             dmp.Put("(1=1)");
@@ -246,6 +341,7 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             dmp.Put(" ^or ");
         }
+
         public override void GenSqlEmpty(ISqlDumper dmp)
         {
             dmp.Put("(1=0)");
