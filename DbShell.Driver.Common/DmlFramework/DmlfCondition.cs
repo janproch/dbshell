@@ -355,4 +355,16 @@ namespace DbShell.Driver.Common.DmlFramework
             dmp.Put("(1=0)");
         }
     }
+
+    public class DmlfExistCondition : DmlfConditionBase
+    {
+        public DmlfSelect Select;
+
+        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        {
+            dmp.Put("^exists (");
+            Select.GenSql(dmp, handler);
+            dmp.Put(")");
+        }
+    }
 }

@@ -28,7 +28,7 @@ namespace DbShell.Driver.Common.DmlFramework
                     dmp.Put("^right ^join");
                     break;
                 case DmlfJoinType.Outer:
-                    dmp.Put("^outer ^join");
+                    dmp.Put("^full ^outer ^join");
                     break;
             }
         }

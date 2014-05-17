@@ -189,6 +189,7 @@ namespace DbShell.Driver.Common.DmlFramework
 
         public void AddAndCondition(DmlfConditionBase cond)
         {
+            if (cond == null) return;
             if (Where == null) Where = new DmlfWhere();
             if (Where.Condition != null)
             {
