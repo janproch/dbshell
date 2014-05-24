@@ -11,15 +11,15 @@ namespace DbShell.Driver.Common.DmlFramework
             //DisplayInfo = new ColumnDisplayInfo();
         }
 
-        private string m_alias;
+        private string _alias;
         [XmlElem]
         public string Alias
         {
-            get { return m_alias; }
+            get { return _alias; }
             set
             {
-                m_alias = value;
-                if (m_alias.IsEmpty()) m_alias = null;
+                _alias = value;
+                if (_alias.IsEmpty()) _alias = null;
             }
         }
         //[XmlSubElem]
@@ -30,9 +30,9 @@ namespace DbShell.Driver.Common.DmlFramework
         public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
         {
             Expr.GenSql(dmp, handler);
-            if (m_alias != null)
+            if (_alias != null)
             {
-                dmp.Put(" ^as %i", m_alias);
+                dmp.Put(" ^as %i", _alias);
             }
         }
 
@@ -60,7 +60,7 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             get
             {
-                if (m_alias != null) return m_alias;
+                if (_alias != null) return _alias;
                 var col = Column;
                 if (col != null) return col.ColumnName;
                 return "";

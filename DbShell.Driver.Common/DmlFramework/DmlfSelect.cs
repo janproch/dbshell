@@ -2,23 +2,18 @@
 using System.Collections.Generic;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Sql;
+using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.DmlFramework
 {
-    public class DmlfSelect : DmlfBase
+    public class DmlfSelect : DmlfCommandBase
     {
         [XmlCollection(typeof (DmlfResultField))]
         public DmlfResultFieldCollection Columns { get; set; }
 
         [XmlSubElem]
-        public List<DmlfFromItem> From { get; set; }
-
-        [XmlSubElem]
         public DmlfSortOrderCollection OrderBy { get; set; }
-
-        [XmlSubElem]
-        public DmlfWhere Where { get; set; }
 
         [XmlElem]
         public int? TopRecords { get; set; }
@@ -31,6 +26,9 @@ namespace DbShell.Driver.Common.DmlFramework
 
         [XmlElem]
         public bool SelectAll { get; set; }
+
+        [XmlElem]
+        public NameWithSchema SelectIntoTable { get; set; }
 
         public DmlfFromItem SingleFrom
         {
@@ -50,7 +48,6 @@ namespace DbShell.Driver.Common.DmlFramework
         public DmlfSelect()
         {
             Columns = new DmlfResultFieldCollection();
-            From = new List<DmlfFromItem>();
         }
 
         ///// <summary>
@@ -156,16 +153,13 @@ namespace DbShell.Driver.Common.DmlFramework
             {
                 Columns.GenSql(dmp, handler);
             }
-            dmp.Put("&n^from &>");
 
-            bool wasfromItem = false;
-            foreach (var fromItem in From)
+            if (SelectIntoTable != null)
             {
-                if (wasfromItem) dmp.Put(",&n");
-                fromItem.GenSql(dmp, handler);
-                wasfromItem = true;
+                dmp.Put("&n^into %f ", SelectIntoTable);
             }
-            dmp.Put("&<");
+
+            GenerateFrom(dmp, handler);
 
             if (Where != null) Where.GenSql(dmp, handler);
             if (OrderBy != null && OrderBy.Count > 0)
@@ -184,30 +178,6 @@ namespace DbShell.Driver.Common.DmlFramework
         //    dmp.Put("^select ^count(*) ");
         //    From.GenSql(dmp, handler);
         //}
-
-        public void AddAndCondition(DmlfConditionBase cond)
-        {
-            if (cond == null) return;
-            if (Where == null) Where = new DmlfWhere();
-            if (Where.Condition != null)
-            {
-                if (Where.Condition is DmlfAndCondition)
-                {
-                    ((DmlfAndCondition) Where.Condition).Conditions.Add(cond);
-                }
-                else
-                {
-                    var and = new DmlfAndCondition();
-                    and.Conditions.Add(Where.Condition);
-                    and.Conditions.Add(cond);
-                    Where.Condition = and;
-                }
-            }
-            else
-            {
-                Where.Condition = cond;
-            }
-        }
     }
 
 }

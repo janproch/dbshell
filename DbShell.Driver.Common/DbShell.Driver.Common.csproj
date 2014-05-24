@@ -109,6 +109,7 @@
     <Compile Include="DbDiff\INameTramsformation.cs" />
     <Compile Include="DmlFramework\DmlfBase.cs" />
     <Compile Include="DmlFramework\DmlfColumnRefExpression.cs" />
+    <Compile Include="DmlFramework\DmlfCommandBase.cs" />
     <Compile Include="DmlFramework\DmlfCountExpression.cs" />
     <Compile Include="DmlFramework\DmlfDelete.cs" />
     <Compile Include="DmlFramework\DmlfExpressionHolder.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="DmlFramework\DmlfFromItem.cs" />
     <Compile Include="DmlFramework\DmlfFuncCallExpression.cs" />
     <Compile Include="DmlFramework\DmlfHandler.cs" />
+    <Compile Include="DmlFramework\DmlfInsertSelect.cs" />
     <Compile Include="DmlFramework\DmlfList.cs" />
     <Compile Include="DmlFramework\DmlfLiteralExpression.cs" />
     <Compile Include="DmlFramework\DmlfLiteralListExpression.cs" />
@@ -128,6 +130,9 @@
     <Compile Include="DmlFramework\DmlfStringExpression.cs" />
     <Compile Include="DmlFramework\DmlfStringValueExpressionBase.cs" />
     <Compile Include="DmlFramework\DmlfSubSelectExpression.cs" />
+    <Compile Include="DmlFramework\DmlfUpdate.cs" />
+    <Compile Include="DmlFramework\DmlfUpdateField.cs" />
+    <Compile Include="DmlFramework\DmlfUpdateFieldCollection.cs" />
     <Compile Include="DmlFramework\DmlfWhere.cs" />
     <Compile Include="FilterParser\antlr\DateTimeFilterLexer.cs" />
     <Compile Include="FilterParser\antlr\DateTimeFilterParser.cs" />

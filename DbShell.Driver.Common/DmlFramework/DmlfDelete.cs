@@ -2,19 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.DmlFramework
 {
-    public class DmlfDelete : DmlfBase
+    public class DmlfDelete : DmlfCommandBase
     {
         [XmlSubElem]
         public DmlfSource DeleteTarget { get; set; }
 
-        [XmlSubElem]
-        public List<DmlfFromItem> From { get; set; }
+        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        {
+            dmp.Put("^delete ");
+            if (DeleteTarget != null) DeleteTarget.GenSqlRef(dmp, handler);
 
-        [XmlSubElem]
-        public DmlfWhere Where { get; set; }
+            GenerateFrom(dmp, handler);
+
+            if (Where != null) Where.GenSql(dmp, handler);
+        }
     }
 }
