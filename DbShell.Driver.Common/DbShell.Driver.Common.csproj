@@ -116,6 +116,8 @@
     <Compile Include="DmlFramework\DmlfExpressionHolderCollection.cs" />
     <Compile Include="DmlFramework\DmlfFromItem.cs" />
     <Compile Include="DmlFramework\DmlfFuncCallExpression.cs" />
+    <Compile Include="DmlFramework\DmlfGroupByCollection.cs" />
+    <Compile Include="DmlFramework\DmlfGroupByItem.cs" />
     <Compile Include="DmlFramework\DmlfHandler.cs" />
     <Compile Include="DmlFramework\DmlfInsertSelect.cs" />
     <Compile Include="DmlFramework\DmlfList.cs" />

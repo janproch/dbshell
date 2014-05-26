@@ -15,6 +15,9 @@ namespace DbShell.Driver.Common.DmlFramework
         [XmlSubElem]
         public DmlfSortOrderCollection OrderBy { get; set; }
 
+        [XmlSubElem]
+        public DmlfGroupByCollection GroupBy { get; set; }
+
         [XmlElem]
         public int? TopRecords { get; set; }
 
@@ -162,6 +165,11 @@ namespace DbShell.Driver.Common.DmlFramework
             GenerateFrom(dmp, handler);
 
             if (Where != null) Where.GenSql(dmp, handler);
+            if (GroupBy != null && GroupBy.Count > 0)
+            {
+                dmp.Put(" ^group ^by ");
+                GroupBy.GenSql(dmp, handler);
+            }
             if (OrderBy != null && OrderBy.Count > 0)
             {
                 dmp.Put(" ^order ^by ");
