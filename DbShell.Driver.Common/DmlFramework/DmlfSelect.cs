@@ -31,6 +31,9 @@ namespace DbShell.Driver.Common.DmlFramework
         public bool SelectAll { get; set; }
 
         [XmlElem]
+        public bool Distinct { get; set; }
+
+        [XmlElem]
         public NameWithSchema SelectIntoTable { get; set; }
 
         public DmlfFromItem SingleFrom
@@ -147,6 +150,10 @@ namespace DbShell.Driver.Common.DmlFramework
             if (TopRecords != null)
             {
                 dmp.Put("^top %s ", TopRecords);
+            }
+            if (Distinct)
+            {
+                dmp.Put(" ^distinct ");
             }
             if (SelectAll)
             {
