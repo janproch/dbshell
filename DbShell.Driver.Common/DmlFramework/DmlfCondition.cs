@@ -44,7 +44,7 @@ namespace DbShell.Driver.Common.DmlFramework
         public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
         {
             Expr.GenSql(dmp, handler);
-            dmp.Put("^is ^null");
+            dmp.Put(" ^is ^null");
         }
     }
 
@@ -53,7 +53,7 @@ namespace DbShell.Driver.Common.DmlFramework
         public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
         {
             Expr.GenSql(dmp, handler);
-            dmp.Put("^is ^not ^null");
+            dmp.Put(" ^is ^not ^null");
         }
     }
 
