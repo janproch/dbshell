@@ -373,7 +373,7 @@ namespace DbShell.Driver.Common.Utility
             }
             else if (val != null)
             {
-                return Convert.ToString(val.ToString(), CultureInfo.InvariantCulture);
+                return Convert.ToString(val, CultureInfo.InvariantCulture);
             }
             return null;
         }
@@ -428,7 +428,7 @@ namespace DbShell.Driver.Common.Utility
             }
             else
             {
-                return Convert.ChangeType(sval, type);
+                return Convert.ChangeType(sval, type, CultureInfo.InvariantCulture);
             }
             return null;
         }
