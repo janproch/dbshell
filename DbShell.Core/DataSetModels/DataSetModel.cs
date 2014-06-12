@@ -50,12 +50,14 @@ namespace DbShell.Core.DataSetModels
             var ts = reader.Structure;
             var cls = GetClass(targetTable);
 
-            int[] map = new int[cls.Structure.ColumnCount];
+            var cols = cls.Structure.Columns.Where(x => x.ComputedExpression == null).ToList();
 
-            for (int i = 0; i < cls.Structure.ColumnCount; i++)
+            int[] map = new int[cols.Count];
+
+            for (int i = 0; i < cols.Count; i++)
             {
                 map[i] = ts.Columns.IndexOfIf(
-                    c => System.String.Compare(c.Name, cls.Structure.Columns[i].Name, System.StringComparison.OrdinalIgnoreCase) == 0);
+                    c => System.String.Compare(c.Name, cols[i].Name, System.StringComparison.OrdinalIgnoreCase) == 0);
             }
 
             while (reader.Read())
@@ -500,7 +502,7 @@ namespace DbShell.Core.DataSetModels
                     //{
                     if (r.ReferencedClass.IdentityColumn == null)
                     {
-                        throw new Exception("DBSH-00125 Lookup or target identity must be defined");
+                        throw new Exception(String.Format("DBSH-00125 Lookup or target identity must be defined on table {0} because of reference from {1}", r.ReferencedClass.TableName, r.BaseClass.TableName));
                     }
                     if (r.Mandatory)
                     {
@@ -621,7 +623,11 @@ namespace DbShell.Core.DataSetModels
             using (var cmd = conn.CreateCommand())
             {
                 var sb = new StringBuilder();
-                sb.Append("SELECT tmain.* FROM [" + table + "] tmain");
+
+                sb.Append("SELECT ");
+                var cls = GetClass(table);
+                sb.Append(cls.Columns.Select(x => "tmain.[" + x + "]").CreateDelimitedText(", "));
+                sb.Append(" FROM [" + table + "] tmain");
 
                 if (!String.IsNullOrEmpty(condition))
                 {
