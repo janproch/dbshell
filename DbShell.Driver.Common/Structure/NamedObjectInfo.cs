@@ -56,5 +56,10 @@ namespace DbShell.Driver.Common.Structure
             var src = (NamedObjectInfo) source;
             FullName = src.FullName;
         }
+
+        public override string ToString()
+        {
+            return FullName.ToString();
+        }
     }
 }
