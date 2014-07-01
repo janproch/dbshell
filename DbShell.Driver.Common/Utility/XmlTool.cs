@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
@@ -540,6 +541,18 @@ namespace DbShell.Driver.Common.Utility
                 return;
             }
             o.LoadPropertiesCore(xml);
+        }
+
+        public static string DownloadProperties(this object o, string url)
+        {
+            using (var wc = new WebClient())
+            {
+                var data = wc.DownloadString(url);
+                var xml = new XmlDocument();
+                xml.LoadXml(data);
+                o.LoadProperties(xml.DocumentElement);
+                return data;
+            }
         }
 
         public static void LoadPropertiesCore(this object o, XmlElement xml)
