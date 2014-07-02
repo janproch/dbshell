@@ -23,6 +23,7 @@ namespace DbShell.Driver.Sqlite
         private TableInfo _table;
         public const string TABLE_NAME = "_data";
         private int _rowCount;
+        private int _rowCountCommited;
         private SQLiteTransaction _tran;
 
         public SqliteStorage(TableInfo table)
@@ -56,7 +57,7 @@ namespace DbShell.Driver.Sqlite
 
         public int RowCount
         {
-            get { return _rowCount; }
+            get { return _rowCountCommited; }
         }
 
         public void Dispose()
@@ -193,6 +194,7 @@ namespace DbShell.Driver.Sqlite
             {
                 _tran.Commit();
                 _tran = null;
+                _rowCountCommited = _rowCount;
             }
         }
 
