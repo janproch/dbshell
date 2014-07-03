@@ -264,6 +264,11 @@ namespace DbShell.Core.Utility
             get { return HasCommand("view"); }
         }
 
+        public bool IsSysView
+        {
+            get { return HasCommand("sysview"); }
+        }
+
         public bool IsEmpty
         {
             get { return Commands.Count == 0; }
