@@ -30,6 +30,17 @@ namespace DbShell.Core
         [XamlProperty]
         public string Name { get; set; }
 
+        /// <summary>
+        /// if table already exists, it is droppped
+        /// </summary>
+        [XamlProperty]
+        public bool DropIfExists { get; set; }
+
+        /// <summary>
+        /// Name if created identity column. If given, column with type INT PRIMARY KEY IDENTITY is created
+        /// </summary>
+        public string IdentityColumn { get; set; }
+
         protected NameWithSchema GetFullName()
         {
             return new NameWithSchema(Replace(Schema), Replace(Name));
@@ -50,15 +61,31 @@ namespace DbShell.Core
                 tbl.ForeignKeys.Clear();
                 if (tbl.PrimaryKey != null) tbl.PrimaryKey.ConstraintName = null;
                 tbl.AfterLoadLink();
-                var sw = new StringWriter();
-                var so = new SqlOutputStream(Connection.Factory.CreateDialect(), sw, new SqlFormatProperties());
-                var dmp = Connection.Factory.CreateDumper(so, new SqlFormatProperties());
-                dmp.CreateTable(tbl);
-                using (var cmd = conn.CreateCommand())
+
+                if (IdentityColumn != null)
                 {
-                    cmd.CommandText = sw.ToString();
-                    cmd.ExecuteNonQuery();
+                    var col = new ColumnInfo(tbl);
+                    col.Name = IdentityColumn;
+                    col.DataType = "int";
+                    col.AutoIncrement = true;
+                    col.NotNull = true;
+                    var pk = new PrimaryKeyInfo(tbl);
+                    pk.Columns.Add(new ColumnReference {RefColumn = col});
+                    pk.ConstraintName = "PK_" + tbl.Name;
+                    tbl.PrimaryKey = pk;
+                    tbl.Columns.Add(col);
                 }
+
+                //var sw = new StringWriter();
+                var so = new ConnectionSqlOutputStream(conn, null, Connection.Factory.CreateDialect());
+                var dmp = Connection.Factory.CreateDumper(so, new SqlFormatProperties());
+                if (DropIfExists) dmp.DropTable(tbl, true);
+                dmp.CreateTable(tbl);
+                //using (var cmd = conn.CreateCommand())
+                //{
+                //    cmd.CommandText = sw.ToString();
+                //    cmd.ExecuteNonQuery();
+                //}
             }
             return new TableWriter(Context, Connection, GetFullName(), rowFormat, options);
         }
