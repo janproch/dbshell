@@ -401,5 +401,12 @@ namespace DbShell.Driver.Common.Utility
             }
             return sb.ToString();
         }
+
+        public static string JoinLines(string s1, string s2)
+        {
+            if (String.IsNullOrEmpty(s1)) return s2;
+            if (String.IsNullOrEmpty(s2)) return s1;
+            return s1 + "\r\n" + s2;
+        }
     }
 }

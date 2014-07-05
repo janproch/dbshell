@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Net;
 using System.Text;
 using System.Xml;
@@ -501,6 +502,16 @@ namespace DbShell.Driver.Common.Utility
                         SaveProperties(val, elem);
                     }
                 }
+                foreach (SettingAttribute attr in prop.GetCustomAttributes(typeof(SettingAttribute), true))
+                {
+                    object val = prop.CallGet(o);
+                    if (val != null)
+                    {
+                        var elem = xml.AddChild(prop.Name);
+                        string sval = PropertyToString(prop, val);
+                        if (sval != null) elem.InnerText = sval;
+                    }
+                }
                 foreach (XmlThisAttribute attr in prop.GetCustomAttributes(typeof(XmlThisAttribute), true))
                 {
                     object val = prop.CallGet(o);
@@ -583,7 +594,7 @@ namespace DbShell.Driver.Common.Utility
                         if (elem != null)
                         {
                             var dct = new Dictionary<string, string>();
-                            foreach(XmlElement itemXml in elem)
+                            foreach (XmlElement itemXml in elem)
                             {
                                 dct[itemXml.GetAttribute("Key")] = itemXml.InnerText;
                             }
@@ -619,6 +630,11 @@ namespace DbShell.Driver.Common.Utility
                             LoadProperties(subval, elem);
                         }
                     }
+                }
+                foreach (SettingAttribute attr in prop.GetCustomAttributes(typeof(SettingAttribute), true))
+                {
+                    var elem = xml.SelectSingleNode(prop.Name);
+                    if (elem != null) sval = elem.InnerText;
                 }
                 foreach (XmlThisAttribute attr in prop.GetCustomAttributes(typeof(XmlThisAttribute), true))
                 {
