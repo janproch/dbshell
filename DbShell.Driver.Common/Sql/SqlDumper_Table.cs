@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
@@ -68,12 +69,21 @@ namespace DbShell.Driver.Common.Sql
                         isIdentityInsert = false;
                     }
                 }
-                var vals = new ValueTypeHolder[ins.Columns.Length];
+                var vals = new List<ValueTypeHolder>();
+                var insColumns = new List<string>();
                 for (int i = 0; i < ins.Columns.Length; i++)
                 {
-                    vals[i] = new ValueTypeHolder(ins.Values[i], table.Columns[ins.Columns[i]].CommonType);
+                    var col = table.Columns[ins.Columns[i]];
+                    if (col != null)
+                    {
+                        insColumns.Add(ins.Columns[i]);
+                        vals.Add(new ValueTypeHolder(ins.Values[i], col.CommonType));
+                    }
                 }
-                Put("^insert ^into %f (%,i) ^values (%,v);&n", table.FullName, ins.Columns, vals);
+                if (insColumns.Count > 0)
+                {
+                    Put("^insert ^into %f (%,i) ^values (%,v);&n", table.FullName, insColumns, vals);
+                }
                 inscnt++;
             }
             if (isIdentityInsert) AllowIdentityInsert(table.FullName, false);

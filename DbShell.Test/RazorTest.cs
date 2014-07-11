@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DbShell.Core.Runtime;
+using DbShell.Driver.Common.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DbShell.Test
@@ -45,5 +46,11 @@ namespace DbShell.Test
                 runner.Run();
             }
         }
+
+        //[TestMethod]
+        //public void EncodePassword()
+        //{
+        //    string pwdEnc = XmlTool.SafeEncodeString("");
+        //}
     }
 }
