@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows.Markup;
 using DbShell.Common;
 using DbShell.Core.Utility;
 using DbShell.Driver.Common.Sql;
@@ -15,6 +16,7 @@ namespace DbShell.Core
     /// <summary>
     /// Job, which is aible to run SQL script, from file or given inline.
     /// </summary>
+    [ContentProperty("Command")]
     public class Script : RunnableBase
     {
         private readonly static ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
