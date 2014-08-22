@@ -10,6 +10,11 @@ namespace DbShell.Driver.Common.Utility
     {
         private static Dictionary<string, Encoding> _encodingByName = new Dictionary<string, Encoding>();
 
+        public static List<string> WebNames
+        {
+            get { return _encodingByName.Keys.ToList().Sorted(); }
+        }
+
         static EncodingTypeConverter()
         {
             foreach (EncodingInfo info in Encoding.GetEncodings())
