@@ -72,6 +72,11 @@ namespace DbShell.Driver.Common.Structure
         private T FindObjectLike<T>(IEnumerable<T> objs, string name)
             where T : NamedObjectInfo
         {
+            if (name != null && name.Contains("."))
+            {
+                var fullName = NameWithSchema.Parse(name);
+                return FindObjectLike(objs, fullName.Schema, fullName.Name);
+            }
             return objs.FirstOrDefault(t => String.Compare(t.Name, name, true) == 0);
         }
 
