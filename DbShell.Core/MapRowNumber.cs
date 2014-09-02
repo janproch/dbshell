@@ -26,7 +26,7 @@ namespace DbShell.Core
 
         ColumnInfo[] IColumnMapping.GetOutputColumns(TableInfo inputTable)
         {
-            var column = new ColumnInfo(new TableInfo(null)) { CommonType = new DbTypeInt(), Name = Name, DataType = "nvarchar", Length = -1 };
+            var column = new ColumnInfo(new TableInfo(null)) { CommonType = new DbTypeInt(), Name = Name, DataType = "int" };
             return new[] { column };
         }
 
