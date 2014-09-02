@@ -167,7 +167,8 @@ namespace DbShell.Core
 
         private LumenWorks.Framework.IO.Csv.CsvReader CreateCsvReader()
         {
-            string name = Context.ResolveFile(GetName(), ResolveFileMode.Input);
+            string name = GetName();
+            if (Context != null) name = Context.ResolveFile(name, ResolveFileMode.Input);
             var textReader = new StreamReader(name, Encoding);
             var reader = new LumenWorks.Framework.IO.Csv.CsvReader(textReader, HasHeaders, Delimiter, Quote, Escape, Comment,
                                                                    TrimSpaces ? LumenWorks.Framework.IO.Csv.ValueTrimmingOptions.UnquotedOnly : LumenWorks.Framework.IO.Csv.ValueTrimmingOptions.None);
