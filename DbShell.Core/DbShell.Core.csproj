@@ -84,6 +84,7 @@
     <Compile Include="DataSet\Prepare.cs" />
     <Compile Include="DataSet\WriteSql.cs" />
     <Compile Include="FilesProvider.cs" />
+    <Compile Include="MapRowNumber.cs" />
     <Compile Include="RazorModels\ColumnModel.cs" />
     <Compile Include="RazorModels\RazorTemplateBase.cs" />
     <Compile Include="RazorModels\RazorScripting.cs" />

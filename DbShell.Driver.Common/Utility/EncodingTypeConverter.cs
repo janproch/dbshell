@@ -65,5 +65,11 @@ namespace DbShell.Driver.Common.Utility
             }
             return base.ConvertTo(context, culture, value, destinationType);
         }
+
+        public static Encoding EncodingFromWebName(string name)
+        {
+            if (_encodingByName.ContainsKey(name)) return _encodingByName[name];
+            return Encoding.UTF8;
+        }
     }
 }

@@ -90,7 +90,7 @@ namespace DbShell.Core
             }
         }
 
-        void IColumnMapping.ProcessMapping(int column, ICdlRecord record, ICdlValueWriter writer)
+        void IColumnMapping.ProcessMapping(int column, int rowNumber, ICdlRecord record, ICdlValueWriter writer)
         {
             if (_value == null)
             {

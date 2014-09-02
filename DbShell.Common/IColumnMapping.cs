@@ -22,8 +22,9 @@ namespace DbShell.Common
         /// Processes mapping in source row for given column
         /// </summary>
         /// <param name="column">Processed column index (index to array retured by GetOutputColumns()).</param>
+        /// <param name="rowNumber">number of processed row (1-based index)</param>
         /// <param name="record">The source record.</param>
         /// <param name="writer">The target writer.</param>
-        void ProcessMapping(int column, ICdlRecord record, ICdlValueWriter writer);
+        void ProcessMapping(int column, int rowNumber, ICdlRecord record, ICdlValueWriter writer);
     }
 }

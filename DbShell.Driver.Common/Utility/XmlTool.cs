@@ -460,6 +460,11 @@ namespace DbShell.Driver.Common.Utility
 
         public static void SavePropertiesCore(this object o, XmlElement xml)
         {
+            if (o is NameWithSchema)
+            {
+                ((NameWithSchema)o).SaveToXml(xml);
+                return;
+            }
             foreach (PropertyInfo prop in o.GetType().GetProperties())
             {
                 foreach (XmlAttribAttribute attr in prop.GetCustomAttributes(typeof(XmlAttribAttribute), true))
@@ -679,16 +684,20 @@ namespace DbShell.Driver.Common.Utility
                         {
                             foreach (XmlElement elem in lst)
                             {
-                                if (attr.ElemType == typeof(string))
+                                if (attr.ElemType == typeof (string))
                                 {
-                                    ((IList)colval).Add(elem.InnerText);
+                                    ((IList) colval).Add(elem.InnerText);
+                                }
+                                else if (attr.ElemType == typeof (NameWithSchema))
+                                {
+                                    ((IList) colval).Add(NameWithSchema.LoadFromXml(elem));
                                 }
                                 else
                                 {
                                     object item;
                                     item = attr.ElemType.CreateNewChildInstance(o);
                                     item.LoadProperties(elem);
-                                    ((IList)colval).Add(item);
+                                    ((IList) colval).Add(item);
                                 }
                             }
                         }

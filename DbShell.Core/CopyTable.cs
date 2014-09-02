@@ -122,6 +122,7 @@ namespace DbShell.Core
             {
                 using (var writer = target.CreateWriter(targetTable, options))
                 {
+                    int rowNumber = 1;
                     while (reader.Read())
                     {
                         if (ColumnMap.Count > 0)
@@ -135,7 +136,7 @@ namespace DbShell.Core
                                 for (int j = 0; j < count; j++, columnIndex++)
                                 {
                                     outputRecord.SeekValue(columnIndex);
-                                    map.ProcessMapping(j, reader, outputRecord);
+                                    map.ProcessMapping(j, rowNumber, reader, outputRecord);
                                 }
                             }
                             writer.Write(outputRecord);
@@ -144,6 +145,7 @@ namespace DbShell.Core
                         {
                             writer.Write(reader);
                         }
+                        rowNumber++;
                     }
                 }
             }
