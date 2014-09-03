@@ -122,7 +122,7 @@ namespace DbShell.Core
             {
                 using (var writer = target.CreateWriter(targetTable, options))
                 {
-                    int rowNumber = 1;
+                    int rowNumber = 0;
                     while (reader.Read())
                     {
                         if (ColumnMap.Count > 0)

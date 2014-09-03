@@ -11,9 +11,9 @@ using DbShell.Driver.Common.Structure;
 namespace DbShell.Core
 {
     /// <summary>
-    /// Maps output column to row number
+    /// Maps output column to constant text
     /// </summary>
-    public class MapRowNumber : ElementBase, IColumnMapping
+    public class MapConstant : ElementBase, IColumnMapping
     {
         /// <summary>
         /// Gets or sets the name of output column.
@@ -25,25 +25,20 @@ namespace DbShell.Core
         public string Name { get; set; }
 
         /// <summary>
-        /// Number of first row
+        /// String constant to be mapped
         /// </summary>
         [XamlProperty]
-        public int StartFrom { get; set; }
-
-        public MapRowNumber()
-        {
-            StartFrom = 1;
-        }
+        public string Value { get; set; }
 
         ColumnInfo[] IColumnMapping.GetOutputColumns(TableInfo inputTable)
         {
-            var column = new ColumnInfo(new TableInfo(null)) { CommonType = new DbTypeInt(), Name = Name, DataType = "int" };
+            var column = new ColumnInfo(new TableInfo(null)) { CommonType = new DbTypeString(), Name = Name, DataType = "nvarchar", Length = -1 };
             return new[] { column };
         }
 
         void IColumnMapping.ProcessMapping(int column, int rowNumber, ICdlRecord record, ICdlValueWriter writer)
         {
-            writer.SetInt32(StartFrom + rowNumber);
+            writer.SetString(Value);
         }
     }
 }

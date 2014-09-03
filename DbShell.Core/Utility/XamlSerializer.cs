@@ -64,6 +64,16 @@ namespace DbShell.Core.Utility
             if (type == typeof (string)) return o.ToString();
             if (type == typeof(char)) return o.ToString();
             if (type == typeof(bool)) return (bool)o ? "True" : "False";
+
+            if (type == typeof(sbyte)) return o.ToString();
+            if (type == typeof(short)) return o.ToString();
+            if (type == typeof(int)) return o.ToString();
+            if (type == typeof(long)) return o.ToString();
+            if (type == typeof(byte)) return o.ToString();
+            if (type == typeof(ushort)) return o.ToString();
+            if (type == typeof(uint)) return o.ToString();
+            if (type == typeof(ulong)) return o.ToString();
+
             if (type.IsEnum) return o.ToString();
             if (o is Encoding) return ((Encoding)o).WebName;
             if (o is IConnectionProvider)
