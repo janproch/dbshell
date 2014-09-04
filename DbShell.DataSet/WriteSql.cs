@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using DbShell.Common;
 
-namespace DbShell.Core.DataSet
+namespace DbShell.DataSet
 {
     public class WriteSql : DataSetItemBase
     {

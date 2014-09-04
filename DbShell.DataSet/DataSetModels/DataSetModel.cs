@@ -7,12 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using DbShell.Common;
+using DbShell.Core;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
 
-namespace DbShell.Core.DataSetModels
+namespace DbShell.DataSet.DataSetModels
 {
     public class DataSetModel
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace DbShell.Core.DataSetModels
+namespace DbShell.DataSet.DataSetModels
 {
     public class SqlJoin
     {

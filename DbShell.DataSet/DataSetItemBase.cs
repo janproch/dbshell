@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using DbShell.Core.DataSetModels;
+using DbShell.DataSet.DataSetModels;
 using DbShell.Core.Utility;
 
-namespace DbShell.Core.DataSet
+namespace DbShell.DataSet
 {
     public abstract class DataSetItemBase : RunnableBase
     {

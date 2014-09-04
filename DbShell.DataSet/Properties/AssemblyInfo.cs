@@ -6,12 +6,12 @@ using System.Windows.Markup;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DbShell.Core")]
+[assembly: AssemblyTitle("DbShell.DataSet")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("DbShell.Core")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2012")]
+[assembly: AssemblyProduct("DbShell.DataSet")]
+[assembly: AssemblyCopyright("Copyright © Microsoft 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -21,7 +21,7 @@ using System.Windows.Markup;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("339775ab-8c0d-4649-ab3d-b124e0e82131")]
+[assembly: Guid("ac34a746-5633-4951-b32e-8d583b37c0dc")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -35,4 +35,4 @@ using System.Windows.Markup;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: XmlnsDefinition("http://schemas.dbshell.com/core", "DbShell.Core")]
+[assembly: XmlnsDefinition("http://schemas.dbshell.com/dataset", "DbShell.DataSet")]

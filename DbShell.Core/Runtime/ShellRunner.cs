@@ -19,6 +19,12 @@ namespace DbShell.Core.Runtime
         public void LoadFile(string file)
         {
             CoreLoader.Load();
+
+            using (var fr = new FileInfo(file).OpenRead())
+            {
+                LoadModule.LoadModules(fr);
+            }
+
             using (var fr = new FileInfo(file).OpenRead())
             {
                 object obj = XamlReader.Load(fr);
@@ -28,6 +34,7 @@ namespace DbShell.Core.Runtime
 
         public void LoadString(string content, string folder = null)
         {
+            LoadModule.LoadModulesFromData(content);
             using (var fr = new StringReader(content))
             {
                 using (var reader = System.Xml.XmlReader.Create(fr))

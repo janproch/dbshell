@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.Structure;
 
-namespace DbShell.Core.DataSetModels
+namespace DbShell.DataSet.DataSetModels
 {
     public class DataSetClass
     {

@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace DbShell.Core.DataSetModels
+namespace DbShell.DataSet.DataSetModels
 {
     public class SqlDumpWriter
     {
