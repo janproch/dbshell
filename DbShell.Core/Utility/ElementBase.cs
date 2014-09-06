@@ -15,7 +15,7 @@ namespace DbShell.Core.Utility
         /// <value>
         /// The connection in format sqlserver://connection_string for SQL Server
         /// </value>
-        [TypeConverter(typeof(ConnectionTypeConverter))]
+        [TypeConverter(typeof (ConnectionTypeConverter))]
         [XamlProperty]
         public IConnectionProvider Connection
         {

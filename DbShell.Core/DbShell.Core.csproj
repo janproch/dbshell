@@ -63,6 +63,7 @@
     <Compile Include="CdlFile.cs" />
     <Compile Include="CdlFileReader.cs" />
     <Compile Include="CdlFileWriter.cs" />
+    <Compile Include="ColumnMapper.cs" />
     <Compile Include="FilesExtension.cs" />
     <Compile Include="CreateTable.cs" />
     <Compile Include="FilesProvider.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Runtime\ShellContext.cs" />
     <Compile Include="Runtime\ShellRunner.cs" />
     <Compile Include="SqlDataWriter.cs" />
+    <Compile Include="Utility\ColumnMapperReader.cs" />
     <Compile Include="Utility\SqlFileWriter.cs" />
     <Compile Include="Utility\SqlProlog.cs" />
     <Compile Include="Utility\TableOrView.cs" />
