@@ -26,6 +26,8 @@ namespace DbShell.Driver.Sqlite
         private int _rowCountCommited;
         private SQLiteTransaction _tran;
 
+        private static Dictionary<string, SqliteStorage> _storageDirectory = new Dictionary<string, SqliteStorage>();
+
         public SqliteStorage(TableInfo table)
         {
             _file = Path.GetTempFileName();
@@ -34,6 +36,16 @@ namespace DbShell.Driver.Sqlite
             _conn.Open();
             string sql = String.Format("create table {0} ({1})", TABLE_NAME, ColumnsText);
             _conn.ExecuteNonQuery(sql);
+
+            lock (_storageDirectory)
+            {
+                _storageDirectory[_file] = this;
+            }
+        }
+
+        public string Identifier
+        {
+            get { return _file; }
         }
 
         private string ColumnsText
@@ -62,6 +74,11 @@ namespace DbShell.Driver.Sqlite
 
         public void Dispose()
         {
+            lock (_storageDirectory)
+            {
+                _storageDirectory.Remove(_file);
+            }
+
             _conn.Close();
             _conn.Dispose();
             try
@@ -205,6 +222,18 @@ namespace DbShell.Driver.Sqlite
                 cmd.CommandText = sql;
                 var res = cmd.ExecuteScalar();
                 return res;
+            }
+        }
+
+        public static SqliteStorage GetFromDirectory(string identifier)
+        {
+            lock (_storageDirectory)
+            {
+                if (!_storageDirectory.ContainsKey(identifier))
+                {
+                    throw new Exception("DBSH-00000 Storage is not longer valid: " + identifier);
+                }
+                return _storageDirectory[identifier];
             }
         }
     }
