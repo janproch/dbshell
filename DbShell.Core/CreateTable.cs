@@ -86,8 +86,9 @@ namespace DbShell.Core
                 //    cmd.CommandText = sw.ToString();
                 //    cmd.ExecuteNonQuery();
                 //}
+
+                return new TableWriter(Context, Connection, GetFullName(), rowFormat, options, tbl);
             }
-            return new TableWriter(Context, Connection, GetFullName(), rowFormat, options);
         }
 
         public TableInfo GetRowFormat()

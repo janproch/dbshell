@@ -10,6 +10,7 @@ using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
+using log4net;
 
 namespace DbShell.Core
 {
@@ -18,6 +19,8 @@ namespace DbShell.Core
     /// </summary>
     public class CdlFile : ElementBase, ITabularDataSource, ITabularDataTarget, IModelProvider
     {
+        private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// File name (should have .cdl extension)
         /// </summary>
@@ -31,7 +34,9 @@ namespace DbShell.Core
 
         private void OpenRead(out TableInfo table, out BinaryReader br)
         {
-            var fr = new FileInfo(GetName()).OpenRead();
+            string file = GetName();
+            if (Context != null) file = Context.ResolveFile(file, ResolveFileMode.Input);
+            var fr = new FileInfo(file).OpenRead();
             br = new BinaryReader(fr);
             string s = br.ReadString();
             var doc = new XmlDocument();
@@ -71,7 +76,13 @@ namespace DbShell.Core
 
         ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options)
         {
-            return new CdlFileWriter(GetName(), rowFormat);
+            string file = GetName();
+            if (Context != null)
+            {
+                file = Context.ResolveFile(file, ResolveFileMode.Output);
+                Context.OutputMessage("Writing file " + Path.GetFullPath(file));
+            }
+            return new CdlFileWriter(file, rowFormat);
         }
 
         TableInfo ITabularDataTarget.GetRowFormat()

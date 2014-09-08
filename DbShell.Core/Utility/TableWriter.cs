@@ -24,7 +24,7 @@ namespace DbShell.Core.Utility
         private DbConnection _connection;
         private IShellContext _context;
 
-        public TableWriter(IShellContext context, IConnectionProvider connection, NameWithSchema name, TableInfo rowFormat, CopyTableTargetOptions options)
+        public TableWriter(IShellContext context, IConnectionProvider connection, NameWithSchema name, TableInfo rowFormat, CopyTableTargetOptions options, TableInfo destinationTableOverride = null)
         {
             _connectionProvider = connection;
             _name = name;
@@ -37,7 +37,7 @@ namespace DbShell.Core.Utility
             _inserter.Connection = _connection;
             _inserter.Factory = connection.Factory;
             var db = context.GetDatabaseStructure(connection);
-            _inserter.DestinationTable = db.FindTableLike(_name.Schema, _name.Name);
+            _inserter.DestinationTable = destinationTableOverride ?? db.FindTableLike(_name.Schema, _name.Name);
             _inserter.CopyOptions = options;
             _inserter.Log += _inserter_Log;
 
