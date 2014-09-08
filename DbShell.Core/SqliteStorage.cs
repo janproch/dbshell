@@ -10,7 +10,7 @@ using DbShell.Driver.Sqlite;
 
 namespace DbShell.Core
 {
-    public class StorageExportSource : ITabularDataSource, IModelProvider
+    public class SqliteStorage : ITabularDataSource, IModelProvider
     {
         [XamlProperty]
         public string Identifier { get; set; }
@@ -18,9 +18,9 @@ namespace DbShell.Core
         [XamlProperty]
         public string Query { get; set; }
 
-        private SqliteStorage Storage
+        private Driver.Sqlite.SqliteStorage Storage
         {
-            get { return SqliteStorage.GetFromDirectory(Identifier); }
+            get { return Driver.Sqlite.SqliteStorage.GetFromDirectory(Identifier); }
         }
         
         TableInfo ITabularDataSource.GetRowFormat()

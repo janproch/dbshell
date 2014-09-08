@@ -71,13 +71,14 @@
     <Compile Include="MapConstant.cs" />
     <Compile Include="MapNull.cs" />
     <Compile Include="MapRowNumber.cs" />
+    <Compile Include="Put.cs" />
     <Compile Include="RazorModels\ColumnModel.cs" />
     <Compile Include="RazorModels\RazorTemplateBase.cs" />
     <Compile Include="RazorModels\RazorScripting.cs" />
     <Compile Include="Runtime\ShellContext.cs" />
     <Compile Include="Runtime\ShellRunner.cs" />
     <Compile Include="SqlDataWriter.cs" />
-    <Compile Include="StorageExportSource.cs" />
+    <Compile Include="SqliteStorage.cs" />
     <Compile Include="Utility\ColumnMapperReader.cs" />
     <Compile Include="Utility\SqlFileWriter.cs" />
     <Compile Include="Utility\SqlProlog.cs" />
