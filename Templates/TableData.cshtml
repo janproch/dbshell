@@ -84,17 +84,17 @@ h5, h6 {
  </head>
  <body>
   
-<h1>Table @Model.TableName</h1>
+<h1>Table @Name</h1>
 
 <table>
 <tr>
-@foreach(var column in Model.Columns) {
+@foreach(var column in Columns) {
   <th>@column.Name</th>
 }
 </tr>
-@foreach(var row in Model.Rows) {
+@foreach(var row in Rows) {
   <tr>
-    @foreach(var column in Model.Columns) {
+    @foreach(var column in Columns) {
       <td>@row[column.Name]</td>
     }
   </tr>
