@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DbShell.Common;
 
 namespace DbShell.DataSet
 {
@@ -9,9 +10,9 @@ namespace DbShell.DataSet
     {
         public string Table { get; set; }
 
-        protected override void DoRun()
+        protected override void DoRun(IShellContext context)
         {
-            Model.LoadMissing(Replace(Table));
+            GetModel(context).LoadMissing(context.Replace(Table));
         }
     }
 }

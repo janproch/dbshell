@@ -41,22 +41,23 @@ namespace DbShell.Core
         /// </summary>
         public string IdentityColumn { get; set; }
 
-        protected NameWithSchema GetFullName()
+        protected NameWithSchema GetFullName(IShellContext context)
         {
-            return new NameWithSchema(Replace(Schema), Replace(Name));
+            return new NameWithSchema(context.Replace(Schema), context.Replace(Name));
         }
 
-        public bool AvailableRowFormat
+        public bool IsAvailableRowFormat(IShellContext context)
         {
-            get { throw new NotImplementedException(); }
+            throw new NotImplementedException();
         }
 
-        public ICdlWriter CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options)
+        public ICdlWriter CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context)
         {
-            using (var conn = Connection.Connect())
+            var connection = GetConnectionProvider(context);
+            using (var conn = connection.Connect())
             {
                 var tbl = rowFormat.CloneTable();
-                tbl.FullName = GetFullName();
+                tbl.FullName = GetFullName(context);
                 foreach(var col in tbl.Columns) col.AutoIncrement = false;
                 tbl.ForeignKeys.Clear();
                 if (tbl.PrimaryKey != null) tbl.PrimaryKey.ConstraintName = null;
@@ -77,8 +78,8 @@ namespace DbShell.Core
                 }
 
                 //var sw = new StringWriter();
-                var so = new ConnectionSqlOutputStream(conn, null, Connection.Factory.CreateDialect());
-                var dmp = Connection.Factory.CreateDumper(so, new SqlFormatProperties());
+                var so = new ConnectionSqlOutputStream(conn, null, connection.Factory.CreateDialect());
+                var dmp = connection.Factory.CreateDumper(so, new SqlFormatProperties());
                 if (DropIfExists) dmp.DropTable(tbl, true);
                 dmp.CreateTable(tbl);
                 //using (var cmd = conn.CreateCommand())
@@ -87,11 +88,11 @@ namespace DbShell.Core
                 //    cmd.ExecuteNonQuery();
                 //}
 
-                return new TableWriter(Context, Connection, GetFullName(), rowFormat, options, tbl);
+                return new TableWriter(context, connection, GetFullName(context), rowFormat, options, tbl);
             }
         }
 
-        public TableInfo GetRowFormat()
+        public TableInfo GetRowFormat(IShellContext context)
         {
             throw new NotImplementedException();
         }

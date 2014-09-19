@@ -27,15 +27,15 @@ namespace DbShell.Core
         [XamlProperty]
         public string Name { get; set; }
 
-        private string GetName()
+        private string GetName(IShellContext context)
         {
-            return Replace(Name);
+            return context.Replace(Name);
         }
 
-        private void OpenRead(out TableInfo table, out BinaryReader br)
+        private void OpenRead(out TableInfo table, out BinaryReader br, IShellContext context)
         {
-            string file = GetName();
-            if (Context != null) file = Context.ResolveFile(file, ResolveFileMode.Input);
+            string file = GetName(context);
+            file = context.ResolveFile(file, ResolveFileMode.Input);
             var fr = new FileInfo(file).OpenRead();
             br = new BinaryReader(fr);
             string s = br.ReadString();
@@ -46,13 +46,13 @@ namespace DbShell.Core
             table.AfterLoadLink();
         }
 
-        TableInfo ITabularDataSource.GetRowFormat()
+        TableInfo ITabularDataSource.GetRowFormat(IShellContext context)
         {
             TableInfo table;
             BinaryReader br = null;
             try
             {
-                OpenRead(out table, out br);
+                OpenRead(out table, out br, context);
             }
             finally
             {
@@ -61,41 +61,38 @@ namespace DbShell.Core
             return table;
         }
 
-        ICdlReader ITabularDataSource.CreateReader()
+        ICdlReader ITabularDataSource.CreateReader(IShellContext context)
         {
             TableInfo table;
             BinaryReader br;
-            OpenRead(out table, out br);
+            OpenRead(out table, out br, context);
             return new CdlFileReader(table, br);
         }
 
-        bool ITabularDataTarget.AvailableRowFormat
+        bool ITabularDataTarget.IsAvailableRowFormat(IShellContext context)
         {
-            get { return false; }
+            return false;
         }
 
-        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options)
+        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context)
         {
-            string file = GetName();
-            if (Context != null)
-            {
-                file = Context.ResolveFile(file, ResolveFileMode.Output);
-                Context.OutputMessage("Writing file " + Path.GetFullPath(file));
-            }
+            string file = GetName(context);
+            file = context.ResolveFile(file, ResolveFileMode.Output);
+            context.OutputMessage("Writing file " + Path.GetFullPath(file));
             return new CdlFileWriter(file, rowFormat);
         }
 
-        TableInfo ITabularDataTarget.GetRowFormat()
+        TableInfo ITabularDataTarget.GetRowFormat(IShellContext context)
         {
             return null;
         }
 
-        object IModelProvider.GetModel()
+        object IModelProvider.GetModel(IShellContext context)
         {
             return this;
         }
 
-        void IModelProvider.InitializeTemplate(IRazorTemplate template)
+        void IModelProvider.InitializeTemplate(IRazorTemplate template, IShellContext context)
         {
             template.TabularData = this;
         }
@@ -108,7 +105,7 @@ namespace DbShell.Core
         /// </returns>
         public override string ToString()
         {
-            return String.Format("[CdlFile {0}]", GetName());
+            return String.Format("[CdlFile {0}]", Name);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DbShell.Common;
 using DbShell.Core.Utility;
 
 namespace DbShell.Core
@@ -42,13 +43,13 @@ namespace DbShell.Core
         [XamlProperty]
         public string ValueExpression { get; set; }
 
-        protected override void DoRun()
+        protected override void DoRun(IShellContext context)
         {
             var collection = Collection;
-            if (collection == null) collection = Context.Evaluate(CollectionExpression);
+            if (collection == null) collection = context.Evaluate(CollectionExpression);
 
             var value = Value;
-            if (value == null) value = Context.Evaluate(ValueExpression);
+            if (value == null) value = context.Evaluate(ValueExpression);
 
             var dct = collection as IDictionary;
             if (dct != null && Key != null) dct[Key] = value;
@@ -56,12 +57,12 @@ namespace DbShell.Core
             if (lst != null) lst.Add(value);
         }
 
-        public override void EnumChildren(Action<Common.IShellElement> enumFunc)
-        {
-            base.EnumChildren(enumFunc);
+        //public override void EnumChildren(Action<Common.IShellElement> enumFunc)
+        //{
+        //    base.EnumChildren(enumFunc);
 
-            YieldChild(enumFunc, Collection);
-            YieldChild(enumFunc, Value);
-        }
+        //    YieldChild(enumFunc, Collection);
+        //    YieldChild(enumFunc, Value);
+        //}
     }
 }

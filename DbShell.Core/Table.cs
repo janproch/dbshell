@@ -18,10 +18,10 @@ namespace DbShell.Core
     /// </summary>
     public class Table : TableOrView
     {
-        protected override TableInfo GetRowFormat()
+        protected override TableInfo GetRowFormat(IShellContext context)
         {
-            var fullName = GetFullName();
-            var db = GetDatabaseStructure();
+            var fullName = GetFullName(context);
+            var db = GetDatabaseStructure(context);
             var table = db.FindTableLike(fullName.Schema, fullName.Name);
             if (table == null)
             {
@@ -32,7 +32,7 @@ namespace DbShell.Core
 
         public override string ToString()
         {
-            return String.Format("[Table {0}]", GetFullName());
+            return String.Format("[Table {0}]", Name);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DbShell.Common;
 using DbShell.DataSet.DataSetModels;
 using DbShell.Core.Utility;
 
@@ -11,10 +12,10 @@ namespace DbShell.DataSet
     {
         public string Name { get; set; }
 
-        protected override void DoRun()
+        protected override void DoRun(IShellContext context)
         {
-            var dbs = GetDatabaseStructure();
-            Context.SetVariable(DataSetVariableName, new DataSetModel(dbs, Context, Connection.Factory));
+            var dbs = GetDatabaseStructure(context);
+            context.SetVariable(GetDataSetVariableName(context), new DataSetModel(dbs, context, GetConnectionProvider(context).Factory));
         }
     }
 }

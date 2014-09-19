@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DbShell.Common;
 
 namespace DbShell.DataSet
 {
@@ -10,11 +11,11 @@ namespace DbShell.DataSet
         public string Table { get; set; }
         public string Condition { get; set; }
 
-        protected override void DoRun()
+        protected override void DoRun(IShellContext context)
         {
-            using (var conn = Connection.Connect())
+            using (var conn = GetConnectionProvider(context).Connect())
             {
-                Model.AddRows(conn, Replace(Table), Replace(Condition));
+                GetModel(context).AddRows(conn, context.Replace(Table), context.Replace(Condition));
             }
         }
     }

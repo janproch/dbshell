@@ -24,9 +24,9 @@ namespace DbShell.Core.Utility
         /// </summary>
         public string TextData { get; set; }
 
-        protected string LoadTextContent(object model)
+        protected string LoadTextContent(object model, IShellContext context)
         {
-            string templateData = LoadTemplate();
+            string templateData = LoadTemplate(context);
             if (templateData != null)
             {
                 var sw = new StringWriter();
@@ -38,7 +38,7 @@ namespace DbShell.Core.Utility
 
             if (textData == null && TextFile != null)
             {
-                using (var sr = new StreamReader(Context.ResolveFile(Replace(TextFile), ResolveFileMode.Input)))
+                using (var sr = new StreamReader(context.ResolveFile(context.Replace(TextFile), ResolveFileMode.Input)))
                 {
                     textData = sr.ReadToEnd();
                 }

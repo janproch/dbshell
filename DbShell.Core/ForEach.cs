@@ -42,57 +42,51 @@ namespace DbShell.Core
         [XamlProperty]
         public IListProvider Source { get; set; }
 
-        protected override void DoRun()
+        protected override void DoRun(IShellContext context)
         {
-            try
+            var childContext = context.CreateChildContext();
+            childContext.CreateScope();
+            foreach (var item in Source.GetList(context))
             {
-                Context.EnterScope();
-                foreach (var item in Source.GetList())
+                if (Property == null)
                 {
-                    if (Property == null)
+                    bool processed = false;
+                    var dct = item as Dictionary<string, object>;
+                    if (dct != null)
                     {
-                        bool processed = false;
-                        var dct = item as Dictionary<string, object>;
-                        if (dct != null)
+                        foreach (var tuple in dct)
                         {
-                            foreach (var tuple in dct)
-                            {
-                                Context.SetVariable(tuple.Key, tuple.Value);
-                            }
-                            processed = true;
+                            childContext.SetVariable(tuple.Key, tuple.Value);
                         }
-                        var record = item as ICdlRecord;
-                        if (record != null)
+                        processed = true;
+                    }
+                    var record = item as ICdlRecord;
+                    if (record != null)
+                    {
+                        for (int i = 0; i < record.FieldCount; i++)
                         {
-                            for (int i = 0; i < record.FieldCount; i++)
-                            {
-                                Context.SetVariable(record.GetName(i), record.GetValue(i));
-                            }
-                            processed = true;
+                            childContext.SetVariable(record.GetName(i), record.GetValue(i));
                         }
-                        if (!processed) throw new Exception("DBSH-00077 Property is not set and Items collection doesn't return property names");
+                        processed = true;
                     }
-                    else
-                    {
-                        Context.SetVariable(Property, item);
-                    }
-                    foreach (var command in Commands)
-                    {
-                        command.Run();
-                    }
+                    if (!processed) throw new Exception("DBSH-00077 Property is not set and Items collection doesn't return property names");
+                }
+                else
+                {
+                    childContext.SetVariable(Property, item);
+                }
+                foreach (var command in Commands)
+                {
+                    command.Run(childContext);
                 }
             }
-            finally
-            {
-                Context.LeaveScope();
-            }
         }
 
-        public override void EnumChildren(Action<IShellElement> enumFunc)
-        {
-            base.EnumChildren(enumFunc);
+        //public override void EnumChildren(Action<IShellElement> enumFunc)
+        //{
+        //    base.EnumChildren(enumFunc);
 
-            YieldChild(enumFunc, Source);
-        }
+        //    YieldChild(enumFunc, Source);
+        //}
     }
 }

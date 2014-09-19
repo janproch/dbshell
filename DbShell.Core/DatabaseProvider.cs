@@ -10,12 +10,12 @@ namespace DbShell.Core
     /// </summary>
     public class DatabaseProvider : ElementBase, IModelProvider
     {
-        public object GetModel()
+        public object GetModel(IShellContext context)
         {
-            return GetDatabaseStructure();
+            return context.GetDatabaseStructure(GetProviderString(context));
         }
 
-        public void InitializeTemplate(IRazorTemplate template)
+        public void InitializeTemplate(IRazorTemplate template, IShellContext context)
         {
         }
     }

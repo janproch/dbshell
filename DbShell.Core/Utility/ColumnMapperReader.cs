@@ -15,13 +15,15 @@ namespace DbShell.Core.Utility
         private List<IColumnMapping> _columnMap;
         private int _rowNumber = 0;
         private List<int> _counts;
+        private IShellContext _context;
 
-        public ColumnMapperReader(ICdlReader source, TableInfo outputFormat, List<IColumnMapping> columnMap, List<int> counts )
+        public ColumnMapperReader(ICdlReader source, TableInfo outputFormat, List<IColumnMapping> columnMap, List<int> counts, IShellContext context )
             : base(outputFormat)
         {
             _source = source;
             _columnMap = columnMap;
             _counts = counts;
+            _context = context;
         }
 
         public void Dispose()
@@ -48,7 +50,7 @@ namespace DbShell.Core.Utility
                 for (int j = 0; j < count; j++, columnIndex++)
                 {
                     SeekValue(columnIndex);
-                    map.ProcessMapping(j, _rowNumber, _source, this);
+                    map.ProcessMapping(j, _rowNumber, _source, this, _context);
                 }
             }
             _rowNumber++;

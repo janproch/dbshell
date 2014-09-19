@@ -32,13 +32,13 @@ namespace DbShell.Core
         [XamlProperty]
         public string OutputName { get; set; }
 
-        void IColumnMapping.ProcessMapping(int column, int rowNumber, ICdlRecord record, ICdlValueWriter writer)
+        void IColumnMapping.ProcessMapping(int column, int rowNumber, ICdlRecord record, ICdlValueWriter writer, IShellContext context)
         {
             record.ReadValue(record.GetOrdinal(Name));
             record.WriteTo(writer);
         }
 
-        ColumnInfo[] IColumnMapping.GetOutputColumns(TableInfo inputTable)
+        ColumnInfo[] IColumnMapping.GetOutputColumns(TableInfo inputTable, IShellContext context)
         {
             var column = inputTable.Columns[Name].CloneColumn();
             column.Name = OutputName ?? Name;

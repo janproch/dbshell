@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using DbShell.Common;
 using DbShell.Core.Utility;
 
 namespace DbShell.DataSet
@@ -19,11 +20,11 @@ namespace DbShell.DataSet
         /// </summary>
         public string Table { get; set; }
 
-        protected override void DoRun()
+        protected override void DoRun(IShellContext context)
         {
-            string file = Replace(File);
-            string table = Replace(Table);
-            Model.LoadFile(file, table ?? Path.GetFileNameWithoutExtension(file));
+            string file = context.Replace(File);
+            string table = context.Replace(Table);
+            GetModel(context).LoadFile(file, table ?? Path.GetFileNameWithoutExtension(file), context);
         }
     }
 }

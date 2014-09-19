@@ -19,8 +19,8 @@ namespace DbShell.Common
         /// <value>
         ///   <c>true</c> if available row format; otherwise, <c>false</c>.
         /// </value>
-        bool AvailableRowFormat { get; }
-        ICdlWriter CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options);
-        TableInfo GetRowFormat();
+        bool IsAvailableRowFormat(IShellContext context);
+        ICdlWriter CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context);
+        TableInfo GetRowFormat(IShellContext context);
     }
 }

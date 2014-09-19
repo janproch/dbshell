@@ -42,7 +42,7 @@ namespace DbShell.Core.RazorModels
         {
             get
             {
-                using (var reader = TabularData.CreateReader())
+                using (var reader = TabularData.CreateReader(Context))
                 {
                     while (reader.Read())
                     {
@@ -62,7 +62,7 @@ namespace DbShell.Core.RazorModels
                 {
                     if (_tabularData != null)
                     {
-                        var fmt = _tabularData.GetRowFormat();
+                        var fmt = _tabularData.GetRowFormat(Context);
                         Columns = new List<ColumnModel>(fmt.Columns.Select(c => new TableColumnModel(c)));
                     }
                     if (_columns == null) throw new Exception("DBSH-00110 Razor:Columns not set");

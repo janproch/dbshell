@@ -14,9 +14,9 @@ namespace DbShell.Core
     /// </summary>
     public class Batch : RunnableContainer
     {
-        protected override void DoRun()
+        protected override void DoRun(IShellContext context)
         {
-            RunContainer();
+            RunContainer(context);
         }
     }
 }

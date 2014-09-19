@@ -68,7 +68,7 @@ namespace DbShell.Core
         [XamlProperty]
         public List<IColumnMapping> ColumnMap { get; set; }
 
-        protected override void DoRun()
+        protected override void DoRun(IShellContext context)
         {
             ITabularDataSource source;
             ITabularDataTarget target;
@@ -80,7 +80,7 @@ namespace DbShell.Core
 
             if (SourceExpression != null)
             {
-                source = (ITabularDataSource) Context.Evaluate(SourceExpression);
+                source = (ITabularDataSource) context.Evaluate(SourceExpression);
             }
             else
             {
@@ -89,7 +89,7 @@ namespace DbShell.Core
 
             if (TargetExpression != null)
             {
-                target = (ITabularDataTarget) Context.Evaluate(TargetExpression);
+                target = (ITabularDataTarget) context.Evaluate(TargetExpression);
             }
             else
             {
@@ -101,7 +101,7 @@ namespace DbShell.Core
                     TruncateBeforeCopy = CleanTarget,
                 };
 
-            var table = source.GetRowFormat();
+            var table = source.GetRowFormat(context);
 
             _log.InfoFormat("Copy table data {0}=>{1}", Source, Target);
 
@@ -112,15 +112,15 @@ namespace DbShell.Core
                 targetTable = new TableInfo(null);
                 foreach (var mapItem in ColumnMap)
                 {
-                    var newCols = mapItem.GetOutputColumns(table);
+                    var newCols = mapItem.GetOutputColumns(table, context);
                     counts.Add(newCols.Length);
                     targetTable.Columns.AddRange(newCols);
                 }
             }
 
-            using (var reader = source.CreateReader())
+            using (var reader = source.CreateReader(context))
             {
-                using (var writer = target.CreateWriter(targetTable, options))
+                using (var writer = target.CreateWriter(targetTable, options, context))
                 {
                     int rowNumber = 0;
                     while (reader.Read())
@@ -136,7 +136,7 @@ namespace DbShell.Core
                                 for (int j = 0; j < count; j++, columnIndex++)
                                 {
                                     outputRecord.SeekValue(columnIndex);
-                                    map.ProcessMapping(j, rowNumber, reader, outputRecord);
+                                    map.ProcessMapping(j, rowNumber, reader, outputRecord, context);
                                 }
                             }
                             writer.Write(outputRecord);
@@ -151,15 +151,15 @@ namespace DbShell.Core
             }
         }
 
-        public override void EnumChildren(Action<IShellElement> enumFunc)
-        {
-            base.EnumChildren(enumFunc);
+        //public override void EnumChildren(Action<IShellElement> enumFunc)
+        //{
+        //    base.EnumChildren(enumFunc);
 
-            YieldChild(enumFunc, Source);
-            YieldChild(enumFunc, Target);
+        //    YieldChild(enumFunc, Source);
+        //    YieldChild(enumFunc, Target);
 
-            foreach (var item in ColumnMap) YieldChild(enumFunc, item);
-        }
+        //    foreach (var item in ColumnMap) YieldChild(enumFunc, item);
+        //}
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CopyTable" /> class.

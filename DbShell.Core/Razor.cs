@@ -50,23 +50,23 @@ namespace DbShell.Core
         [XamlProperty]
         public object Model { get; set; }
 
-        protected override void DoRun()
+        protected override void DoRun(IShellContext context)
         {
             object model = null;
             IModelProvider provider = null;
             if (Model is string)
             {
-                model = Context.Evaluate((string) Model);
+                model = context.Evaluate((string) Model);
                 if (model is IModelProvider)
                 {
                     provider = (IModelProvider) model;
-                    model = provider.GetModel();
+                    model = provider.GetModel(context);
                 }
             }
             else if (Model is IModelProvider)
             {
                 provider = (IModelProvider)Model;
-                model = provider.GetModel();
+                model = provider.GetModel(context);
             }
             else
             {
@@ -75,16 +75,16 @@ namespace DbShell.Core
 
             _log.InfoFormat("DBSH-00074 Apply template {0}=>{1}", TemplateFile ?? "(inline template)", File);
 
-            string templateData = LoadTemplate();
+            string templateData = LoadTemplate(context);
 
             try
             {
-                string fn = Context.ResolveFile(Replace(File), ResolveFileMode.Output);
-                Context.OutputMessage("Generating file " + fn);
+                string fn = context.ResolveFile(context.Replace(File), ResolveFileMode.Output);
+                context.OutputMessage("Generating file " + fn);
                 using (var sw = new StreamWriter(fn))
                 {
                     RazorScripting.ParseRazor(templateData, sw.Write, model, 
-                        provider != null ? provider.InitializeTemplate : (Action<IRazorTemplate>) null);
+                        provider != null ? provider.InitializeTemplate : (Action<IRazorTemplate, IShellContext>) null);
                 }
             }
             catch (RazorEngine.Templating.TemplateCompilationException err)
@@ -98,10 +98,10 @@ namespace DbShell.Core
             }
         }
 
-        public override void EnumChildren(Action<IShellElement> enumFunc)
-        {
-            base.EnumChildren(enumFunc);
-            YieldChild(enumFunc, Model);
-        }
+        //public override void EnumChildren(Action<IShellElement> enumFunc)
+        //{
+        //    base.EnumChildren(enumFunc);
+        //    YieldChild(enumFunc, Model);
+        //}
     }
 }

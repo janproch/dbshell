@@ -29,19 +29,19 @@ namespace DbShell.Core
             }
         }
 
-        DbConnection IConnectionProvider.Connect()
+        public DbConnection Connect()
         {
             DbConnection connection = _factory.CreateConnection(_connectionString);
             connection.Open();
             return connection;
         }
 
-        IDatabaseFactory IConnectionProvider.Factory
+        public IDatabaseFactory Factory
         {
             get { return _factory; }
         }
 
-        string IConnectionProvider.ProviderString
+        public string ProviderString
         {
             get { return _provider + "://" + _connectionString; }
         }

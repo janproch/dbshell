@@ -16,17 +16,17 @@ namespace DbShell.Core.Utility
         [XamlProperty]
         public List<IRunnable> Commands { get; set; }
 
-        public override void EnumChildren(Action<IShellElement> enumFunc)
-        {
-            base.EnumChildren(enumFunc);
-            foreach (var item in Commands) YieldChild(enumFunc, item);
-        }
+        //public override void EnumChildren(Action<IShellElement> enumFunc)
+        //{
+        //    base.EnumChildren(enumFunc);
+        //    foreach (var item in Commands) YieldChild(enumFunc, item);
+        //}
 
-        protected void RunContainer()
+        protected void RunContainer(IShellContext context)
         {
             foreach(var item in Commands)
             {
-                item.Run();
+                item.Run(context);
             }
         }
     }

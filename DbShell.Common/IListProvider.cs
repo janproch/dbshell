@@ -8,6 +8,6 @@ namespace DbShell.Common
 {
     public interface IListProvider
     {
-        IEnumerable GetList();
+        IEnumerable GetList(IShellContext context);
     }
 }

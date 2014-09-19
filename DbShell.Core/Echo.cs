@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DbShell.Common;
 using DbShell.Core.Utility;
 using log4net;
 
@@ -23,11 +24,11 @@ namespace DbShell.Core
         [XamlProperty]
         public string Message { get; set; }
 
-        protected override void DoRun()
+        protected override void DoRun(IShellContext context)
         {
-            string text = Replace(Message);
+            string text = context.Replace(Message);
             _log.Info(text);
-            Context.OutputMessage(text);
+            context.OutputMessage(text);
         }
     }
 }

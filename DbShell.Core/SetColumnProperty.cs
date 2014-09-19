@@ -1,4 +1,5 @@
-﻿using DbShell.Core.Utility;
+﻿using DbShell.Common;
+using DbShell.Core.Utility;
 using DbShell.Driver.Common.Structure;
 using System;
 using System.Collections.Generic;
@@ -86,9 +87,9 @@ namespace DbShell.Core
             }
         }
 
-        protected override void DoRun()
+        protected override void DoRun(IShellContext context)
         {
-            var db = GetDatabaseStructure();
+            var db = GetDatabaseStructure(context);
             if (Table != null && Tables != null) throw new Exception("DBSH-00080 SetColumnProperty: both of Table and Tables attribute is set");
             if (Table == null && Tables == null) throw new Exception("DBSH-00081 SetColumnProperty: none of Table and Tables attribute is set");
             if (Column != null && Columns != null) throw new Exception("DBSH-00082 SetColumnProperty: both of Column and Columns attribute is set");

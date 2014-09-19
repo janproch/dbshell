@@ -35,13 +35,13 @@ namespace DbShell.Core
             StartFrom = 1;
         }
 
-        ColumnInfo[] IColumnMapping.GetOutputColumns(TableInfo inputTable)
+        ColumnInfo[] IColumnMapping.GetOutputColumns(TableInfo inputTable, IShellContext context)
         {
             var column = new ColumnInfo(new TableInfo(null)) { CommonType = new DbTypeInt(), Name = Name, DataType = "int" };
             return new[] { column };
         }
 
-        void IColumnMapping.ProcessMapping(int column, int rowNumber, ICdlRecord record, ICdlValueWriter writer)
+        void IColumnMapping.ProcessMapping(int column, int rowNumber, ICdlRecord record, ICdlValueWriter writer, IShellContext context)
         {
             writer.SetInt32(StartFrom + rowNumber);
         }

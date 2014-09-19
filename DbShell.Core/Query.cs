@@ -18,7 +18,7 @@ namespace DbShell.Core
     /// Represents query reading data from database. Can be exported to file in the some way as table.
     /// </summary>
     [ContentProperty("Text")]
-    public class Query : ElementBase, ITabularDataSource, IListProvider, IEnumerable, IModelProvider
+    public class Query : ElementBase, ITabularDataSource, IListProvider, IModelProvider
     {
         /// <summary>
         /// Gets or sets the query text.
@@ -29,12 +29,12 @@ namespace DbShell.Core
         [XamlProperty]
         public string Text { get; set; }
 
-        private TableInfo GetRowFormat()
+        private TableInfo GetRowFormat(IShellContext context)
         {
-            using (var conn = Connection.Connect())
+            using (var conn = GetConnectionProvider(context).Connect())
             {
                 var cmd = conn.CreateCommand();
-                cmd.CommandText = Replace(Text);
+                cmd.CommandText = context.Replace(Text);
                 using (var reader = cmd.ExecuteReader(CommandBehavior.KeyInfo | CommandBehavior.SchemaOnly))
                 {
                     return reader.GetTableInfo();
@@ -42,19 +42,20 @@ namespace DbShell.Core
             }
         }
 
-        TableInfo ITabularDataSource.GetRowFormat()
+        TableInfo ITabularDataSource.GetRowFormat(IShellContext context)
         {
-            return GetRowFormat();
+            return GetRowFormat(context);
 
         }
 
-        ICdlReader ITabularDataSource.CreateReader()
+        ICdlReader ITabularDataSource.CreateReader(IShellContext context)
         {
-            var dda = Connection.Factory.CreateDataAdapter();
-            var conn = Connection.Connect();
+            var connection = GetConnectionProvider(context);
+            var dda = connection.Factory.CreateDataAdapter();
+            var conn = connection.Connect();
             var cmd = conn.CreateCommand();
             cmd.CommandTimeout = 3600;
-            cmd.CommandText = Replace(Text);
+            cmd.CommandText = context.Replace(Text);
             var reader = cmd.ExecuteReader();
             var result = dda.AdaptReader(reader);
             result.Disposing += () =>
@@ -70,9 +71,9 @@ namespace DbShell.Core
             return String.Format("[Query {0}]", Text);
         }
 
-        IEnumerable IListProvider.GetList()
+        IEnumerable IListProvider.GetList(IShellContext context)
         {
-            using (var reader = ((ITabularDataSource)this).CreateReader())
+            using (var reader = ((ITabularDataSource)this).CreateReader(context))
             {
                 while (reader.Read())
                 {
@@ -81,17 +82,12 @@ namespace DbShell.Core
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
+        object IModelProvider.GetModel(IShellContext context)
         {
-            return ((IListProvider) this).GetList().GetEnumerator();
+            return new QueryModel(this, context);
         }
 
-        object IModelProvider.GetModel()
-        {
-            return this;
-        }
-
-        void IModelProvider.InitializeTemplate(IRazorTemplate template)
+        void IModelProvider.InitializeTemplate(IRazorTemplate template, IShellContext context)
         {
             template.TabularData = this;
         }

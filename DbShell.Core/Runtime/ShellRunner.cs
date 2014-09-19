@@ -11,48 +11,37 @@ namespace DbShell.Core.Runtime
     {
         private IRunnable _main;
         private ShellContext _context;
-        private string _rootFolder;
         private Thread _thread;
         public Exception Error { get; private set; }
         public bool FinishedOk { get; private set; }
 
+        public ShellRunner()
+        {
+            _context = new ShellContext();
+            _context.OnOutputMessage += _context_OnOutputMessage;
+        }
+
+        void _context_OnOutputMessage(string obj)
+        {
+            if (OutputMessage != null) OutputMessage(obj);
+        }
+
         public void LoadFile(string file)
         {
-            CoreLoader.Load();
-
-            using (var fr = new FileInfo(file).OpenRead())
-            {
-                LoadModule.LoadModules(fr);
-            }
-
-            using (var fr = new FileInfo(file).OpenRead())
-            {
-                object obj = XamlReader.Load(fr);
-                LoadObject(obj, Path.GetDirectoryName(file));
-            }
+            var obj = ShellLoader.LoadFile(file);
+            LoadObject(obj, Path.GetDirectoryName(file));
         }
 
         public void LoadString(string content, string folder = null)
         {
-            LoadModule.LoadModulesFromData(content);
-            using (var fr = new StringReader(content))
-            {
-                using (var reader = System.Xml.XmlReader.Create(fr))
-                {
-                    object obj = XamlReader.Load(reader);
-                    LoadObject(obj, folder);
-                }
-            }
+            var obj = ShellLoader.LoadString(content);
+            LoadObject(obj, folder);
         }
 
         public void LoadObject(object obj, string folder = null)
         {
-            _rootFolder = folder;
-            if (_context != null) throw new Exception("DBSH-00137 Load function already called");
-            _main = (IRunnable)obj;
-            _context = new ShellContext(this);
-            var element = _main as IShellElement;
-            if (element != null) ProcessLoadedElement(element, null, _context);
+            if (folder != null) _context.SetExecutingFolder(folder);
+            _main = (IRunnable) obj;
         }
 
         public ShellContext Context
@@ -60,22 +49,19 @@ namespace DbShell.Core.Runtime
             get { return _context; }
         }
 
-        public static void ProcessLoadedElement(IShellElement element, IShellElement parent, IShellContext context)
-        {
-            element.Context = context;
-            if (element.OwnConnection == null && parent != null && parent.OwnConnection != null)
-            {
-                element.OwnConnection = parent.OwnConnection;
-            }
-            element.EnumChildren(child => ProcessLoadedElement(child, element, context));
-        }
+        //public static void ProcessLoadedElement(IShellElement element, IShellElement parent, IShellContext context)
+        //{
+        //    element.Context = context;
+        //    if (element.OwnConnection == null && parent != null && parent.OwnConnection != null)
+        //    {
+        //        element.OwnConnection = parent.OwnConnection;
+        //    }
+        //    element.EnumChildren(child => ProcessLoadedElement(child, element, context));
+        //}
 
         public void Run()
         {
-            if (_context == null) throw new Exception("DBSH-00138 Load function not called");
-            if (_rootFolder != null) _context.PushExecutingFolder(_rootFolder);
-            _main.Run();
-            if (_rootFolder != null) _context.PopExecutingFolder();
+            _main.Run(_context);
         }
 
         public void Dispose()
@@ -131,14 +117,5 @@ namespace DbShell.Core.Runtime
         {
             get { return Error != null || FinishedOk; }
         }
-
-        //public void WaitForFinish()
-        //{
-        //    if (_thread == null)
-        //    {
-        //        throw new Exception("DBSH-00097 Calling ShellRunner.WaitToFinish without valid thread");
-        //    }
-        //    _thread.Join();
-        //}
     }
 }

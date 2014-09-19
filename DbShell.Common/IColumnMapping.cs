@@ -16,7 +16,7 @@ namespace DbShell.Common
         /// Gets the names and types of destination columns.
         /// </summary>
         /// <returns>The output columns</returns>
-        ColumnInfo[] GetOutputColumns(TableInfo inputTable);
+        ColumnInfo[] GetOutputColumns(TableInfo inputTable, IShellContext context);
 
         /// <summary>
         /// Processes mapping in source row for given column
@@ -25,6 +25,6 @@ namespace DbShell.Common
         /// <param name="rowNumber">number of processed row (1-based index)</param>
         /// <param name="record">The source record.</param>
         /// <param name="writer">The target writer.</param>
-        void ProcessMapping(int column, int rowNumber, ICdlRecord record, ICdlValueWriter writer);
+        void ProcessMapping(int column, int rowNumber, ICdlRecord record, ICdlValueWriter writer, IShellContext context);
     }
 }

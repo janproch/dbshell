@@ -8,12 +8,16 @@ namespace DbShell.Core
 {
     public static class CoreLoader
     {
+        private static bool _loaded;
+
         /// <summary>
         /// initializes core
         /// </summary>
         public static void Load()
         {
+            if (_loaded) return;
             SqlServerDatabaseFactory.Initialize();
+            _loaded = true;
         }
     }
 }

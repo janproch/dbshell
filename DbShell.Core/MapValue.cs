@@ -56,7 +56,7 @@ namespace DbShell.Core
         [XamlProperty]
         public string Expression { get; set; }
 
-        ColumnInfo[] IColumnMapping.GetOutputColumns(TableInfo inputTable)
+        ColumnInfo[] IColumnMapping.GetOutputColumns(TableInfo inputTable, IShellContext context)
         {
             var column = new ColumnInfo(new TableInfo(null)) {CommonType = new DbTypeString(), Name = Name, DataType = "nvarchar", Length = -1};
             return new[] {column};
@@ -70,27 +70,19 @@ namespace DbShell.Core
             NeedColumnValues = true;
         }
 
-        private void CreateColumnValues(ICdlRecord record)
+        private void CreateColumnValues(ICdlRecord record, IShellContext context)
         {
             if (NeedColumnValues)
             {
-                Context.EnterScope();
+                context.CreateScope();
                 for (int i = 0; i < record.FieldCount; i++)
                 {
-                    Context.SetVariable(record.GetName(i), record.GetValue(i));
+                    context.SetVariable(record.GetName(i), record.GetValue(i));
                 }
             }
         }
 
-        private void FreeColumnValues()
-        {
-            if (NeedColumnValues)
-            {
-                Context.LeaveScope();
-            }
-        }
-
-        void IColumnMapping.ProcessMapping(int column, int rowNumber, ICdlRecord record, ICdlValueWriter writer)
+        void IColumnMapping.ProcessMapping(int column, int rowNumber, ICdlRecord record, ICdlValueWriter writer, IShellContext context)
         {
             if (_value == null)
             {
@@ -100,33 +92,20 @@ namespace DbShell.Core
             {
                 throw new Exception("DBSH-00004 MapValue: Both Expression and Value is set");
             }
+            var childContext = context.CreateChildContext();
             if (Value != null)
             {
-                try
-                {
-                    CreateColumnValues(record);
-                    string value = Replace(Value);
-                    _value.ReadFrom(value);
-                    _value.WriteTo(writer);
-                }
-                finally
-                {
-                    FreeColumnValues();
-                }
+                CreateColumnValues(record, childContext);
+                string value = childContext.Replace(Value);
+                _value.ReadFrom(value);
+                _value.WriteTo(writer);
             }
             if (Expression != null)
             {
-                try
-                {
-                    CreateColumnValues(record);
-                    object value = Context.Evaluate(Expression);
-                    _value.ReadFrom(value);
-                    _value.WriteTo(writer);
-                }
-                finally
-                {
-                    FreeColumnValues();
-                }
+                CreateColumnValues(record, childContext);
+                object value = childContext.Evaluate(Expression);
+                _value.ReadFrom(value);
+                _value.WriteTo(writer);
             }
             if (Expression == null && Value == null)
             {

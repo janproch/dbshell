@@ -8,11 +8,11 @@ namespace DbShell.Common
     /// <summary>
     /// Defines job, which is run in DB Shell batch
     /// </summary>
-    public interface IRunnable : IShellElement
+    public interface IRunnable
     {
         /// <summary>
         /// Runs job
         /// </summary>
-        void Run();
+        void Run(IShellContext context);
     }
 }

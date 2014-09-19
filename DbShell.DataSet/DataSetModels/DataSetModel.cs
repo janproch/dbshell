@@ -78,20 +78,20 @@ namespace DbShell.DataSet.DataSetModels
             return loaded;
         }
 
-        public void LoadFromReader(ITabularDataSource source, string targetTable)
+        public void LoadFromReader(ITabularDataSource source, string targetTable, IShellContext context)
         {
-            using (var reader = source.CreateReader())
+            using (var reader = source.CreateReader(context))
             {
                 DoLoadRows(reader, targetTable);
             }
         }
 
-        public void LoadFile(string file, string targetTable)
+        public void LoadFile(string file, string targetTable, IShellContext context)
         {
             CheckUnprepared("LoadFile");
             var cdlFile = new CdlFile { Name = file };
             ITabularDataSource source = cdlFile;
-            LoadFromReader(source, targetTable);
+            LoadFromReader(source, targetTable, context);
         }
 
         private List<DataSetClass> GetOrderedClasses()

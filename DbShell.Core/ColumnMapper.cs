@@ -34,22 +34,22 @@ namespace DbShell.Core
             ColumnMap = new List<IColumnMapping>();
         }
 
-        public TableInfo GetRowFormat()
+        public TableInfo GetRowFormat(IShellContext context)
         {
             var counts = new List<int>();
-            return GetRowFormat(counts);
+            return GetRowFormat(counts, context);
         }
 
-        private TableInfo GetRowFormat(List<int> counts)
+        private TableInfo GetRowFormat(List<int> counts, IShellContext context)
         {
-            var table = Source.GetRowFormat();
+            var table = Source.GetRowFormat(context);
 
             var targetTable = table;
 
             targetTable = new TableInfo(null);
             foreach (var mapItem in ColumnMap)
             {
-                var newCols = mapItem.GetOutputColumns(table);
+                var newCols = mapItem.GetOutputColumns(table, context);
                 counts.Add(newCols.Length);
                 targetTable.Columns.AddRange(newCols);
             }
@@ -57,28 +57,28 @@ namespace DbShell.Core
             return targetTable;
         }
 
-        public override void EnumChildren(Action<IShellElement> enumFunc)
-        {
-            base.EnumChildren(enumFunc);
+        //public override void EnumChildren(Action<IShellElement> enumFunc)
+        //{
+        //    base.EnumChildren(enumFunc);
 
-            YieldChild(enumFunc, Source);
+        //    YieldChild(enumFunc, Source);
 
-            foreach (var item in ColumnMap) YieldChild(enumFunc, item);
-        }
+        //    foreach (var item in ColumnMap) YieldChild(enumFunc, item);
+        //}
 
-        public ICdlReader CreateReader()
+        ICdlReader ITabularDataSource.CreateReader(IShellContext context)
         {
             var counts = new List<int>();
-            var outputFormat = GetRowFormat(counts);
-            return new ColumnMapperReader(Source.CreateReader(), outputFormat, ColumnMap, counts);
+            var outputFormat = GetRowFormat(counts, context);
+            return new ColumnMapperReader(Source.CreateReader(context), outputFormat, ColumnMap, counts, context);
         }
 
-        object IModelProvider.GetModel()
+        object IModelProvider.GetModel(IShellContext context)
         {
             return this;
         }
 
-        void IModelProvider.InitializeTemplate(IRazorTemplate template)
+        void IModelProvider.InitializeTemplate(IRazorTemplate template, IShellContext context)
         {
             template.TabularData = this;
         }

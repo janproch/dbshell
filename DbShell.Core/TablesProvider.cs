@@ -13,9 +13,9 @@ namespace DbShell.Core
     /// </summary>
     public class TablesProvider : ElementBase, IListProvider
     {
-        IEnumerable IListProvider.GetList()
+        IEnumerable IListProvider.GetList(IShellContext context)
         {
-            var db = GetDatabaseStructure();
+            var db = GetDatabaseStructure(context);
             return db.Tables;
         }
     }

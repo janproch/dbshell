@@ -15,7 +15,7 @@ namespace DbShell.Core.Utility
     /// <summary>
     /// Table in database
     /// </summary>
-    public abstract class TableOrView : ElementBase, ITabularDataSource, ITabularDataTarget, IListProvider, IEnumerable, IModelProvider
+    public abstract class TableOrView : ElementBase, ITabularDataSource, ITabularDataTarget, IListProvider, IModelProvider
     {
         /// <summary>
         /// Table schema, can be ommited (eg. "dbo" on SQL server)
@@ -29,27 +29,28 @@ namespace DbShell.Core.Utility
         [XamlProperty]
         public string Name { get; set; }
 
-        protected abstract TableInfo GetRowFormat();
+        protected abstract TableInfo GetRowFormat(IShellContext context);
 
-        protected NameWithSchema GetFullName()
+        protected NameWithSchema GetFullName(IShellContext context)
         {
-            return new NameWithSchema(Replace(Schema), Replace(Name));
+            return new NameWithSchema(context.Replace(Schema), context.Replace(Name));
         }
 
-        TableInfo ITabularDataSource.GetRowFormat()
+        TableInfo ITabularDataSource.GetRowFormat(IShellContext context)
         {
-            return GetRowFormat();
+            return GetRowFormat(context);
 
         }
 
-        ICdlReader ITabularDataSource.CreateReader()
+        ICdlReader ITabularDataSource.CreateReader(IShellContext context)
         {
-            var fullName = GetFullName();
-            var dda = Connection.Factory.CreateDataAdapter();
-            var conn = Connection.Connect();
+            var fullName = GetFullName(context);
+            var connection = GetConnectionProvider(context);
+            var dda = connection.Factory.CreateDataAdapter();
+            var conn = connection.Connect();
             var cmd = conn.CreateCommand();
             cmd.CommandTimeout = 3600;
-            var dialect = Connection.Factory.CreateDialect();
+            var dialect = connection.Factory.CreateDialect();
             cmd.CommandText = "SELECT * FROM " + dialect.QuoteFullName(fullName);
             var reader = cmd.ExecuteReader();
             var result = dda.AdaptReader(reader);
@@ -62,24 +63,24 @@ namespace DbShell.Core.Utility
         }
 
 
-        bool ITabularDataTarget.AvailableRowFormat
+        bool ITabularDataTarget.IsAvailableRowFormat(IShellContext context)
         {
-            get { return true; }
+            return true;
         }
 
-        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options)
+        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context)
         {
-            return new TableWriter(Context, Connection, GetFullName(), rowFormat, options);
+            return new TableWriter(context, GetConnectionProvider(context), GetFullName(context), rowFormat, options);
         }
 
-        TableInfo ITabularDataTarget.GetRowFormat()
+        TableInfo ITabularDataTarget.GetRowFormat(IShellContext context)
         {
-            return GetRowFormat();
+            return GetRowFormat(context);
         }
 
-        IEnumerable IListProvider.GetList()
+        IEnumerable IListProvider.GetList(IShellContext context)
         {
-            using (var reader = ((ITabularDataSource)this).CreateReader())
+            using (var reader = ((ITabularDataSource)this).CreateReader(context))
             {
                 while (reader.Read())
                 {
@@ -88,17 +89,17 @@ namespace DbShell.Core.Utility
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return ((IListProvider)this).GetList().GetEnumerator();
-        }
+        //IEnumerator IEnumerable.GetEnumerator()
+        //{
+        //    return ((IListProvider)this).GetList().GetEnumerator();
+        //}
 
-        object IModelProvider.GetModel()
+        object IModelProvider.GetModel(IShellContext context)
         {
             return this;
         }
 
-        void IModelProvider.InitializeTemplate(IRazorTemplate template)
+        void IModelProvider.InitializeTemplate(IRazorTemplate template, IShellContext context)
         {
             template.TabularData = this;
             template.Name = Name;

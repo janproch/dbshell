@@ -73,9 +73,11 @@
     <Compile Include="MapRowNumber.cs" />
     <Compile Include="Put.cs" />
     <Compile Include="RazorModels\ColumnModel.cs" />
+    <Compile Include="RazorModels\QueryModel.cs" />
     <Compile Include="RazorModels\RazorTemplateBase.cs" />
     <Compile Include="RazorModels\RazorScripting.cs" />
     <Compile Include="Runtime\ShellContext.cs" />
+    <Compile Include="Runtime\ShellLoader.cs" />
     <Compile Include="Runtime\ShellRunner.cs" />
     <Compile Include="SqlDataWriter.cs" />
     <Compile Include="SqliteStorage.cs" />

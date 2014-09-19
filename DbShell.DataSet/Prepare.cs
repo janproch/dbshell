@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DbShell.Common;
 
 namespace DbShell.DataSet
 {
     public class Prepare : DataSetItemBase
     {
-        protected override void DoRun()
+        protected override void DoRun(IShellContext context)
         {
-            using (var conn = Connection.Connect())
+            using (var conn = GetConnectionProvider(context).Connect())
             {
-                Model.Prepare(conn);
+                GetModel(context).Prepare(conn);
             }
         }
     }

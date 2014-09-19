@@ -36,7 +36,7 @@ namespace DbShell.Core.Utility
             _connection = _connectionProvider.Connect();
             _inserter.Connection = _connection;
             _inserter.Factory = connection.Factory;
-            var db = context.GetDatabaseStructure(connection);
+            var db = context.GetDatabaseStructure(connection.ProviderString);
             _inserter.DestinationTable = destinationTableOverride ?? db.FindTableLike(_name.Schema, _name.Name);
             _inserter.CopyOptions = options;
             _inserter.Log += _inserter_Log;

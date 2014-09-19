@@ -29,13 +29,13 @@ namespace DbShell.Core.Utility
         [XamlProperty]
         public string TemplateData { get; set; }
 
-        protected string LoadTemplate()
+        protected string LoadTemplate(IShellContext context)
         {
             string templateData = TemplateData;
 
             if (templateData == null && TemplateFile != null)
             {
-                using (var sr = new StreamReader(Context.ResolveFile(Replace(TemplateFile), ResolveFileMode.Template)))
+                using (var sr = new StreamReader(context.ResolveFile(context.Replace(TemplateFile), ResolveFileMode.Template)))
                 {
                     templateData = sr.ReadToEnd();
                 }

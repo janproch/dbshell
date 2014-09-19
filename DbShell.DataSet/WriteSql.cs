@@ -11,13 +11,13 @@ namespace DbShell.DataSet
     {
         public string File { get; set; }
 
-        protected override void DoRun()
+        protected override void DoRun(IShellContext context)
         {
-            string file = Context.ResolveFile(Replace(File), ResolveFileMode.Output);
-            Context.OutputMessage("DBSH-00118 Exporting SQL file Writing " + file);
+            string file = context.ResolveFile(context.Replace(File), ResolveFileMode.Output);
+            context.OutputMessage("DBSH-00118 Exporting SQL file Writing " + file);
             using (var fw = new StreamWriter(file))
             {
-                Model.WriteSql(fw);
+                GetModel(context).WriteSql(fw);
             }
         }
     }

@@ -22,23 +22,23 @@ namespace DbShell.Core
         {
             get { return Driver.Sqlite.SqliteStorage.GetFromDirectory(Identifier); }
         }
-        
-        TableInfo ITabularDataSource.GetRowFormat()
+
+        TableInfo ITabularDataSource.GetRowFormat(IShellContext context)
         {
             return Storage.Structure;
         }
 
-        ICdlReader ITabularDataSource.CreateReader()
+        ICdlReader ITabularDataSource.CreateReader(IShellContext context)
         {
             return Storage.CreateReader(Query);
         }
 
-        object IModelProvider.GetModel()
+        object IModelProvider.GetModel(IShellContext context)
         {
             return this;
         }
 
-        void IModelProvider.InitializeTemplate(IRazorTemplate template)
+        void IModelProvider.InitializeTemplate(IRazorTemplate template, IShellContext context)
         {
             template.TabularData = this;
         }

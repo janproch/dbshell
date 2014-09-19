@@ -13,7 +13,7 @@ namespace DbShell.Core
     {
         public string Filter { get; set; }
 
-        public IEnumerable GetList()
+        public IEnumerable GetList(IShellContext context)
         {
             string path = Path.GetDirectoryName(Filter);
             string filter = Path.GetFileName(Filter);

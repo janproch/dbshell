@@ -92,7 +92,7 @@ namespace DbShell.Core.Utility
                 if (!prop.GetCustomAttributes(typeof (XamlPropertyAttribute), true).Any()) continue;
                 object value = prop.CallGet(o);
                 if (value == null) continue;
-                if (!(value is string) && value is IEnumerable && !(value is DbShell.Common.IShellElement))
+                if (!(value is string) && value is IEnumerable && !(value is DbShell.Core.Utility.ElementBase))
                 {
                     if (value.GetType().GetCustomAttributes(typeof(XamlUnfriendlyAttribute), true).Any())
                     {

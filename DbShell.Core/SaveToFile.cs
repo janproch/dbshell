@@ -51,14 +51,14 @@ namespace DbShell.Core
         [XamlProperty]
         public Encoding Encoding { get; set; }
 
-        protected override void DoRun()
+        protected override void DoRun(IShellContext context)
         {
-            string file = Context.ResolveFile(Replace(File), ResolveFileMode.Output);
+            string file = context.ResolveFile(context.Replace(File), ResolveFileMode.Output);
             if (Expression != null && Value != null) throw new Exception("DBSH-00078 SaveToFile: both Expression and Value is set");
             if (Expression == null && Value == null) throw new Exception("DBSH-00079 SaveToFile: none of Expression and Value is set");
             if (Expression != null)
             {
-                object obj = Context.Evaluate(Expression);
+                object obj = context.Evaluate(Expression);
                 if (obj is byte[])
                 {
                     var bytes = (byte[]) obj;
@@ -77,7 +77,7 @@ namespace DbShell.Core
             }
             if (Value!=null)
             {
-                string val = Replace(Value);
+                string val = context.Replace(Value);
                 using (var fw = new StreamWriter(file, false, Encoding))
                 {
                     fw.Write(val);

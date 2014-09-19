@@ -19,7 +19,7 @@ namespace DbShell.Core
     [ContentProperty("Command")]
     public class Script : RunnableBase
     {
-        private readonly static ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Gets or sets the script file file.
@@ -67,7 +67,7 @@ namespace DbShell.Core
         [XamlProperty]
         public bool UseTransactions { get; set; }
 
-        private void RunScript(TextReader reader, DbConnection conn, DbTransaction tran, bool replace, bool logEachQuery, bool logCount)
+        private void RunScript(TextReader reader, DbConnection conn, DbTransaction tran, bool replace, bool logEachQuery, bool logCount, IShellContext context)
         {
             int count = 0;
             foreach (string item in GoSplitter.GoSplit(reader))
@@ -75,7 +75,7 @@ namespace DbShell.Core
                 string sql = item;
                 if (replace)
                 {
-                    sql = Replace(sql, ReplacePattern);
+                    sql = context.Replace(sql, ReplacePattern);
                 }
                 var cmd = conn.CreateCommand();
                 cmd.CommandText = sql;
@@ -95,12 +95,13 @@ namespace DbShell.Core
             if (logCount) _log.InfoFormat("DBSH-00073 Executed {0} commands", count);
         }
 
-        protected override void DoRun()
+        protected override void DoRun(IShellContext context)
         {
             if (File != null && Command != null) throw new Exception("DBSH-00060 Both Script.File and Script.Command properties are set");
             if (File == null && Command == null) throw new Exception("DBSH-00061 None of Script.File and Script.Command properties are set");
 
-            using (var conn = Connection.Connect())
+            var connection = GetConnectionProvider(context);
+            using (var conn = connection.Connect())
             {
                 DbTransaction tran = null;
                 try
@@ -110,17 +111,17 @@ namespace DbShell.Core
                     // execute inline command
                     if (Command != null)
                     {
-                        RunScript(new StringReader(Command), conn, tran, UseReplacements == null || UseReplacements == true, true, false);
+                        RunScript(new StringReader(Command), conn, tran, UseReplacements == null || UseReplacements == true, true, false, context);
                     }
 
                     // execute linked file
                     if (File != null)
                     {
-                        string fn = Context.ResolveFile(File, ResolveFileMode.Input);
+                        string fn = context.ResolveFile(File, ResolveFileMode.Input);
                         using (var reader = new StreamReader(fn))
                         {
                             _log.InfoFormat("DBSH-00067 Executing SQL file {0}", fn);
-                            RunScript(reader, conn, tran, UseReplacements == true, false, true);
+                            RunScript(reader, conn, tran, UseReplacements == true, false, true, context);
                         }
                     }
                     if (tran != null)

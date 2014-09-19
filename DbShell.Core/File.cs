@@ -18,24 +18,24 @@ namespace DbShell.Core
         [XamlProperty]
         public string Name { get; set; }
 
-        private string GetName()
+        private string GetName(IShellContext context)
         {
-            return Replace(Name);
+            return context.Replace(Name);
         }
 
-        private ITabularDataSource CreateSource()
+        private ITabularDataSource CreateSource(IShellContext context)
         {
-            string name = GetName();
-            if (name.ToLower().EndsWith(".cdl")) return new CdlFile {Connection = Connection, Context = Context, Name = name};
-            if (name.ToLower().EndsWith(".csv")) return new CsvFile { Connection = Connection, Context = Context, Name = name };
+            string name = GetName(context);
+            if (name.ToLower().EndsWith(".cdl")) return new CdlFile {Connection = Connection, Name = name};
+            if (name.ToLower().EndsWith(".csv")) return new CsvFile { Connection = Connection, Name = name };
             throw new Exception("DBSH-00002 Unknown soruce file type:" + name);
         }
 
-        private ITabularDataTarget CreateTarget()
+        private ITabularDataTarget CreateTarget(IShellContext context)
         {
-            string name = GetName();
-            if (name.ToLower().EndsWith(".cdl")) return new CdlFile { Connection = Connection, Context = Context, Name = name };
-            if (name.ToLower().EndsWith(".csv")) return new CsvFile { Connection = Connection, Context = Context, Name = name };
+            string name = GetName(context);
+            if (name.ToLower().EndsWith(".cdl")) return new CdlFile { Connection = Connection, Name = name };
+            if (name.ToLower().EndsWith(".csv")) return new CsvFile { Connection = Connection, Name = name };
             //if (name.ToLower().EndsWith(".html") || name.ToLower().EndsWith(".htm"))
             //{
             //    return new Razor { Connection = Connection, Context = Context, Name = name };
@@ -43,34 +43,34 @@ namespace DbShell.Core
             throw new Exception("DBSH-00003 Unknown target file type:" + name);
         }
 
-        TableInfo ITabularDataSource.GetRowFormat()
+        TableInfo ITabularDataSource.GetRowFormat(IShellContext context)
         {
-            return CreateSource().GetRowFormat();
+            return CreateSource(context).GetRowFormat(context);
         }
 
-        ICdlReader ITabularDataSource.CreateReader()
+        ICdlReader ITabularDataSource.CreateReader(IShellContext context)
         {
-            return CreateSource().CreateReader();
+            return CreateSource(context).CreateReader(context);
         }
 
-        bool ITabularDataTarget.AvailableRowFormat
+        bool ITabularDataTarget.IsAvailableRowFormat(IShellContext context)
         {
-            get { return CreateTarget().AvailableRowFormat; }
+            return CreateTarget(context).IsAvailableRowFormat(context);
         }
 
-        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options)
+        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context)
         {
-            return CreateTarget().CreateWriter(rowFormat, options);
+            return CreateTarget(context).CreateWriter(rowFormat, options, context);
         }
 
-        TableInfo ITabularDataTarget.GetRowFormat()
+        TableInfo ITabularDataTarget.GetRowFormat(IShellContext context)
         {
-            return CreateTarget().GetRowFormat();
+            return CreateTarget(context).GetRowFormat(context);
         }
 
         public override string ToString()
         {
-            return String.Format("[File {0}]", GetName());
+            return String.Format("[File {0}]", Name);
         }
     }
 }

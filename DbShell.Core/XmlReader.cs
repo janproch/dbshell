@@ -36,17 +36,17 @@ namespace DbShell.Core
             Columns = new List<XmlColumn>();
         }
 
-        object IModelProvider.GetModel()
+        object IModelProvider.GetModel(IShellContext context)
         {
             return this;
         }
 
-        public void InitializeTemplate(IRazorTemplate template)
+        public void InitializeTemplate(IRazorTemplate template, IShellContext context)
         {
             template.TabularData = this;
         }
 
-        public TableInfo GetRowFormat()
+        public TableInfo GetRowFormat(IShellContext context)
         {
             var res = new TableInfo(null);
             foreach (var col in Columns)
@@ -56,12 +56,12 @@ namespace DbShell.Core
             return res;
         }
 
-        public ICdlReader CreateReader()
+        public ICdlReader CreateReader(IShellContext context)
         {
-            string file = Context.ResolveFile(Replace(File), ResolveFileMode.Input);
+            string file = context.ResolveFile(context.Replace(File), ResolveFileMode.Input);
             var doc = new XmlDocument();
             doc.Load(file);
-            return new XmlDocumentReader(doc, GetRowFormat(), Columns, XPath);
+            return new XmlDocumentReader(doc, GetRowFormat(context), Columns, XPath);
         }
     }
 }

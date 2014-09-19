@@ -16,11 +16,11 @@ namespace DbShell.Common
         /// Gets table structure of row
         /// </summary>
         /// <returns></returns>
-        TableInfo GetRowFormat();
+        TableInfo GetRowFormat(IShellContext context);
         /// <summary>
         /// Creates the reader
         /// </summary>
         /// <returns></returns>
-        ICdlReader CreateReader();
+        ICdlReader CreateReader(IShellContext context);
     }
 }

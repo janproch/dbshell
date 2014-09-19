@@ -7,62 +7,81 @@ using DbShell.Driver.Common.Structure;
 
 namespace DbShell.Core.Utility
 {
-    public class ElementBase : IShellElement
+    public class ElementBase //: IShellElement
     {
-        /// <summary>
-        /// Gets or sets the connection.
-        /// </summary>
-        /// <value>
-        /// The connection in format sqlserver://connection_string for SQL Server
-        /// </value>
-        [TypeConverter(typeof (ConnectionTypeConverter))]
+        ///// <summary>
+        ///// Gets or sets the connection.
+        ///// </summary>
+        ///// <value>
+        ///// The connection in format sqlserver://connection_string for SQL Server
+        ///// </value>
+        //[TypeConverter(typeof (ConnectionTypeConverter))]
+        //[XamlProperty]
+        //public IConnectionProvider Connection
+        //{
+        //    get
+        //    {
+        //        if (_connection != null) return _connection;
+        //        if (Context != null) return Context.DefaultConnection;
+        //        return null;
+        //    }
+        //    set { _connection = value; }
+        //}
+
+        //public IConnectionProvider OwnConnection
+        //{
+        //    get { return _connection; }
+        //    set { _connection = value; }
+        //}
+
+        //private IConnectionProvider _connection;
+
+        //[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        //public IShellContext Context { get; set; }
+
+        ///// <summary>
+        ///// Enumerates all child elements
+        ///// </summary>
+        ///// <param name="enumFunc">Function called for each child</param>
+        //public virtual void EnumChildren(Action<IShellElement> enumFunc)
+        //{
+        //    if (Connection != this) YieldChild(enumFunc, Connection);
+        //}
+
+        //protected void YieldChild(Action<IShellElement> enumFunc, object value)
+        //{
+        //    var obj = value as IShellElement;
+        //    if (obj != null) enumFunc(obj);
+        //}
+
         [XamlProperty]
-        public IConnectionProvider Connection
+        public string Connection { get; set; }
+
+        protected IConnectionProvider GetConnectionProvider(IShellContext context)
         {
-            get
+            string providerString = GetProviderString(context);
+            return ConnectionProvider.FromString(providerString);
+        }
+
+        protected string GetProviderString(IShellContext context)
+        {
+            string providerString = Connection ?? context.GetDefaultConnection();
+            if (providerString == null)
             {
-                if (_connection != null) return _connection;
-                if (Context != null) return Context.DefaultConnection;
-                return null;
+                throw new Exception("DBSH-00000 Connection is not set, element=" + GetType().FullName);
             }
-            set { _connection = value; }
+            return providerString;
         }
 
-        public IConnectionProvider OwnConnection
+        protected DatabaseInfo GetDatabaseStructure(IShellContext context)
         {
-            get { return _connection; }
-            set { _connection = value; }
+            return context.GetDatabaseStructure(GetProviderString(context));
         }
 
-        private IConnectionProvider _connection;
-
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public IShellContext Context { get; set; }
-
-        /// <summary>
-        /// Enumerates all child elements
-        /// </summary>
-        /// <param name="enumFunc">Function called for each child</param>
-        public virtual void EnumChildren(Action<IShellElement> enumFunc)
-        {
-            if (Connection != this) YieldChild(enumFunc, Connection);
-        }
-
-        protected void YieldChild(Action<IShellElement> enumFunc, object value)
-        {
-            var obj = value as IShellElement;
-            if (obj != null) enumFunc(obj);
-        }
-
-        protected DatabaseInfo GetDatabaseStructure()
-        {
-            return Context.GetDatabaseStructure(Connection);
-        }
-
-        protected string Replace(string value, string replacePattern = null)
-        {
-            if (Context != null) return Context.Replace(value, replacePattern);
-            return value;
-        }
+        //protected string Replace(IShellContext context, string value, string replacePattern = null)
+        //{
+        //    if (Context != null) return Context.Replace(value, replacePattern);
+        //    return value;
+        //}
     }
 }

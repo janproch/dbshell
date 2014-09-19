@@ -24,13 +24,13 @@ namespace DbShell.Core
         [XamlProperty]
         public string Name { get; set; }
 
-        ColumnInfo[] IColumnMapping.GetOutputColumns(TableInfo inputTable)
+        ColumnInfo[] IColumnMapping.GetOutputColumns(TableInfo inputTable, IShellContext context)
         {
             var column = new ColumnInfo(new TableInfo(null)) { CommonType = new DbTypeString(), Name = Name, DataType = "nvarchar", Length = -1 };
             return new[] { column };
         }
 
-        void IColumnMapping.ProcessMapping(int column, int rowNumber, ICdlRecord record, ICdlValueWriter writer)
+        void IColumnMapping.ProcessMapping(int column, int rowNumber, ICdlRecord record, ICdlValueWriter writer, IShellContext context)
         {
             writer.SetNull();
         }

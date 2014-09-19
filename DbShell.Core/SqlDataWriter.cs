@@ -18,19 +18,20 @@ namespace DbShell.Core
         /// </summary>
         public string File { get; set; }
 
-        public bool AvailableRowFormat
+        public bool IsAvailableRowFormat(IShellContext context)
         {
-            get { return false; }
+            return false;
         }
 
-        public ICdlWriter CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options)
+        public ICdlWriter CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context)
         {
-            string file = Context.ResolveFile(Replace(File), ResolveFileMode.Output);
+            string file = context.ResolveFile(context.Replace(File), ResolveFileMode.Output);
             var fw = new StreamWriter(file);
-            return new SqlFileWriter(fw, Context.DefaultConnection.Factory);
+            var provider = GetConnectionProvider(context);
+            return new SqlFileWriter(fw, provider.Factory);
         }
 
-        public TableInfo GetRowFormat()
+        public TableInfo GetRowFormat(IShellContext context)
         {
             return null;
         }

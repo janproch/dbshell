@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Markup;
 using DbShell.Common;
@@ -14,27 +15,47 @@ namespace DbShell.Core.Runtime
 {
     public class ShellContext : IShellContext, IDisposable
     {
+        private ShellContext _parent;
         private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly Dictionary<string, DatabaseInfo> _dbCache = new Dictionary<string, DatabaseInfo>();
+        // fields shared with root context
+        private Dictionary<string, DatabaseInfo> _dbCache;
         private readonly ScriptEngine _engine;
-        private readonly List<ScriptScope> _scopeStack = new List<ScriptScope>();
-        private readonly List<string> _executingFolderStack = new List<string>();
-        private ShellRunner _runner;
+
+        // script scope
+        private ScriptScope _scope;
+
+        // inherited default values
+        private string _executingFolder;
+        private string _defaultConnection;
+        private string _defaultOutputFolder;
+
+        // search folders
         private Dictionary<ResolveFileMode, List<string>> _additionalSearchFolders = new Dictionary<ResolveFileMode, List<string>>();
 
-        public ShellContext(ShellRunner runner)
+        public ShellContext(ShellContext parent = null)
         {
-            _runner = runner;
-            _engine = Python.CreateEngine();
-            _scopeStack.Add(_engine.CreateScope());
+            if (parent==null)
+            {
+                _engine = Python.CreateEngine();
+                _scope = _engine.CreateScope();
+
+                _dbCache = new Dictionary<string, DatabaseInfo>();
+            }
+            else
+            {
+                _parent = parent;
+
+                _engine = _parent._engine;
+                _dbCache = _parent._dbCache;
+            }
         }
 
-        public DatabaseInfo GetDatabaseStructure(IConnectionProvider connection)
+        public DatabaseInfo GetDatabaseStructure(string connectionKey)
         {
-            string key = connection.ProviderString;
-            if (!_dbCache.ContainsKey(key))
+            if (!_dbCache.ContainsKey(connectionKey))
             {
+                IConnectionProvider connection = ConnectionProvider.FromString(connectionKey);
                 _log.InfoFormat("DBSH-00076 Downloading structure for connection {0}", connection);
                 OutputMessage(String.Format("Downloading structure for connection {0}", connection));
                 var analyser = connection.Factory.CreateAnalyser();
@@ -42,10 +63,10 @@ namespace DbShell.Core.Runtime
                 {
                     analyser.Connection = conn;
                     analyser.FullAnalysis();
-                    _dbCache[key] = analyser.Structure;
+                    _dbCache[connectionKey] = analyser.Structure;
                 }
             }
-            return _dbCache[key];
+            return _dbCache[connectionKey];
         }
 
         public void PutDatabaseInfoCache(string providerKey, DatabaseInfo db)
@@ -53,9 +74,25 @@ namespace DbShell.Core.Runtime
             _dbCache[providerKey] = db;
         }
 
+        public void SetDefaultOutputFolder(string value)
+        {
+            _defaultOutputFolder = value;
+        }
+
+        public string GetDefaultOutputFolder()
+        {
+            if (_defaultOutputFolder != null) return _defaultOutputFolder;
+            if (_parent != null) return _parent.GetDefaultOutputFolder();
+            return null;
+        }
+
         private ScriptScope Scope
         {
-            get { return _scopeStack.Last(); }
+            get
+            {
+                if (_scope != null) return _scope;
+                return _parent.Scope;
+            }
         }
 
         public void Dispose()
@@ -67,6 +104,12 @@ namespace DbShell.Core.Runtime
             return _engine.Execute(expression, Scope);
         }
 
+        public void CreateScope()
+        {
+            if (_scope != null) throw new Exception("DBSH-0000 Scope already created");
+            _scope = _engine.CreateScope(Scope);
+        }
+
         public object GetVariable(string name)
         {
             return Scope.GetVariable(name);
@@ -75,16 +118,6 @@ namespace DbShell.Core.Runtime
         public void SetVariable(string name, object value)
         {
             Scope.SetVariable(name, value);
-        }
-
-        public void EnterScope()
-        {
-            _scopeStack.Add(_engine.CreateScope(Scope));
-        }
-
-        public void LeaveScope()
-        {
-            _scopeStack.RemoveAt(_scopeStack.Count - 1);
         }
 
         private string ReplaceMatch(Match m)
@@ -98,24 +131,19 @@ namespace DbShell.Core.Runtime
             return Regex.Replace(replaceString, replacePattern ?? @"\$\{([^\}]+)\}", ReplaceMatch);
         }
 
-        public void IncludeFile(string file, IShellElement parent)
+        public void IncludeFile(string file)
         {
             using (var fr = new FileInfo(file).OpenRead())
             {
                 object obj = XamlReader.Load(fr);
                 var runnable = obj as IRunnable;
                 if (runnable == null) throw new Exception(String.Format("DBSH-00059 Included file {0} doesn't contain root element implementing IRunnable", file));
-                var shellElem = obj as IShellElement;
-                if (shellElem != null) ShellRunner.ProcessLoadedElement(shellElem, parent, this);
-                try
-                {
-                    PushExecutingFolder(Path.GetDirectoryName(file));
-                    runnable.Run();
-                }
-                finally
-                {
-                    PopExecutingFolder();
-                }
+                //var shellElem = obj as IShellElement;
+                //if (shellElem != null) ShellRunner.ProcessLoadedElement(shellElem, parent, this);
+                var childContext = CreateChildContext();
+                childContext.SetExecutingFolder(Path.GetDirectoryName(file));
+                SetExecutingFolder(Path.GetDirectoryName(file));
+                runnable.Run(childContext);
             }
         }
 
@@ -127,13 +155,18 @@ namespace DbShell.Core.Runtime
                 string fn = Path.Combine(folder, file);
                 if (System.IO.File.Exists(fn)) return fn;
             }
-            if (_additionalSearchFolders.ContainsKey(mode))
+            var additionalFoldersCtx = this;
+            while (additionalFoldersCtx != null)
             {
-                foreach (string folder in _additionalSearchFolders[mode])
+                if (additionalFoldersCtx._additionalSearchFolders.ContainsKey(mode))
                 {
-                    string fn = Path.Combine(folder, file);
-                    if (System.IO.File.Exists(fn)) return fn;
+                    foreach (string folder in additionalFoldersCtx._additionalSearchFolders[mode])
+                    {
+                        string fn = Path.Combine(folder, file);
+                        if (System.IO.File.Exists(fn)) return fn;
+                    }
                 }
+                additionalFoldersCtx = additionalFoldersCtx._parent;
             }
             if (System.IO.File.Exists(file)) return file;
 
@@ -156,7 +189,8 @@ namespace DbShell.Core.Runtime
                 case ResolveFileMode.Input:
                     return SearchExistingFile(file, mode, GetExecutingFolder());
                 case ResolveFileMode.Output:
-                    if (DefaultOutputFolder != null) return Path.Combine(DefaultOutputFolder, file);
+                    var outputFolder = GetDefaultOutputFolder();
+                    if (outputFolder != null) return Path.Combine(outputFolder, file);
                     return file;
             }
             return file;
@@ -184,25 +218,23 @@ namespace DbShell.Core.Runtime
         //    return null;
         //}
 
-        public void PushExecutingFolder(string folder)
+        public void SetExecutingFolder(string folder)
         {
-            _executingFolderStack.Add(folder);
-        }
-
-        public void PopExecutingFolder()
-        {
-            _executingFolderStack.RemoveAt(_executingFolderStack.Count - 1);
+            _executingFolder = folder;
         }
 
         public string GetExecutingFolder()
         {
-            if (_executingFolderStack.Count > 0) return _executingFolderStack[_executingFolderStack.Count - 1];
+            if (_executingFolder != null) return _executingFolder;
+            if (_parent != null) return _parent.GetExecutingFolder();
             return null;
         }
 
+        public event Action<string> OnOutputMessage;
+
         public void OutputMessage(string message)
         {
-            if (_runner != null) _runner.OnOutputMessage(message);
+            if (OnOutputMessage != null) OnOutputMessage(message);
         }
 
         public void AddSearchFolder(ResolveFileMode mode, string folder)
@@ -214,7 +246,25 @@ namespace DbShell.Core.Runtime
             _additionalSearchFolders[mode].Add(folder);
         }
 
-        public IConnectionProvider DefaultConnection { get; set; }
-        public string DefaultOutputFolder { get; set; }
+        public void SetDefaultConnection(string connection)
+        {
+            _defaultConnection = connection;
+        }
+
+        public string GetDefaultConnection()
+        {
+            if (_defaultConnection != null) return _defaultConnection;
+            if (_parent != null) return _parent.GetDefaultConnection();
+            return null;
+        }
+
+
+        //public IConnectionProvider DefaultConnection { get; set; }
+        //public string DefaultOutputFolder { get; set; }
+
+        public IShellContext CreateChildContext()
+        {
+            return new ShellContext(this);
+        }
     }
 }

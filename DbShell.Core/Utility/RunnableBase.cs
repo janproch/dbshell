@@ -8,7 +8,7 @@ namespace DbShell.Core.Utility
     {
         private static ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        protected abstract void DoRun();
+        protected abstract void DoRun(IShellContext context);
 
         /// <summary>
         /// Gets or sets the list of required files.
@@ -18,19 +18,24 @@ namespace DbShell.Core.Utility
         /// </value>
         public string Requires { get; set; }
 
-        void IRunnable.Run()
+        void IRunnable.Run(IShellContext context)
         {
+            if (Connection != null)
+            {
+                context = context.CreateChildContext();
+                context.SetDefaultConnection(Connection);
+            }
             if (Requires != null)
             {
                 foreach (string file in Requires.Split(';'))
                 {
                     if (String.IsNullOrEmpty(file)) continue;
                     _log.InfoFormat("DBSH-00005 Including file {0}", file);
-                    Context.IncludeFile(Context.ResolveFile(file, ResolveFileMode.DbShell), this);
+                    context.IncludeFile(context.ResolveFile(file, ResolveFileMode.DbShell));
                 }
             }
 
-            DoRun();
+            DoRun(context);
         }
     }
 }

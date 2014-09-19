@@ -14,12 +14,12 @@ namespace DbShell.Common
         /// Gets the model.
         /// </summary>
         /// <returns>The model</returns>
-        object GetModel();
+        object GetModel(IShellContext context);
 
         /// <summary>
         /// initializes member of razor template
         /// </summary>
         /// <param name="template"></param>
-        void InitializeTemplate(IRazorTemplate template);
+        void InitializeTemplate(IRazorTemplate template, IShellContext context);
     }
 }

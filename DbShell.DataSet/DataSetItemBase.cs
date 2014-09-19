@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DbShell.Common;
 using DbShell.DataSet.DataSetModels;
 using DbShell.Core.Utility;
 
@@ -14,18 +15,15 @@ namespace DbShell.DataSet
         /// </summary>
         public string Name { get; set; }
 
-        protected DataSetModel Model
+        protected DataSetModel GetModel(IShellContext context)
         {
-            get { return (DataSetModel) Context.GetVariable(DataSetVariableName); }
+            return (DataSetModel) context.GetVariable(GetDataSetVariableName(context)); 
         }
 
-        protected string DataSetVariableName
+        protected string GetDataSetVariableName(IShellContext context)
         {
-            get
-            {
-                if (String.IsNullOrEmpty(Name)) return "DefaultDataSet";
-                return Replace(Name);
-            }
+            if (String.IsNullOrEmpty(Name)) return "DefaultDataSet";
+            return context.Replace(Name);
         }
     }
 }

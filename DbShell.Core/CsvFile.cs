@@ -160,44 +160,44 @@ namespace DbShell.Core
             set { _trimSpaces = value; }
         }
 
-        private string GetName()
+        private string GetName(IShellContext context)
         {
-            return Replace(Name);
+            return context.Replace(Name);
         }
 
-        private LumenWorks.Framework.IO.Csv.CsvReader CreateCsvReader()
+        private LumenWorks.Framework.IO.Csv.CsvReader CreateCsvReader(IShellContext context)
         {
-            string name = GetName();
-            if (Context != null) name = Context.ResolveFile(name, ResolveFileMode.Input);
+            string name = GetName(context);
+            name = context.ResolveFile(name, ResolveFileMode.Input);
             var textReader = new StreamReader(name, Encoding);
             var reader = new LumenWorks.Framework.IO.Csv.CsvReader(textReader, HasHeaders, Delimiter, Quote, Escape, Comment,
                                                                    TrimSpaces ? LumenWorks.Framework.IO.Csv.ValueTrimmingOptions.UnquotedOnly : LumenWorks.Framework.IO.Csv.ValueTrimmingOptions.None);
             return reader;
         }
 
-        TableInfo ITabularDataSource.GetRowFormat()
+        TableInfo ITabularDataSource.GetRowFormat(IShellContext context)
         {
-            using (var reader = CreateCsvReader())
+            using (var reader = CreateCsvReader(context))
             {
                 return GetStructure(reader);
             }
         }
 
-        ICdlReader ITabularDataSource.CreateReader()
+        ICdlReader ITabularDataSource.CreateReader(IShellContext context)
         {
-            var reader = CreateCsvReader();
+            var reader = CreateCsvReader(context);
             return new CsvReader(GetStructure(reader), reader);
         }
 
-        bool ITabularDataTarget.AvailableRowFormat
+        bool ITabularDataTarget.IsAvailableRowFormat(IShellContext context)
         {
-            get { return false; }
+            return false;
         }
 
-        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options)
+        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context)
         {
-            string file = Context.ResolveFile(GetName(), ResolveFileMode.Output);
-            Context.OutputMessage("Writing file " + Path.GetFullPath(file));
+            string file = context.ResolveFile(GetName(context), ResolveFileMode.Output);
+            context.OutputMessage("Writing file " + Path.GetFullPath(file));
             //var fs = System.IO.File.OpenWrite(file);
             var fw = new StreamWriter(file, false, Encoding);
             var writer = new CsvWriter(fw, Delimiter, Quote, Escape, Comment, QuotingMode, EndOfLine);
@@ -229,7 +229,7 @@ namespace DbShell.Core
         }
 
 
-        TableInfo ITabularDataTarget.GetRowFormat()
+        TableInfo ITabularDataTarget.GetRowFormat(IShellContext context)
         {
             throw new NotImplementedException();
         }
