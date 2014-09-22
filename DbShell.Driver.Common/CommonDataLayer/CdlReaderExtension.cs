@@ -72,6 +72,13 @@ namespace DbShell.Driver.Common.CommonDataLayer
             return record.GetValue();
         }
 
+        public static object SafeGetValue(this ICdlRecord record, int ordinal)
+        {
+            if (ordinal < 0) return null;
+            record.ReadValue(ordinal);
+            return record.GetValue();
+        }
+
         public static object GetValue(this ICdlRecord record, string colName)
         {
             return record.GetValue(record.GetOrdinal(colName));
