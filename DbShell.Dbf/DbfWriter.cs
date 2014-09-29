@@ -16,6 +16,7 @@ namespace DbShell.Dbf
 
         public DbfWriter(SocialExplorer.IO.FastDBF.DbfFile dbf)
         {
+            _dbf = dbf;
             _orec = new DbfRecord(_dbf.Header);
             _formatter = new CdlValueFormatter(new DataFormatSettings());
         }
