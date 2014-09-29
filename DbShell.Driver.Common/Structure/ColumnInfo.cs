@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.Utility;
 
@@ -214,6 +215,21 @@ namespace DbShell.Driver.Common.Structure
             var table = new TableInfo(null);
             table.FullName = name;
             table.Columns.Add(this);
+        }
+
+        public bool IsStringColumn()
+        {
+            if (DataType != null) return DataType.ToLower().Contains("char");
+            if (CommonType != null) return CommonType is DbTypeString;
+            return true;
+        }
+
+        public void EnsureDataType(ISqlTypeProvider typeProvider)
+        {
+            if (DataType == null)
+            {
+                typeProvider.GetNativeDataType(CommonType, this);
+            }
         }
     }
 }

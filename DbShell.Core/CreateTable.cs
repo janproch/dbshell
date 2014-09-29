@@ -81,6 +81,7 @@ namespace DbShell.Core
                 var so = new ConnectionSqlOutputStream(conn, null, connection.Factory.CreateDialect());
                 var dmp = connection.Factory.CreateDumper(so, new SqlFormatProperties());
                 if (DropIfExists) dmp.DropTable(tbl, true);
+                tbl.Columns.ForEach(x => x.EnsureDataType(connection.Factory.CreateSqlTypeProvider()));
                 dmp.CreateTable(tbl);
                 //using (var cmd = conn.CreateCommand())
                 //{

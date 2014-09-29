@@ -61,6 +61,7 @@
     <Compile Include="SqlServerParsingService.cs" />
     <Compile Include="SqlServerSqlDumper.cs" />
     <Compile Include="SqlServerStatisticsProvider.cs" />
+    <Compile Include="SqlServerTypeProvider.cs" />
     <Compile Include="SqlTypeCode.cs" />
   </ItemGroup>
   <ItemGroup>

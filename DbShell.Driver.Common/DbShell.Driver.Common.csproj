@@ -68,9 +68,11 @@
     <Compile Include="AbstractDb\IDatabaseServerInterface.cs" />
     <Compile Include="AbstractDb\ILiteralFormatter.cs" />
     <Compile Include="AbstractDb\IParsingService.cs" />
+    <Compile Include="AbstractDb\ISqlTypeProvider.cs" />
     <Compile Include="AbstractDb\IStatisticsProvider.cs" />
     <Compile Include="AbstractDb\KeywordsProvider.cs" />
     <Compile Include="AbstractDb\ParsingServiceBase.cs" />
+    <Compile Include="AbstractDb\SqlTypeProviderBase.cs" />
     <Compile Include="CommonDataLayer\CdlChangeSet.cs" />
     <Compile Include="CommonDataLayer\CdlDataQueue.cs" />
     <Compile Include="CommonDataLayer\CdlDataQueueAdapter.cs" />

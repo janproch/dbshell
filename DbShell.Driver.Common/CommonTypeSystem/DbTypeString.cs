@@ -84,19 +84,25 @@ namespace DbShell.Driver.Common.CommonTypeSystem
             return Char(len, false);
         }
 
-        public override string ToString()
+        public string GetStandardSqlName()
         {
-            string sqlname;
             if (IsVarLength)
             {
-                if (IsUnicode) sqlname = "nvarchar";
-                else sqlname = "varchar";
+                if (IsUnicode) return "nvarchar";
+                if (IsBinary) return "varbinary";
+                return "varchar";
             }
             else
             {
-                if (IsUnicode) sqlname = "nchar";
-                else sqlname = "char";
+                if (IsUnicode) return "nchar";
+                if (IsBinary) return "binary";
+                return "char";
             }
+        }
+
+        public override string ToString()
+        {
+            string sqlname = GetStandardSqlName();
             return String.Format("{0}({1})", sqlname, Length < 0 ? "max" : Length.ToString());
         }
 

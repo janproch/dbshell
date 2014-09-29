@@ -56,5 +56,10 @@ namespace DbShell.Driver.Common.AbstractDb
         {
             return null;
         }
+
+        public virtual ISqlTypeProvider CreateSqlTypeProvider()
+        {
+            return new SqlTypeProviderBase();
+        }
     }
 }

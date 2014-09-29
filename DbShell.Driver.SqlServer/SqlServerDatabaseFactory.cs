@@ -81,5 +81,10 @@ namespace DbShell.Driver.SqlServer
         {
             return new SqlServerInterface();
         }
+
+        public override ISqlTypeProvider CreateSqlTypeProvider()
+        {
+            return new SqlServerTypeProvider();
+        }
     }
 }

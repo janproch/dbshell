@@ -77,14 +77,5 @@ namespace DbShell.Driver.Common.CommonTypeSystem
             var res = (DbTypeBase)MemberwiseClone();
             return res;
         }
-
-        #region ISpecificType Members
-
-        public DbTypeBase ToGenericType()
-        {
-            return this;
-        }
-
-        #endregion
     }
 }
