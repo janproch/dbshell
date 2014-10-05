@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,8 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -39,7 +44,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Close.cs" />
+    <Compile Include="Create.cs" />
+    <Compile Include="ExcelElementBase.cs" />
+    <Compile Include="ExcelModels\ExcelWriter.cs" />
+    <Compile Include="ExcelRunnableBase.cs" />
+    <Compile Include="ExcelModels\ExcelModel.cs" />
+    <Compile Include="ExcelModels\ExcelReader.cs" />
+    <Compile Include="Open.cs" />
+    <Compile Include="Sheet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DbShell.Common\DbShell.Common.csproj">
+      <Project>{1CB3E9BA-5F22-4AF6-9352-940E3E8CECB4}</Project>
+      <Name>DbShell.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DbShell.Core\DbShell.Core.csproj">
+      <Project>{72D4E33E-C0A3-45A8-9098-3FD9420A2E52}</Project>
+      <Name>DbShell.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DbShell.Driver.Common\DbShell.Driver.Common.csproj">
+      <Project>{CC233C46-AE79-4ADB-AE5C-B4BAE3FD2495}</Project>
+      <Name>DbShell.Driver.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

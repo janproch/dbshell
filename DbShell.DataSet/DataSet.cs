@@ -10,8 +10,6 @@ namespace DbShell.DataSet
 {
     public class DataSet : DataSetItemBase
     {
-        public string Name { get; set; }
-
         protected override void DoRun(IShellContext context)
         {
             var dbs = GetDatabaseStructure(context);

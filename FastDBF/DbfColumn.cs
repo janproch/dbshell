@@ -360,6 +360,7 @@ namespace SocialExplorer.IO.FastDBF
       { 
         case "C": return DbfColumnType.Character;
         case "N": return DbfColumnType.Number;
+        case "F": return DbfColumnType.Number;
         case "B": return DbfColumnType.Binary;
         case "L": return DbfColumnType.Boolean;
         case "D": return DbfColumnType.Date;

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Markup;
 using DbShell.Common;
 using DbShell.Core.Utility;
 
@@ -11,19 +12,14 @@ namespace DbShell.Core
     /// <summary>
     /// Action for putting objects into collections
     /// </summary>
+    [ContentProperty("Value")]
     public class Put : RunnableBase
     {
         /// <summary>
-        /// collection, into which element is appended
+        /// expression (or variable name) to obtain collection
         /// </summary>
         [XamlProperty]
-        public object Collection { get; set; }
-
-        /// <summary>
-        /// expression to obtain collection
-        /// </summary>
-        [XamlProperty]
-        public string CollectionExpression { get; set; }
+        public string Collection { get; set; }
 
         /// <summary>
         /// key of added element (only for dictionary)
@@ -45,8 +41,7 @@ namespace DbShell.Core
 
         protected override void DoRun(IShellContext context)
         {
-            var collection = Collection;
-            if (collection == null) collection = context.Evaluate(CollectionExpression);
+            object collection = context.Evaluate(Collection);
 
             var value = Value;
             if (value == null) value = context.Evaluate(ValueExpression);
