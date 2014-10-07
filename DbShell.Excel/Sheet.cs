@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DbShell.Common;
+using DbShell.Core.Utility;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
@@ -14,11 +15,13 @@ namespace DbShell.Excel
         /// <summary>
         /// Name of sheet
         /// </summary>
+        [XamlProperty]
         public string SheetName { get; set; }
 
         /// <summary>
         /// Index of sheet
         /// </summary>
+        [XamlProperty]
         public string SheetIndex { get; set; }
 
         public bool IsAvailableRowFormat(IShellContext context)

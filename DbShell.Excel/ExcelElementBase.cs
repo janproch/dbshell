@@ -13,6 +13,7 @@ namespace DbShell.Excel
         /// <summary>
         /// Excel variable name
         /// </summary>
+        [XamlProperty]
         public string Name { get; set; }
 
         protected ExcelModel GetModel(IShellContext context)

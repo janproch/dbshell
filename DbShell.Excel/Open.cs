@@ -13,6 +13,7 @@ namespace DbShell.Excel
         /// <summary>
         /// file name of Excel file
         /// </summary>
+        [XamlProperty]
         public string File { get; set; }
 
         protected override void DoRun(IShellContext context)

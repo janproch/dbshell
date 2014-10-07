@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DbShell.Common;
+using DbShell.Core.Utility;
 using DbShell.Excel.ExcelModels;
 
 namespace DbShell.Excel
@@ -12,6 +13,7 @@ namespace DbShell.Excel
         /// <summary>
         /// file name of Excel file
         /// </summary>
+        [XamlProperty]
         public string File { get; set; }
 
         protected override void DoRun(IShellContext context)

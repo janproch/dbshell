@@ -43,6 +43,8 @@ namespace DbShell.Core.Utility
                     return "http://schemas.dbshell.com/dataset";
                 case "DbShell.Dbf":
                     return "http://schemas.dbshell.com/dbf";
+                case "DbShell.Excel":
+                    return "http://schemas.dbshell.com/excel";
                 case "DbMouse.Core.Xaml":
                     return "http://schemas.dbmouse.com/dbshell";
             }
