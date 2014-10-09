@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using DbShell.Common;
@@ -19,6 +20,7 @@ namespace DbShell.Excel
         protected override void DoRun(IShellContext context)
         {
             string file = context.ResolveFile(context.Replace(File), ResolveFileMode.Output);
+            context.OutputMessage("Writing file " + Path.GetFullPath(file));
             context.SetVariable(GetExcelVariableName(context), ExcelModel.CreateFile(file));
         }
     }
