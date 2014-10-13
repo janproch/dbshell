@@ -39,7 +39,6 @@ namespace DbShell.Core
         [XamlProperty]
         public string Command { get; set; }
 
-
         /// <summary>
         /// Gets or sets the replace pattern.
         /// </summary>
@@ -67,6 +66,17 @@ namespace DbShell.Core
         [XamlProperty]
         public bool UseTransactions { get; set; }
 
+        /// <summary>
+        /// timeout in seconds
+        /// </summary>
+        [XamlProperty]
+        public int Timeout { get; set; }
+
+        public Script()
+        {
+            Timeout = 3600;
+        }
+
         private void RunScript(TextReader reader, DbConnection conn, DbTransaction tran, bool replace, bool logEachQuery, bool logCount, IShellContext context)
         {
             int count = 0;
@@ -79,6 +89,7 @@ namespace DbShell.Core
                 }
                 var cmd = conn.CreateCommand();
                 cmd.CommandText = sql;
+                cmd.CommandTimeout = Timeout;
                 cmd.Transaction = tran;
                 try
                 {
