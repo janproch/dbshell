@@ -18,6 +18,7 @@ namespace DbShell.Excel.ExcelModels
         private bool _usedFirstSheet;
         private bool _openedForWrite;
         private string _file;
+        private bool _createdWindow;
 
         private ExcelModel()
         {
@@ -37,6 +38,19 @@ namespace DbShell.Excel.ExcelModels
             var res = new ExcelModel();
             res.DoCreateFile(file);
             return res;
+        }
+
+        public static ExcelModel CreateNewWindow()
+        {
+            var res = new ExcelModel();
+            res.DoCreateWindow();
+            return res;
+        }
+
+        private void DoCreateWindow()
+        {
+            _workbook = _app.Workbooks.Add(XlWBATemplate.xlWBATWorksheet);
+            _createdWindow = true;
         }
 
         private void DoCreateFile(string file)
@@ -129,8 +143,15 @@ namespace DbShell.Excel.ExcelModels
             {
                 _workbook.SaveAs(_file);
             }
-            _workbook.Close();
-            _app.Quit();
+            if (_createdWindow)
+            {
+                _app.Visible = true;
+            }
+            else
+            {
+                _workbook.Close();
+                _app.Quit();
+            }
         }
     }
 }

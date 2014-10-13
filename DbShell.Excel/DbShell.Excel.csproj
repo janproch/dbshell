@@ -52,6 +52,7 @@
     <Compile Include="ExcelModels\ExcelModel.cs" />
     <Compile Include="ExcelModels\ExcelReader.cs" />
     <Compile Include="Open.cs" />
+    <Compile Include="NewWindow.cs" />
     <Compile Include="Sheet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
