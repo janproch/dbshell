@@ -304,17 +304,42 @@ namespace DbShell.Driver.Common.Structure
             return null;
         }
 
+        public void AssignPhaseData(DatabaseObjectInfo source, DatabaseAnalysePhase phase)
+        {
+            var src = (DatabaseInfo)source;
+
+            if ((phase & DatabaseAnalysePhase.Tables) != 0)
+            {
+                Tables.Clear();
+                foreach (var obj in src.Tables) Tables.Add(obj.CloneTable(this));
+            }
+            if ((phase & DatabaseAnalysePhase.Views) != 0)
+            {
+                Views.Clear();
+                foreach (var obj in src.Views) Views.Add(obj.CloneView(this));
+            }
+            if ((phase & DatabaseAnalysePhase.Functions) != 0)
+            {
+                StoredProcedures.Clear();
+                Functions.Clear();
+                Triggers.Clear();
+                foreach (var obj in src.StoredProcedures) StoredProcedures.Add(obj.CloneStoredProcedure(this));
+                foreach (var obj in src.Functions) Functions.Add(obj.CloneFunction(this));
+                foreach (var obj in src.Triggers) Triggers.Add(obj.CloneTrigger(this));
+            }
+            if ((phase & DatabaseAnalysePhase.Settings) != 0)
+            {
+                Schemas.Clear();
+                foreach (var obj in src.Schemas) Schemas.Add(obj.CloneSchema(this));
+                DefaultSchema = src.DefaultSchema;
+            }
+        }
+
+
         public override void Assign(DatabaseObjectInfo source)
         {
             base.Assign(source);
-            var src = (DatabaseInfo) source;
-            foreach (var obj in src.Tables) Tables.Add(obj.CloneTable(this));
-            foreach (var obj in src.Views) Views.Add(obj.CloneView(this));
-            foreach (var obj in src.StoredProcedures) StoredProcedures.Add(obj.CloneStoredProcedure(this));
-            foreach (var obj in src.Functions) Functions.Add(obj.CloneFunction(this));
-            foreach (var obj in src.Triggers) Triggers.Add(obj.CloneTrigger(this));
-            foreach (var obj in src.Schemas) Schemas.Add(obj.CloneSchema(this));
-            DefaultSchema = src.DefaultSchema;
+            AssignPhaseData(source, DatabaseAnalysePhase.All);
             AfterLoadLink();
         }
 

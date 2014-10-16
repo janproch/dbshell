@@ -107,7 +107,7 @@ namespace DbShell.Driver.SqlServer
 
             var dialect = SqlServerDatabaseFactory.Instance.CreateDialect();
 
-            if (FilterOptions.AnyTables)
+            if (FilterOptions.AnyTables && IsTablesPhase)
             {
                 Timer("tables...");
                 using (var cmd = Connection.CreateCommand())
@@ -382,13 +382,36 @@ namespace DbShell.Driver.SqlServer
 
 
             var objs = new Dictionary<NameWithSchema, string>();
-            if (FilterOptions.AnyFunctions || FilterOptions.AnyStoredProcedures || FilterOptions.AnyViews || FilterOptions.AnyTriggers)
+            if ((FilterOptions.AnyFunctions || FilterOptions.AnyStoredProcedures || FilterOptions.AnyViews || FilterOptions.AnyTriggers) && (IsViewsPhase || IsFunctionsPhase))
             {
                 Timer("sql code...");
                 // load code text
                 using (var cmd = Connection.CreateCommand())
                 {
-                    cmd.CommandText = CreateQuery("loadsqlcode.sql", views: true, procedures: true, functions: true, triggers: true);
+                    string sql;
+                    if (Phase == DatabaseAnalysePhase.All)
+                    {
+                        sql = CreateQuery("loadsqlcode.sql", views: true, procedures: true, functions: true, triggers: true);
+                        sql = sql.Replace("#TYPECOND#", "1=1");
+                    }
+                    else
+                    {
+                        sql = CreateQuery("loadsqlcode.sql", views: IsViewsPhase, procedures: IsFunctionsPhase, functions: IsFunctionsPhase, triggers: IsFunctionsPhase);
+                        var types = new List<string>();
+                        if (IsViewsPhase)
+                        {
+                            types.Add("V");
+                        }
+                        if (IsFunctionsPhase)
+                        {
+                            types.Add("P");
+                            types.Add("IF");
+                            types.Add("FN");
+                            types.Add("TR");
+                        }
+                        sql = sql.Replace("#TYPECOND#", "s.type in (" + types.Select(x => "'" + x + "'").CreateDelimitedText(",") + ")");
+                    }
+                    cmd.CommandText = sql;
                     using (var reader = cmd.ExecuteReader())
                     {
                         NameWithSchema lastName = null;
@@ -410,7 +433,7 @@ namespace DbShell.Driver.SqlServer
                 }
             }
 
-            if (FilterOptions.AnyViews)
+            if (FilterOptions.AnyViews && IsViewsPhase)
             {
                 Timer("views...");
                 // load views
@@ -443,7 +466,7 @@ namespace DbShell.Driver.SqlServer
                 }
             }
 
-            if (FilterOptions.AnyTriggers)
+            if (FilterOptions.AnyTriggers && IsFunctionsPhase)
             {
                 Timer("triggers...");
                 // load triggers
@@ -478,7 +501,7 @@ namespace DbShell.Driver.SqlServer
                 }
             }
 
-            if (FilterOptions.AnyStoredProcedures || FilterOptions.AnyFunctions)
+            if ((FilterOptions.AnyStoredProcedures || FilterOptions.AnyFunctions) && IsFunctionsPhase)
             {
                 Timer("programmables...");
                 var programmables = new Dictionary<NameWithSchema, ProgrammableInfo>();
@@ -555,7 +578,7 @@ namespace DbShell.Driver.SqlServer
 
             Timer("view structure...");
 
-            if (FilterOptions.AnyViews)
+            if (FilterOptions.AnyViews && IsViewsPhase)
             {
                 // load view structure
                 foreach (var view in Structure.Views)
@@ -584,7 +607,7 @@ namespace DbShell.Driver.SqlServer
                 }
             }
 
-            if (FilterOptions.GlobalSettings)
+            if (FilterOptions.GlobalSettings && IsSettingsPhase)
             {
                 Timer("default schema...");
 
@@ -596,24 +619,27 @@ namespace DbShell.Driver.SqlServer
                 }
             }
 
-            Timer("schemas...");
-
-            // load schemas
-            using (var cmd = Connection.CreateCommand())
+            if (IsSettingsPhase)
             {
-                Structure.Schemas.Clear();
-                cmd.CommandText = CreateQuery("getschemas.sql");
-                using (var reader = cmd.ExecuteReader())
+                Timer("schemas...");
+
+                // load schemas
+                using (var cmd = Connection.CreateCommand())
                 {
-                    while (reader.Read())
+                    Structure.Schemas.Clear();
+                    cmd.CommandText = CreateQuery("getschemas.sql");
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        string name = reader.SafeString("name");
-                        string id = reader.SafeString("object_id");
-                        Structure.Schemas.Add(new SchemaInfo(Structure)
-                            {
-                                ObjectId = id,
-                                Name = name,
-                            });
+                        while (reader.Read())
+                        {
+                            string name = reader.SafeString("name");
+                            string id = reader.SafeString("object_id");
+                            Structure.Schemas.Add(new SchemaInfo(Structure)
+                                {
+                                    ObjectId = id,
+                                    Name = name,
+                                });
+                        }
                     }
                 }
             }
