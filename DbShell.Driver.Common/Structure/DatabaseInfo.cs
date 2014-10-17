@@ -359,7 +359,7 @@ namespace DbShell.Driver.Common.Structure
             get { return DatabaseObjectType.Database; }
         }
 
-        private void AfterLoadLink()
+        public override void AfterLoadLink()
         {
             foreach (var obj in Tables) obj.AfterLoadLink();
             foreach (var obj in Views) obj.AfterLoadLink();
