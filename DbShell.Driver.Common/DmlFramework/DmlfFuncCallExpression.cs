@@ -60,6 +60,5 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             return "func";
         }
-
     }
 }
