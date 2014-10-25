@@ -75,6 +75,55 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
             });
     }
 
+    public void AddSqlLiteralRelation(string sql, string relation)
+    {
+        Conditions.Add(new DmlfRelationCondition
+            {
+                LeftExpr = ColumnValue,
+                RightExpr = new DmlfSqlValueExpression {Value = sql},
+                Relation = relation,
+            });
+    }
+
+    public void AddSqlLiteralRelationWithNullTest_EQ(string sql)
+    {
+        var or = new DmlfOrCondition();
+        or.Conditions.Add(new DmlfRelationCondition
+        {
+            LeftExpr = ColumnValue,
+            RightExpr = new DmlfSqlValueExpression { Value = sql },
+            Relation = "=",
+        });
+        var and = new DmlfAndCondition();
+        or.Conditions.Add(and);
+        and.Conditions.Add(new DmlfIsNullCondition { Expr = ColumnValue });
+        and.Conditions.Add(new DmlfIsNullCondition { Expr = new DmlfSqlValueExpression { Value = sql } });
+        Conditions.Add(or);
+    }
+
+    public void AddSqlLiteralRelationWithNullTest_NE(string sql)
+    {
+        var or = new DmlfOrCondition();
+        or.Conditions.Add(new DmlfRelationCondition
+        {
+            LeftExpr = ColumnValue,
+            RightExpr = new DmlfSqlValueExpression { Value = sql },
+            Relation = "<>",
+        });
+
+        var and1 = new DmlfAndCondition();
+        or.Conditions.Add(and1);
+        and1.Conditions.Add(new DmlfIsNullCondition { Expr = ColumnValue });
+        and1.Conditions.Add(new DmlfIsNotNullCondition { Expr = new DmlfSqlValueExpression { Value = sql } });
+
+        var and2 = new DmlfAndCondition();
+        or.Conditions.Add(and2);
+        and2.Conditions.Add(new DmlfIsNotNullCondition { Expr = ColumnValue });
+        and2.Conditions.Add(new DmlfIsNullCondition { Expr = new DmlfSqlValueExpression { Value = sql } });
+
+        Conditions.Add(or);
+    }
+
     public void AddStringRelation(string term, string relation)
     {
         Conditions.Add(new DmlfRelationCondition
@@ -163,6 +212,16 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
     public void AddIsNotNullCondition()
     {
         Conditions.Add(new DmlfIsNotNullCondition { Expr = ColumnValue });
+    }
+
+    public void AddTrueCondition()
+    {
+        Conditions.Add(new DmlfEqualCondition {LeftExpr = ColumnValue, RightExpr = new DmlfLiteralExpression {Value = 1}});
+    }
+
+    public void AddFalseCondition()
+    {
+        Conditions.Add(new DmlfEqualCondition {LeftExpr = ColumnValue, RightExpr = new DmlfLiteralExpression {Value = 0}});
     }
 
     public void AddIsEmptyCondition()

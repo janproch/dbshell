@@ -28,6 +28,7 @@ namespace DbShell.Driver.Common.FilterParser
             Number,
             String,
             DateTime,
+            Logical,
             None,
         };
 
@@ -85,6 +86,24 @@ namespace DbShell.Driver.Common.FilterParser
             return parser.Condition;
         }
 
+        private static DmlfConditionBase ParseLogical(DmlfExpression columnValue, string expression)
+        {
+            var lexer = new LogicalFilterLexer(new ANTLRReaderStream(new StringReader(expression)));
+            var tokens = new CommonTokenStream(lexer);
+            var parser = new LogicalFilterParser(tokens);
+            parser.ColumnValue = columnValue;
+            try
+            {
+                parser.expr();
+            }
+            catch
+            {
+                return null;
+            }
+            if (parser.Errors != null) return null;
+            return parser.Condition;
+        }
+
         public static ExpressionType GetExpressionType(DbTypeBase type)
         {
             if (type != null)
@@ -101,6 +120,8 @@ namespace DbShell.Driver.Common.FilterParser
                         return ExpressionType.String;
                     case DbTypeCode.Datetime:
                         return ExpressionType.DateTime;
+                    case DbTypeCode.Logical:
+                        return ExpressionType.Logical;
                 }
             }
             return ExpressionType.None;
@@ -129,6 +150,8 @@ namespace DbShell.Driver.Common.FilterParser
                     return ParseString(columnValue, expression);
                 case ExpressionType.DateTime:
                     return ParseDateTime(columnValue, expression);
+                case ExpressionType.Logical:
+                    return ParseLogical(columnValue, expression);
             }
             return new DmlfEqualCondition
             {

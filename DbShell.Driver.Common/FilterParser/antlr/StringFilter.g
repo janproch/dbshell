@@ -13,6 +13,11 @@ options {
 
 string_lit: Q_STRING | A_STRING | I_STRING; 
 
+sql_name:
+  lit1=SQL_LITERAL { Push($lit1.text); }
+  (DOT lit2=SQL_LITERAL { Push(Pop<string>() + "." + $lit2.text); } )* 
+  ; 
+
 element:
   s1=string_lit  { AddLikeCondition(true, ExtractString($s1.text), true); }
   | PLUS s1=string_lit  { AddLikeCondition(true, ExtractString($s1.text), true); }
@@ -31,6 +36,15 @@ element:
   | T_NOT T_NULL { AddIsNotNullCondition(); }
   | T_EMPTY { AddIsEmptyCondition(); }
   | T_NOT T_EMPTY { AddIsNotEmptyCondition(); }
+  
+  | LT sql_name { AddSqlLiteralRelation(Pop<string>(), "<"); } 
+  | GT sql_name { AddSqlLiteralRelation(Pop<string>(), ">"); } 
+  | LE sql_name { AddSqlLiteralRelation(Pop<string>(), "<="); } 
+  | GE sql_name { AddSqlLiteralRelation(Pop<string>(), ">="); } 
+  | NE sql_name { AddSqlLiteralRelation(Pop<string>(), "<>"); } 
+  | EQ sql_name { AddSqlLiteralRelation(Pop<string>(), "="); }
+  | EQ2 sql_name { AddSqlLiteralRelationWithNullTest_EQ(Pop<string>()); } 
+  | NE2 sql_name { AddSqlLiteralRelationWithNullTest_NE(Pop<string>()); }
    ;
 
 factor:
@@ -46,7 +60,7 @@ LT:  '<';
 GT:  '>';
 GE:  '>=';
 LE:  '<=';
-NE:  '!=' | '<>';
+NE:  '<>';
 EQ:  '=';
 PLUS: '+';
 STAR:  '*';
@@ -55,11 +69,22 @@ ARROW:  '^';
 DOLLAR:  '$';
 NARROW:  '!^';
 NDOLLAR:  '!$';
+DOT: '.';
+EQ2:  '==';
+NE2:  '!=';
 
 T_NULL: N U L L;
 T_NOT: N O T;
 T_EMPTY: E M P T Y;
- 
+
+SQL_LITERAL:
+	  ('['
+	  	(
+	  		  options{greedy=true;}: ~(']' | '\r' | '\n' )
+	  	)*
+	  ']' )
+;
+
 A_STRING:
 	  ('\''
 	  	(

@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 NumberFilter.g 2013-12-21 16:34:58
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 NumberFilter.g 2014-10-24 22:55:01
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 168, 219
@@ -32,6 +32,8 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
 		"NUMBER", 
 		"Q_STRING", 
 		"A_STRING", 
+		"SQL_LITERAL", 
+		"DOT", 
 		"LT", 
 		"GT", 
 		"LE", 
@@ -40,6 +42,8 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
 		"EQ", 
 		"T_NULL", 
 		"T_NOT", 
+		"EQ2", 
+		"NE2", 
 		"COMMA", 
 		"ENDLINE", 
 		"N", 
@@ -72,49 +76,53 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
 		"Z"
     };
 
-    public const int LT = 8;
+    public const int LT = 10;
     public const int EOF = -1;
     public const int Q_STRING = 6;
-    public const int COMMA = 16;
-    public const int T_NULL = 14;
-    public const int DIGIT = 23;
-    public const int EQ = 13;
-    public const int NE = 12;
-    public const int D = 28;
-    public const int E = 29;
-    public const int GE = 11;
-    public const int F = 30;
-    public const int G = 31;
-    public const int A = 25;
-    public const int B = 26;
-    public const int C = 27;
-    public const int L = 20;
-    public const int M = 36;
-    public const int N = 18;
-    public const int O = 21;
-    public const int H = 32;
-    public const int I = 33;
-    public const int J = 34;
+    public const int COMMA = 20;
+    public const int T_NULL = 16;
+    public const int DIGIT = 27;
+    public const int EQ = 15;
+    public const int DOT = 9;
+    public const int NE = 14;
+    public const int D = 32;
+    public const int E = 33;
+    public const int GE = 13;
+    public const int F = 34;
+    public const int G = 35;
+    public const int A = 29;
+    public const int B = 30;
+    public const int NE2 = 19;
+    public const int C = 31;
+    public const int L = 24;
+    public const int M = 40;
+    public const int N = 22;
+    public const int O = 25;
+    public const int H = 36;
+    public const int I = 37;
+    public const int J = 38;
     public const int NUMBER = 5;
-    public const int K = 35;
-    public const int U = 19;
-    public const int T = 22;
-    public const int WHITESPACE = 24;
-    public const int W = 42;
-    public const int V = 41;
-    public const int Q = 38;
-    public const int P = 37;
-    public const int S = 40;
+    public const int K = 39;
+    public const int U = 23;
+    public const int T = 26;
+    public const int W = 46;
+    public const int WHITESPACE = 28;
+    public const int V = 45;
+    public const int Q = 42;
+    public const int P = 41;
+    public const int S = 44;
+    public const int R = 43;
     public const int MINUS = 4;
-    public const int R = 39;
-    public const int Y = 44;
-    public const int X = 43;
-    public const int Z = 45;
+    public const int Y = 48;
+    public const int X = 47;
+    public const int EQ2 = 18;
+    public const int SQL_LITERAL = 8;
+    public const int Z = 49;
     public const int A_STRING = 7;
-    public const int GT = 9;
-    public const int ENDLINE = 17;
-    public const int T_NOT = 15;
-    public const int LE = 10;
+    public const int GT = 11;
+    public const int ENDLINE = 21;
+    public const int T_NOT = 17;
+    public const int LE = 12;
 
     // delegates
     // delegators
@@ -731,13 +739,13 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
                     	    {
                     	        int LA3_5 = input.LA(3);
 
-                    	        if ( (LA3_5 == A_STRING) )
-                    	        {
-                    	            alt3 = 2;
-                    	        }
-                    	        else if ( (LA3_5 == Q_STRING) )
+                    	        if ( (LA3_5 == Q_STRING) )
                     	        {
                     	            alt3 = 1;
+                    	        }
+                    	        else if ( (LA3_5 == A_STRING) )
+                    	        {
+                    	            alt3 = 2;
                     	        }
                     	        else 
                     	        {
@@ -768,13 +776,13 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
                     	        {
                     	            int LA3_5 = input.LA(4);
 
-                    	            if ( (LA3_5 == A_STRING) )
-                    	            {
-                    	                alt3 = 2;
-                    	            }
-                    	            else if ( (LA3_5 == Q_STRING) )
+                    	            if ( (LA3_5 == Q_STRING) )
                     	            {
                     	                alt3 = 1;
+                    	            }
+                    	            else if ( (LA3_5 == A_STRING) )
+                    	            {
+                    	                alt3 = 2;
                     	            }
                     	            else 
                     	            {
@@ -809,13 +817,13 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
                     	    {
                     	        int LA3_5 = input.LA(3);
 
-                    	        if ( (LA3_5 == A_STRING) )
-                    	        {
-                    	            alt3 = 2;
-                    	        }
-                    	        else if ( (LA3_5 == Q_STRING) )
+                    	        if ( (LA3_5 == Q_STRING) )
                     	        {
                     	            alt3 = 1;
+                    	        }
+                    	        else if ( (LA3_5 == A_STRING) )
+                    	        {
+                    	            alt3 = 2;
                     	        }
                     	        else 
                     	        {
@@ -842,13 +850,13 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
                     	    {
                     	        int LA3_5 = input.LA(3);
 
-                    	        if ( (LA3_5 == A_STRING) )
-                    	        {
-                    	            alt3 = 2;
-                    	        }
-                    	        else if ( (LA3_5 == Q_STRING) )
+                    	        if ( (LA3_5 == Q_STRING) )
                     	        {
                     	            alt3 = 1;
+                    	        }
+                    	        else if ( (LA3_5 == A_STRING) )
+                    	        {
+                    	            alt3 = 2;
                     	        }
                     	        else 
                     	        {
@@ -953,6 +961,106 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
     }
     // $ANTLR end "interval"
 
+    public class sql_name_return : ParserRuleReturnScope
+    {
+        private object tree;
+        override public object Tree
+        {
+        	get { return tree; }
+        	set { tree = (object) value; }
+        }
+    };
+
+    // $ANTLR start "sql_name"
+    // NumberFilter.g:48:1: sql_name : lit1= SQL_LITERAL ( DOT lit2= SQL_LITERAL )* ;
+    public NumberFilterParser.sql_name_return sql_name() // throws RecognitionException [1]
+    {   
+        NumberFilterParser.sql_name_return retval = new NumberFilterParser.sql_name_return();
+        retval.Start = input.LT(1);
+
+        object root_0 = null;
+
+        IToken lit1 = null;
+        IToken lit2 = null;
+        IToken DOT11 = null;
+
+        object lit1_tree=null;
+        object lit2_tree=null;
+        object DOT11_tree=null;
+
+        try 
+    	{
+            // NumberFilter.g:48:9: (lit1= SQL_LITERAL ( DOT lit2= SQL_LITERAL )* )
+            // NumberFilter.g:49:3: lit1= SQL_LITERAL ( DOT lit2= SQL_LITERAL )*
+            {
+            	root_0 = (object)adaptor.GetNilNode();
+
+            	lit1=(IToken)Match(input,SQL_LITERAL,FOLLOW_SQL_LITERAL_in_sql_name161); 
+            		lit1_tree = (object)adaptor.Create(lit1);
+            		adaptor.AddChild(root_0, lit1_tree);
+
+            	 Push(((lit1 != null) ? lit1.Text : null)); 
+            	// NumberFilter.g:50:3: ( DOT lit2= SQL_LITERAL )*
+            	do 
+            	{
+            	    int alt5 = 2;
+            	    int LA5_0 = input.LA(1);
+
+            	    if ( (LA5_0 == DOT) )
+            	    {
+            	        alt5 = 1;
+            	    }
+
+
+            	    switch (alt5) 
+            		{
+            			case 1 :
+            			    // NumberFilter.g:50:4: DOT lit2= SQL_LITERAL
+            			    {
+            			    	DOT11=(IToken)Match(input,DOT,FOLLOW_DOT_in_sql_name168); 
+            			    		DOT11_tree = (object)adaptor.Create(DOT11);
+            			    		adaptor.AddChild(root_0, DOT11_tree);
+
+            			    	lit2=(IToken)Match(input,SQL_LITERAL,FOLLOW_SQL_LITERAL_in_sql_name172); 
+            			    		lit2_tree = (object)adaptor.Create(lit2);
+            			    		adaptor.AddChild(root_0, lit2_tree);
+
+            			    	 Push(Pop<string>() + "." + ((lit2 != null) ? lit2.Text : null)); 
+
+            			    }
+            			    break;
+
+            			default:
+            			    goto loop5;
+            	    }
+            	} while (true);
+
+            	loop5:
+            		;	// Stops C# compiler whining that label 'loop5' has no statements
+
+
+            }
+
+            retval.Stop = input.LT(-1);
+
+            	retval.Tree = (object)adaptor.RulePostProcessing(root_0);
+            	adaptor.SetTokenBoundaries(retval.Tree, (IToken) retval.Start, (IToken) retval.Stop);
+        }
+        catch (RecognitionException re) 
+    	{
+            ReportError(re);
+            Recover(input,re);
+    	// Conversion of the second argument necessary, but harmless
+    	retval.Tree = (object)adaptor.ErrorNode(input, (IToken) retval.Start, input.LT(-1), re);
+
+        }
+        finally 
+    	{
+        }
+        return retval;
+    }
+    // $ANTLR end "sql_name"
+
     public class element_no_negative_return : ParserRuleReturnScope
     {
         private object tree;
@@ -964,7 +1072,7 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
     };
 
     // $ANTLR start "element_no_negative"
-    // NumberFilter.g:48:1: element_no_negative : ( positive_number | number_as_string | interval | LT num1= number | GT num1= number | LE num1= number | GE num1= number | NE num1= number | EQ num1= number | T_NULL | T_NOT T_NULL );
+    // NumberFilter.g:53:1: element_no_negative : ( positive_number | number_as_string | interval | LT num1= number | GT num1= number | LE num1= number | GE num1= number | NE num1= number | EQ num1= number | T_NULL | T_NOT T_NULL | LT sql_name | GT sql_name | LE sql_name | GE sql_name | NE sql_name | EQ sql_name | EQ2 sql_name | NE2 sql_name );
     public NumberFilterParser.element_no_negative_return element_no_negative() // throws RecognitionException [1]
     {   
         NumberFilterParser.element_no_negative_return retval = new NumberFilterParser.element_no_negative_return();
@@ -972,92 +1080,124 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
 
         object root_0 = null;
 
-        IToken LT14 = null;
-        IToken GT15 = null;
-        IToken LE16 = null;
-        IToken GE17 = null;
-        IToken NE18 = null;
-        IToken EQ19 = null;
-        IToken T_NULL20 = null;
-        IToken T_NOT21 = null;
-        IToken T_NULL22 = null;
+        IToken LT15 = null;
+        IToken GT16 = null;
+        IToken LE17 = null;
+        IToken GE18 = null;
+        IToken NE19 = null;
+        IToken EQ20 = null;
+        IToken T_NULL21 = null;
+        IToken T_NOT22 = null;
+        IToken T_NULL23 = null;
+        IToken LT24 = null;
+        IToken GT26 = null;
+        IToken LE28 = null;
+        IToken GE30 = null;
+        IToken NE32 = null;
+        IToken EQ34 = null;
+        IToken EQ236 = null;
+        IToken NE238 = null;
         NumberFilterParser.number_return num1 = default(NumberFilterParser.number_return);
 
-        NumberFilterParser.positive_number_return positive_number11 = default(NumberFilterParser.positive_number_return);
+        NumberFilterParser.positive_number_return positive_number12 = default(NumberFilterParser.positive_number_return);
 
-        NumberFilterParser.number_as_string_return number_as_string12 = default(NumberFilterParser.number_as_string_return);
+        NumberFilterParser.number_as_string_return number_as_string13 = default(NumberFilterParser.number_as_string_return);
 
-        NumberFilterParser.interval_return interval13 = default(NumberFilterParser.interval_return);
+        NumberFilterParser.interval_return interval14 = default(NumberFilterParser.interval_return);
+
+        NumberFilterParser.sql_name_return sql_name25 = default(NumberFilterParser.sql_name_return);
+
+        NumberFilterParser.sql_name_return sql_name27 = default(NumberFilterParser.sql_name_return);
+
+        NumberFilterParser.sql_name_return sql_name29 = default(NumberFilterParser.sql_name_return);
+
+        NumberFilterParser.sql_name_return sql_name31 = default(NumberFilterParser.sql_name_return);
+
+        NumberFilterParser.sql_name_return sql_name33 = default(NumberFilterParser.sql_name_return);
+
+        NumberFilterParser.sql_name_return sql_name35 = default(NumberFilterParser.sql_name_return);
+
+        NumberFilterParser.sql_name_return sql_name37 = default(NumberFilterParser.sql_name_return);
+
+        NumberFilterParser.sql_name_return sql_name39 = default(NumberFilterParser.sql_name_return);
 
 
-        object LT14_tree=null;
-        object GT15_tree=null;
-        object LE16_tree=null;
-        object GE17_tree=null;
-        object NE18_tree=null;
-        object EQ19_tree=null;
-        object T_NULL20_tree=null;
-        object T_NOT21_tree=null;
-        object T_NULL22_tree=null;
+        object LT15_tree=null;
+        object GT16_tree=null;
+        object LE17_tree=null;
+        object GE18_tree=null;
+        object NE19_tree=null;
+        object EQ20_tree=null;
+        object T_NULL21_tree=null;
+        object T_NOT22_tree=null;
+        object T_NULL23_tree=null;
+        object LT24_tree=null;
+        object GT26_tree=null;
+        object LE28_tree=null;
+        object GE30_tree=null;
+        object NE32_tree=null;
+        object EQ34_tree=null;
+        object EQ236_tree=null;
+        object NE238_tree=null;
 
         try 
     	{
-            // NumberFilter.g:48:20: ( positive_number | number_as_string | interval | LT num1= number | GT num1= number | LE num1= number | GE num1= number | NE num1= number | EQ num1= number | T_NULL | T_NOT T_NULL )
-            int alt5 = 11;
-            alt5 = dfa5.Predict(input);
-            switch (alt5) 
+            // NumberFilter.g:53:20: ( positive_number | number_as_string | interval | LT num1= number | GT num1= number | LE num1= number | GE num1= number | NE num1= number | EQ num1= number | T_NULL | T_NOT T_NULL | LT sql_name | GT sql_name | LE sql_name | GE sql_name | NE sql_name | EQ sql_name | EQ2 sql_name | NE2 sql_name )
+            int alt6 = 19;
+            alt6 = dfa6.Predict(input);
+            switch (alt6) 
             {
                 case 1 :
-                    // NumberFilter.g:49:3: positive_number
+                    // NumberFilter.g:54:3: positive_number
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	PushFollow(FOLLOW_positive_number_in_element_no_negative160);
-                    	positive_number11 = positive_number();
+                    	PushFollow(FOLLOW_positive_number_in_element_no_negative192);
+                    	positive_number12 = positive_number();
                     	state.followingStackPointer--;
 
-                    	adaptor.AddChild(root_0, positive_number11.Tree);
+                    	adaptor.AddChild(root_0, positive_number12.Tree);
                     	 AddNumberEqualCondition(Pop<decimal>()); 
 
                     }
                     break;
                 case 2 :
-                    // NumberFilter.g:50:5: number_as_string
+                    // NumberFilter.g:55:5: number_as_string
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	PushFollow(FOLLOW_number_as_string_in_element_no_negative169);
-                    	number_as_string12 = number_as_string();
+                    	PushFollow(FOLLOW_number_as_string_in_element_no_negative201);
+                    	number_as_string13 = number_as_string();
                     	state.followingStackPointer--;
 
-                    	adaptor.AddChild(root_0, number_as_string12.Tree);
+                    	adaptor.AddChild(root_0, number_as_string13.Tree);
                     	 AddNumberEqualCondition(Pop<decimal>()); 
 
                     }
                     break;
                 case 3 :
-                    // NumberFilter.g:51:5: interval
+                    // NumberFilter.g:56:5: interval
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	PushFollow(FOLLOW_interval_in_element_no_negative178);
-                    	interval13 = interval();
+                    	PushFollow(FOLLOW_interval_in_element_no_negative210);
+                    	interval14 = interval();
                     	state.followingStackPointer--;
 
-                    	adaptor.AddChild(root_0, interval13.Tree);
+                    	adaptor.AddChild(root_0, interval14.Tree);
 
                     }
                     break;
                 case 4 :
-                    // NumberFilter.g:52:5: LT num1= number
+                    // NumberFilter.g:57:5: LT num1= number
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	LT14=(IToken)Match(input,LT,FOLLOW_LT_in_element_no_negative184); 
-                    		LT14_tree = (object)adaptor.Create(LT14);
-                    		adaptor.AddChild(root_0, LT14_tree);
+                    	LT15=(IToken)Match(input,LT,FOLLOW_LT_in_element_no_negative216); 
+                    		LT15_tree = (object)adaptor.Create(LT15);
+                    		adaptor.AddChild(root_0, LT15_tree);
 
-                    	PushFollow(FOLLOW_number_in_element_no_negative188);
+                    	PushFollow(FOLLOW_number_in_element_no_negative220);
                     	num1 = number();
                     	state.followingStackPointer--;
 
@@ -1067,15 +1207,15 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
                     }
                     break;
                 case 5 :
-                    // NumberFilter.g:53:5: GT num1= number
+                    // NumberFilter.g:58:5: GT num1= number
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	GT15=(IToken)Match(input,GT,FOLLOW_GT_in_element_no_negative197); 
-                    		GT15_tree = (object)adaptor.Create(GT15);
-                    		adaptor.AddChild(root_0, GT15_tree);
+                    	GT16=(IToken)Match(input,GT,FOLLOW_GT_in_element_no_negative229); 
+                    		GT16_tree = (object)adaptor.Create(GT16);
+                    		adaptor.AddChild(root_0, GT16_tree);
 
-                    	PushFollow(FOLLOW_number_in_element_no_negative201);
+                    	PushFollow(FOLLOW_number_in_element_no_negative233);
                     	num1 = number();
                     	state.followingStackPointer--;
 
@@ -1085,15 +1225,15 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
                     }
                     break;
                 case 6 :
-                    // NumberFilter.g:54:5: LE num1= number
+                    // NumberFilter.g:59:5: LE num1= number
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	LE16=(IToken)Match(input,LE,FOLLOW_LE_in_element_no_negative210); 
-                    		LE16_tree = (object)adaptor.Create(LE16);
-                    		adaptor.AddChild(root_0, LE16_tree);
+                    	LE17=(IToken)Match(input,LE,FOLLOW_LE_in_element_no_negative242); 
+                    		LE17_tree = (object)adaptor.Create(LE17);
+                    		adaptor.AddChild(root_0, LE17_tree);
 
-                    	PushFollow(FOLLOW_number_in_element_no_negative214);
+                    	PushFollow(FOLLOW_number_in_element_no_negative246);
                     	num1 = number();
                     	state.followingStackPointer--;
 
@@ -1103,15 +1243,15 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
                     }
                     break;
                 case 7 :
-                    // NumberFilter.g:55:5: GE num1= number
+                    // NumberFilter.g:60:5: GE num1= number
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	GE17=(IToken)Match(input,GE,FOLLOW_GE_in_element_no_negative223); 
-                    		GE17_tree = (object)adaptor.Create(GE17);
-                    		adaptor.AddChild(root_0, GE17_tree);
+                    	GE18=(IToken)Match(input,GE,FOLLOW_GE_in_element_no_negative255); 
+                    		GE18_tree = (object)adaptor.Create(GE18);
+                    		adaptor.AddChild(root_0, GE18_tree);
 
-                    	PushFollow(FOLLOW_number_in_element_no_negative227);
+                    	PushFollow(FOLLOW_number_in_element_no_negative259);
                     	num1 = number();
                     	state.followingStackPointer--;
 
@@ -1121,15 +1261,15 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
                     }
                     break;
                 case 8 :
-                    // NumberFilter.g:56:5: NE num1= number
+                    // NumberFilter.g:61:5: NE num1= number
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	NE18=(IToken)Match(input,NE,FOLLOW_NE_in_element_no_negative236); 
-                    		NE18_tree = (object)adaptor.Create(NE18);
-                    		adaptor.AddChild(root_0, NE18_tree);
+                    	NE19=(IToken)Match(input,NE,FOLLOW_NE_in_element_no_negative268); 
+                    		NE19_tree = (object)adaptor.Create(NE19);
+                    		adaptor.AddChild(root_0, NE19_tree);
 
-                    	PushFollow(FOLLOW_number_in_element_no_negative240);
+                    	PushFollow(FOLLOW_number_in_element_no_negative272);
                     	num1 = number();
                     	state.followingStackPointer--;
 
@@ -1139,15 +1279,15 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
                     }
                     break;
                 case 9 :
-                    // NumberFilter.g:57:5: EQ num1= number
+                    // NumberFilter.g:62:5: EQ num1= number
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	EQ19=(IToken)Match(input,EQ,FOLLOW_EQ_in_element_no_negative249); 
-                    		EQ19_tree = (object)adaptor.Create(EQ19);
-                    		adaptor.AddChild(root_0, EQ19_tree);
+                    	EQ20=(IToken)Match(input,EQ,FOLLOW_EQ_in_element_no_negative281); 
+                    		EQ20_tree = (object)adaptor.Create(EQ20);
+                    		adaptor.AddChild(root_0, EQ20_tree);
 
-                    	PushFollow(FOLLOW_number_in_element_no_negative253);
+                    	PushFollow(FOLLOW_number_in_element_no_negative285);
                     	num1 = number();
                     	state.followingStackPointer--;
 
@@ -1157,32 +1297,176 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
                     }
                     break;
                 case 10 :
-                    // NumberFilter.g:58:5: T_NULL
+                    // NumberFilter.g:63:5: T_NULL
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	T_NULL20=(IToken)Match(input,T_NULL,FOLLOW_T_NULL_in_element_no_negative262); 
-                    		T_NULL20_tree = (object)adaptor.Create(T_NULL20);
-                    		adaptor.AddChild(root_0, T_NULL20_tree);
+                    	T_NULL21=(IToken)Match(input,T_NULL,FOLLOW_T_NULL_in_element_no_negative294); 
+                    		T_NULL21_tree = (object)adaptor.Create(T_NULL21);
+                    		adaptor.AddChild(root_0, T_NULL21_tree);
 
                     	 AddIsNullCondition(); 
 
                     }
                     break;
                 case 11 :
-                    // NumberFilter.g:59:5: T_NOT T_NULL
+                    // NumberFilter.g:64:5: T_NOT T_NULL
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	T_NOT21=(IToken)Match(input,T_NOT,FOLLOW_T_NOT_in_element_no_negative270); 
-                    		T_NOT21_tree = (object)adaptor.Create(T_NOT21);
-                    		adaptor.AddChild(root_0, T_NOT21_tree);
+                    	T_NOT22=(IToken)Match(input,T_NOT,FOLLOW_T_NOT_in_element_no_negative302); 
+                    		T_NOT22_tree = (object)adaptor.Create(T_NOT22);
+                    		adaptor.AddChild(root_0, T_NOT22_tree);
 
-                    	T_NULL22=(IToken)Match(input,T_NULL,FOLLOW_T_NULL_in_element_no_negative272); 
-                    		T_NULL22_tree = (object)adaptor.Create(T_NULL22);
-                    		adaptor.AddChild(root_0, T_NULL22_tree);
+                    	T_NULL23=(IToken)Match(input,T_NULL,FOLLOW_T_NULL_in_element_no_negative304); 
+                    		T_NULL23_tree = (object)adaptor.Create(T_NULL23);
+                    		adaptor.AddChild(root_0, T_NULL23_tree);
 
                     	 AddIsNotNullCondition(); 
+
+                    }
+                    break;
+                case 12 :
+                    // NumberFilter.g:66:5: LT sql_name
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	LT24=(IToken)Match(input,LT,FOLLOW_LT_in_element_no_negative315); 
+                    		LT24_tree = (object)adaptor.Create(LT24);
+                    		adaptor.AddChild(root_0, LT24_tree);
+
+                    	PushFollow(FOLLOW_sql_name_in_element_no_negative317);
+                    	sql_name25 = sql_name();
+                    	state.followingStackPointer--;
+
+                    	adaptor.AddChild(root_0, sql_name25.Tree);
+                    	 AddSqlLiteralRelation(Pop<string>(), "<"); 
+
+                    }
+                    break;
+                case 13 :
+                    // NumberFilter.g:67:5: GT sql_name
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	GT26=(IToken)Match(input,GT,FOLLOW_GT_in_element_no_negative326); 
+                    		GT26_tree = (object)adaptor.Create(GT26);
+                    		adaptor.AddChild(root_0, GT26_tree);
+
+                    	PushFollow(FOLLOW_sql_name_in_element_no_negative328);
+                    	sql_name27 = sql_name();
+                    	state.followingStackPointer--;
+
+                    	adaptor.AddChild(root_0, sql_name27.Tree);
+                    	 AddSqlLiteralRelation(Pop<string>(), ">"); 
+
+                    }
+                    break;
+                case 14 :
+                    // NumberFilter.g:68:5: LE sql_name
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	LE28=(IToken)Match(input,LE,FOLLOW_LE_in_element_no_negative337); 
+                    		LE28_tree = (object)adaptor.Create(LE28);
+                    		adaptor.AddChild(root_0, LE28_tree);
+
+                    	PushFollow(FOLLOW_sql_name_in_element_no_negative339);
+                    	sql_name29 = sql_name();
+                    	state.followingStackPointer--;
+
+                    	adaptor.AddChild(root_0, sql_name29.Tree);
+                    	 AddSqlLiteralRelation(Pop<string>(), "<="); 
+
+                    }
+                    break;
+                case 15 :
+                    // NumberFilter.g:69:5: GE sql_name
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	GE30=(IToken)Match(input,GE,FOLLOW_GE_in_element_no_negative348); 
+                    		GE30_tree = (object)adaptor.Create(GE30);
+                    		adaptor.AddChild(root_0, GE30_tree);
+
+                    	PushFollow(FOLLOW_sql_name_in_element_no_negative350);
+                    	sql_name31 = sql_name();
+                    	state.followingStackPointer--;
+
+                    	adaptor.AddChild(root_0, sql_name31.Tree);
+                    	 AddSqlLiteralRelation(Pop<string>(), ">="); 
+
+                    }
+                    break;
+                case 16 :
+                    // NumberFilter.g:70:5: NE sql_name
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	NE32=(IToken)Match(input,NE,FOLLOW_NE_in_element_no_negative359); 
+                    		NE32_tree = (object)adaptor.Create(NE32);
+                    		adaptor.AddChild(root_0, NE32_tree);
+
+                    	PushFollow(FOLLOW_sql_name_in_element_no_negative361);
+                    	sql_name33 = sql_name();
+                    	state.followingStackPointer--;
+
+                    	adaptor.AddChild(root_0, sql_name33.Tree);
+                    	 AddSqlLiteralRelation(Pop<string>(), "<>"); 
+
+                    }
+                    break;
+                case 17 :
+                    // NumberFilter.g:71:5: EQ sql_name
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	EQ34=(IToken)Match(input,EQ,FOLLOW_EQ_in_element_no_negative370); 
+                    		EQ34_tree = (object)adaptor.Create(EQ34);
+                    		adaptor.AddChild(root_0, EQ34_tree);
+
+                    	PushFollow(FOLLOW_sql_name_in_element_no_negative372);
+                    	sql_name35 = sql_name();
+                    	state.followingStackPointer--;
+
+                    	adaptor.AddChild(root_0, sql_name35.Tree);
+                    	 AddSqlLiteralRelation(Pop<string>(), "="); 
+
+                    }
+                    break;
+                case 18 :
+                    // NumberFilter.g:72:5: EQ2 sql_name
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	EQ236=(IToken)Match(input,EQ2,FOLLOW_EQ2_in_element_no_negative380); 
+                    		EQ236_tree = (object)adaptor.Create(EQ236);
+                    		adaptor.AddChild(root_0, EQ236_tree);
+
+                    	PushFollow(FOLLOW_sql_name_in_element_no_negative382);
+                    	sql_name37 = sql_name();
+                    	state.followingStackPointer--;
+
+                    	adaptor.AddChild(root_0, sql_name37.Tree);
+                    	 AddSqlLiteralRelationWithNullTest_EQ(Pop<string>()); 
+
+                    }
+                    break;
+                case 19 :
+                    // NumberFilter.g:73:5: NE2 sql_name
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	NE238=(IToken)Match(input,NE2,FOLLOW_NE2_in_element_no_negative391); 
+                    		NE238_tree = (object)adaptor.Create(NE238);
+                    		adaptor.AddChild(root_0, NE238_tree);
+
+                    	PushFollow(FOLLOW_sql_name_in_element_no_negative393);
+                    	sql_name39 = sql_name();
+                    	state.followingStackPointer--;
+
+                    	adaptor.AddChild(root_0, sql_name39.Tree);
+                    	 AddSqlLiteralRelationWithNullTest_NE(Pop<string>()); 
 
                     }
                     break;
@@ -1219,7 +1503,7 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
     };
 
     // $ANTLR start "element_maybe_negative"
-    // NumberFilter.g:62:1: element_maybe_negative : ( negative_number | element_no_negative );
+    // NumberFilter.g:76:1: element_maybe_negative : ( negative_number | element_no_negative );
     public NumberFilterParser.element_maybe_negative_return element_maybe_negative() // throws RecognitionException [1]
     {   
         NumberFilterParser.element_maybe_negative_return retval = new NumberFilterParser.element_maybe_negative_return();
@@ -1227,43 +1511,43 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
 
         object root_0 = null;
 
-        NumberFilterParser.negative_number_return negative_number23 = default(NumberFilterParser.negative_number_return);
+        NumberFilterParser.negative_number_return negative_number40 = default(NumberFilterParser.negative_number_return);
 
-        NumberFilterParser.element_no_negative_return element_no_negative24 = default(NumberFilterParser.element_no_negative_return);
+        NumberFilterParser.element_no_negative_return element_no_negative41 = default(NumberFilterParser.element_no_negative_return);
 
 
 
         try 
     	{
-            // NumberFilter.g:62:23: ( negative_number | element_no_negative )
-            int alt6 = 2;
-            alt6 = dfa6.Predict(input);
-            switch (alt6) 
+            // NumberFilter.g:76:23: ( negative_number | element_no_negative )
+            int alt7 = 2;
+            alt7 = dfa7.Predict(input);
+            switch (alt7) 
             {
                 case 1 :
-                    // NumberFilter.g:63:3: negative_number
+                    // NumberFilter.g:77:3: negative_number
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	PushFollow(FOLLOW_negative_number_in_element_maybe_negative288);
-                    	negative_number23 = negative_number();
+                    	PushFollow(FOLLOW_negative_number_in_element_maybe_negative409);
+                    	negative_number40 = negative_number();
                     	state.followingStackPointer--;
 
-                    	adaptor.AddChild(root_0, negative_number23.Tree);
+                    	adaptor.AddChild(root_0, negative_number40.Tree);
                     	 AddNumberEqualCondition(Pop<decimal>()); 
 
                     }
                     break;
                 case 2 :
-                    // NumberFilter.g:64:5: element_no_negative
+                    // NumberFilter.g:78:5: element_no_negative
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	PushFollow(FOLLOW_element_no_negative_in_element_maybe_negative296);
-                    	element_no_negative24 = element_no_negative();
+                    	PushFollow(FOLLOW_element_no_negative_in_element_maybe_negative417);
+                    	element_no_negative41 = element_no_negative();
                     	state.followingStackPointer--;
 
-                    	adaptor.AddChild(root_0, element_no_negative24.Tree);
+                    	adaptor.AddChild(root_0, element_no_negative41.Tree);
 
                     }
                     break;
@@ -1300,7 +1584,7 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
     };
 
     // $ANTLR start "factor"
-    // NumberFilter.g:67:1: factor : element_maybe_negative ( element_no_negative )* ;
+    // NumberFilter.g:81:1: factor : element_maybe_negative ( element_no_negative )* ;
     public NumberFilterParser.factor_return factor() // throws RecognitionException [1]
     {   
         NumberFilterParser.factor_return retval = new NumberFilterParser.factor_return();
@@ -1308,57 +1592,57 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
 
         object root_0 = null;
 
-        NumberFilterParser.element_maybe_negative_return element_maybe_negative25 = default(NumberFilterParser.element_maybe_negative_return);
+        NumberFilterParser.element_maybe_negative_return element_maybe_negative42 = default(NumberFilterParser.element_maybe_negative_return);
 
-        NumberFilterParser.element_no_negative_return element_no_negative26 = default(NumberFilterParser.element_no_negative_return);
+        NumberFilterParser.element_no_negative_return element_no_negative43 = default(NumberFilterParser.element_no_negative_return);
 
 
 
         try 
     	{
-            // NumberFilter.g:67:8: ( element_maybe_negative ( element_no_negative )* )
-            // NumberFilter.g:68:3: element_maybe_negative ( element_no_negative )*
+            // NumberFilter.g:81:8: ( element_maybe_negative ( element_no_negative )* )
+            // NumberFilter.g:82:3: element_maybe_negative ( element_no_negative )*
             {
             	root_0 = (object)adaptor.GetNilNode();
 
-            	PushFollow(FOLLOW_element_maybe_negative_in_factor309);
-            	element_maybe_negative25 = element_maybe_negative();
+            	PushFollow(FOLLOW_element_maybe_negative_in_factor430);
+            	element_maybe_negative42 = element_maybe_negative();
             	state.followingStackPointer--;
 
-            	adaptor.AddChild(root_0, element_maybe_negative25.Tree);
-            	// NumberFilter.g:68:26: ( element_no_negative )*
+            	adaptor.AddChild(root_0, element_maybe_negative42.Tree);
+            	// NumberFilter.g:82:26: ( element_no_negative )*
             	do 
             	{
-            	    int alt7 = 2;
-            	    int LA7_0 = input.LA(1);
+            	    int alt8 = 2;
+            	    int LA8_0 = input.LA(1);
 
-            	    if ( ((LA7_0 >= MINUS && LA7_0 <= T_NOT)) )
+            	    if ( ((LA8_0 >= MINUS && LA8_0 <= A_STRING) || (LA8_0 >= LT && LA8_0 <= NE2)) )
             	    {
-            	        alt7 = 1;
+            	        alt8 = 1;
             	    }
 
 
-            	    switch (alt7) 
+            	    switch (alt8) 
             		{
             			case 1 :
-            			    // NumberFilter.g:68:26: element_no_negative
+            			    // NumberFilter.g:82:26: element_no_negative
             			    {
-            			    	PushFollow(FOLLOW_element_no_negative_in_factor311);
-            			    	element_no_negative26 = element_no_negative();
+            			    	PushFollow(FOLLOW_element_no_negative_in_factor432);
+            			    	element_no_negative43 = element_no_negative();
             			    	state.followingStackPointer--;
 
-            			    	adaptor.AddChild(root_0, element_no_negative26.Tree);
+            			    	adaptor.AddChild(root_0, element_no_negative43.Tree);
 
             			    }
             			    break;
 
             			default:
-            			    goto loop7;
+            			    goto loop8;
             	    }
             	} while (true);
 
-            	loop7:
-            		;	// Stops C# compiler whining that label 'loop7' has no statements
+            	loop8:
+            		;	// Stops C# compiler whining that label 'loop8' has no statements
 
 
             }
@@ -1394,7 +1678,7 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
     };
 
     // $ANTLR start "list"
-    // NumberFilter.g:70:1: list : factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )* ;
+    // NumberFilter.g:84:1: list : factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )* ;
     public NumberFilterParser.list_return list() // throws RecognitionException [1]
     {   
         NumberFilterParser.list_return retval = new NumberFilterParser.list_return();
@@ -1402,114 +1686,114 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
 
         object root_0 = null;
 
-        IToken COMMA28 = null;
-        IToken ENDLINE29 = null;
-        IToken ENDLINE31 = null;
-        NumberFilterParser.factor_return factor27 = default(NumberFilterParser.factor_return);
+        IToken COMMA45 = null;
+        IToken ENDLINE46 = null;
+        IToken ENDLINE48 = null;
+        NumberFilterParser.factor_return factor44 = default(NumberFilterParser.factor_return);
 
-        NumberFilterParser.factor_return factor30 = default(NumberFilterParser.factor_return);
+        NumberFilterParser.factor_return factor47 = default(NumberFilterParser.factor_return);
 
 
-        object COMMA28_tree=null;
-        object ENDLINE29_tree=null;
-        object ENDLINE31_tree=null;
+        object COMMA45_tree=null;
+        object ENDLINE46_tree=null;
+        object ENDLINE48_tree=null;
 
         try 
     	{
-            // NumberFilter.g:70:5: ( factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )* )
-            // NumberFilter.g:71:3: factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )*
+            // NumberFilter.g:84:5: ( factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )* )
+            // NumberFilter.g:85:3: factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )*
             {
             	root_0 = (object)adaptor.GetNilNode();
 
-            	PushFollow(FOLLOW_factor_in_list322);
-            	factor27 = factor();
+            	PushFollow(FOLLOW_factor_in_list443);
+            	factor44 = factor();
             	state.followingStackPointer--;
 
-            	adaptor.AddChild(root_0, factor27.Tree);
-            	// NumberFilter.g:71:10: ( ( COMMA | ( ( ENDLINE )+ ) ) factor )*
+            	adaptor.AddChild(root_0, factor44.Tree);
+            	// NumberFilter.g:85:10: ( ( COMMA | ( ( ENDLINE )+ ) ) factor )*
             	do 
             	{
-            	    int alt10 = 2;
-            	    alt10 = dfa10.Predict(input);
-            	    switch (alt10) 
+            	    int alt11 = 2;
+            	    alt11 = dfa11.Predict(input);
+            	    switch (alt11) 
             		{
             			case 1 :
-            			    // NumberFilter.g:71:12: ( COMMA | ( ( ENDLINE )+ ) ) factor
+            			    // NumberFilter.g:85:12: ( COMMA | ( ( ENDLINE )+ ) ) factor
             			    {
-            			    	// NumberFilter.g:71:12: ( COMMA | ( ( ENDLINE )+ ) )
-            			    	int alt9 = 2;
-            			    	int LA9_0 = input.LA(1);
+            			    	// NumberFilter.g:85:12: ( COMMA | ( ( ENDLINE )+ ) )
+            			    	int alt10 = 2;
+            			    	int LA10_0 = input.LA(1);
 
-            			    	if ( (LA9_0 == COMMA) )
+            			    	if ( (LA10_0 == COMMA) )
             			    	{
-            			    	    alt9 = 1;
+            			    	    alt10 = 1;
             			    	}
-            			    	else if ( (LA9_0 == ENDLINE) )
+            			    	else if ( (LA10_0 == ENDLINE) )
             			    	{
-            			    	    alt9 = 2;
+            			    	    alt10 = 2;
             			    	}
             			    	else 
             			    	{
-            			    	    NoViableAltException nvae_d9s0 =
-            			    	        new NoViableAltException("", 9, 0, input);
+            			    	    NoViableAltException nvae_d10s0 =
+            			    	        new NoViableAltException("", 10, 0, input);
 
-            			    	    throw nvae_d9s0;
+            			    	    throw nvae_d10s0;
             			    	}
-            			    	switch (alt9) 
+            			    	switch (alt10) 
             			    	{
             			    	    case 1 :
-            			    	        // NumberFilter.g:71:13: COMMA
+            			    	        // NumberFilter.g:85:13: COMMA
             			    	        {
-            			    	        	COMMA28=(IToken)Match(input,COMMA,FOLLOW_COMMA_in_list327); 
-            			    	        		COMMA28_tree = (object)adaptor.Create(COMMA28);
-            			    	        		adaptor.AddChild(root_0, COMMA28_tree);
+            			    	        	COMMA45=(IToken)Match(input,COMMA,FOLLOW_COMMA_in_list448); 
+            			    	        		COMMA45_tree = (object)adaptor.Create(COMMA45);
+            			    	        		adaptor.AddChild(root_0, COMMA45_tree);
 
 
             			    	        }
             			    	        break;
             			    	    case 2 :
-            			    	        // NumberFilter.g:71:21: ( ( ENDLINE )+ )
+            			    	        // NumberFilter.g:85:21: ( ( ENDLINE )+ )
             			    	        {
-            			    	        	// NumberFilter.g:71:21: ( ( ENDLINE )+ )
-            			    	        	// NumberFilter.g:71:22: ( ENDLINE )+
+            			    	        	// NumberFilter.g:85:21: ( ( ENDLINE )+ )
+            			    	        	// NumberFilter.g:85:22: ( ENDLINE )+
             			    	        	{
-            			    	        		// NumberFilter.g:71:22: ( ENDLINE )+
-            			    	        		int cnt8 = 0;
+            			    	        		// NumberFilter.g:85:22: ( ENDLINE )+
+            			    	        		int cnt9 = 0;
             			    	        		do 
             			    	        		{
-            			    	        		    int alt8 = 2;
-            			    	        		    int LA8_0 = input.LA(1);
+            			    	        		    int alt9 = 2;
+            			    	        		    int LA9_0 = input.LA(1);
 
-            			    	        		    if ( (LA8_0 == ENDLINE) )
+            			    	        		    if ( (LA9_0 == ENDLINE) )
             			    	        		    {
-            			    	        		        alt8 = 1;
+            			    	        		        alt9 = 1;
             			    	        		    }
 
 
-            			    	        		    switch (alt8) 
+            			    	        		    switch (alt9) 
             			    	        			{
             			    	        				case 1 :
-            			    	        				    // NumberFilter.g:71:22: ENDLINE
+            			    	        				    // NumberFilter.g:85:22: ENDLINE
             			    	        				    {
-            			    	        				    	ENDLINE29=(IToken)Match(input,ENDLINE,FOLLOW_ENDLINE_in_list332); 
-            			    	        				    		ENDLINE29_tree = (object)adaptor.Create(ENDLINE29);
-            			    	        				    		adaptor.AddChild(root_0, ENDLINE29_tree);
+            			    	        				    	ENDLINE46=(IToken)Match(input,ENDLINE,FOLLOW_ENDLINE_in_list453); 
+            			    	        				    		ENDLINE46_tree = (object)adaptor.Create(ENDLINE46);
+            			    	        				    		adaptor.AddChild(root_0, ENDLINE46_tree);
 
 
             			    	        				    }
             			    	        				    break;
 
             			    	        				default:
-            			    	        				    if ( cnt8 >= 1 ) goto loop8;
-            			    	        			            EarlyExitException eee8 =
-            			    	        			                new EarlyExitException(8, input);
-            			    	        			            throw eee8;
+            			    	        				    if ( cnt9 >= 1 ) goto loop9;
+            			    	        			            EarlyExitException eee9 =
+            			    	        			                new EarlyExitException(9, input);
+            			    	        			            throw eee9;
             			    	        		    }
-            			    	        		    cnt8++;
+            			    	        		    cnt9++;
             			    	        		} while (true);
 
-            			    	        		loop8:
-            			    	        			;	// Stops C# compiler whining that label 'loop8' has no statements
+            			    	        		loop9:
+            			    	        			;	// Stops C# compiler whining that label 'loop9' has no statements
 
 
             			    	        	}
@@ -1521,44 +1805,11 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
             			    	}
 
             			    	 AddAndCondition(); 
-            			    	PushFollow(FOLLOW_factor_in_list339);
-            			    	factor30 = factor();
+            			    	PushFollow(FOLLOW_factor_in_list460);
+            			    	factor47 = factor();
             			    	state.followingStackPointer--;
 
-            			    	adaptor.AddChild(root_0, factor30.Tree);
-
-            			    }
-            			    break;
-
-            			default:
-            			    goto loop10;
-            	    }
-            	} while (true);
-
-            	loop10:
-            		;	// Stops C# compiler whining that label 'loop10' has no statements
-
-            	// NumberFilter.g:71:67: ( ENDLINE )*
-            	do 
-            	{
-            	    int alt11 = 2;
-            	    int LA11_0 = input.LA(1);
-
-            	    if ( (LA11_0 == ENDLINE) )
-            	    {
-            	        alt11 = 1;
-            	    }
-
-
-            	    switch (alt11) 
-            		{
-            			case 1 :
-            			    // NumberFilter.g:71:67: ENDLINE
-            			    {
-            			    	ENDLINE31=(IToken)Match(input,ENDLINE,FOLLOW_ENDLINE_in_list345); 
-            			    		ENDLINE31_tree = (object)adaptor.Create(ENDLINE31);
-            			    		adaptor.AddChild(root_0, ENDLINE31_tree);
-
+            			    	adaptor.AddChild(root_0, factor47.Tree);
 
             			    }
             			    break;
@@ -1570,6 +1821,39 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
 
             	loop11:
             		;	// Stops C# compiler whining that label 'loop11' has no statements
+
+            	// NumberFilter.g:85:67: ( ENDLINE )*
+            	do 
+            	{
+            	    int alt12 = 2;
+            	    int LA12_0 = input.LA(1);
+
+            	    if ( (LA12_0 == ENDLINE) )
+            	    {
+            	        alt12 = 1;
+            	    }
+
+
+            	    switch (alt12) 
+            		{
+            			case 1 :
+            			    // NumberFilter.g:85:67: ENDLINE
+            			    {
+            			    	ENDLINE48=(IToken)Match(input,ENDLINE,FOLLOW_ENDLINE_in_list466); 
+            			    		ENDLINE48_tree = (object)adaptor.Create(ENDLINE48);
+            			    		adaptor.AddChild(root_0, ENDLINE48_tree);
+
+
+            			    }
+            			    break;
+
+            			default:
+            			    goto loop12;
+            	    }
+            	} while (true);
+
+            	loop12:
+            		;	// Stops C# compiler whining that label 'loop12' has no statements
 
 
             }
@@ -1605,7 +1889,7 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
     };
 
     // $ANTLR start "expr"
-    // NumberFilter.g:73:1: expr : list ;
+    // NumberFilter.g:87:1: expr : list ;
     public NumberFilterParser.expr_return expr() // throws RecognitionException [1]
     {   
         NumberFilterParser.expr_return retval = new NumberFilterParser.expr_return();
@@ -1613,22 +1897,22 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
 
         object root_0 = null;
 
-        NumberFilterParser.list_return list32 = default(NumberFilterParser.list_return);
+        NumberFilterParser.list_return list49 = default(NumberFilterParser.list_return);
 
 
 
         try 
     	{
-            // NumberFilter.g:73:5: ( list )
-            // NumberFilter.g:73:7: list
+            // NumberFilter.g:87:5: ( list )
+            // NumberFilter.g:87:7: list
             {
             	root_0 = (object)adaptor.GetNilNode();
 
-            	PushFollow(FOLLOW_list_in_expr355);
-            	list32 = list();
+            	PushFollow(FOLLOW_list_in_expr476);
+            	list49 = list();
             	state.followingStackPointer--;
 
-            	adaptor.AddChild(root_0, list32.Tree);
+            	adaptor.AddChild(root_0, list49.Tree);
 
             }
 
@@ -1655,121 +1939,78 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
     // Delegated rules
 
 
-   	protected DFA5 dfa5;
    	protected DFA6 dfa6;
-   	protected DFA10 dfa10;
+   	protected DFA7 dfa7;
+   	protected DFA11 dfa11;
 	private void InitializeCyclicDFAs()
 	{
-    	this.dfa5 = new DFA5(this);
     	this.dfa6 = new DFA6(this);
-    	this.dfa10 = new DFA10(this);
+    	this.dfa7 = new DFA7(this);
+    	this.dfa11 = new DFA11(this);
 	}
 
-    const string DFA5_eotS =
-        "\x1b\uffff";
-    const string DFA5_eofS =
-        "\x01\uffff\x01\x0e\x02\x10\x0d\uffff\x02\x04\x02\uffff\x01\x0e"+
-        "\x01\x10\x02\uffff\x02\x04";
-    const string DFA5_minS =
-        "\x04\x04\x09\uffff\x01\x05\x01\uffff\x01\x05\x01\uffff\x02\x04"+
-        "\x02\x05\x02\x04\x02\x05\x02\x04";
-    const string DFA5_maxS =
-        "\x01\x0f\x03\x11\x09\uffff\x01\x07\x01\uffff\x01\x07\x01\uffff"+
-        "\x02\x11\x02\x07\x02\x11\x02\x07\x02\x11";
-    const string DFA5_acceptS =
-        "\x04\uffff\x01\x03\x01\x04\x01\x05\x01\x06\x01\x07\x01\x08\x01"+
-        "\x09\x01\x0a\x01\x0b\x01\uffff\x01\x01\x01\uffff\x01\x02\x0a\uffff";
-    const string DFA5_specialS =
-        "\x1b\uffff}>";
-    static readonly string[] DFA5_transitionS = {
-            "\x01\x04\x01\x01\x01\x02\x01\x03\x01\x05\x01\x06\x01\x07\x01"+
-            "\x08\x01\x09\x01\x0a\x01\x0b\x01\x0c",
-            "\x01\x0d\x0d\x0e",
-            "\x01\x0f\x0d\x10",
-            "\x01\x0f\x0d\x10",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "\x01\x11\x02\x04",
-            "",
-            "\x01\x12\x02\x04",
-            "",
-            "\x01\x13\x0d\x04",
-            "\x01\x14\x0d\x04",
-            "\x01\x15\x02\x0e",
-            "\x01\x16\x02\x10",
-            "\x01\x17\x0d\x0e",
-            "\x01\x18\x0d\x10",
-            "\x01\x19\x02\x04",
-            "\x01\x1a\x02\x04",
-            "\x01\x13\x0d\x04",
-            "\x01\x14\x0d\x04"
-    };
-
-    static readonly short[] DFA5_eot = DFA.UnpackEncodedString(DFA5_eotS);
-    static readonly short[] DFA5_eof = DFA.UnpackEncodedString(DFA5_eofS);
-    static readonly char[] DFA5_min = DFA.UnpackEncodedStringToUnsignedChars(DFA5_minS);
-    static readonly char[] DFA5_max = DFA.UnpackEncodedStringToUnsignedChars(DFA5_maxS);
-    static readonly short[] DFA5_accept = DFA.UnpackEncodedString(DFA5_acceptS);
-    static readonly short[] DFA5_special = DFA.UnpackEncodedString(DFA5_specialS);
-    static readonly short[][] DFA5_transition = DFA.UnpackEncodedStringArray(DFA5_transitionS);
-
-    protected class DFA5 : DFA
-    {
-        public DFA5(BaseRecognizer recognizer)
-        {
-            this.recognizer = recognizer;
-            this.decisionNumber = 5;
-            this.eot = DFA5_eot;
-            this.eof = DFA5_eof;
-            this.min = DFA5_min;
-            this.max = DFA5_max;
-            this.accept = DFA5_accept;
-            this.special = DFA5_special;
-            this.transition = DFA5_transition;
-
-        }
-
-        override public string Description
-        {
-            get { return "48:1: element_no_negative : ( positive_number | number_as_string | interval | LT num1= number | GT num1= number | LE num1= number | GE num1= number | NE num1= number | EQ num1= number | T_NULL | T_NOT T_NULL );"; }
-        }
-
-    }
-
     const string DFA6_eotS =
-        "\x0b\uffff";
+        "\x29\uffff";
     const string DFA6_eofS =
-        "\x03\uffff\x01\x05\x02\uffff\x01\x02\x01\uffff\x01\x05\x01\uffff"+
-        "\x01\x02";
+        "\x01\uffff\x01\x10\x02\x12\x1b\uffff\x02\x04\x02\uffff\x01\x10"+
+        "\x01\x12\x02\uffff\x02\x04";
     const string DFA6_minS =
-        "\x01\x04\x01\x05\x01\uffff\x01\x04\x01\x05\x01\uffff\x01\x04\x01"+
-        "\x05\x01\x04\x01\x05\x01\x04";
+        "\x04\x04\x01\uffff\x06\x04\x04\uffff\x01\x05\x01\uffff\x01\x05"+
+        "\x0d\uffff\x02\x04\x02\x05\x02\x04\x02\x05\x02\x04";
     const string DFA6_maxS =
-        "\x01\x0f\x01\x05\x01\uffff\x01\x11\x01\x07\x01\uffff\x01\x11\x01"+
-        "\x07\x01\x11\x01\x07\x01\x11";
+        "\x01\x13\x03\x15\x01\uffff\x06\x08\x04\uffff\x01\x07\x01\uffff"+
+        "\x01\x07\x0d\uffff\x02\x15\x02\x07\x02\x15\x02\x07\x02\x15";
     const string DFA6_acceptS =
-        "\x02\uffff\x01\x02\x02\uffff\x01\x01\x05\uffff";
+        "\x04\uffff\x01\x03\x06\uffff\x01\x0a\x01\x0b\x01\x12\x01\x13\x01"+
+        "\uffff\x01\x01\x01\uffff\x01\x02\x01\x04\x01\x0c\x01\x05\x01\x0d"+
+        "\x01\x0e\x01\x06\x01\x07\x01\x0f\x01\x10\x01\x08\x01\x09\x01\x11"+
+        "\x0a\uffff";
     const string DFA6_specialS =
-        "\x0b\uffff}>";
+        "\x29\uffff}>";
     static readonly string[] DFA6_transitionS = {
-            "\x01\x01\x0b\x02",
-            "\x01\x03",
+            "\x01\x04\x01\x01\x01\x02\x01\x03\x02\uffff\x01\x05\x01\x06"+
+            "\x01\x07\x01\x08\x01\x09\x01\x0a\x01\x0b\x01\x0c\x01\x0d\x01"+
+            "\x0e",
+            "\x01\x0f\x03\x10\x02\uffff\x0c\x10",
+            "\x01\x11\x03\x12\x02\uffff\x0c\x12",
+            "\x01\x11\x03\x12\x02\uffff\x0c\x12",
             "",
-            "\x01\x04\x0d\x05",
-            "\x01\x06\x02\x02",
+            "\x04\x13\x01\x14",
+            "\x04\x15\x01\x16",
+            "\x04\x18\x01\x17",
+            "\x04\x19\x01\x1a",
+            "\x04\x1c\x01\x1b",
+            "\x04\x1d\x01\x1e",
             "",
-            "\x01\x07\x0d\x02",
-            "\x01\x08\x02\x05",
-            "\x01\x09\x0d\x05",
-            "\x01\x0a\x02\x02",
-            "\x01\x07\x0d\x02"
+            "",
+            "",
+            "",
+            "\x01\x1f\x02\x04",
+            "",
+            "\x01\x20\x02\x04",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "\x01\x21\x03\x04\x02\uffff\x0c\x04",
+            "\x01\x22\x03\x04\x02\uffff\x0c\x04",
+            "\x01\x23\x02\x10",
+            "\x01\x24\x02\x12",
+            "\x01\x25\x03\x10\x02\uffff\x0c\x10",
+            "\x01\x26\x03\x12\x02\uffff\x0c\x12",
+            "\x01\x27\x02\x04",
+            "\x01\x28\x02\x04",
+            "\x01\x21\x03\x04\x02\uffff\x0c\x04",
+            "\x01\x22\x03\x04\x02\uffff\x0c\x04"
     };
 
     static readonly short[] DFA6_eot = DFA.UnpackEncodedString(DFA6_eotS);
@@ -1798,57 +2039,117 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
 
         override public string Description
         {
-            get { return "62:1: element_maybe_negative : ( negative_number | element_no_negative );"; }
+            get { return "53:1: element_no_negative : ( positive_number | number_as_string | interval | LT num1= number | GT num1= number | LE num1= number | GE num1= number | NE num1= number | EQ num1= number | T_NULL | T_NOT T_NULL | LT sql_name | GT sql_name | LE sql_name | GE sql_name | NE sql_name | EQ sql_name | EQ2 sql_name | NE2 sql_name );"; }
         }
 
     }
 
-    const string DFA10_eotS =
-        "\x04\uffff";
-    const string DFA10_eofS =
-        "\x02\x02\x02\uffff";
-    const string DFA10_minS =
-        "\x01\x10\x01\x04\x02\uffff";
-    const string DFA10_maxS =
-        "\x02\x11\x02\uffff";
-    const string DFA10_acceptS =
-        "\x02\uffff\x01\x02\x01\x01";
-    const string DFA10_specialS =
-        "\x04\uffff}>";
-    static readonly string[] DFA10_transitionS = {
-            "\x01\x03\x01\x01",
-            "\x0c\x03\x01\uffff\x01\x01",
+    const string DFA7_eotS =
+        "\x0b\uffff";
+    const string DFA7_eofS =
+        "\x03\uffff\x01\x05\x02\uffff\x01\x02\x01\uffff\x01\x05\x01\uffff"+
+        "\x01\x02";
+    const string DFA7_minS =
+        "\x01\x04\x01\x05\x01\uffff\x01\x04\x01\x05\x01\uffff\x01\x04\x01"+
+        "\x05\x01\x04\x01\x05\x01\x04";
+    const string DFA7_maxS =
+        "\x01\x13\x01\x05\x01\uffff\x01\x15\x01\x07\x01\uffff\x01\x15\x01"+
+        "\x07\x01\x15\x01\x07\x01\x15";
+    const string DFA7_acceptS =
+        "\x02\uffff\x01\x02\x02\uffff\x01\x01\x05\uffff";
+    const string DFA7_specialS =
+        "\x0b\uffff}>";
+    static readonly string[] DFA7_transitionS = {
+            "\x01\x01\x03\x02\x02\uffff\x0a\x02",
+            "\x01\x03",
             "",
-            ""
+            "\x01\x04\x03\x05\x02\uffff\x0c\x05",
+            "\x01\x06\x02\x02",
+            "",
+            "\x01\x07\x03\x02\x02\uffff\x0c\x02",
+            "\x01\x08\x02\x05",
+            "\x01\x09\x03\x05\x02\uffff\x0c\x05",
+            "\x01\x0a\x02\x02",
+            "\x01\x07\x03\x02\x02\uffff\x0c\x02"
     };
 
-    static readonly short[] DFA10_eot = DFA.UnpackEncodedString(DFA10_eotS);
-    static readonly short[] DFA10_eof = DFA.UnpackEncodedString(DFA10_eofS);
-    static readonly char[] DFA10_min = DFA.UnpackEncodedStringToUnsignedChars(DFA10_minS);
-    static readonly char[] DFA10_max = DFA.UnpackEncodedStringToUnsignedChars(DFA10_maxS);
-    static readonly short[] DFA10_accept = DFA.UnpackEncodedString(DFA10_acceptS);
-    static readonly short[] DFA10_special = DFA.UnpackEncodedString(DFA10_specialS);
-    static readonly short[][] DFA10_transition = DFA.UnpackEncodedStringArray(DFA10_transitionS);
+    static readonly short[] DFA7_eot = DFA.UnpackEncodedString(DFA7_eotS);
+    static readonly short[] DFA7_eof = DFA.UnpackEncodedString(DFA7_eofS);
+    static readonly char[] DFA7_min = DFA.UnpackEncodedStringToUnsignedChars(DFA7_minS);
+    static readonly char[] DFA7_max = DFA.UnpackEncodedStringToUnsignedChars(DFA7_maxS);
+    static readonly short[] DFA7_accept = DFA.UnpackEncodedString(DFA7_acceptS);
+    static readonly short[] DFA7_special = DFA.UnpackEncodedString(DFA7_specialS);
+    static readonly short[][] DFA7_transition = DFA.UnpackEncodedStringArray(DFA7_transitionS);
 
-    protected class DFA10 : DFA
+    protected class DFA7 : DFA
     {
-        public DFA10(BaseRecognizer recognizer)
+        public DFA7(BaseRecognizer recognizer)
         {
             this.recognizer = recognizer;
-            this.decisionNumber = 10;
-            this.eot = DFA10_eot;
-            this.eof = DFA10_eof;
-            this.min = DFA10_min;
-            this.max = DFA10_max;
-            this.accept = DFA10_accept;
-            this.special = DFA10_special;
-            this.transition = DFA10_transition;
+            this.decisionNumber = 7;
+            this.eot = DFA7_eot;
+            this.eof = DFA7_eof;
+            this.min = DFA7_min;
+            this.max = DFA7_max;
+            this.accept = DFA7_accept;
+            this.special = DFA7_special;
+            this.transition = DFA7_transition;
 
         }
 
         override public string Description
         {
-            get { return "()* loopback of 71:10: ( ( COMMA | ( ( ENDLINE )+ ) ) factor )*"; }
+            get { return "76:1: element_maybe_negative : ( negative_number | element_no_negative );"; }
+        }
+
+    }
+
+    const string DFA11_eotS =
+        "\x04\uffff";
+    const string DFA11_eofS =
+        "\x02\x02\x02\uffff";
+    const string DFA11_minS =
+        "\x01\x14\x01\x04\x02\uffff";
+    const string DFA11_maxS =
+        "\x02\x15\x02\uffff";
+    const string DFA11_acceptS =
+        "\x02\uffff\x01\x02\x01\x01";
+    const string DFA11_specialS =
+        "\x04\uffff}>";
+    static readonly string[] DFA11_transitionS = {
+            "\x01\x03\x01\x01",
+            "\x04\x03\x02\uffff\x0a\x03\x01\uffff\x01\x01",
+            "",
+            ""
+    };
+
+    static readonly short[] DFA11_eot = DFA.UnpackEncodedString(DFA11_eotS);
+    static readonly short[] DFA11_eof = DFA.UnpackEncodedString(DFA11_eofS);
+    static readonly char[] DFA11_min = DFA.UnpackEncodedStringToUnsignedChars(DFA11_minS);
+    static readonly char[] DFA11_max = DFA.UnpackEncodedStringToUnsignedChars(DFA11_maxS);
+    static readonly short[] DFA11_accept = DFA.UnpackEncodedString(DFA11_acceptS);
+    static readonly short[] DFA11_special = DFA.UnpackEncodedString(DFA11_specialS);
+    static readonly short[][] DFA11_transition = DFA.UnpackEncodedStringArray(DFA11_transitionS);
+
+    protected class DFA11 : DFA
+    {
+        public DFA11(BaseRecognizer recognizer)
+        {
+            this.recognizer = recognizer;
+            this.decisionNumber = 11;
+            this.eot = DFA11_eot;
+            this.eof = DFA11_eof;
+            this.min = DFA11_min;
+            this.max = DFA11_max;
+            this.accept = DFA11_accept;
+            this.special = DFA11_special;
+            this.transition = DFA11_transition;
+
+        }
+
+        override public string Description
+        {
+            get { return "()* loopback of 85:10: ( ( COMMA | ( ( ENDLINE )+ ) ) factor )*"; }
         }
 
     }
@@ -1872,33 +2173,52 @@ public partial class NumberFilterParser : DbShellFilterAntlrParser
     public static readonly BitSet FOLLOW_number_in_interval141 = new BitSet(new ulong[]{0x0000000000000010UL});
     public static readonly BitSet FOLLOW_MINUS_in_interval143 = new BitSet(new ulong[]{0x0000000000000080UL});
     public static readonly BitSet FOLLOW_A_STRING_in_interval147 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_positive_number_in_element_no_negative160 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_number_as_string_in_element_no_negative169 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_interval_in_element_no_negative178 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_LT_in_element_no_negative184 = new BitSet(new ulong[]{0x00000000000000F0UL});
-    public static readonly BitSet FOLLOW_number_in_element_no_negative188 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_GT_in_element_no_negative197 = new BitSet(new ulong[]{0x00000000000000F0UL});
-    public static readonly BitSet FOLLOW_number_in_element_no_negative201 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_LE_in_element_no_negative210 = new BitSet(new ulong[]{0x00000000000000F0UL});
-    public static readonly BitSet FOLLOW_number_in_element_no_negative214 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_GE_in_element_no_negative223 = new BitSet(new ulong[]{0x00000000000000F0UL});
-    public static readonly BitSet FOLLOW_number_in_element_no_negative227 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_NE_in_element_no_negative236 = new BitSet(new ulong[]{0x00000000000000F0UL});
-    public static readonly BitSet FOLLOW_number_in_element_no_negative240 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_EQ_in_element_no_negative249 = new BitSet(new ulong[]{0x00000000000000F0UL});
-    public static readonly BitSet FOLLOW_number_in_element_no_negative253 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_T_NULL_in_element_no_negative262 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_T_NOT_in_element_no_negative270 = new BitSet(new ulong[]{0x0000000000004000UL});
-    public static readonly BitSet FOLLOW_T_NULL_in_element_no_negative272 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_negative_number_in_element_maybe_negative288 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_element_no_negative_in_element_maybe_negative296 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_element_maybe_negative_in_factor309 = new BitSet(new ulong[]{0x000000000000FFF2UL});
-    public static readonly BitSet FOLLOW_element_no_negative_in_factor311 = new BitSet(new ulong[]{0x000000000000FFF2UL});
-    public static readonly BitSet FOLLOW_factor_in_list322 = new BitSet(new ulong[]{0x0000000000030002UL});
-    public static readonly BitSet FOLLOW_COMMA_in_list327 = new BitSet(new ulong[]{0x000000000000FFF0UL});
-    public static readonly BitSet FOLLOW_ENDLINE_in_list332 = new BitSet(new ulong[]{0x000000000002FFF0UL});
-    public static readonly BitSet FOLLOW_factor_in_list339 = new BitSet(new ulong[]{0x0000000000030002UL});
-    public static readonly BitSet FOLLOW_ENDLINE_in_list345 = new BitSet(new ulong[]{0x0000000000020002UL});
-    public static readonly BitSet FOLLOW_list_in_expr355 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_SQL_LITERAL_in_sql_name161 = new BitSet(new ulong[]{0x0000000000000202UL});
+    public static readonly BitSet FOLLOW_DOT_in_sql_name168 = new BitSet(new ulong[]{0x0000000000000100UL});
+    public static readonly BitSet FOLLOW_SQL_LITERAL_in_sql_name172 = new BitSet(new ulong[]{0x0000000000000202UL});
+    public static readonly BitSet FOLLOW_positive_number_in_element_no_negative192 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_number_as_string_in_element_no_negative201 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_interval_in_element_no_negative210 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_LT_in_element_no_negative216 = new BitSet(new ulong[]{0x00000000000000F0UL});
+    public static readonly BitSet FOLLOW_number_in_element_no_negative220 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_GT_in_element_no_negative229 = new BitSet(new ulong[]{0x00000000000000F0UL});
+    public static readonly BitSet FOLLOW_number_in_element_no_negative233 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_LE_in_element_no_negative242 = new BitSet(new ulong[]{0x00000000000000F0UL});
+    public static readonly BitSet FOLLOW_number_in_element_no_negative246 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_GE_in_element_no_negative255 = new BitSet(new ulong[]{0x00000000000000F0UL});
+    public static readonly BitSet FOLLOW_number_in_element_no_negative259 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_NE_in_element_no_negative268 = new BitSet(new ulong[]{0x00000000000000F0UL});
+    public static readonly BitSet FOLLOW_number_in_element_no_negative272 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_EQ_in_element_no_negative281 = new BitSet(new ulong[]{0x00000000000000F0UL});
+    public static readonly BitSet FOLLOW_number_in_element_no_negative285 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_T_NULL_in_element_no_negative294 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_T_NOT_in_element_no_negative302 = new BitSet(new ulong[]{0x0000000000010000UL});
+    public static readonly BitSet FOLLOW_T_NULL_in_element_no_negative304 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_LT_in_element_no_negative315 = new BitSet(new ulong[]{0x0000000000000100UL});
+    public static readonly BitSet FOLLOW_sql_name_in_element_no_negative317 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_GT_in_element_no_negative326 = new BitSet(new ulong[]{0x0000000000000100UL});
+    public static readonly BitSet FOLLOW_sql_name_in_element_no_negative328 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_LE_in_element_no_negative337 = new BitSet(new ulong[]{0x0000000000000100UL});
+    public static readonly BitSet FOLLOW_sql_name_in_element_no_negative339 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_GE_in_element_no_negative348 = new BitSet(new ulong[]{0x0000000000000100UL});
+    public static readonly BitSet FOLLOW_sql_name_in_element_no_negative350 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_NE_in_element_no_negative359 = new BitSet(new ulong[]{0x0000000000000100UL});
+    public static readonly BitSet FOLLOW_sql_name_in_element_no_negative361 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_EQ_in_element_no_negative370 = new BitSet(new ulong[]{0x0000000000000100UL});
+    public static readonly BitSet FOLLOW_sql_name_in_element_no_negative372 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_EQ2_in_element_no_negative380 = new BitSet(new ulong[]{0x0000000000000100UL});
+    public static readonly BitSet FOLLOW_sql_name_in_element_no_negative382 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_NE2_in_element_no_negative391 = new BitSet(new ulong[]{0x0000000000000100UL});
+    public static readonly BitSet FOLLOW_sql_name_in_element_no_negative393 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_negative_number_in_element_maybe_negative409 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_element_no_negative_in_element_maybe_negative417 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_element_maybe_negative_in_factor430 = new BitSet(new ulong[]{0x00000000000FFCF2UL});
+    public static readonly BitSet FOLLOW_element_no_negative_in_factor432 = new BitSet(new ulong[]{0x00000000000FFCF2UL});
+    public static readonly BitSet FOLLOW_factor_in_list443 = new BitSet(new ulong[]{0x0000000000300002UL});
+    public static readonly BitSet FOLLOW_COMMA_in_list448 = new BitSet(new ulong[]{0x00000000000FFCF0UL});
+    public static readonly BitSet FOLLOW_ENDLINE_in_list453 = new BitSet(new ulong[]{0x00000000002FFCF0UL});
+    public static readonly BitSet FOLLOW_factor_in_list460 = new BitSet(new ulong[]{0x0000000000300002UL});
+    public static readonly BitSet FOLLOW_ENDLINE_in_list466 = new BitSet(new ulong[]{0x0000000000200002UL});
+    public static readonly BitSet FOLLOW_list_in_expr476 = new BitSet(new ulong[]{0x0000000000000002UL});
 
 }

@@ -44,6 +44,11 @@ number MINUS num2=NUMBER {
                 UpperBound = new DmlfLiteralExpression{Value = right},
             });
 };
+
+sql_name:
+  lit1=SQL_LITERAL { Push($lit1.text); }
+  (DOT lit2=SQL_LITERAL { Push(Pop<string>() + "." + $lit2.text); } )* 
+  ; 
  
 element_no_negative:
   positive_number { AddNumberEqualCondition(Pop<decimal>()); } 
@@ -57,6 +62,15 @@ element_no_negative:
   | EQ num1=number { AddNumberRelation(Pop<decimal>(), "="); } 
   | T_NULL { AddIsNullCondition(); }
   | T_NOT T_NULL { AddIsNotNullCondition(); }
+  
+  | LT sql_name { AddSqlLiteralRelation(Pop<string>(), "<"); } 
+  | GT sql_name { AddSqlLiteralRelation(Pop<string>(), ">"); } 
+  | LE sql_name { AddSqlLiteralRelation(Pop<string>(), "<="); } 
+  | GE sql_name { AddSqlLiteralRelation(Pop<string>(), ">="); } 
+  | NE sql_name { AddSqlLiteralRelation(Pop<string>(), "<>"); } 
+  | EQ sql_name { AddSqlLiteralRelation(Pop<string>(), "="); }
+  | EQ2 sql_name { AddSqlLiteralRelationWithNullTest_EQ(Pop<string>()); } 
+  | NE2 sql_name { AddSqlLiteralRelationWithNullTest_NE(Pop<string>()); }
   ;
   
 element_maybe_negative:
@@ -80,14 +94,25 @@ LT:  '<';
 GT:  '>';
 GE:  '>=';
 LE:  '<=';
-NE:  '!=' | '<>';
+NE:  '<>';
 EQ:  '=';
 COMMA: ',';
+DOT: '.';
+EQ2:  '==';
+NE2:  '!=';
  
 NUMBER  : (DIGIT)+ ('.' (DIGIT)+)?;
 
 WHITESPACE : ( '\t' | ' ' | '\u000C' )+    { $channel = HIDDEN; } ;
 ENDLINE: ( '\r' | '\n' )+; 
+
+SQL_LITERAL:
+	  ('['
+	  	(
+	  		  options{greedy=true;}: ~(']' | '\r' | '\n' )
+	  	)*
+	  ']' )
+;
  
 A_STRING:
 	  ('\''

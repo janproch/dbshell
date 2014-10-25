@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 NumberFilter.g 2014-10-24 22:55:01
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 LogicalFilter.g 2014-10-24 22:55:03
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 168, 219
@@ -13,66 +13,65 @@ using ArrayList 	= System.Collections.ArrayList;
 using Stack 		= Antlr.Runtime.Collections.StackList;
 
 
-public partial class NumberFilterLexer : Lexer {
-    public const int LT = 10;
+public partial class LogicalFilterLexer : Lexer {
     public const int EOF = -1;
-    public const int Q_STRING = 6;
-    public const int COMMA = 20;
-    public const int T_NULL = 16;
-    public const int DIGIT = 27;
-    public const int EQ = 15;
-    public const int DOT = 9;
-    public const int NE = 14;
-    public const int D = 32;
-    public const int E = 33;
-    public const int F = 34;
-    public const int GE = 13;
-    public const int G = 35;
-    public const int A = 29;
-    public const int B = 30;
-    public const int NE2 = 19;
-    public const int C = 31;
-    public const int L = 24;
-    public const int M = 40;
-    public const int N = 22;
-    public const int O = 25;
-    public const int H = 36;
-    public const int I = 37;
-    public const int J = 38;
-    public const int NUMBER = 5;
-    public const int K = 39;
-    public const int U = 23;
-    public const int T = 26;
-    public const int W = 46;
-    public const int WHITESPACE = 28;
-    public const int V = 45;
-    public const int Q = 42;
-    public const int P = 41;
-    public const int S = 44;
-    public const int R = 43;
-    public const int MINUS = 4;
-    public const int Y = 48;
-    public const int SQL_LITERAL = 8;
-    public const int X = 47;
-    public const int EQ2 = 18;
-    public const int Z = 49;
-    public const int A_STRING = 7;
-    public const int GT = 11;
-    public const int ENDLINE = 21;
-    public const int T_NOT = 17;
-    public const int LE = 12;
+    public const int Q_STRING = 32;
+    public const int DIGIT_0 = 28;
+    public const int DIGIT_1 = 29;
+    public const int COMMA = 16;
+    public const int T_NULL = 10;
+    public const int T_TRUE = 6;
+    public const int EQ = 13;
+    public const int DOT = 5;
+    public const int NE = 12;
+    public const int D = 35;
+    public const int E = 24;
+    public const int F = 25;
+    public const int G = 36;
+    public const int A = 26;
+    public const int B = 33;
+    public const int NE2 = 15;
+    public const int C = 34;
+    public const int L = 20;
+    public const int M = 41;
+    public const int N = 18;
+    public const int O = 21;
+    public const int H = 37;
+    public const int I = 38;
+    public const int J = 39;
+    public const int K = 40;
+    public const int U = 19;
+    public const int T = 22;
+    public const int W = 45;
+    public const int WHITESPACE = 30;
+    public const int V = 44;
+    public const int Q = 43;
+    public const int P = 42;
+    public const int S = 27;
+    public const int R = 23;
+    public const int Y = 47;
+    public const int X = 46;
+    public const int EQ2 = 14;
+    public const int SQL_LITERAL = 4;
+    public const int Z = 48;
+    public const int T_FALSE = 7;
+    public const int T_1 = 8;
+    public const int T_0 = 9;
+    public const int A_STRING = 31;
+    public const int ENDLINE = 17;
+    public const int T_NOT = 11;
 
     // delegates
     // delegators
 
-    public NumberFilterLexer() 
+    public LogicalFilterLexer() 
     {
 		InitializeCyclicDFAs();
     }
-    public NumberFilterLexer(ICharStream input)
+    public LogicalFilterLexer(ICharStream input)
 		: this(input, null) {
     }
-    public NumberFilterLexer(ICharStream input, RecognizerSharedState state)
+    public LogicalFilterLexer(ICharStream input, RecognizerSharedState state)
 		: base(input, state) {
 		InitializeCyclicDFAs(); 
 
@@ -80,7 +79,7 @@ public partial class NumberFilterLexer : Lexer {
     
     override public string GrammarFileName
     {
-    	get { return "NumberFilter.g";} 
+    	get { return "LogicalFilter.g";} 
     }
 
     // $ANTLR start "T_NULL"
@@ -90,8 +89,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = T_NULL;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:89:7: ( N U L L )
-            // NumberFilter.g:89:9: N U L L
+            // LogicalFilter.g:41:7: ( N U L L )
+            // LogicalFilter.g:41:9: N U L L
             {
             	mN(); 
             	mU(); 
@@ -116,8 +115,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = T_NOT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:90:6: ( N O T )
-            // NumberFilter.g:90:8: N O T
+            // LogicalFilter.g:42:6: ( N O T )
+            // LogicalFilter.g:42:8: N O T
             {
             	mN(); 
             	mO(); 
@@ -134,17 +133,20 @@ public partial class NumberFilterLexer : Lexer {
     }
     // $ANTLR end "T_NOT"
 
-    // $ANTLR start "MINUS"
-    public void mMINUS() // throws RecognitionException [2]
+    // $ANTLR start "T_TRUE"
+    public void mT_TRUE() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = MINUS;
+            int _type = T_TRUE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:92:6: ( '-' )
-            // NumberFilter.g:92:9: '-'
+            // LogicalFilter.g:43:7: ( T R U E )
+            // LogicalFilter.g:43:9: T R U E
             {
-            	Match('-'); 
+            	mT(); 
+            	mR(); 
+            	mU(); 
+            	mE(); 
 
             }
 
@@ -155,19 +157,23 @@ public partial class NumberFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "MINUS"
+    // $ANTLR end "T_TRUE"
 
-    // $ANTLR start "LT"
-    public void mLT() // throws RecognitionException [2]
+    // $ANTLR start "T_FALSE"
+    public void mT_FALSE() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = LT;
+            int _type = T_FALSE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:93:3: ( '<' )
-            // NumberFilter.g:93:6: '<'
+            // LogicalFilter.g:44:8: ( F A L S E )
+            // LogicalFilter.g:44:10: F A L S E
             {
-            	Match('<'); 
+            	mF(); 
+            	mA(); 
+            	mL(); 
+            	mS(); 
+            	mE(); 
 
             }
 
@@ -178,19 +184,19 @@ public partial class NumberFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "LT"
+    // $ANTLR end "T_FALSE"
 
-    // $ANTLR start "GT"
-    public void mGT() // throws RecognitionException [2]
+    // $ANTLR start "T_0"
+    public void mT_0() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = GT;
+            int _type = T_0;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:94:3: ( '>' )
-            // NumberFilter.g:94:6: '>'
+            // LogicalFilter.g:45:4: ( DIGIT_0 )
+            // LogicalFilter.g:45:6: DIGIT_0
             {
-            	Match('>'); 
+            	mDIGIT_0(); 
 
             }
 
@@ -201,20 +207,19 @@ public partial class NumberFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "GT"
+    // $ANTLR end "T_0"
 
-    // $ANTLR start "GE"
-    public void mGE() // throws RecognitionException [2]
+    // $ANTLR start "T_1"
+    public void mT_1() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = GE;
+            int _type = T_1;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:95:3: ( '>=' )
-            // NumberFilter.g:95:6: '>='
+            // LogicalFilter.g:46:4: ( DIGIT_1 )
+            // LogicalFilter.g:46:6: DIGIT_1
             {
-            	Match(">="); 
-
+            	mDIGIT_1(); 
 
             }
 
@@ -225,31 +230,7 @@ public partial class NumberFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "GE"
-
-    // $ANTLR start "LE"
-    public void mLE() // throws RecognitionException [2]
-    {
-    		try
-    		{
-            int _type = LE;
-    	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:96:3: ( '<=' )
-            // NumberFilter.g:96:6: '<='
-            {
-            	Match("<="); 
-
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally 
-    	{
-        }
-    }
-    // $ANTLR end "LE"
+    // $ANTLR end "T_1"
 
     // $ANTLR start "NE"
     public void mNE() // throws RecognitionException [2]
@@ -258,8 +239,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = NE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:97:3: ( '<>' )
-            // NumberFilter.g:97:6: '<>'
+            // LogicalFilter.g:48:3: ( '<>' )
+            // LogicalFilter.g:48:6: '<>'
             {
             	Match("<>"); 
 
@@ -282,8 +263,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = EQ;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:98:3: ( '=' )
-            // NumberFilter.g:98:6: '='
+            // LogicalFilter.g:49:3: ( '=' )
+            // LogicalFilter.g:49:6: '='
             {
             	Match('='); 
 
@@ -305,8 +286,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = COMMA;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:99:6: ( ',' )
-            // NumberFilter.g:99:8: ','
+            // LogicalFilter.g:50:6: ( ',' )
+            // LogicalFilter.g:50:8: ','
             {
             	Match(','); 
 
@@ -328,8 +309,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = DOT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:100:4: ( '.' )
-            // NumberFilter.g:100:6: '.'
+            // LogicalFilter.g:51:4: ( '.' )
+            // LogicalFilter.g:51:6: '.'
             {
             	Match('.'); 
 
@@ -351,8 +332,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = EQ2;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:101:4: ( '==' )
-            // NumberFilter.g:101:7: '=='
+            // LogicalFilter.g:52:4: ( '==' )
+            // LogicalFilter.g:52:7: '=='
             {
             	Match("=="); 
 
@@ -375,8 +356,8 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = NE2;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:102:4: ( '!=' )
-            // NumberFilter.g:102:7: '!='
+            // LogicalFilter.g:53:4: ( '!=' )
+            // LogicalFilter.g:53:7: '!='
             {
             	Match("!="); 
 
@@ -392,24 +373,24 @@ public partial class NumberFilterLexer : Lexer {
     }
     // $ANTLR end "NE2"
 
-    // $ANTLR start "NUMBER"
-    public void mNUMBER() // throws RecognitionException [2]
+    // $ANTLR start "WHITESPACE"
+    public void mWHITESPACE() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = NUMBER;
+            int _type = WHITESPACE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:104:9: ( ( DIGIT )+ ( '.' ( DIGIT )+ )? )
-            // NumberFilter.g:104:11: ( DIGIT )+ ( '.' ( DIGIT )+ )?
+            // LogicalFilter.g:55:12: ( ( '\\t' | ' ' | '\\u000C' )+ )
+            // LogicalFilter.g:55:14: ( '\\t' | ' ' | '\\u000C' )+
             {
-            	// NumberFilter.g:104:11: ( DIGIT )+
+            	// LogicalFilter.g:55:14: ( '\\t' | ' ' | '\\u000C' )+
             	int cnt1 = 0;
             	do 
             	{
             	    int alt1 = 2;
             	    int LA1_0 = input.LA(1);
 
-            	    if ( ((LA1_0 >= '0' && LA1_0 <= '9')) )
+            	    if ( (LA1_0 == '\t' || LA1_0 == '\f' || LA1_0 == ' ') )
             	    {
             	        alt1 = 1;
             	    }
@@ -418,119 +399,7 @@ public partial class NumberFilterLexer : Lexer {
             	    switch (alt1) 
             		{
             			case 1 :
-            			    // NumberFilter.g:104:12: DIGIT
-            			    {
-            			    	mDIGIT(); 
-
-            			    }
-            			    break;
-
-            			default:
-            			    if ( cnt1 >= 1 ) goto loop1;
-            		            EarlyExitException eee1 =
-            		                new EarlyExitException(1, input);
-            		            throw eee1;
-            	    }
-            	    cnt1++;
-            	} while (true);
-
-            	loop1:
-            		;	// Stops C# compiler whining that label 'loop1' has no statements
-
-            	// NumberFilter.g:104:20: ( '.' ( DIGIT )+ )?
-            	int alt3 = 2;
-            	int LA3_0 = input.LA(1);
-
-            	if ( (LA3_0 == '.') )
-            	{
-            	    alt3 = 1;
-            	}
-            	switch (alt3) 
-            	{
-            	    case 1 :
-            	        // NumberFilter.g:104:21: '.' ( DIGIT )+
-            	        {
-            	        	Match('.'); 
-            	        	// NumberFilter.g:104:25: ( DIGIT )+
-            	        	int cnt2 = 0;
-            	        	do 
-            	        	{
-            	        	    int alt2 = 2;
-            	        	    int LA2_0 = input.LA(1);
-
-            	        	    if ( ((LA2_0 >= '0' && LA2_0 <= '9')) )
-            	        	    {
-            	        	        alt2 = 1;
-            	        	    }
-
-
-            	        	    switch (alt2) 
-            	        		{
-            	        			case 1 :
-            	        			    // NumberFilter.g:104:26: DIGIT
-            	        			    {
-            	        			    	mDIGIT(); 
-
-            	        			    }
-            	        			    break;
-
-            	        			default:
-            	        			    if ( cnt2 >= 1 ) goto loop2;
-            	        		            EarlyExitException eee2 =
-            	        		                new EarlyExitException(2, input);
-            	        		            throw eee2;
-            	        	    }
-            	        	    cnt2++;
-            	        	} while (true);
-
-            	        	loop2:
-            	        		;	// Stops C# compiler whining that label 'loop2' has no statements
-
-
-            	        }
-            	        break;
-
-            	}
-
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally 
-    	{
-        }
-    }
-    // $ANTLR end "NUMBER"
-
-    // $ANTLR start "WHITESPACE"
-    public void mWHITESPACE() // throws RecognitionException [2]
-    {
-    		try
-    		{
-            int _type = WHITESPACE;
-    	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:106:12: ( ( '\\t' | ' ' | '\\u000C' )+ )
-            // NumberFilter.g:106:14: ( '\\t' | ' ' | '\\u000C' )+
-            {
-            	// NumberFilter.g:106:14: ( '\\t' | ' ' | '\\u000C' )+
-            	int cnt4 = 0;
-            	do 
-            	{
-            	    int alt4 = 2;
-            	    int LA4_0 = input.LA(1);
-
-            	    if ( (LA4_0 == '\t' || LA4_0 == '\f' || LA4_0 == ' ') )
-            	    {
-            	        alt4 = 1;
-            	    }
-
-
-            	    switch (alt4) 
-            		{
-            			case 1 :
-            			    // NumberFilter.g:
+            			    // LogicalFilter.g:
             			    {
             			    	if ( input.LA(1) == '\t' || input.LA(1) == '\f' || input.LA(1) == ' ' ) 
             			    	{
@@ -548,16 +417,16 @@ public partial class NumberFilterLexer : Lexer {
             			    break;
 
             			default:
-            			    if ( cnt4 >= 1 ) goto loop4;
-            		            EarlyExitException eee4 =
-            		                new EarlyExitException(4, input);
-            		            throw eee4;
+            			    if ( cnt1 >= 1 ) goto loop1;
+            		            EarlyExitException eee1 =
+            		                new EarlyExitException(1, input);
+            		            throw eee1;
             	    }
-            	    cnt4++;
+            	    cnt1++;
             	} while (true);
 
-            	loop4:
-            		;	// Stops C# compiler whining that label 'loop4' has no statements
+            	loop1:
+            		;	// Stops C# compiler whining that label 'loop1' has no statements
 
             	 _channel = HIDDEN; 
 
@@ -579,26 +448,26 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = ENDLINE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:107:8: ( ( '\\r' | '\\n' )+ )
-            // NumberFilter.g:107:10: ( '\\r' | '\\n' )+
+            // LogicalFilter.g:56:8: ( ( '\\r' | '\\n' )+ )
+            // LogicalFilter.g:56:10: ( '\\r' | '\\n' )+
             {
-            	// NumberFilter.g:107:10: ( '\\r' | '\\n' )+
-            	int cnt5 = 0;
+            	// LogicalFilter.g:56:10: ( '\\r' | '\\n' )+
+            	int cnt2 = 0;
             	do 
             	{
-            	    int alt5 = 2;
-            	    int LA5_0 = input.LA(1);
+            	    int alt2 = 2;
+            	    int LA2_0 = input.LA(1);
 
-            	    if ( (LA5_0 == '\n' || LA5_0 == '\r') )
+            	    if ( (LA2_0 == '\n' || LA2_0 == '\r') )
             	    {
-            	        alt5 = 1;
+            	        alt2 = 1;
             	    }
 
 
-            	    switch (alt5) 
+            	    switch (alt2) 
             		{
             			case 1 :
-            			    // NumberFilter.g:
+            			    // LogicalFilter.g:
             			    {
             			    	if ( input.LA(1) == '\n' || input.LA(1) == '\r' ) 
             			    	{
@@ -616,16 +485,16 @@ public partial class NumberFilterLexer : Lexer {
             			    break;
 
             			default:
-            			    if ( cnt5 >= 1 ) goto loop5;
-            		            EarlyExitException eee5 =
-            		                new EarlyExitException(5, input);
-            		            throw eee5;
+            			    if ( cnt2 >= 1 ) goto loop2;
+            		            EarlyExitException eee2 =
+            		                new EarlyExitException(2, input);
+            		            throw eee2;
             	    }
-            	    cnt5++;
+            	    cnt2++;
             	} while (true);
 
-            	loop5:
-            		;	// Stops C# compiler whining that label 'loop5' has no statements
+            	loop2:
+            		;	// Stops C# compiler whining that label 'loop2' has no statements
 
 
             }
@@ -646,29 +515,29 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = SQL_LITERAL;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:109:12: ( ( '[' ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )* ']' ) )
-            // NumberFilter.g:110:4: ( '[' ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )* ']' )
+            // LogicalFilter.g:58:12: ( ( '[' ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )* ']' ) )
+            // LogicalFilter.g:59:4: ( '[' ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )* ']' )
             {
-            	// NumberFilter.g:110:4: ( '[' ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )* ']' )
-            	// NumberFilter.g:110:5: '[' ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )* ']'
+            	// LogicalFilter.g:59:4: ( '[' ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )* ']' )
+            	// LogicalFilter.g:59:5: '[' ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )* ']'
             	{
             		Match('['); 
-            		// NumberFilter.g:111:5: ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )*
+            		// LogicalFilter.g:60:5: ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )*
             		do 
             		{
-            		    int alt6 = 2;
-            		    int LA6_0 = input.LA(1);
+            		    int alt3 = 2;
+            		    int LA3_0 = input.LA(1);
 
-            		    if ( ((LA6_0 >= '\u0000' && LA6_0 <= '\t') || (LA6_0 >= '\u000B' && LA6_0 <= '\f') || (LA6_0 >= '\u000E' && LA6_0 <= '\\') || (LA6_0 >= '^' && LA6_0 <= '\uFFFF')) )
+            		    if ( ((LA3_0 >= '\u0000' && LA3_0 <= '\t') || (LA3_0 >= '\u000B' && LA3_0 <= '\f') || (LA3_0 >= '\u000E' && LA3_0 <= '\\') || (LA3_0 >= '^' && LA3_0 <= '\uFFFF')) )
             		    {
-            		        alt6 = 1;
+            		        alt3 = 1;
             		    }
 
 
-            		    switch (alt6) 
+            		    switch (alt3) 
             			{
             				case 1 :
-            				    // NumberFilter.g:112:31: ~ ( ']' | '\\r' | '\\n' )
+            				    // LogicalFilter.g:61:31: ~ ( ']' | '\\r' | '\\n' )
             				    {
             				    	if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t') || (input.LA(1) >= '\u000B' && input.LA(1) <= '\f') || (input.LA(1) >= '\u000E' && input.LA(1) <= '\\') || (input.LA(1) >= '^' && input.LA(1) <= '\uFFFF') ) 
             				    	{
@@ -686,12 +555,12 @@ public partial class NumberFilterLexer : Lexer {
             				    break;
 
             				default:
-            				    goto loop6;
+            				    goto loop3;
             		    }
             		} while (true);
 
-            		loop6:
-            			;	// Stops C# compiler whining that label 'loop6' has no statements
+            		loop3:
+            			;	// Stops C# compiler whining that label 'loop3' has no statements
 
             		Match(']'); 
 
@@ -716,40 +585,40 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = A_STRING;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:117:9: ( ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' ) )
-            // NumberFilter.g:118:4: ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
+            // LogicalFilter.g:67:9: ( ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' ) )
+            // LogicalFilter.g:68:4: ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
             {
-            	// NumberFilter.g:118:4: ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
-            	// NumberFilter.g:118:5: '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\''
+            	// LogicalFilter.g:68:4: ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
+            	// LogicalFilter.g:68:5: '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\''
             	{
             		Match('\''); 
-            		// NumberFilter.g:119:5: ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )*
+            		// LogicalFilter.g:69:5: ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )*
             		do 
             		{
-            		    int alt7 = 3;
-            		    int LA7_0 = input.LA(1);
+            		    int alt4 = 3;
+            		    int LA4_0 = input.LA(1);
 
-            		    if ( (LA7_0 == '\'') )
+            		    if ( (LA4_0 == '\'') )
             		    {
-            		        int LA7_1 = input.LA(2);
+            		        int LA4_1 = input.LA(2);
 
-            		        if ( (LA7_1 == '\'') )
+            		        if ( (LA4_1 == '\'') )
             		        {
-            		            alt7 = 2;
+            		            alt4 = 2;
             		        }
 
 
             		    }
-            		    else if ( ((LA7_0 >= '\u0000' && LA7_0 <= '\t') || (LA7_0 >= '\u000B' && LA7_0 <= '\f') || (LA7_0 >= '\u000E' && LA7_0 <= '&') || (LA7_0 >= '(' && LA7_0 <= '\uFFFF')) )
+            		    else if ( ((LA4_0 >= '\u0000' && LA4_0 <= '\t') || (LA4_0 >= '\u000B' && LA4_0 <= '\f') || (LA4_0 >= '\u000E' && LA4_0 <= '&') || (LA4_0 >= '(' && LA4_0 <= '\uFFFF')) )
             		    {
-            		        alt7 = 1;
+            		        alt4 = 1;
             		    }
 
 
-            		    switch (alt7) 
+            		    switch (alt4) 
             			{
             				case 1 :
-            				    // NumberFilter.g:120:31: ~ ( '\\'' | '\\r' | '\\n' )
+            				    // LogicalFilter.g:70:31: ~ ( '\\'' | '\\r' | '\\n' )
             				    {
             				    	if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t') || (input.LA(1) >= '\u000B' && input.LA(1) <= '\f') || (input.LA(1) >= '\u000E' && input.LA(1) <= '&') || (input.LA(1) >= '(' && input.LA(1) <= '\uFFFF') ) 
             				    	{
@@ -766,7 +635,7 @@ public partial class NumberFilterLexer : Lexer {
             				    }
             				    break;
             				case 2 :
-            				    // NumberFilter.g:120:56: '\\'' '\\''
+            				    // LogicalFilter.g:70:56: '\\'' '\\''
             				    {
             				    	Match('\''); 
             				    	Match('\''); 
@@ -775,12 +644,12 @@ public partial class NumberFilterLexer : Lexer {
             				    break;
 
             				default:
-            				    goto loop7;
+            				    goto loop4;
             		    }
             		} while (true);
 
-            		loop7:
-            			;	// Stops C# compiler whining that label 'loop7' has no statements
+            		loop4:
+            			;	// Stops C# compiler whining that label 'loop4' has no statements
 
             		Match('\''); 
 
@@ -805,40 +674,40 @@ public partial class NumberFilterLexer : Lexer {
     		{
             int _type = Q_STRING;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // NumberFilter.g:125:9: ( ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' ) )
-            // NumberFilter.g:126:4: ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' )
+            // LogicalFilter.g:75:9: ( ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' ) )
+            // LogicalFilter.g:76:4: ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' )
             {
-            	// NumberFilter.g:126:4: ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' )
-            	// NumberFilter.g:126:5: '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"'
+            	// LogicalFilter.g:76:4: ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' )
+            	// LogicalFilter.g:76:5: '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"'
             	{
             		Match('\"'); 
-            		// NumberFilter.g:127:5: ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )*
+            		// LogicalFilter.g:77:5: ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )*
             		do 
             		{
-            		    int alt8 = 3;
-            		    int LA8_0 = input.LA(1);
+            		    int alt5 = 3;
+            		    int LA5_0 = input.LA(1);
 
-            		    if ( (LA8_0 == '\"') )
+            		    if ( (LA5_0 == '\"') )
             		    {
-            		        int LA8_1 = input.LA(2);
+            		        int LA5_1 = input.LA(2);
 
-            		        if ( (LA8_1 == '\"') )
+            		        if ( (LA5_1 == '\"') )
             		        {
-            		            alt8 = 2;
+            		            alt5 = 2;
             		        }
 
 
             		    }
-            		    else if ( ((LA8_0 >= '\u0000' && LA8_0 <= '\t') || (LA8_0 >= '\u000B' && LA8_0 <= '\f') || (LA8_0 >= '\u000E' && LA8_0 <= '!') || (LA8_0 >= '#' && LA8_0 <= '\uFFFF')) )
+            		    else if ( ((LA5_0 >= '\u0000' && LA5_0 <= '\t') || (LA5_0 >= '\u000B' && LA5_0 <= '\f') || (LA5_0 >= '\u000E' && LA5_0 <= '!') || (LA5_0 >= '#' && LA5_0 <= '\uFFFF')) )
             		    {
-            		        alt8 = 1;
+            		        alt5 = 1;
             		    }
 
 
-            		    switch (alt8) 
+            		    switch (alt5) 
             			{
             				case 1 :
-            				    // NumberFilter.g:128:31: ~ ( '\\\"' | '\\r' | '\\n' )
+            				    // LogicalFilter.g:78:31: ~ ( '\\\"' | '\\r' | '\\n' )
             				    {
             				    	if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t') || (input.LA(1) >= '\u000B' && input.LA(1) <= '\f') || (input.LA(1) >= '\u000E' && input.LA(1) <= '!') || (input.LA(1) >= '#' && input.LA(1) <= '\uFFFF') ) 
             				    	{
@@ -855,7 +724,7 @@ public partial class NumberFilterLexer : Lexer {
             				    }
             				    break;
             				case 2 :
-            				    // NumberFilter.g:128:56: '\\\"' '\\\"'
+            				    // LogicalFilter.g:78:56: '\\\"' '\\\"'
             				    {
             				    	Match('\"'); 
             				    	Match('\"'); 
@@ -864,12 +733,12 @@ public partial class NumberFilterLexer : Lexer {
             				    break;
 
             				default:
-            				    goto loop8;
+            				    goto loop5;
             		    }
             		} while (true);
 
-            		loop8:
-            			;	// Stops C# compiler whining that label 'loop8' has no statements
+            		loop5:
+            			;	// Stops C# compiler whining that label 'loop5' has no statements
 
             		Match('\"'); 
 
@@ -887,15 +756,15 @@ public partial class NumberFilterLexer : Lexer {
     }
     // $ANTLR end "Q_STRING"
 
-    // $ANTLR start "DIGIT"
-    public void mDIGIT() // throws RecognitionException [2]
+    // $ANTLR start "DIGIT_0"
+    public void mDIGIT_0() // throws RecognitionException [2]
     {
     		try
     		{
-            // NumberFilter.g:133:17: ( '0' .. '9' )
-            // NumberFilter.g:133:19: '0' .. '9'
+            // LogicalFilter.g:83:19: ( '0' )
+            // LogicalFilter.g:83:21: '0'
             {
-            	MatchRange('0','9'); 
+            	Match('0'); 
 
             }
 
@@ -904,15 +773,34 @@ public partial class NumberFilterLexer : Lexer {
     	{
         }
     }
-    // $ANTLR end "DIGIT"
+    // $ANTLR end "DIGIT_0"
+
+    // $ANTLR start "DIGIT_1"
+    public void mDIGIT_1() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            // LogicalFilter.g:84:19: ( '1' )
+            // LogicalFilter.g:84:21: '1'
+            {
+            	Match('1'); 
+
+            }
+
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "DIGIT_1"
 
     // $ANTLR start "A"
     public void mA() // throws RecognitionException [2]
     {
     		try
     		{
-            // NumberFilter.g:135:11: ( 'A' )
-            // NumberFilter.g:135:13: 'A'
+            // LogicalFilter.g:86:11: ( 'A' )
+            // LogicalFilter.g:86:13: 'A'
             {
             	Match('A'); 
 
@@ -930,8 +818,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:136:11: ( 'B' )
-            // NumberFilter.g:136:13: 'B'
+            // LogicalFilter.g:87:11: ( 'B' )
+            // LogicalFilter.g:87:13: 'B'
             {
             	Match('B'); 
 
@@ -949,8 +837,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:137:11: ( 'C' )
-            // NumberFilter.g:137:13: 'C'
+            // LogicalFilter.g:88:11: ( 'C' )
+            // LogicalFilter.g:88:13: 'C'
             {
             	Match('C'); 
 
@@ -968,8 +856,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:138:11: ( 'D' )
-            // NumberFilter.g:138:13: 'D'
+            // LogicalFilter.g:89:11: ( 'D' )
+            // LogicalFilter.g:89:13: 'D'
             {
             	Match('D'); 
 
@@ -987,8 +875,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:139:11: ( 'E' )
-            // NumberFilter.g:139:13: 'E'
+            // LogicalFilter.g:90:11: ( 'E' )
+            // LogicalFilter.g:90:13: 'E'
             {
             	Match('E'); 
 
@@ -1006,8 +894,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:140:11: ( 'F' )
-            // NumberFilter.g:140:13: 'F'
+            // LogicalFilter.g:91:11: ( 'F' )
+            // LogicalFilter.g:91:13: 'F'
             {
             	Match('F'); 
 
@@ -1025,8 +913,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:141:11: ( 'G' )
-            // NumberFilter.g:141:13: 'G'
+            // LogicalFilter.g:92:11: ( 'G' )
+            // LogicalFilter.g:92:13: 'G'
             {
             	Match('G'); 
 
@@ -1044,8 +932,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:142:11: ( 'H' )
-            // NumberFilter.g:142:13: 'H'
+            // LogicalFilter.g:93:11: ( 'H' )
+            // LogicalFilter.g:93:13: 'H'
             {
             	Match('H'); 
 
@@ -1063,8 +951,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:143:11: ( 'I' )
-            // NumberFilter.g:143:13: 'I'
+            // LogicalFilter.g:94:11: ( 'I' )
+            // LogicalFilter.g:94:13: 'I'
             {
             	Match('I'); 
 
@@ -1082,8 +970,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:144:11: ( 'J' )
-            // NumberFilter.g:144:13: 'J'
+            // LogicalFilter.g:95:11: ( 'J' )
+            // LogicalFilter.g:95:13: 'J'
             {
             	Match('J'); 
 
@@ -1101,8 +989,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:145:11: ( 'K' )
-            // NumberFilter.g:145:13: 'K'
+            // LogicalFilter.g:96:11: ( 'K' )
+            // LogicalFilter.g:96:13: 'K'
             {
             	Match('K'); 
 
@@ -1120,8 +1008,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:146:11: ( 'L' )
-            // NumberFilter.g:146:13: 'L'
+            // LogicalFilter.g:97:11: ( 'L' )
+            // LogicalFilter.g:97:13: 'L'
             {
             	Match('L'); 
 
@@ -1139,8 +1027,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:147:11: ( 'M' )
-            // NumberFilter.g:147:13: 'M'
+            // LogicalFilter.g:98:11: ( 'M' )
+            // LogicalFilter.g:98:13: 'M'
             {
             	Match('M'); 
 
@@ -1158,8 +1046,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:148:11: ( 'N' )
-            // NumberFilter.g:148:13: 'N'
+            // LogicalFilter.g:99:11: ( 'N' )
+            // LogicalFilter.g:99:13: 'N'
             {
             	Match('N'); 
 
@@ -1177,8 +1065,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:149:11: ( 'O' )
-            // NumberFilter.g:149:13: 'O'
+            // LogicalFilter.g:100:11: ( 'O' )
+            // LogicalFilter.g:100:13: 'O'
             {
             	Match('O'); 
 
@@ -1196,8 +1084,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:150:11: ( 'P' )
-            // NumberFilter.g:150:13: 'P'
+            // LogicalFilter.g:101:11: ( 'P' )
+            // LogicalFilter.g:101:13: 'P'
             {
             	Match('P'); 
 
@@ -1215,8 +1103,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:151:11: ( 'Q' )
-            // NumberFilter.g:151:13: 'Q'
+            // LogicalFilter.g:102:11: ( 'Q' )
+            // LogicalFilter.g:102:13: 'Q'
             {
             	Match('Q'); 
 
@@ -1234,8 +1122,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:152:11: ( 'R' )
-            // NumberFilter.g:152:13: 'R'
+            // LogicalFilter.g:103:11: ( 'R' )
+            // LogicalFilter.g:103:13: 'R'
             {
             	Match('R'); 
 
@@ -1253,8 +1141,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:153:11: ( 'S' )
-            // NumberFilter.g:153:13: 'S'
+            // LogicalFilter.g:104:11: ( 'S' )
+            // LogicalFilter.g:104:13: 'S'
             {
             	Match('S'); 
 
@@ -1272,8 +1160,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:154:11: ( 'T' )
-            // NumberFilter.g:154:13: 'T'
+            // LogicalFilter.g:105:11: ( 'T' )
+            // LogicalFilter.g:105:13: 'T'
             {
             	Match('T'); 
 
@@ -1291,8 +1179,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:155:11: ( 'U' )
-            // NumberFilter.g:155:13: 'U'
+            // LogicalFilter.g:106:11: ( 'U' )
+            // LogicalFilter.g:106:13: 'U'
             {
             	Match('U'); 
 
@@ -1310,8 +1198,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:156:11: ( 'V' )
-            // NumberFilter.g:156:13: 'V'
+            // LogicalFilter.g:107:11: ( 'V' )
+            // LogicalFilter.g:107:13: 'V'
             {
             	Match('V'); 
 
@@ -1329,8 +1217,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:157:11: ( 'W' )
-            // NumberFilter.g:157:13: 'W'
+            // LogicalFilter.g:108:11: ( 'W' )
+            // LogicalFilter.g:108:13: 'W'
             {
             	Match('W'); 
 
@@ -1348,8 +1236,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:158:11: ( 'X' )
-            // NumberFilter.g:158:13: 'X'
+            // LogicalFilter.g:109:11: ( 'X' )
+            // LogicalFilter.g:109:13: 'X'
             {
             	Match('X'); 
 
@@ -1367,8 +1255,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:159:11: ( 'Y' )
-            // NumberFilter.g:159:13: 'Y'
+            // LogicalFilter.g:110:11: ( 'Y' )
+            // LogicalFilter.g:110:13: 'Y'
             {
             	Match('Y'); 
 
@@ -1386,8 +1274,8 @@ public partial class NumberFilterLexer : Lexer {
     {
     		try
     		{
-            // NumberFilter.g:160:11: ( 'Z' )
-            // NumberFilter.g:160:13: 'Z'
+            // LogicalFilter.g:111:11: ( 'Z' )
+            // LogicalFilter.g:111:13: 'Z'
             {
             	Match('Z'); 
 
@@ -1402,139 +1290,125 @@ public partial class NumberFilterLexer : Lexer {
 
     override public void mTokens() // throws RecognitionException 
     {
-        // NumberFilter.g:1:8: ( T_NULL | T_NOT | MINUS | LT | GT | GE | LE | NE | EQ | COMMA | DOT | EQ2 | NE2 | NUMBER | WHITESPACE | ENDLINE | SQL_LITERAL | A_STRING | Q_STRING )
-        int alt9 = 19;
-        alt9 = dfa9.Predict(input);
-        switch (alt9) 
+        // LogicalFilter.g:1:8: ( T_NULL | T_NOT | T_TRUE | T_FALSE | T_0 | T_1 | NE | EQ | COMMA | DOT | EQ2 | NE2 | WHITESPACE | ENDLINE | SQL_LITERAL | A_STRING | Q_STRING )
+        int alt6 = 17;
+        alt6 = dfa6.Predict(input);
+        switch (alt6) 
         {
             case 1 :
-                // NumberFilter.g:1:10: T_NULL
+                // LogicalFilter.g:1:10: T_NULL
                 {
                 	mT_NULL(); 
 
                 }
                 break;
             case 2 :
-                // NumberFilter.g:1:17: T_NOT
+                // LogicalFilter.g:1:17: T_NOT
                 {
                 	mT_NOT(); 
 
                 }
                 break;
             case 3 :
-                // NumberFilter.g:1:23: MINUS
+                // LogicalFilter.g:1:23: T_TRUE
                 {
-                	mMINUS(); 
+                	mT_TRUE(); 
 
                 }
                 break;
             case 4 :
-                // NumberFilter.g:1:29: LT
+                // LogicalFilter.g:1:30: T_FALSE
                 {
-                	mLT(); 
+                	mT_FALSE(); 
 
                 }
                 break;
             case 5 :
-                // NumberFilter.g:1:32: GT
+                // LogicalFilter.g:1:38: T_0
                 {
-                	mGT(); 
+                	mT_0(); 
 
                 }
                 break;
             case 6 :
-                // NumberFilter.g:1:35: GE
+                // LogicalFilter.g:1:42: T_1
                 {
-                	mGE(); 
+                	mT_1(); 
 
                 }
                 break;
             case 7 :
-                // NumberFilter.g:1:38: LE
-                {
-                	mLE(); 
-
-                }
-                break;
-            case 8 :
-                // NumberFilter.g:1:41: NE
+                // LogicalFilter.g:1:46: NE
                 {
                 	mNE(); 
 
                 }
                 break;
-            case 9 :
-                // NumberFilter.g:1:44: EQ
+            case 8 :
+                // LogicalFilter.g:1:49: EQ
                 {
                 	mEQ(); 
 
                 }
                 break;
-            case 10 :
-                // NumberFilter.g:1:47: COMMA
+            case 9 :
+                // LogicalFilter.g:1:52: COMMA
                 {
                 	mCOMMA(); 
 
                 }
                 break;
-            case 11 :
-                // NumberFilter.g:1:53: DOT
+            case 10 :
+                // LogicalFilter.g:1:58: DOT
                 {
                 	mDOT(); 
 
                 }
                 break;
-            case 12 :
-                // NumberFilter.g:1:57: EQ2
+            case 11 :
+                // LogicalFilter.g:1:62: EQ2
                 {
                 	mEQ2(); 
 
                 }
                 break;
-            case 13 :
-                // NumberFilter.g:1:61: NE2
+            case 12 :
+                // LogicalFilter.g:1:66: NE2
                 {
                 	mNE2(); 
 
                 }
                 break;
-            case 14 :
-                // NumberFilter.g:1:65: NUMBER
-                {
-                	mNUMBER(); 
-
-                }
-                break;
-            case 15 :
-                // NumberFilter.g:1:72: WHITESPACE
+            case 13 :
+                // LogicalFilter.g:1:70: WHITESPACE
                 {
                 	mWHITESPACE(); 
 
                 }
                 break;
-            case 16 :
-                // NumberFilter.g:1:83: ENDLINE
+            case 14 :
+                // LogicalFilter.g:1:81: ENDLINE
                 {
                 	mENDLINE(); 
 
                 }
                 break;
-            case 17 :
-                // NumberFilter.g:1:91: SQL_LITERAL
+            case 15 :
+                // LogicalFilter.g:1:89: SQL_LITERAL
                 {
                 	mSQL_LITERAL(); 
 
                 }
                 break;
-            case 18 :
-                // NumberFilter.g:1:103: A_STRING
+            case 16 :
+                // LogicalFilter.g:1:101: A_STRING
                 {
                 	mA_STRING(); 
 
                 }
                 break;
-            case 19 :
-                // NumberFilter.g:1:112: Q_STRING
+            case 17 :
+                // LogicalFilter.g:1:110: Q_STRING
                 {
                 	mQ_STRING(); 
 
@@ -1546,42 +1420,39 @@ public partial class NumberFilterLexer : Lexer {
     }
 
 
-    protected DFA9 dfa9;
+    protected DFA6 dfa6;
 	private void InitializeCyclicDFAs()
 	{
-	    this.dfa9 = new DFA9(this);
+	    this.dfa6 = new DFA6(this);
 	}
 
-    const string DFA9_eotS =
-        "\x03\uffff\x01\x13\x01\x15\x01\x17\x12\uffff";
-    const string DFA9_eofS =
-        "\x18\uffff";
-    const string DFA9_minS =
-        "\x01\x09\x01\x4f\x01\uffff\x03\x3d\x12\uffff";
-    const string DFA9_maxS =
-        "\x01\x5b\x01\x55\x01\uffff\x01\x3e\x02\x3d\x12\uffff";
-    const string DFA9_acceptS =
-        "\x02\uffff\x01\x03\x03\uffff\x01\x0a\x01\x0b\x01\x0d\x01\x0e\x01"+
-        "\x0f\x01\x10\x01\x11\x01\x12\x01\x13\x01\x01\x01\x02\x01\x07\x01"+
-        "\x08\x01\x04\x01\x06\x01\x05\x01\x0c\x01\x09";
-    const string DFA9_specialS =
-        "\x18\uffff}>";
-    static readonly string[] DFA9_transitionS = {
-            "\x01\x0a\x01\x0b\x01\uffff\x01\x0a\x01\x0b\x12\uffff\x01\x0a"+
-            "\x01\x08\x01\x0e\x04\uffff\x01\x0d\x04\uffff\x01\x06\x01\x02"+
-            "\x01\x07\x01\uffff\x0a\x09\x02\uffff\x01\x03\x01\x05\x01\x04"+
-            "\x0f\uffff\x01\x01\x0c\uffff\x01\x0c",
-            "\x01\x10\x05\uffff\x01\x0f",
-            "",
-            "\x01\x11\x01\x12",
-            "\x01\x14",
-            "\x01\x16",
+    const string DFA6_eotS =
+        "\x07\uffff\x01\x13\x0c\uffff";
+    const string DFA6_eofS =
+        "\x14\uffff";
+    const string DFA6_minS =
+        "\x01\x09\x01\x4f\x05\uffff\x01\x3d\x0c\uffff";
+    const string DFA6_maxS =
+        "\x01\x5b\x01\x55\x05\uffff\x01\x3d\x0c\uffff";
+    const string DFA6_acceptS =
+        "\x02\uffff\x01\x03\x01\x04\x01\x05\x01\x06\x01\x07\x01\uffff\x01"+
+        "\x09\x01\x0a\x01\x0c\x01\x0d\x01\x0e\x01\x0f\x01\x10\x01\x11\x01"+
+        "\x01\x01\x02\x01\x0b\x01\x08";
+    const string DFA6_specialS =
+        "\x14\uffff}>";
+    static readonly string[] DFA6_transitionS = {
+            "\x01\x0b\x01\x0c\x01\uffff\x01\x0b\x01\x0c\x12\uffff\x01\x0b"+
+            "\x01\x0a\x01\x0f\x04\uffff\x01\x0e\x04\uffff\x01\x08\x01\uffff"+
+            "\x01\x09\x01\uffff\x01\x04\x01\x05\x0a\uffff\x01\x06\x01\x07"+
+            "\x08\uffff\x01\x03\x07\uffff\x01\x01\x05\uffff\x01\x02\x06\uffff"+
+            "\x01\x0d",
+            "\x01\x11\x05\uffff\x01\x10",
             "",
             "",
             "",
             "",
             "",
-            "",
+            "\x01\x12",
             "",
             "",
             "",
@@ -1596,33 +1467,33 @@ public partial class NumberFilterLexer : Lexer {
             ""
     };
 
-    static readonly short[] DFA9_eot = DFA.UnpackEncodedString(DFA9_eotS);
-    static readonly short[] DFA9_eof = DFA.UnpackEncodedString(DFA9_eofS);
-    static readonly char[] DFA9_min = DFA.UnpackEncodedStringToUnsignedChars(DFA9_minS);
-    static readonly char[] DFA9_max = DFA.UnpackEncodedStringToUnsignedChars(DFA9_maxS);
-    static readonly short[] DFA9_accept = DFA.UnpackEncodedString(DFA9_acceptS);
-    static readonly short[] DFA9_special = DFA.UnpackEncodedString(DFA9_specialS);
-    static readonly short[][] DFA9_transition = DFA.UnpackEncodedStringArray(DFA9_transitionS);
+    static readonly short[] DFA6_eot = DFA.UnpackEncodedString(DFA6_eotS);
+    static readonly short[] DFA6_eof = DFA.UnpackEncodedString(DFA6_eofS);
+    static readonly char[] DFA6_min = DFA.UnpackEncodedStringToUnsignedChars(DFA6_minS);
+    static readonly char[] DFA6_max = DFA.UnpackEncodedStringToUnsignedChars(DFA6_maxS);
+    static readonly short[] DFA6_accept = DFA.UnpackEncodedString(DFA6_acceptS);
+    static readonly short[] DFA6_special = DFA.UnpackEncodedString(DFA6_specialS);
+    static readonly short[][] DFA6_transition = DFA.UnpackEncodedStringArray(DFA6_transitionS);
 
-    protected class DFA9 : DFA
+    protected class DFA6 : DFA
     {
-        public DFA9(BaseRecognizer recognizer)
+        public DFA6(BaseRecognizer recognizer)
         {
             this.recognizer = recognizer;
-            this.decisionNumber = 9;
-            this.eot = DFA9_eot;
-            this.eof = DFA9_eof;
-            this.min = DFA9_min;
-            this.max = DFA9_max;
-            this.accept = DFA9_accept;
-            this.special = DFA9_special;
-            this.transition = DFA9_transition;
+            this.decisionNumber = 6;
+            this.eot = DFA6_eot;
+            this.eof = DFA6_eof;
+            this.min = DFA6_min;
+            this.max = DFA6_max;
+            this.accept = DFA6_accept;
+            this.special = DFA6_special;
+            this.transition = DFA6_transition;
 
         }
 
         override public string Description
         {
-            get { return "1:1: Tokens : ( T_NULL | T_NOT | MINUS | LT | GT | GE | LE | NE | EQ | COMMA | DOT | EQ2 | NE2 | NUMBER | WHITESPACE | ENDLINE | SQL_LITERAL | A_STRING | Q_STRING );"; }
+            get { return "1:1: Tokens : ( T_NULL | T_NOT | T_TRUE | T_FALSE | T_0 | T_1 | NE | EQ | COMMA | DOT | EQ2 | NE2 | WHITESPACE | ENDLINE | SQL_LITERAL | A_STRING | Q_STRING );"; }
         }
 
     }

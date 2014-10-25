@@ -143,6 +143,8 @@
     <Compile Include="FilterParser\antlr\DateTimeFilterLexer.cs" />
     <Compile Include="FilterParser\antlr\DateTimeFilterParser.cs" />
     <Compile Include="FilterParser\antlr\DbShellFilterAntlrParser.cs" />
+    <Compile Include="FilterParser\antlr\LogicalFilterLexer.cs" />
+    <Compile Include="FilterParser\antlr\LogicalFilterParser.cs" />
     <Compile Include="FilterParser\antlr\NumberFilterLexer.cs" />
     <Compile Include="FilterParser\antlr\NumberFilterParser.cs" />
     <Compile Include="FilterParser\antlr\StringFilterLexer.cs" />

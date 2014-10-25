@@ -11,6 +11,11 @@ options {
 using System.Globalization;
 }
 
+sql_name:
+  lit1=SQL_LITERAL { Push($lit1.text); }
+  (DOT lit2=SQL_LITERAL { Push(Pop<string>() + "." + $lit2.text); } )* 
+  ; 
+
 specification:
   y=YEAR { var d1=new DateTime(Int32.Parse($y.text), 1, 1); AddDateTimeIntervalCondition(d1, d1.AddYears(1)); }
   | d=DATE { AddDateCondition($d.text); }
@@ -74,6 +79,16 @@ specification:
   | GE d=DATE t=TIME { var dt=ParseDate($d.text)+ParseTime($t.text);AddDateTimeRelation(dt, ">="); }
   | T_NULL { AddIsNullCondition(); }
   | T_NOT T_NULL { AddIsNotNullCondition(); }
+  
+  | LT sql_name { AddSqlLiteralRelation(Pop<string>(), "<"); } 
+  | GT sql_name { AddSqlLiteralRelation(Pop<string>(), ">"); } 
+  | LE sql_name { AddSqlLiteralRelation(Pop<string>(), "<="); } 
+  | GE sql_name { AddSqlLiteralRelation(Pop<string>(), ">="); } 
+  | NE sql_name { AddSqlLiteralRelation(Pop<string>(), "<>"); } 
+  | EQ sql_name { AddSqlLiteralRelation(Pop<string>(), "="); }
+  | EQ2 sql_name { AddSqlLiteralRelationWithNullTest_EQ(Pop<string>()); } 
+  | NE2 sql_name { AddSqlLiteralRelationWithNullTest_NE(Pop<string>()); }
+  
 ;
 
 interval : 
@@ -99,9 +114,12 @@ LT:  '<';
 GT:  '>';
 GE:  '>=';
 LE:  '<=';
-NE:  '!=' | '<>';
+NE:  '<>';
 EQ:  '=';
 COMMA: ',';
+DOT: '.';
+EQ2:  '==';
+NE2:  '!=';
 
 YEAR: DIGIT DIGIT DIGIT DIGIT;
 
@@ -157,6 +175,14 @@ T_NOT: N O T;
 WHITESPACE : ( '\t' | ' ' | '\u000C' )+    { $channel = HIDDEN; } ;
 ENDLINE: ( '\r' | '\n' )+;
  
+SQL_LITERAL:
+	  ('['
+	  	(
+	  		  options{greedy=true;}: ~(']' | '\r' | '\n' )
+	  	)*
+	  ']' )
+;
+
 fragment DIGIT  : '0'..'9' ;
 
 fragment A: 'A';

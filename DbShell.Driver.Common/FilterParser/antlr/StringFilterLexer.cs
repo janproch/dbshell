@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 StringFilter.g 2013-12-21 16:34:59
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 StringFilter.g 2014-10-24 22:55:02
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 168, 219
@@ -14,56 +14,60 @@ using Stack 		= Antlr.Runtime.Collections.StackList;
 
 
 public partial class StringFilterLexer : Lexer {
-    public const int DOLLAR = 17;
-    public const int LT = 9;
-    public const int STAR = 24;
+    public const int DOLLAR = 19;
+    public const int LT = 11;
+    public const int STAR = 28;
     public const int EOF = -1;
     public const int Q_STRING = 4;
-    public const int COMMA = 22;
-    public const int T_NULL = 19;
-    public const int PLUS = 7;
-    public const int DIGIT = 35;
-    public const int EQ = 14;
-    public const int NE = 13;
-    public const int D = 39;
-    public const int E = 30;
-    public const int F = 40;
-    public const int GE = 12;
-    public const int G = 41;
+    public const int COMMA = 26;
+    public const int T_NULL = 21;
+    public const int PLUS = 9;
+    public const int DIGIT = 39;
+    public const int EQ = 16;
+    public const int DOT = 8;
+    public const int NE = 15;
+    public const int D = 43;
+    public const int E = 34;
+    public const int GE = 14;
+    public const int F = 44;
+    public const int G = 45;
     public const int I_STRING = 6;
-    public const int A = 36;
-    public const int B = 37;
-    public const int C = 38;
-    public const int L = 27;
-    public const int M = 31;
-    public const int N = 25;
-    public const int O = 28;
-    public const int H = 42;
-    public const int I = 43;
-    public const int J = 44;
-    public const int K = 45;
-    public const int U = 26;
-    public const int T = 29;
-    public const int W = 50;
-    public const int WHITESPACE = 34;
-    public const int V = 49;
-    public const int Q = 46;
-    public const int P = 32;
-    public const int S = 48;
-    public const int R = 47;
-    public const int MINUS = 8;
-    public const int Y = 33;
-    public const int X = 51;
-    public const int Z = 52;
-    public const int NDOLLAR = 18;
-    public const int T_EMPTY = 21;
+    public const int A = 40;
+    public const int B = 41;
+    public const int NE2 = 25;
+    public const int C = 42;
+    public const int L = 31;
+    public const int M = 35;
+    public const int N = 29;
+    public const int O = 32;
+    public const int H = 46;
+    public const int I = 47;
+    public const int J = 48;
+    public const int K = 49;
+    public const int U = 30;
+    public const int T = 33;
+    public const int W = 54;
+    public const int WHITESPACE = 38;
+    public const int V = 53;
+    public const int Q = 50;
+    public const int P = 36;
+    public const int S = 52;
+    public const int R = 51;
+    public const int MINUS = 10;
+    public const int Y = 37;
+    public const int EQ2 = 24;
+    public const int SQL_LITERAL = 7;
+    public const int X = 55;
+    public const int Z = 56;
+    public const int NDOLLAR = 20;
+    public const int T_EMPTY = 23;
     public const int A_STRING = 5;
-    public const int GT = 10;
-    public const int ARROW = 15;
-    public const int ENDLINE = 23;
-    public const int T_NOT = 20;
-    public const int NARROW = 16;
-    public const int LE = 11;
+    public const int GT = 12;
+    public const int ARROW = 17;
+    public const int ENDLINE = 27;
+    public const int T_NOT = 22;
+    public const int NARROW = 18;
+    public const int LE = 13;
 
     // delegates
     // delegators
@@ -93,8 +97,8 @@ public partial class StringFilterLexer : Lexer {
     		{
             int _type = MINUS;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // StringFilter.g:44:6: ( '-' )
-            // StringFilter.g:44:9: '-'
+            // StringFilter.g:58:6: ( '-' )
+            // StringFilter.g:58:9: '-'
             {
             	Match('-'); 
 
@@ -116,8 +120,8 @@ public partial class StringFilterLexer : Lexer {
     		{
             int _type = LT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // StringFilter.g:45:3: ( '<' )
-            // StringFilter.g:45:6: '<'
+            // StringFilter.g:59:3: ( '<' )
+            // StringFilter.g:59:6: '<'
             {
             	Match('<'); 
 
@@ -139,8 +143,8 @@ public partial class StringFilterLexer : Lexer {
     		{
             int _type = GT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // StringFilter.g:46:3: ( '>' )
-            // StringFilter.g:46:6: '>'
+            // StringFilter.g:60:3: ( '>' )
+            // StringFilter.g:60:6: '>'
             {
             	Match('>'); 
 
@@ -162,8 +166,8 @@ public partial class StringFilterLexer : Lexer {
     		{
             int _type = GE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // StringFilter.g:47:3: ( '>=' )
-            // StringFilter.g:47:6: '>='
+            // StringFilter.g:61:3: ( '>=' )
+            // StringFilter.g:61:6: '>='
             {
             	Match(">="); 
 
@@ -186,8 +190,8 @@ public partial class StringFilterLexer : Lexer {
     		{
             int _type = LE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // StringFilter.g:48:3: ( '<=' )
-            // StringFilter.g:48:6: '<='
+            // StringFilter.g:62:3: ( '<=' )
+            // StringFilter.g:62:6: '<='
             {
             	Match("<="); 
 
@@ -210,45 +214,14 @@ public partial class StringFilterLexer : Lexer {
     		{
             int _type = NE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // StringFilter.g:49:3: ( '!=' | '<>' )
-            int alt1 = 2;
-            int LA1_0 = input.LA(1);
-
-            if ( (LA1_0 == '!') )
+            // StringFilter.g:63:3: ( '<>' )
+            // StringFilter.g:63:6: '<>'
             {
-                alt1 = 1;
-            }
-            else if ( (LA1_0 == '<') )
-            {
-                alt1 = 2;
-            }
-            else 
-            {
-                NoViableAltException nvae_d1s0 =
-                    new NoViableAltException("", 1, 0, input);
+            	Match("<>"); 
 
-                throw nvae_d1s0;
-            }
-            switch (alt1) 
-            {
-                case 1 :
-                    // StringFilter.g:49:6: '!='
-                    {
-                    	Match("!="); 
-
-
-                    }
-                    break;
-                case 2 :
-                    // StringFilter.g:49:13: '<>'
-                    {
-                    	Match("<>"); 
-
-
-                    }
-                    break;
 
             }
+
             state.type = _type;
             state.channel = _channel;
         }
@@ -265,8 +238,8 @@ public partial class StringFilterLexer : Lexer {
     		{
             int _type = EQ;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // StringFilter.g:50:3: ( '=' )
-            // StringFilter.g:50:6: '='
+            // StringFilter.g:64:3: ( '=' )
+            // StringFilter.g:64:6: '='
             {
             	Match('='); 
 
@@ -288,8 +261,8 @@ public partial class StringFilterLexer : Lexer {
     		{
             int _type = PLUS;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // StringFilter.g:51:5: ( '+' )
-            // StringFilter.g:51:7: '+'
+            // StringFilter.g:65:5: ( '+' )
+            // StringFilter.g:65:7: '+'
             {
             	Match('+'); 
 
@@ -311,8 +284,8 @@ public partial class StringFilterLexer : Lexer {
     		{
             int _type = STAR;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // StringFilter.g:52:5: ( '*' )
-            // StringFilter.g:52:8: '*'
+            // StringFilter.g:66:5: ( '*' )
+            // StringFilter.g:66:8: '*'
             {
             	Match('*'); 
 
@@ -334,8 +307,8 @@ public partial class StringFilterLexer : Lexer {
     		{
             int _type = COMMA;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // StringFilter.g:53:6: ( ',' )
-            // StringFilter.g:53:8: ','
+            // StringFilter.g:67:6: ( ',' )
+            // StringFilter.g:67:8: ','
             {
             	Match(','); 
 
@@ -357,8 +330,8 @@ public partial class StringFilterLexer : Lexer {
     		{
             int _type = ARROW;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // StringFilter.g:54:6: ( '^' )
-            // StringFilter.g:54:9: '^'
+            // StringFilter.g:68:6: ( '^' )
+            // StringFilter.g:68:9: '^'
             {
             	Match('^'); 
 
@@ -380,8 +353,8 @@ public partial class StringFilterLexer : Lexer {
     		{
             int _type = DOLLAR;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // StringFilter.g:55:7: ( '$' )
-            // StringFilter.g:55:10: '$'
+            // StringFilter.g:69:7: ( '$' )
+            // StringFilter.g:69:10: '$'
             {
             	Match('$'); 
 
@@ -403,8 +376,8 @@ public partial class StringFilterLexer : Lexer {
     		{
             int _type = NARROW;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // StringFilter.g:56:7: ( '!^' )
-            // StringFilter.g:56:10: '!^'
+            // StringFilter.g:70:7: ( '!^' )
+            // StringFilter.g:70:10: '!^'
             {
             	Match("!^"); 
 
@@ -427,8 +400,8 @@ public partial class StringFilterLexer : Lexer {
     		{
             int _type = NDOLLAR;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // StringFilter.g:57:8: ( '!$' )
-            // StringFilter.g:57:11: '!$'
+            // StringFilter.g:71:8: ( '!$' )
+            // StringFilter.g:71:11: '!$'
             {
             	Match("!$"); 
 
@@ -444,6 +417,77 @@ public partial class StringFilterLexer : Lexer {
     }
     // $ANTLR end "NDOLLAR"
 
+    // $ANTLR start "DOT"
+    public void mDOT() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            int _type = DOT;
+    	int _channel = DEFAULT_TOKEN_CHANNEL;
+            // StringFilter.g:72:4: ( '.' )
+            // StringFilter.g:72:6: '.'
+            {
+            	Match('.'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "DOT"
+
+    // $ANTLR start "EQ2"
+    public void mEQ2() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            int _type = EQ2;
+    	int _channel = DEFAULT_TOKEN_CHANNEL;
+            // StringFilter.g:73:4: ( '==' )
+            // StringFilter.g:73:7: '=='
+            {
+            	Match("=="); 
+
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "EQ2"
+
+    // $ANTLR start "NE2"
+    public void mNE2() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            int _type = NE2;
+    	int _channel = DEFAULT_TOKEN_CHANNEL;
+            // StringFilter.g:74:4: ( '!=' )
+            // StringFilter.g:74:7: '!='
+            {
+            	Match("!="); 
+
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "NE2"
+
     // $ANTLR start "T_NULL"
     public void mT_NULL() // throws RecognitionException [2]
     {
@@ -451,8 +495,8 @@ public partial class StringFilterLexer : Lexer {
     		{
             int _type = T_NULL;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // StringFilter.g:59:7: ( N U L L )
-            // StringFilter.g:59:9: N U L L
+            // StringFilter.g:76:7: ( N U L L )
+            // StringFilter.g:76:9: N U L L
             {
             	mN(); 
             	mU(); 
@@ -477,8 +521,8 @@ public partial class StringFilterLexer : Lexer {
     		{
             int _type = T_NOT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // StringFilter.g:60:6: ( N O T )
-            // StringFilter.g:60:8: N O T
+            // StringFilter.g:77:6: ( N O T )
+            // StringFilter.g:77:8: N O T
             {
             	mN(); 
             	mO(); 
@@ -502,8 +546,8 @@ public partial class StringFilterLexer : Lexer {
     		{
             int _type = T_EMPTY;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // StringFilter.g:61:8: ( E M P T Y )
-            // StringFilter.g:61:10: E M P T Y
+            // StringFilter.g:78:8: ( E M P T Y )
+            // StringFilter.g:78:10: E M P T Y
             {
             	mE(); 
             	mM(); 
@@ -522,6 +566,76 @@ public partial class StringFilterLexer : Lexer {
     }
     // $ANTLR end "T_EMPTY"
 
+    // $ANTLR start "SQL_LITERAL"
+    public void mSQL_LITERAL() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            int _type = SQL_LITERAL;
+    	int _channel = DEFAULT_TOKEN_CHANNEL;
+            // StringFilter.g:80:12: ( ( '[' ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )* ']' ) )
+            // StringFilter.g:81:4: ( '[' ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )* ']' )
+            {
+            	// StringFilter.g:81:4: ( '[' ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )* ']' )
+            	// StringFilter.g:81:5: '[' ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )* ']'
+            	{
+            		Match('['); 
+            		// StringFilter.g:82:5: ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )*
+            		do 
+            		{
+            		    int alt1 = 2;
+            		    int LA1_0 = input.LA(1);
+
+            		    if ( ((LA1_0 >= '\u0000' && LA1_0 <= '\t') || (LA1_0 >= '\u000B' && LA1_0 <= '\f') || (LA1_0 >= '\u000E' && LA1_0 <= '\\') || (LA1_0 >= '^' && LA1_0 <= '\uFFFF')) )
+            		    {
+            		        alt1 = 1;
+            		    }
+
+
+            		    switch (alt1) 
+            			{
+            				case 1 :
+            				    // StringFilter.g:83:31: ~ ( ']' | '\\r' | '\\n' )
+            				    {
+            				    	if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t') || (input.LA(1) >= '\u000B' && input.LA(1) <= '\f') || (input.LA(1) >= '\u000E' && input.LA(1) <= '\\') || (input.LA(1) >= '^' && input.LA(1) <= '\uFFFF') ) 
+            				    	{
+            				    	    input.Consume();
+
+            				    	}
+            				    	else 
+            				    	{
+            				    	    MismatchedSetException mse = new MismatchedSetException(null,input);
+            				    	    Recover(mse);
+            				    	    throw mse;}
+
+
+            				    }
+            				    break;
+
+            				default:
+            				    goto loop1;
+            		    }
+            		} while (true);
+
+            		loop1:
+            			;	// Stops C# compiler whining that label 'loop1' has no statements
+
+            		Match(']'); 
+
+            	}
+
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "SQL_LITERAL"
+
     // $ANTLR start "A_STRING"
     public void mA_STRING() // throws RecognitionException [2]
     {
@@ -529,14 +643,14 @@ public partial class StringFilterLexer : Lexer {
     		{
             int _type = A_STRING;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // StringFilter.g:63:9: ( ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' ) )
-            // StringFilter.g:64:4: ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
+            // StringFilter.g:88:9: ( ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' ) )
+            // StringFilter.g:89:4: ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
             {
-            	// StringFilter.g:64:4: ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
-            	// StringFilter.g:64:5: '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\''
+            	// StringFilter.g:89:4: ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
+            	// StringFilter.g:89:5: '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\''
             	{
             		Match('\''); 
-            		// StringFilter.g:65:5: ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )*
+            		// StringFilter.g:90:5: ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )*
             		do 
             		{
             		    int alt2 = 3;
@@ -562,7 +676,7 @@ public partial class StringFilterLexer : Lexer {
             		    switch (alt2) 
             			{
             				case 1 :
-            				    // StringFilter.g:66:31: ~ ( '\\'' | '\\r' | '\\n' )
+            				    // StringFilter.g:91:31: ~ ( '\\'' | '\\r' | '\\n' )
             				    {
             				    	if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t') || (input.LA(1) >= '\u000B' && input.LA(1) <= '\f') || (input.LA(1) >= '\u000E' && input.LA(1) <= '&') || (input.LA(1) >= '(' && input.LA(1) <= '\uFFFF') ) 
             				    	{
@@ -579,7 +693,7 @@ public partial class StringFilterLexer : Lexer {
             				    }
             				    break;
             				case 2 :
-            				    // StringFilter.g:66:56: '\\'' '\\''
+            				    // StringFilter.g:91:56: '\\'' '\\''
             				    {
             				    	Match('\''); 
             				    	Match('\''); 
@@ -618,14 +732,14 @@ public partial class StringFilterLexer : Lexer {
     		{
             int _type = Q_STRING;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // StringFilter.g:71:9: ( ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' ) )
-            // StringFilter.g:72:4: ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' )
+            // StringFilter.g:96:9: ( ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' ) )
+            // StringFilter.g:97:4: ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' )
             {
-            	// StringFilter.g:72:4: ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' )
-            	// StringFilter.g:72:5: '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"'
+            	// StringFilter.g:97:4: ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' )
+            	// StringFilter.g:97:5: '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"'
             	{
             		Match('\"'); 
-            		// StringFilter.g:73:5: ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )*
+            		// StringFilter.g:98:5: ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )*
             		do 
             		{
             		    int alt3 = 3;
@@ -651,7 +765,7 @@ public partial class StringFilterLexer : Lexer {
             		    switch (alt3) 
             			{
             				case 1 :
-            				    // StringFilter.g:74:31: ~ ( '\\\"' | '\\r' | '\\n' )
+            				    // StringFilter.g:99:31: ~ ( '\\\"' | '\\r' | '\\n' )
             				    {
             				    	if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t') || (input.LA(1) >= '\u000B' && input.LA(1) <= '\f') || (input.LA(1) >= '\u000E' && input.LA(1) <= '!') || (input.LA(1) >= '#' && input.LA(1) <= '\uFFFF') ) 
             				    	{
@@ -668,7 +782,7 @@ public partial class StringFilterLexer : Lexer {
             				    }
             				    break;
             				case 2 :
-            				    // StringFilter.g:74:56: '\\\"' '\\\"'
+            				    // StringFilter.g:99:56: '\\\"' '\\\"'
             				    {
             				    	Match('\"'); 
             				    	Match('\"'); 
@@ -707,10 +821,10 @@ public partial class StringFilterLexer : Lexer {
     		{
             int _type = I_STRING;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // StringFilter.g:79:9: ( (~ ( '-' | ' ' | '<' | '>' | '=' | '!' | '\\r' | '\\n' | '^' | '$' | '*' | ',' | '+' ) )* )
-            // StringFilter.g:79:11: (~ ( '-' | ' ' | '<' | '>' | '=' | '!' | '\\r' | '\\n' | '^' | '$' | '*' | ',' | '+' ) )*
+            // StringFilter.g:104:9: ( (~ ( '-' | ' ' | '<' | '>' | '=' | '!' | '\\r' | '\\n' | '^' | '$' | '*' | ',' | '+' ) )* )
+            // StringFilter.g:104:11: (~ ( '-' | ' ' | '<' | '>' | '=' | '!' | '\\r' | '\\n' | '^' | '$' | '*' | ',' | '+' ) )*
             {
-            	// StringFilter.g:79:11: (~ ( '-' | ' ' | '<' | '>' | '=' | '!' | '\\r' | '\\n' | '^' | '$' | '*' | ',' | '+' ) )*
+            	// StringFilter.g:104:11: (~ ( '-' | ' ' | '<' | '>' | '=' | '!' | '\\r' | '\\n' | '^' | '$' | '*' | ',' | '+' ) )*
             	do 
             	{
             	    int alt4 = 2;
@@ -725,7 +839,7 @@ public partial class StringFilterLexer : Lexer {
             	    switch (alt4) 
             		{
             			case 1 :
-            			    // StringFilter.g:79:12: ~ ( '-' | ' ' | '<' | '>' | '=' | '!' | '\\r' | '\\n' | '^' | '$' | '*' | ',' | '+' )
+            			    // StringFilter.g:104:12: ~ ( '-' | ' ' | '<' | '>' | '=' | '!' | '\\r' | '\\n' | '^' | '$' | '*' | ',' | '+' )
             			    {
             			    	if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t') || (input.LA(1) >= '\u000B' && input.LA(1) <= '\f') || (input.LA(1) >= '\u000E' && input.LA(1) <= '\u001F') || (input.LA(1) >= '\"' && input.LA(1) <= '#') || (input.LA(1) >= '%' && input.LA(1) <= ')') || (input.LA(1) >= '.' && input.LA(1) <= ';') || (input.LA(1) >= '?' && input.LA(1) <= ']') || (input.LA(1) >= '_' && input.LA(1) <= '\uFFFF') ) 
             			    	{
@@ -769,10 +883,10 @@ public partial class StringFilterLexer : Lexer {
     		{
             int _type = WHITESPACE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // StringFilter.g:81:12: ( ( '\\t' | ' ' | '\\u000C' )+ )
-            // StringFilter.g:81:14: ( '\\t' | ' ' | '\\u000C' )+
+            // StringFilter.g:106:12: ( ( '\\t' | ' ' | '\\u000C' )+ )
+            // StringFilter.g:106:14: ( '\\t' | ' ' | '\\u000C' )+
             {
-            	// StringFilter.g:81:14: ( '\\t' | ' ' | '\\u000C' )+
+            	// StringFilter.g:106:14: ( '\\t' | ' ' | '\\u000C' )+
             	int cnt5 = 0;
             	do 
             	{
@@ -837,10 +951,10 @@ public partial class StringFilterLexer : Lexer {
     		{
             int _type = ENDLINE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // StringFilter.g:82:8: ( ( '\\r' | '\\n' )+ )
-            // StringFilter.g:82:10: ( '\\r' | '\\n' )+
+            // StringFilter.g:107:8: ( ( '\\r' | '\\n' )+ )
+            // StringFilter.g:107:10: ( '\\r' | '\\n' )+
             {
-            	// StringFilter.g:82:10: ( '\\r' | '\\n' )+
+            	// StringFilter.g:107:10: ( '\\r' | '\\n' )+
             	int cnt6 = 0;
             	do 
             	{
@@ -902,8 +1016,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:84:17: ( '0' .. '9' )
-            // StringFilter.g:84:19: '0' .. '9'
+            // StringFilter.g:109:17: ( '0' .. '9' )
+            // StringFilter.g:109:19: '0' .. '9'
             {
             	MatchRange('0','9'); 
 
@@ -921,8 +1035,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:86:11: ( 'A' )
-            // StringFilter.g:86:13: 'A'
+            // StringFilter.g:111:11: ( 'A' )
+            // StringFilter.g:111:13: 'A'
             {
             	Match('A'); 
 
@@ -940,8 +1054,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:87:11: ( 'B' )
-            // StringFilter.g:87:13: 'B'
+            // StringFilter.g:112:11: ( 'B' )
+            // StringFilter.g:112:13: 'B'
             {
             	Match('B'); 
 
@@ -959,8 +1073,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:88:11: ( 'C' )
-            // StringFilter.g:88:13: 'C'
+            // StringFilter.g:113:11: ( 'C' )
+            // StringFilter.g:113:13: 'C'
             {
             	Match('C'); 
 
@@ -978,8 +1092,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:89:11: ( 'D' )
-            // StringFilter.g:89:13: 'D'
+            // StringFilter.g:114:11: ( 'D' )
+            // StringFilter.g:114:13: 'D'
             {
             	Match('D'); 
 
@@ -997,8 +1111,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:90:11: ( 'E' )
-            // StringFilter.g:90:13: 'E'
+            // StringFilter.g:115:11: ( 'E' )
+            // StringFilter.g:115:13: 'E'
             {
             	Match('E'); 
 
@@ -1016,8 +1130,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:91:11: ( 'F' )
-            // StringFilter.g:91:13: 'F'
+            // StringFilter.g:116:11: ( 'F' )
+            // StringFilter.g:116:13: 'F'
             {
             	Match('F'); 
 
@@ -1035,8 +1149,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:92:11: ( 'G' )
-            // StringFilter.g:92:13: 'G'
+            // StringFilter.g:117:11: ( 'G' )
+            // StringFilter.g:117:13: 'G'
             {
             	Match('G'); 
 
@@ -1054,8 +1168,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:93:11: ( 'H' )
-            // StringFilter.g:93:13: 'H'
+            // StringFilter.g:118:11: ( 'H' )
+            // StringFilter.g:118:13: 'H'
             {
             	Match('H'); 
 
@@ -1073,8 +1187,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:94:11: ( 'I' )
-            // StringFilter.g:94:13: 'I'
+            // StringFilter.g:119:11: ( 'I' )
+            // StringFilter.g:119:13: 'I'
             {
             	Match('I'); 
 
@@ -1092,8 +1206,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:95:11: ( 'J' )
-            // StringFilter.g:95:13: 'J'
+            // StringFilter.g:120:11: ( 'J' )
+            // StringFilter.g:120:13: 'J'
             {
             	Match('J'); 
 
@@ -1111,8 +1225,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:96:11: ( 'K' )
-            // StringFilter.g:96:13: 'K'
+            // StringFilter.g:121:11: ( 'K' )
+            // StringFilter.g:121:13: 'K'
             {
             	Match('K'); 
 
@@ -1130,8 +1244,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:97:11: ( 'L' )
-            // StringFilter.g:97:13: 'L'
+            // StringFilter.g:122:11: ( 'L' )
+            // StringFilter.g:122:13: 'L'
             {
             	Match('L'); 
 
@@ -1149,8 +1263,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:98:11: ( 'M' )
-            // StringFilter.g:98:13: 'M'
+            // StringFilter.g:123:11: ( 'M' )
+            // StringFilter.g:123:13: 'M'
             {
             	Match('M'); 
 
@@ -1168,8 +1282,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:99:11: ( 'N' )
-            // StringFilter.g:99:13: 'N'
+            // StringFilter.g:124:11: ( 'N' )
+            // StringFilter.g:124:13: 'N'
             {
             	Match('N'); 
 
@@ -1187,8 +1301,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:100:11: ( 'O' )
-            // StringFilter.g:100:13: 'O'
+            // StringFilter.g:125:11: ( 'O' )
+            // StringFilter.g:125:13: 'O'
             {
             	Match('O'); 
 
@@ -1206,8 +1320,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:101:11: ( 'P' )
-            // StringFilter.g:101:13: 'P'
+            // StringFilter.g:126:11: ( 'P' )
+            // StringFilter.g:126:13: 'P'
             {
             	Match('P'); 
 
@@ -1225,8 +1339,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:102:11: ( 'Q' )
-            // StringFilter.g:102:13: 'Q'
+            // StringFilter.g:127:11: ( 'Q' )
+            // StringFilter.g:127:13: 'Q'
             {
             	Match('Q'); 
 
@@ -1244,8 +1358,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:103:11: ( 'R' )
-            // StringFilter.g:103:13: 'R'
+            // StringFilter.g:128:11: ( 'R' )
+            // StringFilter.g:128:13: 'R'
             {
             	Match('R'); 
 
@@ -1263,8 +1377,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:104:11: ( 'S' )
-            // StringFilter.g:104:13: 'S'
+            // StringFilter.g:129:11: ( 'S' )
+            // StringFilter.g:129:13: 'S'
             {
             	Match('S'); 
 
@@ -1282,8 +1396,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:105:11: ( 'T' )
-            // StringFilter.g:105:13: 'T'
+            // StringFilter.g:130:11: ( 'T' )
+            // StringFilter.g:130:13: 'T'
             {
             	Match('T'); 
 
@@ -1301,8 +1415,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:106:11: ( 'U' )
-            // StringFilter.g:106:13: 'U'
+            // StringFilter.g:131:11: ( 'U' )
+            // StringFilter.g:131:13: 'U'
             {
             	Match('U'); 
 
@@ -1320,8 +1434,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:107:11: ( 'V' )
-            // StringFilter.g:107:13: 'V'
+            // StringFilter.g:132:11: ( 'V' )
+            // StringFilter.g:132:13: 'V'
             {
             	Match('V'); 
 
@@ -1339,8 +1453,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:108:11: ( 'W' )
-            // StringFilter.g:108:13: 'W'
+            // StringFilter.g:133:11: ( 'W' )
+            // StringFilter.g:133:13: 'W'
             {
             	Match('W'); 
 
@@ -1358,8 +1472,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:109:11: ( 'X' )
-            // StringFilter.g:109:13: 'X'
+            // StringFilter.g:134:11: ( 'X' )
+            // StringFilter.g:134:13: 'X'
             {
             	Match('X'); 
 
@@ -1377,8 +1491,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:110:11: ( 'Y' )
-            // StringFilter.g:110:13: 'Y'
+            // StringFilter.g:135:11: ( 'Y' )
+            // StringFilter.g:135:13: 'Y'
             {
             	Match('Y'); 
 
@@ -1396,8 +1510,8 @@ public partial class StringFilterLexer : Lexer {
     {
     		try
     		{
-            // StringFilter.g:111:11: ( 'Z' )
-            // StringFilter.g:111:13: 'Z'
+            // StringFilter.g:136:11: ( 'Z' )
+            // StringFilter.g:136:13: 'Z'
             {
             	Match('Z'); 
 
@@ -1412,8 +1526,8 @@ public partial class StringFilterLexer : Lexer {
 
     override public void mTokens() // throws RecognitionException 
     {
-        // StringFilter.g:1:8: ( MINUS | LT | GT | GE | LE | NE | EQ | PLUS | STAR | COMMA | ARROW | DOLLAR | NARROW | NDOLLAR | T_NULL | T_NOT | T_EMPTY | A_STRING | Q_STRING | I_STRING | WHITESPACE | ENDLINE )
-        int alt7 = 22;
+        // StringFilter.g:1:8: ( MINUS | LT | GT | GE | LE | NE | EQ | PLUS | STAR | COMMA | ARROW | DOLLAR | NARROW | NDOLLAR | DOT | EQ2 | NE2 | T_NULL | T_NOT | T_EMPTY | SQL_LITERAL | A_STRING | Q_STRING | I_STRING | WHITESPACE | ENDLINE )
+        int alt7 = 26;
         alt7 = dfa7.Predict(input);
         switch (alt7) 
         {
@@ -1516,56 +1630,84 @@ public partial class StringFilterLexer : Lexer {
                 }
                 break;
             case 15 :
-                // StringFilter.g:1:78: T_NULL
+                // StringFilter.g:1:78: DOT
+                {
+                	mDOT(); 
+
+                }
+                break;
+            case 16 :
+                // StringFilter.g:1:82: EQ2
+                {
+                	mEQ2(); 
+
+                }
+                break;
+            case 17 :
+                // StringFilter.g:1:86: NE2
+                {
+                	mNE2(); 
+
+                }
+                break;
+            case 18 :
+                // StringFilter.g:1:90: T_NULL
                 {
                 	mT_NULL(); 
 
                 }
                 break;
-            case 16 :
-                // StringFilter.g:1:85: T_NOT
+            case 19 :
+                // StringFilter.g:1:97: T_NOT
                 {
                 	mT_NOT(); 
 
                 }
                 break;
-            case 17 :
-                // StringFilter.g:1:91: T_EMPTY
+            case 20 :
+                // StringFilter.g:1:103: T_EMPTY
                 {
                 	mT_EMPTY(); 
 
                 }
                 break;
-            case 18 :
-                // StringFilter.g:1:99: A_STRING
+            case 21 :
+                // StringFilter.g:1:111: SQL_LITERAL
+                {
+                	mSQL_LITERAL(); 
+
+                }
+                break;
+            case 22 :
+                // StringFilter.g:1:123: A_STRING
                 {
                 	mA_STRING(); 
 
                 }
                 break;
-            case 19 :
-                // StringFilter.g:1:108: Q_STRING
+            case 23 :
+                // StringFilter.g:1:132: Q_STRING
                 {
                 	mQ_STRING(); 
 
                 }
                 break;
-            case 20 :
-                // StringFilter.g:1:117: I_STRING
+            case 24 :
+                // StringFilter.g:1:141: I_STRING
                 {
                 	mI_STRING(); 
 
                 }
                 break;
-            case 21 :
-                // StringFilter.g:1:126: WHITESPACE
+            case 25 :
+                // StringFilter.g:1:150: WHITESPACE
                 {
                 	mWHITESPACE(); 
 
                 }
                 break;
-            case 22 :
-                // StringFilter.g:1:137: ENDLINE
+            case 26 :
+                // StringFilter.g:1:161: ENDLINE
                 {
                 	mENDLINE(); 
 
@@ -1585,101 +1727,123 @@ public partial class StringFilterLexer : Lexer {
 	}
 
     const string DFA7_eotS =
-        "\x01\x10\x01\uffff\x01\x15\x01\x17\x07\uffff\x05\x10\x0a\uffff"+
-        "\x04\x10\x01\x1f\x01\uffff\x01\x10\x01\x22\x01\uffff\x01\x10\x01"+
-        "\x29\x03\x10\x01\x2b\x01\uffff\x01\x10\x01\uffff\x01\x2d\x01\uffff";
+        "\x01\x12\x01\uffff\x01\x17\x01\x19\x01\x1b\x06\uffff\x01\x1f\x06"+
+        "\x12\x0e\uffff\x04\x12\x01\x25\x01\uffff\x01\x12\x01\x28\x01\uffff"+
+        "\x01\x12\x01\x2b\x01\uffff\x01\x12\x01\x32\x03\x12\x01\x34\x01\uffff"+
+        "\x01\x12\x01\uffff\x01\x36\x01\uffff";
     const string DFA7_eofS =
-        "\x2e\uffff";
+        "\x37\uffff";
     const string DFA7_minS =
-        "\x01\x09\x01\uffff\x02\x3d\x01\x24\x06\uffff\x01\x4f\x01\x4d\x02"+
-        "\x00\x01\x09\x0a\uffff\x01\x4c\x01\x54\x01\x50\x02\x00\x01\uffff"+
-        "\x02\x00\x01\uffff\x01\x4c\x01\x00\x01\x54\x03\x00\x01\uffff\x01"+
-        "\x59\x01\uffff\x01\x00\x01\uffff";
+        "\x01\x09\x01\uffff\x03\x3d\x05\uffff\x01\x24\x01\x00\x01\x4f\x01"+
+        "\x4d\x03\x00\x01\x09\x0e\uffff\x01\x4c\x01\x54\x01\x50\x02\x00\x01"+
+        "\uffff\x02\x00\x01\uffff\x02\x00\x01\uffff\x01\x4c\x01\x00\x01\x54"+
+        "\x03\x00\x01\uffff\x01\x59\x01\uffff\x01\x00\x01\uffff";
     const string DFA7_maxS =
-        "\x01\x5e\x01\uffff\x01\x3e\x01\x3d\x01\x5e\x06\uffff\x01\x55\x01"+
-        "\x4d\x02\uffff\x01\x20\x0a\uffff\x01\x4c\x01\x54\x01\x50\x02\uffff"+
-        "\x01\uffff\x02\uffff\x01\uffff\x01\x4c\x01\uffff\x01\x54\x03\uffff"+
-        "\x01\uffff\x01\x59\x01\uffff\x01\uffff\x01\uffff";
+        "\x01\x5e\x01\uffff\x01\x3e\x02\x3d\x05\uffff\x01\x5e\x01\uffff"+
+        "\x01\x55\x01\x4d\x03\uffff\x01\x20\x0e\uffff\x01\x4c\x01\x54\x01"+
+        "\x50\x02\uffff\x01\uffff\x02\uffff\x01\uffff\x02\uffff\x01\uffff"+
+        "\x01\x4c\x01\uffff\x01\x54\x03\uffff\x01\uffff\x01\x59\x01\uffff"+
+        "\x01\uffff\x01\uffff";
     const string DFA7_acceptS =
-        "\x01\uffff\x01\x01\x03\uffff\x01\x07\x01\x08\x01\x09\x01\x0a\x01"+
-        "\x0b\x01\x0c\x05\uffff\x01\x14\x01\x15\x01\x16\x01\x05\x01\x06\x01"+
-        "\x02\x01\x04\x01\x03\x01\x0d\x01\x0e\x05\uffff\x01\x12\x02\uffff"+
-        "\x01\x13\x06\uffff\x01\x10\x01\uffff\x01\x0f\x01\uffff\x01\x11";
+        "\x01\uffff\x01\x01\x03\uffff\x01\x08\x01\x09\x01\x0a\x01\x0b\x01"+
+        "\x0c\x08\uffff\x01\x18\x01\x19\x01\x1a\x01\x05\x01\x06\x01\x02\x01"+
+        "\x04\x01\x03\x01\x10\x01\x07\x01\x0d\x01\x0e\x01\x11\x01\x0f\x05"+
+        "\uffff\x01\x15\x02\uffff\x01\x16\x02\uffff\x01\x17\x06\uffff\x01"+
+        "\x13\x01\uffff\x01\x12\x01\uffff\x01\x14";
     const string DFA7_specialS =
-        "\x0d\uffff\x01\x08\x01\x06\x0e\uffff\x01\x04\x01\x00\x01\uffff"+
-        "\x01\x07\x01\x03\x02\uffff\x01\x02\x01\uffff\x01\x05\x01\x09\x01"+
-        "\x0a\x03\uffff\x01\x01\x01\uffff}>";
+        "\x0b\uffff\x01\x07\x02\uffff\x01\x0a\x01\x08\x01\x05\x12\uffff"+
+        "\x01\x0e\x01\x00\x01\uffff\x01\x02\x01\x06\x01\uffff\x01\x01\x01"+
+        "\x0d\x02\uffff\x01\x03\x01\uffff\x01\x04\x01\x0b\x01\x09\x03\uffff"+
+        "\x01\x0c\x01\uffff}>";
     static readonly string[] DFA7_transitionS = {
-            "\x01\x0f\x01\x12\x01\uffff\x01\x0f\x01\x12\x12\uffff\x01\x11"+
-            "\x01\x04\x01\x0e\x01\uffff\x01\x0a\x02\uffff\x01\x0d\x02\uffff"+
-            "\x01\x07\x01\x06\x01\x08\x01\x01\x0e\uffff\x01\x02\x01\x05\x01"+
-            "\x03\x06\uffff\x01\x0c\x08\uffff\x01\x0b\x0f\uffff\x01\x09",
+            "\x01\x11\x01\x14\x01\uffff\x01\x11\x01\x14\x12\uffff\x01\x13"+
+            "\x01\x0a\x01\x10\x01\uffff\x01\x09\x02\uffff\x01\x0f\x02\uffff"+
+            "\x01\x06\x01\x05\x01\x07\x01\x01\x01\x0b\x0d\uffff\x01\x02\x01"+
+            "\x04\x01\x03\x06\uffff\x01\x0d\x08\uffff\x01\x0c\x0c\uffff\x01"+
+            "\x0e\x02\uffff\x01\x08",
             "",
-            "\x01\x13\x01\x14",
-            "\x01\x16",
-            "\x01\x19\x18\uffff\x01\x14\x20\uffff\x01\x18",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "\x01\x1b\x05\uffff\x01\x1a",
-            "\x01\x1c",
-            "\x0a\x1d\x01\uffff\x02\x1d\x01\uffff\x12\x1d\x02\x1f\x02\x1d"+
-            "\x01\x1f\x02\x1d\x01\x1e\x02\x1d\x04\x1f\x0e\x1d\x03\x1f\x1f"+
-            "\x1d\x01\x1f\uffa1\x1d",
-            "\x0a\x20\x01\uffff\x02\x20\x01\uffff\x12\x20\x02\x22\x01\x21"+
-            "\x01\x20\x01\x22\x05\x20\x04\x22\x0e\x20\x03\x22\x1f\x20\x01"+
-            "\x22\uffa1\x20",
-            "\x01\x0f\x02\uffff\x01\x0f\x13\uffff\x01\x11",
+            "\x01\x15\x01\x16",
+            "\x01\x18",
+            "\x01\x1a",
             "",
             "",
             "",
             "",
             "",
+            "\x01\x1d\x18\uffff\x01\x1e\x20\uffff\x01\x1c",
+            "\x0a\x12\x01\uffff\x02\x12\x01\uffff\x12\x12\x02\uffff\x02"+
+            "\x12\x01\uffff\x05\x12\x04\uffff\x0e\x12\x03\uffff\x1f\x12\x01"+
+            "\uffff\uffa1\x12",
+            "\x01\x21\x05\uffff\x01\x20",
+            "\x01\x22",
+            "\x0a\x23\x01\uffff\x02\x23\x01\uffff\x12\x23\x02\x25\x02\x23"+
+            "\x01\x25\x05\x23\x04\x25\x0e\x23\x03\x25\x1e\x23\x01\x24\x01"+
+            "\x25\uffa1\x23",
+            "\x0a\x26\x01\uffff\x02\x26\x01\uffff\x12\x26\x02\x28\x02\x26"+
+            "\x01\x28\x02\x26\x01\x27\x02\x26\x04\x28\x0e\x26\x03\x28\x1f"+
+            "\x26\x01\x28\uffa1\x26",
+            "\x0a\x29\x01\uffff\x02\x29\x01\uffff\x12\x29\x02\x2b\x01\x2a"+
+            "\x01\x29\x01\x2b\x05\x29\x04\x2b\x0e\x29\x03\x2b\x1f\x29\x01"+
+            "\x2b\uffa1\x29",
+            "\x01\x11\x02\uffff\x01\x11\x13\uffff\x01\x13",
             "",
             "",
             "",
             "",
             "",
-            "\x01\x23",
-            "\x01\x24",
-            "\x01\x25",
-            "\x0a\x1d\x01\uffff\x02\x1d\x01\uffff\x12\x1d\x02\x1f\x02\x1d"+
-            "\x01\x1f\x02\x1d\x01\x1e\x02\x1d\x04\x1f\x0e\x1d\x03\x1f\x1f"+
-            "\x1d\x01\x1f\uffa1\x1d",
-            "\x0a\x10\x01\uffff\x02\x10\x01\uffff\x12\x10\x02\uffff\x02"+
-            "\x10\x01\uffff\x02\x10\x01\x26\x02\x10\x04\uffff\x0e\x10\x03"+
-            "\uffff\x1f\x10\x01\uffff\uffa1\x10",
             "",
-            "\x0a\x20\x01\uffff\x02\x20\x01\uffff\x12\x20\x02\x22\x01\x21"+
-            "\x01\x20\x01\x22\x05\x20\x04\x22\x0e\x20\x03\x22\x1f\x20\x01"+
-            "\x22\uffa1\x20",
-            "\x0a\x10\x01\uffff\x02\x10\x01\uffff\x12\x10\x02\uffff\x01"+
-            "\x27\x01\x10\x01\uffff\x05\x10\x04\uffff\x0e\x10\x03\uffff\x1f"+
-            "\x10\x01\uffff\uffa1\x10",
             "",
-            "\x01\x28",
-            "\x0a\x10\x01\uffff\x02\x10\x01\uffff\x12\x10\x02\uffff\x02"+
-            "\x10\x01\uffff\x05\x10\x04\uffff\x0e\x10\x03\uffff\x1f\x10\x01"+
-            "\uffff\uffa1\x10",
-            "\x01\x2a",
-            "\x0a\x1d\x01\uffff\x02\x1d\x01\uffff\x12\x1d\x02\x1f\x02\x1d"+
-            "\x01\x1f\x02\x1d\x01\x1e\x02\x1d\x04\x1f\x0e\x1d\x03\x1f\x1f"+
-            "\x1d\x01\x1f\uffa1\x1d",
-            "\x0a\x20\x01\uffff\x02\x20\x01\uffff\x12\x20\x02\x22\x01\x21"+
-            "\x01\x20\x01\x22\x05\x20\x04\x22\x0e\x20\x03\x22\x1f\x20\x01"+
-            "\x22\uffa1\x20",
-            "\x0a\x10\x01\uffff\x02\x10\x01\uffff\x12\x10\x02\uffff\x02"+
-            "\x10\x01\uffff\x05\x10\x04\uffff\x0e\x10\x03\uffff\x1f\x10\x01"+
-            "\uffff\uffa1\x10",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
             "",
             "\x01\x2c",
+            "\x01\x2d",
+            "\x01\x2e",
+            "\x0a\x23\x01\uffff\x02\x23\x01\uffff\x12\x23\x02\x25\x02\x23"+
+            "\x01\x25\x05\x23\x04\x25\x0e\x23\x03\x25\x1e\x23\x01\x24\x01"+
+            "\x25\uffa1\x23",
+            "\x0a\x12\x01\uffff\x02\x12\x01\uffff\x12\x12\x02\uffff\x02"+
+            "\x12\x01\uffff\x05\x12\x04\uffff\x0e\x12\x03\uffff\x1f\x12\x01"+
+            "\uffff\uffa1\x12",
             "",
-            "\x0a\x10\x01\uffff\x02\x10\x01\uffff\x12\x10\x02\uffff\x02"+
-            "\x10\x01\uffff\x05\x10\x04\uffff\x0e\x10\x03\uffff\x1f\x10\x01"+
-            "\uffff\uffa1\x10",
+            "\x0a\x26\x01\uffff\x02\x26\x01\uffff\x12\x26\x02\x28\x02\x26"+
+            "\x01\x28\x02\x26\x01\x27\x02\x26\x04\x28\x0e\x26\x03\x28\x1f"+
+            "\x26\x01\x28\uffa1\x26",
+            "\x0a\x12\x01\uffff\x02\x12\x01\uffff\x12\x12\x02\uffff\x02"+
+            "\x12\x01\uffff\x02\x12\x01\x2f\x02\x12\x04\uffff\x0e\x12\x03"+
+            "\uffff\x1f\x12\x01\uffff\uffa1\x12",
+            "",
+            "\x0a\x29\x01\uffff\x02\x29\x01\uffff\x12\x29\x02\x2b\x01\x2a"+
+            "\x01\x29\x01\x2b\x05\x29\x04\x2b\x0e\x29\x03\x2b\x1f\x29\x01"+
+            "\x2b\uffa1\x29",
+            "\x0a\x12\x01\uffff\x02\x12\x01\uffff\x12\x12\x02\uffff\x01"+
+            "\x30\x01\x12\x01\uffff\x05\x12\x04\uffff\x0e\x12\x03\uffff\x1f"+
+            "\x12\x01\uffff\uffa1\x12",
+            "",
+            "\x01\x31",
+            "\x0a\x12\x01\uffff\x02\x12\x01\uffff\x12\x12\x02\uffff\x02"+
+            "\x12\x01\uffff\x05\x12\x04\uffff\x0e\x12\x03\uffff\x1f\x12\x01"+
+            "\uffff\uffa1\x12",
+            "\x01\x33",
+            "\x0a\x26\x01\uffff\x02\x26\x01\uffff\x12\x26\x02\x28\x02\x26"+
+            "\x01\x28\x02\x26\x01\x27\x02\x26\x04\x28\x0e\x26\x03\x28\x1f"+
+            "\x26\x01\x28\uffa1\x26",
+            "\x0a\x29\x01\uffff\x02\x29\x01\uffff\x12\x29\x02\x2b\x01\x2a"+
+            "\x01\x29\x01\x2b\x05\x29\x04\x2b\x0e\x29\x03\x2b\x1f\x29\x01"+
+            "\x2b\uffa1\x29",
+            "\x0a\x12\x01\uffff\x02\x12\x01\uffff\x12\x12\x02\uffff\x02"+
+            "\x12\x01\uffff\x05\x12\x04\uffff\x0e\x12\x03\uffff\x1f\x12\x01"+
+            "\uffff\uffa1\x12",
+            "",
+            "\x01\x35",
+            "",
+            "\x0a\x12\x01\uffff\x02\x12\x01\uffff\x12\x12\x02\uffff\x02"+
+            "\x12\x01\uffff\x05\x12\x04\uffff\x0e\x12\x03\uffff\x1f\x12\x01"+
+            "\uffff\uffa1\x12",
             ""
     };
 
@@ -1709,7 +1873,7 @@ public partial class StringFilterLexer : Lexer {
 
         override public string Description
         {
-            get { return "1:1: Tokens : ( MINUS | LT | GT | GE | LE | NE | EQ | PLUS | STAR | COMMA | ARROW | DOLLAR | NARROW | NDOLLAR | T_NULL | T_NOT | T_EMPTY | A_STRING | Q_STRING | I_STRING | WHITESPACE | ENDLINE );"; }
+            get { return "1:1: Tokens : ( MINUS | LT | GT | GE | LE | NE | EQ | PLUS | STAR | COMMA | ARROW | DOLLAR | NARROW | NDOLLAR | DOT | EQ2 | NE2 | T_NULL | T_NOT | T_EMPTY | SQL_LITERAL | A_STRING | Q_STRING | I_STRING | WHITESPACE | ENDLINE );"; }
         }
 
     }
@@ -1722,140 +1886,188 @@ public partial class StringFilterLexer : Lexer {
         switch ( s )
         {
                	case 0 : 
-                   	int LA7_30 = input.LA(1);
+                   	int LA7_36 = input.LA(1);
 
                    	s = -1;
-                   	if ( (LA7_30 == '\'') ) { s = 38; }
+                   	if ( ((LA7_36 >= '\u0000' && LA7_36 <= '\t') || (LA7_36 >= '\u000B' && LA7_36 <= '\f') || (LA7_36 >= '\u000E' && LA7_36 <= '\u001F') || (LA7_36 >= '\"' && LA7_36 <= '#') || (LA7_36 >= '%' && LA7_36 <= ')') || (LA7_36 >= '.' && LA7_36 <= ';') || (LA7_36 >= '?' && LA7_36 <= ']') || (LA7_36 >= '_' && LA7_36 <= '\uFFFF')) ) { s = 18; }
 
-                   	else if ( ((LA7_30 >= '\u0000' && LA7_30 <= '\t') || (LA7_30 >= '\u000B' && LA7_30 <= '\f') || (LA7_30 >= '\u000E' && LA7_30 <= '\u001F') || (LA7_30 >= '\"' && LA7_30 <= '#') || (LA7_30 >= '%' && LA7_30 <= '&') || (LA7_30 >= '(' && LA7_30 <= ')') || (LA7_30 >= '.' && LA7_30 <= ';') || (LA7_30 >= '?' && LA7_30 <= ']') || (LA7_30 >= '_' && LA7_30 <= '\uFFFF')) ) { s = 16; }
+                   	else s = 37;
+
+                   	if ( s >= 0 ) return s;
+                   	break;
+               	case 1 : 
+                   	int LA7_41 = input.LA(1);
+
+                   	s = -1;
+                   	if ( (LA7_41 == '\"') ) { s = 42; }
+
+                   	else if ( ((LA7_41 >= '\u0000' && LA7_41 <= '\t') || (LA7_41 >= '\u000B' && LA7_41 <= '\f') || (LA7_41 >= '\u000E' && LA7_41 <= '\u001F') || LA7_41 == '#' || (LA7_41 >= '%' && LA7_41 <= ')') || (LA7_41 >= '.' && LA7_41 <= ';') || (LA7_41 >= '?' && LA7_41 <= ']') || (LA7_41 >= '_' && LA7_41 <= '\uFFFF')) ) { s = 41; }
+
+                   	else if ( ((LA7_41 >= ' ' && LA7_41 <= '!') || LA7_41 == '$' || (LA7_41 >= '*' && LA7_41 <= '-') || (LA7_41 >= '<' && LA7_41 <= '>') || LA7_41 == '^') ) { s = 43; }
+
+                   	else s = 18;
+
+                   	if ( s >= 0 ) return s;
+                   	break;
+               	case 2 : 
+                   	int LA7_38 = input.LA(1);
+
+                   	s = -1;
+                   	if ( (LA7_38 == '\'') ) { s = 39; }
+
+                   	else if ( ((LA7_38 >= '\u0000' && LA7_38 <= '\t') || (LA7_38 >= '\u000B' && LA7_38 <= '\f') || (LA7_38 >= '\u000E' && LA7_38 <= '\u001F') || (LA7_38 >= '\"' && LA7_38 <= '#') || (LA7_38 >= '%' && LA7_38 <= '&') || (LA7_38 >= '(' && LA7_38 <= ')') || (LA7_38 >= '.' && LA7_38 <= ';') || (LA7_38 >= '?' && LA7_38 <= ']') || (LA7_38 >= '_' && LA7_38 <= '\uFFFF')) ) { s = 38; }
+
+                   	else if ( ((LA7_38 >= ' ' && LA7_38 <= '!') || LA7_38 == '$' || (LA7_38 >= '*' && LA7_38 <= '-') || (LA7_38 >= '<' && LA7_38 <= '>') || LA7_38 == '^') ) { s = 40; }
+
+                   	else s = 18;
+
+                   	if ( s >= 0 ) return s;
+                   	break;
+               	case 3 : 
+                   	int LA7_45 = input.LA(1);
+
+                   	s = -1;
+                   	if ( ((LA7_45 >= '\u0000' && LA7_45 <= '\t') || (LA7_45 >= '\u000B' && LA7_45 <= '\f') || (LA7_45 >= '\u000E' && LA7_45 <= '\u001F') || (LA7_45 >= '\"' && LA7_45 <= '#') || (LA7_45 >= '%' && LA7_45 <= ')') || (LA7_45 >= '.' && LA7_45 <= ';') || (LA7_45 >= '?' && LA7_45 <= ']') || (LA7_45 >= '_' && LA7_45 <= '\uFFFF')) ) { s = 18; }
+
+                   	else s = 50;
+
+                   	if ( s >= 0 ) return s;
+                   	break;
+               	case 4 : 
+                   	int LA7_47 = input.LA(1);
+
+                   	s = -1;
+                   	if ( (LA7_47 == '\'') ) { s = 39; }
+
+                   	else if ( ((LA7_47 >= '\u0000' && LA7_47 <= '\t') || (LA7_47 >= '\u000B' && LA7_47 <= '\f') || (LA7_47 >= '\u000E' && LA7_47 <= '\u001F') || (LA7_47 >= '\"' && LA7_47 <= '#') || (LA7_47 >= '%' && LA7_47 <= '&') || (LA7_47 >= '(' && LA7_47 <= ')') || (LA7_47 >= '.' && LA7_47 <= ';') || (LA7_47 >= '?' && LA7_47 <= ']') || (LA7_47 >= '_' && LA7_47 <= '\uFFFF')) ) { s = 38; }
+
+                   	else if ( ((LA7_47 >= ' ' && LA7_47 <= '!') || LA7_47 == '$' || (LA7_47 >= '*' && LA7_47 <= '-') || (LA7_47 >= '<' && LA7_47 <= '>') || LA7_47 == '^') ) { s = 40; }
+
+                   	else s = 18;
+
+                   	if ( s >= 0 ) return s;
+                   	break;
+               	case 5 : 
+                   	int LA7_16 = input.LA(1);
+
+                   	s = -1;
+                   	if ( ((LA7_16 >= '\u0000' && LA7_16 <= '\t') || (LA7_16 >= '\u000B' && LA7_16 <= '\f') || (LA7_16 >= '\u000E' && LA7_16 <= '\u001F') || LA7_16 == '#' || (LA7_16 >= '%' && LA7_16 <= ')') || (LA7_16 >= '.' && LA7_16 <= ';') || (LA7_16 >= '?' && LA7_16 <= ']') || (LA7_16 >= '_' && LA7_16 <= '\uFFFF')) ) { s = 41; }
+
+                   	else if ( (LA7_16 == '\"') ) { s = 42; }
+
+                   	else if ( ((LA7_16 >= ' ' && LA7_16 <= '!') || LA7_16 == '$' || (LA7_16 >= '*' && LA7_16 <= '-') || (LA7_16 >= '<' && LA7_16 <= '>') || LA7_16 == '^') ) { s = 43; }
+
+                   	else s = 18;
+
+                   	if ( s >= 0 ) return s;
+                   	break;
+               	case 6 : 
+                   	int LA7_39 = input.LA(1);
+
+                   	s = -1;
+                   	if ( (LA7_39 == '\'') ) { s = 47; }
+
+                   	else if ( ((LA7_39 >= '\u0000' && LA7_39 <= '\t') || (LA7_39 >= '\u000B' && LA7_39 <= '\f') || (LA7_39 >= '\u000E' && LA7_39 <= '\u001F') || (LA7_39 >= '\"' && LA7_39 <= '#') || (LA7_39 >= '%' && LA7_39 <= '&') || (LA7_39 >= '(' && LA7_39 <= ')') || (LA7_39 >= '.' && LA7_39 <= ';') || (LA7_39 >= '?' && LA7_39 <= ']') || (LA7_39 >= '_' && LA7_39 <= '\uFFFF')) ) { s = 18; }
+
+                   	else s = 40;
+
+                   	if ( s >= 0 ) return s;
+                   	break;
+               	case 7 : 
+                   	int LA7_11 = input.LA(1);
+
+                   	s = -1;
+                   	if ( ((LA7_11 >= '\u0000' && LA7_11 <= '\t') || (LA7_11 >= '\u000B' && LA7_11 <= '\f') || (LA7_11 >= '\u000E' && LA7_11 <= '\u001F') || (LA7_11 >= '\"' && LA7_11 <= '#') || (LA7_11 >= '%' && LA7_11 <= ')') || (LA7_11 >= '.' && LA7_11 <= ';') || (LA7_11 >= '?' && LA7_11 <= ']') || (LA7_11 >= '_' && LA7_11 <= '\uFFFF')) ) { s = 18; }
 
                    	else s = 31;
 
                    	if ( s >= 0 ) return s;
                    	break;
-               	case 1 : 
-                   	int LA7_44 = input.LA(1);
-
-                   	s = -1;
-                   	if ( ((LA7_44 >= '\u0000' && LA7_44 <= '\t') || (LA7_44 >= '\u000B' && LA7_44 <= '\f') || (LA7_44 >= '\u000E' && LA7_44 <= '\u001F') || (LA7_44 >= '\"' && LA7_44 <= '#') || (LA7_44 >= '%' && LA7_44 <= ')') || (LA7_44 >= '.' && LA7_44 <= ';') || (LA7_44 >= '?' && LA7_44 <= ']') || (LA7_44 >= '_' && LA7_44 <= '\uFFFF')) ) { s = 16; }
-
-                   	else s = 45;
-
-                   	if ( s >= 0 ) return s;
-                   	break;
-               	case 2 : 
-                   	int LA7_36 = input.LA(1);
-
-                   	s = -1;
-                   	if ( ((LA7_36 >= '\u0000' && LA7_36 <= '\t') || (LA7_36 >= '\u000B' && LA7_36 <= '\f') || (LA7_36 >= '\u000E' && LA7_36 <= '\u001F') || (LA7_36 >= '\"' && LA7_36 <= '#') || (LA7_36 >= '%' && LA7_36 <= ')') || (LA7_36 >= '.' && LA7_36 <= ';') || (LA7_36 >= '?' && LA7_36 <= ']') || (LA7_36 >= '_' && LA7_36 <= '\uFFFF')) ) { s = 16; }
-
-                   	else s = 41;
-
-                   	if ( s >= 0 ) return s;
-                   	break;
-               	case 3 : 
-                   	int LA7_33 = input.LA(1);
-
-                   	s = -1;
-                   	if ( (LA7_33 == '\"') ) { s = 39; }
-
-                   	else if ( ((LA7_33 >= '\u0000' && LA7_33 <= '\t') || (LA7_33 >= '\u000B' && LA7_33 <= '\f') || (LA7_33 >= '\u000E' && LA7_33 <= '\u001F') || LA7_33 == '#' || (LA7_33 >= '%' && LA7_33 <= ')') || (LA7_33 >= '.' && LA7_33 <= ';') || (LA7_33 >= '?' && LA7_33 <= ']') || (LA7_33 >= '_' && LA7_33 <= '\uFFFF')) ) { s = 16; }
-
-                   	else s = 34;
-
-                   	if ( s >= 0 ) return s;
-                   	break;
-               	case 4 : 
-                   	int LA7_29 = input.LA(1);
-
-                   	s = -1;
-                   	if ( (LA7_29 == '\'') ) { s = 30; }
-
-                   	else if ( ((LA7_29 >= '\u0000' && LA7_29 <= '\t') || (LA7_29 >= '\u000B' && LA7_29 <= '\f') || (LA7_29 >= '\u000E' && LA7_29 <= '\u001F') || (LA7_29 >= '\"' && LA7_29 <= '#') || (LA7_29 >= '%' && LA7_29 <= '&') || (LA7_29 >= '(' && LA7_29 <= ')') || (LA7_29 >= '.' && LA7_29 <= ';') || (LA7_29 >= '?' && LA7_29 <= ']') || (LA7_29 >= '_' && LA7_29 <= '\uFFFF')) ) { s = 29; }
-
-                   	else if ( ((LA7_29 >= ' ' && LA7_29 <= '!') || LA7_29 == '$' || (LA7_29 >= '*' && LA7_29 <= '-') || (LA7_29 >= '<' && LA7_29 <= '>') || LA7_29 == '^') ) { s = 31; }
-
-                   	else s = 16;
-
-                   	if ( s >= 0 ) return s;
-                   	break;
-               	case 5 : 
-                   	int LA7_38 = input.LA(1);
-
-                   	s = -1;
-                   	if ( (LA7_38 == '\'') ) { s = 30; }
-
-                   	else if ( ((LA7_38 >= '\u0000' && LA7_38 <= '\t') || (LA7_38 >= '\u000B' && LA7_38 <= '\f') || (LA7_38 >= '\u000E' && LA7_38 <= '\u001F') || (LA7_38 >= '\"' && LA7_38 <= '#') || (LA7_38 >= '%' && LA7_38 <= '&') || (LA7_38 >= '(' && LA7_38 <= ')') || (LA7_38 >= '.' && LA7_38 <= ';') || (LA7_38 >= '?' && LA7_38 <= ']') || (LA7_38 >= '_' && LA7_38 <= '\uFFFF')) ) { s = 29; }
-
-                   	else if ( ((LA7_38 >= ' ' && LA7_38 <= '!') || LA7_38 == '$' || (LA7_38 >= '*' && LA7_38 <= '-') || (LA7_38 >= '<' && LA7_38 <= '>') || LA7_38 == '^') ) { s = 31; }
-
-                   	else s = 16;
-
-                   	if ( s >= 0 ) return s;
-                   	break;
-               	case 6 : 
-                   	int LA7_14 = input.LA(1);
-
-                   	s = -1;
-                   	if ( ((LA7_14 >= '\u0000' && LA7_14 <= '\t') || (LA7_14 >= '\u000B' && LA7_14 <= '\f') || (LA7_14 >= '\u000E' && LA7_14 <= '\u001F') || LA7_14 == '#' || (LA7_14 >= '%' && LA7_14 <= ')') || (LA7_14 >= '.' && LA7_14 <= ';') || (LA7_14 >= '?' && LA7_14 <= ']') || (LA7_14 >= '_' && LA7_14 <= '\uFFFF')) ) { s = 32; }
-
-                   	else if ( (LA7_14 == '\"') ) { s = 33; }
-
-                   	else if ( ((LA7_14 >= ' ' && LA7_14 <= '!') || LA7_14 == '$' || (LA7_14 >= '*' && LA7_14 <= '-') || (LA7_14 >= '<' && LA7_14 <= '>') || LA7_14 == '^') ) { s = 34; }
-
-                   	else s = 16;
-
-                   	if ( s >= 0 ) return s;
-                   	break;
-               	case 7 : 
-                   	int LA7_32 = input.LA(1);
-
-                   	s = -1;
-                   	if ( (LA7_32 == '\"') ) { s = 33; }
-
-                   	else if ( ((LA7_32 >= '\u0000' && LA7_32 <= '\t') || (LA7_32 >= '\u000B' && LA7_32 <= '\f') || (LA7_32 >= '\u000E' && LA7_32 <= '\u001F') || LA7_32 == '#' || (LA7_32 >= '%' && LA7_32 <= ')') || (LA7_32 >= '.' && LA7_32 <= ';') || (LA7_32 >= '?' && LA7_32 <= ']') || (LA7_32 >= '_' && LA7_32 <= '\uFFFF')) ) { s = 32; }
-
-                   	else if ( ((LA7_32 >= ' ' && LA7_32 <= '!') || LA7_32 == '$' || (LA7_32 >= '*' && LA7_32 <= '-') || (LA7_32 >= '<' && LA7_32 <= '>') || LA7_32 == '^') ) { s = 34; }
-
-                   	else s = 16;
-
-                   	if ( s >= 0 ) return s;
-                   	break;
                	case 8 : 
-                   	int LA7_13 = input.LA(1);
+                   	int LA7_15 = input.LA(1);
 
                    	s = -1;
-                   	if ( ((LA7_13 >= '\u0000' && LA7_13 <= '\t') || (LA7_13 >= '\u000B' && LA7_13 <= '\f') || (LA7_13 >= '\u000E' && LA7_13 <= '\u001F') || (LA7_13 >= '\"' && LA7_13 <= '#') || (LA7_13 >= '%' && LA7_13 <= '&') || (LA7_13 >= '(' && LA7_13 <= ')') || (LA7_13 >= '.' && LA7_13 <= ';') || (LA7_13 >= '?' && LA7_13 <= ']') || (LA7_13 >= '_' && LA7_13 <= '\uFFFF')) ) { s = 29; }
+                   	if ( ((LA7_15 >= '\u0000' && LA7_15 <= '\t') || (LA7_15 >= '\u000B' && LA7_15 <= '\f') || (LA7_15 >= '\u000E' && LA7_15 <= '\u001F') || (LA7_15 >= '\"' && LA7_15 <= '#') || (LA7_15 >= '%' && LA7_15 <= '&') || (LA7_15 >= '(' && LA7_15 <= ')') || (LA7_15 >= '.' && LA7_15 <= ';') || (LA7_15 >= '?' && LA7_15 <= ']') || (LA7_15 >= '_' && LA7_15 <= '\uFFFF')) ) { s = 38; }
 
-                   	else if ( (LA7_13 == '\'') ) { s = 30; }
+                   	else if ( (LA7_15 == '\'') ) { s = 39; }
 
-                   	else if ( ((LA7_13 >= ' ' && LA7_13 <= '!') || LA7_13 == '$' || (LA7_13 >= '*' && LA7_13 <= '-') || (LA7_13 >= '<' && LA7_13 <= '>') || LA7_13 == '^') ) { s = 31; }
+                   	else if ( ((LA7_15 >= ' ' && LA7_15 <= '!') || LA7_15 == '$' || (LA7_15 >= '*' && LA7_15 <= '-') || (LA7_15 >= '<' && LA7_15 <= '>') || LA7_15 == '^') ) { s = 40; }
 
-                   	else s = 16;
+                   	else s = 18;
 
                    	if ( s >= 0 ) return s;
                    	break;
                	case 9 : 
-                   	int LA7_39 = input.LA(1);
+                   	int LA7_49 = input.LA(1);
 
                    	s = -1;
-                   	if ( (LA7_39 == '\"') ) { s = 33; }
+                   	if ( ((LA7_49 >= '\u0000' && LA7_49 <= '\t') || (LA7_49 >= '\u000B' && LA7_49 <= '\f') || (LA7_49 >= '\u000E' && LA7_49 <= '\u001F') || (LA7_49 >= '\"' && LA7_49 <= '#') || (LA7_49 >= '%' && LA7_49 <= ')') || (LA7_49 >= '.' && LA7_49 <= ';') || (LA7_49 >= '?' && LA7_49 <= ']') || (LA7_49 >= '_' && LA7_49 <= '\uFFFF')) ) { s = 18; }
 
-                   	else if ( ((LA7_39 >= '\u0000' && LA7_39 <= '\t') || (LA7_39 >= '\u000B' && LA7_39 <= '\f') || (LA7_39 >= '\u000E' && LA7_39 <= '\u001F') || LA7_39 == '#' || (LA7_39 >= '%' && LA7_39 <= ')') || (LA7_39 >= '.' && LA7_39 <= ';') || (LA7_39 >= '?' && LA7_39 <= ']') || (LA7_39 >= '_' && LA7_39 <= '\uFFFF')) ) { s = 32; }
-
-                   	else if ( ((LA7_39 >= ' ' && LA7_39 <= '!') || LA7_39 == '$' || (LA7_39 >= '*' && LA7_39 <= '-') || (LA7_39 >= '<' && LA7_39 <= '>') || LA7_39 == '^') ) { s = 34; }
-
-                   	else s = 16;
+                   	else s = 52;
 
                    	if ( s >= 0 ) return s;
                    	break;
                	case 10 : 
-                   	int LA7_40 = input.LA(1);
+                   	int LA7_14 = input.LA(1);
 
                    	s = -1;
-                   	if ( ((LA7_40 >= '\u0000' && LA7_40 <= '\t') || (LA7_40 >= '\u000B' && LA7_40 <= '\f') || (LA7_40 >= '\u000E' && LA7_40 <= '\u001F') || (LA7_40 >= '\"' && LA7_40 <= '#') || (LA7_40 >= '%' && LA7_40 <= ')') || (LA7_40 >= '.' && LA7_40 <= ';') || (LA7_40 >= '?' && LA7_40 <= ']') || (LA7_40 >= '_' && LA7_40 <= '\uFFFF')) ) { s = 16; }
+                   	if ( ((LA7_14 >= '\u0000' && LA7_14 <= '\t') || (LA7_14 >= '\u000B' && LA7_14 <= '\f') || (LA7_14 >= '\u000E' && LA7_14 <= '\u001F') || (LA7_14 >= '\"' && LA7_14 <= '#') || (LA7_14 >= '%' && LA7_14 <= ')') || (LA7_14 >= '.' && LA7_14 <= ';') || (LA7_14 >= '?' && LA7_14 <= '\\') || (LA7_14 >= '_' && LA7_14 <= '\uFFFF')) ) { s = 35; }
+
+                   	else if ( (LA7_14 == ']') ) { s = 36; }
+
+                   	else if ( ((LA7_14 >= ' ' && LA7_14 <= '!') || LA7_14 == '$' || (LA7_14 >= '*' && LA7_14 <= '-') || (LA7_14 >= '<' && LA7_14 <= '>') || LA7_14 == '^') ) { s = 37; }
+
+                   	else s = 18;
+
+                   	if ( s >= 0 ) return s;
+                   	break;
+               	case 11 : 
+                   	int LA7_48 = input.LA(1);
+
+                   	s = -1;
+                   	if ( (LA7_48 == '\"') ) { s = 42; }
+
+                   	else if ( ((LA7_48 >= '\u0000' && LA7_48 <= '\t') || (LA7_48 >= '\u000B' && LA7_48 <= '\f') || (LA7_48 >= '\u000E' && LA7_48 <= '\u001F') || LA7_48 == '#' || (LA7_48 >= '%' && LA7_48 <= ')') || (LA7_48 >= '.' && LA7_48 <= ';') || (LA7_48 >= '?' && LA7_48 <= ']') || (LA7_48 >= '_' && LA7_48 <= '\uFFFF')) ) { s = 41; }
+
+                   	else if ( ((LA7_48 >= ' ' && LA7_48 <= '!') || LA7_48 == '$' || (LA7_48 >= '*' && LA7_48 <= '-') || (LA7_48 >= '<' && LA7_48 <= '>') || LA7_48 == '^') ) { s = 43; }
+
+                   	else s = 18;
+
+                   	if ( s >= 0 ) return s;
+                   	break;
+               	case 12 : 
+                   	int LA7_53 = input.LA(1);
+
+                   	s = -1;
+                   	if ( ((LA7_53 >= '\u0000' && LA7_53 <= '\t') || (LA7_53 >= '\u000B' && LA7_53 <= '\f') || (LA7_53 >= '\u000E' && LA7_53 <= '\u001F') || (LA7_53 >= '\"' && LA7_53 <= '#') || (LA7_53 >= '%' && LA7_53 <= ')') || (LA7_53 >= '.' && LA7_53 <= ';') || (LA7_53 >= '?' && LA7_53 <= ']') || (LA7_53 >= '_' && LA7_53 <= '\uFFFF')) ) { s = 18; }
+
+                   	else s = 54;
+
+                   	if ( s >= 0 ) return s;
+                   	break;
+               	case 13 : 
+                   	int LA7_42 = input.LA(1);
+
+                   	s = -1;
+                   	if ( (LA7_42 == '\"') ) { s = 48; }
+
+                   	else if ( ((LA7_42 >= '\u0000' && LA7_42 <= '\t') || (LA7_42 >= '\u000B' && LA7_42 <= '\f') || (LA7_42 >= '\u000E' && LA7_42 <= '\u001F') || LA7_42 == '#' || (LA7_42 >= '%' && LA7_42 <= ')') || (LA7_42 >= '.' && LA7_42 <= ';') || (LA7_42 >= '?' && LA7_42 <= ']') || (LA7_42 >= '_' && LA7_42 <= '\uFFFF')) ) { s = 18; }
 
                    	else s = 43;
+
+                   	if ( s >= 0 ) return s;
+                   	break;
+               	case 14 : 
+                   	int LA7_35 = input.LA(1);
+
+                   	s = -1;
+                   	if ( (LA7_35 == ']') ) { s = 36; }
+
+                   	else if ( ((LA7_35 >= '\u0000' && LA7_35 <= '\t') || (LA7_35 >= '\u000B' && LA7_35 <= '\f') || (LA7_35 >= '\u000E' && LA7_35 <= '\u001F') || (LA7_35 >= '\"' && LA7_35 <= '#') || (LA7_35 >= '%' && LA7_35 <= ')') || (LA7_35 >= '.' && LA7_35 <= ';') || (LA7_35 >= '?' && LA7_35 <= '\\') || (LA7_35 >= '_' && LA7_35 <= '\uFFFF')) ) { s = 35; }
+
+                   	else if ( ((LA7_35 >= ' ' && LA7_35 <= '!') || LA7_35 == '$' || (LA7_35 >= '*' && LA7_35 <= '-') || (LA7_35 >= '<' && LA7_35 <= '>') || LA7_35 == '^') ) { s = 37; }
+
+                   	else s = 18;
 
                    	if ( s >= 0 ) return s;
                    	break;
