@@ -80,7 +80,7 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
         Conditions.Add(new DmlfRelationCondition
             {
                 LeftExpr = ColumnValue,
-                RightExpr = new DmlfSqlValueExpression {Value = sql},
+                RightExpr = new DmlfSqlIdentifierExpression {Value = sql},
                 Relation = relation,
             });
     }
@@ -91,13 +91,13 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
         or.Conditions.Add(new DmlfRelationCondition
         {
             LeftExpr = ColumnValue,
-            RightExpr = new DmlfSqlValueExpression { Value = sql },
+            RightExpr = new DmlfSqlIdentifierExpression { Value = sql },
             Relation = "=",
         });
         var and = new DmlfAndCondition();
         or.Conditions.Add(and);
         and.Conditions.Add(new DmlfIsNullCondition { Expr = ColumnValue });
-        and.Conditions.Add(new DmlfIsNullCondition { Expr = new DmlfSqlValueExpression { Value = sql } });
+        and.Conditions.Add(new DmlfIsNullCondition { Expr = new DmlfSqlIdentifierExpression { Value = sql } });
         Conditions.Add(or);
     }
 
@@ -107,19 +107,19 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
         or.Conditions.Add(new DmlfRelationCondition
         {
             LeftExpr = ColumnValue,
-            RightExpr = new DmlfSqlValueExpression { Value = sql },
+            RightExpr = new DmlfSqlIdentifierExpression { Value = sql },
             Relation = "<>",
         });
 
         var and1 = new DmlfAndCondition();
         or.Conditions.Add(and1);
         and1.Conditions.Add(new DmlfIsNullCondition { Expr = ColumnValue });
-        and1.Conditions.Add(new DmlfIsNotNullCondition { Expr = new DmlfSqlValueExpression { Value = sql } });
+        and1.Conditions.Add(new DmlfIsNotNullCondition { Expr = new DmlfSqlIdentifierExpression { Value = sql } });
 
         var and2 = new DmlfAndCondition();
         or.Conditions.Add(and2);
         and2.Conditions.Add(new DmlfIsNotNullCondition { Expr = ColumnValue });
-        and2.Conditions.Add(new DmlfIsNullCondition { Expr = new DmlfSqlValueExpression { Value = sql } });
+        and2.Conditions.Add(new DmlfIsNullCondition { Expr = new DmlfSqlIdentifierExpression { Value = sql } });
 
         Conditions.Add(or);
     }

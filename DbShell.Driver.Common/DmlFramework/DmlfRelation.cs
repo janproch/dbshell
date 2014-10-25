@@ -170,17 +170,17 @@ namespace DbShell.Driver.Common.DmlFramework
         public DmlfSource Reference { get; set; }
         [XmlElem]
         public DmlfJoinType JoinType { get; set; }
-        [XmlCollection(typeof(DmlfEqualCondition), "Condition")]
-        public DmlfList<DmlfEqualCondition> Conditions { get; set; }
+        [XmlCollection(typeof(DmlfConditionBase), "Condition")]
+        public DmlfList<DmlfConditionBase> Conditions { get; set; }
 
         public DmlfRelation()
         {
-            Conditions = new DmlfList<DmlfEqualCondition>();
+            Conditions = new DmlfList<DmlfConditionBase>();
         }
 
         public DmlfRelation(XmlElement xml)
         {
-            Conditions = new DmlfList<DmlfEqualCondition>();
+            Conditions = new DmlfList<DmlfConditionBase>();
             this.LoadProperties(xml);
         }
 

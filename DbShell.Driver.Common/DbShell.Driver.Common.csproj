@@ -127,11 +127,13 @@
     <Compile Include="DmlFramework\DmlfList.cs" />
     <Compile Include="DmlFramework\DmlfLiteralExpression.cs" />
     <Compile Include="DmlFramework\DmlfLiteralListExpression.cs" />
+    <Compile Include="DmlFramework\DmlfPlaceholderExpression.cs" />
     <Compile Include="DmlFramework\DmlfResultField.cs" />
     <Compile Include="DmlFramework\DmlfResultFieldCollection.cs" />
     <Compile Include="DmlFramework\DmlfRowNumberExpression.cs" />
     <Compile Include="DmlFramework\DmlfSortOrderCollection.cs" />
     <Compile Include="DmlFramework\DmlfSortOrderItem.cs" />
+    <Compile Include="DmlFramework\DmlfSqlIdentifierExpression.cs" />
     <Compile Include="DmlFramework\DmlfSqlValueExpression.cs" />
     <Compile Include="DmlFramework\DmlfStringExpression.cs" />
     <Compile Include="DmlFramework\DmlfStringValueExpressionBase.cs" />

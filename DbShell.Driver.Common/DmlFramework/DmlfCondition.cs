@@ -320,6 +320,15 @@ namespace DbShell.Driver.Common.DmlFramework
                 GenSqlEnd(dmp);
             }
         }
+
+        public override void ForEachChild(Action<IDmlfNode> action)
+        {
+            base.ForEachChild(action);
+            foreach(var child in Conditions)
+            {
+                child.ForEachChild(action);
+            }
+        }
     }
 
     public class DmlfAndCondition : DmlfCompoudCondition
@@ -363,6 +372,18 @@ namespace DbShell.Driver.Common.DmlFramework
         public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
         {
             dmp.Put("^exists (");
+            Select.GenSql(dmp, handler);
+            dmp.Put(")");
+        }
+    }
+
+    public class DmlfNotExistCondition : DmlfConditionBase
+    {
+        public DmlfSelect Select;
+
+        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        {
+            dmp.Put("^not ^exists (");
             Select.GenSql(dmp, handler);
             dmp.Put(")");
         }

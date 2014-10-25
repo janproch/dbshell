@@ -12,6 +12,10 @@ namespace DbShell.Driver.Common.DmlFramework
             {
                 case "col":
                     return new DmlfColumnRefExpression(xml);
+                case "ident":
+                    return new DmlfSqlIdentifierExpression(xml);
+                case "placeholder":
+                    return new DmlfPlaceholderExpression(xml);
                 case "val":
                     return new DmlfSqlValueExpression(xml);
                 case "str":

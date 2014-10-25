@@ -1,15 +1,16 @@
+using System.Collections.Generic;
 using System.Xml;
 using DbShell.Driver.Common.AbstractDb;
 
 namespace DbShell.Driver.Common.DmlFramework
 {
-    public class DmlfSqlValueExpression : DmlfStringValueExpressionBase
+    public class DmlfSqlIdentifierExpression : DmlfStringValueExpressionBase
     {
-        public DmlfSqlValueExpression()
+        public DmlfSqlIdentifierExpression()
         {
         }
 
-        public DmlfSqlValueExpression(XmlElement xml)
+        public DmlfSqlIdentifierExpression(XmlElement xml)
         {
             LoadFromXml(xml);
         }
@@ -21,7 +22,7 @@ namespace DbShell.Driver.Common.DmlFramework
 
         protected override string GetTypeName()
         {
-            return "val";
+            return "ident";
         }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Xml;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Utility;
@@ -44,13 +45,15 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             if (obj == null) return false;
             if (obj.GetType() != GetType()) return false;
-            return DmlfEquals((DmlfBase)obj);
+            return DmlfEquals((DmlfBase) obj);
         }
+
         public static bool operator ==(DmlfBase a, DmlfBase b)
         {
-            if ((object)a == null || (object)b == null) return (object)a == null && (object)b == null;
+            if ((object) a == null || (object) b == null) return (object) a == null && (object) b == null;
             return a.Equals(b);
         }
+
         public static bool operator !=(DmlfBase a, DmlfBase b)
         {
             return !(a == b);
@@ -69,6 +72,24 @@ namespace DbShell.Driver.Common.DmlFramework
             res = res.Replace("-", "_");
             res = res.Replace("(SOURCE)", "basetbl");
             return res;
+        }
+
+        public static HashSet<T> ExtractNodes<T>(IDmlfNode node)
+            where T : class, IDmlfNode
+        {
+            var res = new HashSet<T>();
+            ExtractNodes(node, res);
+            return res;
+        }
+
+        private static void ExtractNodes<T>(IDmlfNode node, HashSet<T> res)
+            where T : class, IDmlfNode
+        {
+            node.ForEachChild(child =>
+                {
+                    var add = child as T;
+                    if (add != null) res.Add(add);
+                });
         }
     }
 }
