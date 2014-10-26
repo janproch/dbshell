@@ -30,6 +30,12 @@ namespace DbShell.Driver.Common.DmlFramework
                 case DmlfJoinType.Outer:
                     dmp.Put("^full ^outer ^join");
                     break;
+                case DmlfJoinType.CrossApply:
+                    dmp.Put("^cross ^apply");
+                    break;
+                case DmlfJoinType.OuterApply:
+                    dmp.Put("^outer ^apply");
+                    break;
             }
         }
 

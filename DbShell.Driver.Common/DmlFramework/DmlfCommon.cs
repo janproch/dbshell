@@ -4,7 +4,7 @@ using DbShell.Driver.Common.Structure;
 
 namespace DbShell.Driver.Common.DmlFramework
 {
-    public enum DmlfJoinType { Inner, Outer, Left, Right }
+    public enum DmlfJoinType { Inner, Outer, Left, Right, CrossApply, OuterApply }
     public enum DmlfBinaryOperator { Inner, Outer, Left, Right }
     public enum DmlfSortOrderType { Ascending, Descendning }
 

@@ -202,13 +202,16 @@ namespace DbShell.Driver.Common.DmlFramework
             JoinType.GenSql(dmp);
             dmp.Put(" ");
             Reference.GenSqlDef(dmp, handler);
-            dmp.Put(" ^on ");
-            bool was = false;
-            foreach (var cond in Conditions)
+            if (Conditions.Any())
             {
-                if (was) dmp.Put(" ^and ");
-                cond.GenSql(dmp, handler);
-                was = true;
+                dmp.Put(" ^on ");
+                bool was = false;
+                foreach (var cond in Conditions)
+                {
+                    if (was) dmp.Put(" ^and ");
+                    cond.GenSql(dmp, handler);
+                    was = true;
+                }
             }
         }
 
