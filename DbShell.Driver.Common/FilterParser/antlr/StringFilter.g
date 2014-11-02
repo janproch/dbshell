@@ -19,19 +19,19 @@ sql_name:
   ; 
 
 element:
-  s1=string_lit  { AddLikeCondition(true, ExtractString($s1.text), true); }
-  | PLUS s1=string_lit  { AddLikeCondition(true, ExtractString($s1.text), true); }
-  | MINUS s1=string_lit  { AddLikeCondition(true, ExtractString($s1.text), true);NegateLastCondition(); }
+  s1=string_lit  { AddStringTestCondition<DmlfContainsTextCondition>(ExtractString($s1.text)); }
+  | PLUS s1=string_lit  { AddStringTestCondition<DmlfContainsTextCondition>(ExtractString($s1.text)); }
+  | MINUS s1=string_lit  { AddStringTestCondition<DmlfContainsTextCondition>(ExtractString($s1.text));NegateLastCondition(); }
   | LT s1=string_lit { AddStringRelation(ExtractString($s1.text), "<"); } 
   | GT s1=string_lit { AddStringRelation(ExtractString($s1.text), ">"); } 
   | LE s1=string_lit { AddStringRelation(ExtractString($s1.text), "<="); } 
   | GE s1=string_lit { AddStringRelation(ExtractString($s1.text), ">="); } 
   | NE s1=string_lit { AddStringRelation(ExtractString($s1.text), "<>"); } 
   | EQ s1=string_lit { AddStringRelation(ExtractString($s1.text), "="); } 
-  | ARROW s1=string_lit { AddLikeCondition(false, ExtractString($s1.text), true); } 
-  | NARROW s1=string_lit { AddLikeCondition(false, ExtractString($s1.text), true);NegateLastCondition(); } 
-  | DOLLAR s1=string_lit { AddLikeCondition(true, ExtractString($s1.text), false); } 
-  | NDOLLAR s1=string_lit { AddLikeCondition(true, ExtractString($s1.text), false);NegateLastCondition(); } 
+  | ARROW s1=string_lit { AddStringTestCondition<DmlfStartsWithCondition>(ExtractString($s1.text)); } 
+  | NARROW s1=string_lit { AddStringTestCondition<DmlfStartsWithCondition>(ExtractString($s1.text));NegateLastCondition(); } 
+  | DOLLAR s1=string_lit { AddStringTestCondition<DmlfEndsWithCondition>(ExtractString($s1.text)); } 
+  | NDOLLAR s1=string_lit { AddStringTestCondition<DmlfEndsWithCondition>(ExtractString($s1.text));NegateLastCondition(); } 
   | T_NULL { AddIsNullCondition(); }
   | T_NOT T_NULL { AddIsNotNullCondition(); }
   | T_EMPTY { AddIsEmptyCondition(); }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.SqlServer
 {
@@ -30,7 +31,7 @@ namespace DbShell.Driver.SqlServer
         }
         public override void SetDateTime(DateTime value)
         {
-            m_text = "'" + value.ToString("yyyy-MM-ddTHH:mm:ss.fff", CultureInfo.InvariantCulture) + "'";
+            m_text = "'" + StringTool.DateTimeToIsoStringExact(value) + "'";
         }
         public override void SetTimeEx(TimeEx value)
         {

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.Linq;
 using System.Xml;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Utility;
@@ -7,6 +9,10 @@ namespace DbShell.Driver.Common.DmlFramework
 {
     public abstract class DmlfConditionBase : DmlfBase
     {
+        public virtual bool EvalCondition(IDmlfHandler handler)
+        {
+            throw new InternalError("DBSH-00000 Eval not implemented:" + GetType().FullName);
+        }
     }
 
     public abstract class DmlfUnaryCondition : DmlfConditionBase
@@ -21,7 +27,7 @@ namespace DbShell.Driver.Common.DmlFramework
     }
 
 
-    public class DmlfNotCondition : DmlfUnaryCondition
+    public class DmlfNotCondition : DmlfConditionBase
     {
         public DmlfConditionBase Expr { get; set; }
 
@@ -37,6 +43,11 @@ namespace DbShell.Driver.Common.DmlFramework
             Expr.GenSql(dmp, handler);
             dmp.Put("))");
         }
+
+        public override bool EvalCondition(IDmlfHandler handler)
+        {
+            return !Expr.EvalCondition(handler);
+        }
     }
 
     public class DmlfIsNullCondition : DmlfUnaryCondition
@@ -46,6 +57,12 @@ namespace DbShell.Driver.Common.DmlFramework
             Expr.GenSql(dmp, handler);
             dmp.Put(" ^is ^null");
         }
+
+        public override bool EvalCondition(IDmlfHandler handler)
+        {
+            object value = Expr.EvalExpression(handler);
+            return value == null || value == DBNull.Value;
+        }
     }
 
     public class DmlfIsNotNullCondition : DmlfUnaryCondition
@@ -54,6 +71,12 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             Expr.GenSql(dmp, handler);
             dmp.Put(" ^is ^not ^null");
+        }
+
+        public override bool EvalCondition(IDmlfHandler handler)
+        {
+            object value = Expr.EvalExpression(handler);
+            return value != null && value != DBNull.Value;
         }
     }
 
@@ -170,6 +193,11 @@ namespace DbShell.Driver.Common.DmlFramework
             dmp.Put("=");
             RightExpr.GenSql(dmp, handler);
         }
+
+        public override bool EvalCondition(IDmlfHandler handler)
+        {
+            return DmlfRelationCondition.EvalRelation(LeftExpr, RightExpr, "=", handler);
+        }
     }
 
     public class DmlfNotEqualCondition : DmlfBinaryCondition
@@ -179,6 +207,11 @@ namespace DbShell.Driver.Common.DmlFramework
             LeftExpr.GenSql(dmp, handler);
             dmp.Put("<>");
             RightExpr.GenSql(dmp, handler);
+        }
+
+        public override bool EvalCondition(IDmlfHandler handler)
+        {
+            return DmlfRelationCondition.EvalRelation(LeftExpr, RightExpr, "<>", handler);
         }
     }
 
@@ -190,6 +223,11 @@ namespace DbShell.Driver.Common.DmlFramework
             dmp.Put(">");
             RightExpr.GenSql(dmp, handler);
         }
+
+        public override bool EvalCondition(IDmlfHandler handler)
+        {
+            return DmlfRelationCondition.EvalRelation(LeftExpr, RightExpr, ">", handler);
+        }
     }
 
     public class DmlfGreaterEqualCondition : DmlfBinaryCondition
@@ -199,6 +237,11 @@ namespace DbShell.Driver.Common.DmlFramework
             LeftExpr.GenSql(dmp, handler);
             dmp.Put(">=");
             RightExpr.GenSql(dmp, handler);
+        }
+
+        public override bool EvalCondition(IDmlfHandler handler)
+        {
+            return DmlfRelationCondition.EvalRelation(LeftExpr, RightExpr, ">=", handler);
         }
     }
 
@@ -210,6 +253,11 @@ namespace DbShell.Driver.Common.DmlFramework
             dmp.Put("<");
             RightExpr.GenSql(dmp, handler);
         }
+
+        public override bool EvalCondition(IDmlfHandler handler)
+        {
+            return DmlfRelationCondition.EvalRelation(LeftExpr, RightExpr, "<", handler);
+        }
     }
 
     public class DmlfLessEqualCondition : DmlfBinaryCondition
@@ -219,6 +267,11 @@ namespace DbShell.Driver.Common.DmlFramework
             LeftExpr.GenSql(dmp, handler);
             dmp.Put("<=");
             RightExpr.GenSql(dmp, handler);
+        }
+
+        public override bool EvalCondition(IDmlfHandler handler)
+        {
+            return DmlfRelationCondition.EvalRelation(LeftExpr, RightExpr, "<=", handler);
         }
     }
 
@@ -232,6 +285,107 @@ namespace DbShell.Driver.Common.DmlFramework
             dmp.Put(Relation);
             RightExpr.GenSql(dmp, handler);
         }
+
+        public override bool EvalCondition(IDmlfHandler handler)
+        {
+            return EvalRelation(LeftExpr, RightExpr, Relation, handler);
+        }
+
+        public static bool EvalRelation(DmlfExpression leftExpr, DmlfExpression rightExpr, string relation, IDmlfHandler handler)
+        {
+            object left = leftExpr.EvalExpression(handler);
+            object right = rightExpr.EvalExpression(handler);
+
+            if (left == null || right == null) return false;
+
+            var leftType = left.GetType();
+            var rightType = right.GetType();
+
+            string leftStr = Convert.ToString(left, CultureInfo.InvariantCulture);
+            string rightStr = Convert.ToString(right, CultureInfo.InvariantCulture);
+
+            if (leftType.IsNumberType() || rightType.IsNumberType())
+            {
+                double leftValue, rightValue;
+                if (Double.TryParse(leftStr, NumberStyles.Number, CultureInfo.InvariantCulture, out leftValue) 
+                    && Double.TryParse(rightStr, NumberStyles.Number, CultureInfo.InvariantCulture, out rightValue))
+                {
+                    switch (relation)
+                    {
+                        case "=":
+                            return leftValue == rightValue;
+                        case "<=":
+                            return leftValue <= rightValue;
+                        case ">=":
+                            return leftValue >= rightValue;
+                        case "<":
+                            return leftValue < rightValue;
+                        case ">":
+                            return leftValue > rightValue;
+                        case "<>":
+                            return leftValue != rightValue;
+                    }
+                }
+            }
+
+            if (leftType == typeof(DateTime) || rightType == typeof(DateTime))
+            {
+                DateTime? leftValue = null, rightValue = null;
+                DateTime tmp;
+                if (leftType == typeof (DateTime))
+                {
+                    leftValue = (DateTime) left;
+                }
+                else if (DateTime.TryParse(leftStr, CultureInfo.InvariantCulture, DateTimeStyles.None, out tmp))
+                {
+                    leftValue = tmp;
+                }
+                if (rightType == typeof (DateTime))
+                {
+                    rightValue = (DateTime) right;
+                }
+                else if (DateTime.TryParse(leftStr, CultureInfo.InvariantCulture, DateTimeStyles.None, out tmp))
+                {
+                    rightValue = tmp;
+                }
+                if (leftValue.HasValue && rightValue.HasValue)
+                {
+                    switch (relation)
+                    {
+                        case "=":
+                            return leftValue == rightValue;
+                        case "<=":
+                            return leftValue <= rightValue;
+                        case ">=":
+                            return leftValue >= rightValue;
+                        case "<":
+                            return leftValue < rightValue;
+                        case ">":
+                            return leftValue > rightValue;
+                        case "<>":
+                            return leftValue != rightValue;
+                    }
+                }
+            }
+
+            switch (relation)
+            {
+                case "=":
+                    return System.String.Compare(leftStr, rightStr, System.StringComparison.OrdinalIgnoreCase) == 0;
+                case "<=":
+                    return System.String.Compare(leftStr, rightStr, System.StringComparison.OrdinalIgnoreCase) <= 0;
+                case ">=":
+                    return System.String.Compare(leftStr, rightStr, System.StringComparison.OrdinalIgnoreCase) >= 0;
+                case "<":
+                    return System.String.Compare(leftStr, rightStr, System.StringComparison.OrdinalIgnoreCase) < 0;
+                case ">":
+                    return System.String.Compare(leftStr, rightStr, System.StringComparison.OrdinalIgnoreCase) > 0;
+                case "<>":
+                    return System.String.Compare(leftStr, rightStr, System.StringComparison.OrdinalIgnoreCase) != 0;
+            }
+
+            return false;
+        }
     }
 
     public class DmlfLikeCondition : DmlfBinaryCondition
@@ -241,6 +395,63 @@ namespace DbShell.Driver.Common.DmlFramework
             LeftExpr.GenSql(dmp, handler);
             dmp.Put(" ^like ");
             RightExpr.GenSql(dmp, handler);
+        }
+    }
+
+    public abstract class DmlfStringTestCondition : DmlfUnaryCondition
+    {
+        public string Value;
+
+        public override bool EvalCondition(IDmlfHandler handler)
+        {
+            if (Value == null) return false;
+            object val = Expr.EvalExpression(handler);
+            if (val == null) return false;
+            return Test(Convert.ToString(val, CultureInfo.InvariantCulture));
+        }
+
+        protected abstract bool Test(string testedString);
+    }
+
+    public class DmlfStartsWithCondition : DmlfStringTestCondition
+    {
+        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        {
+            Expr.GenSql(dmp, handler);
+            dmp.Put(" ^like %v", Value + "%");
+        }
+
+        protected override bool Test(string testedString)
+        {
+            return testedString.StartsWith(Value, StringComparison.InvariantCultureIgnoreCase);
+        }
+    }
+
+    public class DmlfEndsWithCondition : DmlfStringTestCondition
+    {
+        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        {
+            Expr.GenSql(dmp, handler);
+            dmp.Put(" ^like %v", "%" + Value);
+        }
+
+        protected override bool Test(string testedString)
+        {
+            return testedString.EndsWith(Value, StringComparison.InvariantCultureIgnoreCase);
+        }
+    }
+
+    public class DmlfContainsTextCondition : DmlfStringTestCondition
+    {
+        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        {
+            Expr.GenSql(dmp, handler);
+            dmp.Put(" ^like %v", "%" + Value + "%");
+        }
+
+        protected override bool Test(string testedString)
+        {
+            return testedString.IndexOf(Value, StringComparison.InvariantCultureIgnoreCase) >= 0;
         }
     }
 
@@ -342,6 +553,11 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             dmp.Put("(1=1)");
         }
+
+        public override bool EvalCondition(IDmlfHandler handler)
+        {
+            return Conditions.All(x => x.EvalCondition(handler));
+        }
     }
 
     public class DmlfOrCondition : DmlfCompoudCondition
@@ -355,6 +571,11 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             dmp.Put("(1=0)");
         }
+
+        public override bool EvalCondition(IDmlfHandler handler)
+        {
+            return Conditions.Any(x => x.EvalCondition(handler));
+        }
     }
 
     public class DmlfFalseCondition : DmlfConditionBase
@@ -362,6 +583,11 @@ namespace DbShell.Driver.Common.DmlFramework
         public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
         {
             dmp.Put("(1=0)");
+        }
+
+        public override bool EvalCondition(IDmlfHandler handler)
+        {
+            return false;
         }
     }
 

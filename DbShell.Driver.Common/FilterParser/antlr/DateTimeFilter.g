@@ -38,13 +38,13 @@ specification:
   | T_NOV { AddMonthCondition(11); }
   | T_DEC { AddMonthCondition(12); }
   
-  | T_MON { AddDayOfWeekCondition(1); }
-  | T_TUE { AddDayOfWeekCondition(2); }
-  | T_WED { AddDayOfWeekCondition(3); }
-  | T_THU { AddDayOfWeekCondition(4); }
-  | T_FRI { AddDayOfWeekCondition(5); }
-  | T_SAT { AddDayOfWeekCondition(6); }
-  | T_SUN { AddDayOfWeekCondition(7); }
+  | T_MON { AddDayOfWeekCondition(DayOfWeek.Monday); }
+  | T_TUE { AddDayOfWeekCondition(DayOfWeek.Tuesday); }
+  | T_WED { AddDayOfWeekCondition(DayOfWeek.Wednesday); }
+  | T_THU { AddDayOfWeekCondition(DayOfWeek.Thursday); }
+  | T_FRI { AddDayOfWeekCondition(DayOfWeek.Friday); }
+  | T_SAT { AddDayOfWeekCondition(DayOfWeek.Saturday); }
+  | T_SUN { AddDayOfWeekCondition(DayOfWeek.Sunday); }
   
   | T_LAST T_HOUR { var h1 = new DateTime(Now.Year, Now.Month, Now.Day, Now.Hour, 0, 0); AddDateTimeIntervalCondition(h1 - TimeSpan.FromHours(1), h1); }
   | T_THIS T_HOUR { var h1 = new DateTime(Now.Year, Now.Month, Now.Day, Now.Hour, 0, 0); AddDateTimeIntervalCondition(h1, h1 + TimeSpan.FromHours(1)); }
@@ -72,11 +72,17 @@ specification:
   | GT d=DATE { var dt=ParseDate($d.text);AddDateTimeRelation(dt+TimeSpan.FromDays(1), ">="); }  
   | GE d=DATE { var dt=ParseDate($d.text);AddDateTimeRelation(dt, ">="); }  
   | NE d=DATE { var dt=ParseDate($d.text);AddDateTimeNotIntervalCondition(dt, dt + TimeSpan.FromDays(1)); }
+
+  | d=DATE time_noexact { string time=Pop<string>(); AddDateTimeIntervalCondition(ParseDate($d.text) + ParseTime(time), ParseDate($d.text) + ParseTimeEnd(time)); }  
+  | EQ d=DATE time_noexact { string time=Pop<string>(); AddDateTimeIntervalCondition(ParseDate($d.text) + ParseTime(time), ParseDate($d.text) + ParseTimeEnd(time)); }
+
+  | d=DATE time_exact { string time=Pop<string>(); var dt=ParseDate($d.text) + ParseTime(time);AddDateTimeRelation(dt, "=");  }  
+  | EQ d=DATE time_exact { string time=Pop<string>(); var dt=ParseDate($d.text) + ParseTime(time);AddDateTimeRelation(dt, "=");  }
     
-  | LT d=DATE t=TIME { var dt=ParseDate($d.text)+ParseTime($t.text);AddDateTimeRelation(dt, "<"); }  
-  | LE d=DATE t=TIME { var dt=ParseDate($d.text)+ParseTime($t.text);AddDateTimeRelation(dt, "<="); }  
-  | GT d=DATE t=TIME { var dt=ParseDate($d.text)+ParseTime($t.text);AddDateTimeRelation(dt, ">"); }  
-  | GE d=DATE t=TIME { var dt=ParseDate($d.text)+ParseTime($t.text);AddDateTimeRelation(dt, ">="); }
+  | LT d=DATE t=time { var dt=ParseDate($d.text)+ParseTime($t.text);AddDateTimeRelation(dt, "<"); }  
+  | LE d=DATE t=time { var dt=ParseDate($d.text)+ParseTimeEnd($t.text);AddDateTimeRelation(dt, "<="); }  
+  | GT d=DATE t=time { var dt=ParseDate($d.text)+ParseTime($t.text);AddDateTimeRelation(dt, ">"); }  
+  | GE d=DATE t=time { var dt=ParseDate($d.text)+ParseTime($t.text);AddDateTimeRelation(dt, ">="); }
   | T_NULL { AddIsNullCondition(); }
   | T_NOT T_NULL { AddIsNotNullCondition(); }
   
@@ -93,10 +99,19 @@ specification:
 
 interval : 
   d1=DATE MINUS d2=DATE { AddDateTimeIntervalCondition(ParseDate($d1.text), ParseDate($d2.text) + TimeSpan.FromDays(1)); }
-  | d1=DATE t1=TIME MINUS d2=DATE t2=TIME {
-    AddDateTimeIntervalCondition(ParseDate($d1.text) + ParseTime($t1.text), ParseDate($d2.text) + ParseTime($t2.text));    
+  | d1=DATE t1=time MINUS d2=DATE t2=time {
+    AddDateTimeIntervalCondition(ParseDate($d1.text) + ParseTime($t1.text), ParseDate($d2.text) + ParseTimeEnd($t2.text));    
   }
 ;
+
+time:
+   time_exact | time_noexact;    
+
+time_exact:
+  t=TIME_SECOND_FRACTION { Push($t.text); };   
+
+time_noexact:
+  t=TIME_MINUE { Push($t.text); } | t=TIME_SECOND { Push($t.text); };
  
 element:
   specification | interval;
@@ -128,7 +143,9 @@ DATE: DIGIT DIGIT DIGIT DIGIT '-' DIGIT? DIGIT '-' DIGIT? DIGIT    // ISO format
   | DIGIT? DIGIT '/'  DIGIT? DIGIT ('/' DIGIT DIGIT DIGIT DIGIT)?  // US format 
 ;
 
-TIME: DIGIT? DIGIT ':' DIGIT? DIGIT ( ':' DIGIT? DIGIT ( '.' DIGIT (DIGIT? DIGIT)? )?  )?; 
+TIME_MINUE: DIGIT? DIGIT ':' DIGIT? DIGIT;
+TIME_SECOND: DIGIT? DIGIT ':' DIGIT? DIGIT ':' DIGIT? DIGIT;
+TIME_SECOND_FRACTION: DIGIT? DIGIT ':' DIGIT? DIGIT ':' DIGIT? DIGIT '.' DIGIT*;
 
 FLOW_MONTH: DIGIT? DIGIT '/' ; 
 FLOW_DAY: DIGIT? DIGIT '.' ; 

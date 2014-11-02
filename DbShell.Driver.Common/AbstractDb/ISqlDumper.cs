@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Xml;
 using System.ComponentModel;
 using DbShell.Driver.Common.CommonDataLayer;
@@ -172,5 +173,10 @@ namespace DbShell.Driver.Common.AbstractDb
         void EndCommand();
 
         string Format(string format, params object[] args);
+
+        void ExtractMonth(Action<ISqlDumper> argument);
+        void ExtractDayOfMonth(Action<ISqlDumper> argument);
+        void ExtractDayOfWeek(Action<ISqlDumper> argument);
+        void PutDayOfWeekLiteral(DayOfWeek value);
     }
 }

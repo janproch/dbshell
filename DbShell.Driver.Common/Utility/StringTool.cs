@@ -408,5 +408,23 @@ namespace DbShell.Driver.Common.Utility
             if (String.IsNullOrEmpty(s2)) return s1;
             return s1 + "\r\n" + s2;
         }
+
+        public static string DateTimeToIsoStringExact(DateTime value)
+        {
+            var dt = value;
+            string s = dt.ToString("s");
+            long dticks = dt.Ticks - new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second, dt.Millisecond).Ticks;
+            if (dticks > 0)
+            {
+                return s + "." + dt.Millisecond.ToString("000") + dticks.ToString("0000");
+            }
+            if (dt.Millisecond > 0) return s + "." + dt.Millisecond.ToString("000");
+            return s;
+        }
+
+        public static string DateTimeToStringExact(DateTime value)
+        {
+            return DateTimeToIsoStringExact(value).Replace("T", " ");
+        }
     }
 }

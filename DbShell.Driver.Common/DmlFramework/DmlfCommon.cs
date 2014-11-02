@@ -12,6 +12,7 @@ namespace DbShell.Driver.Common.DmlFramework
     {
         TableInfo GetStructure(NameWithSchema name);
         DmlfSource BaseTable { get; }
+        object GetValue(string variable);
     }
 
     public interface IDmlfNode

@@ -26,5 +26,10 @@ namespace DbShell.Driver.Sqlite
         {
             get { return new Type[] {typeof (SQLiteConnection)}; }
         }
+
+        public override ISqlDumper CreateDumper(ISqlOutputStream stream, SqlFormatProperties props)
+        {
+            return new SqliteSqlDumper(stream, this, props);
+        }
     }
 }

@@ -60,5 +60,10 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             return "lit";
         }
+
+        public override object EvalExpression(IDmlfHandler handler)
+        {
+            return Value;
+        }
     }
 }

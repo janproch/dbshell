@@ -23,6 +23,10 @@ namespace DbShell.Driver.Common.DmlFramework
         }
 
         public DmlfSource BaseTable { get; set; }
+        public virtual object GetValue(string variable)
+        {
+            return null;
+        }
 
         #endregion
     }

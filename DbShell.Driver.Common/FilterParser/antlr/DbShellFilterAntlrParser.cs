@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Antlr.Runtime;
 using DbShell.Driver.Common.DmlFramework;
+using DbShell.Driver.Common.Utility;
 
 public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
 {
@@ -18,7 +19,7 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
 
     public List<DmlfConditionBase> Conditions
     {
-        get { return ((DmlfAndCondition) Condition.Conditions.Last()).Conditions; }
+        get { return ((DmlfAndCondition) Enumerable.Last(Condition.Conditions)).Conditions; }
     }
 
     public DbShellFilterAntlrParser(ITokenStream input, RecognizerSharedState state)
@@ -51,13 +52,24 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
         });
     }
 
-    public void AddLikeCondition(bool prefix, string term, bool postfix)
+    //public void AddLikeCondition(bool prefix, string term, bool postfix)
+    //{
+    //    Conditions.Add(new DmlfLikeCondition
+    //    {
+    //        LeftExpr = ColumnValue,
+    //        RightExpr = new DmlfStringExpression { Value = (prefix ? "%" : "") + term + (postfix ? "%" : "") },
+    //    });
+    //}
+
+    public void AddStringTestCondition<T>(string term)
+        where T : DmlfStringTestCondition, new()
     {
-        Conditions.Add(new DmlfLikeCondition
-        {
-            LeftExpr = ColumnValue,
-            RightExpr = new DmlfStringExpression { Value = (prefix ? "%" : "") + term + (postfix ? "%" : "") },
-        });
+        var cond = new T
+            {
+                Expr = ColumnValue,
+                Value = term
+            };
+        Conditions.Add(cond);
     }
 
     public void NegateLastCondition()
@@ -139,7 +151,7 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
         Conditions.Add(new DmlfRelationCondition
         {
             LeftExpr = ColumnValue,
-            RightExpr = new DmlfStringExpression { Value = value.ToString("s") },
+            RightExpr = new DmlfLiteralExpression { Value = value },
             Relation = relation,
         });
     }
@@ -173,13 +185,13 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
         var and = new DmlfAndCondition();
         and.Conditions.Add(new DmlfRelationCondition
             {
-                LeftExpr = ColumnValue, Relation = ">=", RightExpr = new DmlfLiteralExpression {Value = left.ToString("s")}
+                LeftExpr = ColumnValue, Relation = ">=", RightExpr = new DmlfLiteralExpression {Value = StringTool.DateTimeToIsoStringExact(left)}
             });
         and.Conditions.Add(new DmlfRelationCondition
         {
             LeftExpr = ColumnValue,
             Relation = "<",
-            RightExpr = new DmlfLiteralExpression { Value = right.ToString("s") }
+            RightExpr = new DmlfLiteralExpression { Value = StringTool.DateTimeToIsoStringExact(right) }
         });
         Conditions.Add(and);
 
@@ -243,35 +255,85 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
         });
     }
 
+    private void ParseTimeCore(string term, out TimeSpan begin, out TimeSpan end)
+    {
+        var m1 = Regex.Match(term, @"(\d?\d):(\d?\d):(\d?\d)\.(\d*)");
+        if (m1.Success)
+        {
+            int hours = Int32.Parse(m1.Groups[1].Value);
+            int minutes = Int32.Parse(m1.Groups[2].Value);
+            int seconds = Int32.Parse(m1.Groups[3].Value);
+            int fraction = 0;
+            if (m1.Groups[4].Value.Length > 0)
+            {
+                fraction = Int32.Parse(m1.Groups[4].Value)*(int) Math.Pow(10, 7 - m1.Groups[4].Value.Length);
+            }
+            var res = new TimeSpan(hours, minutes, seconds);
+            begin = end = new TimeSpan(res.Ticks + fraction);
+            return;
+        }
+        var m2 = Regex.Match(term, @"(\d?\d):(\d?\d):(\d?\d)");
+        if (m2.Success)
+        {
+            int hours = Int32.Parse(m2.Groups[1].Value);
+            int minutes = Int32.Parse(m2.Groups[2].Value);
+            int seconds = Int32.Parse(m2.Groups[3].Value);
+            begin = new TimeSpan(hours, minutes, seconds);
+            end = new TimeSpan(hours, minutes, seconds+1);
+            return;
+        }
+        var m3 = Regex.Match(term, @"(\d?\d):(\d?\d)");
+        if (m3.Success)
+        {
+            int hours = Int32.Parse(m3.Groups[1].Value);
+            int minutes = Int32.Parse(m3.Groups[2].Value);
+            begin = new TimeSpan(hours, minutes, 0);
+            end = new TimeSpan(hours, minutes + 1, 0);
+            return;
+        }
+
+        begin = end = Now.TimeOfDay;
+    }
+
     public TimeSpan ParseTime(string term)
     {
-        var m = Regex.Match(term, @"(\d?\d):(\d?\d)(:(\d?\d)(\.\d?\d?\d)?)?");
-        if (m.Success)
-        {
-            int hours = Int32.Parse(m.Groups[1].Value);
-            int minutes = Int32.Parse(m.Groups[2].Value);
-            int seconds = 0;
-            if (!String.IsNullOrEmpty(m.Groups[4].Value)) seconds = Int32.Parse(m.Groups[4].Value);
-            int ms = 0;
-            if (!String.IsNullOrEmpty(m.Groups[5].Value))
-            {
-                int f = Int32.Parse(m.Groups[5].Value);
-                switch (m.Groups[5].Value.Length)
-                {
-                    case 1:
-                        ms = f * 100;
-                        break;
-                    case 2:
-                        ms = f * 10;
-                        break;
-                    case 3:
-                        ms = f * 1;
-                        break;
-                }
-            }
-            return new TimeSpan(0, hours, minutes, seconds, ms);
-        }
-        return Now.TimeOfDay;
+        TimeSpan begin, end;
+        ParseTimeCore(term, out begin, out end);
+        return begin;
+        //var m = Regex.Match(term, @"(\d?\d):(\d?\d)(:(\d?\d)(\.\d*)?");
+        //if (m.Success)
+        //{
+        //    int hours = Int32.Parse(m.Groups[1].Value);
+        //    int minutes = Int32.Parse(m.Groups[2].Value);
+        //    int seconds = 0;
+        //    if (!String.IsNullOrEmpty(m.Groups[4].Value)) seconds = Int32.Parse(m.Groups[4].Value);
+        //    int ms = 0;
+        //    if (!String.IsNullOrEmpty(m.Groups[5].Value))
+        //    {
+        //        int f = Int32.Parse(m.Groups[5].Value);
+        //        switch (m.Groups[5].Value.Length)
+        //        {
+        //            case 1:
+        //                ms = f * 100;
+        //                break;
+        //            case 2:
+        //                ms = f * 10;
+        //                break;
+        //            case 3:
+        //                ms = f * 1;
+        //                break;
+        //        }
+        //    }
+        //    return new TimeSpan(0, hours, minutes, seconds, ms);
+        //}
+        //return Now.TimeOfDay;
+    }
+
+    public TimeSpan ParseTimeEnd(string term)
+    {
+        TimeSpan begin, end;
+        ParseTimeCore(term, out begin, out end);
+        return end;
     }
 
     public DateTime ParseDate(string term)
@@ -339,27 +401,45 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
     {
         Conditions.Add(new DmlfEqualCondition
             {
-                LeftExpr = new DmlfFuncCallExpression("MONTH", ColumnValue),
+                LeftExpr = new DmlfMonthExpression {Argument = ColumnValue},
                 RightExpr = new DmlfLiteralExpression {Value = month},
             });
+
+        //Conditions.Add(new DmlfEqualCondition
+        //    {
+        //        LeftExpr = new DmlfFuncCallExpression("MONTH", ColumnValue),
+        //        RightExpr = new DmlfLiteralExpression {Value = month},
+        //    });
     }
 
     public void AddDayCondition(int day)
     {
         Conditions.Add(new DmlfEqualCondition
         {
-            LeftExpr = new DmlfFuncCallExpression("DAY", ColumnValue),
+            LeftExpr = new DmlfDayOfMonthExpression { Argument = ColumnValue },
             RightExpr = new DmlfLiteralExpression { Value = day },
         });
+
+        //Conditions.Add(new DmlfEqualCondition
+        //{
+        //    LeftExpr = new DmlfFuncCallExpression("DAY", ColumnValue),
+        //    RightExpr = new DmlfLiteralExpression { Value = day },
+        //});
     }
 
-    public void AddDayOfWeekCondition(int day)
+    public void AddDayOfWeekCondition(DayOfWeek day)
     {
         Conditions.Add(new DmlfEqualCondition
             {
-                LeftExpr = new DmlfFuncCallExpression("DATEPART", new DmlfSqlValueExpression {Value = "WEEKDAY"}, ColumnValue),
-                RightExpr = new DmlfLiteralExpression { Value = day },
+                LeftExpr = new DmlfDayOfWeekExpression {Argument = ColumnValue},
+                RightExpr = new DmlfDayOfWeekLiteralExpression {Value = day},
             });
+
+        //Conditions.Add(new DmlfEqualCondition
+        //    {
+        //        LeftExpr = new DmlfFuncCallExpression("DATEPART", new DmlfSqlValueExpression {Value = "WEEKDAY"}, ColumnValue),
+        //        RightExpr = new DmlfLiteralExpression { Value = day },
+        //    });
     }
 
     public void AddFlowMonthCondition(string term)

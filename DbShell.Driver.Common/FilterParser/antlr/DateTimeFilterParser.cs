@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 DateTimeFilter.g 2014-10-25 22:48:43
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 DateTimeFilter.g 2014-11-02 21:57:16
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 168, 219
@@ -71,12 +71,14 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
 		"GT", 
 		"GE", 
 		"NE", 
-		"TIME", 
 		"T_NULL", 
 		"T_NOT", 
 		"EQ2", 
 		"NE2", 
 		"MINUS", 
+		"TIME_SECOND_FRACTION", 
+		"TIME_MINUE", 
+		"TIME_SECOND", 
 		"COMMA", 
 		"ENDLINE", 
 		"DIGIT", 
@@ -120,69 +122,71 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
     public const int T_SEP = 20;
     public const int T_SAT = 29;
     public const int YEAR_MONTH = 11;
-    public const int TIME = 47;
-    public const int COMMA = 53;
-    public const int T_NULL = 48;
+    public const int TIME_SECOND = 54;
+    public const int COMMA = 55;
+    public const int T_NULL = 47;
     public const int T_SUN = 30;
     public const int T_WED = 26;
+    public const int TIME_MINUE = 53;
     public const int T_FRI = 28;
     public const int FLOW_DAY = 10;
-    public const int DIGIT = 55;
+    public const int DIGIT = 57;
     public const int EQ = 41;
     public const int DOT = 5;
     public const int T_YESTERDAY = 35;
     public const int NE = 46;
     public const int T_WEEK = 38;
-    public const int D = 72;
-    public const int E = 63;
-    public const int F = 74;
+    public const int D = 74;
+    public const int E = 65;
+    public const int F = 76;
     public const int GE = 45;
     public const int T_APR = 15;
-    public const int G = 77;
-    public const int A = 57;
-    public const int B = 75;
+    public const int G = 79;
+    public const int A = 59;
+    public const int TIME_SECOND_FRACTION = 52;
+    public const int B = 77;
     public const int T_THIS = 33;
-    public const int C = 78;
-    public const int NE2 = 51;
+    public const int C = 80;
+    public const int NE2 = 50;
     public const int T_TUE = 25;
     public const int T_TOMORROW = 37;
-    public const int L = 56;
-    public const int M = 70;
-    public const int N = 62;
-    public const int O = 65;
-    public const int H = 60;
-    public const int I = 61;
-    public const int J = 73;
-    public const int K = 69;
+    public const int L = 58;
+    public const int M = 72;
+    public const int N = 64;
+    public const int O = 67;
+    public const int H = 62;
+    public const int I = 63;
+    public const int J = 75;
+    public const int K = 71;
     public const int T_LAST = 31;
-    public const int U = 66;
-    public const int T = 59;
-    public const int WHITESPACE = 80;
-    public const int W = 68;
-    public const int V = 79;
+    public const int U = 68;
+    public const int T = 61;
+    public const int WHITESPACE = 82;
+    public const int W = 70;
+    public const int V = 81;
     public const int T_YEAR = 40;
-    public const int Q = 81;
-    public const int P = 76;
-    public const int S = 58;
+    public const int Q = 83;
+    public const int P = 78;
+    public const int S = 60;
     public const int T_MONTH = 39;
-    public const int R = 67;
-    public const int MINUS = 52;
-    public const int Y = 71;
-    public const int X = 64;
-    public const int EQ2 = 50;
+    public const int R = 69;
+    public const int MINUS = 51;
+    public const int Y = 73;
+    public const int X = 66;
+    public const int EQ2 = 49;
     public const int SQL_LITERAL = 4;
     public const int T_DEC = 23;
-    public const int Z = 82;
+    public const int Z = 84;
     public const int T_THU = 27;
     public const int T_HOUR = 32;
     public const int T_JAN = 12;
     public const int T_JUN = 17;
     public const int GT = 44;
-    public const int ENDLINE = 54;
+    public const int ENDLINE = 56;
     public const int T_MON = 24;
     public const int T_TODAY = 36;
     public const int T_MAY = 16;
-    public const int T_NOT = 49;
+    public const int T_NOT = 48;
     public const int DATE = 7;
     public const int T_NOV = 22;
     public const int T_FEB = 13;
@@ -336,7 +340,7 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
     };
 
     // $ANTLR start "specification"
-    // DateTimeFilter.g:19:1: specification : (y= YEAR | d= DATE | d= HOUR_ANY_MINUTE | d= FLOW_MONTH | d= FLOW_DAY | d= YEAR_MONTH | T_JAN | T_FEB | T_MAR | T_APR | T_MAY | T_JUN | T_JUL | T_AUG | T_SEP | T_OCT | T_NOV | T_DEC | T_MON | T_TUE | T_WED | T_THU | T_FRI | T_SAT | T_SUN | T_LAST T_HOUR | T_THIS T_HOUR | T_NEXT T_HOUR | T_YESTERDAY | T_TODAY | T_TOMORROW | T_LAST T_WEEK | T_THIS T_WEEK | T_NEXT T_WEEK | T_LAST T_MONTH | T_THIS T_MONTH | T_NEXT T_MONTH | T_LAST T_YEAR | T_THIS T_YEAR | T_NEXT T_YEAR | EQ d= DATE | LT d= DATE | LE d= DATE | GT d= DATE | GE d= DATE | NE d= DATE | LT d= DATE t= TIME | LE d= DATE t= TIME | GT d= DATE t= TIME | GE d= DATE t= TIME | T_NULL | T_NOT T_NULL | LT sql_name | GT sql_name | LE sql_name | GE sql_name | NE sql_name | EQ sql_name | EQ2 sql_name | NE2 sql_name );
+    // DateTimeFilter.g:19:1: specification : (y= YEAR | d= DATE | d= HOUR_ANY_MINUTE | d= FLOW_MONTH | d= FLOW_DAY | d= YEAR_MONTH | T_JAN | T_FEB | T_MAR | T_APR | T_MAY | T_JUN | T_JUL | T_AUG | T_SEP | T_OCT | T_NOV | T_DEC | T_MON | T_TUE | T_WED | T_THU | T_FRI | T_SAT | T_SUN | T_LAST T_HOUR | T_THIS T_HOUR | T_NEXT T_HOUR | T_YESTERDAY | T_TODAY | T_TOMORROW | T_LAST T_WEEK | T_THIS T_WEEK | T_NEXT T_WEEK | T_LAST T_MONTH | T_THIS T_MONTH | T_NEXT T_MONTH | T_LAST T_YEAR | T_THIS T_YEAR | T_NEXT T_YEAR | EQ d= DATE | LT d= DATE | LE d= DATE | GT d= DATE | GE d= DATE | NE d= DATE | d= DATE time_noexact | EQ d= DATE time_noexact | d= DATE time_exact | EQ d= DATE time_exact | LT d= DATE t= time | LE d= DATE t= time | GT d= DATE t= time | GE d= DATE t= time | T_NULL | T_NOT T_NULL | LT sql_name | GT sql_name | LE sql_name | GE sql_name | NE sql_name | EQ sql_name | EQ2 sql_name | NE2 sql_name );
     public DateTimeFilterParser.specification_return specification() // throws RecognitionException [1]
     {   
         DateTimeFilterParser.specification_return retval = new DateTimeFilterParser.specification_return();
@@ -346,7 +350,6 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
 
         IToken y = null;
         IToken d = null;
-        IToken t = null;
         IToken T_JAN2 = null;
         IToken T_FEB3 = null;
         IToken T_MAR4 = null;
@@ -399,26 +402,32 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
         IToken GT51 = null;
         IToken GE52 = null;
         IToken NE53 = null;
-        IToken LT54 = null;
-        IToken LE55 = null;
-        IToken GT56 = null;
-        IToken GE57 = null;
-        IToken T_NULL58 = null;
-        IToken T_NOT59 = null;
-        IToken T_NULL60 = null;
-        IToken LT61 = null;
-        IToken GT63 = null;
-        IToken LE65 = null;
-        IToken GE67 = null;
-        IToken NE69 = null;
-        IToken EQ71 = null;
-        IToken EQ273 = null;
-        IToken NE275 = null;
-        DateTimeFilterParser.sql_name_return sql_name62 = default(DateTimeFilterParser.sql_name_return);
+        IToken EQ55 = null;
+        IToken EQ58 = null;
+        IToken LT60 = null;
+        IToken LE61 = null;
+        IToken GT62 = null;
+        IToken GE63 = null;
+        IToken T_NULL64 = null;
+        IToken T_NOT65 = null;
+        IToken T_NULL66 = null;
+        IToken LT67 = null;
+        IToken GT69 = null;
+        IToken LE71 = null;
+        IToken GE73 = null;
+        IToken NE75 = null;
+        IToken EQ77 = null;
+        IToken EQ279 = null;
+        IToken NE281 = null;
+        DateTimeFilterParser.time_return t = default(DateTimeFilterParser.time_return);
 
-        DateTimeFilterParser.sql_name_return sql_name64 = default(DateTimeFilterParser.sql_name_return);
+        DateTimeFilterParser.time_noexact_return time_noexact54 = default(DateTimeFilterParser.time_noexact_return);
 
-        DateTimeFilterParser.sql_name_return sql_name66 = default(DateTimeFilterParser.sql_name_return);
+        DateTimeFilterParser.time_noexact_return time_noexact56 = default(DateTimeFilterParser.time_noexact_return);
+
+        DateTimeFilterParser.time_exact_return time_exact57 = default(DateTimeFilterParser.time_exact_return);
+
+        DateTimeFilterParser.time_exact_return time_exact59 = default(DateTimeFilterParser.time_exact_return);
 
         DateTimeFilterParser.sql_name_return sql_name68 = default(DateTimeFilterParser.sql_name_return);
 
@@ -430,10 +439,15 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
 
         DateTimeFilterParser.sql_name_return sql_name76 = default(DateTimeFilterParser.sql_name_return);
 
+        DateTimeFilterParser.sql_name_return sql_name78 = default(DateTimeFilterParser.sql_name_return);
+
+        DateTimeFilterParser.sql_name_return sql_name80 = default(DateTimeFilterParser.sql_name_return);
+
+        DateTimeFilterParser.sql_name_return sql_name82 = default(DateTimeFilterParser.sql_name_return);
+
 
         object y_tree=null;
         object d_tree=null;
-        object t_tree=null;
         object T_JAN2_tree=null;
         object T_FEB3_tree=null;
         object T_MAR4_tree=null;
@@ -486,26 +500,28 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
         object GT51_tree=null;
         object GE52_tree=null;
         object NE53_tree=null;
-        object LT54_tree=null;
-        object LE55_tree=null;
-        object GT56_tree=null;
-        object GE57_tree=null;
-        object T_NULL58_tree=null;
-        object T_NOT59_tree=null;
-        object T_NULL60_tree=null;
-        object LT61_tree=null;
-        object GT63_tree=null;
-        object LE65_tree=null;
-        object GE67_tree=null;
-        object NE69_tree=null;
-        object EQ71_tree=null;
-        object EQ273_tree=null;
-        object NE275_tree=null;
+        object EQ55_tree=null;
+        object EQ58_tree=null;
+        object LT60_tree=null;
+        object LE61_tree=null;
+        object GT62_tree=null;
+        object GE63_tree=null;
+        object T_NULL64_tree=null;
+        object T_NOT65_tree=null;
+        object T_NULL66_tree=null;
+        object LT67_tree=null;
+        object GT69_tree=null;
+        object LE71_tree=null;
+        object GE73_tree=null;
+        object NE75_tree=null;
+        object EQ77_tree=null;
+        object EQ279_tree=null;
+        object NE281_tree=null;
 
         try 
     	{
-            // DateTimeFilter.g:19:14: (y= YEAR | d= DATE | d= HOUR_ANY_MINUTE | d= FLOW_MONTH | d= FLOW_DAY | d= YEAR_MONTH | T_JAN | T_FEB | T_MAR | T_APR | T_MAY | T_JUN | T_JUL | T_AUG | T_SEP | T_OCT | T_NOV | T_DEC | T_MON | T_TUE | T_WED | T_THU | T_FRI | T_SAT | T_SUN | T_LAST T_HOUR | T_THIS T_HOUR | T_NEXT T_HOUR | T_YESTERDAY | T_TODAY | T_TOMORROW | T_LAST T_WEEK | T_THIS T_WEEK | T_NEXT T_WEEK | T_LAST T_MONTH | T_THIS T_MONTH | T_NEXT T_MONTH | T_LAST T_YEAR | T_THIS T_YEAR | T_NEXT T_YEAR | EQ d= DATE | LT d= DATE | LE d= DATE | GT d= DATE | GE d= DATE | NE d= DATE | LT d= DATE t= TIME | LE d= DATE t= TIME | GT d= DATE t= TIME | GE d= DATE t= TIME | T_NULL | T_NOT T_NULL | LT sql_name | GT sql_name | LE sql_name | GE sql_name | NE sql_name | EQ sql_name | EQ2 sql_name | NE2 sql_name )
-            int alt2 = 60;
+            // DateTimeFilter.g:19:14: (y= YEAR | d= DATE | d= HOUR_ANY_MINUTE | d= FLOW_MONTH | d= FLOW_DAY | d= YEAR_MONTH | T_JAN | T_FEB | T_MAR | T_APR | T_MAY | T_JUN | T_JUL | T_AUG | T_SEP | T_OCT | T_NOV | T_DEC | T_MON | T_TUE | T_WED | T_THU | T_FRI | T_SAT | T_SUN | T_LAST T_HOUR | T_THIS T_HOUR | T_NEXT T_HOUR | T_YESTERDAY | T_TODAY | T_TOMORROW | T_LAST T_WEEK | T_THIS T_WEEK | T_NEXT T_WEEK | T_LAST T_MONTH | T_THIS T_MONTH | T_NEXT T_MONTH | T_LAST T_YEAR | T_THIS T_YEAR | T_NEXT T_YEAR | EQ d= DATE | LT d= DATE | LE d= DATE | GT d= DATE | GE d= DATE | NE d= DATE | d= DATE time_noexact | EQ d= DATE time_noexact | d= DATE time_exact | EQ d= DATE time_exact | LT d= DATE t= time | LE d= DATE t= time | GT d= DATE t= time | GE d= DATE t= time | T_NULL | T_NOT T_NULL | LT sql_name | GT sql_name | LE sql_name | GE sql_name | NE sql_name | EQ sql_name | EQ2 sql_name | NE2 sql_name )
+            int alt2 = 64;
             alt2 = dfa2.Predict(input);
             switch (alt2) 
             {
@@ -752,7 +768,7 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
                     		T_MON14_tree = (object)adaptor.Create(T_MON14);
                     		adaptor.AddChild(root_0, T_MON14_tree);
 
-                    	 AddDayOfWeekCondition(1); 
+                    	 AddDayOfWeekCondition(DayOfWeek.Monday); 
 
                     }
                     break;
@@ -765,7 +781,7 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
                     		T_TUE15_tree = (object)adaptor.Create(T_TUE15);
                     		adaptor.AddChild(root_0, T_TUE15_tree);
 
-                    	 AddDayOfWeekCondition(2); 
+                    	 AddDayOfWeekCondition(DayOfWeek.Tuesday); 
 
                     }
                     break;
@@ -778,7 +794,7 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
                     		T_WED16_tree = (object)adaptor.Create(T_WED16);
                     		adaptor.AddChild(root_0, T_WED16_tree);
 
-                    	 AddDayOfWeekCondition(3); 
+                    	 AddDayOfWeekCondition(DayOfWeek.Wednesday); 
 
                     }
                     break;
@@ -791,7 +807,7 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
                     		T_THU17_tree = (object)adaptor.Create(T_THU17);
                     		adaptor.AddChild(root_0, T_THU17_tree);
 
-                    	 AddDayOfWeekCondition(4); 
+                    	 AddDayOfWeekCondition(DayOfWeek.Thursday); 
 
                     }
                     break;
@@ -804,7 +820,7 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
                     		T_FRI18_tree = (object)adaptor.Create(T_FRI18);
                     		adaptor.AddChild(root_0, T_FRI18_tree);
 
-                    	 AddDayOfWeekCondition(5); 
+                    	 AddDayOfWeekCondition(DayOfWeek.Friday); 
 
                     }
                     break;
@@ -817,7 +833,7 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
                     		T_SAT19_tree = (object)adaptor.Create(T_SAT19);
                     		adaptor.AddChild(root_0, T_SAT19_tree);
 
-                    	 AddDayOfWeekCondition(6); 
+                    	 AddDayOfWeekCondition(DayOfWeek.Saturday); 
 
                     }
                     break;
@@ -830,7 +846,7 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
                     		T_SUN20_tree = (object)adaptor.Create(T_SUN20);
                     		adaptor.AddChild(root_0, T_SUN20_tree);
 
-                    	 AddDayOfWeekCondition(7); 
+                    	 AddDayOfWeekCondition(DayOfWeek.Sunday); 
 
                     }
                     break;
@@ -1180,259 +1196,343 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
                     }
                     break;
                 case 47 :
-                    // DateTimeFilter.g:76:5: LT d= DATE t= TIME
+                    // DateTimeFilter.g:76:5: d= DATE time_noexact
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	LT54=(IToken)Match(input,LT,FOLLOW_LT_in_specification541); 
-                    		LT54_tree = (object)adaptor.Create(LT54);
-                    		adaptor.AddChild(root_0, LT54_tree);
-
-                    	d=(IToken)Match(input,DATE,FOLLOW_DATE_in_specification545); 
+                    	d=(IToken)Match(input,DATE,FOLLOW_DATE_in_specification539); 
                     		d_tree = (object)adaptor.Create(d);
                     		adaptor.AddChild(root_0, d_tree);
 
-                    	t=(IToken)Match(input,TIME,FOLLOW_TIME_in_specification549); 
-                    		t_tree = (object)adaptor.Create(t);
-                    		adaptor.AddChild(root_0, t_tree);
+                    	PushFollow(FOLLOW_time_noexact_in_specification541);
+                    	time_noexact54 = time_noexact();
+                    	state.followingStackPointer--;
 
-                    	 var dt=ParseDate(((d != null) ? d.Text : null))+ParseTime(((t != null) ? t.Text : null));AddDateTimeRelation(dt, "<"); 
+                    	adaptor.AddChild(root_0, time_noexact54.Tree);
+                    	 string time=Pop<string>(); AddDateTimeIntervalCondition(ParseDate(((d != null) ? d.Text : null)) + ParseTime(time), ParseDate(((d != null) ? d.Text : null)) + ParseTimeEnd(time)); 
 
                     }
                     break;
                 case 48 :
-                    // DateTimeFilter.g:77:5: LE d= DATE t= TIME
+                    // DateTimeFilter.g:77:5: EQ d= DATE time_noexact
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	LE55=(IToken)Match(input,LE,FOLLOW_LE_in_specification559); 
-                    		LE55_tree = (object)adaptor.Create(LE55);
-                    		adaptor.AddChild(root_0, LE55_tree);
+                    	EQ55=(IToken)Match(input,EQ,FOLLOW_EQ_in_specification551); 
+                    		EQ55_tree = (object)adaptor.Create(EQ55);
+                    		adaptor.AddChild(root_0, EQ55_tree);
 
-                    	d=(IToken)Match(input,DATE,FOLLOW_DATE_in_specification563); 
+                    	d=(IToken)Match(input,DATE,FOLLOW_DATE_in_specification555); 
                     		d_tree = (object)adaptor.Create(d);
                     		adaptor.AddChild(root_0, d_tree);
 
-                    	t=(IToken)Match(input,TIME,FOLLOW_TIME_in_specification567); 
-                    		t_tree = (object)adaptor.Create(t);
-                    		adaptor.AddChild(root_0, t_tree);
+                    	PushFollow(FOLLOW_time_noexact_in_specification557);
+                    	time_noexact56 = time_noexact();
+                    	state.followingStackPointer--;
 
-                    	 var dt=ParseDate(((d != null) ? d.Text : null))+ParseTime(((t != null) ? t.Text : null));AddDateTimeRelation(dt, "<="); 
+                    	adaptor.AddChild(root_0, time_noexact56.Tree);
+                    	 string time=Pop<string>(); AddDateTimeIntervalCondition(ParseDate(((d != null) ? d.Text : null)) + ParseTime(time), ParseDate(((d != null) ? d.Text : null)) + ParseTimeEnd(time)); 
 
                     }
                     break;
                 case 49 :
-                    // DateTimeFilter.g:78:5: GT d= DATE t= TIME
+                    // DateTimeFilter.g:79:5: d= DATE time_exact
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	GT56=(IToken)Match(input,GT,FOLLOW_GT_in_specification577); 
-                    		GT56_tree = (object)adaptor.Create(GT56);
-                    		adaptor.AddChild(root_0, GT56_tree);
-
-                    	d=(IToken)Match(input,DATE,FOLLOW_DATE_in_specification581); 
+                    	d=(IToken)Match(input,DATE,FOLLOW_DATE_in_specification568); 
                     		d_tree = (object)adaptor.Create(d);
                     		adaptor.AddChild(root_0, d_tree);
 
-                    	t=(IToken)Match(input,TIME,FOLLOW_TIME_in_specification585); 
-                    		t_tree = (object)adaptor.Create(t);
-                    		adaptor.AddChild(root_0, t_tree);
+                    	PushFollow(FOLLOW_time_exact_in_specification570);
+                    	time_exact57 = time_exact();
+                    	state.followingStackPointer--;
 
-                    	 var dt=ParseDate(((d != null) ? d.Text : null))+ParseTime(((t != null) ? t.Text : null));AddDateTimeRelation(dt, ">"); 
+                    	adaptor.AddChild(root_0, time_exact57.Tree);
+                    	 string time=Pop<string>(); var dt=ParseDate(((d != null) ? d.Text : null)) + ParseTime(time);AddDateTimeRelation(dt, "=");  
 
                     }
                     break;
                 case 50 :
-                    // DateTimeFilter.g:79:5: GE d= DATE t= TIME
+                    // DateTimeFilter.g:80:5: EQ d= DATE time_exact
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	GE57=(IToken)Match(input,GE,FOLLOW_GE_in_specification595); 
-                    		GE57_tree = (object)adaptor.Create(GE57);
-                    		adaptor.AddChild(root_0, GE57_tree);
+                    	EQ58=(IToken)Match(input,EQ,FOLLOW_EQ_in_specification580); 
+                    		EQ58_tree = (object)adaptor.Create(EQ58);
+                    		adaptor.AddChild(root_0, EQ58_tree);
 
-                    	d=(IToken)Match(input,DATE,FOLLOW_DATE_in_specification599); 
+                    	d=(IToken)Match(input,DATE,FOLLOW_DATE_in_specification584); 
                     		d_tree = (object)adaptor.Create(d);
                     		adaptor.AddChild(root_0, d_tree);
 
-                    	t=(IToken)Match(input,TIME,FOLLOW_TIME_in_specification603); 
-                    		t_tree = (object)adaptor.Create(t);
-                    		adaptor.AddChild(root_0, t_tree);
+                    	PushFollow(FOLLOW_time_exact_in_specification586);
+                    	time_exact59 = time_exact();
+                    	state.followingStackPointer--;
 
-                    	 var dt=ParseDate(((d != null) ? d.Text : null))+ParseTime(((t != null) ? t.Text : null));AddDateTimeRelation(dt, ">="); 
+                    	adaptor.AddChild(root_0, time_exact59.Tree);
+                    	 string time=Pop<string>(); var dt=ParseDate(((d != null) ? d.Text : null)) + ParseTime(time);AddDateTimeRelation(dt, "=");  
 
                     }
                     break;
                 case 51 :
-                    // DateTimeFilter.g:80:5: T_NULL
+                    // DateTimeFilter.g:82:5: LT d= DATE t= time
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	T_NULL58=(IToken)Match(input,T_NULL,FOLLOW_T_NULL_in_specification611); 
-                    		T_NULL58_tree = (object)adaptor.Create(T_NULL58);
-                    		adaptor.AddChild(root_0, T_NULL58_tree);
+                    	LT60=(IToken)Match(input,LT,FOLLOW_LT_in_specification599); 
+                    		LT60_tree = (object)adaptor.Create(LT60);
+                    		adaptor.AddChild(root_0, LT60_tree);
+
+                    	d=(IToken)Match(input,DATE,FOLLOW_DATE_in_specification603); 
+                    		d_tree = (object)adaptor.Create(d);
+                    		adaptor.AddChild(root_0, d_tree);
+
+                    	PushFollow(FOLLOW_time_in_specification607);
+                    	t = time();
+                    	state.followingStackPointer--;
+
+                    	adaptor.AddChild(root_0, t.Tree);
+                    	 var dt=ParseDate(((d != null) ? d.Text : null))+ParseTime(((t != null) ? input.ToString((IToken)(t.Start),(IToken)(t.Stop)) : null));AddDateTimeRelation(dt, "<"); 
+
+                    }
+                    break;
+                case 52 :
+                    // DateTimeFilter.g:83:5: LE d= DATE t= time
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	LE61=(IToken)Match(input,LE,FOLLOW_LE_in_specification617); 
+                    		LE61_tree = (object)adaptor.Create(LE61);
+                    		adaptor.AddChild(root_0, LE61_tree);
+
+                    	d=(IToken)Match(input,DATE,FOLLOW_DATE_in_specification621); 
+                    		d_tree = (object)adaptor.Create(d);
+                    		adaptor.AddChild(root_0, d_tree);
+
+                    	PushFollow(FOLLOW_time_in_specification625);
+                    	t = time();
+                    	state.followingStackPointer--;
+
+                    	adaptor.AddChild(root_0, t.Tree);
+                    	 var dt=ParseDate(((d != null) ? d.Text : null))+ParseTimeEnd(((t != null) ? input.ToString((IToken)(t.Start),(IToken)(t.Stop)) : null));AddDateTimeRelation(dt, "<="); 
+
+                    }
+                    break;
+                case 53 :
+                    // DateTimeFilter.g:84:5: GT d= DATE t= time
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	GT62=(IToken)Match(input,GT,FOLLOW_GT_in_specification635); 
+                    		GT62_tree = (object)adaptor.Create(GT62);
+                    		adaptor.AddChild(root_0, GT62_tree);
+
+                    	d=(IToken)Match(input,DATE,FOLLOW_DATE_in_specification639); 
+                    		d_tree = (object)adaptor.Create(d);
+                    		adaptor.AddChild(root_0, d_tree);
+
+                    	PushFollow(FOLLOW_time_in_specification643);
+                    	t = time();
+                    	state.followingStackPointer--;
+
+                    	adaptor.AddChild(root_0, t.Tree);
+                    	 var dt=ParseDate(((d != null) ? d.Text : null))+ParseTime(((t != null) ? input.ToString((IToken)(t.Start),(IToken)(t.Stop)) : null));AddDateTimeRelation(dt, ">"); 
+
+                    }
+                    break;
+                case 54 :
+                    // DateTimeFilter.g:85:5: GE d= DATE t= time
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	GE63=(IToken)Match(input,GE,FOLLOW_GE_in_specification653); 
+                    		GE63_tree = (object)adaptor.Create(GE63);
+                    		adaptor.AddChild(root_0, GE63_tree);
+
+                    	d=(IToken)Match(input,DATE,FOLLOW_DATE_in_specification657); 
+                    		d_tree = (object)adaptor.Create(d);
+                    		adaptor.AddChild(root_0, d_tree);
+
+                    	PushFollow(FOLLOW_time_in_specification661);
+                    	t = time();
+                    	state.followingStackPointer--;
+
+                    	adaptor.AddChild(root_0, t.Tree);
+                    	 var dt=ParseDate(((d != null) ? d.Text : null))+ParseTime(((t != null) ? input.ToString((IToken)(t.Start),(IToken)(t.Stop)) : null));AddDateTimeRelation(dt, ">="); 
+
+                    }
+                    break;
+                case 55 :
+                    // DateTimeFilter.g:86:5: T_NULL
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	T_NULL64=(IToken)Match(input,T_NULL,FOLLOW_T_NULL_in_specification669); 
+                    		T_NULL64_tree = (object)adaptor.Create(T_NULL64);
+                    		adaptor.AddChild(root_0, T_NULL64_tree);
 
                     	 AddIsNullCondition(); 
 
                     }
                     break;
-                case 52 :
-                    // DateTimeFilter.g:81:5: T_NOT T_NULL
+                case 56 :
+                    // DateTimeFilter.g:87:5: T_NOT T_NULL
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	T_NOT59=(IToken)Match(input,T_NOT,FOLLOW_T_NOT_in_specification619); 
-                    		T_NOT59_tree = (object)adaptor.Create(T_NOT59);
-                    		adaptor.AddChild(root_0, T_NOT59_tree);
+                    	T_NOT65=(IToken)Match(input,T_NOT,FOLLOW_T_NOT_in_specification677); 
+                    		T_NOT65_tree = (object)adaptor.Create(T_NOT65);
+                    		adaptor.AddChild(root_0, T_NOT65_tree);
 
-                    	T_NULL60=(IToken)Match(input,T_NULL,FOLLOW_T_NULL_in_specification621); 
-                    		T_NULL60_tree = (object)adaptor.Create(T_NULL60);
-                    		adaptor.AddChild(root_0, T_NULL60_tree);
+                    	T_NULL66=(IToken)Match(input,T_NULL,FOLLOW_T_NULL_in_specification679); 
+                    		T_NULL66_tree = (object)adaptor.Create(T_NULL66);
+                    		adaptor.AddChild(root_0, T_NULL66_tree);
 
                     	 AddIsNotNullCondition(); 
 
                     }
                     break;
-                case 53 :
-                    // DateTimeFilter.g:83:5: LT sql_name
+                case 57 :
+                    // DateTimeFilter.g:89:5: LT sql_name
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	LT61=(IToken)Match(input,LT,FOLLOW_LT_in_specification632); 
-                    		LT61_tree = (object)adaptor.Create(LT61);
-                    		adaptor.AddChild(root_0, LT61_tree);
+                    	LT67=(IToken)Match(input,LT,FOLLOW_LT_in_specification690); 
+                    		LT67_tree = (object)adaptor.Create(LT67);
+                    		adaptor.AddChild(root_0, LT67_tree);
 
-                    	PushFollow(FOLLOW_sql_name_in_specification634);
-                    	sql_name62 = sql_name();
-                    	state.followingStackPointer--;
-
-                    	adaptor.AddChild(root_0, sql_name62.Tree);
-                    	 AddSqlLiteralRelation(Pop<string>(), "<"); 
-
-                    }
-                    break;
-                case 54 :
-                    // DateTimeFilter.g:84:5: GT sql_name
-                    {
-                    	root_0 = (object)adaptor.GetNilNode();
-
-                    	GT63=(IToken)Match(input,GT,FOLLOW_GT_in_specification643); 
-                    		GT63_tree = (object)adaptor.Create(GT63);
-                    		adaptor.AddChild(root_0, GT63_tree);
-
-                    	PushFollow(FOLLOW_sql_name_in_specification645);
-                    	sql_name64 = sql_name();
-                    	state.followingStackPointer--;
-
-                    	adaptor.AddChild(root_0, sql_name64.Tree);
-                    	 AddSqlLiteralRelation(Pop<string>(), ">"); 
-
-                    }
-                    break;
-                case 55 :
-                    // DateTimeFilter.g:85:5: LE sql_name
-                    {
-                    	root_0 = (object)adaptor.GetNilNode();
-
-                    	LE65=(IToken)Match(input,LE,FOLLOW_LE_in_specification654); 
-                    		LE65_tree = (object)adaptor.Create(LE65);
-                    		adaptor.AddChild(root_0, LE65_tree);
-
-                    	PushFollow(FOLLOW_sql_name_in_specification656);
-                    	sql_name66 = sql_name();
-                    	state.followingStackPointer--;
-
-                    	adaptor.AddChild(root_0, sql_name66.Tree);
-                    	 AddSqlLiteralRelation(Pop<string>(), "<="); 
-
-                    }
-                    break;
-                case 56 :
-                    // DateTimeFilter.g:86:5: GE sql_name
-                    {
-                    	root_0 = (object)adaptor.GetNilNode();
-
-                    	GE67=(IToken)Match(input,GE,FOLLOW_GE_in_specification665); 
-                    		GE67_tree = (object)adaptor.Create(GE67);
-                    		adaptor.AddChild(root_0, GE67_tree);
-
-                    	PushFollow(FOLLOW_sql_name_in_specification667);
+                    	PushFollow(FOLLOW_sql_name_in_specification692);
                     	sql_name68 = sql_name();
                     	state.followingStackPointer--;
 
                     	adaptor.AddChild(root_0, sql_name68.Tree);
-                    	 AddSqlLiteralRelation(Pop<string>(), ">="); 
-
-                    }
-                    break;
-                case 57 :
-                    // DateTimeFilter.g:87:5: NE sql_name
-                    {
-                    	root_0 = (object)adaptor.GetNilNode();
-
-                    	NE69=(IToken)Match(input,NE,FOLLOW_NE_in_specification676); 
-                    		NE69_tree = (object)adaptor.Create(NE69);
-                    		adaptor.AddChild(root_0, NE69_tree);
-
-                    	PushFollow(FOLLOW_sql_name_in_specification678);
-                    	sql_name70 = sql_name();
-                    	state.followingStackPointer--;
-
-                    	adaptor.AddChild(root_0, sql_name70.Tree);
-                    	 AddSqlLiteralRelation(Pop<string>(), "<>"); 
+                    	 AddSqlLiteralRelation(Pop<string>(), "<"); 
 
                     }
                     break;
                 case 58 :
-                    // DateTimeFilter.g:88:5: EQ sql_name
+                    // DateTimeFilter.g:90:5: GT sql_name
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	EQ71=(IToken)Match(input,EQ,FOLLOW_EQ_in_specification687); 
-                    		EQ71_tree = (object)adaptor.Create(EQ71);
-                    		adaptor.AddChild(root_0, EQ71_tree);
+                    	GT69=(IToken)Match(input,GT,FOLLOW_GT_in_specification701); 
+                    		GT69_tree = (object)adaptor.Create(GT69);
+                    		adaptor.AddChild(root_0, GT69_tree);
 
-                    	PushFollow(FOLLOW_sql_name_in_specification689);
-                    	sql_name72 = sql_name();
+                    	PushFollow(FOLLOW_sql_name_in_specification703);
+                    	sql_name70 = sql_name();
                     	state.followingStackPointer--;
 
-                    	adaptor.AddChild(root_0, sql_name72.Tree);
-                    	 AddSqlLiteralRelation(Pop<string>(), "="); 
+                    	adaptor.AddChild(root_0, sql_name70.Tree);
+                    	 AddSqlLiteralRelation(Pop<string>(), ">"); 
 
                     }
                     break;
                 case 59 :
-                    // DateTimeFilter.g:89:5: EQ2 sql_name
+                    // DateTimeFilter.g:91:5: LE sql_name
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	EQ273=(IToken)Match(input,EQ2,FOLLOW_EQ2_in_specification697); 
-                    		EQ273_tree = (object)adaptor.Create(EQ273);
-                    		adaptor.AddChild(root_0, EQ273_tree);
+                    	LE71=(IToken)Match(input,LE,FOLLOW_LE_in_specification712); 
+                    		LE71_tree = (object)adaptor.Create(LE71);
+                    		adaptor.AddChild(root_0, LE71_tree);
 
-                    	PushFollow(FOLLOW_sql_name_in_specification699);
-                    	sql_name74 = sql_name();
+                    	PushFollow(FOLLOW_sql_name_in_specification714);
+                    	sql_name72 = sql_name();
                     	state.followingStackPointer--;
 
-                    	adaptor.AddChild(root_0, sql_name74.Tree);
-                    	 AddSqlLiteralRelationWithNullTest_EQ(Pop<string>()); 
+                    	adaptor.AddChild(root_0, sql_name72.Tree);
+                    	 AddSqlLiteralRelation(Pop<string>(), "<="); 
 
                     }
                     break;
                 case 60 :
-                    // DateTimeFilter.g:90:5: NE2 sql_name
+                    // DateTimeFilter.g:92:5: GE sql_name
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	NE275=(IToken)Match(input,NE2,FOLLOW_NE2_in_specification708); 
-                    		NE275_tree = (object)adaptor.Create(NE275);
-                    		adaptor.AddChild(root_0, NE275_tree);
+                    	GE73=(IToken)Match(input,GE,FOLLOW_GE_in_specification723); 
+                    		GE73_tree = (object)adaptor.Create(GE73);
+                    		adaptor.AddChild(root_0, GE73_tree);
 
-                    	PushFollow(FOLLOW_sql_name_in_specification710);
+                    	PushFollow(FOLLOW_sql_name_in_specification725);
+                    	sql_name74 = sql_name();
+                    	state.followingStackPointer--;
+
+                    	adaptor.AddChild(root_0, sql_name74.Tree);
+                    	 AddSqlLiteralRelation(Pop<string>(), ">="); 
+
+                    }
+                    break;
+                case 61 :
+                    // DateTimeFilter.g:93:5: NE sql_name
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	NE75=(IToken)Match(input,NE,FOLLOW_NE_in_specification734); 
+                    		NE75_tree = (object)adaptor.Create(NE75);
+                    		adaptor.AddChild(root_0, NE75_tree);
+
+                    	PushFollow(FOLLOW_sql_name_in_specification736);
                     	sql_name76 = sql_name();
                     	state.followingStackPointer--;
 
                     	adaptor.AddChild(root_0, sql_name76.Tree);
+                    	 AddSqlLiteralRelation(Pop<string>(), "<>"); 
+
+                    }
+                    break;
+                case 62 :
+                    // DateTimeFilter.g:94:5: EQ sql_name
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	EQ77=(IToken)Match(input,EQ,FOLLOW_EQ_in_specification745); 
+                    		EQ77_tree = (object)adaptor.Create(EQ77);
+                    		adaptor.AddChild(root_0, EQ77_tree);
+
+                    	PushFollow(FOLLOW_sql_name_in_specification747);
+                    	sql_name78 = sql_name();
+                    	state.followingStackPointer--;
+
+                    	adaptor.AddChild(root_0, sql_name78.Tree);
+                    	 AddSqlLiteralRelation(Pop<string>(), "="); 
+
+                    }
+                    break;
+                case 63 :
+                    // DateTimeFilter.g:95:5: EQ2 sql_name
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	EQ279=(IToken)Match(input,EQ2,FOLLOW_EQ2_in_specification755); 
+                    		EQ279_tree = (object)adaptor.Create(EQ279);
+                    		adaptor.AddChild(root_0, EQ279_tree);
+
+                    	PushFollow(FOLLOW_sql_name_in_specification757);
+                    	sql_name80 = sql_name();
+                    	state.followingStackPointer--;
+
+                    	adaptor.AddChild(root_0, sql_name80.Tree);
+                    	 AddSqlLiteralRelationWithNullTest_EQ(Pop<string>()); 
+
+                    }
+                    break;
+                case 64 :
+                    // DateTimeFilter.g:96:5: NE2 sql_name
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	NE281=(IToken)Match(input,NE2,FOLLOW_NE2_in_specification766); 
+                    		NE281_tree = (object)adaptor.Create(NE281);
+                    		adaptor.AddChild(root_0, NE281_tree);
+
+                    	PushFollow(FOLLOW_sql_name_in_specification768);
+                    	sql_name82 = sql_name();
+                    	state.followingStackPointer--;
+
+                    	adaptor.AddChild(root_0, sql_name82.Tree);
                     	 AddSqlLiteralRelationWithNullTest_NE(Pop<string>()); 
 
                     }
@@ -1470,7 +1570,7 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
     };
 
     // $ANTLR start "interval"
-    // DateTimeFilter.g:94:1: interval : (d1= DATE MINUS d2= DATE | d1= DATE t1= TIME MINUS d2= DATE t2= TIME );
+    // DateTimeFilter.g:100:1: interval : (d1= DATE MINUS d2= DATE | d1= DATE t1= time MINUS d2= DATE t2= time );
     public DateTimeFilterParser.interval_return interval() // throws RecognitionException [1]
     {   
         DateTimeFilterParser.interval_return retval = new DateTimeFilterParser.interval_return();
@@ -1480,21 +1580,21 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
 
         IToken d1 = null;
         IToken d2 = null;
-        IToken t1 = null;
-        IToken t2 = null;
-        IToken MINUS77 = null;
-        IToken MINUS78 = null;
+        IToken MINUS83 = null;
+        IToken MINUS84 = null;
+        DateTimeFilterParser.time_return t1 = default(DateTimeFilterParser.time_return);
+
+        DateTimeFilterParser.time_return t2 = default(DateTimeFilterParser.time_return);
+
 
         object d1_tree=null;
         object d2_tree=null;
-        object t1_tree=null;
-        object t2_tree=null;
-        object MINUS77_tree=null;
-        object MINUS78_tree=null;
+        object MINUS83_tree=null;
+        object MINUS84_tree=null;
 
         try 
     	{
-            // DateTimeFilter.g:94:10: (d1= DATE MINUS d2= DATE | d1= DATE t1= TIME MINUS d2= DATE t2= TIME )
+            // DateTimeFilter.g:100:10: (d1= DATE MINUS d2= DATE | d1= DATE t1= time MINUS d2= DATE t2= time )
             int alt3 = 2;
             int LA3_0 = input.LA(1);
 
@@ -1506,7 +1606,7 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
                 {
                     alt3 = 1;
                 }
-                else if ( (LA3_1 == TIME) )
+                else if ( ((LA3_1 >= TIME_SECOND_FRACTION && LA3_1 <= TIME_SECOND)) )
                 {
                     alt3 = 2;
                 }
@@ -1528,19 +1628,19 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
             switch (alt3) 
             {
                 case 1 :
-                    // DateTimeFilter.g:95:3: d1= DATE MINUS d2= DATE
+                    // DateTimeFilter.g:101:3: d1= DATE MINUS d2= DATE
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	d1=(IToken)Match(input,DATE,FOLLOW_DATE_in_interval729); 
+                    	d1=(IToken)Match(input,DATE,FOLLOW_DATE_in_interval787); 
                     		d1_tree = (object)adaptor.Create(d1);
                     		adaptor.AddChild(root_0, d1_tree);
 
-                    	MINUS77=(IToken)Match(input,MINUS,FOLLOW_MINUS_in_interval731); 
-                    		MINUS77_tree = (object)adaptor.Create(MINUS77);
-                    		adaptor.AddChild(root_0, MINUS77_tree);
+                    	MINUS83=(IToken)Match(input,MINUS,FOLLOW_MINUS_in_interval789); 
+                    		MINUS83_tree = (object)adaptor.Create(MINUS83);
+                    		adaptor.AddChild(root_0, MINUS83_tree);
 
-                    	d2=(IToken)Match(input,DATE,FOLLOW_DATE_in_interval735); 
+                    	d2=(IToken)Match(input,DATE,FOLLOW_DATE_in_interval793); 
                     		d2_tree = (object)adaptor.Create(d2);
                     		adaptor.AddChild(root_0, d2_tree);
 
@@ -1549,32 +1649,34 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
                     }
                     break;
                 case 2 :
-                    // DateTimeFilter.g:96:5: d1= DATE t1= TIME MINUS d2= DATE t2= TIME
+                    // DateTimeFilter.g:102:5: d1= DATE t1= time MINUS d2= DATE t2= time
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	d1=(IToken)Match(input,DATE,FOLLOW_DATE_in_interval745); 
+                    	d1=(IToken)Match(input,DATE,FOLLOW_DATE_in_interval803); 
                     		d1_tree = (object)adaptor.Create(d1);
                     		adaptor.AddChild(root_0, d1_tree);
 
-                    	t1=(IToken)Match(input,TIME,FOLLOW_TIME_in_interval749); 
-                    		t1_tree = (object)adaptor.Create(t1);
-                    		adaptor.AddChild(root_0, t1_tree);
+                    	PushFollow(FOLLOW_time_in_interval807);
+                    	t1 = time();
+                    	state.followingStackPointer--;
 
-                    	MINUS78=(IToken)Match(input,MINUS,FOLLOW_MINUS_in_interval751); 
-                    		MINUS78_tree = (object)adaptor.Create(MINUS78);
-                    		adaptor.AddChild(root_0, MINUS78_tree);
+                    	adaptor.AddChild(root_0, t1.Tree);
+                    	MINUS84=(IToken)Match(input,MINUS,FOLLOW_MINUS_in_interval809); 
+                    		MINUS84_tree = (object)adaptor.Create(MINUS84);
+                    		adaptor.AddChild(root_0, MINUS84_tree);
 
-                    	d2=(IToken)Match(input,DATE,FOLLOW_DATE_in_interval755); 
+                    	d2=(IToken)Match(input,DATE,FOLLOW_DATE_in_interval813); 
                     		d2_tree = (object)adaptor.Create(d2);
                     		adaptor.AddChild(root_0, d2_tree);
 
-                    	t2=(IToken)Match(input,TIME,FOLLOW_TIME_in_interval759); 
-                    		t2_tree = (object)adaptor.Create(t2);
-                    		adaptor.AddChild(root_0, t2_tree);
+                    	PushFollow(FOLLOW_time_in_interval817);
+                    	t2 = time();
+                    	state.followingStackPointer--;
 
+                    	adaptor.AddChild(root_0, t2.Tree);
 
-                    	    AddDateTimeIntervalCondition(ParseDate(((d1 != null) ? d1.Text : null)) + ParseTime(((t1 != null) ? t1.Text : null)), ParseDate(((d2 != null) ? d2.Text : null)) + ParseTime(((t2 != null) ? t2.Text : null)));    
+                    	    AddDateTimeIntervalCondition(ParseDate(((d1 != null) ? d1.Text : null)) + ParseTime(((t1 != null) ? input.ToString((IToken)(t1.Start),(IToken)(t1.Stop)) : null)), ParseDate(((d2 != null) ? d2.Text : null)) + ParseTimeEnd(((t2 != null) ? input.ToString((IToken)(t2.Start),(IToken)(t2.Stop)) : null)));    
                     	  
 
                     }
@@ -1601,7 +1703,7 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
     }
     // $ANTLR end "interval"
 
-    public class element_return : ParserRuleReturnScope
+    public class time_return : ParserRuleReturnScope
     {
         private object tree;
         override public object Tree
@@ -1611,50 +1713,34 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
         }
     };
 
-    // $ANTLR start "element"
-    // DateTimeFilter.g:101:1: element : ( specification | interval );
-    public DateTimeFilterParser.element_return element() // throws RecognitionException [1]
+    // $ANTLR start "time"
+    // DateTimeFilter.g:107:1: time : ( time_exact | time_noexact );
+    public DateTimeFilterParser.time_return time() // throws RecognitionException [1]
     {   
-        DateTimeFilterParser.element_return retval = new DateTimeFilterParser.element_return();
+        DateTimeFilterParser.time_return retval = new DateTimeFilterParser.time_return();
         retval.Start = input.LT(1);
 
         object root_0 = null;
 
-        DateTimeFilterParser.specification_return specification79 = default(DateTimeFilterParser.specification_return);
+        DateTimeFilterParser.time_exact_return time_exact85 = default(DateTimeFilterParser.time_exact_return);
 
-        DateTimeFilterParser.interval_return interval80 = default(DateTimeFilterParser.interval_return);
+        DateTimeFilterParser.time_noexact_return time_noexact86 = default(DateTimeFilterParser.time_noexact_return);
 
 
 
         try 
     	{
-            // DateTimeFilter.g:101:8: ( specification | interval )
+            // DateTimeFilter.g:107:5: ( time_exact | time_noexact )
             int alt4 = 2;
             int LA4_0 = input.LA(1);
 
-            if ( (LA4_0 == YEAR || (LA4_0 >= HOUR_ANY_MINUTE && LA4_0 <= T_LAST) || (LA4_0 >= T_THIS && LA4_0 <= T_TOMORROW) || (LA4_0 >= EQ && LA4_0 <= NE) || (LA4_0 >= T_NULL && LA4_0 <= NE2)) )
+            if ( (LA4_0 == TIME_SECOND_FRACTION) )
             {
                 alt4 = 1;
             }
-            else if ( (LA4_0 == DATE) )
+            else if ( ((LA4_0 >= TIME_MINUE && LA4_0 <= TIME_SECOND)) )
             {
-                int LA4_2 = input.LA(2);
-
-                if ( (LA4_2 == TIME || LA4_2 == MINUS) )
-                {
-                    alt4 = 2;
-                }
-                else if ( (LA4_2 == EOF || (LA4_2 >= YEAR && LA4_2 <= T_LAST) || (LA4_2 >= T_THIS && LA4_2 <= T_TOMORROW) || (LA4_2 >= EQ && LA4_2 <= NE) || (LA4_2 >= T_NULL && LA4_2 <= NE2) || (LA4_2 >= COMMA && LA4_2 <= ENDLINE)) )
-                {
-                    alt4 = 1;
-                }
-                else 
-                {
-                    NoViableAltException nvae_d4s2 =
-                        new NoViableAltException("", 4, 2, input);
-
-                    throw nvae_d4s2;
-                }
+                alt4 = 2;
             }
             else 
             {
@@ -1666,28 +1752,400 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
             switch (alt4) 
             {
                 case 1 :
-                    // DateTimeFilter.g:102:3: specification
+                    // DateTimeFilter.g:108:4: time_exact
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	PushFollow(FOLLOW_specification_in_element772);
-                    	specification79 = specification();
+                    	PushFollow(FOLLOW_time_exact_in_time830);
+                    	time_exact85 = time_exact();
                     	state.followingStackPointer--;
 
-                    	adaptor.AddChild(root_0, specification79.Tree);
+                    	adaptor.AddChild(root_0, time_exact85.Tree);
 
                     }
                     break;
                 case 2 :
-                    // DateTimeFilter.g:102:19: interval
+                    // DateTimeFilter.g:108:17: time_noexact
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	PushFollow(FOLLOW_interval_in_element776);
-                    	interval80 = interval();
+                    	PushFollow(FOLLOW_time_noexact_in_time834);
+                    	time_noexact86 = time_noexact();
                     	state.followingStackPointer--;
 
-                    	adaptor.AddChild(root_0, interval80.Tree);
+                    	adaptor.AddChild(root_0, time_noexact86.Tree);
+
+                    }
+                    break;
+
+            }
+            retval.Stop = input.LT(-1);
+
+            	retval.Tree = (object)adaptor.RulePostProcessing(root_0);
+            	adaptor.SetTokenBoundaries(retval.Tree, (IToken) retval.Start, (IToken) retval.Stop);
+        }
+        catch (RecognitionException re) 
+    	{
+            ReportError(re);
+            Recover(input,re);
+    	// Conversion of the second argument necessary, but harmless
+    	retval.Tree = (object)adaptor.ErrorNode(input, (IToken) retval.Start, input.LT(-1), re);
+
+        }
+        finally 
+    	{
+        }
+        return retval;
+    }
+    // $ANTLR end "time"
+
+    public class time_exact_return : ParserRuleReturnScope
+    {
+        private object tree;
+        override public object Tree
+        {
+        	get { return tree; }
+        	set { tree = (object) value; }
+        }
+    };
+
+    // $ANTLR start "time_exact"
+    // DateTimeFilter.g:110:1: time_exact : t= TIME_SECOND_FRACTION ;
+    public DateTimeFilterParser.time_exact_return time_exact() // throws RecognitionException [1]
+    {   
+        DateTimeFilterParser.time_exact_return retval = new DateTimeFilterParser.time_exact_return();
+        retval.Start = input.LT(1);
+
+        object root_0 = null;
+
+        IToken t = null;
+
+        object t_tree=null;
+
+        try 
+    	{
+            // DateTimeFilter.g:110:11: (t= TIME_SECOND_FRACTION )
+            // DateTimeFilter.g:111:3: t= TIME_SECOND_FRACTION
+            {
+            	root_0 = (object)adaptor.GetNilNode();
+
+            	t=(IToken)Match(input,TIME_SECOND_FRACTION,FOLLOW_TIME_SECOND_FRACTION_in_time_exact849); 
+            		t_tree = (object)adaptor.Create(t);
+            		adaptor.AddChild(root_0, t_tree);
+
+            	 Push(((t != null) ? t.Text : null)); 
+
+            }
+
+            retval.Stop = input.LT(-1);
+
+            	retval.Tree = (object)adaptor.RulePostProcessing(root_0);
+            	adaptor.SetTokenBoundaries(retval.Tree, (IToken) retval.Start, (IToken) retval.Stop);
+        }
+        catch (RecognitionException re) 
+    	{
+            ReportError(re);
+            Recover(input,re);
+    	// Conversion of the second argument necessary, but harmless
+    	retval.Tree = (object)adaptor.ErrorNode(input, (IToken) retval.Start, input.LT(-1), re);
+
+        }
+        finally 
+    	{
+        }
+        return retval;
+    }
+    // $ANTLR end "time_exact"
+
+    public class time_noexact_return : ParserRuleReturnScope
+    {
+        private object tree;
+        override public object Tree
+        {
+        	get { return tree; }
+        	set { tree = (object) value; }
+        }
+    };
+
+    // $ANTLR start "time_noexact"
+    // DateTimeFilter.g:113:1: time_noexact : (t= TIME_MINUE | t= TIME_SECOND );
+    public DateTimeFilterParser.time_noexact_return time_noexact() // throws RecognitionException [1]
+    {   
+        DateTimeFilterParser.time_noexact_return retval = new DateTimeFilterParser.time_noexact_return();
+        retval.Start = input.LT(1);
+
+        object root_0 = null;
+
+        IToken t = null;
+
+        object t_tree=null;
+
+        try 
+    	{
+            // DateTimeFilter.g:113:13: (t= TIME_MINUE | t= TIME_SECOND )
+            int alt5 = 2;
+            int LA5_0 = input.LA(1);
+
+            if ( (LA5_0 == TIME_MINUE) )
+            {
+                alt5 = 1;
+            }
+            else if ( (LA5_0 == TIME_SECOND) )
+            {
+                alt5 = 2;
+            }
+            else 
+            {
+                NoViableAltException nvae_d5s0 =
+                    new NoViableAltException("", 5, 0, input);
+
+                throw nvae_d5s0;
+            }
+            switch (alt5) 
+            {
+                case 1 :
+                    // DateTimeFilter.g:114:3: t= TIME_MINUE
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	t=(IToken)Match(input,TIME_MINUE,FOLLOW_TIME_MINUE_in_time_noexact865); 
+                    		t_tree = (object)adaptor.Create(t);
+                    		adaptor.AddChild(root_0, t_tree);
+
+                    	 Push(((t != null) ? t.Text : null)); 
+
+                    }
+                    break;
+                case 2 :
+                    // DateTimeFilter.g:114:37: t= TIME_SECOND
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	t=(IToken)Match(input,TIME_SECOND,FOLLOW_TIME_SECOND_in_time_noexact873); 
+                    		t_tree = (object)adaptor.Create(t);
+                    		adaptor.AddChild(root_0, t_tree);
+
+                    	 Push(((t != null) ? t.Text : null)); 
+
+                    }
+                    break;
+
+            }
+            retval.Stop = input.LT(-1);
+
+            	retval.Tree = (object)adaptor.RulePostProcessing(root_0);
+            	adaptor.SetTokenBoundaries(retval.Tree, (IToken) retval.Start, (IToken) retval.Stop);
+        }
+        catch (RecognitionException re) 
+    	{
+            ReportError(re);
+            Recover(input,re);
+    	// Conversion of the second argument necessary, but harmless
+    	retval.Tree = (object)adaptor.ErrorNode(input, (IToken) retval.Start, input.LT(-1), re);
+
+        }
+        finally 
+    	{
+        }
+        return retval;
+    }
+    // $ANTLR end "time_noexact"
+
+    public class element_return : ParserRuleReturnScope
+    {
+        private object tree;
+        override public object Tree
+        {
+        	get { return tree; }
+        	set { tree = (object) value; }
+        }
+    };
+
+    // $ANTLR start "element"
+    // DateTimeFilter.g:116:1: element : ( specification | interval );
+    public DateTimeFilterParser.element_return element() // throws RecognitionException [1]
+    {   
+        DateTimeFilterParser.element_return retval = new DateTimeFilterParser.element_return();
+        retval.Start = input.LT(1);
+
+        object root_0 = null;
+
+        DateTimeFilterParser.specification_return specification87 = default(DateTimeFilterParser.specification_return);
+
+        DateTimeFilterParser.interval_return interval88 = default(DateTimeFilterParser.interval_return);
+
+
+
+        try 
+    	{
+            // DateTimeFilter.g:116:8: ( specification | interval )
+            int alt6 = 2;
+            int LA6_0 = input.LA(1);
+
+            if ( (LA6_0 == YEAR || (LA6_0 >= HOUR_ANY_MINUTE && LA6_0 <= T_LAST) || (LA6_0 >= T_THIS && LA6_0 <= T_TOMORROW) || (LA6_0 >= EQ && LA6_0 <= NE2)) )
+            {
+                alt6 = 1;
+            }
+            else if ( (LA6_0 == DATE) )
+            {
+                switch ( input.LA(2) ) 
+                {
+                case MINUS:
+                	{
+                    alt6 = 2;
+                    }
+                    break;
+                case TIME_SECOND_FRACTION:
+                	{
+                    int LA6_4 = input.LA(3);
+
+                    if ( (LA6_4 == MINUS) )
+                    {
+                        alt6 = 2;
+                    }
+                    else if ( (LA6_4 == EOF || (LA6_4 >= YEAR && LA6_4 <= T_LAST) || (LA6_4 >= T_THIS && LA6_4 <= T_TOMORROW) || (LA6_4 >= EQ && LA6_4 <= NE2) || (LA6_4 >= COMMA && LA6_4 <= ENDLINE)) )
+                    {
+                        alt6 = 1;
+                    }
+                    else 
+                    {
+                        NoViableAltException nvae_d6s4 =
+                            new NoViableAltException("", 6, 4, input);
+
+                        throw nvae_d6s4;
+                    }
+                    }
+                    break;
+                case TIME_MINUE:
+                	{
+                    int LA6_5 = input.LA(3);
+
+                    if ( (LA6_5 == EOF || (LA6_5 >= YEAR && LA6_5 <= T_LAST) || (LA6_5 >= T_THIS && LA6_5 <= T_TOMORROW) || (LA6_5 >= EQ && LA6_5 <= NE2) || (LA6_5 >= COMMA && LA6_5 <= ENDLINE)) )
+                    {
+                        alt6 = 1;
+                    }
+                    else if ( (LA6_5 == MINUS) )
+                    {
+                        alt6 = 2;
+                    }
+                    else 
+                    {
+                        NoViableAltException nvae_d6s5 =
+                            new NoViableAltException("", 6, 5, input);
+
+                        throw nvae_d6s5;
+                    }
+                    }
+                    break;
+                case TIME_SECOND:
+                	{
+                    int LA6_6 = input.LA(3);
+
+                    if ( (LA6_6 == EOF || (LA6_6 >= YEAR && LA6_6 <= T_LAST) || (LA6_6 >= T_THIS && LA6_6 <= T_TOMORROW) || (LA6_6 >= EQ && LA6_6 <= NE2) || (LA6_6 >= COMMA && LA6_6 <= ENDLINE)) )
+                    {
+                        alt6 = 1;
+                    }
+                    else if ( (LA6_6 == MINUS) )
+                    {
+                        alt6 = 2;
+                    }
+                    else 
+                    {
+                        NoViableAltException nvae_d6s6 =
+                            new NoViableAltException("", 6, 6, input);
+
+                        throw nvae_d6s6;
+                    }
+                    }
+                    break;
+                case EOF:
+                case YEAR:
+                case DATE:
+                case HOUR_ANY_MINUTE:
+                case FLOW_MONTH:
+                case FLOW_DAY:
+                case YEAR_MONTH:
+                case T_JAN:
+                case T_FEB:
+                case T_MAR:
+                case T_APR:
+                case T_MAY:
+                case T_JUN:
+                case T_JUL:
+                case T_AUG:
+                case T_SEP:
+                case T_OCT:
+                case T_NOV:
+                case T_DEC:
+                case T_MON:
+                case T_TUE:
+                case T_WED:
+                case T_THU:
+                case T_FRI:
+                case T_SAT:
+                case T_SUN:
+                case T_LAST:
+                case T_THIS:
+                case T_NEXT:
+                case T_YESTERDAY:
+                case T_TODAY:
+                case T_TOMORROW:
+                case EQ:
+                case LT:
+                case LE:
+                case GT:
+                case GE:
+                case NE:
+                case T_NULL:
+                case T_NOT:
+                case EQ2:
+                case NE2:
+                case COMMA:
+                case ENDLINE:
+                	{
+                    alt6 = 1;
+                    }
+                    break;
+                	default:
+                	    NoViableAltException nvae_d6s2 =
+                	        new NoViableAltException("", 6, 2, input);
+
+                	    throw nvae_d6s2;
+                }
+
+            }
+            else 
+            {
+                NoViableAltException nvae_d6s0 =
+                    new NoViableAltException("", 6, 0, input);
+
+                throw nvae_d6s0;
+            }
+            switch (alt6) 
+            {
+                case 1 :
+                    // DateTimeFilter.g:117:3: specification
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	PushFollow(FOLLOW_specification_in_element885);
+                    	specification87 = specification();
+                    	state.followingStackPointer--;
+
+                    	adaptor.AddChild(root_0, specification87.Tree);
+
+                    }
+                    break;
+                case 2 :
+                    // DateTimeFilter.g:117:19: interval
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	PushFollow(FOLLOW_interval_in_element889);
+                    	interval88 = interval();
+                    	state.followingStackPointer--;
+
+                    	adaptor.AddChild(root_0, interval88.Tree);
 
                     }
                     break;
@@ -1724,7 +2182,7 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
     };
 
     // $ANTLR start "factor"
-    // DateTimeFilter.g:104:1: factor : ( element )+ ;
+    // DateTimeFilter.g:119:1: factor : ( element )+ ;
     public DateTimeFilterParser.factor_return factor() // throws RecognitionException [1]
     {   
         DateTimeFilterParser.factor_return retval = new DateTimeFilterParser.factor_return();
@@ -1732,55 +2190,55 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
 
         object root_0 = null;
 
-        DateTimeFilterParser.element_return element81 = default(DateTimeFilterParser.element_return);
+        DateTimeFilterParser.element_return element89 = default(DateTimeFilterParser.element_return);
 
 
 
         try 
     	{
-            // DateTimeFilter.g:104:8: ( ( element )+ )
-            // DateTimeFilter.g:105:3: ( element )+
+            // DateTimeFilter.g:119:8: ( ( element )+ )
+            // DateTimeFilter.g:120:3: ( element )+
             {
             	root_0 = (object)adaptor.GetNilNode();
 
-            	// DateTimeFilter.g:105:3: ( element )+
-            	int cnt5 = 0;
+            	// DateTimeFilter.g:120:3: ( element )+
+            	int cnt7 = 0;
             	do 
             	{
-            	    int alt5 = 2;
-            	    int LA5_0 = input.LA(1);
+            	    int alt7 = 2;
+            	    int LA7_0 = input.LA(1);
 
-            	    if ( ((LA5_0 >= YEAR && LA5_0 <= T_LAST) || (LA5_0 >= T_THIS && LA5_0 <= T_TOMORROW) || (LA5_0 >= EQ && LA5_0 <= NE) || (LA5_0 >= T_NULL && LA5_0 <= NE2)) )
+            	    if ( ((LA7_0 >= YEAR && LA7_0 <= T_LAST) || (LA7_0 >= T_THIS && LA7_0 <= T_TOMORROW) || (LA7_0 >= EQ && LA7_0 <= NE2)) )
             	    {
-            	        alt5 = 1;
+            	        alt7 = 1;
             	    }
 
 
-            	    switch (alt5) 
+            	    switch (alt7) 
             		{
             			case 1 :
-            			    // DateTimeFilter.g:105:3: element
+            			    // DateTimeFilter.g:120:3: element
             			    {
-            			    	PushFollow(FOLLOW_element_in_factor788);
-            			    	element81 = element();
+            			    	PushFollow(FOLLOW_element_in_factor901);
+            			    	element89 = element();
             			    	state.followingStackPointer--;
 
-            			    	adaptor.AddChild(root_0, element81.Tree);
+            			    	adaptor.AddChild(root_0, element89.Tree);
 
             			    }
             			    break;
 
             			default:
-            			    if ( cnt5 >= 1 ) goto loop5;
-            		            EarlyExitException eee5 =
-            		                new EarlyExitException(5, input);
-            		            throw eee5;
+            			    if ( cnt7 >= 1 ) goto loop7;
+            		            EarlyExitException eee7 =
+            		                new EarlyExitException(7, input);
+            		            throw eee7;
             	    }
-            	    cnt5++;
+            	    cnt7++;
             	} while (true);
 
-            	loop5:
-            		;	// Stops C# compiler whining that label 'loop5' has no statements
+            	loop7:
+            		;	// Stops C# compiler whining that label 'loop7' has no statements
 
 
             }
@@ -1816,7 +2274,7 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
     };
 
     // $ANTLR start "list"
-    // DateTimeFilter.g:107:1: list : factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )* ;
+    // DateTimeFilter.g:122:1: list : factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )* ;
     public DateTimeFilterParser.list_return list() // throws RecognitionException [1]
     {   
         DateTimeFilterParser.list_return retval = new DateTimeFilterParser.list_return();
@@ -1824,114 +2282,114 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
 
         object root_0 = null;
 
-        IToken COMMA83 = null;
-        IToken ENDLINE84 = null;
-        IToken ENDLINE86 = null;
-        DateTimeFilterParser.factor_return factor82 = default(DateTimeFilterParser.factor_return);
+        IToken COMMA91 = null;
+        IToken ENDLINE92 = null;
+        IToken ENDLINE94 = null;
+        DateTimeFilterParser.factor_return factor90 = default(DateTimeFilterParser.factor_return);
 
-        DateTimeFilterParser.factor_return factor85 = default(DateTimeFilterParser.factor_return);
+        DateTimeFilterParser.factor_return factor93 = default(DateTimeFilterParser.factor_return);
 
 
-        object COMMA83_tree=null;
-        object ENDLINE84_tree=null;
-        object ENDLINE86_tree=null;
+        object COMMA91_tree=null;
+        object ENDLINE92_tree=null;
+        object ENDLINE94_tree=null;
 
         try 
     	{
-            // DateTimeFilter.g:107:5: ( factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )* )
-            // DateTimeFilter.g:108:3: factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )*
+            // DateTimeFilter.g:122:5: ( factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )* )
+            // DateTimeFilter.g:123:3: factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )*
             {
             	root_0 = (object)adaptor.GetNilNode();
 
-            	PushFollow(FOLLOW_factor_in_list799);
-            	factor82 = factor();
+            	PushFollow(FOLLOW_factor_in_list912);
+            	factor90 = factor();
             	state.followingStackPointer--;
 
-            	adaptor.AddChild(root_0, factor82.Tree);
-            	// DateTimeFilter.g:108:10: ( ( COMMA | ( ( ENDLINE )+ ) ) factor )*
+            	adaptor.AddChild(root_0, factor90.Tree);
+            	// DateTimeFilter.g:123:10: ( ( COMMA | ( ( ENDLINE )+ ) ) factor )*
             	do 
             	{
-            	    int alt8 = 2;
-            	    alt8 = dfa8.Predict(input);
-            	    switch (alt8) 
+            	    int alt10 = 2;
+            	    alt10 = dfa10.Predict(input);
+            	    switch (alt10) 
             		{
             			case 1 :
-            			    // DateTimeFilter.g:108:12: ( COMMA | ( ( ENDLINE )+ ) ) factor
+            			    // DateTimeFilter.g:123:12: ( COMMA | ( ( ENDLINE )+ ) ) factor
             			    {
-            			    	// DateTimeFilter.g:108:12: ( COMMA | ( ( ENDLINE )+ ) )
-            			    	int alt7 = 2;
-            			    	int LA7_0 = input.LA(1);
+            			    	// DateTimeFilter.g:123:12: ( COMMA | ( ( ENDLINE )+ ) )
+            			    	int alt9 = 2;
+            			    	int LA9_0 = input.LA(1);
 
-            			    	if ( (LA7_0 == COMMA) )
+            			    	if ( (LA9_0 == COMMA) )
             			    	{
-            			    	    alt7 = 1;
+            			    	    alt9 = 1;
             			    	}
-            			    	else if ( (LA7_0 == ENDLINE) )
+            			    	else if ( (LA9_0 == ENDLINE) )
             			    	{
-            			    	    alt7 = 2;
+            			    	    alt9 = 2;
             			    	}
             			    	else 
             			    	{
-            			    	    NoViableAltException nvae_d7s0 =
-            			    	        new NoViableAltException("", 7, 0, input);
+            			    	    NoViableAltException nvae_d9s0 =
+            			    	        new NoViableAltException("", 9, 0, input);
 
-            			    	    throw nvae_d7s0;
+            			    	    throw nvae_d9s0;
             			    	}
-            			    	switch (alt7) 
+            			    	switch (alt9) 
             			    	{
             			    	    case 1 :
-            			    	        // DateTimeFilter.g:108:13: COMMA
+            			    	        // DateTimeFilter.g:123:13: COMMA
             			    	        {
-            			    	        	COMMA83=(IToken)Match(input,COMMA,FOLLOW_COMMA_in_list804); 
-            			    	        		COMMA83_tree = (object)adaptor.Create(COMMA83);
-            			    	        		adaptor.AddChild(root_0, COMMA83_tree);
+            			    	        	COMMA91=(IToken)Match(input,COMMA,FOLLOW_COMMA_in_list917); 
+            			    	        		COMMA91_tree = (object)adaptor.Create(COMMA91);
+            			    	        		adaptor.AddChild(root_0, COMMA91_tree);
 
 
             			    	        }
             			    	        break;
             			    	    case 2 :
-            			    	        // DateTimeFilter.g:108:21: ( ( ENDLINE )+ )
+            			    	        // DateTimeFilter.g:123:21: ( ( ENDLINE )+ )
             			    	        {
-            			    	        	// DateTimeFilter.g:108:21: ( ( ENDLINE )+ )
-            			    	        	// DateTimeFilter.g:108:22: ( ENDLINE )+
+            			    	        	// DateTimeFilter.g:123:21: ( ( ENDLINE )+ )
+            			    	        	// DateTimeFilter.g:123:22: ( ENDLINE )+
             			    	        	{
-            			    	        		// DateTimeFilter.g:108:22: ( ENDLINE )+
-            			    	        		int cnt6 = 0;
+            			    	        		// DateTimeFilter.g:123:22: ( ENDLINE )+
+            			    	        		int cnt8 = 0;
             			    	        		do 
             			    	        		{
-            			    	        		    int alt6 = 2;
-            			    	        		    int LA6_0 = input.LA(1);
+            			    	        		    int alt8 = 2;
+            			    	        		    int LA8_0 = input.LA(1);
 
-            			    	        		    if ( (LA6_0 == ENDLINE) )
+            			    	        		    if ( (LA8_0 == ENDLINE) )
             			    	        		    {
-            			    	        		        alt6 = 1;
+            			    	        		        alt8 = 1;
             			    	        		    }
 
 
-            			    	        		    switch (alt6) 
+            			    	        		    switch (alt8) 
             			    	        			{
             			    	        				case 1 :
-            			    	        				    // DateTimeFilter.g:108:22: ENDLINE
+            			    	        				    // DateTimeFilter.g:123:22: ENDLINE
             			    	        				    {
-            			    	        				    	ENDLINE84=(IToken)Match(input,ENDLINE,FOLLOW_ENDLINE_in_list809); 
-            			    	        				    		ENDLINE84_tree = (object)adaptor.Create(ENDLINE84);
-            			    	        				    		adaptor.AddChild(root_0, ENDLINE84_tree);
+            			    	        				    	ENDLINE92=(IToken)Match(input,ENDLINE,FOLLOW_ENDLINE_in_list922); 
+            			    	        				    		ENDLINE92_tree = (object)adaptor.Create(ENDLINE92);
+            			    	        				    		adaptor.AddChild(root_0, ENDLINE92_tree);
 
 
             			    	        				    }
             			    	        				    break;
 
             			    	        				default:
-            			    	        				    if ( cnt6 >= 1 ) goto loop6;
-            			    	        			            EarlyExitException eee6 =
-            			    	        			                new EarlyExitException(6, input);
-            			    	        			            throw eee6;
+            			    	        				    if ( cnt8 >= 1 ) goto loop8;
+            			    	        			            EarlyExitException eee8 =
+            			    	        			                new EarlyExitException(8, input);
+            			    	        			            throw eee8;
             			    	        		    }
-            			    	        		    cnt6++;
+            			    	        		    cnt8++;
             			    	        		} while (true);
 
-            			    	        		loop6:
-            			    	        			;	// Stops C# compiler whining that label 'loop6' has no statements
+            			    	        		loop8:
+            			    	        			;	// Stops C# compiler whining that label 'loop8' has no statements
 
 
             			    	        	}
@@ -1943,55 +2401,55 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
             			    	}
 
             			    	 AddAndCondition(); 
-            			    	PushFollow(FOLLOW_factor_in_list816);
-            			    	factor85 = factor();
+            			    	PushFollow(FOLLOW_factor_in_list929);
+            			    	factor93 = factor();
             			    	state.followingStackPointer--;
 
-            			    	adaptor.AddChild(root_0, factor85.Tree);
+            			    	adaptor.AddChild(root_0, factor93.Tree);
 
             			    }
             			    break;
 
             			default:
-            			    goto loop8;
+            			    goto loop10;
             	    }
             	} while (true);
 
-            	loop8:
-            		;	// Stops C# compiler whining that label 'loop8' has no statements
+            	loop10:
+            		;	// Stops C# compiler whining that label 'loop10' has no statements
 
-            	// DateTimeFilter.g:108:67: ( ENDLINE )*
+            	// DateTimeFilter.g:123:67: ( ENDLINE )*
             	do 
             	{
-            	    int alt9 = 2;
-            	    int LA9_0 = input.LA(1);
+            	    int alt11 = 2;
+            	    int LA11_0 = input.LA(1);
 
-            	    if ( (LA9_0 == ENDLINE) )
+            	    if ( (LA11_0 == ENDLINE) )
             	    {
-            	        alt9 = 1;
+            	        alt11 = 1;
             	    }
 
 
-            	    switch (alt9) 
+            	    switch (alt11) 
             		{
             			case 1 :
-            			    // DateTimeFilter.g:108:67: ENDLINE
+            			    // DateTimeFilter.g:123:67: ENDLINE
             			    {
-            			    	ENDLINE86=(IToken)Match(input,ENDLINE,FOLLOW_ENDLINE_in_list822); 
-            			    		ENDLINE86_tree = (object)adaptor.Create(ENDLINE86);
-            			    		adaptor.AddChild(root_0, ENDLINE86_tree);
+            			    	ENDLINE94=(IToken)Match(input,ENDLINE,FOLLOW_ENDLINE_in_list935); 
+            			    		ENDLINE94_tree = (object)adaptor.Create(ENDLINE94);
+            			    		adaptor.AddChild(root_0, ENDLINE94_tree);
 
 
             			    }
             			    break;
 
             			default:
-            			    goto loop9;
+            			    goto loop11;
             	    }
             	} while (true);
 
-            	loop9:
-            		;	// Stops C# compiler whining that label 'loop9' has no statements
+            	loop11:
+            		;	// Stops C# compiler whining that label 'loop11' has no statements
 
 
             }
@@ -2027,7 +2485,7 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
     };
 
     // $ANTLR start "expr"
-    // DateTimeFilter.g:110:1: expr : list ;
+    // DateTimeFilter.g:125:1: expr : list ;
     public DateTimeFilterParser.expr_return expr() // throws RecognitionException [1]
     {   
         DateTimeFilterParser.expr_return retval = new DateTimeFilterParser.expr_return();
@@ -2035,22 +2493,22 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
 
         object root_0 = null;
 
-        DateTimeFilterParser.list_return list87 = default(DateTimeFilterParser.list_return);
+        DateTimeFilterParser.list_return list95 = default(DateTimeFilterParser.list_return);
 
 
 
         try 
     	{
-            // DateTimeFilter.g:110:5: ( list )
-            // DateTimeFilter.g:110:7: list
+            // DateTimeFilter.g:125:5: ( list )
+            // DateTimeFilter.g:125:7: list
             {
             	root_0 = (object)adaptor.GetNilNode();
 
-            	PushFollow(FOLLOW_list_in_expr832);
-            	list87 = list();
+            	PushFollow(FOLLOW_list_in_expr945);
+            	list95 = list();
             	state.followingStackPointer--;
 
-            	adaptor.AddChild(root_0, list87.Tree);
+            	adaptor.AddChild(root_0, list95.Tree);
 
             }
 
@@ -2078,43 +2536,49 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
 
 
    	protected DFA2 dfa2;
-   	protected DFA8 dfa8;
+   	protected DFA10 dfa10;
 	private void InitializeCyclicDFAs()
 	{
     	this.dfa2 = new DFA2(this);
-    	this.dfa8 = new DFA8(this);
+    	this.dfa10 = new DFA10(this);
 	}
 
     const string DFA2_eotS =
-        "\x4a\uffff";
+        "\x50\uffff";
     const string DFA2_eofS =
-        "\x38\uffff\x01\x43\x01\uffff\x01\x45\x01\uffff\x01\x47\x01\uffff"+
-        "\x01\x49\x0b\uffff";
+        "\x02\uffff\x01\x2b\x36\uffff\x01\x45\x01\uffff\x01\x49\x01\uffff"+
+        "\x01\x4a\x01\uffff\x01\x4d\x01\uffff\x01\x4e\x0e\uffff";
     const string DFA2_minS =
-        "\x01\x06\x19\uffff\x03\x20\x03\uffff\x06\x04\x12\uffff\x01\x06"+
-        "\x01\uffff\x01\x06\x01\uffff\x01\x06\x01\uffff\x01\x06\x0b\uffff";
+        "\x01\x06\x01\uffff\x01\x06\x17\uffff\x03\x20\x03\uffff\x06\x04"+
+        "\x13\uffff\x01\x06\x01\uffff\x01\x06\x01\uffff\x01\x06\x01\uffff"+
+        "\x01\x06\x01\uffff\x01\x06\x0e\uffff";
     const string DFA2_maxS =
-        "\x01\x33\x19\uffff\x03\x28\x03\uffff\x06\x07\x12\uffff\x01\x36"+
-        "\x01\uffff\x01\x36\x01\uffff\x01\x36\x01\uffff\x01\x36\x0b\uffff";
+        "\x01\x32\x01\uffff\x01\x38\x17\uffff\x03\x28\x03\uffff\x06\x07"+
+        "\x13\uffff\x01\x38\x01\uffff\x01\x38\x01\uffff\x01\x38\x01\uffff"+
+        "\x01\x38\x01\uffff\x01\x38\x0e\uffff";
     const string DFA2_acceptS =
-        "\x01\uffff\x01\x01\x01\x02\x01\x03\x01\x04\x01\x05\x01\x06\x01"+
+        "\x01\uffff\x01\x01\x01\uffff\x01\x03\x01\x04\x01\x05\x01\x06\x01"+
         "\x07\x01\x08\x01\x09\x01\x0a\x01\x0b\x01\x0c\x01\x0d\x01\x0e\x01"+
         "\x0f\x01\x10\x01\x11\x01\x12\x01\x13\x01\x14\x01\x15\x01\x16\x01"+
         "\x17\x01\x18\x01\x19\x03\uffff\x01\x1d\x01\x1e\x01\x1f\x06\uffff"+
-        "\x01\x33\x01\x34\x01\x3b\x01\x3c\x01\x1a\x01\x20\x01\x23\x01\x26"+
-        "\x01\x1b\x01\x21\x01\x24\x01\x27\x01\x1c\x01\x22\x01\x25\x01\x28"+
-        "\x01\x29\x01\x3a\x01\uffff\x01\x35\x01\uffff\x01\x37\x01\uffff\x01"+
-        "\x36\x01\uffff\x01\x38\x01\x2e\x01\x39\x01\x2f\x01\x2a\x01\x30\x01"+
-        "\x2b\x01\x31\x01\x2c\x01\x32\x01\x2d";
+        "\x01\x37\x01\x38\x01\x3f\x01\x40\x01\x31\x01\x02\x01\x2f\x01\x1a"+
+        "\x01\x20\x01\x23\x01\x26\x01\x1b\x01\x21\x01\x24\x01\x27\x01\x1c"+
+        "\x01\x22\x01\x25\x01\x28\x01\uffff\x01\x3e\x01\uffff\x01\x39\x01"+
+        "\uffff\x01\x3b\x01\uffff\x01\x3a\x01\uffff\x01\x3c\x01\x2e\x01\x3d"+
+        "\x01\x29\x01\x30\x01\x32\x01\x33\x01\x2a\x01\x2b\x01\x34\x01\x35"+
+        "\x01\x2c\x01\x2d\x01\x36";
     const string DFA2_specialS =
-        "\x4a\uffff}>";
+        "\x50\uffff}>";
     static readonly string[] DFA2_transitionS = {
             "\x01\x01\x01\x02\x01\x03\x01\x04\x01\x05\x01\x06\x01\x07\x01"+
             "\x08\x01\x09\x01\x0a\x01\x0b\x01\x0c\x01\x0d\x01\x0e\x01\x0f"+
             "\x01\x10\x01\x11\x01\x12\x01\x13\x01\x14\x01\x15\x01\x16\x01"+
             "\x17\x01\x18\x01\x19\x01\x1a\x01\uffff\x01\x1b\x01\x1c\x01\x1d"+
             "\x01\x1e\x01\x1f\x03\uffff\x01\x20\x01\x21\x01\x22\x01\x23\x01"+
-            "\x24\x01\x25\x01\uffff\x01\x26\x01\x27\x01\x28\x01\x29",
+            "\x24\x01\x25\x01\x26\x01\x27\x01\x28\x01\x29",
+            "",
+            "\x1a\x2b\x01\uffff\x05\x2b\x03\uffff\x0a\x2b\x01\uffff\x01"+
+            "\x2a\x02\x2c\x02\x2b",
             "",
             "",
             "",
@@ -2138,21 +2602,18 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
             "",
             "",
             "",
-            "",
-            "",
-            "\x01\x2a\x05\uffff\x01\x2b\x01\x2c\x01\x2d",
-            "\x01\x2e\x05\uffff\x01\x2f\x01\x30\x01\x31",
-            "\x01\x32\x05\uffff\x01\x33\x01\x34\x01\x35",
+            "\x01\x2d\x05\uffff\x01\x2e\x01\x2f\x01\x30",
+            "\x01\x31\x05\uffff\x01\x32\x01\x33\x01\x34",
+            "\x01\x35\x05\uffff\x01\x36\x01\x37\x01\x38",
             "",
             "",
             "",
-            "\x01\x37\x02\uffff\x01\x36",
-            "\x01\x39\x02\uffff\x01\x38",
-            "\x01\x3b\x02\uffff\x01\x3a",
-            "\x01\x3d\x02\uffff\x01\x3c",
-            "\x01\x3f\x02\uffff\x01\x3e",
-            "\x01\x41\x02\uffff\x01\x40",
-            "",
+            "\x01\x3a\x02\uffff\x01\x39",
+            "\x01\x3c\x02\uffff\x01\x3b",
+            "\x01\x3e\x02\uffff\x01\x3d",
+            "\x01\x40\x02\uffff\x01\x3f",
+            "\x01\x42\x02\uffff\x01\x41",
+            "\x01\x44\x02\uffff\x01\x43",
             "",
             "",
             "",
@@ -2170,17 +2631,25 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
             "",
             "",
             "",
-            "\x1a\x43\x01\uffff\x05\x43\x03\uffff\x06\x43\x01\x42\x04\x43"+
-            "\x01\uffff\x02\x43",
             "",
-            "\x1a\x45\x01\uffff\x05\x45\x03\uffff\x06\x45\x01\x44\x04\x45"+
-            "\x01\uffff\x02\x45",
             "",
-            "\x1a\x47\x01\uffff\x05\x47\x03\uffff\x06\x47\x01\x46\x04\x47"+
-            "\x01\uffff\x02\x47",
+            "\x1a\x45\x01\uffff\x05\x45\x03\uffff\x0a\x45\x01\uffff\x01"+
+            "\x47\x02\x46\x02\x45",
             "",
-            "\x1a\x49\x01\uffff\x05\x49\x03\uffff\x06\x49\x01\x48\x04\x49"+
-            "\x01\uffff\x02\x49",
+            "\x1a\x49\x01\uffff\x05\x49\x03\uffff\x0a\x49\x01\uffff\x03"+
+            "\x48\x02\x49",
+            "",
+            "\x1a\x4a\x01\uffff\x05\x4a\x03\uffff\x0a\x4a\x01\uffff\x03"+
+            "\x4b\x02\x4a",
+            "",
+            "\x1a\x4d\x01\uffff\x05\x4d\x03\uffff\x0a\x4d\x01\uffff\x03"+
+            "\x4c\x02\x4d",
+            "",
+            "\x1a\x4e\x01\uffff\x05\x4e\x03\uffff\x0a\x4e\x01\uffff\x03"+
+            "\x4f\x02\x4e",
+            "",
+            "",
+            "",
             "",
             "",
             "",
@@ -2220,58 +2689,58 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
 
         override public string Description
         {
-            get { return "19:1: specification : (y= YEAR | d= DATE | d= HOUR_ANY_MINUTE | d= FLOW_MONTH | d= FLOW_DAY | d= YEAR_MONTH | T_JAN | T_FEB | T_MAR | T_APR | T_MAY | T_JUN | T_JUL | T_AUG | T_SEP | T_OCT | T_NOV | T_DEC | T_MON | T_TUE | T_WED | T_THU | T_FRI | T_SAT | T_SUN | T_LAST T_HOUR | T_THIS T_HOUR | T_NEXT T_HOUR | T_YESTERDAY | T_TODAY | T_TOMORROW | T_LAST T_WEEK | T_THIS T_WEEK | T_NEXT T_WEEK | T_LAST T_MONTH | T_THIS T_MONTH | T_NEXT T_MONTH | T_LAST T_YEAR | T_THIS T_YEAR | T_NEXT T_YEAR | EQ d= DATE | LT d= DATE | LE d= DATE | GT d= DATE | GE d= DATE | NE d= DATE | LT d= DATE t= TIME | LE d= DATE t= TIME | GT d= DATE t= TIME | GE d= DATE t= TIME | T_NULL | T_NOT T_NULL | LT sql_name | GT sql_name | LE sql_name | GE sql_name | NE sql_name | EQ sql_name | EQ2 sql_name | NE2 sql_name );"; }
+            get { return "19:1: specification : (y= YEAR | d= DATE | d= HOUR_ANY_MINUTE | d= FLOW_MONTH | d= FLOW_DAY | d= YEAR_MONTH | T_JAN | T_FEB | T_MAR | T_APR | T_MAY | T_JUN | T_JUL | T_AUG | T_SEP | T_OCT | T_NOV | T_DEC | T_MON | T_TUE | T_WED | T_THU | T_FRI | T_SAT | T_SUN | T_LAST T_HOUR | T_THIS T_HOUR | T_NEXT T_HOUR | T_YESTERDAY | T_TODAY | T_TOMORROW | T_LAST T_WEEK | T_THIS T_WEEK | T_NEXT T_WEEK | T_LAST T_MONTH | T_THIS T_MONTH | T_NEXT T_MONTH | T_LAST T_YEAR | T_THIS T_YEAR | T_NEXT T_YEAR | EQ d= DATE | LT d= DATE | LE d= DATE | GT d= DATE | GE d= DATE | NE d= DATE | d= DATE time_noexact | EQ d= DATE time_noexact | d= DATE time_exact | EQ d= DATE time_exact | LT d= DATE t= time | LE d= DATE t= time | GT d= DATE t= time | GE d= DATE t= time | T_NULL | T_NOT T_NULL | LT sql_name | GT sql_name | LE sql_name | GE sql_name | NE sql_name | EQ sql_name | EQ2 sql_name | NE2 sql_name );"; }
         }
 
     }
 
-    const string DFA8_eotS =
+    const string DFA10_eotS =
         "\x04\uffff";
-    const string DFA8_eofS =
+    const string DFA10_eofS =
         "\x02\x02\x02\uffff";
-    const string DFA8_minS =
-        "\x01\x35\x01\x06\x02\uffff";
-    const string DFA8_maxS =
-        "\x02\x36\x02\uffff";
-    const string DFA8_acceptS =
+    const string DFA10_minS =
+        "\x01\x37\x01\x06\x02\uffff";
+    const string DFA10_maxS =
+        "\x02\x38\x02\uffff";
+    const string DFA10_acceptS =
         "\x02\uffff\x01\x02\x01\x01";
-    const string DFA8_specialS =
+    const string DFA10_specialS =
         "\x04\uffff}>";
-    static readonly string[] DFA8_transitionS = {
+    static readonly string[] DFA10_transitionS = {
             "\x01\x03\x01\x01",
-            "\x1a\x03\x01\uffff\x05\x03\x03\uffff\x06\x03\x01\uffff\x04"+
-            "\x03\x02\uffff\x01\x01",
+            "\x1a\x03\x01\uffff\x05\x03\x03\uffff\x0a\x03\x05\uffff\x01"+
+            "\x01",
             "",
             ""
     };
 
-    static readonly short[] DFA8_eot = DFA.UnpackEncodedString(DFA8_eotS);
-    static readonly short[] DFA8_eof = DFA.UnpackEncodedString(DFA8_eofS);
-    static readonly char[] DFA8_min = DFA.UnpackEncodedStringToUnsignedChars(DFA8_minS);
-    static readonly char[] DFA8_max = DFA.UnpackEncodedStringToUnsignedChars(DFA8_maxS);
-    static readonly short[] DFA8_accept = DFA.UnpackEncodedString(DFA8_acceptS);
-    static readonly short[] DFA8_special = DFA.UnpackEncodedString(DFA8_specialS);
-    static readonly short[][] DFA8_transition = DFA.UnpackEncodedStringArray(DFA8_transitionS);
+    static readonly short[] DFA10_eot = DFA.UnpackEncodedString(DFA10_eotS);
+    static readonly short[] DFA10_eof = DFA.UnpackEncodedString(DFA10_eofS);
+    static readonly char[] DFA10_min = DFA.UnpackEncodedStringToUnsignedChars(DFA10_minS);
+    static readonly char[] DFA10_max = DFA.UnpackEncodedStringToUnsignedChars(DFA10_maxS);
+    static readonly short[] DFA10_accept = DFA.UnpackEncodedString(DFA10_acceptS);
+    static readonly short[] DFA10_special = DFA.UnpackEncodedString(DFA10_specialS);
+    static readonly short[][] DFA10_transition = DFA.UnpackEncodedStringArray(DFA10_transitionS);
 
-    protected class DFA8 : DFA
+    protected class DFA10 : DFA
     {
-        public DFA8(BaseRecognizer recognizer)
+        public DFA10(BaseRecognizer recognizer)
         {
             this.recognizer = recognizer;
-            this.decisionNumber = 8;
-            this.eot = DFA8_eot;
-            this.eof = DFA8_eof;
-            this.min = DFA8_min;
-            this.max = DFA8_max;
-            this.accept = DFA8_accept;
-            this.special = DFA8_special;
-            this.transition = DFA8_transition;
+            this.decisionNumber = 10;
+            this.eot = DFA10_eot;
+            this.eof = DFA10_eof;
+            this.min = DFA10_min;
+            this.max = DFA10_max;
+            this.accept = DFA10_accept;
+            this.special = DFA10_special;
+            this.transition = DFA10_transition;
 
         }
 
         override public string Description
         {
-            get { return "()* loopback of 108:10: ( ( COMMA | ( ( ENDLINE )+ ) ) factor )*"; }
+            get { return "()* loopback of 123:10: ( ( COMMA | ( ( ENDLINE )+ ) ) factor )*"; }
         }
 
     }
@@ -2345,53 +2814,68 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
     public static readonly BitSet FOLLOW_DATE_in_specification514 = new BitSet(new ulong[]{0x0000000000000002UL});
     public static readonly BitSet FOLLOW_NE_in_specification524 = new BitSet(new ulong[]{0x0000000000000080UL});
     public static readonly BitSet FOLLOW_DATE_in_specification528 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_LT_in_specification541 = new BitSet(new ulong[]{0x0000000000000080UL});
-    public static readonly BitSet FOLLOW_DATE_in_specification545 = new BitSet(new ulong[]{0x0000800000000000UL});
-    public static readonly BitSet FOLLOW_TIME_in_specification549 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_LE_in_specification559 = new BitSet(new ulong[]{0x0000000000000080UL});
-    public static readonly BitSet FOLLOW_DATE_in_specification563 = new BitSet(new ulong[]{0x0000800000000000UL});
-    public static readonly BitSet FOLLOW_TIME_in_specification567 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_GT_in_specification577 = new BitSet(new ulong[]{0x0000000000000080UL});
-    public static readonly BitSet FOLLOW_DATE_in_specification581 = new BitSet(new ulong[]{0x0000800000000000UL});
-    public static readonly BitSet FOLLOW_TIME_in_specification585 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_GE_in_specification595 = new BitSet(new ulong[]{0x0000000000000080UL});
-    public static readonly BitSet FOLLOW_DATE_in_specification599 = new BitSet(new ulong[]{0x0000800000000000UL});
-    public static readonly BitSet FOLLOW_TIME_in_specification603 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_T_NULL_in_specification611 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_T_NOT_in_specification619 = new BitSet(new ulong[]{0x0001000000000000UL});
-    public static readonly BitSet FOLLOW_T_NULL_in_specification621 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_LT_in_specification632 = new BitSet(new ulong[]{0x0000000000000010UL});
-    public static readonly BitSet FOLLOW_sql_name_in_specification634 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_GT_in_specification643 = new BitSet(new ulong[]{0x0000000000000010UL});
-    public static readonly BitSet FOLLOW_sql_name_in_specification645 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_LE_in_specification654 = new BitSet(new ulong[]{0x0000000000000010UL});
-    public static readonly BitSet FOLLOW_sql_name_in_specification656 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_GE_in_specification665 = new BitSet(new ulong[]{0x0000000000000010UL});
-    public static readonly BitSet FOLLOW_sql_name_in_specification667 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_NE_in_specification676 = new BitSet(new ulong[]{0x0000000000000010UL});
-    public static readonly BitSet FOLLOW_sql_name_in_specification678 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_EQ_in_specification687 = new BitSet(new ulong[]{0x0000000000000010UL});
-    public static readonly BitSet FOLLOW_sql_name_in_specification689 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_EQ2_in_specification697 = new BitSet(new ulong[]{0x0000000000000010UL});
-    public static readonly BitSet FOLLOW_sql_name_in_specification699 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_NE2_in_specification708 = new BitSet(new ulong[]{0x0000000000000010UL});
-    public static readonly BitSet FOLLOW_sql_name_in_specification710 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_DATE_in_interval729 = new BitSet(new ulong[]{0x0010000000000000UL});
-    public static readonly BitSet FOLLOW_MINUS_in_interval731 = new BitSet(new ulong[]{0x0000000000000080UL});
-    public static readonly BitSet FOLLOW_DATE_in_interval735 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_DATE_in_interval745 = new BitSet(new ulong[]{0x0000800000000000UL});
-    public static readonly BitSet FOLLOW_TIME_in_interval749 = new BitSet(new ulong[]{0x0010000000000000UL});
-    public static readonly BitSet FOLLOW_MINUS_in_interval751 = new BitSet(new ulong[]{0x0000000000000080UL});
-    public static readonly BitSet FOLLOW_DATE_in_interval755 = new BitSet(new ulong[]{0x0000800000000000UL});
-    public static readonly BitSet FOLLOW_TIME_in_interval759 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_specification_in_element772 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_interval_in_element776 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_element_in_factor788 = new BitSet(new ulong[]{0x000F7E3EFFFFFFC2UL});
-    public static readonly BitSet FOLLOW_factor_in_list799 = new BitSet(new ulong[]{0x0060000000000002UL});
-    public static readonly BitSet FOLLOW_COMMA_in_list804 = new BitSet(new ulong[]{0x000F7E3EFFFFFFC0UL});
-    public static readonly BitSet FOLLOW_ENDLINE_in_list809 = new BitSet(new ulong[]{0x004F7E3EFFFFFFC0UL});
-    public static readonly BitSet FOLLOW_factor_in_list816 = new BitSet(new ulong[]{0x0060000000000002UL});
-    public static readonly BitSet FOLLOW_ENDLINE_in_list822 = new BitSet(new ulong[]{0x0040000000000002UL});
-    public static readonly BitSet FOLLOW_list_in_expr832 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_DATE_in_specification539 = new BitSet(new ulong[]{0x0060000000000000UL});
+    public static readonly BitSet FOLLOW_time_noexact_in_specification541 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_EQ_in_specification551 = new BitSet(new ulong[]{0x0000000000000080UL});
+    public static readonly BitSet FOLLOW_DATE_in_specification555 = new BitSet(new ulong[]{0x0060000000000000UL});
+    public static readonly BitSet FOLLOW_time_noexact_in_specification557 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_DATE_in_specification568 = new BitSet(new ulong[]{0x0010000000000000UL});
+    public static readonly BitSet FOLLOW_time_exact_in_specification570 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_EQ_in_specification580 = new BitSet(new ulong[]{0x0000000000000080UL});
+    public static readonly BitSet FOLLOW_DATE_in_specification584 = new BitSet(new ulong[]{0x0010000000000000UL});
+    public static readonly BitSet FOLLOW_time_exact_in_specification586 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_LT_in_specification599 = new BitSet(new ulong[]{0x0000000000000080UL});
+    public static readonly BitSet FOLLOW_DATE_in_specification603 = new BitSet(new ulong[]{0x0070000000000000UL});
+    public static readonly BitSet FOLLOW_time_in_specification607 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_LE_in_specification617 = new BitSet(new ulong[]{0x0000000000000080UL});
+    public static readonly BitSet FOLLOW_DATE_in_specification621 = new BitSet(new ulong[]{0x0070000000000000UL});
+    public static readonly BitSet FOLLOW_time_in_specification625 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_GT_in_specification635 = new BitSet(new ulong[]{0x0000000000000080UL});
+    public static readonly BitSet FOLLOW_DATE_in_specification639 = new BitSet(new ulong[]{0x0070000000000000UL});
+    public static readonly BitSet FOLLOW_time_in_specification643 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_GE_in_specification653 = new BitSet(new ulong[]{0x0000000000000080UL});
+    public static readonly BitSet FOLLOW_DATE_in_specification657 = new BitSet(new ulong[]{0x0070000000000000UL});
+    public static readonly BitSet FOLLOW_time_in_specification661 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_T_NULL_in_specification669 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_T_NOT_in_specification677 = new BitSet(new ulong[]{0x0000800000000000UL});
+    public static readonly BitSet FOLLOW_T_NULL_in_specification679 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_LT_in_specification690 = new BitSet(new ulong[]{0x0000000000000010UL});
+    public static readonly BitSet FOLLOW_sql_name_in_specification692 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_GT_in_specification701 = new BitSet(new ulong[]{0x0000000000000010UL});
+    public static readonly BitSet FOLLOW_sql_name_in_specification703 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_LE_in_specification712 = new BitSet(new ulong[]{0x0000000000000010UL});
+    public static readonly BitSet FOLLOW_sql_name_in_specification714 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_GE_in_specification723 = new BitSet(new ulong[]{0x0000000000000010UL});
+    public static readonly BitSet FOLLOW_sql_name_in_specification725 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_NE_in_specification734 = new BitSet(new ulong[]{0x0000000000000010UL});
+    public static readonly BitSet FOLLOW_sql_name_in_specification736 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_EQ_in_specification745 = new BitSet(new ulong[]{0x0000000000000010UL});
+    public static readonly BitSet FOLLOW_sql_name_in_specification747 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_EQ2_in_specification755 = new BitSet(new ulong[]{0x0000000000000010UL});
+    public static readonly BitSet FOLLOW_sql_name_in_specification757 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_NE2_in_specification766 = new BitSet(new ulong[]{0x0000000000000010UL});
+    public static readonly BitSet FOLLOW_sql_name_in_specification768 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_DATE_in_interval787 = new BitSet(new ulong[]{0x0008000000000000UL});
+    public static readonly BitSet FOLLOW_MINUS_in_interval789 = new BitSet(new ulong[]{0x0000000000000080UL});
+    public static readonly BitSet FOLLOW_DATE_in_interval793 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_DATE_in_interval803 = new BitSet(new ulong[]{0x0070000000000000UL});
+    public static readonly BitSet FOLLOW_time_in_interval807 = new BitSet(new ulong[]{0x0008000000000000UL});
+    public static readonly BitSet FOLLOW_MINUS_in_interval809 = new BitSet(new ulong[]{0x0000000000000080UL});
+    public static readonly BitSet FOLLOW_DATE_in_interval813 = new BitSet(new ulong[]{0x0070000000000000UL});
+    public static readonly BitSet FOLLOW_time_in_interval817 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_time_exact_in_time830 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_time_noexact_in_time834 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_TIME_SECOND_FRACTION_in_time_exact849 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_TIME_MINUE_in_time_noexact865 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_TIME_SECOND_in_time_noexact873 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_specification_in_element885 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_interval_in_element889 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_element_in_factor901 = new BitSet(new ulong[]{0x0007FE3EFFFFFFC2UL});
+    public static readonly BitSet FOLLOW_factor_in_list912 = new BitSet(new ulong[]{0x0180000000000002UL});
+    public static readonly BitSet FOLLOW_COMMA_in_list917 = new BitSet(new ulong[]{0x0007FE3EFFFFFFC0UL});
+    public static readonly BitSet FOLLOW_ENDLINE_in_list922 = new BitSet(new ulong[]{0x0107FE3EFFFFFFC0UL});
+    public static readonly BitSet FOLLOW_factor_in_list929 = new BitSet(new ulong[]{0x0180000000000002UL});
+    public static readonly BitSet FOLLOW_ENDLINE_in_list935 = new BitSet(new ulong[]{0x0100000000000002UL});
+    public static readonly BitSet FOLLOW_list_in_expr945 = new BitSet(new ulong[]{0x0000000000000002UL});
 
 }

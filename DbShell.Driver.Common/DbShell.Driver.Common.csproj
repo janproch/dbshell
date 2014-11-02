@@ -115,6 +115,7 @@
     <Compile Include="DmlFramework\DmlfCommandBase.cs" />
     <Compile Include="DmlFramework\DmlfCountDistinctExpression.cs" />
     <Compile Include="DmlFramework\DmlfCountExpression.cs" />
+    <Compile Include="DmlFramework\DmlfDateExpression.cs" />
     <Compile Include="DmlFramework\DmlfDelete.cs" />
     <Compile Include="DmlFramework\DmlfExpressionHolder.cs" />
     <Compile Include="DmlFramework\DmlfExpressionHolderCollection.cs" />

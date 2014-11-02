@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 StringFilter.g 2014-10-25 22:48:42
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 StringFilter.g 2014-11-02 21:57:15
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 168, 219
@@ -447,7 +447,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                     	state.followingStackPointer--;
 
                     	adaptor.AddChild(root_0, s1.Tree);
-                    	 AddLikeCondition(true, ExtractString(((s1 != null) ? input.ToString((IToken)(s1.Start),(IToken)(s1.Stop)) : null)), true); 
+                    	 AddStringTestCondition<DmlfContainsTextCondition>(ExtractString(((s1 != null) ? input.ToString((IToken)(s1.Start),(IToken)(s1.Stop)) : null))); 
 
                     }
                     break;
@@ -465,7 +465,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                     	state.followingStackPointer--;
 
                     	adaptor.AddChild(root_0, s1.Tree);
-                    	 AddLikeCondition(true, ExtractString(((s1 != null) ? input.ToString((IToken)(s1.Start),(IToken)(s1.Stop)) : null)), true); 
+                    	 AddStringTestCondition<DmlfContainsTextCondition>(ExtractString(((s1 != null) ? input.ToString((IToken)(s1.Start),(IToken)(s1.Stop)) : null))); 
 
                     }
                     break;
@@ -483,7 +483,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                     	state.followingStackPointer--;
 
                     	adaptor.AddChild(root_0, s1.Tree);
-                    	 AddLikeCondition(true, ExtractString(((s1 != null) ? input.ToString((IToken)(s1.Start),(IToken)(s1.Stop)) : null)), true);NegateLastCondition(); 
+                    	 AddStringTestCondition<DmlfContainsTextCondition>(ExtractString(((s1 != null) ? input.ToString((IToken)(s1.Start),(IToken)(s1.Stop)) : null)));NegateLastCondition(); 
 
                     }
                     break;
@@ -609,7 +609,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                     	state.followingStackPointer--;
 
                     	adaptor.AddChild(root_0, s1.Tree);
-                    	 AddLikeCondition(false, ExtractString(((s1 != null) ? input.ToString((IToken)(s1.Start),(IToken)(s1.Stop)) : null)), true); 
+                    	 AddStringTestCondition<DmlfStartsWithCondition>(ExtractString(((s1 != null) ? input.ToString((IToken)(s1.Start),(IToken)(s1.Stop)) : null))); 
 
                     }
                     break;
@@ -627,7 +627,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                     	state.followingStackPointer--;
 
                     	adaptor.AddChild(root_0, s1.Tree);
-                    	 AddLikeCondition(false, ExtractString(((s1 != null) ? input.ToString((IToken)(s1.Start),(IToken)(s1.Stop)) : null)), true);NegateLastCondition(); 
+                    	 AddStringTestCondition<DmlfStartsWithCondition>(ExtractString(((s1 != null) ? input.ToString((IToken)(s1.Start),(IToken)(s1.Stop)) : null)));NegateLastCondition(); 
 
                     }
                     break;
@@ -645,7 +645,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                     	state.followingStackPointer--;
 
                     	adaptor.AddChild(root_0, s1.Tree);
-                    	 AddLikeCondition(true, ExtractString(((s1 != null) ? input.ToString((IToken)(s1.Start),(IToken)(s1.Stop)) : null)), false); 
+                    	 AddStringTestCondition<DmlfEndsWithCondition>(ExtractString(((s1 != null) ? input.ToString((IToken)(s1.Start),(IToken)(s1.Stop)) : null))); 
 
                     }
                     break;
@@ -663,7 +663,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                     	state.followingStackPointer--;
 
                     	adaptor.AddChild(root_0, s1.Tree);
-                    	 AddLikeCondition(true, ExtractString(((s1 != null) ? input.ToString((IToken)(s1.Start),(IToken)(s1.Stop)) : null)), false);NegateLastCondition(); 
+                    	 AddStringTestCondition<DmlfEndsWithCondition>(ExtractString(((s1 != null) ? input.ToString((IToken)(s1.Start),(IToken)(s1.Stop)) : null)));NegateLastCondition(); 
 
                     }
                     break;

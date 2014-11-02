@@ -13,10 +13,14 @@ namespace DbShell.Driver.Common.DmlFramework
             LoadFromXml(xml);
         }
 
-
         protected override string GetTypeName()
         {
             return "placeholder";
+        }
+
+        public override object EvalExpression(IDmlfHandler handler)
+        {
+            return handler.GetValue(Value);
         }
     }
 }

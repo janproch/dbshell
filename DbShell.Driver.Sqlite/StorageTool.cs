@@ -65,7 +65,7 @@ namespace DbShell.Driver.Sqlite
                     sqldata = rec.GetUInt64().ToString(CultureInfo.InvariantCulture);
                     break;
                 case TypeStorage.DateTime:
-                    sqldata = "'" + rec.GetDateTime().ToString("s", CultureInfo.InvariantCulture) + "'";
+                    sqldata = "'" + StringTool.DateTimeToIsoStringExact(rec.GetDateTime()) + "'";
                     break;
                 case TypeStorage.DateTimeEx:
                     sqldata = "'" + rec.GetDateTimeEx().ToStringNormalized() + "'";
@@ -140,7 +140,8 @@ namespace DbShell.Driver.Sqlite
                     writer.SetUInt64((ulong) reader.GetInt64(index));
                     break;
                 case TypeStorage.DateTime:
-                    writer.SetDateTime(DateTime.ParseExact(reader.GetString(index), "s", CultureInfo.InvariantCulture));
+                    writer.SetDateTime(DateTime.Parse(reader.GetString(index), CultureInfo.InvariantCulture));
+                    //writer.SetDateTime(DateTime.ParseExact(reader.GetString(index), "s", CultureInfo.InvariantCulture));
                     break;
                 case TypeStorage.DateTimeEx:
                     writer.SetDateTimeEx(DateTimeEx.ParseNormalized(reader.GetString(index)));

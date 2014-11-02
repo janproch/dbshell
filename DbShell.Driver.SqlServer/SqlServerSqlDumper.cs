@@ -200,5 +200,31 @@ namespace DbShell.Driver.SqlServer
             Put("^drop ^index %i ^on %f", ix.ConstraintName, ix.OwnerTable.FullName);
             EndCommand();
         }
+
+        public override void ExtractMonth(Action<ISqlDumper> argument)
+        {
+            Put("^datepart(^month, ");
+            argument(this);
+            Put(")");
+        }
+
+        public override void ExtractDayOfMonth(Action<ISqlDumper> argument)
+        {
+            Put("^datepart(^day, ");
+            argument(this);
+            Put(")");
+        }
+
+        public override void ExtractDayOfWeek(Action<ISqlDumper> argument)
+        {
+            Put("^datepart(^weekday, ");
+            argument(this);
+            Put(")");
+        }
+
+        public override void PutDayOfWeekLiteral(DayOfWeek value)
+        {
+            Put("%s", ((int)value) + 1);
+        }
     }
 }

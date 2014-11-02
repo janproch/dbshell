@@ -52,6 +52,26 @@ namespace DbShell.Driver.Common.Sql
         {
         }
 
+        public virtual void ExtractMonth(Action<ISqlDumper> argument)
+        {
+            throw new NotImplementedError("DBSH-00000");
+        }
+
+        public virtual void ExtractDayOfMonth(Action<ISqlDumper> argument)
+        {
+            throw new NotImplementedError("DBSH-00000");
+        }
+
+        public virtual void ExtractDayOfWeek(Action<ISqlDumper> argument)
+        {
+            throw new NotImplementedError("DBSH-00000");
+        }
+
+        public virtual void PutDayOfWeekLiteral(DayOfWeek value)
+        {
+            Put("%s", (int) value);
+        }
+
         public virtual void RenameDomain(NameWithSchema domain, string newname)
         {
         }
@@ -523,5 +543,6 @@ namespace DbShell.Driver.Common.Sql
         {
             throw new System.NotImplementedException();
         }
+
     }
 }

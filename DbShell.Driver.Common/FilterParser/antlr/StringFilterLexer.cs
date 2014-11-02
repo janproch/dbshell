@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 StringFilter.g 2014-10-25 22:48:42
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 StringFilter.g 2014-11-02 21:57:15
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 168, 219
