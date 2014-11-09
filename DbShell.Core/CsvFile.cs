@@ -170,6 +170,11 @@ namespace DbShell.Core
             string name = GetName(context);
             name = context.ResolveFile(name, ResolveFileMode.Input);
             var textReader = new StreamReader(name, Encoding);
+            return CreateCsvReader(textReader);
+        }
+
+        private LumenWorks.Framework.IO.Csv.CsvReader CreateCsvReader(TextReader textReader)
+        {
             var reader = new LumenWorks.Framework.IO.Csv.CsvReader(textReader, HasHeaders, Delimiter, Quote, Escape, Comment,
                                                                    TrimSpaces ? LumenWorks.Framework.IO.Csv.ValueTrimmingOptions.UnquotedOnly : LumenWorks.Framework.IO.Csv.ValueTrimmingOptions.None);
             return reader;
@@ -186,6 +191,13 @@ namespace DbShell.Core
         ICdlReader ITabularDataSource.CreateReader(IShellContext context)
         {
             var reader = CreateCsvReader(context);
+            return new CsvReader(GetStructure(reader), reader);
+        }
+
+        // ignores File attribute and creates buffer reader
+        public CsvReader CreateBufferCsvReader(TextReader textReader)
+        {
+            var reader = CreateCsvReader(textReader);
             return new CsvReader(GetStructure(reader), reader);
         }
 

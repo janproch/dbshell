@@ -174,7 +174,7 @@ namespace DbShell.Driver.Common.DmlFramework
             if (Where != null) Where.GenSql(dmp, handler);
             if (GroupBy != null && GroupBy.Count > 0)
             {
-                dmp.Put(" ^group ^by ");
+                dmp.Put("&n^group ^by ");
                 GroupBy.GenSql(dmp, handler);
             }
             if (OrderBy != null && OrderBy.Count > 0)
