@@ -58,6 +58,11 @@ namespace DbShell.Driver.Common.Utility
             get { return _values.Length; }
         }
 
+        public object[] Values
+        {
+            get { return _values; }
+        }
+
         public int GetOrdinal(string colName)
         {
             return _structure.Columns.GetIndex(colName);
