@@ -407,6 +407,7 @@ namespace DbShell.Driver.SqlServer
                             types.Add("P");
                             types.Add("IF");
                             types.Add("FN");
+                            types.Add("TF");
                             types.Add("TR");
                         }
                         sql = sql.Replace("#TYPECOND#", "s.type in (" + types.Select(x => "'" + x + "'").CreateDelimitedText(",") + ")");
@@ -530,6 +531,7 @@ namespace DbShell.Driver.SqlServer
                                     break;
                                 case "IF":
                                 case "FN":
+                                case "TF":
                                     info = new FunctionInfo(Structure);
                                     break;
                             }
@@ -816,6 +818,7 @@ namespace DbShell.Driver.SqlServer
                                 break;
                             case "IF":
                             case "FN":
+                            case "TF":
                                 type = DatabaseObjectType.Function;
                                 break;
                             case "TR":
