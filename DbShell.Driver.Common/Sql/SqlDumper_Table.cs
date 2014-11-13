@@ -26,21 +26,23 @@ namespace DbShell.Driver.Common.Sql
             Put("^delete ^from %f;&n", name);
         }
 
-        public void UpdateData(TableInfo table, SingleTableDataScript script)
+        public void UpdateData(TableInfo table, SingleTableDataScript script, LinkedDatabaseInfo linkedInfo)
         {
             if (script == null) return;
             int delcnt = 0, inscnt = 0, updrows = 0, updflds = 0;
 
+            string linkedInfoStr = linkedInfo != null ? linkedInfo.ToString() : "";
+
             foreach (var del in script.Deletes)
             {
-                Put("^delete ^from %f", table.FullName);
+                Put("^delete ^from %s%f", linkedInfoStr, table.FullName);
                 Where(table.FullName, del.CondCols, del.CondValues);
                 Put(";&n");
                 delcnt++;
             }
             foreach (var upd in script.Updates)
             {
-                Put("^update %f ^set ", table.FullName);
+                Put("^update %s%f ^set ", linkedInfoStr, table.FullName);
                 for (int i = 0; i < upd.Columns.Length; i++)
                 {
                     if (i > 0) Put(", ");
@@ -82,20 +84,21 @@ namespace DbShell.Driver.Common.Sql
                 }
                 if (insColumns.Count > 0)
                 {
-                    Put("^insert ^into %f (%,i) ^values (%,v);&n", table.FullName, insColumns, vals);
+                    Put("^insert ^into %s%f (%,i) ^values (%,v);&n", linkedInfoStr, table.FullName, insColumns, vals);
                 }
                 inscnt++;
             }
             if (isIdentityInsert) AllowIdentityInsert(table.FullName, false);
         }
 
-        public void UpdateData(MultiTableUpdateScript script)
+        public void UpdateData(MultiTableUpdateScript script, LinkedDatabaseInfo linkedInfo)
         {
             if (script == null) return;
+            string linkedInfoStr = linkedInfo != null ? linkedInfo.ToString() : "";
             int updrows = 0, updflds = 0;
             foreach (var upd in script.Updates)
             {
-                Put("^update %f ^set ", upd.Table);
+                Put("^update %s%f ^set ", linkedInfoStr, upd.Table);
                 for (int i = 0; i < upd.Columns.Length; i++)
                 {
                     if (i > 0) Put(", ");

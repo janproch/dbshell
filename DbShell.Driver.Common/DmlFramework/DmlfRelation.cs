@@ -66,6 +66,10 @@ namespace DbShell.Driver.Common.DmlFramework
         string m_alias;
         [XmlElem]
         public NameWithSchema TableOrView { get; set; }
+
+        [XmlSubElem]
+        public LinkedDatabaseInfo LinkedInfo { get; set; }
+
         [XmlElem]
         public string Alias
         {
@@ -92,6 +96,7 @@ namespace DbShell.Driver.Common.DmlFramework
 
             if (TableOrView != null)
             {
+                if (LinkedInfo != null) dmp.WriteRaw(LinkedInfo.ToString());
                 dmp.Put("%f", TableOrView);
             }
             if (SubQuery != null)

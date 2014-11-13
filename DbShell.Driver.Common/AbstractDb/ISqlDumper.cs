@@ -164,8 +164,8 @@ namespace DbShell.Driver.Common.AbstractDb
         // table operations
         void TruncateTable(NameWithSchema name);
 
-        void UpdateData(TableInfo table, SingleTableDataScript script);
-        void UpdateData(MultiTableUpdateScript script);
+        void UpdateData(TableInfo table, SingleTableDataScript script, LinkedDatabaseInfo linkedInfo);
+        void UpdateData(MultiTableUpdateScript script, LinkedDatabaseInfo linkedInfo);
 
         void Put(string format, params object[] args);
         void PutCmd(string format, params object[] args);

@@ -12,12 +12,12 @@ namespace DbShell.Driver.SqlServer
 {
     public class SqlServerStatisticsProvider : IStatisticsProvider
     {
-        public TableSizes GetTableSizes(DbConnection conn)
+        public TableSizes GetTableSizes(DbConnection conn, LinkedDatabaseInfo linkedInfo)
         {
             var res = new TableSizes();
             using (var cmd = conn.CreateCommand())
             {
-                cmd.CommandText = SqlServerDatabaseFactory.LoadEmbeddedResource("rowcounts.sql");
+                cmd.CommandText = SqlServerLinkedServer.ReplaceLinkedServer(SqlServerDatabaseFactory.LoadEmbeddedResource("rowcounts.sql"), linkedInfo);
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())

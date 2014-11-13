@@ -155,6 +155,7 @@
     <Compile Include="FilterParser\FilterParser.cs" />
     <Compile Include="Structure\ConstraintInfo.cs" />
     <Compile Include="Structure\CheckInfo.cs" />
+    <Compile Include="Structure\LinkedDatabaseInfo.cs" />
     <Compile Include="Structure\SchemaInfo.cs" />
     <Compile Include="Structure\TriggerInfo.cs" />
     <Compile Include="Structure\ForeignKeyActionExtension.cs" />

@@ -80,6 +80,7 @@ namespace DbShell.Driver.SqlServer
         {
             string res = SqlServerDatabaseFactory.LoadEmbeddedResource(resFileName);
             res = res.Replace("=[OBJECT_ID_CONDITION]", CreateFilterExpression(tables, views, procedures, functions, triggers));
+            res = SqlServerLinkedServer.ReplaceLinkedServer(res, LinkedServerName, DatabaseName);
             return res;
         }
 
@@ -592,7 +593,7 @@ namespace DbShell.Driver.SqlServer
 
                     using (var cmd = Connection.CreateCommand())
                     {
-                        cmd.CommandText = "SELECT * FROM " + dialect.QuoteFullName(view.FullName);
+                        cmd.CommandText = SqlServerLinkedServer.ReplaceLinkedServer("SELECT * FROM [SERVER]." + dialect.QuoteFullName(view.FullName), LinkedServerName, DatabaseName);
                         try
                         {
                             using (var reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly | CommandBehavior.KeyInfo))
@@ -789,7 +790,7 @@ namespace DbShell.Driver.SqlServer
 
             using (var cmd = Connection.CreateCommand())
             {
-                cmd.CommandText = SqlServerDatabaseFactory.LoadEmbeddedResource("modifications.sql");
+                cmd.CommandText = SqlServerLinkedServer.ReplaceLinkedServer(SqlServerDatabaseFactory.LoadEmbeddedResource("modifications.sql"), LinkedServerName, DatabaseName);
                 using (var reader = cmd.ExecuteReader())
                 {
                     int modifyIndex = reader.GetOrdinal("modify_date");

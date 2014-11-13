@@ -26,6 +26,7 @@ namespace DbShell.Driver.Common.AbstractDb
         public DatabaseAnalyserFilterOptions FilterOptions;
         public DatabaseServerVersion ServerVersion;
         public DatabaseAnalysePhase Phase = DatabaseAnalysePhase.All;
+        private string _linkedServerName;
 
         public void FullAnalysis()
         {
@@ -117,6 +118,12 @@ namespace DbShell.Driver.Common.AbstractDb
         {
             get { return _dbname; }
             set { _dbname = value; }
+        }
+
+        public string LinkedServerName
+        {
+            get { return _linkedServerName; }
+            set { _linkedServerName = value; }
         }
 
         protected abstract void DoRunAnalysis();

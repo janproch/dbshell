@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.SqlServer
@@ -29,5 +30,36 @@ namespace DbShell.Driver.SqlServer
             }
             return res;
         }
+
+        public List<string> GetDatabases(DbConnection conn)
+        {
+            var res = new List<string>();
+            using (var reader = conn.RunOneSqlCommandReader(String.Format("select name from [{0}].master.sys.databases", Name)))
+            {
+                foreach (DataRow row in reader.ToDataTable().Rows)
+                {
+                    res.Add(row["name"].SafeToString());
+                }
+            }
+            return res;
+        }
+
+        public static string ReplaceLinkedServer(string sql, LinkedDatabaseInfo linkedInfo)
+        {
+            if (sql == null) return null;
+
+            string linkedServerSpec = "";
+            if (linkedInfo != null && linkedInfo.ServerName != null)
+            {
+                linkedServerSpec = String.Format("[{0}].[{1}].", linkedInfo.ServerName, linkedInfo.DatabaseName);
+            }
+            return sql.Replace("[SERVER].", linkedServerSpec);
+        }
+
+        public static string ReplaceLinkedServer(string sql, string server, string database)
+        {
+            return ReplaceLinkedServer(sql, new LinkedDatabaseInfo(server, database));
+        }
+
     }
 }
