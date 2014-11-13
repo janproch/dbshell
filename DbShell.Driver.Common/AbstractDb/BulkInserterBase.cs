@@ -20,9 +20,11 @@ namespace DbShell.Driver.Common.AbstractDb
 
         public int BatchSize { get; set; }
         public string DatabaseName { get; set; }
+
         public DbConnection Connection { get; set; }
         public CopyTableTargetOptions CopyOptions { get; set; }
         public IDatabaseFactory Factory { get; set; }
+        public LinkedDatabaseInfo LinkedInfo { get; set; }
 
         public BulkInserterBase()
         {

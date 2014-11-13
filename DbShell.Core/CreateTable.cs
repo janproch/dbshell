@@ -41,6 +41,36 @@ namespace DbShell.Core
         /// </summary>
         public string IdentityColumn { get; set; }
 
+        /// <summary>
+        /// Linked server name
+        /// </summary>
+        [XamlProperty]
+        public string LinkedServerName { get; set; }
+
+        /// <summary>
+        /// Database name on linked server
+        /// </summary>
+        [XamlProperty]
+        public string LinkedDatabaseName { get; set; }
+
+        public LinkedDatabaseInfo LinkedInfo
+        {
+            get { return new LinkedDatabaseInfo(LinkedServerName, LinkedDatabaseName); }
+            set
+            {
+                if (value == null)
+                {
+                    LinkedServerName = null;
+                    LinkedDatabaseName = null;
+                }
+                else
+                {
+                    LinkedServerName = value.ServerName;
+                    LinkedDatabaseName = value.DatabaseName;
+                }
+            }
+        }
+
         protected NameWithSchema GetFullName(IShellContext context)
         {
             return new NameWithSchema(context.Replace(Schema), context.Replace(Name));
@@ -80,16 +110,16 @@ namespace DbShell.Core
                 //var sw = new StringWriter();
                 var so = new ConnectionSqlOutputStream(conn, null, connection.Factory.CreateDialect());
                 var dmp = connection.Factory.CreateDumper(so, new SqlFormatProperties());
-                if (DropIfExists) dmp.DropTable(tbl, true);
+                if (DropIfExists) dmp.DropTable(tbl, true, LinkedInfo);
                 tbl.Columns.ForEach(x => x.EnsureDataType(connection.Factory.CreateSqlTypeProvider()));
-                dmp.CreateTable(tbl);
+                dmp.CreateTable(tbl, LinkedInfo);
                 //using (var cmd = conn.CreateCommand())
                 //{
                 //    cmd.CommandText = sw.ToString();
                 //    cmd.ExecuteNonQuery();
                 //}
 
-                return new TableWriter(context, connection, GetFullName(context), rowFormat, options, tbl);
+                return new TableWriter(context, connection, GetFullName(context), rowFormat, options, tbl, LinkedInfo);
             }
         }
 

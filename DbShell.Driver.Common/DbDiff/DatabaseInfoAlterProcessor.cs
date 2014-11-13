@@ -175,11 +175,21 @@ namespace DbShell.Driver.Common.DbDiff
             }
         }
 
+        public void CreateTable(TableInfo obj, LinkedDatabaseInfo linkedInfo)
+        {
+            CreateTable(obj);
+        }
+
         public void CreateTable(TableInfo obj)
         {
             var tnew = obj.CloneTable(_database);
             _database.Tables.Add(tnew);
             tnew.AfterLoadLink();
+        }
+
+        public void DropTable(TableInfo obj, bool testIfExists, LinkedDatabaseInfo linkedInfo)
+        {
+            DropTable(obj, testIfExists);
         }
 
         public void DropTable(TableInfo obj, bool testIfExists)

@@ -23,10 +23,12 @@ namespace DbShell.Core.Utility
         private IBulkInserter _inserter;
         private DbConnection _connection;
         private IShellContext _context;
+        private LinkedDatabaseInfo _linkedInfo;
 
-        public TableWriter(IShellContext context, IConnectionProvider connection, NameWithSchema name, TableInfo rowFormat, CopyTableTargetOptions options, TableInfo destinationTableOverride = null)
+        public TableWriter(IShellContext context, IConnectionProvider connection, NameWithSchema name, TableInfo rowFormat, CopyTableTargetOptions options, TableInfo destinationTableOverride = null, LinkedDatabaseInfo linkedInfo = null)
         {
             _connectionProvider = connection;
+            _linkedInfo = linkedInfo;
             _name = name;
             _rowFormat = rowFormat;
             _queue = new CdlDataQueue(rowFormat);
@@ -36,6 +38,7 @@ namespace DbShell.Core.Utility
             _connection = _connectionProvider.Connect();
             _inserter.Connection = _connection;
             _inserter.Factory = connection.Factory;
+            _inserter.LinkedInfo = _linkedInfo;
             var db = context.GetDatabaseStructure(connection.ProviderString);
             _inserter.DestinationTable = destinationTableOverride ?? db.FindTableLike(_name.Schema, _name.Name);
             _inserter.CopyOptions = options;

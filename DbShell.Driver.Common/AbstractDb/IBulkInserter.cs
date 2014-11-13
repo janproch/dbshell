@@ -14,6 +14,7 @@ namespace DbShell.Driver.Common.AbstractDb
         TableInfo DestinationTable { get; set; }
         int BatchSize { get; set; }
         string DatabaseName { get; set; }
+        LinkedDatabaseInfo LinkedInfo { get; set; }
         DbConnection Connection { get; set; }
         IDatabaseFactory Factory { get; set; }
         void Run(ICdlReader reader);

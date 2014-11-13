@@ -29,6 +29,36 @@ namespace DbShell.Core.Utility
         [XamlProperty]
         public string Name { get; set; }
 
+        /// <summary>
+        /// Linked server name
+        /// </summary>
+        [XamlProperty]
+        public string LinkedServerName { get; set; }
+
+        /// <summary>
+        /// Database name on linked server
+        /// </summary>
+        [XamlProperty]
+        public string LinkedDatabaseName { get; set; }
+
+        public LinkedDatabaseInfo LinkedInfo
+        {
+            get { return new LinkedDatabaseInfo(LinkedServerName, LinkedDatabaseName); }
+            set
+            {
+                if (value == null)
+                {
+                    LinkedServerName = null;
+                    LinkedDatabaseName = null;
+                }
+                else
+                {
+                    LinkedServerName = value.ServerName;
+                    LinkedDatabaseName = value.DatabaseName;
+                }
+            }
+        }
+
         protected abstract TableInfo GetRowFormat(IShellContext context);
 
         protected NameWithSchema GetFullName(IShellContext context)
@@ -51,14 +81,14 @@ namespace DbShell.Core.Utility
             var cmd = conn.CreateCommand();
             cmd.CommandTimeout = 3600;
             var dialect = connection.Factory.CreateDialect();
-            cmd.CommandText = "SELECT * FROM " + dialect.QuoteFullName(fullName);
+            cmd.CommandText = "SELECT * FROM " + LinkedInfo + dialect.QuoteFullName(fullName);
             var reader = cmd.ExecuteReader();
             var result = dda.AdaptReader(reader);
             result.Disposing += () =>
-            {
-                reader.Dispose();
-                conn.Dispose();
-            };
+                {
+                    reader.Dispose();
+                    conn.Dispose();
+                };
             return result;
         }
 
@@ -70,7 +100,7 @@ namespace DbShell.Core.Utility
 
         ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context)
         {
-            return new TableWriter(context, GetConnectionProvider(context), GetFullName(context), rowFormat, options);
+            return new TableWriter(context, GetConnectionProvider(context), GetFullName(context), rowFormat, options, null, LinkedInfo);
         }
 
         TableInfo ITabularDataTarget.GetRowFormat(IShellContext context)

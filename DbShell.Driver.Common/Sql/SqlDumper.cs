@@ -15,8 +15,8 @@ namespace DbShell.Driver.Common.Sql
         protected readonly ISqlOutputStream m_stream;
         protected readonly SqlFormatProperties m_props;
         protected readonly ISqlDialect m_dialect;
-        SqlFormatterState m_formatterState = new SqlFormatterState();
-        IDialectDataAdapter m_DDA;
+        private SqlFormatterState m_formatterState = new SqlFormatterState();
+        private IDialectDataAdapter m_DDA;
         private IDatabaseFactory m_factory;
 
         public SqlDumper(ISqlOutputStream stream, IDatabaseFactory factory, SqlFormatProperties props)
@@ -75,11 +75,15 @@ namespace DbShell.Driver.Common.Sql
         public virtual void RenameDomain(NameWithSchema domain, string newname)
         {
         }
+
         public virtual void ChangeDomainSchema(NameWithSchema domain, string newschema)
         {
         }
 
-        public ISqlDialect Dialect { get { return m_dialect; } }
+        public ISqlDialect Dialect
+        {
+            get { return m_dialect; }
+        }
 
         public SqlFormatterState FormatterState
         {
@@ -205,9 +209,14 @@ namespace DbShell.Driver.Common.Sql
 
         public virtual void CreateTable(TableInfo tableSrc)
         {
+            CreateTable(tableSrc, null);
+        }
+
+        public virtual void CreateTable(TableInfo tableSrc, LinkedDatabaseInfo linkedInfo)
+        {
             var table = tableSrc.CloneTable();
             table.AfterLoadLink();
-            Put("^create ^table %f ( &>&n", table.FullName);
+            Put("^create ^table %s%f ( &>&n", linkedInfo != null ? linkedInfo.ToString() : "", table.FullName);
             bool first = true;
             foreach (var col in table.Columns)
             {
@@ -246,7 +255,7 @@ namespace DbShell.Driver.Common.Sql
             }
             Put("&<&n)");
             EndCommand();
-            foreach(var ix in table.Indexes)
+            foreach (var ix in table.Indexes)
             {
                 CreateIndex(ix);
             }
@@ -354,10 +363,12 @@ namespace DbShell.Driver.Common.Sql
             CreateForeignKeyCore(fk);
             EndCommand();
         }
+
         public virtual void DropPrimaryKey(PrimaryKeyInfo pk)
         {
             DropConstraint(pk);
         }
+
         public virtual void CreatePrimaryKey(PrimaryKeyInfo pk)
         {
             Put("^alter ^table %f ^add ^constraint %i ^primary ^key", pk.OwnerTable, pk.ConstraintName);
@@ -471,6 +482,7 @@ namespace DbShell.Driver.Common.Sql
         }
 
         public static string TempTableNameOverride;
+
         private static string GenerateTempTableName(int id)
         {
             if (TempTableNameOverride != null) return TempTableNameOverride;
@@ -478,6 +490,7 @@ namespace DbShell.Driver.Common.Sql
         }
 
         public static int _lastAlterTableId = 0;
+
         public virtual void RecreateTable(TableInfo oldTable, TableInfo newTable)
         {
             if (oldTable.GroupId != newTable.GroupId) throw new InternalError("DBSH-00143 Recreate is not possible: oldTable.GroupId != newTable.GroupId");
@@ -500,22 +513,22 @@ namespace DbShell.Driver.Common.Sql
             bool hasident = idcol != null && columnMap[idcol.ColumnOrder] >= 0;
             if (hasident) AllowIdentityInsert(newTable.FullName, true);
             PutCmd("^insert ^into %f (%,i) select %,s ^from %f", newTable.FullName,
-                from c in newTable.Columns
-                where columnMap[c.ColumnOrder] >= 0
-                select c.Name,
-                from dstindex in
-                    (
-                    from i in PyList.Range(newTable.Columns.Count)
-                    where columnMap[i] >= 0
-                    select i
-                    )
-                let srcindex = columnMap[dstindex]
-                select
-                    (srcindex < 0
-                    // srcindex < 0 should not occur thanks to filtering
-                    ? Format("^null ^as %i", newTable.Columns[dstindex].Name)
-                    : Format("^%i ^as %i", old.Columns[srcindex].Name, newTable.Columns[dstindex].Name)),
-                old.FullName);
+                   from c in newTable.Columns
+                   where columnMap[c.ColumnOrder] >= 0
+                   select c.Name,
+                   from dstindex in
+                       (
+                           from i in PyList.Range(newTable.Columns.Count)
+                           where columnMap[i] >= 0
+                           select i
+                       )
+                   let srcindex = columnMap[dstindex]
+                   select
+                       (srcindex < 0
+                        // srcindex < 0 should not occur thanks to filtering
+                            ? Format("^null ^as %i", newTable.Columns[dstindex].Name)
+                            : Format("^%i ^as %i", old.Columns[srcindex].Name, newTable.Columns[dstindex].Name)),
+                   old.FullName);
             if (hasident) AllowIdentityInsert(newTable.FullName, false);
 
             // newTable.Constraints are allready created
@@ -531,7 +544,12 @@ namespace DbShell.Driver.Common.Sql
 
         public virtual void DropTable(TableInfo obj, bool testIfExists)
         {
-            PutCmd("^drop ^table %f", obj.FullName);
+            DropTable(obj, testIfExists, null);
+        }
+
+        public virtual void DropTable(TableInfo obj, bool testIfExists, LinkedDatabaseInfo linkedInfo)
+        {
+            PutCmd("^drop ^table %s%f", linkedInfo != null ? linkedInfo.ToString() : "", obj.FullName);
         }
 
         public virtual void ChangeTableSchema(TableInfo obj, string schema)
