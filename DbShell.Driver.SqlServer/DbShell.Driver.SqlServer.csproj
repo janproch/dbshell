@@ -51,6 +51,7 @@
     <Compile Include="antlr\SqlServerLexer.cs" />
     <Compile Include="antlr\SqlServerParserEx.cs" />
     <Compile Include="antlr\SqlServerParser.cs" />
+    <Compile Include="SqlServerLinkedServer.cs" />
     <Compile Include="SqlServerBulkInserter.cs" />
     <Compile Include="SqlServerDatabaseAnalyser.cs" />
     <Compile Include="SqlServerDatabaseFactory.cs" />

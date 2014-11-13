@@ -11,6 +11,8 @@ using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
+using LumenWorks.Framework.IO.Csv;
+using CsvReader = DbShell.Core.Utility.CsvReader;
 
 namespace DbShell.Core
 {
@@ -177,6 +179,7 @@ namespace DbShell.Core
         {
             var reader = new LumenWorks.Framework.IO.Csv.CsvReader(textReader, HasHeaders, Delimiter, Quote, Escape, Comment,
                                                                    TrimSpaces ? LumenWorks.Framework.IO.Csv.ValueTrimmingOptions.UnquotedOnly : LumenWorks.Framework.IO.Csv.ValueTrimmingOptions.None);
+            reader.DefaultParseErrorAction = ParseErrorAction.AdvanceToNextLine;
             return reader;
         }
 
