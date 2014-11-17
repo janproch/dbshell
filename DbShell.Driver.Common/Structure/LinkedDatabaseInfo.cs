@@ -9,15 +9,23 @@ namespace DbShell.Driver.Common.Structure
     public class LinkedDatabaseInfo
     {
         [XmlElem]
-        public string ServerName { get; set; }
+        public string LinkedServerName { get; set; }
 
         [XmlElem]
-        public string DatabaseName { get; set; }
+        public string LinkedDatabaseName { get; set; }
+
+        [XmlElem]
+        public string ExplicitDatabaseName { get; set; }
 
         public LinkedDatabaseInfo(string server, string database)
         {
-            ServerName = server;
-            DatabaseName = database;
+            LinkedServerName = server;
+            LinkedDatabaseName = database;
+        }
+
+        public LinkedDatabaseInfo(string explicitDatabase)
+        {
+            ExplicitDatabaseName = explicitDatabase;
         }
 
         public LinkedDatabaseInfo()
@@ -26,7 +34,8 @@ namespace DbShell.Driver.Common.Structure
 
         public override string ToString()
         {
-            if (ServerName != null) return String.Format("[{0}].[{1}].", ServerName, DatabaseName);
+            if (LinkedServerName != null) return String.Format("[{0}].[{1}].", LinkedServerName, LinkedDatabaseName);
+            if (ExplicitDatabaseName != null) return String.Format("[{0}].", ExplicitDatabaseName);
             return "";
         }
     }

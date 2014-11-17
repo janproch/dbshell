@@ -40,8 +40,6 @@ namespace DbShell.Driver.Common.AbstractDb
         // table operations
         void CreateTable(TableInfo obj);
         void DropTable(TableInfo obj, bool testIfExists);
-        void CreateTable(TableInfo obj, LinkedDatabaseInfo linkedInfo);
-        void DropTable(TableInfo obj, bool testIfExists, LinkedDatabaseInfo linkedInfo);
         void ChangeTableSchema(TableInfo obj, string schema);
         void RenameTable(TableInfo obj, string newname);
 

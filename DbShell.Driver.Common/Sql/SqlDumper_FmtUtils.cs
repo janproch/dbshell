@@ -331,11 +331,11 @@ namespace DbShell.Driver.Common.Sql
                     DumpSeparatorIfNeeded(sb, props, state);
                     if (val is string)
                     {
-                        sb.Append(QuoteIdentifier(dialect, props, (string)val));
+                        sb.Append(QuoteIdentifier(dialect, props, (string) val));
                     }
                     else if (val is ColumnReference)
                     {
-                        sb.Append(QuoteIdentifier(dialect, props, ((ColumnReference)val).RefColumn.Name));
+                        sb.Append(QuoteIdentifier(dialect, props, ((ColumnReference) val).RefColumn.Name));
                     }
                     else
                     {
@@ -345,10 +345,32 @@ namespace DbShell.Driver.Common.Sql
                     break;
                 case 'f': // quote full name
                     DumpSeparatorIfNeeded(sb, props, state);
-                    if (val is NameWithSchema) sb.Append(QuoteFullName(dialect, props, (NameWithSchema)val));
-                    else if (val is IFullNamedObject) sb.Append(QuoteFullName(dialect, props, ((IFullNamedObject)val).FullName));
+                    if (val is NameWithSchema) sb.Append(QuoteFullName(dialect, props, state, (NameWithSchema) val));
+                    else if (val is IFullNamedObject) sb.Append(QuoteFullName(dialect, props, state, ((IFullNamedObject)val).FullName));
                     else throw new InternalError("DBSH-00045 Full name must be of type NameWithSchema or IFullNamedObject");
                     DataDumped(state);
+                    break;
+                case 'l': // quote linked server name
+                    DumpSeparatorIfNeeded(sb, props, state);
+                    var linked = val as LinkedDatabaseInfo;
+                    if (linked == null && val != null)
+                    {
+                        throw new InternalError("DBSH-00000 Linked name must be LinkedDatabaseInfo or null");
+                    }
+                    if (linked != null && linked.LinkedServerName != null)
+                    {
+                        sb.Append(QuoteIdentifier(dialect, props, linked.LinkedServerName));
+                        sb.Append(".");
+                        sb.Append(QuoteIdentifier(dialect, props, linked.LinkedDatabaseName));
+                        sb.Append(".");
+                        state.ForceFullName = true;
+                    }
+                    if (linked != null && linked.ExplicitDatabaseName != null)
+                    {
+                        sb.Append(QuoteIdentifier(dialect, props, linked.ExplicitDatabaseName));
+                        sb.Append(".");
+                        state.ForceFullName = true;
+                    }
                     break;
                 case 's': // string - copy character data
                     if (val != null)
@@ -361,12 +383,12 @@ namespace DbShell.Driver.Common.Sql
                 case 'k': // keyword
                     DumpSeparatorIfNeeded(sb, props, state);
                     if (!(val is string)) throw new InternalError("DBSH-00046 Identifier must be of type string");
-                    foreach (char c2 in (string)val) sb.Append(GetCasedChar(c2, props.SqlCommandCase));
+                    foreach (char c2 in (string) val) sb.Append(GetCasedChar(c2, props.SqlCommandCase));
                     DataDumped(state);
                     break;
                 case 'K': // multi-word keyword
                     if (!(val is IEnumerable<string>)) throw new InternalError("DBSH-00047 Identifier must be of type string");
-                    foreach (string s in ((IEnumerable<string>)val))
+                    foreach (string s in ((IEnumerable<string>) val))
                     {
                         DumpSeparatorIfNeeded(sb, props, state);
                         sb.Append(GetCasedString(s, props.SqlCommandCase));
@@ -461,9 +483,15 @@ namespace DbShell.Driver.Common.Sql
             return QuoteIdentifier(m_dialect, m_props, ident);
         }
 
-        private static string QuoteFullName(ISqlDialect dialect, SqlFormatProperties props, NameWithSchema name)
+        private static string QuoteFullName(ISqlDialect dialect, SqlFormatProperties props, SqlFormatterState state, NameWithSchema name)
         {
-            if (!props.UseSchema || name.Schema == null)
+            bool omitSchema = !props.UseSchema || name.Schema == null;
+            if (state != null && state.ForceFullName)
+            {
+                state.ForceFullName = false;
+                omitSchema = false;
+            }
+            if (omitSchema)
             {
                 return QuoteIdentifier(dialect, props, name.Name);
             }
@@ -472,7 +500,7 @@ namespace DbShell.Driver.Common.Sql
 
         protected string QuoteFullName(NameWithSchema name)
         {
-            return QuoteFullName(m_dialect, m_props, name);
+            return QuoteFullName(m_dialect, m_props, null, name);
         }
 
         public static string GetCasedString(string s, CharacterCase cc)

@@ -69,6 +69,9 @@ namespace DbShell.Driver.Common.Structure
         [XmlElem]
         public string DefaultSchema { get; set; }
 
+        [XmlSubElem]
+        public LinkedDatabaseInfo LinkedInfo { get; set; }
+
         private T FindObjectLike<T>(IEnumerable<T> objs, string name)
             where T : NamedObjectInfo
         {

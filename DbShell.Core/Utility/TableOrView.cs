@@ -53,8 +53,8 @@ namespace DbShell.Core.Utility
                 }
                 else
                 {
-                    LinkedServerName = value.ServerName;
-                    LinkedDatabaseName = value.DatabaseName;
+                    LinkedServerName = value.LinkedServerName;
+                    LinkedDatabaseName = value.LinkedDatabaseName;
                 }
             }
         }

@@ -73,6 +73,12 @@ namespace DbShell.Driver.Common.Structure
             throw new Exception(String.Format("DBSH-0000 Object {0} is not cloneable", GetType().FullName));
         }
 
+        public LinkedDatabaseInfo GetLinkedInfo()
+        {
+            if (OwnerDatabase != null) return OwnerDatabase.LinkedInfo;
+            return null;
+        }
+
         //public DatabaseObjectInfo CloneObject()
         //{
         //    var tbl = this as TableInfo;

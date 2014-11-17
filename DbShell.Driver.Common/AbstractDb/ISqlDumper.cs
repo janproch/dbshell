@@ -104,6 +104,8 @@ namespace DbShell.Driver.Common.AbstractDb
         public IDialectDataAdapter DDA;
         // value holder for internal usage
         public CdlValueHolder _Holder = new CdlValueHolder();
+        // if true, next NameWithSchema must be dumped with schema
+        public bool ForceFullName;
     }
 
     //public enum AlterTableMode { Conservative, RecreateWhenNeeded, RecreateAllways }

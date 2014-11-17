@@ -278,12 +278,21 @@ namespace DbShell.Driver.Common.DmlFramework
     public class DmlfRelationCondition : DmlfBinaryCondition
     {
         public string Relation = "=";
+        public string CollateSpec;
 
         public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
         {
             LeftExpr.GenSql(dmp, handler);
+            if (CollateSpec != null)
+            {
+                dmp.Put(" ^collate %s ", CollateSpec);
+            }
             dmp.Put(Relation);
             RightExpr.GenSql(dmp, handler);
+            if (CollateSpec != null)
+            {
+                dmp.Put(" ^collate %s ", CollateSpec);
+            }
         }
 
         public override bool EvalCondition(IDmlfHandler handler)

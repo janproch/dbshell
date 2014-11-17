@@ -14,6 +14,7 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
     public DmlfExpression ColumnValue;
     string _errors = null;
     private Stack<object> _stack = new Stack<object>();
+    public string CollateSpec;
 
     public DateTime Now = DateTime.Now;
 
@@ -94,6 +95,7 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
                 LeftExpr = ColumnValue,
                 RightExpr = new DmlfSqlIdentifierExpression {Value = sql},
                 Relation = relation,
+                CollateSpec = CollateSpec,
             });
     }
 
@@ -105,6 +107,7 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
             LeftExpr = ColumnValue,
             RightExpr = new DmlfSqlIdentifierExpression { Value = sql },
             Relation = "=",
+            CollateSpec = CollateSpec,
         });
         var and = new DmlfAndCondition();
         or.Conditions.Add(and);
@@ -121,6 +124,7 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
             LeftExpr = ColumnValue,
             RightExpr = new DmlfSqlIdentifierExpression { Value = sql },
             Relation = "<>",
+            CollateSpec = CollateSpec,
         });
 
         var and1 = new DmlfAndCondition();

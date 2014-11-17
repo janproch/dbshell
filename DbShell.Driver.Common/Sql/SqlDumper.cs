@@ -209,14 +209,9 @@ namespace DbShell.Driver.Common.Sql
 
         public virtual void CreateTable(TableInfo tableSrc)
         {
-            CreateTable(tableSrc, null);
-        }
-
-        public virtual void CreateTable(TableInfo tableSrc, LinkedDatabaseInfo linkedInfo)
-        {
             var table = tableSrc.CloneTable();
             table.AfterLoadLink();
-            Put("^create ^table %s%f ( &>&n", linkedInfo != null ? linkedInfo.ToString() : "", table.FullName);
+            Put("^create ^table %l%f ( &>&n", table.GetLinkedInfo(), table.FullName);
             bool first = true;
             foreach (var col in table.Columns)
             {
@@ -544,12 +539,7 @@ namespace DbShell.Driver.Common.Sql
 
         public virtual void DropTable(TableInfo obj, bool testIfExists)
         {
-            DropTable(obj, testIfExists, null);
-        }
-
-        public virtual void DropTable(TableInfo obj, bool testIfExists, LinkedDatabaseInfo linkedInfo)
-        {
-            PutCmd("^drop ^table %s%f", linkedInfo != null ? linkedInfo.ToString() : "", obj.FullName);
+            PutCmd("^drop ^table %l%f", obj.GetLinkedInfo(), obj.FullName);
         }
 
         public virtual void ChangeTableSchema(TableInfo obj, string schema)

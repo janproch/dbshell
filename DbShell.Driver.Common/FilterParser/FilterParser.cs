@@ -32,11 +32,12 @@ namespace DbShell.Driver.Common.FilterParser
             None,
         };
 
-        private static DmlfConditionBase ParseNumber(DmlfExpression columnValue, string expression)
+        private static DmlfConditionBase ParseNumber(DmlfExpression columnValue, string expression, Action<DbShellFilterAntlrParser> initParser = null)
         {
             var lexer = new NumberFilterLexer(new ANTLRReaderStream(new StringReader(expression)));
             var tokens = new CommonTokenStream(lexer);
             var parser = new NumberFilterParser(tokens);
+            if (initParser != null) initParser(parser);
             parser.ColumnValue = columnValue;
             try
             {
@@ -50,11 +51,12 @@ namespace DbShell.Driver.Common.FilterParser
             return parser.Condition;
         }
 
-        private static DmlfConditionBase ParseString(DmlfExpression columnValue, string expression)
+        private static DmlfConditionBase ParseString(DmlfExpression columnValue, string expression, Action<DbShellFilterAntlrParser> initParser = null)
         {
             var lexer = new StringFilterLexer(new ANTLRReaderStream(new StringReader(expression)));
             var tokens = new CommonTokenStream(lexer);
             var parser = new StringFilterParser(tokens);
+            if (initParser != null) initParser(parser);
             parser.ColumnValue = columnValue;
             try
             {
@@ -68,11 +70,12 @@ namespace DbShell.Driver.Common.FilterParser
             return parser.Condition;
         }
 
-        private static DmlfConditionBase ParseDateTime(DmlfExpression columnValue, string expression)
+        private static DmlfConditionBase ParseDateTime(DmlfExpression columnValue, string expression, Action<DbShellFilterAntlrParser> initParser = null)
         {
             var lexer = new DateTimeFilterLexer(new ANTLRReaderStream(new StringReader(expression)));
             var tokens = new CommonTokenStream(lexer);
             var parser = new DateTimeFilterParser(tokens);
+            if (initParser != null) initParser(parser);
             parser.ColumnValue = columnValue;
             try
             {
@@ -86,11 +89,12 @@ namespace DbShell.Driver.Common.FilterParser
             return parser.Condition;
         }
 
-        private static DmlfConditionBase ParseLogical(DmlfExpression columnValue, string expression)
+        private static DmlfConditionBase ParseLogical(DmlfExpression columnValue, string expression, Action<DbShellFilterAntlrParser> initParser = null)
         {
             var lexer = new LogicalFilterLexer(new ANTLRReaderStream(new StringReader(expression)));
             var tokens = new CommonTokenStream(lexer);
             var parser = new LogicalFilterParser(tokens);
+            if (initParser != null) initParser(parser);
             parser.ColumnValue = columnValue;
             try
             {
@@ -138,20 +142,20 @@ namespace DbShell.Driver.Common.FilterParser
             return FilterLineTransformation.None;
         }
 
-        public static DmlfConditionBase ParseFilterExpression(DbTypeBase type, DmlfExpression columnValue, string expression)
+        public static DmlfConditionBase ParseFilterExpression(DbTypeBase type, DmlfExpression columnValue, string expression, Action<DbShellFilterAntlrParser> initParser = null)
         {
             expression = TransformExpression(expression);
 
             switch (GetExpressionType(type))
             {
                 case ExpressionType.Number:
-                    return ParseNumber(columnValue, expression);
+                    return ParseNumber(columnValue, expression, initParser);
                 case ExpressionType.String:
-                    return ParseString(columnValue, expression);
+                    return ParseString(columnValue, expression, initParser);
                 case ExpressionType.DateTime:
-                    return ParseDateTime(columnValue, expression);
+                    return ParseDateTime(columnValue, expression, initParser);
                 case ExpressionType.Logical:
-                    return ParseLogical(columnValue, expression);
+                    return ParseLogical(columnValue, expression, initParser);
             }
             return new DmlfEqualCondition
             {

@@ -65,8 +65,8 @@ namespace DbShell.Core
                 }
                 else
                 {
-                    LinkedServerName = value.ServerName;
-                    LinkedDatabaseName = value.DatabaseName;
+                    LinkedServerName = value.LinkedServerName;
+                    LinkedDatabaseName = value.LinkedDatabaseName;
                 }
             }
         }
@@ -86,7 +86,9 @@ namespace DbShell.Core
             var connection = GetConnectionProvider(context);
             using (var conn = connection.Connect())
             {
-                var tbl = rowFormat.CloneTable();
+                var db = new DatabaseInfo();
+                db.LinkedInfo = LinkedInfo;
+                var tbl = rowFormat.CloneTable(db);
                 tbl.FullName = GetFullName(context);
                 foreach(var col in tbl.Columns) col.AutoIncrement = false;
                 tbl.ForeignKeys.Clear();
@@ -110,9 +112,9 @@ namespace DbShell.Core
                 //var sw = new StringWriter();
                 var so = new ConnectionSqlOutputStream(conn, null, connection.Factory.CreateDialect());
                 var dmp = connection.Factory.CreateDumper(so, new SqlFormatProperties());
-                if (DropIfExists) dmp.DropTable(tbl, true, LinkedInfo);
+                if (DropIfExists) dmp.DropTable(tbl, true);
                 tbl.Columns.ForEach(x => x.EnsureDataType(connection.Factory.CreateSqlTypeProvider()));
-                dmp.CreateTable(tbl, LinkedInfo);
+                dmp.CreateTable(tbl);
                 //using (var cmd = conn.CreateCommand())
                 //{
                 //    cmd.CommandText = sw.ToString();

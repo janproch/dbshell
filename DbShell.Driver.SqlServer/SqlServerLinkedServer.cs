@@ -49,9 +49,9 @@ namespace DbShell.Driver.SqlServer
             if (sql == null) return null;
 
             string linkedServerSpec = "";
-            if (linkedInfo != null && linkedInfo.ServerName != null)
+            if (linkedInfo != null && linkedInfo.LinkedServerName != null)
             {
-                linkedServerSpec = String.Format("[{0}].[{1}].", linkedInfo.ServerName, linkedInfo.DatabaseName);
+                linkedServerSpec = String.Format("[{0}].[{1}].", linkedInfo.LinkedServerName, linkedInfo.LinkedDatabaseName);
             }
             return sql.Replace("[SERVER].", linkedServerSpec);
         }
@@ -60,6 +60,5 @@ namespace DbShell.Driver.SqlServer
         {
             return ReplaceLinkedServer(sql, new LinkedDatabaseInfo(server, database));
         }
-
     }
 }

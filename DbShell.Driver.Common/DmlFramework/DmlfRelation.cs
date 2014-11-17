@@ -96,8 +96,7 @@ namespace DbShell.Driver.Common.DmlFramework
 
             if (TableOrView != null)
             {
-                if (LinkedInfo != null) dmp.WriteRaw(LinkedInfo.ToString());
-                dmp.Put("%f", TableOrView);
+                dmp.Put("%l%f", LinkedInfo, TableOrView);
             }
             if (SubQuery != null)
             {
