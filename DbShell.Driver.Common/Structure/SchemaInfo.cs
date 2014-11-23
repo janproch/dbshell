@@ -14,7 +14,7 @@ namespace DbShell.Driver.Common.Structure
 
         public override DatabaseObjectType ObjectType
         {
-            get { return DatabaseObjectType.View; }
+            get { return DatabaseObjectType.Schema; }
         }
 
         public SchemaInfo CloneSchema(DatabaseInfo ownerDb = null)
@@ -34,6 +34,15 @@ namespace DbShell.Driver.Common.Structure
             base.Assign(source);
             var src = (SchemaInfo) source;
             Name = src.Name;
+        }
+
+        public override FullDatabaseRelatedName GetName()
+        {
+            return new FullDatabaseRelatedName
+            {
+                ObjectType = DatabaseObjectType.Schema,
+                SubName = Name,
+            };
         }
     }
 }

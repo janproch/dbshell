@@ -1,5 +1,6 @@
 using System;
 using System.Data.Common;
+using DbShell.Driver.Common.DbDiff;
 using DbShell.Driver.Common.Sql;
 
 namespace DbShell.Driver.Common.AbstractDb
@@ -27,6 +28,11 @@ namespace DbShell.Driver.Common.AbstractDb
         }
 
         public abstract string[] Identifiers { get; }
+
+        public virtual AlterProcessorCaps DumperCaps
+        {
+            get { return new AlterProcessorCaps(); }
+        }
 
         public abstract DbConnection CreateConnection(string connectionString);
 

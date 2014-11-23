@@ -27,5 +27,14 @@ namespace DbShell.Driver.Common.Structure
         {
             return CloneObject(ownerDb) as SpecificObjectInfo;
         }
+
+        public override FullDatabaseRelatedName GetName()
+        {
+            return new FullDatabaseRelatedName
+            {
+                ObjectName = FullName,
+                ObjectType = ObjectType,
+            };
+        }
     }
 }

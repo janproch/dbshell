@@ -231,5 +231,15 @@ namespace DbShell.Driver.Common.Structure
                 typeProvider.GetNativeDataType(CommonType, this);
             }
         }
+
+        public override FullDatabaseRelatedName GetName()
+        {
+            return new FullDatabaseRelatedName
+                {
+                    ObjectName = OwnerTable != null ? OwnerTable.FullName : null,
+                    ObjectType = DatabaseObjectType.Column,
+                    SubName = Name,
+                };
+        }
     }
 }

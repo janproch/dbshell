@@ -54,5 +54,15 @@ namespace DbShell.Driver.Common.Structure
             DataType = src.DataType;
             IsOutput = src.IsOutput;
         }
+
+        public override FullDatabaseRelatedName GetName()
+        {
+            return new FullDatabaseRelatedName
+                {
+                    ObjectName = Programmable != null ? Programmable.FullName : null,
+                    ObjectType = DatabaseObjectType.Parameter,
+                    SubName = Name,
+                };
+        }
     }
 }

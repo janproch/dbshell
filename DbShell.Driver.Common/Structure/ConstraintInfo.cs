@@ -27,5 +27,15 @@ namespace DbShell.Driver.Common.Structure
         {
             return CloneObject(ownerTable) as ConstraintInfo;
         }
+
+        public override FullDatabaseRelatedName GetName()
+        {
+            return new FullDatabaseRelatedName
+            {
+                ObjectName = OwnerTable != null ? OwnerTable.FullName : null,
+                ObjectType = ObjectType,
+                SubName = ConstraintName,
+            };
+        }
     }
 }

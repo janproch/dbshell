@@ -265,5 +265,14 @@ namespace DbShell.Driver.Common.Structure
             }
             return res;
         }
+
+        public override FullDatabaseRelatedName GetName()
+        {
+            return new FullDatabaseRelatedName
+            {
+                ObjectName = FullName,
+                ObjectType = DatabaseObjectType.Table,
+            };
+        }
     }
 }

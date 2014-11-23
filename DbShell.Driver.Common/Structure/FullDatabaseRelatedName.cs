@@ -2,7 +2,7 @@ namespace DbShell.Driver.Common.Structure
 {
     public class FullDatabaseRelatedName
     {
-        public string ObjectType;
+        public DatabaseObjectType ObjectType;
         public NameWithSchema ObjectName;
         public string SubName;
 

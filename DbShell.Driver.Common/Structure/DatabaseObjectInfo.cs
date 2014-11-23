@@ -97,5 +97,6 @@ namespace DbShell.Driver.Common.Structure
         //    if (dbs != null) return new DatabaseStructure(dbs);
         //    return null;
         //}
+        public abstract FullDatabaseRelatedName GetName();
     }
 }

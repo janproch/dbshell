@@ -95,6 +95,11 @@ namespace DbShell.Driver.Common.DbDiff
 
         public AlterDependencyCaps DepCaps = new AlterDependencyCaps();
 
+        public ObjectOperationCaps ViewCaps = new ObjectOperationCaps();
+        public ObjectOperationCaps StoredProcedureCaps = new ObjectOperationCaps();
+        public ObjectOperationCaps FunctionCaps = new ObjectOperationCaps();
+        public ObjectOperationCaps TriggerCaps = new ObjectOperationCaps();
+
         //public ObjectOperationCaps SpecificCaps = new ObjectOperationCaps();
         //public Dictionary<string, ObjectOperationCaps> SpecificOverride = new Dictionary<string, ObjectOperationCaps>();
 
@@ -168,6 +173,10 @@ namespace DbShell.Driver.Common.DbDiff
             set
             {
                 base.AllFlags = value;
+                ViewCaps.AllFlags = value;
+                StoredProcedureCaps.AllFlags = value;
+                FunctionCaps.AllFlags = value;
+                TriggerCaps.AllFlags = value;
                 //SpecificCaps.AllFlags = value;
             }
         }

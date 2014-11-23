@@ -555,5 +555,13 @@ namespace DbShell.Driver.Common.Structure
         {
             return FindTable(constraint.OwnerTable.FullName).Constraints.First(c => c.ConstraintName == constraint.ConstraintName);
         }
+
+        public override FullDatabaseRelatedName GetName()
+        {
+            return new FullDatabaseRelatedName
+                {
+                    ObjectType = DatabaseObjectType.Database,
+                };
+        }
     }
 }

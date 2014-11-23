@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using System.IO;
 using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.DbDiff;
 
 namespace DbShell.Driver.SqlServer
 {
@@ -85,6 +86,52 @@ namespace DbShell.Driver.SqlServer
         public override ISqlTypeProvider CreateSqlTypeProvider()
         {
             return new SqlServerTypeProvider();
+        }
+
+        public override AlterProcessorCaps DumperCaps
+        {
+            get
+            {
+                return new SqlDumperCaps
+                {
+                    AllFlags = false,
+
+                    CreateTable = true,
+                    DropTable = true,
+                    //AlterTable = true,
+                    RenameTable = true,
+                    RecreateTable = true,
+                    ChangeTableSchema = true,
+
+                    ChangeColumnType = true,
+                    RenameColumn = true,
+                    AddColumn = true,
+                    DropColumn = true,
+                    ChangeColumn = true,
+                    ChangeColumnDefaultValue = true,
+
+                    RenameConstraint = true,
+                    AddConstraint = true,
+                    DropConstraint = true,
+                    RenameIndex = true,
+                    AddIndex = true,
+                    DropIndex = true,
+
+                    CreateDatabase = true,
+                    DropDatabase = true,
+                    RenameDatabase = true,
+
+                    CreateSchema = true,
+                    RenameSchema = true,
+                    DropSchema = true,
+
+                    ViewCaps = new ObjectOperationCaps { AllFlags = true, Change = false },
+                    StoredProcedureCaps = new ObjectOperationCaps { AllFlags = true, Change = false },
+                    FunctionCaps = new ObjectOperationCaps { AllFlags = true, Change = false },
+                    TriggerCaps = new ObjectOperationCaps { AllFlags = true, Change = false },
+                    DepCaps = new AlterDependencyCaps { AllFlags = true },
+                };
+            }
         }
     }
 }

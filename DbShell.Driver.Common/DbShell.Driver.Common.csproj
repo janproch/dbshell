@@ -60,7 +60,6 @@
     <Compile Include="AbstractDb\DatabaseServerInterfaceBase.cs" />
     <Compile Include="AbstractDb\DatabaseServerVersion.cs" />
     <Compile Include="AbstractDb\DialectBase.cs" />
-    <Compile Include="AbstractDb\DialectExtension.cs" />
     <Compile Include="AbstractDb\FactoryProvider.cs" />
     <Compile Include="AbstractDb\GenericDatabase.cs" />
     <Compile Include="AbstractDb\IAlterProcessor.cs" />
@@ -103,7 +102,11 @@
     <Compile Include="DbDiff\AlterPlan.cs" />
     <Compile Include="DbDiff\AlterProcessorExtension.cs" />
     <Compile Include="DbDiff\Capabilities.cs" />
+    <Compile Include="DbDiff\DatabaseDiff.cs" />
+    <Compile Include="DbDiff\DatabaseDiff_CreateActions.cs" />
+    <Compile Include="DbDiff\DatabaseDiff_CreatePairing.cs" />
     <Compile Include="DbDiff\DatabaseInfoAlterProcessor.cs" />
+    <Compile Include="DbDiff\DbDiffActions.cs" />
     <Compile Include="DbDiff\DbDiffOptions.cs" />
     <Compile Include="DbDiff\DbDiffTool.cs" />
     <Compile Include="DbDiff\DbDiff_Database.cs" />

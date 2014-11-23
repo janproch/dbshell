@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Common;
+using DbShell.Driver.Common.DbDiff;
 
 namespace DbShell.Driver.Common.AbstractDb
 {
@@ -7,6 +8,7 @@ namespace DbShell.Driver.Common.AbstractDb
     {
         string[] Identifiers { get; }
         Type[] ConnectionTypes { get; }
+        AlterProcessorCaps DumperCaps { get; }
         DbConnection CreateConnection(string connectionString);
         DatabaseAnalyser CreateAnalyser();
         IDialectDataAdapter CreateDataAdapter();
