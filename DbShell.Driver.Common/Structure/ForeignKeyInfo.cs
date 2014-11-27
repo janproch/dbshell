@@ -115,9 +115,16 @@ namespace DbShell.Driver.Common.Structure
                 _refTableName = null;
             }
 
-            foreach(var col in RefColumns)
+            if (RefTable != null)
             {
-                col.AfterLoadLink(RefTable);
+                foreach (var col in RefColumns)
+                {
+                    col.AfterLoadLink(RefTable);
+                }
+            }
+            else
+            {
+                int x = 0;
             }
         }
 

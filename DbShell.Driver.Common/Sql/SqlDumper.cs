@@ -410,7 +410,7 @@ namespace DbShell.Driver.Common.Sql
 
         protected virtual void CreateCheckCore(CheckInfo ch)
         {
-            PutCmd("^constraint %i ^check (%s)", ch.ConstraintName, ch.Definition);
+            Put("^constraint %i ^check (%s)", ch.ConstraintName, ch.Definition);
         }
 
         public virtual void CreateCheck(CheckInfo ch)

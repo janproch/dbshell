@@ -9,14 +9,14 @@ namespace DbShell.Driver.Common.DbDiff
 {
     public partial class DatabaseDiff
     {
-        DbDiffAction m_actions;
-        DatabaseInfo m_src;
-        DatabaseInfo m_dst;
-        AlterPlan m_plan;
-        internal DbDiffOptions m_options;
+        DbDiffAction _actions;
+        DatabaseInfo _src;
+        DatabaseInfo _dst;
+        AlterPlan _plan;
+        internal DbDiffOptions _options;
         internal IDatabaseFactory _factory;
-        Dictionary<string, DatabaseObjectInfo> srcGroupIds = new Dictionary<string, DatabaseObjectInfo>();
-        Dictionary<string, DatabaseObjectInfo> dstGroupIds = new Dictionary<string, DatabaseObjectInfo>();
+        Dictionary<string, DatabaseObjectInfo> _srcGroupIds = new Dictionary<string, DatabaseObjectInfo>();
+        Dictionary<string, DatabaseObjectInfo> _dstGroupIds = new Dictionary<string, DatabaseObjectInfo>();
 
         HashSet<string> alteredObjects = new HashSet<string>();
         //Dictionary<string, IAbstractObjectStructure> AlteredSourceObjects = new Dictionary<string, IAbstractObjectStructure>();
@@ -29,21 +29,26 @@ namespace DbShell.Driver.Common.DbDiff
         public DatabaseDiff(DatabaseInfo src, DatabaseInfo dst, DbDiffOptions options, IDatabaseFactory factory)
         {
             _factory = factory;
-            m_src = src.CloneDatabase();
-            m_dst = dst.CloneDatabase();
-            m_actions = new DbDiffAction(this);
+            _src = src.CloneDatabase();
+            _dst = dst.CloneDatabase();
+            _actions = new DbDiffAction(this);
             //m_actions = new DiffActionDatabase(this, m_src, m_dst);
-            m_options = options;
+            _options = options;
             RebuildGroupIdDictionary();
-            if (m_src.GroupId != m_dst.GroupId) CreatePairing();
+            if (_src.GroupId != _dst.GroupId) CreatePairing();
             CreateActions();
         }
 
-        public DatabaseInfo Source { get { return m_src; } }
-        public DatabaseInfo Target { get { return m_dst; } }
-        public AlterPlan Plan { get { return m_plan; } }
+        public DatabaseInfo Source { get { return _src; } }
+        public DatabaseInfo Target { get { return _dst; } }
+        public AlterPlan Plan { get { return _plan; } }
 
-        public DbDiffAction Actions { get { return m_actions; } }
+        public DbDiffAction Actions { get { return _actions; } }
+
+        public DbDiffOptions Options
+        {
+            get { return _options; }
+        }
 
         internal void AddAlteredObject(DatabaseObjectInfo obj)
         {
@@ -57,15 +62,15 @@ namespace DbShell.Driver.Common.DbDiff
 
         private void RebuildGroupIdDictionary()
         {
-            srcGroupIds.Clear();
-            dstGroupIds.Clear();
-            foreach (DatabaseObjectInfo obj in m_src.GetAllObjects())
+            _srcGroupIds.Clear();
+            _dstGroupIds.Clear();
+            foreach (DatabaseObjectInfo obj in _src.GetAllObjects())
             {
-                srcGroupIds[obj.GroupId] = obj;
+                _srcGroupIds[obj.GroupId] = obj;
             }
-            foreach (DatabaseObjectInfo obj in m_dst.GetAllObjects())
+            foreach (DatabaseObjectInfo obj in _dst.GetAllObjects())
             {
-                dstGroupIds[obj.GroupId] = obj;
+                _dstGroupIds[obj.GroupId] = obj;
             }
         }
 

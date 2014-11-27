@@ -11,14 +11,14 @@ namespace DbShell.Driver.Common.DbDiff
     {
         public bool IsPaired(DatabaseObjectInfo obj)
         {
-            return srcGroupIds.ContainsKey(obj.GroupId) && dstGroupIds.ContainsKey(obj.GroupId);
+            return _srcGroupIds.ContainsKey(obj.GroupId) && _dstGroupIds.ContainsKey(obj.GroupId);
         }
 
         public T FindPair<T>(T obj)
             where T : DatabaseObjectInfo
         {
-            var src = srcGroupIds.Get(obj.GroupId, null);
-            var dst = dstGroupIds.Get(obj.GroupId, null);
+            var src = _srcGroupIds.Get(obj.GroupId, null);
+            var dst = _dstGroupIds.Get(obj.GroupId, null);
             if (src == obj) return (T)dst;
             if (dst == obj) return (T)src;
             return null;
@@ -27,13 +27,13 @@ namespace DbShell.Driver.Common.DbDiff
         public DatabaseObjectInfo FindSource(string groupid)
         {
             if (groupid == null) return null;
-            return srcGroupIds.Get(groupid, null);
+            return _srcGroupIds.Get(groupid, null);
         }
 
         public DatabaseObjectInfo FindTarget(string groupid)
         {
             if (groupid == null) return null;
-            return dstGroupIds.Get(groupid, null);
+            return _dstGroupIds.Get(groupid, null);
         }
 
         // sparovani objektu
@@ -76,12 +76,12 @@ namespace DbShell.Driver.Common.DbDiff
 
         private void PairSpecificObjects()
         {
-            foreach (var osrc in m_src.GetAllSpecificObjects())
+            foreach (var osrc in _src.GetAllSpecificObjects())
             {
                 if (IsPaired(osrc)) continue;
-                foreach (var odst in m_dst.GetAllSpecificObjects())
+                foreach (var odst in _dst.GetAllSpecificObjects())
                 {
-                    if (odst.ObjectType == osrc.ObjectType && DbDiffTool.EqualFullNames(osrc.FullName, odst.FullName, m_options))
+                    if (odst.ObjectType == osrc.ObjectType && DbDiffTool.EqualFullNames(osrc.FullName, odst.FullName, _options))
                     {
                         if (!IsPaired(odst)) PairObjects(osrc, odst);
                     }
@@ -91,12 +91,12 @@ namespace DbShell.Driver.Common.DbDiff
 
         private void PairTables()
         {
-            foreach (var tsrc in m_src.Tables)
+            foreach (var tsrc in _src.Tables)
             {
                 if (IsPaired(tsrc)) continue;
-                foreach (var tdst in m_dst.Tables)
+                foreach (var tdst in _dst.Tables)
                 {
-                    if (DbDiffTool.EqualFullNames(tsrc.FullName, tdst.FullName, m_options) && !IsPaired(tdst))
+                    if (DbDiffTool.EqualFullNames(tsrc.FullName, tdst.FullName, _options) && !IsPaired(tdst))
                     {
                         PairObjects(tsrc, tdst);
                         break;
@@ -106,13 +106,13 @@ namespace DbShell.Driver.Common.DbDiff
                 //if (tdst != null) PairObjects(tsrc, tdst);
             }
 
-            if (m_options.AllowPairRenamedTables)
+            if (_options.AllowPairRenamedTables)
             {
                 // snazime se tabulky sparovat na zaklade stejnych jmen VSECH sloupcu
-                foreach (var tsrc in m_src.Tables)
+                foreach (var tsrc in _src.Tables)
                 {
                     if (IsPaired(tsrc)) continue;
-                    foreach (var tdst in m_dst.Tables)
+                    foreach (var tdst in _dst.Tables)
                     {
                         if (DbDiffTool.EqualColumnNames(tsrc, tdst) && !IsPaired(tdst))
                         {
@@ -123,7 +123,7 @@ namespace DbShell.Driver.Common.DbDiff
                 }
             }
 
-            foreach (var tsrc in m_src.Tables)
+            foreach (var tsrc in _src.Tables)
             {
                 var tdst = FindPair(tsrc);
                 if (tdst != null)
@@ -206,9 +206,9 @@ namespace DbShell.Driver.Common.DbDiff
 
         private void PairObjects(DatabaseObjectInfo src, DatabaseObjectInfo dst)
         {
-            dstGroupIds.Remove(dst.GroupId);
+            _dstGroupIds.Remove(dst.GroupId);
             dst.GroupId = src.GroupId;
-            dstGroupIds[dst.GroupId] = dst;
+            _dstGroupIds[dst.GroupId] = dst;
         }
     }
 }

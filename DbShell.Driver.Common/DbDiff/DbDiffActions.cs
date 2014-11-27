@@ -24,6 +24,7 @@ namespace DbShell.Driver.Common.DbDiff
 
         FullDatabaseRelatedName m_srcName, m_dstName;
         DatabaseObjectInfo m_srcObject, m_dstObject, m_anyObject;
+        public object Tag;
         //DatabaseObjectInfo m_repr;
 
         public DbDiffAction(DatabaseDiff diff)
@@ -255,40 +256,38 @@ namespace DbShell.Driver.Common.DbDiff
             var name = m_anyObject.GetName();
         }
 
-        private bool m_isChecked;
+        //private bool m_isChecked;
 
-        public bool IsChecked
+        //public bool IsChecked
+        //{
+        //    get { return m_isChecked; }
+        //    set
+        //    {
+        //        if (Operation == null && Elements.Count == 0) return;
+        //        m_isChecked = value;
+        //        m_diff.CallChangedAction(this);
+        //    }
+        //}
+
+        public void GetOperations(AlterPlan plan, Func<DbDiffAction, bool> useActionFunc)
         {
-            get { return m_isChecked; }
-            set
-            {
-                if (Operation == null && Elements.Count == 0) return;
-                m_isChecked = value;
-                m_diff.CallChangedAction(this);
-            }
+            if (!useActionFunc(this)) return;
+            if (Operation != null) plan.Operations.Add(Operation);
+            foreach (var elem in Elements) elem.GetOperations(plan, useActionFunc);
         }
 
-        public void GetOperations(AlterPlan plan, bool ignoreMyChecked)
-        {
-            if (ignoreMyChecked || IsChecked)
-            {
-                if (Operation != null) plan.Operations.Add(Operation);
-                foreach (var elem in Elements) elem.GetOperations(plan, false);
-            }
-        }
-
-        public AlterPlan GetPlanForThis(DatabaseInfo targetDb, bool ignoreMyChecked)
+        public AlterPlan GetPlanForThis(DatabaseInfo targetDb, Func<DbDiffAction, bool> useActionFunc)
         {
             var plan = new AlterPlan(m_diff.Target);
-            GetOperations(plan, ignoreMyChecked);
-            plan.Transform(m_diff._factory.DumperCaps, m_diff.m_options);
+            GetOperations(plan, useActionFunc);
+            plan.Transform(m_diff._factory.DumperCaps, m_diff._options);
             return plan;
         }
 
-        public string GenerateSql(DatabaseInfo targetDb)
+        public string GenerateSql(DatabaseInfo targetDb, Func<DbDiffAction, bool> useActionFunc)
         {
-            var plan = GetPlanForThis(targetDb, true);
-            return m_diff._factory.GenerateScript(dmp => plan.CreateRunner().Run(dmp, m_diff.m_options));
+            var plan = GetPlanForThis(targetDb, useActionFunc);
+            return m_diff._factory.GenerateScript(dmp => plan.CreateRunner().Run(dmp, m_diff._options));
         }
 
         //public DbSourceTarget GetAlter()

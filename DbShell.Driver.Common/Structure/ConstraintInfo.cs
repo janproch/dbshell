@@ -37,5 +37,12 @@ namespace DbShell.Driver.Common.Structure
                 SubName = ConstraintName,
             };
         }
+
+        public override string ToString()
+        {
+            string res = ConstraintName;
+            if (OwnerTable != null && OwnerTable.FullName != null) res = OwnerTable.FullName.ToString() + "." + res;
+            return res;
+        }
     }
 }

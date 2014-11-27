@@ -9,11 +9,11 @@ namespace DbShell.Driver.Common.DbDiff
     {
         private void CreateActions()
         {
-            m_plan = new AlterPlan(m_dst);
-            DbDiffTool.AlterDatabase(Plan, new DbObjectPairing(m_dst, m_src), m_options);
+            _plan = new AlterPlan(_dst);
+            DbDiffTool.AlterDatabase(Plan, new DbObjectPairing(_dst, _src), _options);
             DbDiffAction lastAlterTable = null;
 
-            foreach (var op in m_plan.Operations)
+            foreach (var op in _plan.Operations)
             {
                 DbDiffAction act;
                 if (op.ParentTable != null)
@@ -24,11 +24,11 @@ namespace DbShell.Driver.Common.DbDiff
                         lastAlterTable = new DbDiffAction(this);
                         lastAlterTable.ParentTable = op.ParentTable;
                         lastAlterTable.AfterCreate();
-                        m_actions.Elements.Add(lastAlterTable);
+                        _actions.Elements.Add(lastAlterTable);
                     }
                     act = new DbDiffAction(this);
                     act.Operation = op;
-                    act.IsChecked = true;
+                    //act.IsChecked = true;
                     act.AfterCreate();
                     lastAlterTable.Elements.Add(act);
                 }
@@ -38,7 +38,7 @@ namespace DbShell.Driver.Common.DbDiff
                     act.Operation = op;
                     lastAlterTable = null;
                     act.AfterCreate();
-                    m_actions.Elements.Add(act);
+                    _actions.Elements.Add(act);
                 }
             }
             //this.AlterDatabase(m_dst, m_src, m_options);

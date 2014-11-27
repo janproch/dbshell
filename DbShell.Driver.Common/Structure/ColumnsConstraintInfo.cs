@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.Structure
@@ -34,6 +36,13 @@ namespace DbShell.Driver.Common.Structure
             {
                 col.AfterLoadLink(OwnerTable);
             }
+        }
+
+        public override string ToString()
+        {
+            string res = String.Format("{0}({1})", ConstraintName, Columns.Select(x => x.Name).CreateDelimitedText(","));
+            if (OwnerTable != null && OwnerTable.FullName != null) res = OwnerTable.FullName.ToString() + "." + res;
+            return res;
         }
     }
 }

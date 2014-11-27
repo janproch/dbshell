@@ -241,5 +241,12 @@ namespace DbShell.Driver.Common.Structure
                     SubName = Name,
                 };
         }
+
+        public override string ToString()
+        {
+            string res = Name;
+            if (OwnerTable != null && OwnerTable.FullName != null) res = OwnerTable.FullName.ToString() + "." + res;
+            return res;
+        }
     }
 }
