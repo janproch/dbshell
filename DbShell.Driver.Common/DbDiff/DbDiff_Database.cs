@@ -250,9 +250,9 @@ namespace DbShell.Driver.Common.DbDiff
             run.Run(proc, options);
         }
 
-        public static AlterPlan PlanAlterTable(TableInfo oldTable, TableInfo newTable, DbDiffOptions opts, DatabaseInfo targetDb)
+        public static AlterPlan PlanAlterTable(TableInfo oldTable, TableInfo newTable, DbDiffOptions opts, DatabaseInfo currentStructure)
         {
-            AlterPlan plan = new AlterPlan(targetDb);
+            AlterPlan plan = new AlterPlan(currentStructure);
             if (oldTable == null)
             {
                 plan.CreateTable(newTable);

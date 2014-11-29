@@ -349,12 +349,12 @@ namespace DbShell.Driver.Common.DbDiff
                 TransformToRecreateTable(replacement, plan);
                 return;
             }
-            if (!caps.ChangeAutoIncrement && ((ColumnInfo) OldObject).AutoIncrement != ((ColumnInfo) NewObject).AutoIncrement)
+            if (!caps.ChangeAutoIncrement && ((ColumnInfo)OldObject).AutoIncrement != ((ColumnInfo)NewObject).AutoIncrement)
             {
                 TransformToRecreateTable(replacement, plan);
                 return;
             }
-            if (!caps.ChangeComputedColumnExpression && ((ColumnInfo) NewObject).ComputedExpression != null)
+            if (!caps.ChangeComputedColumnExpression && ((ColumnInfo)NewObject).ComputedExpression != null)
             {
                 plan.RecreateObject(OldObject, NewObject);
                 replacement.Clear();
@@ -602,8 +602,8 @@ namespace DbShell.Driver.Common.DbDiff
         {
             //if (!caps[OldObject).ObjectType].Change)
             //{
-                plan.RecreateObject(OldObject, NewObject);
-                replacement.Clear();
+            plan.RecreateObject(OldObject, NewObject);
+            replacement.Clear();
             //}
         }
     }
@@ -764,39 +764,37 @@ namespace DbShell.Driver.Common.DbDiff
     {
         public DataScript Data;
 
-        //public override void TransformToImplementedOps(AlterProcessorCaps caps, DbDiffOptions opts, List<AlterOperation> replacement, AlterPlan plan)
-        //{
-        //    if (targetDb != null && !targetDb.Dialect.DialectCaps.UncheckedReferences)
-        //    {
-        //        replacement.Clear();
-        //        replacement.Add(this);
-        //        var table = (TableStructure)NewObject;
-        //        foreach (var cnt in new List<ConstraintInfo>(table.Constraints))
-        //        {
-        //            var fk = cnt as ForeignKey;
-        //            if (fk == null) continue;
-        //            table._Constraints.Remove(cnt);
-        //            fk.SetDummyTable(table.FullName);
-        //            replacement.Add(new AlterOperation_CreateConstraint
-        //            {
-        //                NewObject = fk
-        //            });
-        //        }
-        //        return;
-        //    }
-        //    base.TransformToImplementedOps(caps, opts, replacement, plan, targetDb);
-        //}
-        //public override void RunNameTransformation(INameTransformation transform)
-        //{
-        //    base.RunNameTransformation(transform);
-        //    var table = (TableStructure)NewObject;
-        //    table.RunNameTransformation(transform);
-        //}
-        //public override void Run(IAlterProcessor proc, DbDiffOptions opts)
-        //{
-        //    base.Run(proc, opts);
-        //    if (Data != null) proc.UpdateData((TableStructure)NewObject, Data, null);
-        //}
+        public override void TransformToImplementedOps(AlterProcessorCaps caps, DbDiffOptions opts, List<AlterOperation> replacement, AlterPlan plan)
+        {
+            replacement.Clear();
+            replacement.Add(this);
+            var table = (TableInfo)NewObject;
+            foreach (var fk in new List<ForeignKeyInfo>(table.ForeignKeys))
+            {
+                table.ForeignKeys.Remove(fk);
+                fk.SetDummyTable(table.FullName);
+                replacement.Add(new AlterOperation_CreateConstraint
+                {
+                    NewObject = fk
+                });
+            }
+        }
+        public override void RunNameTransformation(INameTransformation transform)
+        {
+            base.RunNameTransformation(transform);
+            var table = (TableInfo)NewObject;
+            table.RunNameTransformation(transform);
+        }
+        public override void Run(IAlterProcessor proc, DbDiffOptions opts)
+        {
+            base.Run(proc, opts);
+            if (Data != null)
+            {
+                if (Data.MainChanges != null) proc.UpdateData((TableInfo) NewObject, Data.MainChanges, null);
+                if (Data.LinkedChanges != null) proc.UpdateData(Data.LinkedChanges, null);
+            }
+        }
+
         public override void AssignFrom(AlterOperation src)
         {
             base.AssignFrom(src);

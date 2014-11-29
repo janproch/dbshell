@@ -87,6 +87,7 @@ namespace DbShell.Driver.Common.DbDiff
     public class AlterPlanBase
     {
         public readonly DatabaseInfo Structure;
+        public readonly DatabaseInfo TargetDb;
         public List<AlterOperation> Operations = new List<AlterOperation>();
         public List<RecreatedItem> RecreatedItems = new List<RecreatedItem>();
 

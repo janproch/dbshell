@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.DbDiff;
 using DbShell.Driver.Common.Structure;
 
@@ -79,6 +80,9 @@ namespace DbShell.Driver.Common.AbstractDb
 
         // generates physical recreate of table
         void RecreateTable(TableInfo src, TableInfo dst);
+
+        void UpdateData(TableInfo table, SingleTableDataScript script, LinkedDatabaseInfo linkedInfo);
+        void UpdateData(MultiTableUpdateScript script, LinkedDatabaseInfo linkedInfo);
 
         //// table operations
         ////void AlterTable(TableInfo src, TableInfo dst, out bool processed);

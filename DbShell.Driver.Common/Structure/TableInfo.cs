@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml;
 using System.Linq;
+using DbShell.Driver.Common.DbDiff;
 using DbShell.Driver.Common.Utility;
 using System;
 
@@ -274,5 +275,19 @@ namespace DbShell.Driver.Common.Structure
                 ObjectType = DatabaseObjectType.Table,
             };
         }
+
+        public void RunNameTransformation(INameTransformation nameTransform)
+        {
+            FullName = nameTransform.RenameObject(FullName, "table");
+            foreach (var col in Columns)
+            {
+                col.Name = nameTransform.RenameColumn(FullName, col.Name);
+            }
+            foreach (var cnt in Constraints)
+            {
+                cnt.ConstraintName = nameTransform.RenameConstraint(cnt);
+            }
+        }
+
     }
 }

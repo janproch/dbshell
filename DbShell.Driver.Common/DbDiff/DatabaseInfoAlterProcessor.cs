@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
 
 namespace DbShell.Driver.Common.DbDiff
@@ -299,6 +300,14 @@ namespace DbShell.Driver.Common.DbDiff
         public void RecreateTable(TableInfo src, TableInfo dst)
         {
             DbDiffTool.DecomposeAlterTable(this, src, dst, new DbDiffOptions());
+        }
+
+        public void UpdateData(TableInfo table, SingleTableDataScript script, LinkedDatabaseInfo linkedInfo)
+        {
+        }
+
+        public void UpdateData(MultiTableUpdateScript script, LinkedDatabaseInfo linkedInfo)
+        {
         }
 
         //public void ChangeColumn(ColumnInfo oldcol, ColumnInfo newcol)
