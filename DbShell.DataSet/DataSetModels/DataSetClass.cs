@@ -48,6 +48,7 @@ namespace DbShell.DataSet.DataSetModels
             foreach (var fk in _targetTable.ForeignKeys)
             {
                 if (fk.Columns.Count > 1) continue;
+                if (fk.RefTableFullName == targetTable.FullName) continue;
 
                 var target = _model.GetClass(fk.RefTableName);
                 var r = new DataSetReference
