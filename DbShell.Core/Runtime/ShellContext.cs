@@ -33,11 +33,24 @@ namespace DbShell.Core.Runtime
         // search folders
         private Dictionary<ResolveFileMode, List<string>> _additionalSearchFolders = new Dictionary<ResolveFileMode, List<string>>();
 
+        [ThreadStatic]
+        static ScriptEngine _staticEngine;
+
+        private static ScriptEngine GetEngine()
+        {
+            if (_staticEngine == null)
+            {
+                _staticEngine = Python.CreateEngine();
+            }
+            return _staticEngine;
+        }
+
         public ShellContext(ShellContext parent = null)
         {
-            if (parent==null)
+            if (parent == null)
             {
-                _engine = Python.CreateEngine();
+                //_engine = Python.CreateEngine();
+                _engine = GetEngine();
                 _scope = _engine.CreateScope();
 
                 _dbCache = new Dictionary<string, DatabaseInfo>();
@@ -48,7 +61,14 @@ namespace DbShell.Core.Runtime
 
                 _engine = _parent._engine;
                 _dbCache = _parent._dbCache;
+
+                OnOutputMessage += ShellContext_OnOutputMessage;
             }
+        }
+
+        void ShellContext_OnOutputMessage(string msg)
+        {
+            if (_parent != null) _parent.OutputMessage(msg);
         }
 
         public DatabaseInfo GetDatabaseStructure(string connectionKey)

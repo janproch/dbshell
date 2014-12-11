@@ -34,5 +34,9 @@ namespace DbShell.Driver.Sqlite
             argument(this);
             Put(") as int)");
         }
+
+        public override void ColumnDefinition(Common.Structure.ColumnInfo col, bool includeDefault, bool includeNullable, bool includeCollate)
+        {
+        }
     }
 }

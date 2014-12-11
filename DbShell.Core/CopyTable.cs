@@ -104,6 +104,7 @@ namespace DbShell.Core
             var table = source.GetRowFormat(context);
 
             _log.InfoFormat("Copy table data {0}=>{1}", Source, Target);
+            context.OutputMessage(String.Format("Copy table data {0}=>{1}", Source, Target));
 
             var targetTable = table;
             var counts = new List<int>();

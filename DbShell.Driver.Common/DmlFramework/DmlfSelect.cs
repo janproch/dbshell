@@ -184,7 +184,7 @@ namespace DbShell.Driver.Common.DmlFramework
             }
             if (LimitCount != null)
             {
-                dmp.Put(" ^limit %s,%s", Offset, LimitCount);
+                dmp.Put(" ^limit %s ^offset %s", LimitCount, Offset);
             }
         }
 

@@ -9,6 +9,11 @@ namespace DbShell.Driver.SqlServer
 {
     public class SqlServerDialect : DialectBase
     {
+        public SqlServerDialect()
+            : base(SqlServerDatabaseFactory.Instance)
+        {
+        }
+
         public override char QuoteIdentBegin
         {
             get { return '['; }
@@ -22,45 +27,6 @@ namespace DbShell.Driver.SqlServer
         public override char StringEscapeChar
         {
             get { return '\''; }
-        }
-
-        public override SqlDumperCaps DumperCaps
-        {
-            get
-            {
-                return new SqlDumperCaps
-                {
-                    AllFlags = false,
-
-                    CreateTable = true,
-                    DropTable = true,
-                    //AlterTable = true,
-                    RenameTable = true,
-                    RecreateTable = true,
-                    ChangeTableSchema = true,
-
-                    ChangeColumnType = true,
-                    RenameColumn = true,
-                    AddColumn = true,
-                    DropColumn = true,
-                    ChangeColumn = true,
-                    ChangeColumnDefaultValue = true,
-
-                    RenameConstraint = true,
-                    AddConstraint = true,
-                    DropConstraint = true,
-                    RenameIndex = true,
-                    AddIndex = true,
-                    DropIndex = true,
-
-                    CreateDatabase = true,
-                    DropDatabase = true,
-                    RenameDatabase = true,
-
-                    //SpecificCaps = new ObjectOperationCaps { AllFlags = true, Change = false },
-                    DepCaps = new AlterDependencyCaps { AllFlags = true },
-                };
-            }
         }
 
         public override Type SpecificTypeEnum

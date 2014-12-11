@@ -31,9 +31,9 @@ namespace DbShell.Driver.Common.AbstractDb
         HashSetEx<string> Keywords { get; }
         string StripComments(string content);
 
-        SqlDumperCaps DumperCaps { get; }
-        SqlDialectCaps DialectCaps { get; }
         Type SpecificTypeEnum { get; }
+
+        IDatabaseFactory Factory { get; }
 
         DbTypeBase CreateCommonType(ColumnInfo column);
     }

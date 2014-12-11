@@ -5,6 +5,11 @@ namespace DbShell.Driver.Common.AbstractDb
     public class GenericDialect : DialectBase
     {
         public static GenericDialect Instance = new GenericDialect();
+
+        protected GenericDialect()
+            : base(GenericDatabaseFactory.Instance)
+        {
+        }
     }
 
     public class GenericDatabaseFactory : DatabaseFactoryBase

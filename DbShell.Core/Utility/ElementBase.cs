@@ -60,7 +60,13 @@ namespace DbShell.Core.Utility
         protected IConnectionProvider GetConnectionProvider(IShellContext context)
         {
             string providerString = GetProviderString(context);
-            return ConnectionProvider.FromString(providerString);
+            string providerStringReplaced = context.Replace(providerString);
+            var conn = ConnectionProvider.FromString(providerStringReplaced);
+            if (conn == null)
+            {
+                throw new Exception("DBSH-00000 Connection not defined, provider string:" + providerString);
+            }
+            return conn;
         }
 
         protected string GetProviderString(IShellContext context)

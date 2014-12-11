@@ -129,5 +129,10 @@ namespace DbShell.Core
         {
             throw new NotImplementedException();
         }
+
+        public override string ToString()
+        {
+            return String.Format("[Create Table {0}]", Name);
+        }
     }
 }

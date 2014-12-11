@@ -88,7 +88,7 @@ namespace DbShell.Driver.SqlServer
             return new SqlServerTypeProvider();
         }
 
-        public override AlterProcessorCaps DumperCaps
+        public override SqlDumperCaps DumperCaps
         {
             get
             {
@@ -133,5 +133,21 @@ namespace DbShell.Driver.SqlServer
                 };
             }
         }
+
+        public override SqlDialectCaps DialectCaps
+        {
+            get
+            {
+                var res = base.DialectCaps;
+                res.MultiCommand = false;
+                res.NestedTransactions = true;
+                res.ExplicitDropConstraint = false;
+                //if (m_version.Is_2005()) res.LimitSelect = true;
+                res.Domains = true;
+                res.SupportBackup = true;
+                return res;
+            }
+        }
+
     }
 }
