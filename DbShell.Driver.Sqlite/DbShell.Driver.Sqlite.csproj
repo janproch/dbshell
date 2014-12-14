@@ -47,6 +47,7 @@
     <Compile Include="SqliteAnalyser.cs" />
     <Compile Include="SqliteDatabaseFactory.cs" />
     <Compile Include="SqliteDialect.cs" />
+    <Compile Include="SqliteLiteralFormatter.cs" />
     <Compile Include="SqliteSqlDumper.cs" />
     <Compile Include="SqliteStorage.cs" />
     <Compile Include="StorageTool.cs" />

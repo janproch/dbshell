@@ -25,7 +25,7 @@ namespace DbShell.Driver.Sqlite
 
         public override char StringEscapeChar
         {
-            get { return '\\'; }
+            get { return '\''; }
         }
     }
 }

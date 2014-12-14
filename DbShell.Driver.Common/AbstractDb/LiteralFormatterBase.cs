@@ -10,12 +10,14 @@ namespace DbShell.Driver.Common.AbstractDb
     {
         protected string m_text;
         private IDatabaseFactory _factory;
+        private ISqlDialect _dialect;
 
         #region ICdlValueWriter Members
 
         public LiteralFormatterBase(IDatabaseFactory factory)
         {
             _factory = factory;
+            _dialect = _factory.CreateDialect();
         }
 
         public virtual void SetBoolean(bool value)
@@ -111,7 +113,7 @@ namespace DbShell.Driver.Common.AbstractDb
 
         public virtual void SetString(string value)
         {
-            StringBuilder sb = new StringBuilder(value.Length + 10);
+            var sb = new StringBuilder(value.Length + 10);
             sb.Append('\'');
             EscapeString(value, sb);
             sb.Append('\'');
@@ -141,7 +143,7 @@ namespace DbShell.Driver.Common.AbstractDb
 
         public virtual void EscapeString(string value, StringBuilder sb)
         {
-            _factory.CreateDialect().EscapeString(value, sb);
+            _dialect.EscapeString(value, sb);
         }
     }
 }

@@ -33,6 +33,11 @@ namespace DbShell.Driver.Sqlite
             return new SqliteSqlDumper(stream, this, props);
         }
 
+        public override ILiteralFormatter CreateLiteralFormatter()
+        {
+            return new SqliteLiteralFormatter(this);
+        }
+
         public override ISqlDialect CreateDialect()
         {
             return new SqliteDialect();

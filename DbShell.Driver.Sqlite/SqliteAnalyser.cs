@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
 
@@ -38,6 +39,22 @@ namespace DbShell.Driver.Sqlite
                 col.Name = cname;
                 tbl.Columns.Add(col);
             }
+
+            //foreach (var table in Structure.Tables)
+            //{
+            //    if (table.PrimaryKey == null)
+            //    {
+            //        var rowid = new ColumnInfo(table);
+            //        rowid.Name = "rowid";
+            //        rowid.NotNull = true;
+            //        rowid.DataType = "int";
+            //        rowid.CommonType = new DbTypeInt();
+            //        rowid.PrimaryKey = true;
+            //        table.Columns.Insert(0, rowid);
+            //        table.PrimaryKey = new PrimaryKeyInfo(table);
+            //        table.PrimaryKey.Columns.Add(new ColumnReference { RefColumn = rowid });
+            //    }
+            //}
         }
 
         protected override void DoGetModifications()
