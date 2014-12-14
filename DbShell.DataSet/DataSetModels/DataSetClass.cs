@@ -19,6 +19,10 @@ namespace DbShell.DataSet.DataSetModels
         public string[] Columns;
         public string[] ComplexPkCols;
         public int[] ComplexPkColIndexes;
+        public string[] LookupFields;
+        public int[] LookupFieldIndexes;
+        public string SimplePkCol;
+        public int SimplePkColIndex = -1;
 
         public bool LoadMissingInstances;
         public bool KeepKey;
@@ -36,6 +40,12 @@ namespace DbShell.DataSet.DataSetModels
         public List<DataSetInstance> AllInstances = new List<DataSetInstance>();
         public Dictionary<int, DataSetInstance> InstancesByIdentity = new Dictionary<int, DataSetInstance>();
         public Dictionary<string, DataSetInstance> InstancesByComplexPk = new Dictionary<string, DataSetInstance>();
+
+        // dict old lookup value -> lookup mapping tuple
+        public Dictionary<int, string[]> LookupValues = new Dictionary<int, string[]>();
+
+        // dict old lookup value -> lookup variable (for WriteSql)
+        public Dictionary<int, int> LookupVariables = new Dictionary<int, int>();
 
         public Dictionary<string, int> ColumnOrdinals = new Dictionary<string, int>();
         public Dictionary<string, UndefinedReferenceReport> _undefinedReferences = new Dictionary<string, UndefinedReferenceReport>();
@@ -90,6 +100,11 @@ namespace DbShell.DataSet.DataSetModels
             {
                 ComplexPkColIndexes = null;
             }
+            if (_targetTable.PrimaryKey != null && _targetTable.PrimaryKey.Columns.Count == 1)
+            {
+                SimplePkCol = _targetTable.PrimaryKey.Columns[0].Name;
+                SimplePkColIndex = Array.IndexOf(Columns, SimplePkCol);
+            }
         }
 
         public string TableName
@@ -100,6 +115,11 @@ namespace DbShell.DataSet.DataSetModels
         public TableInfo Structure
         {
             get { return _targetTable; }
+        }
+
+        public bool LookupDefined
+        {
+            get { return LookupFields != null && SimplePkCol != null; }
         }
 
         public DataSetInstance AddRecord(object[] values)
@@ -173,8 +193,10 @@ namespace DbShell.DataSet.DataSetModels
         {
             foreach (var item in _undefinedReferences.Values)
             {
-                _model.Warning("DBSH-00135 Undefined reference {0}.{1}=>{2}, used {3} times, {4} different keys. Use <ds:KeepKey Table='{2}' /> to keep original values.",
-                               item.Table, item.Column, TableName, item.RefCount, item.KeyValues.Count);
+                string message = String.Format("DBSH-00135 Undefined reference {0}.{1}=>{2}, used {3} times, {4} different keys.", item.Table, item.Column, TableName, item.RefCount,
+                                               item.KeyValues.Count);
+                if (!_model.KeepUndefinedReferences) message += String.Format(" Use <ds:KeepKey Table='{0}' /> to keep original values.", TableName);
+                _model.Warning(message);
             }
         }
 

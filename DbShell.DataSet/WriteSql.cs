@@ -4,11 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using DbShell.Common;
+using DbShell.Core.Utility;
 
 namespace DbShell.DataSet
 {
     public class WriteSql : DataSetItemBase
     {
+        [XamlProperty]
         public string File { get; set; }
 
         protected override void DoRun(IShellContext context)

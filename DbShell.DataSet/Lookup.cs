@@ -7,14 +7,18 @@ using DbShell.Core.Utility;
 
 namespace DbShell.DataSet
 {
-    public class KeepKey : DataSetItemBase
+    public class Lookup : DataSetItemBase
     {
         [XamlProperty]
         public string Table { get; set; }
 
+        [XamlProperty]
+        public string Column { get; set; }
+
         protected override void DoRun(IShellContext context)
         {
-            GetModel(context).KeepKey(context.Replace(Table));
+            GetModel(context).DefineLookup(Table, new[] {Column});
         }
     }
+
 }

@@ -13,6 +13,7 @@ namespace DbShell.DataSet
         /// <summary>
         /// data set name
         /// </summary>
+        [XamlProperty]
         public string Name { get; set; }
 
         protected DataSetModel GetModel(IShellContext context)
