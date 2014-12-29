@@ -37,7 +37,7 @@ namespace DbShell.Core
             Columns = new List<XmlColumn>();
         }
 
-        DataFormatSettings ITabularDataSource.GetSourceFormat()
+        DataFormatSettings ITabularDataSource.GetSourceFormat(IShellContext context)
         {
             return null;
         }

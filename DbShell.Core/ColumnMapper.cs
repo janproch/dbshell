@@ -75,7 +75,7 @@ namespace DbShell.Core
             return new ColumnMapperReader(Source.CreateReader(context), outputFormat, ColumnMap, counts, context);
         }
 
-        DataFormatSettings ITabularDataSource.GetSourceFormat()
+        DataFormatSettings ITabularDataSource.GetSourceFormat(IShellContext context)
         {
             return null;
         }

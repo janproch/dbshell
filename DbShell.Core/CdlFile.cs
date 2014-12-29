@@ -69,7 +69,7 @@ namespace DbShell.Core
             return new CdlFileReader(table, br);
         }
 
-        DataFormatSettings ITabularDataSource.GetSourceFormat()
+        DataFormatSettings ITabularDataSource.GetSourceFormat(IShellContext context)
         {
             return null;
         }

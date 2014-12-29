@@ -25,7 +25,7 @@ namespace DbShell.Core
             get { return Driver.Sqlite.SqliteStorage.GetFromDirectory(Identifier); }
         }
 
-        DataFormatSettings ITabularDataSource.GetSourceFormat()
+        DataFormatSettings ITabularDataSource.GetSourceFormat(IShellContext context)
         {
             return null;
         }

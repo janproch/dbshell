@@ -26,6 +26,8 @@ namespace DbShell.Excel.ExcelModels
             _app.Visible = false;
         }
 
+        public DataFormatSettings DataFormat;
+
         public static ExcelModel OpenFile(string file)
         {
             var res = new ExcelModel();
@@ -89,7 +91,7 @@ namespace DbShell.Excel.ExcelModels
         public ICdlWriter CreateWriter(TableInfo rowFormat, string sheetName)
         {
             var sheet = CreateSheet(rowFormat, sheetName);
-            return new ExcelWriter(rowFormat, sheet);
+            return new ExcelWriter(rowFormat, sheet, DataFormat);
         }
 
         private TableInfo GetSheetStructure(Worksheet sheet)

@@ -168,7 +168,7 @@ namespace DbShell.Core
         [XamlProperty]
         public DataFormatSettings DataFormat { get; set; }
 
-        DataFormatSettings ITabularDataSource.GetSourceFormat()
+        DataFormatSettings ITabularDataSource.GetSourceFormat(IShellContext context)
         {
             return DataFormat;
         }

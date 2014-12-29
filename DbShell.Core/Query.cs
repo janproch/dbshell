@@ -43,7 +43,7 @@ namespace DbShell.Core
             }
         }
 
-        DataFormatSettings ITabularDataSource.GetSourceFormat()
+        DataFormatSettings ITabularDataSource.GetSourceFormat(IShellContext context)
         {
             return null;
         }

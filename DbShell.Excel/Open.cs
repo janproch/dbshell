@@ -5,6 +5,7 @@ using System.Text;
 using DbShell.Common;
 using DbShell.Core.Utility;
 using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Utility;
 using DbShell.Excel.ExcelModels;
 
@@ -18,10 +19,18 @@ namespace DbShell.Excel
         [XamlProperty]
         public string File { get; set; }
 
+        /// <summary>
+        /// data format
+        /// </summary>
+        [XamlProperty]
+        public DataFormatSettings DataFormat { get; set; }
+
         protected override void DoRun(IShellContext context)
         {
             string file = context.ResolveFile(context.Replace(File), ResolveFileMode.Input);
-            context.SetVariable(GetExcelVariableName(context), ExcelModel.OpenFile(file));
+            var model = ExcelModel.OpenFile(file);
+            model.DataFormat = DataFormat;
+            context.SetVariable(GetExcelVariableName(context), model);
         }
     }
 }

@@ -27,8 +27,6 @@ namespace DbShell.Dbf
         [XamlProperty]
         public string Name { get; set; }
 
-
-
         public bool AllowFoxProInteger { get; set; }
 
         public int DefaultStringLength { get; set; }
@@ -71,7 +69,7 @@ namespace DbShell.Dbf
             return dbf;
         }
 
-        DataFormatSettings ITabularDataSource.GetSourceFormat()
+        DataFormatSettings ITabularDataSource.GetSourceFormat(IShellContext context)
         {
             return DataFormat;
         }

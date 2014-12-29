@@ -27,6 +27,6 @@ namespace DbShell.Common
         /// gets data format of source data
         /// </summary>
         /// <returns></returns>
-        DataFormatSettings GetSourceFormat();
+        DataFormatSettings GetSourceFormat(IShellContext context);
     }
 }

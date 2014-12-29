@@ -30,9 +30,9 @@ namespace DbShell.Excel
             return false;
         }
 
-        DataFormatSettings ITabularDataSource.GetSourceFormat()
+        DataFormatSettings ITabularDataSource.GetSourceFormat(IShellContext context)
         {
-            return null;
+            return GetModel(context).DataFormat;
         }
 
         public ICdlWriter CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context, DataFormatSettings sourceDataFormat)

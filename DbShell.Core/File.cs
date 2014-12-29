@@ -24,7 +24,7 @@ namespace DbShell.Core
             return context.Replace(Name);
         }
 
-        DataFormatSettings ITabularDataSource.GetSourceFormat()
+        DataFormatSettings ITabularDataSource.GetSourceFormat(IShellContext context)
         {
             return null;
         }
