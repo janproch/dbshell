@@ -42,8 +42,11 @@ namespace DbShell.Driver.Common.AbstractDb
             if (htype.IsDateRelated() && !m_allowZeroInDate)
             {
                 var dt = holder.GetDateTimeValue();
-                dt.MakeValidDate();
-                m_holder.SetDateTimeEx(dt);
+
+                if (dt.MakeValidDate())
+                {
+                    m_holder.SetDateTimeEx(dt);
+                }
             }
         }
 
@@ -57,10 +60,15 @@ namespace DbShell.Driver.Common.AbstractDb
             }
             else
             {
-                converter.ConvertValue(reader, type.DefaultStorage, m_holder);
+                ConvertNotNullValue(reader, type, m_holder, converter);
                 ApplyTypeRestrictions(m_holder, type);
             }
             writer.ReadFrom(m_holder);
+        }
+
+        protected virtual void ConvertNotNullValue(ICdlValueReader reader, DbTypeBase type, CdlValueHolder valueHolder, ICdlValueConvertor converter)
+        {
+            converter.ConvertValue(reader, type.DefaultStorage, valueHolder);
         }
 
         public virtual ICdlReader AdaptReader(IDataReader reader)

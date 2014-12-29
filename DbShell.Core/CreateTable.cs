@@ -38,6 +38,12 @@ namespace DbShell.Core
         public bool DropIfExists { get; set; }
 
         /// <summary>
+        /// if table already exists, it is used (not created)
+        /// </summary>
+        [XamlProperty]
+        public bool UseIfExists { get; set; }
+
+        /// <summary>
         /// Name if created identity column. If given, column with type INT PRIMARY KEY IDENTITY is created
         /// </summary>
         public string IdentityColumn { get; set; }
@@ -114,8 +120,19 @@ namespace DbShell.Core
                 var so = new ConnectionSqlOutputStream(conn, null, connection.Factory.CreateDialect());
                 var dmp = connection.Factory.CreateDumper(so, new SqlFormatProperties());
                 if (DropIfExists) dmp.DropTable(tbl, true);
-                tbl.Columns.ForEach(x => x.EnsureDataType(connection.Factory.CreateSqlTypeProvider()));
-                dmp.CreateTable(tbl);
+
+                bool useExistingTable = false;
+                if (UseIfExists)
+                {
+                    var ts = context.GetDatabaseStructure(connection.ProviderString);
+                    useExistingTable = ts.FindTableLike(tbl.FullName.Schema, tbl.FullName.Name) != null;
+                }
+
+                if (!useExistingTable)
+                {
+                    tbl.Columns.ForEach(x => x.EnsureDataType(connection.Factory.CreateSqlTypeProvider()));
+                    dmp.CreateTable(tbl);
+                }
                 //using (var cmd = conn.CreateCommand())
                 //{
                 //    cmd.CommandText = sw.ToString();

@@ -596,10 +596,20 @@ namespace DbShell.Driver.Common.CommonDataLayer
             if (this >= maxval) this = maxval;
         }
 
-        public void MakeValidDate()
+        public bool MakeValidDate()
         {
-            if (m_month == 0) m_month = 1;
-            if (m_day == 0) m_day = 1;
+            bool changed = false;
+            if (m_month == 0)
+            {
+                m_month = 1;
+                changed = true;
+            }
+            if (m_day == 0)
+            {
+                m_day = 1;
+                changed = true;
+            }
+            return changed;
         }
     }
 }

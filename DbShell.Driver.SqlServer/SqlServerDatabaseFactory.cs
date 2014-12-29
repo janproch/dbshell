@@ -88,6 +88,11 @@ namespace DbShell.Driver.SqlServer
             return new SqlServerTypeProvider();
         }
 
+        public override IDialectDataAdapter CreateDataAdapter()
+        {
+            return new SqlServerDialectDataAdapter(this);
+        }
+
         public override SqlDumperCaps DumperCaps
         {
             get
