@@ -18,8 +18,9 @@ namespace DbShell.Core.Utility
         private CsvQuotingMode _qmode;
         private ICdlValueFormatter _formatter;
         private string[] _dataRecord;
+        private DataFormatSettings _dataFormat;
 
-        public CsvWriter(TextWriter stream, char delimiter, char quote, char escape, char comment, CsvQuotingMode qmode, string lineEnds)
+        public CsvWriter(TextWriter stream, char delimiter, char quote, char escape, char comment, CsvQuotingMode qmode, string lineEnds, DataFormatSettings dataFormat)
         {
             _stream = stream;
             _lineEnds = lineEnds;
@@ -28,7 +29,8 @@ namespace DbShell.Core.Utility
             _escape = escape;
             _comment = comment;
             _qmode = qmode;
-            _formatter = new CdlValueFormatter(new DataFormatSettings());
+            _dataFormat = dataFormat;
+            _formatter = new CdlValueFormatter(_dataFormat ?? new DataFormatSettings());
         }
 
         public void WriteRow(IEnumerable<string> cols)

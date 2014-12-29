@@ -11,6 +11,7 @@ using System.Globalization;
 using System.Drawing;
 using System.Collections;
 using System.Text.RegularExpressions;
+using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
 
 namespace DbShell.Driver.Common.Utility
@@ -592,7 +593,13 @@ namespace DbShell.Driver.Common.Utility
                         var elem = xml.SelectSingleNode(attr.Name ?? prop.Name) as XmlElement;
                         if (elem != null) prop.CallSet(o, NameWithSchema.LoadFromXml(elem));
                     }
-                    else if (prop.PropertyType == typeof (Dictionary<string, string>))
+                    else if (prop.PropertyType == typeof(DateTimeEx))
+                    {
+                        propHandled = true;
+                        var elem = xml.SelectSingleNode(attr.Name ?? prop.Name) as XmlElement;
+                        if (elem != null && !String.IsNullOrEmpty(elem.InnerText)) prop.CallSet(o, DateTimeEx.ParseNormalized(elem.InnerText));
+                    }
+                    else if (prop.PropertyType == typeof(Dictionary<string, string>))
                     {
                         propHandled = true;
                         var elem = xml.SelectSingleNode(attr.Name ?? prop.Name) as XmlElement;

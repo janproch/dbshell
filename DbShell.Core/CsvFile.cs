@@ -162,6 +162,17 @@ namespace DbShell.Core
             set { _trimSpaces = value; }
         }
 
+        /// <summary>
+        /// data format settings
+        /// </summary>
+        [XamlProperty]
+        public DataFormatSettings DataFormat { get; set; }
+
+        DataFormatSettings ITabularDataSource.GetSourceFormat()
+        {
+            return DataFormat;
+        }
+
         private string GetName(IShellContext context)
         {
             return context.Replace(Name);
@@ -209,13 +220,13 @@ namespace DbShell.Core
             return false;
         }
 
-        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context)
+        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context, DataFormatSettings sourceDataFormat)
         {
             string file = context.ResolveFile(GetName(context), ResolveFileMode.Output);
             context.OutputMessage("Writing file " + Path.GetFullPath(file));
             //var fs = System.IO.File.OpenWrite(file);
             var fw = new StreamWriter(file, false, Encoding);
-            var writer = new CsvWriter(fw, Delimiter, Quote, Escape, Comment, QuotingMode, EndOfLine);
+            var writer = new CsvWriter(fw, Delimiter, Quote, Escape, Comment, QuotingMode, EndOfLine, DataFormat);
             if (HasHeaders)
             {
                 writer.WriteRow(rowFormat.Columns.Select(c => c.Name));

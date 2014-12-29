@@ -25,6 +25,7 @@ namespace DbShell.Driver.Common.AbstractDb
         public CopyTableTargetOptions CopyOptions { get; set; }
         public IDatabaseFactory Factory { get; set; }
         public LinkedDatabaseInfo LinkedInfo { get; set; }
+        public DataFormatSettings SourceDataFormat { get; set; }
 
         public BulkInserterBase()
         {
@@ -36,14 +37,16 @@ namespace DbShell.Driver.Common.AbstractDb
 
         public virtual void Run(ICdlReader reader)
         {
+            var toDb = new RecordToDbAdapter(DestinationTable, Factory, SourceDataFormat ?? new DataFormatSettings());
+            var adapter = new CdlReaderToDbAdapter(toDb, reader);
             BeforeRun();
             if (CopyOptions.AllowBulkCopy)
             {
-                RunBulkCopy(reader);
+                RunBulkCopy(adapter);
             }
             else
             {
-                RunInserts(reader);
+                RunInserts(adapter);
             }
             AfterRun();
         }

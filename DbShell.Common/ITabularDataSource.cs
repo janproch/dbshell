@@ -22,5 +22,11 @@ namespace DbShell.Common
         /// </summary>
         /// <returns></returns>
         ICdlReader CreateReader(IShellContext context);
+
+        /// <summary>
+        /// gets data format of source data
+        /// </summary>
+        /// <returns></returns>
+        DataFormatSettings GetSourceFormat();
     }
 }

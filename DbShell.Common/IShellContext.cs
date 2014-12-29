@@ -7,7 +7,7 @@ using DbShell.Driver.Common.Structure;
 
 namespace DbShell.Common
 {
-    public interface IShellContext
+    public interface IShellContext : IDisposable
     {
         DatabaseInfo GetDatabaseStructure(string providerKey);
         void SetVariable(string name, object value);
@@ -38,5 +38,6 @@ namespace DbShell.Common
         string GetDefaultOutputFolder();
 
         IShellContext CreateChildContext();
+        void AddDisposableItem(IDisposable disposable);
     }
 }

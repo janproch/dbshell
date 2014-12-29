@@ -7,15 +7,12 @@ using System.Reflection;
 using System.Text;
 using System.Xml;
 using DbShell.Common;
+using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core.Utility
 {
-    [AttributeUsage(AttributeTargets.Property)]
-    public class XamlPropertyAttribute : Attribute
-    {
-    }
-
     [AttributeUsage(AttributeTargets.Class)]
     public class XamlUnfriendlyAttribute : Attribute
     {
@@ -47,6 +44,8 @@ namespace DbShell.Core.Utility
                     return "http://schemas.dbshell.com/excel";
                 case "DbMouse.Core.Xaml":
                     return "http://schemas.dbmouse.com/dbshell";
+                case "DbShell.Driver.Common.CommonDataLayer":
+                    return "http://schemas.dbshell.com/cdl";
             }
             return "clr-namespace:" + codeNs;
         }
@@ -77,6 +76,7 @@ namespace DbShell.Core.Utility
             if (type == typeof(ushort)) return o.ToString();
             if (type == typeof(uint)) return o.ToString();
             if (type == typeof(ulong)) return o.ToString();
+            if (type == typeof(DateTimeEx)) return ((DateTimeEx) o).ToStringNormalized();
 
             if (type.IsEnum) return o.ToString();
             if (o is Encoding) return ((Encoding)o).WebName;

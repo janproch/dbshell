@@ -7,6 +7,7 @@ using DbShell.Core.Utility;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core
 {
@@ -21,6 +22,11 @@ namespace DbShell.Core
         private string GetName(IShellContext context)
         {
             return context.Replace(Name);
+        }
+
+        DataFormatSettings ITabularDataSource.GetSourceFormat()
+        {
+            return null;
         }
 
         private ITabularDataSource CreateSource(IShellContext context)
@@ -58,9 +64,9 @@ namespace DbShell.Core
             return CreateTarget(context).IsAvailableRowFormat(context);
         }
 
-        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context)
+        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context, DataFormatSettings sourceDataFormat)
         {
-            return CreateTarget(context).CreateWriter(rowFormat, options, context);
+            return CreateTarget(context).CreateWriter(rowFormat, options, context, sourceDataFormat);
         }
 
         TableInfo ITabularDataTarget.GetRowFormat(IShellContext context)

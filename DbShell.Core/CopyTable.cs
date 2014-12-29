@@ -121,7 +121,7 @@ namespace DbShell.Core
 
             using (var reader = source.CreateReader(context))
             {
-                using (var writer = target.CreateWriter(targetTable, options, context))
+                using (var writer = target.CreateWriter(targetTable, options, context, source.GetSourceFormat()))
                 {
                     int rowNumber = 0;
                     while (reader.Read())

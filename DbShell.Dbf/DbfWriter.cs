@@ -13,12 +13,14 @@ namespace DbShell.Dbf
         private SocialExplorer.IO.FastDBF.DbfFile _dbf;
         private DbfRecord _orec;
         private CdlValueFormatter _formatter;
+        private DataFormatSettings _dataFormat;
 
-        public DbfWriter(SocialExplorer.IO.FastDBF.DbfFile dbf)
+        public DbfWriter(SocialExplorer.IO.FastDBF.DbfFile dbf, DataFormatSettings dataFormat)
         {
             _dbf = dbf;
             _orec = new DbfRecord(_dbf.Header);
-            _formatter = new CdlValueFormatter(new DataFormatSettings());
+            _dataFormat = dataFormat;
+            _formatter = new CdlValueFormatter(_dataFormat ?? new DataFormatSettings());
         }
 
         public event Action Disposing;

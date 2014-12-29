@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Markup;
 using DbShell.Common;
 using DbShell.Core.Utility;
+using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Utility;
 using log4net;

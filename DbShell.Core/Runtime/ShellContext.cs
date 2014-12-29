@@ -30,6 +30,8 @@ namespace DbShell.Core.Runtime
         private string _defaultConnection;
         private string _defaultOutputFolder;
 
+        private List<IDisposable> _disposableItems = new List<IDisposable>();
+
         // search folders
         private Dictionary<ResolveFileMode, List<string>> _additionalSearchFolders = new Dictionary<ResolveFileMode, List<string>>();
 
@@ -117,6 +119,8 @@ namespace DbShell.Core.Runtime
 
         public void Dispose()
         {
+            _disposableItems.ForEach(x => x.Dispose());
+            _disposableItems.Clear();
         }
 
         public object Evaluate(string expression)
@@ -160,10 +164,12 @@ namespace DbShell.Core.Runtime
                 if (runnable == null) throw new Exception(String.Format("DBSH-00059 Included file {0} doesn't contain root element implementing IRunnable", file));
                 //var shellElem = obj as IShellElement;
                 //if (shellElem != null) ShellRunner.ProcessLoadedElement(shellElem, parent, this);
-                var childContext = CreateChildContext();
-                childContext.SetExecutingFolder(Path.GetDirectoryName(file));
-                SetExecutingFolder(Path.GetDirectoryName(file));
-                runnable.Run(childContext);
+                using (var childContext = CreateChildContext())
+                {
+                    childContext.SetExecutingFolder(Path.GetDirectoryName(file));
+                    SetExecutingFolder(Path.GetDirectoryName(file));
+                    runnable.Run(childContext);
+                }
             }
         }
 
@@ -285,6 +291,11 @@ namespace DbShell.Core.Runtime
         public IShellContext CreateChildContext()
         {
             return new ShellContext(this);
+        }
+
+        public void AddDisposableItem(IDisposable disposable)
+        {
+            _disposableItems.Add(disposable);
         }
     }
 }

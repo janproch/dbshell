@@ -25,7 +25,7 @@ namespace DbShell.Core.Utility
         private IShellContext _context;
         private LinkedDatabaseInfo _linkedInfo;
 
-        public TableWriter(IShellContext context, IConnectionProvider connection, NameWithSchema name, TableInfo rowFormat, CopyTableTargetOptions options, TableInfo destinationTableOverride = null, LinkedDatabaseInfo linkedInfo = null)
+        public TableWriter(IShellContext context, IConnectionProvider connection, NameWithSchema name, TableInfo rowFormat, CopyTableTargetOptions options, TableInfo destinationTableOverride = null, LinkedDatabaseInfo linkedInfo = null, DataFormatSettings sourceDataFormat = null)
         {
             _connectionProvider = connection;
             _linkedInfo = linkedInfo;
@@ -35,6 +35,7 @@ namespace DbShell.Core.Utility
             _context = context;
 
             _inserter = connection.Factory.CreateBulkInserter();
+            _inserter.SourceDataFormat = sourceDataFormat;
             _connection = _connectionProvider.Connect();
             _inserter.Connection = _connection;
             _inserter.Factory = connection.Factory;

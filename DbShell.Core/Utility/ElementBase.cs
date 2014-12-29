@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml;
 using DbShell.Common;
+using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core.Utility
 {

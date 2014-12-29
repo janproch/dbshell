@@ -10,6 +10,7 @@ using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core
 {
@@ -81,7 +82,7 @@ namespace DbShell.Core
             throw new NotImplementedException();
         }
 
-        public ICdlWriter CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context)
+        public ICdlWriter CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context, DataFormatSettings sourceDataFormat)
         {
             var connection = GetConnectionProvider(context);
             using (var conn = connection.Connect())
@@ -121,7 +122,7 @@ namespace DbShell.Core
                 //    cmd.ExecuteNonQuery();
                 //}
 
-                return new TableWriter(context, connection, GetFullName(context), rowFormat, options, tbl, LinkedInfo);
+                return new TableWriter(context, connection, GetFullName(context), rowFormat, options, tbl, LinkedInfo, sourceDataFormat);
             }
         }
 

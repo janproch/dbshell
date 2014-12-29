@@ -29,7 +29,7 @@ namespace DbShell.Driver.Common.AbstractDb
                     return;
                 case DbTypeCode.Numeric:
                     columnInfo.DataType = "numeric";
-                    columnInfo.Length = commonType.GetLength();
+                    columnInfo.Precision = commonType.GetLength();
                     columnInfo.Scale = commonType.GetScale();
                     return;
                 case DbTypeCode.Text:

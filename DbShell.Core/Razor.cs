@@ -7,7 +7,9 @@ using System.Windows.Markup;
 using DbShell.Common;
 using DbShell.Core.RazorModels;
 using DbShell.Core.Utility;
+using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.Utility;
 using log4net;
 
 namespace DbShell.Core

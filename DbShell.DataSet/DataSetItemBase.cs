@@ -5,6 +5,8 @@ using System.Text;
 using DbShell.Common;
 using DbShell.DataSet.DataSetModels;
 using DbShell.Core.Utility;
+using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.DataSet
 {

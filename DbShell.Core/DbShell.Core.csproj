@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -49,7 +49,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -82,6 +81,7 @@
     <Compile Include="Runtime\ShellRunner.cs" />
     <Compile Include="SqlDataWriter.cs" />
     <Compile Include="SqliteStorage.cs" />
+    <Compile Include="TempFile.cs" />
     <Compile Include="Utility\ColumnMapperReader.cs" />
     <Compile Include="Utility\SqlFileWriter.cs" />
     <Compile Include="Utility\SqlProlog.cs" />
