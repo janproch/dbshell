@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.DataSet.DataSetModels
 {
@@ -55,6 +57,11 @@ namespace DbShell.DataSet.DataSetModels
         {
             _targetTable = targetTable;
             _model = model;
+        }
+
+        public ICdlReader CreateReader()
+        {
+            return new DataSetClassReader(this);
         }
 
         public void InitializeClass()
@@ -184,11 +191,12 @@ namespace DbShell.DataSet.DataSetModels
         public void ReportUndefinedReference(string tableName, string bindingColumn, int refid)
         {
             var key = tableName + "||" + bindingColumn;
-            if (!_undefinedReferences.ContainsKey(key)) _undefinedReferences[key] = new UndefinedReferenceReport
-                {
-                    Column = bindingColumn, 
-                    Table = tableName
-                };
+            if (!_undefinedReferences.ContainsKey(key))
+                _undefinedReferences[key] = new UndefinedReferenceReport
+                    {
+                        Column = bindingColumn,
+                        Table = tableName
+                    };
             _undefinedReferences[key].RefCount++;
             _undefinedReferences[key].KeyValues.Add(refid);
         }
@@ -232,6 +240,48 @@ namespace DbShell.DataSet.DataSetModels
             var refValues = _model.GetAllReferences(this);
             foreach (int id in InstancesByIdentity.Keys) refValues.Remove(id);
             return refValues;
+        }
+    }
+
+    public class DataSetClassReader : ArrayDataRecord, ICdlReader
+    {
+        private DataSetClass _cls;
+        private int _rowIndex = -1;
+
+        public DataSetClassReader(DataSetClass cls)
+            : base(cls.TargetTable)
+        {
+            _cls = cls;
+        }
+
+        public void Dispose()
+        {
+            if (Disposing != null)
+            {
+                Disposing();
+                Disposing = null;
+            }
+        }
+
+        public event Action Disposing;
+
+        public bool Read()
+        {
+            _rowIndex++;
+            if (_rowIndex < _cls.AllInstances.Count)
+            {
+                for (int i = 0; i < _values.Length; i++)
+                {
+                    _values[i] = _cls.AllInstances[_rowIndex].Values[i];
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public bool NextResult()
+        {
+            return false;
         }
     }
 }
