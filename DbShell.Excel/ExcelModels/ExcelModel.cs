@@ -98,10 +98,17 @@ namespace DbShell.Excel.ExcelModels
         {
             var res = new TableInfo(null);
             var range = sheet.UsedRange.Columns;
+            var usedNames = new HashSet<string>();
+            for (int i = 1; i <= range.Count; i++)
+            {
+                usedNames.Add("column_" + i);
+            }
             for (int i = 1; i <= range.Count; i++)
             {
                 object value = ((Range) range.Cells[1, i]).Value2;
                 string name = value.SafeToString();
+                if (String.IsNullOrEmpty(name) || usedNames.Contains(name)) name = "column_" + i;
+                usedNames.Add(name);
                 res.Columns.Add(new ColumnInfo(res) {CommonType = new DbTypeString(), DataType = "nvarchar", Length = -1, Name = name});
 
             }

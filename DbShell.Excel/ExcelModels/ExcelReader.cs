@@ -15,6 +15,8 @@ namespace DbShell.Excel.ExcelModels
         private string[] _array;
         private int _rowIndex = 2;
         private Range _usedRange;
+        private object[,] _usedData;
+        private int _rowCount;
 
         public ExcelReader(TableInfo structure, Worksheet worksheet)
             : base(structure)
@@ -26,13 +28,19 @@ namespace DbShell.Excel.ExcelModels
 
         public bool Read()
         {
-            if (_rowIndex > _usedRange.Rows.Count)
+            if (_usedData == null)
+            {
+                _usedData = _usedRange.Value2;
+                _rowCount = _usedRange.Rows.Count;
+            }
+            if (_rowIndex > _rowCount)
             {
                 return false;
             }
             for (int i = 1; i <= _array.Length; i++)
             {
-                object value = ((Range) _usedRange.Cells[_rowIndex, i]).Value2;
+                //object value = ((Range) _usedRange.Cells[_rowIndex, i]).Value2;
+                object value = _usedData[_rowIndex, i];
                 string svalue = value.SafeToString();
                 _values[i - 1] = svalue;
             }

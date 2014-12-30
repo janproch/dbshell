@@ -213,14 +213,14 @@ namespace DbShell.Core
         ICdlReader ITabularDataSource.CreateReader(IShellContext context)
         {
             var reader = CreateCsvReader(context);
-            return new CsvReader(GetStructure(reader), reader);
+            return new CsvReader(GetStructure(reader), reader, DataFormat);
         }
 
         // ignores File attribute and creates buffer reader
         public CsvReader CreateBufferCsvReader(TextReader textReader)
         {
             var reader = CreateCsvReader(textReader);
-            return new CsvReader(GetStructure(reader), reader);
+            return new CsvReader(GetStructure(reader), reader, DataFormat);
         }
 
         bool ITabularDataTarget.IsAvailableRowFormat(IShellContext context)

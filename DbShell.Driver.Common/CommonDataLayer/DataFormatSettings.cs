@@ -242,5 +242,11 @@ namespace DbShell.Driver.Common.CommonDataLayer
             else if (type == TypeStorage.Boolean) writer.SetBoolean(m_defautlLogical);
             else writer.SetNull();
         }
+
+        public bool IsNullString(string s)
+        {
+            if (s == null) return true;
+            return m_nullValues.Contains(s.Trim());
+        }
     }
 }
