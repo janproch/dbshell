@@ -168,6 +168,12 @@ namespace DbShell.Core
         [XamlProperty]
         public DataFormatSettings DataFormat { get; set; }
 
+        /// <summary>
+        /// delimiter will be autodetected
+        /// </summary>
+        [XamlProperty]
+        public bool AutoDetectDelimiter { get; set; }
+
         DataFormatSettings ITabularDataSource.GetSourceFormat(IShellContext context)
         {
             return DataFormat;
@@ -183,12 +189,14 @@ namespace DbShell.Core
             string name = GetName(context);
             name = context.ResolveFile(name, ResolveFileMode.Input);
             var textReader = new StreamReader(name, Encoding);
-            return CreateCsvReader(textReader);
+            return CreateCsvReader(textReader, name);
         }
 
-        private LumenWorks.Framework.IO.Csv.CsvReader CreateCsvReader(TextReader textReader)
+        private LumenWorks.Framework.IO.Csv.CsvReader CreateCsvReader(TextReader textReader, string file = null)
         {
-            var reader = new LumenWorks.Framework.IO.Csv.CsvReader(textReader, HasHeaders, Delimiter, Quote, Escape, Comment,
+            char delim = Delimiter;
+            if (file != null && AutoDetectDelimiter) delim = DetectDelimiter(file);
+            var reader = new LumenWorks.Framework.IO.Csv.CsvReader(textReader, HasHeaders, delim, Quote, Escape, Comment,
                                                                    TrimSpaces ? LumenWorks.Framework.IO.Csv.ValueTrimmingOptions.UnquotedOnly : LumenWorks.Framework.IO.Csv.ValueTrimmingOptions.None);
             reader.DefaultParseErrorAction = ParseErrorAction.AdvanceToNextLine;
             return reader;
@@ -254,6 +262,35 @@ namespace DbShell.Core
             return res;
         }
 
+        public char DetectDelimiter(IShellContext context)
+        {
+            string name = GetName(context);
+            name = context.ResolveFile(name, ResolveFileMode.Input);
+            return DetectDelimiter(name);
+        }
+
+        private char DetectDelimiter(string file)
+        {
+            var counts = new Dictionary<char, List<int>>();
+            counts[','] = new List<int>();
+            counts[';'] = new List<int>();
+            counts['\t'] = new List<int>();
+
+            using (var reader = new StreamReader(file, Encoding))
+            {
+                for (int i = 0; i < 100; i++)
+                {
+                    string line = reader.ReadLine();
+                    if (line == null) break;
+                    foreach (var item in counts)
+                    {
+                        item.Value.Add(line.Count(x => x == item.Key));
+                    }
+                }
+            }
+
+            return counts.MaxKey(x => x.Value.Sum()).Key;
+        }
 
         TableInfo ITabularDataTarget.GetRowFormat(IShellContext context)
         {
