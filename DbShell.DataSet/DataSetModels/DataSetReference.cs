@@ -11,6 +11,6 @@ namespace DbShell.DataSet.DataSetModels
         public DataSetClass ReferencedClass;
         public string BindingColumn;
         public bool Mandatory;
-        public bool Load;
+        //public bool Load;
     }
 }

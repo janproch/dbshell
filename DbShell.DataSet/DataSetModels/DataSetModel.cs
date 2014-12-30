@@ -27,6 +27,8 @@ namespace DbShell.DataSet.DataSetModels
         private IDialectDataAdapter _dda;
         private List<LoadReferencesDefinition> _loadRefDefs = new List<LoadReferencesDefinition>();
         public bool KeepUndefinedReferences = false;
+        private bool _loadingStopped;
+        private bool _loadAllMissing;
 
         public DataSetModel(DatabaseInfo targetDatabase, IShellContext context, IDatabaseFactory factory)
         {
@@ -44,6 +46,7 @@ namespace DbShell.DataSet.DataSetModels
             if (tbl == null) throw new Exception("DBSH-00120 Unknown target table in data set:" + name);
             var cls = new DataSetClass(this, tbl);
             Classes[name] = cls;
+            cls.InitializeClass();
             return cls;
         }
 
@@ -65,6 +68,7 @@ namespace DbShell.DataSet.DataSetModels
 
             while (reader.Read())
             {
+                if (_loadingStopped) return loaded;
                 object[] newValues = new object[map.Length];
                 for (int i = 0; i < map.Length; i++)
                 {
@@ -212,10 +216,32 @@ namespace DbShell.DataSet.DataSetModels
             return refValues;
         }
 
+        public DataSetModel CloneData()
+        {
+            CheckUnprepared("Clone");
+            var res = new DataSetModel(_targetDatabase, _context, _factory);
+
+            foreach(var cls in Classes)
+            {
+                res.Classes[cls.Key] = new DataSetClass(res, cls.Value.TargetTable);
+            }
+            foreach(var cls in res.Classes)
+            {
+                cls.Value.InitializeClass();
+            }
+            foreach (var cls in Classes)
+            {
+                foreach (var instance in cls.Value.AllInstances)
+                {
+                    res.Classes[cls.Key].AddRecord(instance.Values);
+                }
+            }
+            return res;
+        }
+
         public void LoadReference(string table, string column, string reftable)
         {
-            CheckUnprepared("LoadReference");
-            _loadRefDefs.Add(
+            LoadReference(
                 new LoadReferencesDefinition
                     {
                         Column = column,
@@ -224,20 +250,62 @@ namespace DbShell.DataSet.DataSetModels
                     });
         }
 
-        public void Prepare(DbConnection conn)
+        public void LoadReference(LoadReferencesDefinition refDef)
         {
-            if (_prepared) throw new Exception("DBSH-00124 DataSet is already prepared");
-            _prepared = true;
+            CheckUnprepared("LoadReference");
+            _loadRefDefs.Add(refDef);
+        }
 
+        public List<LoadReferencesDefinition> GetAvailableReferences()
+        {
+            var res = new List<LoadReferencesDefinition>();
+            foreach (var cls in Classes.Values.ToList())
+            {
+                if (cls.SimplePkCol == null) continue;
+                if (!cls.AllInstances.Any()) continue;
+                foreach (var fk in cls.Structure.GetReferences())
+                {
+                    var rcls = GetClass(fk.OwnerTable.Name);
+                    foreach (var refref in rcls.References)
+                    {
+                        if (refref.ReferencedClass != cls) continue;
+                        res.Add(new LoadReferencesDefinition
+                            {
+                                Column = refref.BindingColumn,
+                                Table = rcls.TableName,
+                                RefTable = cls.TableName,
+                            });
+                    }
+                }
+            }
+            return res;
+        }
+
+        public void LoadMarkedData(DbConnection conn)
+        {
+            CheckUnprepared("LoadMarkedData");
+
+            foreach (var cls in Classes.Values)
+            {
+                foreach (string cond in cls.AddRowsRequests)
+                {
+                    if (_loadingStopped) return;
+                    DoAddRows(conn, cls.TableName, cond);
+                }
+                cls.AddRowsRequests.Clear();
+            }
+
+            var loadedRefs = new HashSet<DataSetReference>();
             foreach (var loadRef in _loadRefDefs)
             {
+                if (_loadingStopped) return;
                 var x = GetClass(loadRef.Table);
                 var r = x.FindReference(loadRef.Column, loadRef.RefTable);
                 if (r == null)
                 {
                     throw new Exception(String.Format("Undefined reference from {0}.{1}=>{2}", loadRef.Table, loadRef.Column, loadRef.RefTable));
                 }
-                r.Load = true;
+                loadedRefs.Add(r);
             }
 
             int maxSteps = 5;
@@ -248,20 +316,32 @@ namespace DbShell.DataSet.DataSetModels
                 {
                     foreach (var r in cls.References)
                     {
-                        if (!r.Load) continue;
+                        if (_loadingStopped) return;
+                        if (!loadedRefs.Contains(r)) continue;
                         anyLoaded |= DoLoadReferences(conn, r) > 0;
                     }
                 }
 
                 foreach (var cls in Classes.Values)
                 {
-                    if (!cls.LoadMissingInstances) continue;
+                    if (_loadingStopped) return;
+                    if (!cls.LoadMissingInstances && !_loadAllMissing) continue;
                     /// load missing identity entities
                     anyLoaded |= LoadMissing(conn, cls) > 0;
                 }
 
                 if (!anyLoaded) break;
             }
+        }
+
+        public void Prepare(DbConnection conn)
+        {
+            if (_prepared) throw new Exception("DBSH-00124 DataSet is already prepared");
+
+            LoadMarkedData(conn);
+
+            _prepared = true;
+
             foreach (var cls in Classes.Values)
             {
                 if (!cls.LookupDefined) continue;
@@ -354,11 +434,10 @@ namespace DbShell.DataSet.DataSetModels
 
         private int LoadMissing(DbConnection conn, DataSetClass cls)
         {
-            var refValues = GetAllReferences(cls);
-            foreach (int id in cls.InstancesByIdentity.Keys) refValues.Remove(id);
+            var refValues = cls.GetMissingKeys();
             if (refValues.Count == 0) return 0;
             var sb = new StringBuilder();
-            sb.AppendFormat("select * from [{0}] where [{1}] in (", cls.TableName, cls.IdentityColumn);
+            sb.AppendFormat("select * from [{0}] where [{1}] in (", cls.TableName, cls.SimplePkCol);
             bool was = false;
             foreach (int id in refValues)
             {
@@ -675,9 +754,22 @@ namespace DbShell.DataSet.DataSetModels
             return refobj;
         }
 
-        public void AddRows(DbConnection conn, string table, string condition)
+        public void AddRows(string table, string condition)
         {
             CheckUnprepared("AddRows");
+            var cls = GetClass(table);
+            cls.AddRowsRequests.Add(condition);
+        }
+
+        public void AddRowsByPk(string table, string[] pks)
+        {
+            var cls = GetClass(table);
+            AddRows(table, 
+                "[" + cls.Structure.PrimaryKey.Columns[0].Name + "] in (" + pks.Select(x => "'" + x + "'").CreateDelimitedText(",") + ")");
+        }
+
+        private void DoAddRows(DbConnection conn, string table, string condition)
+        {
             using (var cmd = conn.CreateCommand())
             {
                 var sb = new StringBuilder();
@@ -750,6 +842,16 @@ namespace DbShell.DataSet.DataSetModels
                 }
                 tran.Commit();
             }
+        }
+
+        public void StopLoading()
+        {
+            _loadingStopped = true;
+        }
+
+        public void LoadAllMissing()
+        {
+            _loadAllMissing = true;
         }
     }
 }

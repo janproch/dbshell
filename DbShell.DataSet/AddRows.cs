@@ -18,10 +18,7 @@ namespace DbShell.DataSet
 
         protected override void DoRun(IShellContext context)
         {
-            using (var conn = GetConnectionProvider(context).Connect())
-            {
-                GetModel(context).AddRows(conn, context.Replace(Table), context.Replace(Condition));
-            }
+            GetModel(context).AddRows(context.Replace(Table), context.Replace(Condition));
         }
     }
 }

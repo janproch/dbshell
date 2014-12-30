@@ -49,12 +49,16 @@ namespace DbShell.DataSet.DataSetModels
 
         public Dictionary<string, int> ColumnOrdinals = new Dictionary<string, int>();
         public Dictionary<string, UndefinedReferenceReport> _undefinedReferences = new Dictionary<string, UndefinedReferenceReport>();
+        public List<string> AddRowsRequests = new List<string>();
 
         public DataSetClass(DataSetModel model, TableInfo targetTable)
         {
             _targetTable = targetTable;
             _model = model;
+        }
 
+        public void InitializeClass()
+        {
             foreach (var fk in _targetTable.ForeignKeys)
             {
                 if (fk.Columns.Count > 1) continue;
@@ -77,7 +81,7 @@ namespace DbShell.DataSet.DataSetModels
                 IdentityColumn = autoInc.Name;
                 IdentityColumnOrdinal = _targetTable.Columns.IndexOf(autoInc);
             }
-            Columns = _targetTable.Columns.Where(c=>c.ComputedExpression == null).Select(c => c.Name).ToArray();
+            Columns = _targetTable.Columns.Where(c => c.ComputedExpression == null).Select(c => c.Name).ToArray();
 
             for (int i = 0; i < _targetTable.ColumnCount; i++)
             {
@@ -204,6 +208,30 @@ namespace DbShell.DataSet.DataSetModels
         {
             if (AllInstances.Count == 0) return;
             _model.Info("DBSH-00136 Table {0}: loaded {1} rows", TableName, AllInstances.Count);
+        }
+
+        public DataSetModel Model
+        {
+            get { return _model; }
+        }
+
+        public TableInfo TargetTable
+        {
+            get { return _targetTable; }
+        }
+
+        public void RemoveAllRows()
+        {
+            AllInstances.Clear();
+            InstancesByComplexPk.Clear();
+            InstancesByIdentity.Clear();
+        }
+
+        public HashSet<int> GetMissingKeys()
+        {
+            var refValues = _model.GetAllReferences(this);
+            foreach (int id in InstancesByIdentity.Keys) refValues.Remove(id);
+            return refValues;
         }
     }
 }
