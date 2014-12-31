@@ -88,7 +88,7 @@ namespace DbShell.DataSet.DataSetModels
                 IdentityColumn = autoInc.Name;
                 IdentityColumnOrdinal = _targetTable.Columns.IndexOf(autoInc);
             }
-            Columns = _targetTable.Columns.Where(c => c.ComputedExpression == null).Select(c => c.Name).ToArray();
+            Columns = _targetTable.Columns.Select(c => c.Name).ToArray();
 
             for (int i = 0; i < _targetTable.ColumnCount; i++)
             {

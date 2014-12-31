@@ -56,7 +56,7 @@ namespace DbShell.DataSet.DataSetModels
             var ts = reader.Structure;
             var cls = GetClass(targetTable);
 
-            var cols = cls.Structure.Columns.Where(x => x.ComputedExpression == null).ToList();
+            var cols = cls.Structure.Columns.ToList();
 
             int[] map = new int[cols.Count];
 
@@ -599,6 +599,7 @@ namespace DbShell.DataSet.DataSetModels
             for (int i = 0; i < inst.Class.Columns.Length; i++)
             {
                 if (inst.Class.Columns[i] == inst.Class.IdentityColumn) continue;
+                if (inst.Class.TargetTable.Columns[i].ComputedExpression != null) continue;
                 if (was) sdw.Write(",");
                 var r = inst.Class.GetReference(i);
                 //var fr = inst.Class.GetFulltextReference(i);
@@ -625,8 +626,12 @@ namespace DbShell.DataSet.DataSetModels
                     {
                         if (r.ReferencedClass.IdentityColumn == null)
                         {
-                            throw new Exception(String.Format("DBSH-00125 Lookup or target identity must be defined on table {0} because of reference from {1}", r.ReferencedClass.TableName,
-                                                              r.BaseClass.TableName));
+                            int ord = r.BaseClass.ColumnOrdinals[r.BindingColumn];
+                            if (r.BaseClass.AllInstances.Select(x => x.Values[ord]).Any(x => x != null))
+                            {
+                                throw new Exception(String.Format("DBSH-00125 Lookup or target identity must be defined on table {0} because of reference from {1}", r.ReferencedClass.TableName,
+                                                                  r.BaseClass.TableName));
+                            }
                         }
                         if (r.Mandatory)
                         {
@@ -719,6 +724,7 @@ namespace DbShell.DataSet.DataSetModels
             for (int i = 0; i < cls.Columns.Length; i++)
             {
                 if (cls.Columns[i] == cls.IdentityColumn) continue;
+                if (cls.TargetTable.Columns[i].ComputedExpression != null) continue;
                 if (was) sb.Append(",");
                 sb.AppendFormat("[{0}]", cls.Columns[i]);
                 was = true;

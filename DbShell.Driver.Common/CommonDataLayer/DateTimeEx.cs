@@ -542,7 +542,14 @@ namespace DbShell.Driver.Common.CommonDataLayer
         {
             if (Nanosecond != 0)
             {
-                return ToString("yyyy-MM-ddTHH:mm:ss.fffffff", DateTimeFormatInfo.InvariantInfo);
+                if (_Millisecond * 1000000 != Nanosecond)
+                {
+                    return ToString("yyyy-MM-ddTHH:mm:ss.fffffff", DateTimeFormatInfo.InvariantInfo);
+                }
+                else
+                {
+                    return ToString("yyyy-MM-ddTHH:mm:ss.fff", DateTimeFormatInfo.InvariantInfo);
+                }
             }
             else
             {
