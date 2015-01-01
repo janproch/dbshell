@@ -287,6 +287,13 @@ namespace DbShell.DataSet.DataSetModels
 
             foreach (var cls in Classes.Values)
             {
+                if (cls.RequiredPks.Any())
+                {
+                    string cond = "[" + cls.Structure.PrimaryKey.Columns[0].Name + "] in (" + cls.RequiredPks.Select(x => "'" + x + "'").CreateDelimitedText(",") + ")";
+                    DoAddRows(conn, cls.TableName, cond);
+                    cls.RequiredPks.Clear();
+                }
+
                 foreach (string cond in cls.AddRowsRequests)
                 {
                     if (_loadingStopped) return;
@@ -767,11 +774,13 @@ namespace DbShell.DataSet.DataSetModels
             cls.AddRowsRequests.Add(condition);
         }
 
-        public void AddRowsByPk(string table, string[] pks)
+        public void AddRowsByPk(string table, params string[] pks)
         {
             var cls = GetClass(table);
-            AddRows(table, 
-                "[" + cls.Structure.PrimaryKey.Columns[0].Name + "] in (" + pks.Select(x => "'" + x + "'").CreateDelimitedText(",") + ")");
+            foreach(string pk in pks)
+            {
+                cls.RequiredPks.Add(pk);
+            }
         }
 
         private void DoAddRows(DbConnection conn, string table, string condition)

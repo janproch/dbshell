@@ -52,6 +52,7 @@ namespace DbShell.DataSet.DataSetModels
         public Dictionary<string, int> ColumnOrdinals = new Dictionary<string, int>();
         public Dictionary<string, UndefinedReferenceReport> _undefinedReferences = new Dictionary<string, UndefinedReferenceReport>();
         public List<string> AddRowsRequests = new List<string>();
+        public HashSet<string> RequiredPks = new HashSet<string>();
 
         public DataSetClass(DataSetModel model, TableInfo targetTable)
         {

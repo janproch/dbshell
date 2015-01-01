@@ -205,5 +205,10 @@ namespace DbShell.Driver.Common.FilterParser
             }
             return sb.ToString();
         }
+
+        public static string GetTrasformExpression(FilterLineTransformation tran, string lines)
+        {
+            return LineTransformPrefix + tran.ToString() + "\n" + lines;
+        }
     }
 }

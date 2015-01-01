@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Data.Common;
@@ -88,6 +89,23 @@ namespace DbShell.Driver.Common.Utility
                 if (cmd.Connection != null) cmd.Connection.FillInfo(err.Data);
                 throw;
             }
+        }
+
+        public static List<string> ExecuteStringVector(this DbConnection conn, string sql)
+        {
+            var res = new List<string>();
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = sql;
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        res.Add(reader.IsDBNull(0) ? null : reader[0].SafeToString());
+                    }
+                }
+            }
+            return res;
         }
 
         public static void ExecuteNonQuery(this DbConnection conn, string sql)
