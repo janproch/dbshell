@@ -363,9 +363,9 @@ namespace DbShell.DataSet.DataSetModels
                 var refs = GetAllReferences(cls);
                 foreach (int refid in refs)
                 {
-                    if (cls.InstancesByIdentity.ContainsKey(refid))
+                    if (cls.InstancesBySimpleKey.ContainsKey(refid))
                     {
-                        cls.InstancesByIdentity[refid].IsReferenced = true;
+                        cls.InstancesBySimpleKey[refid].IsReferenced = true;
                     }
                 }
             }
@@ -748,7 +748,7 @@ namespace DbShell.DataSet.DataSetModels
         public DataSetInstance GetReferenceInstance(string srefid, DataSetClass baseClass, DataSetClass referencedClass, string bindingColumn)
         {
             int refid = Int32.Parse(srefid);
-            if (!referencedClass.InstancesByIdentity.ContainsKey(refid))
+            if (!referencedClass.InstancesBySimpleKey.ContainsKey(refid))
             {
                 referencedClass.ReportUndefinedReference(baseClass.TableName, bindingColumn, refid);
                 //if (UndefinedReference != null)

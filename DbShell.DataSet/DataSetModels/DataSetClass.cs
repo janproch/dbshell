@@ -40,7 +40,7 @@ namespace DbShell.DataSet.DataSetModels
 
         public List<DataSetReference> References = new List<DataSetReference>();
         public List<DataSetInstance> AllInstances = new List<DataSetInstance>();
-        public Dictionary<int, DataSetInstance> InstancesByIdentity = new Dictionary<int, DataSetInstance>();
+        public Dictionary<int, DataSetInstance> InstancesBySimpleKey = new Dictionary<int, DataSetInstance>();
         public Dictionary<string, DataSetInstance> InstancesByComplexPk = new Dictionary<string, DataSetInstance>();
 
         // dict old lookup value -> lookup mapping tuple
@@ -138,10 +138,10 @@ namespace DbShell.DataSet.DataSetModels
         {
             var ent = new DataSetInstance(this, values);
 
-            if (IdentityColumnOrdinal >= 0)
+            if (SimplePkColIndex >= 0)
             {
-                if (InstancesByIdentity.ContainsKey(ent.IdentityValue)) return null;
-                InstancesByIdentity[ent.IdentityValue] = ent;
+                if (InstancesBySimpleKey.ContainsKey(ent.SimpleKeyValue)) return null;
+                InstancesBySimpleKey[ent.SimpleKeyValue] = ent;
             }
             if (ComplexPkColIndexes != null)
             {
@@ -172,7 +172,7 @@ namespace DbShell.DataSet.DataSetModels
         public DataSetInstance GetInstanceByIdentity(int id)
         {
             DataSetInstance res;
-            if (InstancesByIdentity.TryGetValue(id, out res)) return res;
+            if (InstancesBySimpleKey.TryGetValue(id, out res)) return res;
             return null;
         }
 
@@ -233,13 +233,13 @@ namespace DbShell.DataSet.DataSetModels
         {
             AllInstances.Clear();
             InstancesByComplexPk.Clear();
-            InstancesByIdentity.Clear();
+            InstancesBySimpleKey.Clear();
         }
 
         public HashSet<int> GetMissingKeys()
         {
             var refValues = _model.GetAllReferences(this);
-            foreach (int id in InstancesByIdentity.Keys) refValues.Remove(id);
+            foreach (int id in InstancesBySimpleKey.Keys) refValues.Remove(id);
             return refValues;
         }
     }
