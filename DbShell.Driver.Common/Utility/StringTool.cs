@@ -426,5 +426,10 @@ namespace DbShell.Driver.Common.Utility
         {
             return DateTimeToIsoStringExact(value).Replace("T", " ");
         }
+
+        public static string DateTimeToStringMinutes(DateTime value)
+        {
+            return value.ToString("yyyy-MM-dd HH:mm");
+        }
     }
 }

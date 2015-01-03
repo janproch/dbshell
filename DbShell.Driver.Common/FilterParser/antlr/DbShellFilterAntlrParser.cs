@@ -357,13 +357,13 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
         var m2 = Regex.Match(term, @"(\d?\d)\.(\d?\d)\.(\d\d\d\d)?");
         if (m2.Success)
         {
-            isYear = !String.IsNullOrEmpty(m1.Groups[3].Value);
+            isYear = !String.IsNullOrEmpty(m2.Groups[3].Value);
             return new DateTime(isYear ? Int32.Parse(m2.Groups[3].Value) : DateTime.Now.Year, Int32.Parse(m2.Groups[2].Value), Int32.Parse(m2.Groups[1].Value));
         }
-        var m3 = Regex.Match(term, @"(\d?\d)\/(\d?\d)(\/\d\d\d\d)?");
+        var m3 = Regex.Match(term, @"(\d?\d)\/(\d?\d)\/(\d\d\d\d)?");
         if (m3.Success)
         {
-            isYear = !String.IsNullOrEmpty(m1.Groups[3].Value);
+            isYear = !String.IsNullOrEmpty(m3.Groups[3].Value);
             return new DateTime(isYear ? Int32.Parse(m3.Groups[3].Value) : DateTime.Now.Year, Int32.Parse(m3.Groups[1].Value), Int32.Parse(m3.Groups[2].Value));
         }
         isYear = true;
