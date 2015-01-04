@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Common;
 using System.IO;
 using System.Linq;
@@ -74,7 +75,7 @@ namespace DbShell.Core
         public int Timeout { get; set; }
 
         /// <summary>
-        /// list of files for load
+        /// list of files
         /// </summary>
         [XamlProperty]
         public string[] Files { get; set; }
@@ -82,6 +83,7 @@ namespace DbShell.Core
         /// <summary>
         /// file encoding
         /// </summary>
+        [TypeConverter(typeof(EncodingTypeConverter))]
         [XamlProperty]
         public Encoding FileEncoding { get; set; }
 

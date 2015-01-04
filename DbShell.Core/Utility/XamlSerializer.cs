@@ -96,7 +96,20 @@ namespace DbShell.Core.Utility
                 if (!prop.GetCustomAttributes(typeof (XamlPropertyAttribute), true).Any()) continue;
                 object value = prop.CallGet(o);
                 if (value == null) continue;
-                if (!(value is string) && value is IEnumerable && !(value is DbShell.Core.Utility.ElementBase))
+                if (value is string[])
+                {
+                    var propElem = _doc.CreateElement(tname + "." + prop.Name, tns);
+                    root.AppendChild(propElem);
+                    //var arrayElem = _doc.CreateElement("Array", "http://schemas.microsoft.com/winfx/2006/xaml");
+                    //propElem.AppendChild(arrayElem);
+                    foreach (string item in (string[])value)
+                    {
+                        var itemElem = _doc.CreateElement("String", "clr-namespace:System;assembly=mscorlib");
+                        itemElem.InnerText = item;
+                        propElem.AppendChild(itemElem);
+                    }
+                }
+                else if (!(value is string) && value is IEnumerable && !(value is DbShell.Core.Utility.ElementBase))
                 {
                     if (value.GetType().GetCustomAttributes(typeof(XamlUnfriendlyAttribute), true).Any())
                     {
