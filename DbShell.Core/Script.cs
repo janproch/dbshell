@@ -73,9 +73,22 @@ namespace DbShell.Core
         [XamlProperty]
         public int Timeout { get; set; }
 
+        /// <summary>
+        /// list of files for load
+        /// </summary>
+        [XamlProperty]
+        public string[] Files { get; set; }
+
+        /// <summary>
+        /// file encoding
+        /// </summary>
+        [XamlProperty]
+        public Encoding FileEncoding { get; set; }
+
         public Script()
         {
             Timeout = 3600;
+            FileEncoding = Encoding.UTF8;
         }
 
         private void RunScript(TextReader reader, DbConnection conn, DbTransaction tran, bool replace, bool logEachQuery, bool logCount, IShellContext context)
@@ -110,7 +123,7 @@ namespace DbShell.Core
         protected override void DoRun(IShellContext context)
         {
             if (File != null && Command != null) throw new Exception("DBSH-00060 Both Script.File and Script.Command properties are set");
-            if (File == null && Command == null) throw new Exception("DBSH-00061 None of Script.File and Script.Command properties are set");
+            if (File == null && Command == null && Files == null) throw new Exception("DBSH-00061 None of Script.File and Script.Command and Script.Files properties are set");
 
             var connection = GetConnectionProvider(context);
             using (var conn = connection.Connect())
@@ -118,7 +131,11 @@ namespace DbShell.Core
                 DbTransaction tran = null;
                 try
                 {
-                    if (UseTransactions) tran = conn.BeginTransaction();
+                    if (UseTransactions)
+                    {
+                        context.OutputMessage("Opening transaction");
+                        tran = conn.BeginTransaction();
+                    }
 
                     // execute inline command
                     if (Command != null)
@@ -130,20 +147,48 @@ namespace DbShell.Core
                     if (File != null)
                     {
                         string fn = context.ResolveFile(File, ResolveFileMode.Input);
-                        using (var reader = new StreamReader(fn))
+                        using (var reader = new StreamReader(fn, FileEncoding))
                         {
                             _log.InfoFormat("DBSH-00067 Executing SQL file {0}", fn);
+                            context.OutputMessage(String.Format("Executing SQL file {0}", fn));
                             RunScript(reader, conn, tran, UseReplacements == true, false, true, context);
                         }
                     }
+                    if (Files != null)
+                    {
+                        foreach (string file in Files)
+                        {
+                            string fn = context.ResolveFile(file, ResolveFileMode.Input);
+                            using (var reader = new StreamReader(fn, FileEncoding))
+                            {
+                                _log.InfoFormat("DBSH-00000 Executing SQL file {0}", fn);
+                                context.OutputMessage(String.Format("Executing SQL file {0}", fn));
+                                RunScript(reader, conn, tran, UseReplacements == true, false, true, context);
+                            }
+                        }
+                    }
+
                     if (tran != null)
                     {
+                        context.OutputMessage("Commiting transaction");
                         tran.Commit();
                     }
                 }
+                catch
+                {
+                    if (tran != null)
+                    {
+                        context.OutputMessage("Rollbacking transaction");
+                        tran.Rollback();
+                    }
+                    throw;
+                }
                 finally
                 {
-                    if (tran != null) tran.Dispose();
+                    if (tran != null)
+                    {
+                        tran.Dispose();
+                    }
                 }
             }
         }
