@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Web;
 
@@ -7,31 +8,33 @@ namespace DbShell.Driver.Common.Utility
 {
     public static class StringTool
     {
-        static string[] HEXCHARS = new string[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F" };
+        private static string[] HEXCHARS = new string[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"};
 
         public static sbyte DecodeHex(char c)
         {
-            if (c >= '0' && c <= '9') return (sbyte)(c - '0');
-            if (c >= 'a' && c <= 'f') return (sbyte)(c - 'a' + 10);
-            if (c >= 'A' && c <= 'F') return (sbyte)(c - 'A' + 10);
+            if (c >= '0' && c <= '9') return (sbyte) (c - '0');
+            if (c >= 'a' && c <= 'f') return (sbyte) (c - 'a' + 10);
+            if (c >= 'A' && c <= 'F') return (sbyte) (c - 'A' + 10);
             return -1;
         }
 
         public static string EncodeHex(byte value)
         {
-            return HEXCHARS[value / 16] + HEXCHARS[value % 16];
+            return HEXCHARS[value/16] + HEXCHARS[value%16];
         }
 
         public static void EncodeHex(byte value, StringBuilder sb)
         {
-            sb.Append(HEXCHARS[value / 16]);
-            sb.Append(HEXCHARS[value % 16]);
+            sb.Append(HEXCHARS[value/16]);
+            sb.Append(HEXCHARS[value%16]);
         }
 
         public static void EncodeOct(byte value, StringBuilder sb)
         {
-            sb.Append(HEXCHARS[value / 64]); value %= 64;
-            sb.Append(HEXCHARS[value / 8]); value %= 8;
+            sb.Append(HEXCHARS[value/64]);
+            value %= 64;
+            sb.Append(HEXCHARS[value/8]);
+            value %= 8;
             sb.Append(HEXCHARS[value]);
         }
 
@@ -88,13 +91,13 @@ namespace DbShell.Driver.Common.Utility
 
         public static string EncodeHex(object o, int linewi)
         {
-            if (o is byte[]) return EncodeHex((byte[])o, linewi);
+            if (o is byte[]) return EncodeHex((byte[]) o, linewi);
             return "???";
         }
 
         public static string EncodeHexNice(object o, int linewi)
         {
-            if (o is byte[]) return EncodeHexNice((byte[])o, linewi);
+            if (o is byte[]) return EncodeHexNice((byte[]) o, linewi);
             return "???";
         }
 
@@ -284,10 +287,11 @@ namespace DbShell.Driver.Common.Utility
 
         public static string Capitalize(this string value)
         {
-            if (value==null) return null;
-            if (value.Length<=1) return value.ToUpper();
+            if (value == null) return null;
+            if (value.Length <= 1) return value.ToUpper();
             return Char.ToUpper(value[0]) + value.Substring(1).ToLower();
         }
+
         /// <summary>
         /// creates string GoHomePlease from go_home_please
         /// </summary>
@@ -334,7 +338,7 @@ namespace DbShell.Driver.Common.Utility
                     sb.Append(offset.ToString("X8") + ": ");
                 }
                 sb.Append(EncodeHex(b));
-                if (b>=32 && b < 128) ascii.Append((char)b); 
+                if (b >= 32 && b < 128) ascii.Append((char) b);
                 else ascii.Append("?");
                 offset++;
                 bytesonline++;
@@ -347,7 +351,7 @@ namespace DbShell.Driver.Common.Utility
                 }
                 else
                 {
-                    if (bytesonline == linewi / 2) sb.Append("|");
+                    if (bytesonline == linewi/2) sb.Append("|");
                     else sb.Append(" ");
                 }
             }
@@ -430,6 +434,20 @@ namespace DbShell.Driver.Common.Utility
         public static string DateTimeToStringMinutes(DateTime value)
         {
             return value.ToString("yyyy-MM-dd HH:mm");
+        }
+
+        public static DateTime? DateTimeFromString(string value)
+        {
+            if (value == null) return null;
+            DateTime res;
+            if (DateTime.TryParseExact(value, "yyyy-MM-dd HH:mm:ss.fff", CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces, out res)) return res;
+            if (DateTime.TryParseExact(value, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces, out res)) return res;
+            if (DateTime.TryParseExact(value, "yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces, out res)) return res;
+            if (DateTime.TryParseExact(value, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces, out res)) return res;
+            if (DateTime.TryParseExact(value, "HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces, out res)) return res;
+            if (DateTime.TryParseExact(value, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces, out res)) return res;
+            if (DateTime.TryParse(value, out res)) return res;
+            return null;
         }
     }
 }
