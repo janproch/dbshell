@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Batch
+    xmlns="http://schemas.dbshell.com/core"
+    >
+    
+    <CopyTable Source="{File ImportedData.csv}" Target="{Table ImportedData}" />
+</Batch>    
