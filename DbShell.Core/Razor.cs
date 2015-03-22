@@ -86,7 +86,7 @@ namespace DbShell.Core
                 using (var sw = new StreamWriter(fn))
                 {
                     RazorScripting.ParseRazor(templateData, sw.Write, model, 
-                        provider != null ? provider.InitializeTemplate : (Action<IRazorTemplate, IShellContext>) null);
+                        provider != null ? provider.InitializeTemplate : (Action<IRazorTemplate, IShellContext>) null, context);
                 }
             }
             catch (RazorEngine.Templating.TemplateCompilationException err)

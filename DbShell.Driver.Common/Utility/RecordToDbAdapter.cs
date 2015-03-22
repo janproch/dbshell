@@ -11,13 +11,13 @@ namespace DbShell.Driver.Common.Utility
 {
     public class RecordToDbAdapter : IRecordToDbAdapter
     {
-        private TableInfo _targetTable;
         private IDialectDataAdapter _dda;
         private ICdlValueConvertor _outputConv;
+        private TargetColumnMap _columnMap;
 
-        public RecordToDbAdapter(TableInfo targetTable, IDatabaseFactory targetFactory, DataFormatSettings formatSettings)
+        public RecordToDbAdapter(TargetColumnMap columnMap, IDatabaseFactory targetFactory, DataFormatSettings formatSettings)
         {
-            _targetTable = targetTable;
+            _columnMap = columnMap;
             _dda = targetFactory.CreateDataAdapter();
             _outputConv = new CdlValueConvertor(formatSettings);
         }
@@ -27,9 +27,13 @@ namespace DbShell.Driver.Common.Utility
             var res = new ArrayDataRecord(record.Structure);
             for (int i = 0; i < res.FieldCount; i++)
             {
+                var targetColumn = _columnMap.GetTargetColumnBySourceIndex(i);
+                if (targetColumn == null) continue;
+
                 record.ReadValue(i);
                 res.SeekValue(i);
-                _dda.AdaptValue(record, _targetTable.Columns[i].CommonType, res, _outputConv);
+
+                _dda.AdaptValue(record, targetColumn.CommonType, res, _outputConv);
             }
             return res;
         }

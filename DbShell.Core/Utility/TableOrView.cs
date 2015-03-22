@@ -103,9 +103,9 @@ namespace DbShell.Core.Utility
             return true;
         }
 
-        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context, DataFormatSettings sourceDataFormat)
+        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo inputRowFormat, CopyTableTargetOptions options, IShellContext context, DataFormatSettings sourceDataFormat)
         {
-            return new TableWriter(context, GetConnectionProvider(context), GetFullName(context), rowFormat, options, null, LinkedInfo, sourceDataFormat);
+            return new TableWriter(context, GetConnectionProvider(context), GetFullName(context), inputRowFormat, options, null, LinkedInfo, sourceDataFormat);
         }
 
         TableInfo ITabularDataTarget.GetRowFormat(IShellContext context)

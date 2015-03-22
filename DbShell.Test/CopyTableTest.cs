@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.IO;
 using DbShell.Core.Runtime;
+using DbShell.Driver.Common.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DbShell.Test
@@ -84,6 +85,19 @@ namespace DbShell.Test
             }
         }
 
+        private void TestValue(string table, string idcol, string idval, string column, string value)
+        {
+            using (var conn = OpenConnection(true))
+            {
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = String.Format("SELECT [{0}] FROM [{1}] WHERE [{2}] = '{3}'", column, table, idcol, idval);
+                    string realVal = cmd.ExecuteScalar().SafeToString();
+                    Assert.AreEqual(value, realVal);
+                }
+            }
+        }
+
         [TestMethod]
         [DeploymentItem("mapped_import.xaml")]
         [DeploymentItem("ImportedData.csv")]
@@ -96,6 +110,18 @@ namespace DbShell.Test
                 runner.LoadFile("mapped_import.xaml");
                 runner.Run();
             }
+
+            // bulk copy
+            TestValue("ImportedData", "ID_IMPORTED", "1", "Data1", "a1");
+            TestValue("ImportedData", "ID_IMPORTED", "3", "Data3", "c3");
+            TestValue("ImportedData", "ID_IMPORTED", "4", "Data1", "a3");
+            TestValue("ImportedData", "ID_IMPORTED", "6", "Data3", "c2");
+
+            // inserts
+            TestValue("ImportedData", "ID_IMPORTED", "7", "Data1", "a1");
+            TestValue("ImportedData", "ID_IMPORTED", "9", "Data3", "c3");
+            TestValue("ImportedData", "ID_IMPORTED", "10", "Data1", "a3");
+            TestValue("ImportedData", "ID_IMPORTED", "12", "Data3", "c2");
         }
 
     }

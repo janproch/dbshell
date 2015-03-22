@@ -75,6 +75,7 @@
     <Compile Include="AbstractDb\ParsingServiceBase.cs" />
     <Compile Include="AbstractDb\SqlTypeProviderBase.cs" />
     <Compile Include="Utility\DateTimeExTypeConverter.cs" />
+    <Compile Include="Utility\TargetColumnMap.cs" />
     <Compile Include="Utility\XamlPropertyAttribute.cs" />
     <Compile Include="CommonDataLayer\CdlChangeSet.cs" />
     <Compile Include="CommonDataLayer\CdlDataQueue.cs" />

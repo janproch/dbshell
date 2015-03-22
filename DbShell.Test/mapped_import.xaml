@@ -4,4 +4,9 @@
     >
     
     <CopyTable Source="{File ImportedData.csv}" Target="{Table ImportedData}" />
+    <CopyTable Source="{File ImportedData.csv}" Target="{Table ImportedData}" TargetMapMode="OrdinalSkipIdentity" />
+    
+    <CopyTable Source="{File ImportedData.csv}" Target="{Table ImportedData}" AllowBulkCopy="False" />
+    <CopyTable Source="{File ImportedData.csv}" Target="{Table ImportedData}" TargetMapMode="OrdinalSkipIdentity" AllowBulkCopy="False" />
+    
 </Batch>    
