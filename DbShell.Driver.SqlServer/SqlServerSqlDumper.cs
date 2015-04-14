@@ -171,26 +171,26 @@ namespace DbShell.Driver.SqlServer
                     break;
             }
             if (ix.IsUnique) Put(" ^unique");
-            Put(" ^index %i on %f (", ix.ConstraintName, ix.OwnerTable.FullName);
+            Put(" ^index %i &n^on %f (&>&n", ix.ConstraintName, ix.OwnerTable.FullName);
             bool was = false;
             foreach (var col in ix.Columns.Where(x => !x.IsIncluded))
             {
-                if (was) Put(" ,");
+                if (was) Put("&n,");
                 Put("%i %k", col.RefColumnName, col.IsDescending ? "DESC" : "ASC");
                 was = true;
             }
-            Put(")");
+            Put("&<&n)");
             was = false;
             if (ix.Columns.Any(x => x.IsIncluded))
             {
-                Put(" ^include (");
+                Put(" ^include (&>&n");
                 foreach (var col in ix.Columns.Where(x => x.IsIncluded))
                 {
-                    if (was) Put(" ,");
+                    if (was) Put("&n,");
                     Put("%i", col.RefColumnName);
                     was = true;
                 }
-                Put(")");
+                Put("&<&n)");
             }
             EndCommand();
         }
