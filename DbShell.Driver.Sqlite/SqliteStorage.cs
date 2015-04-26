@@ -231,7 +231,7 @@ namespace DbShell.Driver.Sqlite
             {
                 if (!_storageDirectory.ContainsKey(identifier))
                 {
-                    throw new Exception("DBSH-00000 Storage is not longer valid: " + identifier);
+                    throw new Exception("DBSH-00165 Storage is not longer valid: " + identifier);
                 }
                 return _storageDirectory[identifier];
             }

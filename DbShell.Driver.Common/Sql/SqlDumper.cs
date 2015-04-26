@@ -54,17 +54,17 @@ namespace DbShell.Driver.Common.Sql
 
         public virtual void ExtractMonth(Action<ISqlDumper> argument)
         {
-            throw new NotImplementedError("DBSH-00000");
+            throw new NotImplementedError("DBSH-00159");
         }
 
         public virtual void ExtractDayOfMonth(Action<ISqlDumper> argument)
         {
-            throw new NotImplementedError("DBSH-00000");
+            throw new NotImplementedError("DBSH-00160");
         }
 
         public virtual void ExtractDayOfWeek(Action<ISqlDumper> argument)
         {
-            throw new NotImplementedError("DBSH-00000");
+            throw new NotImplementedError("DBSH-00161");
         }
 
         public virtual void PutDayOfWeekLiteral(DayOfWeek value)

@@ -19,7 +19,7 @@ namespace DbShell.Driver.Common.Utility
                 if (key == null)
                 {
                     if (_isNullKey) return _nullValue;
-                    throw new Exception("DBSH-00000 Null key not in dictionary");
+                    throw new Exception("DBSH-00163 Null key not in dictionary");
                 }
                 else
                 {

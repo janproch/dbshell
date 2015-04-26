@@ -66,7 +66,7 @@ namespace DbShell.Core.Utility
             var conn = ConnectionProvider.FromString(providerStringReplaced);
             if (conn == null)
             {
-                throw new Exception("DBSH-00000 Connection not defined, provider string:" + providerString);
+                throw new Exception("DBSH-00150 Connection not defined, provider string:" + providerString);
             }
             return conn;
         }
@@ -76,7 +76,7 @@ namespace DbShell.Core.Utility
             string providerString = Connection ?? context.GetDefaultConnection();
             if (providerString == null)
             {
-                throw new Exception("DBSH-00000 Connection is not set, element=" + GetType().FullName);
+                throw new Exception("DBSH-00151 Connection is not set, element=" + GetType().FullName);
             }
             return providerString;
         }

@@ -11,7 +11,7 @@ namespace DbShell.Driver.Common.DmlFramework
     {
         public virtual bool EvalCondition(IDmlfHandler handler)
         {
-            throw new InternalError("DBSH-00000 Eval not implemented:" + GetType().FullName);
+            throw new InternalError("DBSH-00156 Eval not implemented:" + GetType().FullName);
         }
     }
 

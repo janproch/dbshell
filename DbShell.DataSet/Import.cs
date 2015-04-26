@@ -12,7 +12,7 @@ namespace DbShell.DataSet
     {
         protected override void DoRun(IShellContext context)
         {
-            context.OutputMessage("DBSH-00000 Importing dataset");
+            context.OutputMessage("DBSH-00152 Importing dataset");
 
             using (var conn = GetConnectionProvider(context).Connect())
             {

@@ -104,7 +104,7 @@ namespace DbShell.Driver.Sqlite
                     //    }
                     //    break;
                 default:
-                    throw new Exception("DBSH-00000 Unsupported field type:" + type.ToString());
+                    throw new Exception("DBSH-00166 Unsupported field type:" + type.ToString());
             }
         }
 
@@ -186,7 +186,7 @@ namespace DbShell.Driver.Sqlite
                     writer.SetNull();
                     break;
                 default:
-                    throw new Exception("DBSH-00000 Unsupported field type:" + type.ToString());
+                    throw new Exception("DBSH-00167 Unsupported field type:" + type.ToString());
             }
         }
     }

@@ -23,7 +23,7 @@ namespace DbShell
             }
             catch (Exception err)
             {
-                _log.Error("Error loading XAML", err);
+                _log.Error("DBSH-00146 Error loading XAML", err);
                 return 1;
             }
 
@@ -33,7 +33,7 @@ namespace DbShell
             }
             catch (Exception err)
             {
-                _log.Error("Error running process", err);
+                _log.Error("DBSH-00147 Error running process", err);
                 return 2;
             }
             return 0;

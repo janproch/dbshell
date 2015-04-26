@@ -10,7 +10,7 @@ namespace DbShell.Driver.Common.AbstractDb
     {
         public virtual DatabaseAnalyser CreateAnalyser()
         {
-            throw new NotImplementedError("DBSH-00000");
+            throw new NotImplementedError("DBSH-00155");
         }
 
         public virtual IDialectDataAdapter CreateDataAdapter()

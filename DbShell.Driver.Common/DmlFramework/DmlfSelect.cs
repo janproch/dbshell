@@ -41,7 +41,7 @@ namespace DbShell.Driver.Common.DmlFramework
             get
             {
                 if (From.Count == 0) From.Add(new DmlfFromItem());
-                if (From.Count > 1) throw new Exception("DBSH-00000 internal error");
+                if (From.Count > 1) throw new Exception("DBSH-00158 internal error");
                 return From[0];
             }
             set

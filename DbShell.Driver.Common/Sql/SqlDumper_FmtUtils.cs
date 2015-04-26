@@ -355,7 +355,7 @@ namespace DbShell.Driver.Common.Sql
                     var linked = val as LinkedDatabaseInfo;
                     if (linked == null && val != null)
                     {
-                        throw new InternalError("DBSH-00000 Linked name must be LinkedDatabaseInfo or null");
+                        throw new InternalError("DBSH-00162 Linked name must be LinkedDatabaseInfo or null");
                     }
                     if (linked != null && linked.LinkedServerName != null)
                     {

@@ -163,7 +163,7 @@ namespace DbShell.Core
                             string fn = context.ResolveFile(file, ResolveFileMode.Input);
                             using (var reader = new StreamReader(fn, FileEncoding))
                             {
-                                _log.InfoFormat("DBSH-00000 Executing SQL file {0}", fn);
+                                _log.InfoFormat("DBSH-00148 Executing SQL file {0}", fn);
                                 context.OutputMessage(String.Format("Executing SQL file {0}", fn));
                                 RunScript(reader, conn, tran, UseReplacements == true, false, true, context);
                             }

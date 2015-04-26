@@ -37,8 +37,8 @@ namespace DbShell.DataSet
         {
             ITabularDataSource source;
 
-            if (Source != null && SourceExpression != null) throw new Exception("DBSH-00000 LoadTable: Both Source and SourceExpression are set");
-            if (Source == null && SourceExpression == null) throw new Exception("DBSH-00000 LoadTable: None Source and SourceExpression are set");
+            if (Source != null && SourceExpression != null) throw new Exception("DBSH-00153 LoadTable: Both Source and SourceExpression are set");
+            if (Source == null && SourceExpression == null) throw new Exception("DBSH-00154 LoadTable: None Source and SourceExpression are set");
 
             if (SourceExpression != null)
             {

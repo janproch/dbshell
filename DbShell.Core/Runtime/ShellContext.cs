@@ -79,7 +79,7 @@ namespace DbShell.Core.Runtime
             {
                 IConnectionProvider connection = ConnectionProvider.FromString(connectionKey);
                 _log.InfoFormat("DBSH-00076 Downloading structure for connection {0}", connection);
-                OutputMessage(String.Format("DBSH-00000 Downloading structure for connection {0}", connection));
+                OutputMessage(String.Format("DBSH-00149 Downloading structure for connection {0}", connection));
                 var analyser = connection.Factory.CreateAnalyser();
                 using (var conn = connection.Connect())
                 {

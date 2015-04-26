@@ -59,7 +59,7 @@ namespace DbShell.Driver.Sqlite
 
         protected override void DoGetModifications()
         {
-            throw new NotImplementedError("DBSH-00000");
+            throw new NotImplementedError("DBSH-00164");
         }
     }
 }
