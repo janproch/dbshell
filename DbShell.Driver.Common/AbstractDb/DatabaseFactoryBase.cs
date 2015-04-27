@@ -2,6 +2,7 @@ using System;
 using System.Data.Common;
 using DbShell.Driver.Common.DbDiff;
 using DbShell.Driver.Common.Sql;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.AbstractDb
 {
@@ -9,7 +10,7 @@ namespace DbShell.Driver.Common.AbstractDb
     {
         public virtual DatabaseAnalyser CreateAnalyser()
         {
-            return null;
+            throw new NotImplementedError("DBSH-00155");
         }
 
         public virtual IDialectDataAdapter CreateDataAdapter()
@@ -24,15 +25,33 @@ namespace DbShell.Driver.Common.AbstractDb
 
         public virtual ISqlDialect CreateDialect()
         {
-            return new DialectBase();
+            return new DialectBase(this);
+        }
+
+        public virtual SqlDumperCaps DumperCaps
+        {
+            get { return new SqlDumperCaps(); }
+        }
+
+        public virtual SqlDialectCaps DialectCaps
+        {
+            get
+            {
+                var res = new SqlDialectCaps(true);
+                res.Domains = false;
+                res.UncheckedReferences = false;
+                res.AnonymousPrimaryKey = false;
+                res.NestedTransactions = false;
+                res.UseDatabaseAsSchema = false;
+                res.RangeSelect = false;
+                res.Arrays = false;
+                res.SupportBackup = false;
+                res.AutoIncrement = true;
+                return res;
+            }
         }
 
         public abstract string[] Identifiers { get; }
-
-        public virtual AlterProcessorCaps DumperCaps
-        {
-            get { return new AlterProcessorCaps(); }
-        }
 
         public abstract DbConnection CreateConnection(string connectionString);
 

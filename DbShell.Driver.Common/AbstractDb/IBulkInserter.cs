@@ -20,5 +20,6 @@ namespace DbShell.Driver.Common.AbstractDb
         void Run(ICdlReader reader);
         CopyTableTargetOptions CopyOptions { get; set; }
         event Action<LogRecord> Log;
+        DataFormatSettings SourceDataFormat { get; set; }
     }
 }

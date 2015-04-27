@@ -55,13 +55,17 @@ namespace DbShell.Driver.Common.Utility
                 string tp = row["DataTypeName"].SafeToString();
                 if (tp == "xml") return new DbTypeXml();
                 int size = row.SafeString("ColumnSize").SafeIntParse();
-                if (tp == "varchar") return new DbTypeString { Length = size };
-                if (tp == "nvarchar") return new DbTypeString { Length = size, IsUnicode = true };
+                if (tp == "varchar") return new DbTypeString {Length = size};
+                if (tp == "nvarchar") return new DbTypeString {Length = size, IsUnicode = true};
                 if (tp == "text") return new DbTypeText();
-                if (tp == "ntext") return new DbTypeText { IsUnicode = true };
+                if (tp == "ntext") return new DbTypeText {IsUnicode = true};
             }
-            catch { }
-            return TypeTool.GetDatAdminType((Type)row["DataType"]);
+            catch
+            {
+            }
+            var clrType = row["DataType"] as Type;
+            if (clrType != null) return clrType.GetDatAdminType();
+            return new DbTypeString();
         }
 
         public static QueryResultInfo SchemaTableToInfo(DataTable schemaTable)

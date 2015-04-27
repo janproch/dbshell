@@ -7,15 +7,12 @@ using System.Reflection;
 using System.Text;
 using System.Xml;
 using DbShell.Common;
+using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core.Utility
 {
-    [AttributeUsage(AttributeTargets.Property)]
-    public class XamlPropertyAttribute : Attribute
-    {
-    }
-
     [AttributeUsage(AttributeTargets.Class)]
     public class XamlUnfriendlyAttribute : Attribute
     {
@@ -47,6 +44,8 @@ namespace DbShell.Core.Utility
                     return "http://schemas.dbshell.com/excel";
                 case "DbMouse.Core.Xaml":
                     return "http://schemas.dbmouse.com/dbshell";
+                case "DbShell.Driver.Common.CommonDataLayer":
+                    return "http://schemas.dbshell.com/cdl";
             }
             return "clr-namespace:" + codeNs;
         }
@@ -77,6 +76,7 @@ namespace DbShell.Core.Utility
             if (type == typeof(ushort)) return o.ToString();
             if (type == typeof(uint)) return o.ToString();
             if (type == typeof(ulong)) return o.ToString();
+            if (type == typeof(DateTimeEx)) return ((DateTimeEx) o).ToStringNormalized();
 
             if (type.IsEnum) return o.ToString();
             if (o is Encoding) return ((Encoding)o).WebName;
@@ -96,7 +96,20 @@ namespace DbShell.Core.Utility
                 if (!prop.GetCustomAttributes(typeof (XamlPropertyAttribute), true).Any()) continue;
                 object value = prop.CallGet(o);
                 if (value == null) continue;
-                if (!(value is string) && value is IEnumerable && !(value is DbShell.Core.Utility.ElementBase))
+                if (value is string[])
+                {
+                    var propElem = _doc.CreateElement(tname + "." + prop.Name, tns);
+                    root.AppendChild(propElem);
+                    //var arrayElem = _doc.CreateElement("Array", "http://schemas.microsoft.com/winfx/2006/xaml");
+                    //propElem.AppendChild(arrayElem);
+                    foreach (string item in (string[])value)
+                    {
+                        var itemElem = _doc.CreateElement("String", "clr-namespace:System;assembly=mscorlib");
+                        itemElem.InnerText = item;
+                        propElem.AppendChild(itemElem);
+                    }
+                }
+                else if (!(value is string) && value is IEnumerable && !(value is DbShell.Core.Utility.ElementBase))
                 {
                     if (value.GetType().GetCustomAttributes(typeof(XamlUnfriendlyAttribute), true).Any())
                     {

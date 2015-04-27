@@ -9,14 +9,16 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DbShell.Test
 {
     [TestClass]
-    public class RazorTest
+    public class RazorTest : DatabaseTestBase
     {
         [TestMethod]
         [DeploymentItem("dbdocs.xaml")]
         [DeploymentItem("DatabaseDoc.cshtml")]
         public void DbDocs()
         {
-            using (var runner = new ShellRunner())
+            InitDatabase();
+            RunEmbeddedScript("CreateTestData.sql");
+            using (var runner = CreateRunner())
             {
                 runner.LoadFile("dbdocs.xaml");
                 runner.Run();
@@ -27,7 +29,9 @@ namespace DbShell.Test
         [DeploymentItem("querytofiles.xaml")]
         public void QueryToFiles()
         {
-            using (var runner = new ShellRunner())
+            InitDatabase();
+            RunEmbeddedScript("CreateTestData.sql");
+            using (var runner = CreateRunner())
             {
                 runner.LoadFile("querytofiles.xaml");
                 runner.Run();
@@ -40,7 +44,9 @@ namespace DbShell.Test
         [DeploymentItem("TableData.cshtml")]
         public void QueryToHtml()
         {
-            using (var runner = new ShellRunner())
+            InitDatabase();
+            RunEmbeddedScript("CreateTestData.sql");
+            using (var runner = CreateRunner())
             {
                 runner.LoadFile("querytohtml.xaml");
                 runner.Run();

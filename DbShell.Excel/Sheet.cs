@@ -7,6 +7,7 @@ using DbShell.Core.Utility;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Excel
 {
@@ -29,7 +30,12 @@ namespace DbShell.Excel
             return false;
         }
 
-        public ICdlWriter CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context)
+        DataFormatSettings ITabularDataSource.GetSourceFormat(IShellContext context)
+        {
+            return GetModel(context).DataFormat;
+        }
+
+        public ICdlWriter CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context, DataFormatSettings sourceDataFormat)
         {
             return GetModel(context).CreateWriter(rowFormat, context.Replace(SheetName));
         }

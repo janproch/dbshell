@@ -8,6 +8,7 @@ using System.Windows.Markup;
 using DbShell.Common;
 using DbShell.Core.RazorModels;
 using DbShell.Core.Utility;
+using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
@@ -40,6 +41,11 @@ namespace DbShell.Core
                     return reader.GetTableInfo();
                 }
             }
+        }
+
+        DataFormatSettings ITabularDataSource.GetSourceFormat(IShellContext context)
+        {
+            return null;
         }
 
         TableInfo ITabularDataSource.GetRowFormat(IShellContext context)

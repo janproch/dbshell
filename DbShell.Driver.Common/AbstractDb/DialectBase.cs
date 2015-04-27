@@ -10,7 +10,13 @@ namespace DbShell.Driver.Common.AbstractDb
 {
     public class DialectBase : ISqlDialect
     {
-        HashSetEx<string> _keywords;
+        private HashSetEx<string> _keywords;
+        private IDatabaseFactory _factory;
+
+        public DialectBase(IDatabaseFactory factory)
+        {
+            _factory = factory;
+        }
 
         public virtual HashSetEx<string> Keywords
         {
@@ -40,14 +46,9 @@ namespace DbShell.Driver.Common.AbstractDb
             return sb.ToString();
         }
 
-        public virtual SqlDumperCaps DumperCaps
+        public IDatabaseFactory Factory
         {
-            get { return new SqlDumperCaps(); }
-        }
-
-        public virtual SqlDialectCaps DialectCaps
-        {
-            get { return new SqlDialectCaps(); }
+            get { return _factory; }
         }
 
         public virtual Type SpecificTypeEnum

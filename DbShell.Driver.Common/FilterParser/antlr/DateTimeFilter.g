@@ -80,7 +80,7 @@ specification:
   | EQ d=DATE time_exact { string time=Pop<string>(); var dt=ParseDate($d.text) + ParseTime(time);AddDateTimeRelation(dt, "=");  }
     
   | LT d=DATE t=time { var dt=ParseDate($d.text)+ParseTime($t.text);AddDateTimeRelation(dt, "<"); }  
-  | LE d=DATE t=time { var dt=ParseDate($d.text)+ParseTimeEnd($t.text);AddDateTimeRelation(dt, "<="); }  
+  | LE d=DATE t=time { var dt=ParseDate($d.text)+ParseTimeEnd($t.text);AddDateTimeRelation(dt, "<"); }  
   | GT d=DATE t=time { var dt=ParseDate($d.text)+ParseTime($t.text);AddDateTimeRelation(dt, ">"); }  
   | GE d=DATE t=time { var dt=ParseDate($d.text)+ParseTime($t.text);AddDateTimeRelation(dt, ">="); }
   | T_NULL { AddIsNullCondition(); }

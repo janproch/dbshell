@@ -25,6 +25,9 @@ namespace DbShell.Driver.Common.AbstractDb
         public CopyTableTargetOptions CopyOptions { get; set; }
         public IDatabaseFactory Factory { get; set; }
         public LinkedDatabaseInfo LinkedInfo { get; set; }
+        public DataFormatSettings SourceDataFormat { get; set; }
+
+        protected TargetColumnMap _columnMap;
 
         public BulkInserterBase()
         {
@@ -36,14 +39,17 @@ namespace DbShell.Driver.Common.AbstractDb
 
         public virtual void Run(ICdlReader reader)
         {
+            _columnMap = new TargetColumnMap(reader.Structure, DestinationTable, CopyOptions.TargetMapMode);
+            var toDb = new RecordToDbAdapter(_columnMap, Factory, SourceDataFormat ?? new DataFormatSettings());
+            var adapter = new CdlReaderToDbAdapter(toDb, reader);
             BeforeRun();
             if (CopyOptions.AllowBulkCopy)
             {
-                RunBulkCopy(reader);
+                RunBulkCopy(adapter);
             }
             else
             {
-                RunInserts(reader);
+                RunInserts(adapter);
             }
             AfterRun();
         }
@@ -87,15 +93,7 @@ namespace DbShell.Driver.Common.AbstractDb
             bool hasident = false;
             if (autoinc != null)
             {
-                if (ts.Columns.Count != dst_ts.Columns.Count)
-                {
-                    // determine whether auto-inc column is inserted
-                    hasident = ts.Columns.IndexOfIf(col => col.Name == autoinc.Name) >= 0;
-                }
-                else
-                {
-                    hasident = true;
-                }
+                hasident = _columnMap.GetTargetColumnBySourceIndex(autoinc.ColumnOrder) != null;
             }
             return hasident;
         }
@@ -108,12 +106,10 @@ namespace DbShell.Driver.Common.AbstractDb
             {
                 List<string> colnames = new List<string>();
                 List<string> vals = new List<string>();
-                var ts = reader.Structure;
-                var dst_ts = DestinationTable;
-                foreach (var col in ts.Columns)
+                foreach (var colIndexes in _columnMap.Items)
                 {
                     vals.Add("{" + colnames.Count.ToString() + "}");
-                    colnames.Add(col.Name);
+                    colnames.Add(DestinationTable.Columns[colIndexes.Target].Name);
                 }
                 string[] values = new string[colnames.Count];
                 NameWithSchema table = DestinationTable.FullName;
@@ -136,9 +132,9 @@ namespace DbShell.Driver.Common.AbstractDb
                         {
                             rowcounter++;
                             var row = reader;
-                            for (int i = 0; i < row.FieldCount; i++)
+                            for (int i = 0; i < _columnMap.Items.Count; i++)
                             {
-                                row.ReadValue(i);
+                                row.ReadValue(_columnMap.Items[i].Source);
                                 values[i] = dda.GetSqlLiteral(row, new DbTypeString());
                             }
                             inscmd.CommandText = String.Format(insertTemplate, values);

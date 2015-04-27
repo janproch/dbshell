@@ -6,6 +6,14 @@ using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.AbstractDb
 {
+    public enum TargetColumnMapMode
+    {
+        Name,
+        NameExact, // name with case sensitive comparation
+        Ordinal,
+        OrdinalSkipIdentity,
+    }
+
     public class CopyTableTargetOptions
     {
         public CopyTableTargetOptions()
@@ -13,6 +21,7 @@ namespace DbShell.Driver.Common.AbstractDb
             AllowBulkCopy = true;
             TruncateBeforeCopy = false;
             DisableConstraints = false;
+            TargetMapMode = TargetColumnMapMode.Name;
         }
 
         [XmlElem]
@@ -23,5 +32,8 @@ namespace DbShell.Driver.Common.AbstractDb
 
         [XmlElem]
         public bool DisableConstraints { get; set; }
+
+        [XmlElem]
+        public TargetColumnMapMode TargetMapMode { get; set; }
     }
 }

@@ -10,6 +10,7 @@ using DbShell.Common;
 using DbShell.Core;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
+using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
 
@@ -25,6 +26,9 @@ namespace DbShell.DataSet.DataSetModels
         private IDatabaseFactory _factory;
         private IDialectDataAdapter _dda;
         private List<LoadReferencesDefinition> _loadRefDefs = new List<LoadReferencesDefinition>();
+        public bool KeepUndefinedReferences = false;
+        private bool _loadingStopped;
+        private bool _loadAllMissing;
 
         public DataSetModel(DatabaseInfo targetDatabase, IShellContext context, IDatabaseFactory factory)
         {
@@ -42,6 +46,7 @@ namespace DbShell.DataSet.DataSetModels
             if (tbl == null) throw new Exception("DBSH-00120 Unknown target table in data set:" + name);
             var cls = new DataSetClass(this, tbl);
             Classes[name] = cls;
+            cls.InitializeClass();
             return cls;
         }
 
@@ -51,7 +56,7 @@ namespace DbShell.DataSet.DataSetModels
             var ts = reader.Structure;
             var cls = GetClass(targetTable);
 
-            var cols = cls.Structure.Columns.Where(x => x.ComputedExpression == null).ToList();
+            var cols = cls.Structure.Columns.ToList();
 
             int[] map = new int[cols.Count];
 
@@ -63,6 +68,7 @@ namespace DbShell.DataSet.DataSetModels
 
             while (reader.Read())
             {
+                if (_loadingStopped) return loaded;
                 object[] newValues = new object[map.Length];
                 for (int i = 0; i < map.Length; i++)
                 {
@@ -86,11 +92,9 @@ namespace DbShell.DataSet.DataSetModels
             }
         }
 
-        public void LoadFile(string file, string targetTable, IShellContext context)
+        public void LoadTable(ITabularDataSource source, string targetTable, IShellContext context)
         {
-            CheckUnprepared("LoadFile");
-            var cdlFile = new CdlFile { Name = file };
-            ITabularDataSource source = cdlFile;
+            CheckUnprepared("LoadTable");
             LoadFromReader(source, targetTable, context);
         }
 
@@ -212,10 +216,32 @@ namespace DbShell.DataSet.DataSetModels
             return refValues;
         }
 
+        public DataSetModel CloneData()
+        {
+            CheckUnprepared("Clone");
+            var res = new DataSetModel(_targetDatabase, _context, _factory);
+
+            foreach(var cls in Classes)
+            {
+                res.Classes[cls.Key] = new DataSetClass(res, cls.Value.TargetTable);
+            }
+            foreach(var cls in res.Classes)
+            {
+                cls.Value.InitializeClass();
+            }
+            foreach (var cls in Classes)
+            {
+                foreach (var instance in cls.Value.AllInstances)
+                {
+                    res.Classes[cls.Key].AddRecord(instance.Values);
+                }
+            }
+            return res;
+        }
+
         public void LoadReference(string table, string column, string reftable)
         {
-            CheckUnprepared("LoadReference");
-            _loadRefDefs.Add(
+            LoadReference(
                 new LoadReferencesDefinition
                     {
                         Column = column,
@@ -224,20 +250,69 @@ namespace DbShell.DataSet.DataSetModels
                     });
         }
 
-        public void Prepare(DbConnection conn)
+        public void LoadReference(LoadReferencesDefinition refDef)
         {
-            if (_prepared) throw new Exception("DBSH-00124 DataSet is already prepared");
-            _prepared = true;
+            CheckUnprepared("LoadReference");
+            _loadRefDefs.Add(refDef);
+        }
 
+        public List<LoadReferencesDefinition> GetAvailableReferences()
+        {
+            var res = new List<LoadReferencesDefinition>();
+            foreach (var cls in Classes.Values.ToList())
+            {
+                if (cls.SimplePkCol == null) continue;
+                if (!cls.AllInstances.Any()) continue;
+                foreach (var fk in cls.Structure.GetReferences())
+                {
+                    var rcls = GetClass(fk.OwnerTable.Name);
+                    foreach (var refref in rcls.References)
+                    {
+                        if (refref.ReferencedClass != cls) continue;
+                        res.Add(new LoadReferencesDefinition
+                            {
+                                Column = refref.BindingColumn,
+                                Table = rcls.TableName,
+                                RefTable = cls.TableName,
+                            });
+                    }
+                }
+            }
+            return res;
+        }
+
+        public void LoadMarkedData(DbConnection conn)
+        {
+            CheckUnprepared("LoadMarkedData");
+
+            foreach (var cls in Classes.Values)
+            {
+                if (cls.RequiredPks.Any())
+                {
+                    string cond = "[" + cls.Structure.PrimaryKey.Columns[0].Name + "] in (" + cls.RequiredPks.Select(x => "'" + x + "'").CreateDelimitedText(",") + ")";
+                    DoAddRows(conn, cls.TableName, cond);
+                    cls.RequiredPks.Clear();
+                }
+
+                foreach (string cond in cls.AddRowsRequests)
+                {
+                    if (_loadingStopped) return;
+                    DoAddRows(conn, cls.TableName, cond);
+                }
+                cls.AddRowsRequests.Clear();
+            }
+
+            var loadedRefs = new HashSet<DataSetReference>();
             foreach (var loadRef in _loadRefDefs)
             {
+                if (_loadingStopped) return;
                 var x = GetClass(loadRef.Table);
                 var r = x.FindReference(loadRef.Column, loadRef.RefTable);
                 if (r == null)
                 {
                     throw new Exception(String.Format("Undefined reference from {0}.{1}=>{2}", loadRef.Table, loadRef.Column, loadRef.RefTable));
                 }
-                r.Load = true;
+                loadedRefs.Add(r);
             }
 
             int maxSteps = 5;
@@ -248,26 +323,38 @@ namespace DbShell.DataSet.DataSetModels
                 {
                     foreach (var r in cls.References)
                     {
-                        if (!r.Load) continue;
+                        if (_loadingStopped) return;
+                        if (!loadedRefs.Contains(r)) continue;
                         anyLoaded |= DoLoadReferences(conn, r) > 0;
                     }
                 }
 
                 foreach (var cls in Classes.Values)
                 {
-                    if (!cls.LoadMissingInstances) continue;
+                    if (_loadingStopped) return;
+                    if (!cls.LoadMissingInstances && !_loadAllMissing) continue;
                     /// load missing identity entities
                     anyLoaded |= LoadMissing(conn, cls) > 0;
                 }
 
                 if (!anyLoaded) break;
             }
-            //foreach (var cls in m_classes.Values)
-            //{
-            //    if (cls.LookupFields == null) continue;
-            //    /// load lookup fields
-            //    LoadLookup(conn, cls);
-            //}
+        }
+
+        public void Prepare(DbConnection conn)
+        {
+            if (_prepared) throw new Exception("DBSH-00124 DataSet is already prepared");
+
+            LoadMarkedData(conn);
+
+            _prepared = true;
+
+            foreach (var cls in Classes.Values)
+            {
+                if (!cls.LookupDefined) continue;
+                // load lookup fields
+                ProcessLookupValues(conn, cls);
+            }
 
             foreach (var cls in Classes.Values)
             {
@@ -276,9 +363,9 @@ namespace DbShell.DataSet.DataSetModels
                 var refs = GetAllReferences(cls);
                 foreach (int refid in refs)
                 {
-                    if (cls.InstancesByIdentity.ContainsKey(refid))
+                    if (cls.InstancesBySimpleKey.ContainsKey(refid))
                     {
-                        cls.InstancesByIdentity[refid].IsReferenced = true;
+                        cls.InstancesBySimpleKey[refid].IsReferenced = true;
                     }
                 }
             }
@@ -286,9 +373,27 @@ namespace DbShell.DataSet.DataSetModels
             ReportPrepareInformation();
         }
 
+        private void ProcessLookupValues(DbConnection conn, DataSetClass cls)
+        {
+            if (String.IsNullOrEmpty(cls.SimplePkCol))
+            {
+                throw new Exception(String.Format("Lookup column for table {0} is not defined", cls));
+            }
+            var refValues = GetAllReferences(cls);
+            if (refValues.Count == 0) return;
+
+            foreach(var row in cls.AllInstances)
+            {
+                int value = row.SimpleKeyValue;
+                if (!refValues.Contains(value)) continue;
+                string[] values = cls.LookupFieldIndexes.Select(x => x >= 0 ? row.Values[x].SafeToString() : null).ToArray();
+                cls.LookupValues[value] = values;
+            }
+        }
+
         private void ReportPrepareInformation()
         {
-            foreach(var cls in Classes.Values)
+            foreach (var cls in Classes.Values)
             {
                 cls.ReportPrepareInformation();
             }
@@ -336,11 +441,10 @@ namespace DbShell.DataSet.DataSetModels
 
         private int LoadMissing(DbConnection conn, DataSetClass cls)
         {
-            var refValues = GetAllReferences(cls);
-            foreach (int id in cls.InstancesByIdentity.Keys) refValues.Remove(id);
+            var refValues = cls.GetMissingKeys();
             if (refValues.Count == 0) return 0;
             var sb = new StringBuilder();
-            sb.AppendFormat("select * from [{0}] where [{1}] in (", cls.TableName, cls.IdentityColumn);
+            sb.AppendFormat("select * from [{0}] where [{1}] in (", cls.TableName, cls.SimplePkCol);
             bool was = false;
             foreach (int id in refValues)
             {
@@ -389,16 +493,17 @@ namespace DbShell.DataSet.DataSetModels
             // 1. determine order of classes, as partial order using relation "contains mandatory relation"
             var orderedClasses = GetOrderedClasses();
 
-            //// define lookups
-            //foreach (var cls in orderedClasses)
-            //{
-            //    if (cls.LookupKeyColumn == null) continue;
-            //    WriteLookup(sdw, cls);
-            //}
+            // define lookups
+            foreach (var cls in orderedClasses)
+            {
+                if (!cls.LookupDefined) continue;
+                WriteLookup(sdw, cls);
+            }
 
             // write inserts
             foreach (var cls in orderedClasses)
             {
+                if (cls.LookupDefined) continue;
                 WriteClass(sdw, cls);
             }
 
@@ -413,9 +518,33 @@ namespace DbShell.DataSet.DataSetModels
             ReportWarnings();
         }
 
+        private void WriteLookup(SqlDumpWriter sdw, DataSetClass cls)
+        {
+            foreach (var tuple in cls.LookupValues)
+            {
+                var sb = new StringBuilder();
+                sb.Append("(");
+                sb.AppendFormat("select top(1) tmain.[{0}] from [{1}] tmain ", cls.SimplePkCol, cls.TableName);
+                var exprs = new List<string>();
+                var rewr = new SqlRewriter(cls.TableName, this);
+                for (int i = 0; i < cls.LookupFields.Length; i++) exprs.Add(rewr.Rewrite(cls.LookupFields[i]));
+                rewr.WriteJoins(sb);
+                sb.Append(" where ");
+                bool was = false;
+                for (int i = 0; i < exprs.Count; i++)
+                {
+                    if (was) sb.Append(" and ");
+                    sb.AppendFormat("{0}=N'{1}'", exprs[i], tuple.Value[i]);
+                    was = true;
+                }
+                sb.Append(")");
+                cls.LookupVariables[tuple.Key] = AssignVariable(sdw, sb.ToString());
+            }
+        }
+
         private void ReportWarnings()
         {
-            foreach(var cls in Classes.Values)
+            foreach (var cls in Classes.Values)
             {
                 cls.ReportWarnings();
             }
@@ -477,6 +606,7 @@ namespace DbShell.DataSet.DataSetModels
             for (int i = 0; i < inst.Class.Columns.Length; i++)
             {
                 if (inst.Class.Columns[i] == inst.Class.IdentityColumn) continue;
+                if (inst.Class.TargetTable.Columns[i].ComputedExpression != null) continue;
                 if (was) sdw.Write(",");
                 var r = inst.Class.GetReference(i);
                 //var fr = inst.Class.GetFulltextReference(i);
@@ -487,25 +617,7 @@ namespace DbShell.DataSet.DataSetModels
                 //else 
                 if (r != null && !r.ReferencedClass.KeepKey)
                 {
-                    //if (r.ReferencedClass.LookupKeyColumn != null)
-                    //{
-                    //    if (inst.Values[i] == null || inst.Values[i] == DBNull.Value)
-                    //    {
-                    //        sdw.Write("NULL");
-                    //    }
-                    //    else
-                    //    {
-                    //        int refid = Int32.Parse(inst.Values[i].ToString());
-                    //        sdw.WriteVar(r.ReferencedClass.LookupVariables[refid]);
-                    //    }
-                    //}
-                    //else
-                    //{
-                    if (r.ReferencedClass.IdentityColumn == null)
-                    {
-                        throw new Exception(String.Format("DBSH-00125 Lookup or target identity must be defined on table {0} because of reference from {1}", r.ReferencedClass.TableName, r.BaseClass.TableName));
-                    }
-                    if (r.Mandatory)
+                    if (r.ReferencedClass.LookupDefined)
                     {
                         if (inst.Values[i] == null || inst.Values[i] == DBNull.Value)
                         {
@@ -513,16 +625,52 @@ namespace DbShell.DataSet.DataSetModels
                         }
                         else
                         {
-                            int? rvar = GetReferenceVariable(inst.Values[i].ToString(), r.BaseClass, r.ReferencedClass, r.BindingColumn);
-                            if (rvar == null) sdw.Write("NULL");
-                            else sdw.WriteVar(rvar.Value);
+                            int refid = Int32.Parse(inst.Values[i].ToString());
+                            sdw.WriteVar(r.ReferencedClass.LookupVariables[refid]);
                         }
                     }
                     else
                     {
-                        sdw.Write("NULL");
+                        if (r.ReferencedClass.IdentityColumn == null)
+                        {
+                            int ord = r.BaseClass.ColumnOrdinals[r.BindingColumn];
+                            if (r.BaseClass.AllInstances.Select(x => x.Values[ord]).Any(x => x != null))
+                            {
+                                throw new Exception(String.Format("DBSH-00125 Lookup or target identity must be defined on table {0} because of reference from {1}", r.ReferencedClass.TableName,
+                                                                  r.BaseClass.TableName));
+                            }
+                        }
+                        if (r.Mandatory)
+                        {
+                            if (inst.Values[i] == null || inst.Values[i] == DBNull.Value)
+                            {
+                                sdw.Write("NULL");
+                            }
+                            else
+                            {
+                                int? rvar = GetReferenceVariable(inst.Values[i].ToString(), r.BaseClass, r.ReferencedClass, r.BindingColumn);
+                                if (rvar == null)
+                                {
+                                    if (KeepUndefinedReferences)
+                                    {
+                                        WriteValue(sdw.CurrentCommandBuilder, inst.Values[i]);
+                                    }
+                                    else
+                                    {
+                                        sdw.Write("NULL");
+                                    }
+                                }
+                                else
+                                {
+                                    sdw.WriteVar(rvar.Value);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            sdw.Write("NULL");
+                        }
                     }
-                    //}
                 }
                 else
                 {
@@ -562,16 +710,16 @@ namespace DbShell.DataSet.DataSetModels
         protected internal void WriteValue(StringBuilder sb, object value)
         {
             if (value is string) sb.AppendFormat("N'{0}'", value.ToString().Replace("'", "''"));
-            else if (value is DateTime) sb.AppendFormat("'{0}'", ((DateTime)value).ToString("s"));
-            else if (value is decimal) sb.AppendFormat("'{0}'", ((decimal)value).ToString(CultureInfo.InvariantCulture));
-            else if (value is float) sb.AppendFormat("'{0}'", ((float)value).ToString(CultureInfo.InvariantCulture));
-            else if (value is double) sb.AppendFormat("'{0}'", ((double)value).ToString(CultureInfo.InvariantCulture));
+            else if (value is DateTime) sb.AppendFormat("'{0}'", ((DateTime) value).ToString("s"));
+            else if (value is decimal) sb.AppendFormat("'{0}'", ((decimal) value).ToString(CultureInfo.InvariantCulture));
+            else if (value is float) sb.AppendFormat("'{0}'", ((float) value).ToString(CultureInfo.InvariantCulture));
+            else if (value is double) sb.AppendFormat("'{0}'", ((double) value).ToString(CultureInfo.InvariantCulture));
             else if (value == null || value == DBNull.Value) sb.Append("NULL");
-            else if (value is bool) sb.Append((bool)value ? "1" : "0");
+            else if (value is bool) sb.Append((bool) value ? "1" : "0");
             else if (value is byte[])
             {
                 sb.Append("0x");
-                StringTool.EncodeHex((byte[])value, sb);
+                StringTool.EncodeHex((byte[]) value, sb);
             }
             else if (value is decimal) sb.AppendFormat(String.Format(CultureInfo.InvariantCulture, "'{0}'", value));
             else sb.AppendFormat("{0}", value);
@@ -583,6 +731,7 @@ namespace DbShell.DataSet.DataSetModels
             for (int i = 0; i < cls.Columns.Length; i++)
             {
                 if (cls.Columns[i] == cls.IdentityColumn) continue;
+                if (cls.TargetTable.Columns[i].ComputedExpression != null) continue;
                 if (was) sb.Append(",");
                 sb.AppendFormat("[{0}]", cls.Columns[i]);
                 was = true;
@@ -599,7 +748,7 @@ namespace DbShell.DataSet.DataSetModels
         public DataSetInstance GetReferenceInstance(string srefid, DataSetClass baseClass, DataSetClass referencedClass, string bindingColumn)
         {
             int refid = Int32.Parse(srefid);
-            if (!referencedClass.InstancesByIdentity.ContainsKey(refid))
+            if (!referencedClass.InstancesBySimpleKey.ContainsKey(refid))
             {
                 referencedClass.ReportUndefinedReference(baseClass.TableName, bindingColumn, refid);
                 //if (UndefinedReference != null)
@@ -618,9 +767,24 @@ namespace DbShell.DataSet.DataSetModels
             return refobj;
         }
 
-        public void AddRows(DbConnection conn, string table, string condition)
+        public void AddRows(string table, string condition)
         {
             CheckUnprepared("AddRows");
+            var cls = GetClass(table);
+            cls.AddRowsRequests.Add(condition);
+        }
+
+        public void AddRowsByPk(string table, params string[] pks)
+        {
+            var cls = GetClass(table);
+            foreach(string pk in pks)
+            {
+                cls.RequiredPks.Add(pk);
+            }
+        }
+
+        private void DoAddRows(DbConnection conn, string table, string condition)
+        {
             using (var cmd = conn.CreateCommand())
             {
                 var sb = new StringBuilder();
@@ -665,6 +829,44 @@ namespace DbShell.DataSet.DataSetModels
             CheckUnprepared("KeepKey");
             var cls = GetClass(table);
             cls.KeepKey = true;
+        }
+
+        public void DefineLookup(string table, string[] lookupColumns)
+        {
+            CheckUnprepared("Lookup");
+            var cls = GetClass(table);
+            cls.LookupFields = lookupColumns;
+            cls.LookupFieldIndexes = lookupColumns.Select(x => cls.ColumnOrdinals.Get(x, -1)).ToArray();
+        }
+
+        public void ImportIntoDatabase(DbConnection conn)
+        {
+            var sw = new StringWriter();
+            WriteSql(sw);
+
+            using (var tran = conn.BeginTransaction())
+            {
+                foreach (var item in GoSplitter.GoSplit(sw.ToString()))
+                {
+                    using (var cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = item.Data;
+                        cmd.Transaction = tran;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                tran.Commit();
+            }
+        }
+
+        public void StopLoading()
+        {
+            _loadingStopped = true;
+        }
+
+        public void LoadAllMissing()
+        {
+            _loadAllMissing = true;
         }
     }
 }

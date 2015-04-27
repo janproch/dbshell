@@ -434,5 +434,11 @@ namespace DbShell.Core.Utility
             }
             return content;
         }
+
+        public static string Preprocess(string sql)
+        {
+            var prolog = new SqlProlog(sql);
+            return prolog.PreprocessScript(sql, true);
+        }
     }
 }

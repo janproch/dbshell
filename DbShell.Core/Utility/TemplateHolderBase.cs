@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Markup;
 using DbShell.Common;
+using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.Utility;
 using log4net;
 
 namespace DbShell.Core.Utility

@@ -44,12 +44,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqliteAnalyser.cs" />
     <Compile Include="SqliteDatabaseFactory.cs" />
+    <Compile Include="SqliteDialect.cs" />
+    <Compile Include="SqliteLiteralFormatter.cs" />
     <Compile Include="SqliteSqlDumper.cs" />
     <Compile Include="SqliteStorage.cs" />
     <Compile Include="StorageTool.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DbShell.Common\DbShell.Common.csproj">
+      <Project>{1CB3E9BA-5F22-4AF6-9352-940E3E8CECB4}</Project>
+      <Name>DbShell.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DbShell.Driver.Common\DbShell.Driver.Common.csproj">
       <Project>{CC233C46-AE79-4ADB-AE5C-B4BAE3FD2495}</Project>
       <Name>DbShell.Driver.Common</Name>

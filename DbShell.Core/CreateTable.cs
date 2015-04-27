@@ -10,6 +10,7 @@ using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core
 {
@@ -35,6 +36,12 @@ namespace DbShell.Core
         /// </summary>
         [XamlProperty]
         public bool DropIfExists { get; set; }
+
+        /// <summary>
+        /// if table already exists, it is used (not created)
+        /// </summary>
+        [XamlProperty]
+        public bool UseIfExists { get; set; }
 
         /// <summary>
         /// Name if created identity column. If given, column with type INT PRIMARY KEY IDENTITY is created
@@ -81,16 +88,16 @@ namespace DbShell.Core
             throw new NotImplementedException();
         }
 
-        public ICdlWriter CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context)
+        public ICdlWriter CreateWriter(TableInfo inputRowFormat, CopyTableTargetOptions options, IShellContext context, DataFormatSettings sourceDataFormat)
         {
             var connection = GetConnectionProvider(context);
             using (var conn = connection.Connect())
             {
                 var db = new DatabaseInfo();
                 db.LinkedInfo = LinkedInfo;
-                var tbl = rowFormat.CloneTable(db);
+                var tbl = inputRowFormat.CloneTable(db);
                 tbl.FullName = GetFullName(context);
-                foreach(var col in tbl.Columns) col.AutoIncrement = false;
+                foreach (var col in tbl.Columns) col.AutoIncrement = false;
                 tbl.ForeignKeys.Clear();
                 if (tbl.PrimaryKey != null) tbl.PrimaryKey.ConstraintName = null;
                 tbl.AfterLoadLink();
@@ -106,28 +113,44 @@ namespace DbShell.Core
                     pk.Columns.Add(new ColumnReference {RefColumn = col});
                     pk.ConstraintName = "PK_" + tbl.Name;
                     tbl.PrimaryKey = pk;
-                    tbl.Columns.Add(col);
+                    tbl.Columns.Insert(0, col);
                 }
 
                 //var sw = new StringWriter();
                 var so = new ConnectionSqlOutputStream(conn, null, connection.Factory.CreateDialect());
                 var dmp = connection.Factory.CreateDumper(so, new SqlFormatProperties());
                 if (DropIfExists) dmp.DropTable(tbl, true);
-                tbl.Columns.ForEach(x => x.EnsureDataType(connection.Factory.CreateSqlTypeProvider()));
-                dmp.CreateTable(tbl);
+
+                bool useExistingTable = false;
+                if (UseIfExists)
+                {
+                    var ts = context.GetDatabaseStructure(connection.ProviderString);
+                    useExistingTable = ts.FindTableLike(tbl.FullName.Schema, tbl.FullName.Name) != null;
+                }
+
+                if (!useExistingTable)
+                {
+                    tbl.Columns.ForEach(x => x.EnsureDataType(connection.Factory.CreateSqlTypeProvider()));
+                    dmp.CreateTable(tbl);
+                }
                 //using (var cmd = conn.CreateCommand())
                 //{
                 //    cmd.CommandText = sw.ToString();
                 //    cmd.ExecuteNonQuery();
                 //}
 
-                return new TableWriter(context, connection, GetFullName(context), rowFormat, options, tbl, LinkedInfo);
+                return new TableWriter(context, connection, GetFullName(context), inputRowFormat, options, useExistingTable ? null : tbl, LinkedInfo, sourceDataFormat);
             }
         }
 
         public TableInfo GetRowFormat(IShellContext context)
         {
             throw new NotImplementedException();
+        }
+
+        public override string ToString()
+        {
+            return String.Format("[Create Table {0}]", Name);
         }
     }
 }

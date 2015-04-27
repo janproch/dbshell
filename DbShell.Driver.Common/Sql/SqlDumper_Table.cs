@@ -23,7 +23,7 @@ namespace DbShell.Driver.Common.Sql
 
         public virtual void TruncateTable(NameWithSchema name)
         {
-            Put("^delete ^from %f;&n", name);
+            PutCmd("^delete ^from %f;&n", name);
         }
 
         public void UpdateData(TableInfo table, SingleTableDataScript script, LinkedDatabaseInfo linkedInfo)

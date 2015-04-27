@@ -46,9 +46,9 @@ namespace DbShell.Driver.Common.CommonDataLayer
                     return;
                 }
             }
-            NumberStyles floatStyle = NumberStyles.Float | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite;
+            NumberStyles floatStyle = NumberStyles.Float | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite | NumberStyles.AllowExponent;
             NumberStyles intStyle = NumberStyles.Integer | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite;
-            NumberStyles decStyle = NumberStyles.Number | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite;
+            NumberStyles decStyle = NumberStyles.Number | NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite | NumberStyles.AllowExponent;
             switch (type)
             {
                 case TypeStorage.Null:

@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 DateTimeFilter.g 2014-11-02 21:57:16
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 DateTimeFilter.g 2015-01-03 12:47:24
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 168, 219
@@ -1315,7 +1315,7 @@ public partial class DateTimeFilterParser : DbShellFilterAntlrParser
                     	state.followingStackPointer--;
 
                     	adaptor.AddChild(root_0, t.Tree);
-                    	 var dt=ParseDate(((d != null) ? d.Text : null))+ParseTimeEnd(((t != null) ? input.ToString((IToken)(t.Start),(IToken)(t.Stop)) : null));AddDateTimeRelation(dt, "<="); 
+                    	 var dt=ParseDate(((d != null) ? d.Text : null))+ParseTimeEnd(((t != null) ? input.ToString((IToken)(t.Start),(IToken)(t.Stop)) : null));AddDateTimeRelation(dt, "<"); 
 
                     }
                     break;

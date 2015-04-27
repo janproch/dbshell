@@ -7,6 +7,8 @@ using System.Text;
 using System.Xml;
 using DbShell.Common;
 using DbShell.Core.Utility;
+using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core
 {

@@ -40,9 +40,12 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <Choose>
@@ -58,11 +61,13 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DatabaseTestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CopyTableTest.cs" />
     <Compile Include="RazorTest.cs" />
     <Compile Include="CsvTest.cs" />
     <Compile Include="TestUtility.cs" />
+    <Compile Include="ToolTests.cs" />
     <Compile Include="XamlReaderTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -78,10 +83,6 @@
       <Project>{cc233c46-ae79-4adb-ae5c-b4bae3fd2495}</Project>
       <Name>DbShell.Driver.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DbShell.Driver.SqlServer.Test\DbShell.Driver.SqlServer.Test.csproj">
-      <Project>{68ea9100-a0ac-444b-81f7-9e10a2f4b8b9}</Project>
-      <Name>DbShell.Driver.SqlServer.Test</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DbShell.Driver.SqlServer\DbShell.Driver.SqlServer.csproj">
       <Project>{80906e4d-1539-4f93-a227-3e072f49baea}</Project>
       <Name>DbShell.Driver.SqlServer</Name>
@@ -91,6 +92,7 @@
     <Content Include="Ideas.xml">
       <SubType>Designer</SubType>
     </Content>
+    <EmbeddedResource Include="CreateTestData.sql" />
     <Content Include="xamltest1.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -181,6 +183,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="querytohtml.xaml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <Content Include="ImportedData.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="mapped_import.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

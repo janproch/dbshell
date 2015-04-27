@@ -26,6 +26,8 @@ namespace DbShell.Excel.ExcelModels
             _app.Visible = false;
         }
 
+        public DataFormatSettings DataFormat;
+
         public static ExcelModel OpenFile(string file)
         {
             var res = new ExcelModel();
@@ -89,17 +91,24 @@ namespace DbShell.Excel.ExcelModels
         public ICdlWriter CreateWriter(TableInfo rowFormat, string sheetName)
         {
             var sheet = CreateSheet(rowFormat, sheetName);
-            return new ExcelWriter(rowFormat, sheet);
+            return new ExcelWriter(rowFormat, sheet, DataFormat);
         }
 
         private TableInfo GetSheetStructure(Worksheet sheet)
         {
             var res = new TableInfo(null);
             var range = sheet.UsedRange.Columns;
+            var usedNames = new HashSet<string>();
+            for (int i = 1; i <= range.Count; i++)
+            {
+                usedNames.Add("column_" + i);
+            }
             for (int i = 1; i <= range.Count; i++)
             {
                 object value = ((Range) range.Cells[1, i]).Value2;
                 string name = value.SafeToString();
+                if (String.IsNullOrEmpty(name) || usedNames.Contains(name)) name = "column_" + i;
+                usedNames.Add(name);
                 res.Columns.Add(new ColumnInfo(res) {CommonType = new DbTypeString(), DataType = "nvarchar", Length = -1, Name = name});
 
             }

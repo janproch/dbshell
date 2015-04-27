@@ -34,5 +34,22 @@ namespace DbShell.Driver.Sqlite
             argument(this);
             Put(") as int)");
         }
+
+        public override void RenameTable(Common.Structure.TableInfo obj, string newname)
+        {
+            PutCmd("^alter ^table %f ^rename ^to %i", obj.FullName, newname);
+        }
+
+        public override void ColumnDefinition(Common.Structure.ColumnInfo col, bool includeDefault, bool includeNullable, bool includeCollate)
+        {
+        }
+
+        public override void DropTable(Common.Structure.TableInfo obj, bool testIfExists)
+        {
+            Put("^drop ^table");
+            if (testIfExists) Put(" ^if ^exists");
+            Put(" %f", obj.FullName);
+            EndCommand();
+        }
     }
 }

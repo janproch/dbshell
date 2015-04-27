@@ -30,14 +30,29 @@ namespace DbShell.Core.Runtime
         private string _defaultConnection;
         private string _defaultOutputFolder;
 
+        private List<IDisposable> _disposableItems = new List<IDisposable>();
+
         // search folders
         private Dictionary<ResolveFileMode, List<string>> _additionalSearchFolders = new Dictionary<ResolveFileMode, List<string>>();
 
+        [ThreadStatic]
+        static ScriptEngine _staticEngine;
+
+        private static ScriptEngine GetEngine()
+        {
+            if (_staticEngine == null)
+            {
+                _staticEngine = Python.CreateEngine();
+            }
+            return _staticEngine;
+        }
+
         public ShellContext(ShellContext parent = null)
         {
-            if (parent==null)
+            if (parent == null)
             {
-                _engine = Python.CreateEngine();
+                //_engine = Python.CreateEngine();
+                _engine = GetEngine();
                 _scope = _engine.CreateScope();
 
                 _dbCache = new Dictionary<string, DatabaseInfo>();
@@ -48,7 +63,14 @@ namespace DbShell.Core.Runtime
 
                 _engine = _parent._engine;
                 _dbCache = _parent._dbCache;
+
+                OnOutputMessage += ShellContext_OnOutputMessage;
             }
+        }
+
+        void ShellContext_OnOutputMessage(string msg)
+        {
+            if (_parent != null) _parent.OutputMessage(msg);
         }
 
         public DatabaseInfo GetDatabaseStructure(string connectionKey)
@@ -57,7 +79,7 @@ namespace DbShell.Core.Runtime
             {
                 IConnectionProvider connection = ConnectionProvider.FromString(connectionKey);
                 _log.InfoFormat("DBSH-00076 Downloading structure for connection {0}", connection);
-                OutputMessage(String.Format("DBSH-00000 Downloading structure for connection {0}", connection));
+                OutputMessage(String.Format("DBSH-00149 Downloading structure for connection {0}", connection));
                 var analyser = connection.Factory.CreateAnalyser();
                 using (var conn = connection.Connect())
                 {
@@ -97,6 +119,8 @@ namespace DbShell.Core.Runtime
 
         public void Dispose()
         {
+            _disposableItems.ForEach(x => x.Dispose());
+            _disposableItems.Clear();
         }
 
         public object Evaluate(string expression)
@@ -140,10 +164,12 @@ namespace DbShell.Core.Runtime
                 if (runnable == null) throw new Exception(String.Format("DBSH-00059 Included file {0} doesn't contain root element implementing IRunnable", file));
                 //var shellElem = obj as IShellElement;
                 //if (shellElem != null) ShellRunner.ProcessLoadedElement(shellElem, parent, this);
-                var childContext = CreateChildContext();
-                childContext.SetExecutingFolder(Path.GetDirectoryName(file));
-                SetExecutingFolder(Path.GetDirectoryName(file));
-                runnable.Run(childContext);
+                using (var childContext = CreateChildContext())
+                {
+                    childContext.SetExecutingFolder(Path.GetDirectoryName(file));
+                    SetExecutingFolder(Path.GetDirectoryName(file));
+                    runnable.Run(childContext);
+                }
             }
         }
 
@@ -265,6 +291,11 @@ namespace DbShell.Core.Runtime
         public IShellContext CreateChildContext()
         {
             return new ShellContext(this);
+        }
+
+        public void AddDisposableItem(IDisposable disposable)
+        {
+            _disposableItems.Add(disposable);
         }
     }
 }

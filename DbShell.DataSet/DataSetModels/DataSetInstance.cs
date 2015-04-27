@@ -36,6 +36,15 @@ namespace DbShell.DataSet.DataSetModels
             }
         }
 
+        public int SimpleKeyValue
+        {
+            get
+            {
+                if (Class.SimplePkColIndex < 0) throw new Exception(String.Format("Please define simple key of table {0}", Class.TableName));
+                return Int32.Parse(Values[Class.SimplePkColIndex].ToString());
+            }
+        }
+
         public bool RequiredIdentity
         {
             get

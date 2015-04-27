@@ -5,6 +5,7 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.DbDiff;
 
 namespace DbShell.Driver.Sqlite
 {
@@ -30,6 +31,44 @@ namespace DbShell.Driver.Sqlite
         public override ISqlDumper CreateDumper(ISqlOutputStream stream, SqlFormatProperties props)
         {
             return new SqliteSqlDumper(stream, this, props);
+        }
+
+        public override ILiteralFormatter CreateLiteralFormatter()
+        {
+            return new SqliteLiteralFormatter(this);
+        }
+
+        public override ISqlDialect CreateDialect()
+        {
+            return new SqliteDialect();
+        }
+
+        public static void Initialize()
+        {
+            FactoryProvider.RegisterFactory(Instance);
+        }
+
+        public override DatabaseAnalyser CreateAnalyser()
+        {
+            return new SqliteAnalyser();
+        }
+
+        public override SqlDialectCaps DialectCaps
+        {
+            get
+            {
+                var res = base.DialectCaps;
+                res.MultiCommand = true;
+                res.ForeignKeys = true;
+                res.Uniques = false;
+                res.MultipleSchema = false;
+                res.MultipleDatabase = false;
+                res.UncheckedReferences = true;
+                res.NestedTransactions = true;
+                res.AnonymousPrimaryKey = true;
+                res.RangeSelect = true;
+                return res;
+            }
         }
     }
 }

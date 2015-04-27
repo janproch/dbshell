@@ -2,6 +2,7 @@
 using System.Linq;
 using System.ComponentModel;
 using System.Globalization;
+using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.CommonDataLayer
@@ -10,17 +11,22 @@ namespace DbShell.Driver.Common.CommonDataLayer
 
     public enum OnDataErrorMode
     {
-        [Description("s_propagate_to_higher_level")]
+        [Description("Propagate to higher level")]
         Propagate,
-        [Description("s_use_defaut_value")]
+        [Description("Use defaut value")]
         UseDefault,
-        [Description("s_use_null")]
+        [Description("Use null")]
         UseNull,
     }
 
+    [DisplayName("Data format settings")]
     public class DataFormatSettings
     {
         string m_dateFormat = "yyyy-MM-dd";
+        [XmlElem]
+        [DisplayName("Date format")]
+        [Category("Date and time")]
+        [XamlProperty]
         public string DateFormat
         {
             get { return m_dateFormat; }
@@ -28,6 +34,10 @@ namespace DbShell.Driver.Common.CommonDataLayer
         }
 
         string m_timeFormat = "HH:mm:ss";
+        [XmlElem]
+        [DisplayName("Time format")]
+        [Category("Date and time")]
+        [XamlProperty]
         public string TimeFormat
         {
             get { return m_timeFormat; }
@@ -35,6 +45,10 @@ namespace DbShell.Driver.Common.CommonDataLayer
         }
 
         string m_dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+        [XmlElem]
+        [DisplayName("Date-time format")]
+        [Category("Date and time")]
+        [XamlProperty]
         public string DateTimeFormat
         {
             get { return m_dateTimeFormat; }
@@ -42,6 +56,10 @@ namespace DbShell.Driver.Common.CommonDataLayer
         }
 
         string m_decimalSeparator = ".";
+        [XmlElem]
+        [DisplayName("Decimal separator")]
+        [Category("Numbers")]
+        [XamlProperty]
         public string DecimalSeparator
         {
             get { return m_decimalSeparator; }
@@ -49,6 +67,10 @@ namespace DbShell.Driver.Common.CommonDataLayer
         }
 
         string[] m_nullValues = new string[] { "(NULL)" };
+        [XmlElem]
+        [DisplayName("NULL values")]
+        [Category("General")]
+        [XamlProperty]
         public string NullValues
         {
             get { return String.Join(", ", m_nullValues); }
@@ -56,14 +78,21 @@ namespace DbShell.Driver.Common.CommonDataLayer
         }
 
         string[] m_trueValues = new string[] { "true", "yes", "1", "on" };
+        [XmlElem]
+        [DisplayName("TRUE values")]
+        [Category("General")]
+        [XamlProperty]
         public string TrueValues
         {
             get { return String.Join(", ", m_trueValues); }
             set { m_trueValues = (from s in value.Split(',') select s.Trim()).ToArray(); }
         }
 
-
         string[] m_falseValues = new string[] { "false", "no", "0", "off" };
+        [XmlElem]
+        [DisplayName("FALSE values")]
+        [Category("General")]
+        [XamlProperty]
         public string FalseValues
         {
             get { return String.Join(", ", m_falseValues); }
@@ -71,6 +100,10 @@ namespace DbShell.Driver.Common.CommonDataLayer
         }
 
         string m_blobInfo = "(BLOB)";
+        [XmlElem]
+        [DisplayName("BLOB info message")]
+        [Category("Binary data")]
+        [XamlProperty]
         public string BlobInfo
         {
             get { return m_blobInfo; }
@@ -78,6 +111,10 @@ namespace DbShell.Driver.Common.CommonDataLayer
         }
 
         DataFormatBlobMode m_blobMode = DataFormatBlobMode.Base64;
+        [XmlElem]
+        [DisplayName("BLOB mode")]
+        [Category("Binary data")]
+        [XamlProperty]
         public DataFormatBlobMode BlobMode
         {
             get { return m_blobMode; }
@@ -85,6 +122,10 @@ namespace DbShell.Driver.Common.CommonDataLayer
         }
 
         int m_hexBytesOnLine = 0;
+        [XmlElem]
+        [DisplayName("HEX bytes on line")]
+        [Category("Binary data")]
+        [XamlProperty]
         public int HexBytesOnLine
         {
             get { return m_hexBytesOnLine; }
@@ -92,6 +133,10 @@ namespace DbShell.Driver.Common.CommonDataLayer
         }
 
         bool m_logAllErrors = false;
+        [XmlElem]
+        [DisplayName("Log all errors")]
+        [Category("Errors")]
+        [XamlProperty]
         public bool LogAllErrors
         {
             get { return m_logAllErrors; }
@@ -99,6 +144,11 @@ namespace DbShell.Driver.Common.CommonDataLayer
         }
 
         OnDataErrorMode m_onErrorMode = OnDataErrorMode.Propagate;
+        [XmlElem]
+        [DisplayName("On error")]
+        [Category("Errors")]
+        //[TypeConverter(typeof(EnumDescConverter))]
+        [XamlProperty]
         public OnDataErrorMode OnErrorMode
         {
             get { return m_onErrorMode; }
@@ -106,6 +156,10 @@ namespace DbShell.Driver.Common.CommonDataLayer
         }
 
         int m_defaultNumber;
+        [XmlElem]
+        [DisplayName("Default number")]
+        [Category("Errors")]
+        [XamlProperty]
         public int DefaultNumber
         {
             get { return m_defaultNumber; }
@@ -113,6 +167,10 @@ namespace DbShell.Driver.Common.CommonDataLayer
         }
 
         bool m_defautlLogical;
+        [XmlElem]
+        [DisplayName("Default logical value")]
+        [Category("Errors")]
+        [XamlProperty]
         public bool DefautlLogical
         {
             get { return m_defautlLogical; }
@@ -120,6 +178,11 @@ namespace DbShell.Driver.Common.CommonDataLayer
         }
 
         DateTimeEx m_defaultDateTime = new DateTimeEx(2000, 1, 1, 0, 0, 0);
+        [XmlElem]
+        [DisplayName("Default date-time value")]
+        [Category("Errors")]
+        [XamlProperty]
+        [TypeConverter(typeof(DateTimeExTypeConverter))]
         public DateTimeEx DefaultDateTime
         {
             get { return m_defaultDateTime; }
@@ -178,6 +241,12 @@ namespace DbShell.Driver.Common.CommonDataLayer
             else if (type.IsDateRelated()) writer.SetDateTimeValue(type, m_defaultDateTime);
             else if (type == TypeStorage.Boolean) writer.SetBoolean(m_defautlLogical);
             else writer.SetNull();
+        }
+
+        public bool IsNullString(string s)
+        {
+            if (s == null) return true;
+            return m_nullValues.Contains(s.Trim());
         }
     }
 }

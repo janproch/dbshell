@@ -542,7 +542,14 @@ namespace DbShell.Driver.Common.CommonDataLayer
         {
             if (Nanosecond != 0)
             {
-                return ToString("yyyy-MM-ddTHH:mm:ss.fffffff", DateTimeFormatInfo.InvariantInfo);
+                if (_Millisecond * 1000000 != Nanosecond)
+                {
+                    return ToString("yyyy-MM-ddTHH:mm:ss.fffffff", DateTimeFormatInfo.InvariantInfo);
+                }
+                else
+                {
+                    return ToString("yyyy-MM-ddTHH:mm:ss.fff", DateTimeFormatInfo.InvariantInfo);
+                }
             }
             else
             {
@@ -596,10 +603,20 @@ namespace DbShell.Driver.Common.CommonDataLayer
             if (this >= maxval) this = maxval;
         }
 
-        public void MakeValidDate()
+        public bool MakeValidDate()
         {
-            if (m_month == 0) m_month = 1;
-            if (m_day == 0) m_day = 1;
+            bool changed = false;
+            if (m_month == 0)
+            {
+                m_month = 1;
+                changed = true;
+            }
+            if (m_day == 0)
+            {
+                m_day = 1;
+                changed = true;
+            }
+            return changed;
         }
     }
 }

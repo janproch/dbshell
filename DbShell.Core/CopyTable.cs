@@ -58,6 +58,17 @@ namespace DbShell.Core
         [XamlProperty]
         public bool CleanTarget { get; set; }
 
+        /// <summary>
+        /// How to map input columns to target (used if target has fixed columns, eg. existing table)
+        /// </summary>
+        [XamlProperty]
+        public TargetColumnMapMode TargetMapMode { get; set; }
+
+        /// <summary>
+        /// whether to allow bulk copy inserting, if target supports it
+        /// </summary>
+        [XamlProperty]
+        public bool AllowBulkCopy { get; set; }
 
         /// <summary>
         /// Gets or sets the column map. If ColumnMap is empty (no mappings are defined), identity column map is used
@@ -99,35 +110,38 @@ namespace DbShell.Core
             var options = new CopyTableTargetOptions
                 {
                     TruncateBeforeCopy = CleanTarget,
+                    TargetMapMode = TargetMapMode,
+                    AllowBulkCopy = AllowBulkCopy,
                 };
 
             var table = source.GetRowFormat(context);
 
             _log.InfoFormat("Copy table data {0}=>{1}", Source, Target);
+            context.OutputMessage(String.Format("Copy table data {0}=>{1}", Source, Target));
 
-            var targetTable = table;
+            var transformedInputTable = table;
             var counts = new List<int>();
             if (ColumnMap.Count > 0)
             {
-                targetTable = new TableInfo(null);
+                transformedInputTable = new TableInfo(null);
                 foreach (var mapItem in ColumnMap)
                 {
                     var newCols = mapItem.GetOutputColumns(table, context);
                     counts.Add(newCols.Length);
-                    targetTable.Columns.AddRange(newCols);
+                    transformedInputTable.Columns.AddRange(newCols);
                 }
             }
 
             using (var reader = source.CreateReader(context))
             {
-                using (var writer = target.CreateWriter(targetTable, options, context))
+                using (var writer = target.CreateWriter(transformedInputTable, options, context, source.GetSourceFormat(context)))
                 {
                     int rowNumber = 0;
                     while (reader.Read())
                     {
                         if (ColumnMap.Count > 0)
                         {
-                            var outputRecord = new ArrayDataRecord(targetTable);
+                            var outputRecord = new ArrayDataRecord(transformedInputTable);
                             int columnIndex = 0;
                             for (int i = 0; i < ColumnMap.Count; i++)
                             {
@@ -167,6 +181,8 @@ namespace DbShell.Core
         public CopyTable()
         {
             ColumnMap = new List<IColumnMapping>();
+            TargetMapMode = TargetColumnMapMode.Name;
+            AllowBulkCopy = true;
         }
     }
 }

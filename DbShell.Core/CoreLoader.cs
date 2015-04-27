@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DbShell.Driver.SqlServer;
+using DbShell.Driver.Sqlite;
 
 namespace DbShell.Core
 {
@@ -17,6 +18,7 @@ namespace DbShell.Core
         {
             if (_loaded) return;
             SqlServerDatabaseFactory.Initialize();
+            SqliteDatabaseFactory.Initialize();
             _loaded = true;
         }
     }

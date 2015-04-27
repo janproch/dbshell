@@ -9,20 +9,23 @@ namespace DbShell.Core.RazorModels
     {
         private static bool _initialized;
 
-        public static void ParseRazor(string templateData, Action<string> write, object model, Action<IRazorTemplate, IShellContext> initTemplate = null)
+        public static void ParseRazor(string templateData, Action<string> write, object model, Action<IRazorTemplate, IShellContext> initTemplate = null, IShellContext context = null)
         {
             if (!_initialized)
             {
                 Initialize();
             }
-            var ctx = new ShellContext(null);
-            if (InitializeContext != null) InitializeContext(ctx);
+            if (context == null)
+            {
+                context = new ShellContext(null);
+                if (InitializeContext != null) InitializeContext(context);
+            }
             Action<ITemplate> func = tpl =>
                 {
                     var rtpl = (IRazorTemplate) tpl;
                     rtpl.Reset();
-                    rtpl.Context = ctx;
-                    if (initTemplate != null) initTemplate(rtpl, ctx);
+                    rtpl.Context = context;
+                    if (initTemplate != null) initTemplate(rtpl, context);
                     if (InitializeTemplate != null) InitializeTemplate(rtpl);
                 };
             RazorEngine.Razor.Parse(templateData, write, model, null, func);

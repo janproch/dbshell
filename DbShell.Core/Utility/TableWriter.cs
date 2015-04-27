@@ -17,7 +17,7 @@ namespace DbShell.Core.Utility
 
         private IConnectionProvider _connectionProvider;
         private NameWithSchema _name;
-        private TableInfo _rowFormat;
+        private TableInfo _inputRowFormat;
         private Thread _thread;
         private CdlDataQueue _queue;
         private IBulkInserter _inserter;
@@ -25,16 +25,17 @@ namespace DbShell.Core.Utility
         private IShellContext _context;
         private LinkedDatabaseInfo _linkedInfo;
 
-        public TableWriter(IShellContext context, IConnectionProvider connection, NameWithSchema name, TableInfo rowFormat, CopyTableTargetOptions options, TableInfo destinationTableOverride = null, LinkedDatabaseInfo linkedInfo = null)
+        public TableWriter(IShellContext context, IConnectionProvider connection, NameWithSchema name, TableInfo inputRowFormat, CopyTableTargetOptions options, TableInfo destinationTableOverride = null, LinkedDatabaseInfo linkedInfo = null, DataFormatSettings sourceDataFormat = null)
         {
             _connectionProvider = connection;
             _linkedInfo = linkedInfo;
             _name = name;
-            _rowFormat = rowFormat;
-            _queue = new CdlDataQueue(rowFormat);
+            _inputRowFormat = inputRowFormat;
+            _queue = new CdlDataQueue(inputRowFormat);
             _context = context;
 
             _inserter = connection.Factory.CreateBulkInserter();
+            _inserter.SourceDataFormat = sourceDataFormat;
             _connection = _connectionProvider.Connect();
             _inserter.Connection = _connection;
             _inserter.Factory = connection.Factory;

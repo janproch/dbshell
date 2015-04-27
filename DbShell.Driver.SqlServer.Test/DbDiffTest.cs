@@ -73,7 +73,7 @@ namespace DbShell.Driver.SqlServer.Test
             mangle(db2);
             var plan = new AlterPlan(db1);
             DbDiffTool.AlterDatabase(plan, db1, db2, new DbDiffOptions());
-            var caps = SqlServerDatabaseFactory.Instance.CreateDialect().DumperCaps;
+            var caps = SqlServerDatabaseFactory.Instance.DumperCaps;
             plan.AddLogicalDependencies(caps, new DbDiffOptions());
             plan.Transform(caps, new DbDiffOptions());
 

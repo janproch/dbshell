@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Windows.Markup;
 using DbShell.Common;
+using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core.Utility
 {

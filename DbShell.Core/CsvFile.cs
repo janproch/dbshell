@@ -162,6 +162,23 @@ namespace DbShell.Core
             set { _trimSpaces = value; }
         }
 
+        /// <summary>
+        /// data format settings
+        /// </summary>
+        [XamlProperty]
+        public DataFormatSettings DataFormat { get; set; }
+
+        /// <summary>
+        /// delimiter will be autodetected
+        /// </summary>
+        [XamlProperty]
+        public bool AutoDetectDelimiter { get; set; }
+
+        DataFormatSettings ITabularDataSource.GetSourceFormat(IShellContext context)
+        {
+            return DataFormat;
+        }
+
         private string GetName(IShellContext context)
         {
             return context.Replace(Name);
@@ -172,12 +189,14 @@ namespace DbShell.Core
             string name = GetName(context);
             name = context.ResolveFile(name, ResolveFileMode.Input);
             var textReader = new StreamReader(name, Encoding);
-            return CreateCsvReader(textReader);
+            return CreateCsvReader(textReader, name);
         }
 
-        private LumenWorks.Framework.IO.Csv.CsvReader CreateCsvReader(TextReader textReader)
+        private LumenWorks.Framework.IO.Csv.CsvReader CreateCsvReader(TextReader textReader, string file = null)
         {
-            var reader = new LumenWorks.Framework.IO.Csv.CsvReader(textReader, HasHeaders, Delimiter, Quote, Escape, Comment,
+            char delim = Delimiter;
+            if (file != null && AutoDetectDelimiter) delim = DetectDelimiter(file);
+            var reader = new LumenWorks.Framework.IO.Csv.CsvReader(textReader, HasHeaders, delim, Quote, Escape, Comment,
                                                                    TrimSpaces ? LumenWorks.Framework.IO.Csv.ValueTrimmingOptions.UnquotedOnly : LumenWorks.Framework.IO.Csv.ValueTrimmingOptions.None);
             reader.DefaultParseErrorAction = ParseErrorAction.AdvanceToNextLine;
             return reader;
@@ -194,14 +213,14 @@ namespace DbShell.Core
         ICdlReader ITabularDataSource.CreateReader(IShellContext context)
         {
             var reader = CreateCsvReader(context);
-            return new CsvReader(GetStructure(reader), reader);
+            return new CsvReader(GetStructure(reader), reader, DataFormat);
         }
 
         // ignores File attribute and creates buffer reader
         public CsvReader CreateBufferCsvReader(TextReader textReader)
         {
             var reader = CreateCsvReader(textReader);
-            return new CsvReader(GetStructure(reader), reader);
+            return new CsvReader(GetStructure(reader), reader, DataFormat);
         }
 
         bool ITabularDataTarget.IsAvailableRowFormat(IShellContext context)
@@ -209,13 +228,13 @@ namespace DbShell.Core
             return false;
         }
 
-        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context)
+        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context, DataFormatSettings sourceDataFormat)
         {
             string file = context.ResolveFile(GetName(context), ResolveFileMode.Output);
             context.OutputMessage("Writing file " + Path.GetFullPath(file));
             //var fs = System.IO.File.OpenWrite(file);
             var fw = new StreamWriter(file, false, Encoding);
-            var writer = new CsvWriter(fw, Delimiter, Quote, Escape, Comment, QuotingMode, EndOfLine);
+            var writer = new CsvWriter(fw, Delimiter, Quote, Escape, Comment, QuotingMode, EndOfLine, DataFormat);
             if (HasHeaders)
             {
                 writer.WriteRow(rowFormat.Columns.Select(c => c.Name));
@@ -243,6 +262,35 @@ namespace DbShell.Core
             return res;
         }
 
+        public char DetectDelimiter(IShellContext context)
+        {
+            string name = GetName(context);
+            name = context.ResolveFile(name, ResolveFileMode.Input);
+            return DetectDelimiter(name);
+        }
+
+        private char DetectDelimiter(string file)
+        {
+            var counts = new Dictionary<char, List<int>>();
+            counts[','] = new List<int>();
+            counts[';'] = new List<int>();
+            counts['\t'] = new List<int>();
+
+            using (var reader = new StreamReader(file, Encoding))
+            {
+                for (int i = 0; i < 100; i++)
+                {
+                    string line = reader.ReadLine();
+                    if (line == null) break;
+                    foreach (var item in counts)
+                    {
+                        item.Value.Add(line.Count(x => x == item.Key));
+                    }
+                }
+            }
+
+            return counts.MaxKey(x => x.Value.Sum()).Key;
+        }
 
         TableInfo ITabularDataTarget.GetRowFormat(IShellContext context)
         {

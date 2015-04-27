@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.IO;
+using System.Text;
 using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.CommonDataLayer
@@ -37,25 +38,25 @@ namespace DbShell.Driver.Common.CommonDataLayer
                     case TypeCode.SByte:
                         unchecked
                         {
-                            writer.SetSByte((sbyte)record.GetByte(index));
+                            writer.SetSByte((sbyte) record.GetByte(index));
                         }
                         break;
                     case TypeCode.UInt16:
                         unchecked
                         {
-                            writer.SetUInt16((ushort)record.GetInt16(index));
+                            writer.SetUInt16((ushort) record.GetInt16(index));
                         }
                         break;
                     case TypeCode.UInt32:
                         unchecked
                         {
-                            writer.SetUInt32((uint)record.GetInt32(index));
+                            writer.SetUInt32((uint) record.GetInt32(index));
                         }
                         break;
                     case TypeCode.UInt64:
                         unchecked
                         {
-                            writer.SetUInt64((ulong)record.GetInt64(index));
+                            writer.SetUInt64((ulong) record.GetInt64(index));
                         }
                         break;
                     case TypeCode.DateTime:
@@ -74,13 +75,13 @@ namespace DbShell.Driver.Common.CommonDataLayer
                         writer.SetString(record.GetString(index));
                         break;
                     default:
-                        if (type == typeof(Guid))
+                        if (type == typeof (Guid))
                         {
                             writer.SetGuid(record.GetGuid(index));
                         }
-                        else if (type == typeof(byte[]))
+                        else if (type == typeof (byte[]))
                         {
-                            writer.SetByteArray((byte[])record.GetValue(index));
+                            writer.SetByteArray((byte[]) record.GetValue(index));
                         }
                         else
                         {
@@ -89,7 +90,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                         break;
                 }
             }
-            catch
+            catch (Exception err)
             {
                 try
                 {
@@ -103,18 +104,31 @@ namespace DbShell.Driver.Common.CommonDataLayer
                     {
                         writer.SetString(record.GetString(index));
                     }
-                    catch (Exception err)
+                    catch
                     {
                         // add information to exception
-                        try { err.Data["data_type"] = record.GetFieldType(index).FullName; }
-                        catch (Exception err2) { err.Data["data_type"] = err2.ToString(); }
-                        try { err.Data["data_isnull"] = record.IsDBNull(index).ToString(); }
-                        catch (Exception err2) { err.Data["data_isnull"] = err2.ToString(); }
-                        throw;
+                        try
+                        {
+                            err.Data["data_type"] = record.GetFieldType(index).FullName;
+                        }
+                        catch (Exception err2)
+                        {
+                            err.Data["data_type"] = err2.ToString();
+                        }
+                        try
+                        {
+                            err.Data["data_isnull"] = record.IsDBNull(index).ToString();
+                        }
+                        catch (Exception err2)
+                        {
+                            err.Data["data_isnull"] = err2.ToString();
+                        }
+                        throw err;
                     }
                 }
             }
         }
+
         public static void ReadFrom(this ICdlValueWriter writer, object value)
         {
             if (value == null || value == DBNull.Value)

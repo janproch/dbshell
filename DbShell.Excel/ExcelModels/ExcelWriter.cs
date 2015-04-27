@@ -13,20 +13,37 @@ namespace DbShell.Excel.ExcelModels
     {
         private TableInfo _rowFormat;
         private Worksheet _sheet;
-        private int _rowIndex = 2;
         private ICdlValueFormatter _formatter;
+        private List<object[]> _rows = new List<object[]>();
 
-        public ExcelWriter(TableInfo rowFormat, Worksheet sheet)
+        public ExcelWriter(TableInfo rowFormat, Worksheet sheet, DataFormatSettings dataFormat)
         {
             _rowFormat = rowFormat;
             _sheet = sheet;
-            _formatter = new CdlValueFormatter(new DataFormatSettings());
+            _formatter = new CdlValueFormatter(dataFormat ?? new DataFormatSettings());
         }
 
         #region IDisposable Members
 
         public void Dispose()
         {
+            if (_rows.Any())
+            {
+                var data = new object[_rows.Count,_rowFormat.ColumnCount];
+                for (int i = 0; i < _rows.Count; i++)
+                {
+                    for (int j = 0; j < _rowFormat.ColumnCount; j++)
+                    {
+                        data[i, j] = _rows[i][j];
+                    }
+                }
+
+                var beginWrite = (Range) _sheet.Cells[2, 1];
+                var endWrite = (Range) _sheet.Cells[_rows.Count + 1, _rowFormat.ColumnCount];
+                var sheetData = _sheet.Range[beginWrite, endWrite];
+                sheetData.Value2 = data;
+            }
+
             if (Disposing != null)
             {
                 Disposing();
@@ -40,13 +57,14 @@ namespace DbShell.Excel.ExcelModels
 
         public void Write(ICdlRecord row)
         {
+            var dataRow = new object[row.FieldCount];
+            _rows.Add(dataRow);
             for (int i = 0; i < row.FieldCount; i++)
             {
                 row.ReadValue(i);
                 _formatter.ReadFrom(row);
-                ((Range) _sheet.Cells[_rowIndex, i + 1]).Value2 = _formatter.GetText();
+                dataRow[i] = _formatter.GetText();
             }
-            _rowIndex++;
         }
     }
 }

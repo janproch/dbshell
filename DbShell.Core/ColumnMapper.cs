@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using DbShell.Common;
 using DbShell.Core.Utility;
+using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core
 {
@@ -71,6 +73,11 @@ namespace DbShell.Core
             var counts = new List<int>();
             var outputFormat = GetRowFormat(counts, context);
             return new ColumnMapperReader(Source.CreateReader(context), outputFormat, ColumnMap, counts, context);
+        }
+
+        DataFormatSettings ITabularDataSource.GetSourceFormat(IShellContext context)
+        {
+            return null;
         }
 
         object IModelProvider.GetModel(IShellContext context)

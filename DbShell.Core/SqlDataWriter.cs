@@ -8,6 +8,7 @@ using DbShell.Core.Utility;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core
 {
@@ -16,6 +17,7 @@ namespace DbShell.Core
         /// <summary>
         ///  name of input file
         /// </summary>
+        [XamlProperty]
         public string File { get; set; }
 
         public bool IsAvailableRowFormat(IShellContext context)
@@ -23,7 +25,7 @@ namespace DbShell.Core
             return false;
         }
 
-        public ICdlWriter CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context)
+        public ICdlWriter CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context, DataFormatSettings sourceDataFormat)
         {
             string file = context.ResolveFile(context.Replace(File), ResolveFileMode.Output);
             var fw = new StreamWriter(file);

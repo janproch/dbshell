@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using DbShell.Test;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DbShell.Driver.SqlServer.Test
 {
@@ -11,7 +12,7 @@ namespace DbShell.Driver.SqlServer.Test
             InitDatabase();
 
             string sql = LoadEmbeddedResource("OneTable.sql");
-            using (var conn = OpenConnection())
+            using (var conn = OpenConnection(true))
             {
                 using (var cmd = conn.CreateCommand())
                 {
@@ -39,7 +40,7 @@ namespace DbShell.Driver.SqlServer.Test
             InitDatabase();
 
             string sql = LoadEmbeddedResource("ForeignKeys.sql");
-            using (var conn = OpenConnection())
+            using (var conn = OpenConnection(true))
             {
                 using (var cmd = conn.CreateCommand())
                 {

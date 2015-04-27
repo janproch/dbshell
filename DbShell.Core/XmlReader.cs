@@ -8,6 +8,7 @@ using DbShell.Core.Utility;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core
 {
@@ -34,6 +35,11 @@ namespace DbShell.Core
         public XmlReader()
         {
             Columns = new List<XmlColumn>();
+        }
+
+        DataFormatSettings ITabularDataSource.GetSourceFormat(IShellContext context)
+        {
+            return null;
         }
 
         object IModelProvider.GetModel(IShellContext context)

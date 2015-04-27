@@ -23,17 +23,36 @@ namespace DbShell.Driver.SqlServer
             using (SqlBulkCopy bcp = new SqlBulkCopy( (SqlConnection)Connection, SqlBulkCopyOptions.KeepIdentity | SqlBulkCopyOptions.KeepNulls, null))
             {
                 bcp.DestinationTableName = dialect.QuoteFullName(DestinationTable.FullName);
-                var dst_ts = DestinationTable;
-                if (ts.Columns.Count < dst_ts.Columns.Count)
+
+                foreach(var item in _columnMap.Items)
                 {
-                    int srcindex = 0;
-                    foreach (var src in ts.Columns)
-                    {
-                        SqlBulkCopyColumnMapping map = new SqlBulkCopyColumnMapping(srcindex, dst_ts.Columns.IndexOfIf(col => col.Name == src.Name));
-                        bcp.ColumnMappings.Add(map);
-                        srcindex++;
-                    }
+                    var map = new SqlBulkCopyColumnMapping(item.Source, item.Target);
+                    bcp.ColumnMappings.Add(map);
                 }
+
+                //var dst_ts = DestinationTable;
+
+                //if (ts.Columns.Count < dst_ts.Columns.Count)
+                //{
+                //    int srcindex = 0;
+                //    foreach (var src in ts.Columns)
+                //    {
+                //        SqlBulkCopyColumnMapping map = new SqlBulkCopyColumnMapping(srcindex, dst_ts.Columns.IndexOfIf(col => col.Name == src.Name));
+                //        bcp.ColumnMappings.Add(map);
+                //        srcindex++;
+                //    }
+                //}
+
+                //int srcindex = 0;
+                //foreach (var src in ts.Columns)
+                //{
+                //    int dstIndex = dst_ts.Columns.IndexOfIf(col => col.Name == src.Name);
+                //    if (dstIndex < 0) continue;
+                //    SqlBulkCopyColumnMapping map = new SqlBulkCopyColumnMapping(srcindex, dstIndex);
+                //    bcp.ColumnMappings.Add(map);
+                //    srcindex++;
+                //}
+
                 var readerAda = new CdlReaderAdapter();
                 readerAda.Reader = reader;
                 try

@@ -26,26 +26,29 @@ namespace DbShell.Driver.Common.AbstractDb
             m_literalFormatter = factory.CreateLiteralFormatter();
         }
 
-        //protected virtual void ApplyTypeRestrictions(CdlValueHolder holder, DbTypeBase type, ILogger logger)
-        //{
-        //    var stype = type as DbTypeString;
-        //    var htype = holder.GetFieldType();
-        //    if (stype != null && htype == TypeStorage.String)
-        //    {
-        //        string sval = holder.GetString();
-        //        if (stype.Length > 0 && sval.Length > stype.Length)
-        //        {
-        //            sval = sval.Substring(0, stype.Length);
-        //            holder.SetString(sval);
-        //        }
-        //    }
-        //    if (htype.IsDateRelated() && !m_allowZeroInDate)
-        //    {
-        //        var dt = holder.GetDateTimeValue();
-        //        dt.MakeValidDate();
-        //        m_holder.SetDateTimeEx(dt);
-        //    }
-        //}
+        protected virtual void ApplyTypeRestrictions(CdlValueHolder holder, DbTypeBase type)
+        {
+            var stype = type as DbTypeString;
+            var htype = holder.GetFieldType();
+            if (stype != null && htype == TypeStorage.String)
+            {
+                string sval = holder.GetString();
+                if (stype.Length > 0 && sval.Length > stype.Length)
+                {
+                    sval = sval.Substring(0, stype.Length);
+                    holder.SetString(sval);
+                }
+            }
+            if (htype.IsDateRelated() && !m_allowZeroInDate)
+            {
+                var dt = holder.GetDateTimeValue();
+
+                if (dt.MakeValidDate())
+                {
+                    m_holder.SetDateTimeEx(dt);
+                }
+            }
+        }
 
         #region IDialectDataAdapter Members
 
@@ -57,10 +60,15 @@ namespace DbShell.Driver.Common.AbstractDb
             }
             else
             {
-                converter.ConvertValue(reader, type.DefaultStorage, m_holder);
-                //ApplyTypeRestrictions(m_holder, type, logger);
+                ConvertNotNullValue(reader, type, m_holder, converter);
+                ApplyTypeRestrictions(m_holder, type);
             }
             writer.ReadFrom(m_holder);
+        }
+
+        protected virtual void ConvertNotNullValue(ICdlValueReader reader, DbTypeBase type, CdlValueHolder valueHolder, ICdlValueConvertor converter)
+        {
+            converter.ConvertValue(reader, type.DefaultStorage, valueHolder);
         }
 
         public virtual ICdlReader AdaptReader(IDataReader reader)

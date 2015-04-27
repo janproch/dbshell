@@ -69,12 +69,17 @@ namespace DbShell.Core
             return new CdlFileReader(table, br);
         }
 
+        DataFormatSettings ITabularDataSource.GetSourceFormat(IShellContext context)
+        {
+            return null;
+        }
+
         bool ITabularDataTarget.IsAvailableRowFormat(IShellContext context)
         {
             return false;
         }
 
-        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context)
+        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context, DataFormatSettings sourceDataFormat)
         {
             string file = GetName(context);
             file = context.ResolveFile(file, ResolveFileMode.Output);

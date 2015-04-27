@@ -27,8 +27,6 @@ namespace DbShell.Dbf
         [XamlProperty]
         public string Name { get; set; }
 
-
-
         public bool AllowFoxProInteger { get; set; }
 
         public int DefaultStringLength { get; set; }
@@ -51,6 +49,11 @@ namespace DbShell.Dbf
             set { _encoding = value; }
         }
 
+        /// <summary>
+        /// data format settings
+        /// </summary>
+        [XamlProperty]
+        public DataFormatSettings DataFormat { get; set; }
 
         public DbfFile()
         {
@@ -64,6 +67,11 @@ namespace DbShell.Dbf
             var name = context.ResolveFile(context.Replace(Name), ResolveFileMode.Input);
             dbf.Open(name, System.IO.FileMode.Open);
             return dbf;
+        }
+
+        DataFormatSettings ITabularDataSource.GetSourceFormat(IShellContext context)
+        {
+            return DataFormat;
         }
 
         TableInfo GetStructure(SocialExplorer.IO.FastDBF.DbfFile dbf)
@@ -95,7 +103,11 @@ namespace DbShell.Dbf
                         type = new DbTypeText();
                         break;
                     case DbfColumn.DbfColumnType.Number:
-                        type = new DbTypeNumeric {Precision = dbf.Header[i].DecimalCount};
+                        type = new DbTypeNumeric
+                            {
+                                Precision = dbf.Header[i].Length,
+                                Scale = dbf.Header[i].DecimalCount,
+                            };
                         break;
                     default:
                         type = new DbTypeString();
@@ -135,7 +147,7 @@ namespace DbShell.Dbf
             return false;
         }
 
-        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context)
+        ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context, DataFormatSettings sourceDataFormat)
         {
             string file = context.ResolveFile(context.Replace(Name), ResolveFileMode.Output);
             context.OutputMessage("Writing file " + Path.GetFullPath(file));
@@ -220,7 +232,7 @@ namespace DbShell.Dbf
                 dbf.Header.AddColumn(col.Name, type, len, scale);
             }
 
-            return new DbfWriter(dbf);
+            return new DbfWriter(dbf, DataFormat);
         }
 
         TableInfo ITabularDataTarget.GetRowFormat(IShellContext context)

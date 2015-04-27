@@ -54,17 +54,17 @@ namespace DbShell.Driver.Common.Sql
 
         public virtual void ExtractMonth(Action<ISqlDumper> argument)
         {
-            throw new NotImplementedError("DBSH-00000");
+            throw new NotImplementedError("DBSH-00159");
         }
 
         public virtual void ExtractDayOfMonth(Action<ISqlDumper> argument)
         {
-            throw new NotImplementedError("DBSH-00000");
+            throw new NotImplementedError("DBSH-00160");
         }
 
         public virtual void ExtractDayOfWeek(Action<ISqlDumper> argument)
         {
-            throw new NotImplementedError("DBSH-00000");
+            throw new NotImplementedError("DBSH-00161");
         }
 
         public virtual void PutDayOfWeekLiteral(DayOfWeek value)
@@ -440,7 +440,7 @@ namespace DbShell.Driver.Common.Sql
             {
                 if (cnt is PrimaryKeyInfo)
                 {
-                    if (cnt.ConstraintName != null && !m_dialect.DialectCaps.AnonymousPrimaryKey)
+                    if (cnt.ConstraintName != null && !m_dialect.Factory.DialectCaps.AnonymousPrimaryKey)
                     {
                         Put(" ^constraint %i", cnt.ConstraintName);
                     }
@@ -534,7 +534,7 @@ namespace DbShell.Driver.Common.Sql
 
         public AlterProcessorCaps AlterCaps
         {
-            get { return m_factory.CreateDialect().DumperCaps; }
+            get { return m_factory.DumperCaps; }
         }
 
         public virtual void DropTable(TableInfo obj, bool testIfExists)
