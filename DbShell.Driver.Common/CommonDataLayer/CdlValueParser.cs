@@ -64,7 +64,11 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.Byte:
                     {
                         byte val;
-                        if (Byte.TryParse(text, intStyle, m_numberFormat, out val))
+                        if (String.IsNullOrWhiteSpace(text))
+                        {
+                            writer.SetNull();
+                        }
+                        else if (Byte.TryParse(text, intStyle, m_numberFormat, out val))
                         {
                             writer.SetByte(val);
                         }
@@ -77,7 +81,11 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.Int16:
                     {
                         short val;
-                        if (Int16.TryParse(text, intStyle, m_numberFormat, out val))
+                        if (String.IsNullOrWhiteSpace(text))
+                        {
+                            writer.SetNull();
+                        }
+                        else if (Int16.TryParse(text, intStyle, m_numberFormat, out val))
                         {
                             writer.SetInt16(val);
                         }
@@ -90,7 +98,11 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.Int32:
                     {
                         int val;
-                        if (Int32.TryParse(text, intStyle, m_numberFormat, out val))
+                        if (String.IsNullOrWhiteSpace(text))
+                        {
+                            writer.SetNull();
+                        }
+                        else if (Int32.TryParse(text, intStyle, m_numberFormat, out val))
                         {
                             writer.SetInt32(val);
                         }
@@ -103,7 +115,11 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.Int64:
                     {
                         long val;
-                        if (Int64.TryParse(text, intStyle, m_numberFormat, out val))
+                        if (String.IsNullOrWhiteSpace(text))
+                        {
+                            writer.SetNull();
+                        }
+                        else if (Int64.TryParse(text, intStyle, m_numberFormat, out val))
                         {
                             writer.SetInt64(val);
                         }
@@ -116,7 +132,11 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.SByte:
                     {
                         sbyte val;
-                        if (SByte.TryParse(text, intStyle, m_numberFormat, out val))
+                        if (String.IsNullOrWhiteSpace(text))
+                        {
+                            writer.SetNull();
+                        }
+                        else if (SByte.TryParse(text, intStyle, m_numberFormat, out val))
                         {
                             writer.SetSByte(val);
                         }
@@ -129,7 +149,11 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.UInt16:
                     {
                         ushort val;
-                        if (UInt16.TryParse(text, intStyle, m_numberFormat, out val))
+                        if (String.IsNullOrWhiteSpace(text))
+                        {
+                            writer.SetNull();
+                        }
+                        else if (UInt16.TryParse(text, intStyle, m_numberFormat, out val))
                         {
                             writer.SetUInt16(val);
                         }
@@ -142,7 +166,11 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.UInt32:
                     {
                         uint val;
-                        if (UInt32.TryParse(text, intStyle, m_numberFormat, out val))
+                        if (String.IsNullOrWhiteSpace(text))
+                        {
+                            writer.SetNull();
+                        }
+                        else if (UInt32.TryParse(text, intStyle, m_numberFormat, out val))
                         {
                             writer.SetUInt32(val);
                         }
@@ -155,7 +183,11 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.UInt64:
                     {
                         ulong val;
-                        if (UInt64.TryParse(text, intStyle, m_numberFormat, out val))
+                        if (String.IsNullOrWhiteSpace(text))
+                        {
+                            writer.SetNull();
+                        }
+                        else if (UInt64.TryParse(text, intStyle, m_numberFormat, out val))
                         {
                             writer.SetUInt64(val);
                         }
@@ -168,7 +200,11 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.Float:
                     {
                         float val;
-                        if (Single.TryParse(text, floatStyle, m_numberFormat, out val))
+                        if (String.IsNullOrWhiteSpace(text))
+                        {
+                            writer.SetNull();
+                        }
+                        else if (Single.TryParse(text, floatStyle, m_numberFormat, out val))
                         {
                             writer.SetFloat(val);
                         }
@@ -181,7 +217,11 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.Double:
                     {
                         double val;
-                        if (Double.TryParse(text, floatStyle, m_numberFormat, out val))
+                        if (String.IsNullOrWhiteSpace(text))
+                        {
+                            writer.SetNull();
+                        }
+                        else if (Double.TryParse(text, floatStyle, m_numberFormat, out val))
                         {
                             writer.SetDouble(val);
                         }
@@ -194,7 +234,11 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.Decimal:
                     {
                         decimal val;
-                        if (Decimal.TryParse(text, decStyle, m_numberFormat, out val))
+                        if (String.IsNullOrWhiteSpace(text))
+                        {
+                            writer.SetNull();
+                        }
+                        else if (Decimal.TryParse(text, decStyle, m_numberFormat, out val))
                         {
                             writer.SetDecimal(val);
                         }
@@ -207,7 +251,11 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.DateTime:
                     {
                         DateTime val;
-                        if (DateTime.TryParseExact(text, m_settings.DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out val))
+                        if (String.IsNullOrWhiteSpace(text))
+                        {
+                            writer.SetNull();
+                        }
+                        else if (DateTime.TryParseExact(text, m_settings.DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out val))
                         {
                             writer.SetDateTime(val);
                         }
