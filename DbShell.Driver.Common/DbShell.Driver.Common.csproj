@@ -74,6 +74,13 @@
     <Compile Include="AbstractDb\KeywordsProvider.cs" />
     <Compile Include="AbstractDb\ParsingServiceBase.cs" />
     <Compile Include="AbstractDb\SqlTypeProviderBase.cs" />
+    <Compile Include="ChangeSet\ChangeSetCondition.cs" />
+    <Compile Include="ChangeSet\ChangeSetItem.cs" />
+    <Compile Include="ChangeSet\ChangeSetModel.cs" />
+    <Compile Include="ChangeSet\ChangeSetUpdateItem.cs" />
+    <Compile Include="ChangeSet\ChangeSetValue.cs" />
+    <Compile Include="ChangeSet\ChangeSetDeleteItem.cs" />
+    <Compile Include="ChangeSet\ChangeSetInsertItem.cs" />
     <Compile Include="Utility\DateTimeExTypeConverter.cs" />
     <Compile Include="Utility\TargetColumnMap.cs" />
     <Compile Include="Utility\XamlPropertyAttribute.cs" />
