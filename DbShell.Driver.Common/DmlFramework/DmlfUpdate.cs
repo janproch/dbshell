@@ -33,6 +33,5 @@ namespace DbShell.Driver.Common.DmlFramework
             GenerateFrom(dmp, handler);
             if (Where != null) Where.GenSql(dmp, handler);
         }
-
     }
 }
