@@ -36,21 +36,6 @@ namespace DbShell.Driver.Common.DmlFramework
         [XmlElem]
         public NameWithSchema SelectIntoTable { get; set; }
 
-        public DmlfFromItem SingleFrom
-        {
-            get
-            {
-                if (From.Count == 0) From.Add(new DmlfFromItem());
-                if (From.Count > 1) throw new Exception("DBSH-00158 internal error");
-                return From[0];
-            }
-            set
-            {
-                From.Clear();
-                From.Add(value);
-            }
-        }
-
         public DmlfSelect()
         {
             Columns = new DmlfResultFieldCollection();

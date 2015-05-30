@@ -34,7 +34,7 @@ namespace DbShell.Driver.Common.DmlFramework
             dmp.Put("^insert ^into  ");
             if (InsertTarget != null) InsertTarget.GenSqlDef(dmp, handler);
 
-            dmp.Put(" (%,i) ^ values (", Columns.Select(x => x.Column));
+            dmp.Put(" (%,i) ^ values (", Columns.Select(x => x.TargetColumn));
             for (int i = 0; i < Columns.Count; i++)
             {
                 if (i > 0) dmp.WriteRaw(", ");

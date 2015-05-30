@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.DmlFramework
@@ -55,6 +56,21 @@ namespace DbShell.Driver.Common.DmlFramework
             else
             {
                 Where.Condition = cond;
+            }
+        }
+
+        public DmlfFromItem SingleFrom
+        {
+            get
+            {
+                if (From.Count == 0) From.Add(new DmlfFromItem());
+                if (From.Count > 1) throw new Exception("DBSH-00158 internal error");
+                return From[0];
+            }
+            set
+            {
+                From.Clear();
+                From.Add(value);
             }
         }
     }

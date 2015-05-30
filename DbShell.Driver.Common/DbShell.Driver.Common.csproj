@@ -82,6 +82,7 @@
     <Compile Include="ChangeSet\ChangeSetDeleteItem.cs" />
     <Compile Include="ChangeSet\ChangeSetInsertItem.cs" />
     <Compile Include="DmlFramework\DmlfInsert.cs" />
+    <Compile Include="Structure\StructuredIdentifier.cs" />
     <Compile Include="Utility\DateTimeExTypeConverter.cs" />
     <Compile Include="Utility\TargetColumnMap.cs" />
     <Compile Include="Utility\XamlPropertyAttribute.cs" />

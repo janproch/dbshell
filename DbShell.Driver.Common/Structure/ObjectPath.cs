@@ -4,6 +4,9 @@ using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.Structure
 {
+    /// <summary>
+    /// similar to StructuredIdentifier
+    /// </summary>
     public class ObjectPath : IFormattable
     {
         public string DbName;

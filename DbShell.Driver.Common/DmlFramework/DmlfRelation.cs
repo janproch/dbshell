@@ -299,5 +299,13 @@ namespace DbShell.Driver.Common.DmlFramework
                 from c in cols select new DmlfColumnRef { ColumnName = c, Source = source }
                 ).ToArray();
         }
+
+        public ColumnInfo FindSourceColumn(DatabaseInfo db)
+        {
+            if (Source == null || Source.TableOrView == null) return null;
+            var table = db.FindTable(Source.TableOrView);
+            if (table == null) return null;
+            return table.FindColumn(ColumnName);
+        }
     }
 }

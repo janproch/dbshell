@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.DmlFramework;
 using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Structure;
@@ -74,23 +75,27 @@ namespace DbShell.Driver.Common.ChangeSet
 
         private bool GetCondition(DmlfCommandBase cmd, ChangeSetItem item, ChangeSetCondition cond, DatabaseInfo db)
         {
-            var table = db.FindTable(item.TargetTable);
-            if (table == null) return false;
-            var column = table.FindColumn(cond.Column);
-            if (column == null) return false;
+            var source = new DmlfSource
+                {
+                    Alias = "basetbl",
+                    LinkedInfo = item.LinkedInfo,
+                    TableOrView = item.TargetTable,
+                };
+            var colref = cmd.SingleFrom.GetColumnRef(source, item.TargetTable, StructuredIdentifier.Parse(cond.Column), db);
+            if (colref == null) return false;
+
+            //var table = db.FindTable(item.TargetTable);
+            //if (table == null) return false;
+            //var column = table.FindColumn(cond.Column);
+            //if (column == null) return false;
+
             var colexpr = new DmlfColumnRefExpression
                 {
-                    Column = new DmlfColumnRef
-                        {
-                            ColumnName = column.Name,
-                            Source = new DmlfSource
-                                {
-                                    LinkedInfo = item.LinkedInfo,
-                                    TableOrView = item.TargetTable,
-                                }
-                        }
+                    Column = colref
                 };
-            cmd.AddAndCondition(FilterParser.FilterParser.ParseFilterExpression(column.CommonType, colexpr, cond.Expression));
+            var column = colref.FindSourceColumn(db);
+
+            cmd.AddAndCondition(FilterParser.FilterParser.ParseFilterExpression(column != null ? column.CommonType : new DbTypeString(), colexpr, cond.Expression));
             return true;
         }
 
@@ -142,6 +147,7 @@ namespace DbShell.Driver.Common.ChangeSet
                     {
                         TableOrView = upd.TargetTable,
                         LinkedInfo = upd.LinkedInfo,
+                        Alias = "basetbl",
                     };
                 cmd.From.Add(new DmlfFromItem
                     {
@@ -163,6 +169,7 @@ namespace DbShell.Driver.Common.ChangeSet
                     {
                         TableOrView = del.TargetTable,
                         LinkedInfo = del.LinkedInfo,
+                        Alias = "basetbl",
                     };
                 cmd.From.Add(new DmlfFromItem
                 {
