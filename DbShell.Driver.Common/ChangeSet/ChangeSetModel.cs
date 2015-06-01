@@ -64,120 +64,53 @@ namespace DbShell.Driver.Common.ChangeSet
         //    }
         //}
 
-        private bool GetConditions(DmlfCommandBase cmd, ChangeSetItem item, List<ChangeSetCondition> conditions, DatabaseInfo db)
+        public DmlfBatch GetCommands(DatabaseInfo db)
         {
-            foreach (var cond in conditions)
+            var disableFks = new HashSet<Tuple<NameWithSchema, string>>();
+
+            foreach (var upd in Updates)
             {
-                if (!GetCondition(cmd, item, cond, db)) return false;
-            }
-            return true;
-        }
-
-        private bool GetCondition(DmlfCommandBase cmd, ChangeSetItem item, ChangeSetCondition cond, DatabaseInfo db)
-        {
-            var source = new DmlfSource
+                if (upd.DisableReferencedForeignKeys || upd.UpdateReferences)
                 {
-                    Alias = "basetbl",
-                    LinkedInfo = item.LinkedInfo,
-                    TableOrView = item.TargetTable,
-                };
-            var colref = cmd.SingleFrom.GetColumnRef(source, item.TargetTable, StructuredIdentifier.Parse(cond.Column), db);
-            if (colref == null) return false;
-
-            //var table = db.FindTable(item.TargetTable);
-            //if (table == null) return false;
-            //var column = table.FindColumn(cond.Column);
-            //if (column == null) return false;
-
-            var colexpr = new DmlfColumnRefExpression
-                {
-                    Column = colref
-                };
-            var column = colref.FindSourceColumn(db);
-
-            cmd.AddAndCondition(FilterParser.FilterParser.ParseFilterExpression(column != null ? column.CommonType : new DbTypeString(), colexpr, cond.Expression));
-            return true;
-        }
-
-        private void GetValues(DmlfUpdateFieldCollection fields, List<ChangeSetValue> values, TableInfo table)
-        {
-            foreach (var col in values)
-            {
-                var colinfo = table.FindColumn(col.Column);
-                if (colinfo == null) continue;
-                fields.Add(new DmlfUpdateField
+                    var table = db.FindTable(upd.TargetTable);
+                    if (table == null) continue;
+                    foreach (var fk in table.GetReferences())
                     {
-                        TargetColumn = colinfo.Name,
-                        Expr = new DmlfLiteralExpression
-                            {
-                                Value = col.Value,
-                            }
-                    });
+                        disableFks.Add(Tuple.Create(fk.OwnerTable.FullName, fk.ConstraintName));
+                    }
+                }
             }
-        }
 
-        public List<DmlfBase> GetCommands(DatabaseInfo db)
-        {
-            var res = new List<DmlfBase>();
+            var res = new DmlfBatch();
+
+            foreach (var fk in disableFks) res.DisableConstraint(fk.Item1, fk.Item2, true);
 
             foreach (var ins in Inserts)
             {
-                var cmd = new DmlfInsert();
-                cmd.InsertTarget = new DmlfSource
-                    {
-                        TableOrView = ins.TargetTable,
-                        LinkedInfo = ins.LinkedInfo,
-                    };
-
-                var table = db.FindTable(ins.TargetTable);
-                if (table == null) continue;
-
-                var autoinc = table.FindAutoIncrementColumn();
-                if (autoinc != null && ins.Values.Any(x => x.Column == autoinc.Name)) cmd.IdentityInsertTable = table.FullName;
-
-                GetValues(cmd.Columns, ins.Values, table);
-
-                res.Add(cmd);
+                ins.GetCommands(res, db);
             }
 
             foreach (var upd in Updates)
             {
-                var cmd = new DmlfUpdate();
-                cmd.UpdateTarget = new DmlfSource
-                    {
-                        TableOrView = upd.TargetTable,
-                        LinkedInfo = upd.LinkedInfo,
-                        Alias = "basetbl",
-                    };
-                cmd.From.Add(new DmlfFromItem
-                    {
-                        Source = cmd.UpdateTarget,
-                    });
-                if (!GetConditions(cmd, upd, upd.Conditions, db)) continue;
+                upd.GetInsertCommands(res, db);
+            }
 
-                var table = db.FindTable(upd.TargetTable);
-                if (table == null) continue;
+            foreach (var upd in Updates)
+            {
+                upd.GetCommands(res, db);
+            }
 
-                GetValues(cmd.Columns, upd.Values, table);
-                res.Add(cmd);
+            foreach (var upd in Updates)
+            {
+                upd.GetDeleteCommands(res, db);
             }
 
             foreach (var del in Deletes)
             {
-                var cmd = new DmlfDelete();
-                cmd.DeleteTarget = new DmlfSource
-                    {
-                        TableOrView = del.TargetTable,
-                        LinkedInfo = del.LinkedInfo,
-                        Alias = "basetbl",
-                    };
-                cmd.From.Add(new DmlfFromItem
-                {
-                    Source = cmd.DeleteTarget,
-                });
-                if (!GetConditions(cmd, del, del.Conditions, db)) continue;
-                res.Add(cmd);
+                del.GetCommands(res, db);
             }
+
+            foreach (var fk in disableFks) res.DisableConstraint(fk.Item1, fk.Item2, false);
 
             return res;
         }
@@ -185,11 +118,7 @@ namespace DbShell.Driver.Common.ChangeSet
         public void DumpSql(ISqlDumper dmp, DatabaseInfo db)
         {
             var commands = GetCommands(db);
-            commands.ForEach(x =>
-                {
-                    x.GenSql(dmp, new DmlfHandler());
-                    dmp.EndCommand();
-                });
+            commands.GenSql(dmp, new DmlfHandler());
         }
 
         //public void LoadFromXml(XmlElement xml)

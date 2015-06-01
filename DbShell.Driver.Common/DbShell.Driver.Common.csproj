@@ -81,6 +81,9 @@
     <Compile Include="ChangeSet\ChangeSetValue.cs" />
     <Compile Include="ChangeSet\ChangeSetDeleteItem.cs" />
     <Compile Include="ChangeSet\ChangeSetInsertItem.cs" />
+    <Compile Include="DmlFramework\DmlfAllowIdentityInsert.cs" />
+    <Compile Include="DmlFramework\DmlfBatch.cs" />
+    <Compile Include="DmlFramework\DmlfDisableConstraint.cs" />
     <Compile Include="DmlFramework\DmlfInsert.cs" />
     <Compile Include="Structure\StructuredIdentifier.cs" />
     <Compile Include="Utility\DateTimeExTypeConverter.cs" />

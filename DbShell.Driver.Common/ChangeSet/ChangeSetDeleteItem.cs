@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using DbShell.Driver.Common.DmlFramework;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
 
@@ -12,6 +13,9 @@ namespace DbShell.Driver.Common.ChangeSet
     {
         [XmlCollection(typeof (ChangeSetCondition))]
         public List<ChangeSetCondition> Conditions { get; set; }
+
+        [XmlElem]
+        public bool DeleteReferencesCascade { get; set; }
 
         public ChangeSetDeleteItem()
         {
@@ -29,16 +33,7 @@ namespace DbShell.Driver.Common.ChangeSet
                         LinkedInfo = LinkedInfo,
                         TargetTable = fk.OwnerTable.FullName,
                     };
-                foreach (var cond in Conditions)
-                {
-                    var col = StructuredIdentifier.Parse(cond.Column);
-                    var newcol = fk.ConstraintName/col;
-                    newItem.Conditions.Add(new ChangeSetCondition
-                        {
-                            Column = newcol.ToString(),
-                            Expression = cond.Expression,
-                        });
-                }
+                newItem.Conditions.AddRange(GetPrefixedConditions(Conditions, fk.ConstraintName));
                 res.Add(newItem);
                 newItem.DoGenerateCascadeDeletions(db, res);
             }
@@ -50,6 +45,32 @@ namespace DbShell.Driver.Common.ChangeSet
             DoGenerateCascadeDeletions(db, res);
             res.Reverse();
             return res;
+        }
+
+        public void GetCommands(DmlfBatch res, DatabaseInfo db)
+        {
+            if (DeleteReferencesCascade)
+            {
+                var refs = GenerateCascadeDeletions(db);
+                foreach (var item in refs)
+                {
+                    item.GetCommands(res, db);
+                }
+            }
+
+            var cmd = new DmlfDelete();
+            cmd.DeleteTarget = new DmlfSource
+            {
+                TableOrView = TargetTable,
+                LinkedInfo = LinkedInfo,
+                Alias = "basetbl",
+            };
+            cmd.From.Add(new DmlfFromItem
+            {
+                Source = cmd.DeleteTarget,
+            });
+            if (!GetConditions(cmd, this, Conditions, db)) return;
+            res.Commands.Add(cmd);
         }
     }
 }
