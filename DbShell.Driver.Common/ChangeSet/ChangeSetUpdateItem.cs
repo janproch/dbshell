@@ -76,8 +76,9 @@ namespace DbShell.Driver.Common.ChangeSet
             return Values.Any(x => table.PrimaryKey.Columns.Any(y => System.String.Compare(x.Column, y.RefColumnName, System.StringComparison.OrdinalIgnoreCase) == 0));
         }
 
-        public bool IsDuplicatingIdentity(DatabaseInfo db)
+        public bool IsDuplicatingIdentity(DatabaseInfo db, ChangeSetModel model)
         {
+            if (!UpdateReferences && !model.UpdateReferences) return false;
             if (!IsUpdatingPk(db)) return false;
             var table = db.FindTable(TargetTable);
             if (table == null) return false;
@@ -85,12 +86,12 @@ namespace DbShell.Driver.Common.ChangeSet
             return autoinc != null && Values.Any(x => x.Column == autoinc.Name);
         }
 
-        public void GetInsertCommands(DmlfBatch res, DatabaseInfo db)
+        public void GetInsertCommands(DmlfBatch res, DatabaseInfo db, ChangeSetModel model)
         {
             var table = db.FindTable(TargetTable);
             if (table == null) return;
 
-            if (IsDuplicatingIdentity(db))
+            if (IsDuplicatingIdentity(db, model))
             {
                 res.AllowIdentityInsert(table.FullName, true);
                 var insert = new DmlfInsertSelect
@@ -133,12 +134,12 @@ namespace DbShell.Driver.Common.ChangeSet
             }
         }
 
-        public void GetDeleteCommands(DmlfBatch res, DatabaseInfo db)
+        public void GetDeleteCommands(DmlfBatch res, DatabaseInfo db, ChangeSetModel model)
         {
             var table = db.FindTable(TargetTable);
             if (table == null) return;
 
-            if (IsDuplicatingIdentity(db))
+            if (IsDuplicatingIdentity(db, model))
             {
                 var del = new DmlfDelete();
                 del.DeleteTarget = new DmlfSource
@@ -156,21 +157,21 @@ namespace DbShell.Driver.Common.ChangeSet
             }
         }
 
-        public void GetCommands(DmlfBatch res, DatabaseInfo db)
+        public void GetCommands(DmlfBatch res, DatabaseInfo db, ChangeSetModel model)
         {
             var table = db.FindTable(TargetTable);
             if (table == null) return;
 
-            if (UpdateReferences && IsUpdatingPk(db))
+            if ((UpdateReferences || model.UpdateReferences) && IsUpdatingPk(db))
             {
                 var refs = GenerateCascadeUpdates(db);
                 foreach (var item in refs)
                 {
-                    item.GetCommands(res, db);
+                    item.GetCommands(res, db, model);
                 }
             }
 
-            if (!IsDuplicatingIdentity(db))
+            if (!IsDuplicatingIdentity(db, model))
             {
                 var cmd = new DmlfUpdate();
                 cmd.UpdateTarget = new DmlfSource

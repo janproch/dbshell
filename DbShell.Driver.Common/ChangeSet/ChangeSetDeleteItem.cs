@@ -47,14 +47,14 @@ namespace DbShell.Driver.Common.ChangeSet
             return res;
         }
 
-        public void GetCommands(DmlfBatch res, DatabaseInfo db)
+        public void GetCommands(DmlfBatch res, DatabaseInfo db, ChangeSetModel model)
         {
-            if (DeleteReferencesCascade)
+            if (DeleteReferencesCascade || model.DeleteReferencesCascade)
             {
                 var refs = GenerateCascadeDeletions(db);
                 foreach (var item in refs)
                 {
-                    item.GetCommands(res, db);
+                    item.GetCommands(res, db, model);
                 }
             }
 

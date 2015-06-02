@@ -23,6 +23,15 @@ namespace DbShell.Driver.Common.ChangeSet
         [XmlCollection(typeof(ChangeSetDeleteItem))]
         public List<ChangeSetDeleteItem> Deletes { get; set; }
 
+        [XmlElem]
+        public bool DeleteReferencesCascade { get; set; }
+
+        [XmlElem]
+        public bool UpdateReferences { get; set; }
+
+        [XmlElem]
+        public bool DisableReferencedForeignKeys { get; set; }
+
         public ChangeSetModel()
         {
             Inserts = new List<ChangeSetInsertItem>();
@@ -70,7 +79,7 @@ namespace DbShell.Driver.Common.ChangeSet
 
             foreach (var upd in Updates)
             {
-                if (upd.DisableReferencedForeignKeys || upd.UpdateReferences)
+                if (upd.DisableReferencedForeignKeys || upd.UpdateReferences || DisableReferencedForeignKeys || UpdateReferences)
                 {
                     var table = db.FindTable(upd.TargetTable);
                     if (table == null) continue;
@@ -92,22 +101,22 @@ namespace DbShell.Driver.Common.ChangeSet
 
             foreach (var upd in Updates)
             {
-                upd.GetInsertCommands(res, db);
+                upd.GetInsertCommands(res, db, this);
             }
 
             foreach (var upd in Updates)
             {
-                upd.GetCommands(res, db);
+                upd.GetCommands(res, db, this);
             }
 
             foreach (var upd in Updates)
             {
-                upd.GetDeleteCommands(res, db);
+                upd.GetDeleteCommands(res, db, this);
             }
 
             foreach (var del in Deletes)
             {
-                del.GetCommands(res, db);
+                del.GetCommands(res, db, this);
             }
 
             foreach (var fk in disableFks) res.DisableConstraint(fk.Item1, fk.Item2, false);

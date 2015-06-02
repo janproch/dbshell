@@ -154,7 +154,7 @@ namespace DbShell.Driver.SqlServer
                 using (var cmd = Connection.CreateCommand())
                 {
                     string sql=CreateQuery("columns.sql", tables: true);
-                    if (ServerVersion.Is_2008()) sql = sql.Replace("#2008#", ",c.is_sparse");
+                    if (ServerVersion.Is_2008() && String.IsNullOrEmpty(LinkedServerName)) sql = sql.Replace("#2008#", ",c.is_sparse");
                     else sql = sql.Replace("#2008#", "");
                     cmd.CommandText = sql;
                     using (var reader = cmd.ExecuteReader())
