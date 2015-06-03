@@ -16,7 +16,7 @@ namespace DbShell.Driver.Common.DmlFramework
         [XmlElem]
         public bool AllowIdentityInsert { get; set; }
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
             dmp.AllowIdentityInsert(TableName, AllowIdentityInsert);
         }

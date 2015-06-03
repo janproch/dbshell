@@ -10,10 +10,10 @@ namespace DbShell.Driver.Common.DmlFramework
     {
         public string TargetColumn { get; set; }
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
             dmp.Put("%i = ", TargetColumn);
-            Expr.GenSql(dmp, handler);
+            Expr.GenSql(dmp);
         }
 
     }

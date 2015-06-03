@@ -11,10 +11,10 @@ namespace DbShell.Driver.Common.DmlFramework
             return "subselect";
         }
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
             dmp.Put("(");
-            Select.GenSql(dmp, handler);
+            Select.GenSql(dmp);
             dmp.Put(")");
         }
     }

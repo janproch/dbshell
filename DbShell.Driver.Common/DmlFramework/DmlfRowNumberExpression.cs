@@ -15,14 +15,14 @@ namespace DbShell.Driver.Common.DmlFramework
         {
         }
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
             dmp.Put(" ^row_number() ^over (^order ^by ");
             bool was = false;
             foreach (var col in OrderBy)
             {
                 if (was) dmp.Put(", ");
-                col.GenSql(dmp, handler);
+                col.GenSql(dmp);
                 was = true;
             }
             dmp.Put(")");

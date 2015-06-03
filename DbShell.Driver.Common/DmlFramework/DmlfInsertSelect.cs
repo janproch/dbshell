@@ -23,10 +23,10 @@ namespace DbShell.Driver.Common.DmlFramework
             TargetColumns = new List<string>();
         }
 
-        public override void GenSql(AbstractDb.ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(AbstractDb.ISqlDumper dmp)
         {
             dmp.Put("^insert into %f (%,i)&n", TargetTable, TargetColumns);
-            Select.GenSql(dmp, handler);
+            Select.GenSql(dmp);
         }
     }
 }

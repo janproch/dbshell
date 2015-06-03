@@ -43,7 +43,7 @@ namespace DbShell.Driver.Common.DmlFramework
             return true;
         }
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
             dmp.Put("%k(", FuncName);
             bool was = false;
@@ -51,7 +51,7 @@ namespace DbShell.Driver.Common.DmlFramework
             {
                 if (was) dmp.Put(",");
                 was = true;
-                arg.GenSql(dmp, handler);
+                arg.GenSql(dmp);
             }
             dmp.Put(")");
         }

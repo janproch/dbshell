@@ -129,7 +129,7 @@ namespace DbShell.Driver.Common.DmlFramework
         //    }
         //}
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
             dmp.Put("^select ");
             if (TopRecords != null)
@@ -146,7 +146,7 @@ namespace DbShell.Driver.Common.DmlFramework
             }
             else
             {
-                Columns.GenSql(dmp, handler);
+                Columns.GenSql(dmp);
             }
 
             if (SelectIntoTable != null)
@@ -154,18 +154,18 @@ namespace DbShell.Driver.Common.DmlFramework
                 dmp.Put("&n^into %f ", SelectIntoTable);
             }
 
-            GenerateFrom(dmp, handler);
+            GenerateFrom(dmp);
 
-            if (Where != null) Where.GenSql(dmp, handler);
+            if (Where != null) Where.GenSql(dmp);
             if (GroupBy != null && GroupBy.Count > 0)
             {
                 dmp.Put("&n^group ^by ");
-                GroupBy.GenSql(dmp, handler);
+                GroupBy.GenSql(dmp);
             }
             if (OrderBy != null && OrderBy.Count > 0)
             {
                 dmp.Put(" ^order ^by ");
-                OrderBy.GenSql(dmp, handler);
+                OrderBy.GenSql(dmp);
             }
             if (LimitCount != null)
             {

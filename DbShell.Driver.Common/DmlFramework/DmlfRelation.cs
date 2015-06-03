@@ -41,11 +41,11 @@ namespace DbShell.Driver.Common.DmlFramework
             return null;
         }
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
             foreach (var rel in this)
             {
-                rel.GenSql(dmp, handler);
+                rel.GenSql(dmp);
             }
         }
 
@@ -86,7 +86,7 @@ namespace DbShell.Driver.Common.DmlFramework
         [XmlElem]
         public string SubQueryString { get; set; }
 
-        public void GenSqlDef(ISqlDumper dmp, IDmlfHandler handler)
+        public void GenSqlDef(ISqlDumper dmp)
         {
             int sources = 0;
             if (TableOrView != null) sources++;
@@ -101,7 +101,7 @@ namespace DbShell.Driver.Common.DmlFramework
             if (SubQuery != null)
             {
                 dmp.Put("(");
-                SubQuery.GenSql(dmp, handler);
+                SubQuery.GenSql(dmp);
                 dmp.Put(")");
             }
             if (SubQueryString != null)
@@ -116,7 +116,7 @@ namespace DbShell.Driver.Common.DmlFramework
             }
         }
 
-        public bool GenSqlRef(ISqlDumper dmp, IDmlfHandler handler)
+        public bool GenSqlRef(ISqlDumper dmp)
         {
             if (Alias != null)
             {
@@ -128,10 +128,10 @@ namespace DbShell.Driver.Common.DmlFramework
                 dmp.Put("%f", TableOrView);
                 return true;
             }
-            else if (handler != null && handler.BaseTable != null && handler.BaseTable != this)
-            {
-                return handler.BaseTable.GenSqlRef(dmp, handler);
-            }
+            //else if (handler != null && handler.BaseTable != null && handler.BaseTable != this)
+            //{
+            //    return handler.BaseTable.GenSqlRef(dmp, handler);
+            //}
             return false;
         }
 
@@ -146,7 +146,7 @@ namespace DbShell.Driver.Common.DmlFramework
 
         public override string ToString()
         {
-            if (m_alias == "basetbl") return "(SOURCE)";
+            //if (m_alias == "basetbl") return "(SOURCE)";
             return AliasOrName;
         }
 
@@ -200,12 +200,12 @@ namespace DbShell.Driver.Common.DmlFramework
             action(Conditions);
         }
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
             dmp.Put("&n");
             JoinType.GenSql(dmp);
             dmp.Put(" ");
-            Reference.GenSqlDef(dmp, handler);
+            Reference.GenSqlDef(dmp);
             if (Conditions.Any())
             {
                 dmp.Put(" ^on ");
@@ -213,7 +213,7 @@ namespace DbShell.Driver.Common.DmlFramework
                 foreach (var cond in Conditions)
                 {
                     if (was) dmp.Put(" ^and ");
-                    cond.GenSql(dmp, handler);
+                    cond.GenSql(dmp);
                     was = true;
                 }
             }
@@ -240,24 +240,24 @@ namespace DbShell.Driver.Common.DmlFramework
         [XmlElem]
         public string ColumnName { get; set; }
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
             if (Source != null)
             {
-                if (Source.GenSqlRef(dmp, handler))
+                if (Source.GenSqlRef(dmp))
                 {
                     dmp.Put(".");
                 }
             }
-            else if (handler != null)
-            {
-                var b = handler.BaseTable;
-                if (b != null)
-                {
-                    b.GenSqlRef(dmp, handler);
-                    dmp.Put(".");
-                }
-            }
+            //else if (handler != null)
+            //{
+            //    var b = handler.BaseTable;
+            //    if (b != null)
+            //    {
+            //        b.GenSqlRef(dmp, handler);
+            //        dmp.Put(".");
+            //    }
+            //}
             dmp.Put("%i", ColumnName);
         }
 

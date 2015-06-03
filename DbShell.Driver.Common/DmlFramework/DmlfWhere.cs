@@ -6,12 +6,12 @@ namespace DbShell.Driver.Common.DmlFramework
     {
         public DmlfConditionBase Condition;
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
             if (Condition != null)
             {
                 dmp.Put("&n^where &>");
-                Condition.GenSql(dmp, handler);
+                Condition.GenSql(dmp);
                 dmp.Put("&<");
             }
         }

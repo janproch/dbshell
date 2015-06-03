@@ -27,9 +27,9 @@ namespace DbShell.Driver.Common.DmlFramework
 
         public QueryResultColumnInfo ResultInfo { get; set; }
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
-            Expr.GenSql(dmp, handler);
+            Expr.GenSql(dmp);
             if (_alias != null)
             {
                 dmp.Put(" ^as %i", _alias);

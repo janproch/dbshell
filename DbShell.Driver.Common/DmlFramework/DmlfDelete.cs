@@ -14,15 +14,15 @@ namespace DbShell.Driver.Common.DmlFramework
         [XmlSubElem]
         public DmlfSource DeleteTarget { get; set; }
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
             dmp.Put("^delete ");
             if (TopRecords != null) dmp.Put("^top(%s) ", TopRecords);
-            if (DeleteTarget != null) DeleteTarget.GenSqlRef(dmp, handler);
+            if (DeleteTarget != null) DeleteTarget.GenSqlRef(dmp);
 
-            GenerateFrom(dmp, handler);
+            GenerateFrom(dmp);
 
-            if (Where != null) Where.GenSql(dmp, handler);
+            if (Where != null) Where.GenSql(dmp);
         }
     }
 }

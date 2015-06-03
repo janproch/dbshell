@@ -16,11 +16,11 @@ namespace DbShell.Driver.Common.DmlFramework
             Commands.ForEach(action);
         }
 
-        public override void GenSql(AbstractDb.ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(AbstractDb.ISqlDumper dmp)
         {
             Commands.ForEach(x =>
                 {
-                    x.GenSql(dmp, handler);
+                    x.GenSql(dmp);
                     dmp.EndCommand();
                 });
         }

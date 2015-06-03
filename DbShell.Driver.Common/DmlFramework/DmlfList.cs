@@ -7,7 +7,6 @@ namespace DbShell.Driver.Common.DmlFramework
     public class DmlfList<T> : List<T>, IDmlfNode
         where T : IDmlfNode
     {
-        public IDmlfHandler Handler { get; private set; }
         #region IDmlfNode Members
 
         public virtual void ForEachChild(Action<IDmlfNode> action)
@@ -18,7 +17,7 @@ namespace DbShell.Driver.Common.DmlFramework
 
         #endregion
 
-        public virtual void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public virtual void GenSql(ISqlDumper dmp)
         {
             dmp.Put("&>");
             bool was = false;
@@ -26,7 +25,7 @@ namespace DbShell.Driver.Common.DmlFramework
             {
                 if (was) dmp.Put(",&n");
                 else dmp.Put("&n");
-                item.GenSql(dmp, handler);
+                item.GenSql(dmp);
                 was = true;
             }
             dmp.Put("&<");

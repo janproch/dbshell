@@ -127,7 +127,7 @@ namespace DbShell.Driver.Common.ChangeSet
         public void DumpSql(ISqlDumper dmp, DatabaseInfo db)
         {
             var commands = GetCommands(db);
-            commands.GenSql(dmp, new DmlfHandler());
+            commands.GenSql(dmp);
         }
 
         //public void LoadFromXml(XmlElement xml)

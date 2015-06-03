@@ -21,9 +21,9 @@ namespace DbShell.Driver.Common.DmlFramework
             action(Column);
         }
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
-            Column.GenSql(dmp, handler);
+            Column.GenSql(dmp);
         }
 
         public override void SaveToXml(XmlElement xml)

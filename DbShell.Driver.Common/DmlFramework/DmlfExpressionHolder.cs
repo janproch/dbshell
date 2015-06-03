@@ -27,9 +27,9 @@ namespace DbShell.Driver.Common.DmlFramework
             return "(null)";
         }
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
-            Expr.GenSql(dmp, handler);
+            Expr.GenSql(dmp);
         }
 
         public DmlfColumnRef Column

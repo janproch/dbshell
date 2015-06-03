@@ -31,7 +31,7 @@ namespace DbShell.Driver.Common.DmlFramework
 
         #endregion
 
-        public virtual void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public virtual void GenSql(ISqlDumper dmp)
         {
             throw new NotImplementedError("DBSH-00072");
         }
@@ -61,7 +61,7 @@ namespace DbShell.Driver.Common.DmlFramework
 
         public override string ToString()
         {
-            return this.ToSql(GenericDatabaseFactory.Instance, null);
+            return this.ToSql(GenericDatabaseFactory.Instance);
         }
 
         public virtual string GetIdentifier()

@@ -8,16 +8,21 @@ namespace DbShell.Driver.Common.DmlFramework
     public enum DmlfBinaryOperator { Inner, Outer, Left, Right }
     public enum DmlfSortOrderType { Ascending, Descendning }
 
-    public interface IDmlfHandler
+    //public interface IDmlfHandler
+    //{
+    //    TableInfo GetStructure(NameWithSchema name);
+    //    DmlfSource BaseTable { get; }
+    //    object GetValue(string variable);
+    //}
+
+    public interface IDmlfNamespace
     {
-        TableInfo GetStructure(NameWithSchema name);
-        DmlfSource BaseTable { get; }
         object GetValue(string variable);
     }
 
     public interface IDmlfNode
     {
         void ForEachChild(Action<IDmlfNode> action);
-        void GenSql(ISqlDumper dmp, IDmlfHandler handler);
+        void GenSql(ISqlDumper dmp);
     }
 }

@@ -14,7 +14,7 @@ namespace DbShell.Driver.Common.DmlFramework
             LoadFromXml(xml);
         }
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
             dmp.WriteRaw(Value);
         }

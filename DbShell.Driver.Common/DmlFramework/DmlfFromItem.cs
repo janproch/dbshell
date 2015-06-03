@@ -39,13 +39,11 @@ namespace DbShell.Driver.Common.DmlFramework
             if (Relations != null) Relations.ForEachChild(action);
         }
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
-            var src = Source;
-            if (src == null) src = handler.BaseTable;
-            src.GenSqlDef(dmp, handler);
+            Source.GenSqlDef(dmp);
             dmp.Put(" ");
-            Relations.GenSql(dmp, handler);
+            Relations.GenSql(dmp);
         }
 
         public DmlfSource FindSourceWithAlias(string alias)

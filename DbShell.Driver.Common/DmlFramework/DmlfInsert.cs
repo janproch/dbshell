@@ -21,14 +21,14 @@ namespace DbShell.Driver.Common.DmlFramework
             Columns = new DmlfUpdateFieldCollection();
         }
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
             dmp.Put("^insert ^into  %f ", InsertTarget);
             dmp.Put("(%,i) ^ values (", Columns.Select(x => x.TargetColumn));
             for (int i = 0; i < Columns.Count; i++)
             {
                 if (i > 0) dmp.WriteRaw(", ");
-                Columns[i].Expr.GenSql(dmp, handler);
+                Columns[i].Expr.GenSql(dmp);
             }
             dmp.Put(")");
             dmp.EndCommand();

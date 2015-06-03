@@ -7,7 +7,7 @@ namespace DbShell.Driver.Common.DmlFramework
     {
         public List<object> Values = new List<object>();
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
             dmp.Put("(%,v)", Values);
         }

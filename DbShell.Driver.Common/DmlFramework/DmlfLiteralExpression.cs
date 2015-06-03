@@ -51,7 +51,7 @@ namespace DbShell.Driver.Common.DmlFramework
             return true;
         }
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
             dmp.Put("%v", Value);
         }
@@ -61,7 +61,7 @@ namespace DbShell.Driver.Common.DmlFramework
             return "lit";
         }
 
-        public override object EvalExpression(IDmlfHandler handler)
+        public override object EvalExpression(IDmlfNamespace ns)
         {
             return Value;
         }

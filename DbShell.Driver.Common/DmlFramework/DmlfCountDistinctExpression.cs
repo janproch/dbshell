@@ -33,10 +33,10 @@ namespace DbShell.Driver.Common.DmlFramework
             return true;
         }
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
             dmp.Put("^count(^distinct ");
-            Argument.GenSql(dmp, handler);
+            Argument.GenSql(dmp);
             dmp.Put(")");
         }
 

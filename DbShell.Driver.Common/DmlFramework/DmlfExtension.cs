@@ -58,32 +58,32 @@ namespace DbShell.Driver.Common.DmlFramework
             else return DmlfSortOrderType.Ascending;
         }
 
-        public static DmlfColumnRef FindColumn(this IEnumerable<DmlfSource> tables, string name, IDmlfHandler handler)
-        {
-            name = (name ?? "").Trim();
-            foreach (var tbl in tables)
-            {
-                var ts = handler.GetStructure(tbl == null ? null : tbl.TableOrView);
-                foreach (var col in ts.Columns)
-                {
-                    if (tbl != null)
-                    {
-                        string fullname = tbl.AliasOrName + "." + col.Name;
-                        if (String.Compare(fullname, name, true) == 0) return new DmlfColumnRef
-                        {
-                            Source = tbl,
-                            ColumnName = col.Name
-                        };
-                    }
-                    if (String.Compare(col.Name, name, true) == 0) return new DmlfColumnRef
-                    {
-                        Source = tbl,
-                        ColumnName = col.Name
-                    };
-                }
-            }
-            return null;
-        }
+        //public static DmlfColumnRef FindColumn(this IEnumerable<DmlfSource> tables, string name, IDmlfHandler handler)
+        //{
+        //    name = (name ?? "").Trim();
+        //    foreach (var tbl in tables)
+        //    {
+        //        var ts = handler.GetStructure(tbl == null ? null : tbl.TableOrView);
+        //        foreach (var col in ts.Columns)
+        //        {
+        //            if (tbl != null)
+        //            {
+        //                string fullname = tbl.AliasOrName + "." + col.Name;
+        //                if (String.Compare(fullname, name, true) == 0) return new DmlfColumnRef
+        //                {
+        //                    Source = tbl,
+        //                    ColumnName = col.Name
+        //                };
+        //            }
+        //            if (String.Compare(col.Name, name, true) == 0) return new DmlfColumnRef
+        //            {
+        //                Source = tbl,
+        //                ColumnName = col.Name
+        //            };
+        //        }
+        //    }
+        //    return null;
+        //}
 
         public static DmlfSource FindAnySource(this IEnumerable<DmlfEqualCondition> conditions, bool left, bool right)
         {
@@ -103,12 +103,12 @@ namespace DbShell.Driver.Common.DmlFramework
             return null;
         }
 
-        public static string ToSql(this IDmlfNode node, IDatabaseFactory factory, IDmlfHandler handler)
+        public static string ToSql(this IDmlfNode node, IDatabaseFactory factory)
         {
             if (factory == null) return "";
             var sw = new StringWriter();
             var dmp = factory.CreateDumper(new SqlOutputStream(factory.CreateDialect(), sw, SqlFormatProperties.Default), SqlFormatProperties.Default);
-            node.GenSql(dmp, handler);
+            node.GenSql(dmp);
             return sw.ToString();
         }
 

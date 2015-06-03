@@ -21,7 +21,7 @@ namespace DbShell.Driver.Common.DmlFramework
             From = new List<DmlfFromItem>();
         }
 
-        protected void GenerateFrom(ISqlDumper dmp, IDmlfHandler handler)
+        protected void GenerateFrom(ISqlDumper dmp)
         {
             dmp.Put("&n^from &>");
 
@@ -29,7 +29,7 @@ namespace DbShell.Driver.Common.DmlFramework
             foreach (var fromItem in From)
             {
                 if (wasfromItem) dmp.Put(",&n");
-                fromItem.GenSql(dmp, handler);
+                fromItem.GenSql(dmp);
                 wasfromItem = true;
             }
             dmp.Put("&<");

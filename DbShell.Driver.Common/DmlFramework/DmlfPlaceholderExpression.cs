@@ -18,9 +18,9 @@ namespace DbShell.Driver.Common.DmlFramework
             return "placeholder";
         }
 
-        public override object EvalExpression(IDmlfHandler handler)
+        public override object EvalExpression(IDmlfNamespace ns)
         {
-            return handler.GetValue(Value);
+            return ns.GetValue(Value);
         }
     }
 }

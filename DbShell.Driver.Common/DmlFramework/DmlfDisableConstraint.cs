@@ -18,7 +18,7 @@ namespace DbShell.Driver.Common.DmlFramework
         [XmlElem]
         public bool Disable { get; set; }
 
-        public override void GenSql(AbstractDb.ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(AbstractDb.ISqlDumper dmp)
         {
             dmp.PutCmd("^alter ^table %f %k ^constraint %i", TableName, Disable ? "nocheck" : "check", ConstraintName);
         }

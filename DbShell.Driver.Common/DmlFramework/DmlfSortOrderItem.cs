@@ -6,9 +6,9 @@ namespace DbShell.Driver.Common.DmlFramework
     {
         public DmlfSortOrderType OrderType;
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
-            Expr.GenSql(dmp, handler);
+            Expr.GenSql(dmp);
             dmp.Put(" ");
             OrderType.GenSql(dmp);
         }

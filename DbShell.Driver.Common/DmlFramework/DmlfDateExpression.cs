@@ -41,14 +41,14 @@ namespace DbShell.Driver.Common.DmlFramework
             return "month";
         }
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
-            dmp.ExtractMonth(d => Argument.GenSql(d, handler));
+            dmp.ExtractMonth(d => Argument.GenSql(d));
         }
 
-        public override object EvalExpression(IDmlfHandler handler)
+        public override object EvalExpression(IDmlfNamespace ns)
         {
-            var inner = Argument.EvalExpression(handler);
+            var inner = Argument.EvalExpression(ns);
             var dt = inner as DateTime?;
             if (dt.HasValue) return dt.Value.Month;
             return null;
@@ -62,14 +62,14 @@ namespace DbShell.Driver.Common.DmlFramework
             return "day_of_week";
         }
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
-            dmp.ExtractDayOfWeek(d => Argument.GenSql(d, handler));
+            dmp.ExtractDayOfWeek(d => Argument.GenSql(d));
         }
 
-        public override object EvalExpression(IDmlfHandler handler)
+        public override object EvalExpression(IDmlfNamespace ns)
         {
-            var inner = Argument.EvalExpression(handler);
+            var inner = Argument.EvalExpression(ns);
             var dt = inner as DateTime?;
             if (dt.HasValue) return (int)dt.Value.DayOfWeek;
             return null;
@@ -85,12 +85,12 @@ namespace DbShell.Driver.Common.DmlFramework
             return "day_of_week_literal";
         }
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
             dmp.PutDayOfWeekLiteral(Value);
         }
 
-        public override object EvalExpression(IDmlfHandler handler)
+        public override object EvalExpression(IDmlfNamespace ns)
         {
             return (int)Value;
         }
@@ -104,14 +104,14 @@ namespace DbShell.Driver.Common.DmlFramework
             return "day_of_month";
         }
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
-            dmp.ExtractDayOfMonth(d => Argument.GenSql(d, handler));
+            dmp.ExtractDayOfMonth(d => Argument.GenSql(d));
         }
 
-        public override object EvalExpression(IDmlfHandler handler)
+        public override object EvalExpression(IDmlfNamespace ns)
         {
-            var inner = Argument.EvalExpression(handler);
+            var inner = Argument.EvalExpression(ns);
             var dt = inner as DateTime?;
             if (dt.HasValue) return dt.Value.Day;
             return null;

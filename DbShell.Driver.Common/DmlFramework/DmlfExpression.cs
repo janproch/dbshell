@@ -36,7 +36,7 @@ namespace DbShell.Driver.Common.DmlFramework
             xml.SetAttribute("type", GetTypeName());
         }
 
-        public virtual object EvalExpression(IDmlfHandler handler)
+        public virtual object EvalExpression(IDmlfNamespace ns)
         {
             throw new InternalError("DBSH-00157 Eval not implemented:" + GetType().FullName);
         }

@@ -22,16 +22,16 @@ namespace DbShell.Driver.Common.DmlFramework
             Columns = new DmlfUpdateFieldCollection();
         }
 
-        public override void GenSql(ISqlDumper dmp, IDmlfHandler handler)
+        public override void GenSql(ISqlDumper dmp)
         {
             dmp.Put("^update ");
             if (TopRecords != null) dmp.Put("^top(%s) ", TopRecords);
-            if (UpdateTarget != null) UpdateTarget.GenSqlRef(dmp, handler);
+            if (UpdateTarget != null) UpdateTarget.GenSqlRef(dmp);
             dmp.Put("&n^set ");
-            Columns.GenSql(dmp, handler);
+            Columns.GenSql(dmp);
 
-            GenerateFrom(dmp, handler);
-            if (Where != null) Where.GenSql(dmp, handler);
+            GenerateFrom(dmp);
+            if (Where != null) Where.GenSql(dmp);
         }
     }
 }
