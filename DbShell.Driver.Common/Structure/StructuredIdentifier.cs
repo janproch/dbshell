@@ -12,7 +12,7 @@ namespace DbShell.Driver.Common.Structure
     /// class to hold values like [dbo].[t1].[xxxx]
     /// similar to ObjectPath
     /// </summary>
-    public class StructuredIdentifier : IFormattable
+    public class StructuredIdentifier : IFormattable, IComparable
     {
         private List<string> _nameItems = new List<string>();
 
@@ -24,6 +24,11 @@ namespace DbShell.Driver.Common.Structure
         public StructuredIdentifier()
         {
 
+        }
+
+        public StructuredIdentifier(string name)
+        {
+            _nameItems.Add(name);
         }
 
         public StructuredIdentifier(StructuredIdentifier a, string b)
@@ -182,6 +187,34 @@ namespace DbShell.Driver.Common.Structure
         public static StructuredIdentifier operator /(StructuredIdentifier a, StructuredIdentifier b)
         {
             return new StructuredIdentifier(a, b);
+        }
+
+        public override int GetHashCode()
+        {
+            return ToString().GetHashCode();
+        }
+
+        public int CompareTo(object obj)
+        {
+            return System.String.Compare(ToString(), (obj != null ? obj.ToString() : ""), System.StringComparison.Ordinal);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(obj, null)) return false;
+            return ToString() == obj.ToString();
+        }
+
+        public static bool operator ==(StructuredIdentifier a, StructuredIdentifier b)
+        {
+            if (ReferenceEquals(a, null) || ReferenceEquals(b, null)) return ReferenceEquals(a, b);
+            return a.ToString() == b.ToString();
+        }
+
+        public static bool operator !=(StructuredIdentifier a, StructuredIdentifier b)
+        {
+            if (ReferenceEquals(a, null) || ReferenceEquals(b, null)) return !ReferenceEquals(a, b);
+            return !(a == b);
         }
     }
 }
