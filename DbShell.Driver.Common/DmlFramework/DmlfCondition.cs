@@ -13,6 +13,11 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             throw new InternalError("DBSH-00156 Eval not implemented:" + GetType().FullName);
         }
+
+        public virtual DmlfConditionBase SimplifyCondition()
+        {
+            return this;
+        }
     }
 
     public abstract class DmlfUnaryCondition : DmlfConditionBase
@@ -567,6 +572,12 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             return Conditions.All(x => x.EvalCondition(ns));
         }
+
+        public override DmlfConditionBase SimplifyCondition()
+        {
+            if (Conditions.Count == 1) return Conditions[0].SimplifyCondition();
+            return base.SimplifyCondition();
+        }
     }
 
     public class DmlfOrCondition : DmlfCompoudCondition
@@ -584,6 +595,12 @@ namespace DbShell.Driver.Common.DmlFramework
         public override bool EvalCondition(IDmlfNamespace ns)
         {
             return Conditions.Any(x => x.EvalCondition(ns));
+        }
+
+        public override DmlfConditionBase SimplifyCondition()
+        {
+            if (Conditions.Count == 1) return Conditions[0].SimplifyCondition();
+            return base.SimplifyCondition();
         }
     }
 

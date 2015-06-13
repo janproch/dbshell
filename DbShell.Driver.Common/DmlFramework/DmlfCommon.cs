@@ -20,6 +20,21 @@ namespace DbShell.Driver.Common.DmlFramework
         object GetValue(string variable);
     }
 
+    public class DmlfSingleValueNamespace : IDmlfNamespace
+    {
+        public object Value;
+
+        public DmlfSingleValueNamespace(object value)
+        {
+            Value = value;
+        }
+
+        public object GetValue(string variable)
+        {
+            return Value;
+        }
+    }
+
     public interface IDmlfNode
     {
         void ForEachChild(Action<IDmlfNode> action);

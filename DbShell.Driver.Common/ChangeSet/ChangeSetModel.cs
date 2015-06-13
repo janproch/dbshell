@@ -143,5 +143,9 @@ namespace DbShell.Driver.Common.ChangeSet
         //        Inserts.Add(item);
         //    }
         //}
+        public bool HasChanges()
+        {
+            return Updates.Any() || Inserts.Any() || Deletes.Any();
+        }
     }
 }

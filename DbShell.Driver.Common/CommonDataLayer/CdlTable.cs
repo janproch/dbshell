@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DbShell.Driver.Common.ChangeSet;
 using DbShell.Driver.Common.DmlFramework;
 using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Structure;
@@ -274,130 +275,69 @@ namespace DbShell.Driver.Common.CommonDataLayer
             return res;
         }
 
-        public void AddChangesToChangeSet(CdlChangeSet changeSet, string[] colNames, int[] pk, 
-            Dictionary<int, Tuple<NameWithSchema, int[]>> referencedColumnKeys)
-        {
-            foreach (var row in Rows)
-            {
-                switch (row.RowState)
-                {
-                    case CdlRowState.Unchanged:
-                        continue;
-                    case CdlRowState.Added:
-                        {
-                            var values = new CdlChangeSet.InsertedRowValues();
-                            for (int i = 0; i < colNames.Length; i++)
-                            {
-                                if (!row.IsChanged(i)) continue;
-                                values.ChangedItems.Add(new CdlChangeSet.RowValuesBase.Item
-                                    {
-                                        Column = colNames[i],
-                                        Value = row[i],
-                                    });
-                            }
-                            changeSet.InsertedRows.Add(values);
-                        }
-                        break;
-                    case CdlRowState.Modified:
-                        {
-                            if (pk == null) throw new Exception("DBSH-00117 PK required");
-                            object[] pkVals = row.Original.GetValuesByCols(pk);
-                            var values = changeSet.FindValuesByKey(pkVals);
-                            if (values == null)
-                            {
-                                values = new CdlChangeSet.UpdatedRowValues
-                                    {
-                                        UpdateKey = pkVals,
-                                    };
-                                changeSet.UpdatedRows.Add(values);
-                            }
-                            for (int i = 0; i < colNames.Length; i++)
-                            {
-                                if (!row.IsChanged(i)) continue;
-                                values.ChangedItems.Add(new CdlChangeSet.RowValuesBase.Item
-                                    {
-                                        Column = colNames[i],
-                                        Value = row[i],
-                                    });
-                                if (referencedColumnKeys != null && referencedColumnKeys.ContainsKey(i))
-                                {
-                                    values.ReferencedTablesKeys[referencedColumnKeys[i].Item1]
-                                        = row.Original.GetValuesByCols(referencedColumnKeys[i].Item2);
-                                }
-                            }
-                        }
-                        break;
-                    case CdlRowState.Deleted:
-                        {
-                            if (pk == null) throw new Exception("DBSH-00094 PK required");
-                            object[] pkVals = row.Original.GetValuesByCols(pk);
-                            changeSet.DeletedRows.Add(pkVals);
-                        }
-                        break;
-                }
-            }
-        }
+        //public void AddChangesToChangeSet(CdlChangeSet changeSet, string[] colNames, int[] pk, 
+        //    Dictionary<int, Tuple<NameWithSchema, int[]>> referencedColumnKeys)
+        //{
+        //    foreach (var row in Rows)
+        //    {
+        //        switch (row.RowState)
+        //        {
+        //            case CdlRowState.Unchanged:
+        //                continue;
+        //            case CdlRowState.Added:
+        //                {
+        //                    var values = new CdlChangeSet.InsertedRowValues();
+        //                    for (int i = 0; i < colNames.Length; i++)
+        //                    {
+        //                        if (!row.IsChanged(i)) continue;
+        //                        values.ChangedItems.Add(new CdlChangeSet.RowValuesBase.Item
+        //                            {
+        //                                Column = colNames[i],
+        //                                Value = row[i],
+        //                            });
+        //                    }
+        //                    changeSet.InsertedRows.Add(values);
+        //                }
+        //                break;
+        //            case CdlRowState.Modified:
+        //                {
+        //                    if (pk == null) throw new Exception("DBSH-00117 PK required");
+        //                    object[] pkVals = row.Original.GetValuesByCols(pk);
+        //                    var values = changeSet.FindValuesByKey(pkVals);
+        //                    if (values == null)
+        //                    {
+        //                        values = new CdlChangeSet.UpdatedRowValues
+        //                            {
+        //                                UpdateKey = pkVals,
+        //                            };
+        //                        changeSet.UpdatedRows.Add(values);
+        //                    }
+        //                    for (int i = 0; i < colNames.Length; i++)
+        //                    {
+        //                        if (!row.IsChanged(i)) continue;
+        //                        values.ChangedItems.Add(new CdlChangeSet.RowValuesBase.Item
+        //                            {
+        //                                Column = colNames[i],
+        //                                Value = row[i],
+        //                            });
+        //                        if (referencedColumnKeys != null && referencedColumnKeys.ContainsKey(i))
+        //                        {
+        //                            values.ReferencedTablesKeys[referencedColumnKeys[i].Item1]
+        //                                = row.Original.GetValuesByCols(referencedColumnKeys[i].Item2);
+        //                        }
+        //                    }
+        //                }
+        //                break;
+        //            case CdlRowState.Deleted:
+        //                {
+        //                    if (pk == null) throw new Exception("DBSH-00094 PK required");
+        //                    object[] pkVals = row.Original.GetValuesByCols(pk);
+        //                    changeSet.DeletedRows.Add(pkVals);
+        //                }
+        //                break;
+        //        }
+        //    }
+        //}
 
-        public void ApplyChangesFromChangeSet(CdlChangeSet changeSet, bool removeFromChangeSet, string[] colNames, int[] pk)
-        {
-            var dct = CdlChangeSet.CreateTableDict(this, pk);
-
-            foreach (var pkVal in changeSet.DeletedRows.ToArray())
-            {
-                string key = CdlChangeSet.GetPkString(pkVal);
-                if (dct.ContainsKey(key))
-                {
-                    dct[key].RowState = CdlRowState.Deleted;
-                    if (removeFromChangeSet) changeSet.DeletedRows.Remove(pkVal);
-                }
-            }
-
-            foreach (var change in changeSet.UpdatedRows.ToArray())
-            {
-                if (change.UpdateKey != null)
-                {
-                    string key = CdlChangeSet.GetPkString(change.UpdateKey);
-                    if (dct.ContainsKey(key))
-                    {
-                        var row = dct[key];
-                        foreach (var item in change.ChangedItems.ToArray())
-                        {
-                            int index = colNames.IndexOfEx(item.Column);
-                            if (index >= 0)
-                            {
-                                row[index] = item.Value;
-                                if (removeFromChangeSet) change.ChangedItems.Remove(item);
-                            }
-                        }
-                        if (removeFromChangeSet && change.ChangedItems.Count == 0)
-                        {
-                            changeSet.UpdatedRows.Remove(change);
-                        }
-                    }
-                }
-            }
-        }
-
-        public void ApplyAddedRowsFromChangeSet(CdlChangeSet changeSet, bool removeFromChangeSet, string[] colNames)
-        {
-            foreach(var change in changeSet.InsertedRows.ToArray())
-            {
-                var row = NewRow();
-                Rows.Add(row);
-                foreach (var item in change.ChangedItems.ToArray())
-                {
-                    int index = colNames.IndexOfEx(item.Column);
-                    if (index >= 0)
-                    {
-                        row[index] = item.Value;
-                        if (removeFromChangeSet) change.ChangedItems.Remove(item);
-                    }
-                }
-                if (removeFromChangeSet && change.ChangedItems.Count == 0)
-                {
-                    changeSet.InsertedRows.Remove(change);
-                }
-            }
-        }
     }
 }

@@ -34,5 +34,10 @@ namespace DbShell.Driver.Common.DmlFramework
             var o = (DmlfStringValueExpressionBase)obj;
             return Value == o.Value;
         }
+
+        public override object EvalExpression(IDmlfNamespace ns)
+        {
+            return Value;
+        }
     }
 }

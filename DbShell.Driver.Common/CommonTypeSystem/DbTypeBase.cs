@@ -77,5 +77,11 @@ namespace DbShell.Driver.Common.CommonTypeSystem
             var res = (DbTypeBase)MemberwiseClone();
             return res;
         }
+
+        public static bool IsComparable(DbTypeBase type)
+        {
+            if (type is DbTypeXml || type is DbTypeBlob) return false;
+            return true;
+        }
     }
 }

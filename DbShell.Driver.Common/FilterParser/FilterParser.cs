@@ -142,7 +142,7 @@ namespace DbShell.Driver.Common.FilterParser
             return FilterLineTransformation.None;
         }
 
-        public static DmlfConditionBase ParseFilterExpression(DbTypeBase type, DmlfExpression columnValue, string expression, Action<DbShellFilterAntlrParser> initParser = null)
+        private static DmlfConditionBase DoParseFilterExpression(DbTypeBase type, DmlfExpression columnValue, string expression, Action<DbShellFilterAntlrParser> initParser = null)
         {
             expression = TransformExpression(expression);
 
@@ -162,6 +162,13 @@ namespace DbShell.Driver.Common.FilterParser
                 LeftExpr = columnValue,
                 RightExpr = new DmlfStringExpression { Value = expression },
             };
+        }
+
+        public static DmlfConditionBase ParseFilterExpression(DbTypeBase type, DmlfExpression columnValue, string expression, Action<DbShellFilterAntlrParser> initParser = null)
+        {
+            var res = DoParseFilterExpression(type, columnValue, expression, initParser);
+            if (res != null) res = res.SimplifyCondition();
+            return res;
         }
 
         private static string TransformExpression(string expression)
