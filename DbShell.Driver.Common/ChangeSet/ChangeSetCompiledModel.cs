@@ -224,10 +224,10 @@ namespace DbShell.Driver.Common.ChangeSet
             for (int i = 0; i < pk.Length; i++)
             {
                 conditions.Add(new ChangeSetCondition
-                {
-                    Column = pk[i].Name,
-                    Expression = values[i] == null ? "NULL" : String.Format("= \"{0}\"", values[i]),
-                });
+                    {
+                        Column = pk[i].Name,
+                        Expression = values[i] == null ? "NULL" : String.Format("= \"{0}\"", values[i]),
+                    });
             }
         }
 
@@ -302,6 +302,17 @@ namespace DbShell.Driver.Common.ChangeSet
             }
         }
 
+        private void WriteValueToRow(CdlRow row, int index, object value)
+        {
+            if (row.GetDefaultStorage(index) == TypeStorage.Int32 && value != null && value.GetType() == typeof (byte[]))
+            {
+                row[index] = ((byte[]) value).Length;
+            }
+            else
+            {
+                row[index] = value;
+            }
+        }
 
         public void ApplyOnRow(NameWithSchema tableName, CdlRow row)
         {
@@ -311,7 +322,7 @@ namespace DbShell.Driver.Common.ChangeSet
                 {
                     foreach (var value in item.Values)
                     {
-                        row[value.Column] = value.Value;
+                        WriteValueToRow(row, value.Column, value.Value);
                     }
                 }
             }
@@ -332,7 +343,7 @@ namespace DbShell.Driver.Common.ChangeSet
                     {
                         foreach (var value in item.Values)
                         {
-                            row[value.Column] = value.Value;
+                            WriteValueToRow(row, value.Column, value.Value);
                         }
                     }
                 }
@@ -359,7 +370,7 @@ namespace DbShell.Driver.Common.ChangeSet
                     int index = FindColumnIndex(item.TargetTable, value.Column);
                     if (index >= 0)
                     {
-                        row[index] = value.Value;
+                        WriteValueToRow(row, index, value.Value);
                     }
                 }
             }
@@ -420,8 +431,18 @@ namespace DbShell.Driver.Common.ChangeSet
 
         public void RevertRowChanges(NameWithSchema tableName, CdlRow row)
         {
-            Updates.RemoveAll(x => x.EvalCondition(row));
-            Deletes.RemoveAll(x => x.Item.TargetTable == tableName && x.EvalCondition(row));
+            foreach (var upd in Updates.Where(x => x.EvalCondition(row)).ToList())
+            {
+                ChangeSet.Updates.Remove((ChangeSetUpdateItem) upd.Item);
+                Updates.Remove(upd);
+            }
+
+            foreach (var del in Deletes.Where(x => x.Item.TargetTable == tableName && x.EvalCondition(row)).ToList())
+            {
+                ChangeSet.Deletes.Remove((ChangeSetDeleteItem) del.Item);
+                Deletes.Remove(del);
+            }
+
             DispatchChanged();
         }
     }

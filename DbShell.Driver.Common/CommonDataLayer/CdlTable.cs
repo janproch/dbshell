@@ -69,7 +69,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
             m_defConvertor = new CdlValueConvertor(new DataFormatSettings());
         }
 
-        internal CdlValueConvertor CdlConvertor
+        public CdlValueConvertor CdlConvertor
         {
             get { return m_convertor ?? m_defConvertor; }
             set { m_convertor = value; }

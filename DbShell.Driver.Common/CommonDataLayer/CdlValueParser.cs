@@ -36,6 +36,14 @@ namespace DbShell.Driver.Common.CommonDataLayer
 
         //public IProgressInfo ProgressInfo { get; set; }
 
+        private static bool IsNullTextTest(string text)
+        {
+            if (String.IsNullOrWhiteSpace(text)) return true;
+            string tested = text.ToUpper().Trim();
+            if (tested == "NULL" || tested == "NIL") return true;
+            return false;
+        }
+
         public void ParseValue(string text, TypeStorage type, ICdlValueWriter writer)
         {
             foreach (string nulltext in m_settings.GetNullValues())
@@ -56,15 +64,22 @@ namespace DbShell.Driver.Common.CommonDataLayer
                     break;
                 case TypeStorage.Boolean:
                     {
-                        bool? val = m_settings.ParseBoolean(text);
-                        if (val != null) writer.SetBoolean(val.Value);
-                        else writer.SetNull();
+                        if (IsNullTextTest(text))
+                        {
+                            writer.SetNull();
+                        }
+                        else
+                        {
+                            bool? val = m_settings.ParseBoolean(text);
+                            if (val != null) writer.SetBoolean(val.Value);
+                            else writer.SetNull();
+                        }
                     }
                     break;
                 case TypeStorage.Byte:
                     {
                         byte val;
-                        if (String.IsNullOrWhiteSpace(text))
+                        if (IsNullTextTest(text))
                         {
                             writer.SetNull();
                         }
@@ -81,7 +96,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.Int16:
                     {
                         short val;
-                        if (String.IsNullOrWhiteSpace(text))
+                        if (IsNullTextTest(text))
                         {
                             writer.SetNull();
                         }
@@ -98,7 +113,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.Int32:
                     {
                         int val;
-                        if (String.IsNullOrWhiteSpace(text))
+                        if (IsNullTextTest(text))
                         {
                             writer.SetNull();
                         }
@@ -115,7 +130,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.Int64:
                     {
                         long val;
-                        if (String.IsNullOrWhiteSpace(text))
+                        if (IsNullTextTest(text))
                         {
                             writer.SetNull();
                         }
@@ -132,7 +147,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.SByte:
                     {
                         sbyte val;
-                        if (String.IsNullOrWhiteSpace(text))
+                        if (IsNullTextTest(text))
                         {
                             writer.SetNull();
                         }
@@ -149,7 +164,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.UInt16:
                     {
                         ushort val;
-                        if (String.IsNullOrWhiteSpace(text))
+                        if (IsNullTextTest(text))
                         {
                             writer.SetNull();
                         }
@@ -166,7 +181,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.UInt32:
                     {
                         uint val;
-                        if (String.IsNullOrWhiteSpace(text))
+                        if (IsNullTextTest(text))
                         {
                             writer.SetNull();
                         }
@@ -183,7 +198,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.UInt64:
                     {
                         ulong val;
-                        if (String.IsNullOrWhiteSpace(text))
+                        if (IsNullTextTest(text))
                         {
                             writer.SetNull();
                         }
@@ -200,7 +215,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.Float:
                     {
                         float val;
-                        if (String.IsNullOrWhiteSpace(text))
+                        if (IsNullTextTest(text))
                         {
                             writer.SetNull();
                         }
@@ -217,7 +232,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.Double:
                     {
                         double val;
-                        if (String.IsNullOrWhiteSpace(text))
+                        if (IsNullTextTest(text))
                         {
                             writer.SetNull();
                         }
@@ -234,7 +249,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.Decimal:
                     {
                         decimal val;
-                        if (String.IsNullOrWhiteSpace(text))
+                        if (IsNullTextTest(text))
                         {
                             writer.SetNull();
                         }
@@ -251,7 +266,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.DateTime:
                     {
                         DateTime val;
-                        if (String.IsNullOrWhiteSpace(text))
+                        if (IsNullTextTest(text))
                         {
                             writer.SetNull();
                         }
@@ -270,43 +285,79 @@ namespace DbShell.Driver.Common.CommonDataLayer
                     }
                     break;
                 case TypeStorage.DateTimeEx:
-                    try
+                    if (IsNullTextTest(text))
                     {
-                        writer.SetDateTimeEx(DateTimeEx.Parse(text, m_settings.DateTimeFormat, CultureInfo.InvariantCulture));
+                        writer.SetNull();
                     }
-                    catch
+                    else
                     {
-                        writer.SetDateTimeEx(DateTimeEx.FromDateTime(DateTime.Parse(text, CultureInfo.InvariantCulture)));
+                        try
+                        {
+                            writer.SetDateTimeEx(DateTimeEx.Parse(text, m_settings.DateTimeFormat, CultureInfo.InvariantCulture));
+                        }
+                        catch
+                        {
+                            writer.SetDateTimeEx(DateTimeEx.FromDateTime(DateTime.Parse(text, CultureInfo.InvariantCulture)));
+                        }
                     }
                     break;
                 case TypeStorage.DateEx:
-                    try
+                    if (IsNullTextTest(text))
                     {
-                        writer.SetDateEx(DateTimeEx.Parse(text, m_settings.DateFormat, CultureInfo.InvariantCulture).DatePart);
+                        writer.SetNull();
                     }
-                    catch
+                    else
                     {
-                        writer.SetDateEx(DateTimeEx.FromDateTime(DateTime.Parse(text, CultureInfo.InvariantCulture)).DatePart);
+                        try
+                        {
+                            writer.SetDateEx(DateTimeEx.Parse(text, m_settings.DateFormat, CultureInfo.InvariantCulture).DatePart);
+                        }
+                        catch
+                        {
+                            writer.SetDateEx(DateTimeEx.FromDateTime(DateTime.Parse(text, CultureInfo.InvariantCulture)).DatePart);
+                        }
                     }
                     break;
                 case TypeStorage.TimeEx:
-                    try
+                    if (IsNullTextTest(text))
                     {
-                        writer.SetTimeEx(DateTimeEx.Parse(text, m_settings.TimeFormat, CultureInfo.InvariantCulture).TimePart);
+                        writer.SetNull();
                     }
-                    catch
+                    else
                     {
-                        writer.SetTimeEx(DateTimeEx.FromDateTime(DateTime.Parse(text, CultureInfo.InvariantCulture)).TimePart);
+                        try
+                        {
+                            writer.SetTimeEx(DateTimeEx.Parse(text, m_settings.TimeFormat, CultureInfo.InvariantCulture).TimePart);
+                        }
+                        catch
+                        {
+                            writer.SetTimeEx(DateTimeEx.FromDateTime(DateTime.Parse(text, CultureInfo.InvariantCulture)).TimePart);
+                        }
                     }
                     break;
                 case TypeStorage.ByteArray:
+                    if (IsNullTextTest(text))
                     {
-                        if (text.EndsWith("=")) writer.SetByteArray(Convert.FromBase64String(text.Replace("=", "")));
-                        else writer.SetNull();
+                        writer.SetNull();
+                    }
+                    else if (text.EndsWith("=")) 
+                    {
+                        writer.SetByteArray(Convert.FromBase64String(text.Replace("=", "")));
+                    }
+                    else
+                    {
+                        writer.SetNull();
                     }
                     break;
                 case TypeStorage.Guid:
-                    writer.SetGuid(new Guid(text));
+                    if (IsNullTextTest(text))
+                    {
+                        writer.SetNull();
+                    }
+                    else
+                    {
+                        writer.SetGuid(new Guid(text));
+                    }
                     break;
                 case TypeStorage.String:
                     writer.SetString(text);
