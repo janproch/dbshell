@@ -44,5 +44,17 @@ namespace DbShell.Driver.Common.ChangeSet
                 res.AllowIdentityInsert(table.FullName, false);
             }
         }
+
+        public void UpdateValue(string column, object value)
+        {
+            var val = Values.FirstOrDefault(x => x.Column == column);
+            if (val == null)
+            {
+                val = new ChangeSetValue();
+                Values.Add(val);
+            }
+            val.Column = column;
+            val.Value = value;
+        }
     }
 }

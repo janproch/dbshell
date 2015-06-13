@@ -11,11 +11,8 @@ namespace DbShell.Driver.Common.ChangeSet
         public ChangeSetCompiledDeleteItem(ChangeSetCompiledModel changeSet, ChangeSetDeleteItem item)
             : base(changeSet, item)
         {
-            if (item.TargetTable == changeSet.BaseTable)
-            {
-                CanBeUsed = true;
-                CompileConditions(item.Conditions);
-            }
+            CanBeUsed = true;
+            CompileConditions(item.Conditions);
         }
     }
 }

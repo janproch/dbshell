@@ -66,5 +66,13 @@ namespace DbShell.Driver.Common.DmlFramework
                 return "";
             }
         }
+
+        public string GetResultName()
+        {
+            if (Alias != null) return Alias;
+            var e = Expr as DmlfColumnRefExpression;
+            if (e != null) return e.Column.ColumnName;
+            return null;
+        }
     }
 }

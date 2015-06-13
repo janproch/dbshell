@@ -178,6 +178,31 @@ namespace DbShell.Driver.Common.DmlFramework
         //    dmp.Put("^select ^count(*) ");
         //    From.GenSql(dmp, handler);
         //}
-    }
 
+        private string GetUniqueName(HashSet<string> used, string baseName)
+        {
+            if (!used.Contains(baseName)) return baseName;
+            int index = 2;
+            while (used.Contains(baseName + "_" + index)) index++;
+            return baseName + "_" + index;
+        }
+
+        public void MakeUniqueResultAliases()
+        {
+            var used = new HashSet<string>();
+            foreach (var col in Columns)
+            {
+                string name = col.GetResultName();
+                if (name == null || used.Contains(name))
+                {
+                    col.Alias = GetUniqueName(used, name ?? "COLUMN");
+                    used.Add(col.Alias);
+                }
+                else
+                {
+                    used.Add(name);
+                }
+            }
+        }
+    }
 }
