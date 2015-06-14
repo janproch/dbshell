@@ -330,9 +330,14 @@ namespace DbShell.Driver.Common.Utility
             return child;
         }
 
-        public static XmlDocument CreateDocument(string rootElement)
+        public static XmlDocument CreateDocument(string rootElement, bool createHeader = false)
         {
-            XmlDocument res = new XmlDocument();
+            var res = new XmlDocument();
+            if (createHeader)
+            {
+                var xmlDeclaration = res.CreateXmlDeclaration("1.0", "UTF-8", null);
+                res.AppendChild(xmlDeclaration);
+            }
             res.AppendChild(res.CreateElement(rootElement));
             return res;
         }

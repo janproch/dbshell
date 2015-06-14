@@ -4,6 +4,7 @@ using System.Linq;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.ChangeSet
 {
@@ -58,14 +59,14 @@ namespace DbShell.Driver.Common.ChangeSet
             }
         }
 
-        private void RecompileItem(ChangeSetUpdateItem item)
+        public void RecompileItem(ChangeSetUpdateItem item)
         {
             int index = Updates.FindIndex(x => x.Item == item);
             if (index >= 0) Updates[index] = new ChangeSetCompiledUpdateItem(this, item);
             else Updates.Add(new ChangeSetCompiledUpdateItem(this, item));
         }
 
-        private void RecompileItem(ChangeSetDeleteItem item)
+        public void RecompileItem(ChangeSetDeleteItem item)
         {
             int index = Deletes.FindIndex(x => x.Item == item);
             if (index >= 0) Deletes[index] = new ChangeSetCompiledDeleteItem(this, item);
@@ -444,6 +445,34 @@ namespace DbShell.Driver.Common.ChangeSet
             }
 
             DispatchChanged();
+        }
+
+        public void ExtendChanges(IEnumerable<CdlRow> extendedRows, List<ChangeSetCondition> conditions)
+        {
+            if (conditions == null) return;
+            var updates = Updates.Where(x => extendedRows.Any(x.EvalCondition)).ToList();
+            foreach (var upd in updates)
+            {
+                var updSource = (ChangeSetUpdateItem) upd.Item;
+                updSource.Conditions.Clear();
+                updSource.Conditions.AddRange(conditions);
+                RecompileItem(updSource);
+            }
+            DispatchChanged();
+        }
+
+        public List<ChangeSetCondition> GetPkConditions(NameWithSchema tableName, List<CdlRow> rows)
+        {
+            var pk = GetTableKey(tableName);
+            if (pk == null) return null;
+            if (pk.Length != 1) return null;
+            string condExpr = rows.Select(x => FilterParser.FilterParser.GetValueTestExpression(x[pk[0].Index])).CreateDelimitedText(",");
+            var cond = new ChangeSetCondition
+                {
+                    Column = pk[0].Name,
+                    Expression = condExpr,
+                };
+            return new List<ChangeSetCondition> {cond};
         }
     }
 }

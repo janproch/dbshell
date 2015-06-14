@@ -28,6 +28,11 @@ namespace DbShell.Driver.Common.ChangeSet
             if (table == null) return;
             foreach (var fk in table.GetReferences())
             {
+                if (res.Any(x => x.TargetTable == fk.OwnerTable.FullName))
+                {
+                    // prevent cycling
+                    continue;
+                }
                 var newItem = new ChangeSetDeleteItem
                     {
                         LinkedInfo = LinkedInfo,
@@ -47,14 +52,14 @@ namespace DbShell.Driver.Common.ChangeSet
             return res;
         }
 
-        public void GetCommands(DmlfBatch res, DatabaseInfo db, ChangeSetModel model)
+        public void GetCommands(DmlfBatch res, DatabaseInfo db, ChangeSetModel model, bool allowCascade = true)
         {
-            if (DeleteReferencesCascade || model.DeleteReferencesCascade)
+            if (allowCascade && (DeleteReferencesCascade || model.DeleteReferencesCascade))
             {
                 var refs = GenerateCascadeDeletions(db);
                 foreach (var item in refs)
                 {
-                    item.GetCommands(res, db, model);
+                    item.GetCommands(res, db, model, false);
                 }
             }
 

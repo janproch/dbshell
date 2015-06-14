@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using Antlr.Runtime;
 using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.DmlFramework;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.FilterParser
 {
@@ -158,10 +160,10 @@ namespace DbShell.Driver.Common.FilterParser
                     return ParseLogical(columnValue, expression, initParser);
             }
             return new DmlfEqualCondition
-            {
-                LeftExpr = columnValue,
-                RightExpr = new DmlfStringExpression { Value = expression },
-            };
+                {
+                    LeftExpr = columnValue,
+                    RightExpr = new DmlfStringExpression {Value = expression},
+                };
         }
 
         public static DmlfConditionBase ParseFilterExpression(DbTypeBase type, DmlfExpression columnValue, string expression, Action<DbShellFilterAntlrParser> initParser = null)
@@ -216,6 +218,27 @@ namespace DbShell.Driver.Common.FilterParser
         public static string GetTrasformExpression(FilterLineTransformation tran, string lines)
         {
             return LineTransformPrefix + tran.ToString() + "\n" + lines;
+        }
+
+        public static string GetValueTestExpression(object value, string dateResolution = null)
+        {
+            if (value != null)
+            {
+                if (value is DateTime)
+                {
+                    if (dateResolution == "day")
+                    {
+                        return ((DateTime) value).ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    }
+                    return StringTool.DateTimeToStringExact((DateTime) value);
+                }
+                if (value is bool)
+                {
+                    return (bool) value ? "TRUE" : "FALSE";
+                }
+                return "=\"" + value.ToString() + "\"";
+            }
+            return "NULL";
         }
     }
 }

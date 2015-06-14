@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
@@ -14,13 +15,13 @@ namespace DbShell.Driver.Common.ChangeSet
 {
     public class ChangeSetModel
     {
-        [XmlCollection(typeof(ChangeSetInsertItem))]
+        [XmlCollection(typeof (ChangeSetInsertItem))]
         public List<ChangeSetInsertItem> Inserts { get; set; }
 
-        [XmlCollection(typeof(ChangeSetUpdateItem))]
+        [XmlCollection(typeof (ChangeSetUpdateItem))]
         public List<ChangeSetUpdateItem> Updates { get; set; }
 
-        [XmlCollection(typeof(ChangeSetDeleteItem))]
+        [XmlCollection(typeof (ChangeSetDeleteItem))]
         public List<ChangeSetDeleteItem> Deletes { get; set; }
 
         [XmlElem]
@@ -146,6 +147,15 @@ namespace DbShell.Driver.Common.ChangeSet
         public bool HasChanges()
         {
             return Updates.Any() || Inserts.Any() || Deletes.Any();
+        }
+
+        public static ChangeSetModel LoadFromFile(string fileName)
+        {
+            var doc = new XmlDocument();
+            doc.LoadXml(File.ReadAllText(fileName));
+            var res = new ChangeSetModel();
+            res.LoadProperties(doc.DocumentElement);
+            return res;
         }
     }
 }
