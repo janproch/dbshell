@@ -41,7 +41,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
             RowState = initialState;
         }
 
-        public CdlRowState RowState { get; internal set; }
+        public CdlRowState RowState { get; set; }
         public CdlTable Table { get { return m_table; } }
 
         public string[] GetChangedColumns(bool notNull)
