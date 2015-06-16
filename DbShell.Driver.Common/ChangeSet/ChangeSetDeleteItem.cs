@@ -17,6 +17,18 @@ namespace DbShell.Driver.Common.ChangeSet
         [XmlElem]
         public bool DeleteReferencesCascade { get; set; }
 
+        public class DeleteWrapper
+        {
+            public List<ChangeSetDeleteItem> Items = new List<ChangeSetDeleteItem>();
+            public TableInfo Table;
+            public List<NameWithSchema> Refs;
+
+            public override string ToString()
+            {
+                return String.Format("{0} [{1}]", Table.Name, Refs.Select(x => x.Name).CreateDelimitedText(","));
+            }
+        }
+
         public ChangeSetDeleteItem()
         {
             Conditions = new List<ChangeSetCondition>();
@@ -44,12 +56,61 @@ namespace DbShell.Driver.Common.ChangeSet
             }
         }
 
+        /// <summary>
+        /// Generates the cascade deletions.
+        /// </summary>
+        /// <param name="db">The db.</param>
+        /// <returns></returns>
         public List<ChangeSetDeleteItem> GenerateCascadeDeletions(DatabaseInfo db)
         {
             var res = new List<ChangeSetDeleteItem>();
             DoGenerateCascadeDeletions(db, res);
-            res.Reverse();
-            return res;
+
+            var dct = new Dictionary<NameWithSchema, DeleteWrapper>();
+            var queue = new List<DeleteWrapper>();
+            foreach (var item in res)
+            {
+                DeleteWrapper wrap;
+                if (!dct.ContainsKey(item.TargetTable))
+                {
+                    wrap = new DeleteWrapper();
+                    dct[item.TargetTable] = wrap;
+                    wrap.Table = db.FindTable(item.TargetTable);
+                    wrap.Refs = wrap.Table.GetReferences().Select(x => x.OwnerTable.FullName).ToList();
+                    wrap.Refs.RemoveAll(x => x == wrap.Table.FullName);
+                    queue.Add(wrap);
+                }
+                else
+                {
+                    wrap = dct[item.TargetTable];
+                }
+                wrap.Items.Add(item);
+            }
+            queue.Reverse();
+
+            var resWrappers = new List<DeleteWrapper>();
+
+            while (queue.Any())
+            {
+                DeleteWrapper selected = null;
+                foreach (var wrap in queue)
+                {
+                    if (wrap.Refs.All(x => resWrappers.Any(y => y.Table.FullName == x)))
+                    {
+                        selected = wrap;
+                        break;
+                    }
+                }
+                if (selected == null)
+                {
+                    // omit partial ordering, if order is not possible
+                    selected = queue.First();
+                }
+                queue.Remove(selected);
+                resWrappers.Add(selected);
+            }
+
+            return resWrappers.SelectMany(x => x.Items).ToList();
         }
 
         public void GetCommands(DmlfBatch res, DatabaseInfo db, ChangeSetModel model, bool allowCascade = true)
