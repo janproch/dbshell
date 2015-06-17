@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using DbShell.Driver.Common.Structure;
 
@@ -17,6 +18,13 @@ namespace DbShell.Driver.Common.AbstractDb
         All = Tables | Functions | Views | Settings | Finish,
     }
 
+    public class DatabaseAnalyserError
+    {
+        public string Message;
+        public string Detail;
+        public Exception Error;
+    }
+
     public abstract class DatabaseAnalyser : IDisposable
     {
         protected DbConnection _conn;
@@ -26,6 +34,7 @@ namespace DbShell.Driver.Common.AbstractDb
         public DatabaseAnalyserFilterOptions FilterOptions;
         public DatabaseServerVersion ServerVersion;
         public DatabaseAnalysePhase Phase = DatabaseAnalysePhase.All;
+        public List<DatabaseAnalyserError> Errors = new List<DatabaseAnalyserError>();
         private string _linkedServerName;
 
         public void FullAnalysis()
@@ -37,6 +46,16 @@ namespace DbShell.Driver.Common.AbstractDb
             if (FilterOptions == null) FilterOptions = new DatabaseAnalyserFilterOptions();
             DoRunAnalysis();
             SortStructureItems();
+        }
+
+        protected void AddErrorReport(string message, Exception err)
+        {
+            Errors.Add(new DatabaseAnalyserError
+                {
+                    Message = message + ": " + err.Message,
+                    Detail = err.ToString(),
+                    Error = err,
+                });
         }
 
         private void SortStructureItems()

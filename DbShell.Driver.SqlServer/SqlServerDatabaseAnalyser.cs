@@ -111,273 +111,322 @@ namespace DbShell.Driver.SqlServer
             if (FilterOptions.AnyTables && IsTablesPhase)
             {
                 Timer("tables...");
-                using (var cmd = Connection.CreateCommand())
+                try
                 {
-                    cmd.CommandText = CreateQuery("tables.sql", tables: true);
-                    using (var reader = cmd.ExecuteReader())
+                    using (var cmd = Connection.CreateCommand())
                     {
-                        int modifyIndex = reader.GetOrdinal("modify_date");
-                        int createIndex = reader.GetOrdinal("modify_date");
-                        while (reader.Read())
+                        cmd.CommandText = CreateQuery("tables.sql", tables: true);
+                        using (var reader = cmd.ExecuteReader())
                         {
-                            string tname = reader.SafeString("TableName");
-                            string schema = reader.SafeString("SchemaName");
-                            string id = reader.SafeString("object_id");
-                            DateTime modify = reader.GetDateTime(modifyIndex);
-                            DateTime create = reader.GetDateTime(createIndex);
+                            int modifyIndex = reader.GetOrdinal("modify_date");
+                            int createIndex = reader.GetOrdinal("modify_date");
+                            while (reader.Read())
+                            {
+                                string tname = reader.SafeString("TableName");
+                                string schema = reader.SafeString("SchemaName");
+                                string id = reader.SafeString("object_id");
+                                DateTime modify = reader.GetDateTime(modifyIndex);
+                                DateTime create = reader.GetDateTime(createIndex);
 
-                            if (_tablesById.ContainsKey(id))
-                            {
-                                var table = _tablesById[id];
-                                table.FullName = new NameWithSchema(schema, tname);
-                                table.ModifyDate = modify;
-                            }
-                            else
-                            {
-                                var table = new TableInfo(Structure)
-                                    {
-                                        FullName = new NameWithSchema(schema, tname),
-                                        ObjectId = id,
-                                        ModifyDate = modify,
-                                        CreateDate = create,
-                                    };
-                                Structure.Tables.Add(table);
-                                _tables[table.FullName] = table;
-                                _tablesById[table.ObjectId] = table;
+                                if (_tablesById.ContainsKey(id))
+                                {
+                                    var table = _tablesById[id];
+                                    table.FullName = new NameWithSchema(schema, tname);
+                                    table.ModifyDate = modify;
+                                }
+                                else
+                                {
+                                    var table = new TableInfo(Structure)
+                                        {
+                                            FullName = new NameWithSchema(schema, tname),
+                                            ObjectId = id,
+                                            ModifyDate = modify,
+                                            CreateDate = create,
+                                        };
+                                    Structure.Tables.Add(table);
+                                    _tables[table.FullName] = table;
+                                    _tablesById[table.ObjectId] = table;
+                                }
                             }
                         }
                     }
+                }
+                catch (Exception err)
+                {
+                    AddErrorReport("Error loading tables", err);
                 }
 
                 Timer("columns...");
 
-                using (var cmd = Connection.CreateCommand())
+                try
                 {
-                    string sql=CreateQuery("columns.sql", tables: true);
-                    if (ServerVersion.Is_2008() && String.IsNullOrEmpty(LinkedServerName)) sql = sql.Replace("#2008#", ",c.is_sparse");
-                    else sql = sql.Replace("#2008#", "");
-                    cmd.CommandText = sql;
-                    using (var reader = cmd.ExecuteReader())
+                    using (var cmd = Connection.CreateCommand())
                     {
-                        while (reader.Read())
+                        string sql = CreateQuery("columns.sql", tables: true);
+                        if (ServerVersion.Is_2008() && String.IsNullOrEmpty(LinkedServerName)) sql = sql.Replace("#2008#", ",c.is_sparse");
+                        else sql = sql.Replace("#2008#", "");
+                        cmd.CommandText = sql;
+                        using (var reader = cmd.ExecuteReader())
                         {
-                            string tid = reader.SafeString("object_id");
-                            if (!_tablesById.ContainsKey(tid)) continue;
-                            var table = _tablesById[tid];
-                            var col = new ColumnInfo(table);
-                            col.Name = reader.SafeString("column_name");
-                            col.NotNull = reader.SafeString("is_nullable") != "True";
-                            col.DataType = reader.SafeString("type_name");
-                            int bytelen = reader.SafeString("max_length").SafeIntParse();
-                            if (col.DataType.ToLower().Contains("nchar") || col.DataType.ToLower().Contains("nvarchar"))
+                            while (reader.Read())
                             {
-                                col.Length = bytelen >= 0 ? bytelen/2 : bytelen;
-                            }
-                            else if (col.DataType.ToLower().Contains("char") || col.DataType.ToLower().Contains("binary"))
-                            {
-                                col.Length = bytelen;
-                            }
-                            col.Precision = reader.SafeString("precision").SafeIntParse();
-                            col.Scale = reader.SafeString("scale").SafeIntParse();
-                            col.DefaultValue = SimplifyExpression(reader.SafeString("default_value"));
-                            col.DefaultConstraint = reader.SafeString("default_constraint");
-                            col.AutoIncrement = reader.SafeString("is_identity") == "True";
-                            col.ComputedExpression = SimplifyExpression(reader.SafeString("computed_expression"));
-                            col.IsPersisted = reader.SafeString("is_persisted") == "True";
-                            col.IsSparse = reader.SafeString("is_sparse") == "True";
-                            col.ObjectId = reader.SafeString("column_id");
-                            col.CommonType = AnalyseType(col.DataType, col.Length, col.Precision, col.Scale);
-                            table.Columns.Add(col);
-                            if (String.IsNullOrWhiteSpace(col.ComputedExpression)) col.ComputedExpression = null;
-                            if (String.IsNullOrWhiteSpace(col.DefaultValue))
-                            {
-                                col.DefaultValue = null;
-                                col.DefaultConstraint = null;
+                                string tid = reader.SafeString("object_id");
+                                if (!_tablesById.ContainsKey(tid)) continue;
+                                var table = _tablesById[tid];
+                                var col = new ColumnInfo(table);
+                                col.Name = reader.SafeString("column_name");
+                                col.NotNull = reader.SafeString("is_nullable") != "True";
+                                col.DataType = reader.SafeString("type_name");
+                                int bytelen = reader.SafeString("max_length").SafeIntParse();
+                                if (col.DataType.ToLower().Contains("nchar") || col.DataType.ToLower().Contains("nvarchar"))
+                                {
+                                    col.Length = bytelen >= 0 ? bytelen/2 : bytelen;
+                                }
+                                else if (col.DataType.ToLower().Contains("char") || col.DataType.ToLower().Contains("binary"))
+                                {
+                                    col.Length = bytelen;
+                                }
+                                col.Precision = reader.SafeString("precision").SafeIntParse();
+                                col.Scale = reader.SafeString("scale").SafeIntParse();
+                                col.DefaultValue = SimplifyExpression(reader.SafeString("default_value"));
+                                col.DefaultConstraint = reader.SafeString("default_constraint");
+                                col.AutoIncrement = reader.SafeString("is_identity") == "True";
+                                col.ComputedExpression = SimplifyExpression(reader.SafeString("computed_expression"));
+                                col.IsPersisted = reader.SafeString("is_persisted") == "True";
+                                col.IsSparse = reader.SafeString("is_sparse") == "True";
+                                col.ObjectId = reader.SafeString("column_id");
+                                col.CommonType = AnalyseType(col.DataType, col.Length, col.Precision, col.Scale);
+                                table.Columns.Add(col);
+                                if (String.IsNullOrWhiteSpace(col.ComputedExpression)) col.ComputedExpression = null;
+                                if (String.IsNullOrWhiteSpace(col.DefaultValue))
+                                {
+                                    col.DefaultValue = null;
+                                    col.DefaultConstraint = null;
+                                }
                             }
                         }
                     }
                 }
-
-                Timer("primary keys...");
-                using (var cmd = Connection.CreateCommand())
+                catch (Exception err)
                 {
-                    cmd.CommandText = CreateQuery("primary_keys.sql", tables: true);
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            string table = reader.SafeString("TableName");
-                            string schema = reader.SafeString("SchemaName");
-                            string column = reader.SafeString("ColumnName");
-                            string cnt = reader.SafeString("ConstraintName");
-                            var t = _tables[new NameWithSchema(schema, table)];
-                            t.Columns[column].PrimaryKey = true;
+                    AddErrorReport("Error loading columns", err);
+                }
 
-                            if (t.PrimaryKey == null)
+                try
+                {
+                    Timer("primary keys...");
+                    using (var cmd = Connection.CreateCommand())
+                    {
+                        cmd.CommandText = CreateQuery("primary_keys.sql", tables: true);
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
                             {
-                                t.PrimaryKey = new PrimaryKeyInfo(t);
-                                t.PrimaryKey.ConstraintName = cnt;
+                                string table = reader.SafeString("TableName");
+                                string schema = reader.SafeString("SchemaName");
+                                string column = reader.SafeString("ColumnName");
+                                string cnt = reader.SafeString("ConstraintName");
+                                var t = _tables[new NameWithSchema(schema, table)];
+                                t.Columns[column].PrimaryKey = true;
+
+                                if (t.PrimaryKey == null)
+                                {
+                                    t.PrimaryKey = new PrimaryKeyInfo(t);
+                                    t.PrimaryKey.ConstraintName = cnt;
+                                }
+                                t.PrimaryKey.Columns.Add(new ColumnReference {RefColumn = t.Columns[column]});
                             }
-                            t.PrimaryKey.Columns.Add(new ColumnReference {RefColumn = t.Columns[column]});
                         }
                     }
                 }
-
-                Timer("foreign keys...");
-                using (var cmd = Connection.CreateCommand())
+                catch (Exception err)
                 {
-                    cmd.CommandText = CreateQuery("foreign_keys.sql", tables: true);
-                    using (var reader = cmd.ExecuteReader())
+                    AddErrorReport("Error loading primary keys", err);
+                }
+
+                try
+                {
+                    Timer("foreign keys...");
+                    using (var cmd = Connection.CreateCommand())
                     {
-                        while (reader.Read())
+                        cmd.CommandText = CreateQuery("foreign_keys.sql", tables: true);
+                        using (var reader = cmd.ExecuteReader())
                         {
-                            string fktable = reader.SafeString("FK_Table");
-                            string fkcolumn = reader.SafeString("FK_Column");
-                            string fkschema = reader.SafeString("FK_Schema");
-
-                            string pktable = reader.SafeString("IX_Table");
-                            if (String.IsNullOrEmpty(pktable)) pktable = reader.SafeString("PK_Table");
-                            string pkcolumn = reader.SafeString("IX_Column");
-                            if (String.IsNullOrEmpty(pkcolumn)) pkcolumn = reader.SafeString("PK_Column");
-                            string pkschema = reader.SafeString("IX_Schema");
-                            if (String.IsNullOrEmpty(pkschema)) pkschema = reader.SafeString("PK_Schema");
-
-                            string deleteAction = reader.SafeString("Delete_Action");
-                            string updateAction = reader.SafeString("Update_Action");
-
-                            string cname = reader.SafeString("Constraint_Name");
-
-                            var fkt = _tables[new NameWithSchema(fkschema, fktable)];
-                            var pkt = _tables[new NameWithSchema(pkschema, pktable)];
-                            var fk = fkt.ForeignKeys.Find(f => f.ConstraintName == cname);
-                            if (fk == null)
+                            while (reader.Read())
                             {
-                                fk = new ForeignKeyInfo(fkt) {ConstraintName = cname, RefTable = pkt};
-                                fk.Columns.Add(new ColumnReference
-                                    {
-                                        RefColumn = fkt.Columns[fkcolumn]
-                                    });
-                                fk.RefColumns.Add(new ColumnReference
-                                    {
-                                        RefColumn = pkt.Columns[pkcolumn]
-                                    });
-                                fk.OnDeleteAction = ForeignKeyActionExtension.FromSqlName(deleteAction);
-                                fk.OnUpdateAction = ForeignKeyActionExtension.FromSqlName(updateAction);
-                                fkt.ForeignKeys.Add(fk);
+                                string fktable = reader.SafeString("FK_Table");
+                                string fkcolumn = reader.SafeString("FK_Column");
+                                string fkschema = reader.SafeString("FK_Schema");
+
+                                string pktable = reader.SafeString("IX_Table");
+                                if (String.IsNullOrEmpty(pktable)) pktable = reader.SafeString("PK_Table");
+                                string pkcolumn = reader.SafeString("IX_Column");
+                                if (String.IsNullOrEmpty(pkcolumn)) pkcolumn = reader.SafeString("PK_Column");
+                                string pkschema = reader.SafeString("IX_Schema");
+                                if (String.IsNullOrEmpty(pkschema)) pkschema = reader.SafeString("PK_Schema");
+
+                                string deleteAction = reader.SafeString("Delete_Action");
+                                string updateAction = reader.SafeString("Update_Action");
+
+                                string cname = reader.SafeString("Constraint_Name");
+
+                                var fkt = _tables[new NameWithSchema(fkschema, fktable)];
+                                var pkt = _tables[new NameWithSchema(pkschema, pktable)];
+                                var fk = fkt.ForeignKeys.Find(f => f.ConstraintName == cname);
+                                if (fk == null)
+                                {
+                                    fk = new ForeignKeyInfo(fkt) {ConstraintName = cname, RefTable = pkt};
+                                    fk.Columns.Add(new ColumnReference
+                                        {
+                                            RefColumn = fkt.Columns[fkcolumn]
+                                        });
+                                    fk.RefColumns.Add(new ColumnReference
+                                        {
+                                            RefColumn = pkt.Columns[pkcolumn]
+                                        });
+                                    fk.OnDeleteAction = ForeignKeyActionExtension.FromSqlName(deleteAction);
+                                    fk.OnUpdateAction = ForeignKeyActionExtension.FromSqlName(updateAction);
+                                    fkt.ForeignKeys.Add(fk);
+                                }
+                                ;
                             }
-                            ;
                         }
                     }
+                }
+                catch (Exception err)
+                {
+                    AddErrorReport("Error loading foreign keys", err);
                 }
 
                 var indexById = new Dictionary<string, ColumnsConstraintInfo>();
 
-                Timer("indexes...");
-                using (var cmd = Connection.CreateCommand())
+                try
                 {
-                    cmd.CommandText = CreateQuery("getindexes.sql", tables: true);
-                    using (var reader = cmd.ExecuteReader())
+                    Timer("indexes...");
+                    using (var cmd = Connection.CreateCommand())
                     {
-                        while (reader.Read())
+                        cmd.CommandText = CreateQuery("getindexes.sql", tables: true);
+                        using (var reader = cmd.ExecuteReader())
                         {
-                            string oid = reader.SafeString("object_id");
-                            string ixname = reader.SafeString("ix_name");
-                            string typedesc = (reader.SafeString("type_desc") ?? "").ToLower();
-                            bool isunique = reader.SafeString("is_unique") == "True";
-                            string indexid = reader.SafeString("index_id");
-                            bool isUniqueConstraint = reader.SafeString("is_unique_constraint") == "True";
+                            while (reader.Read())
+                            {
+                                string oid = reader.SafeString("object_id");
+                                string ixname = reader.SafeString("ix_name");
+                                string typedesc = (reader.SafeString("type_desc") ?? "").ToLower();
+                                bool isunique = reader.SafeString("is_unique") == "True";
+                                string indexid = reader.SafeString("index_id");
+                                bool isUniqueConstraint = reader.SafeString("is_unique_constraint") == "True";
 
-                            var table = _tablesById.Get(oid);
-                            if (table == null) continue;
-                            if (isUniqueConstraint)
-                            {
-                                var unique = new UniqueInfo(table);
-                                unique.ObjectId = indexid;
-                                unique.ConstraintName = ixname;
-                                indexById[oid + "|" + indexid] = unique;
-                                table.Uniques.Add(unique);
-                            }
-                            else
-                            {
-                                var index = new IndexInfo(table);
-                                index.ObjectId = indexid;
-                                index.IsUnique = isunique;
-                                index.ConstraintName = ixname;
-                                switch (typedesc)
+                                var table = _tablesById.Get(oid);
+                                if (table == null) continue;
+                                if (isUniqueConstraint)
                                 {
-                                    case "clustered":
-                                        index.IndexType = DbIndexType.Clustered;
-                                        break;
-                                    case "xml":
-                                        index.IndexType = DbIndexType.Xml;
-                                        break;
-                                    case "spatial":
-                                        index.IndexType = DbIndexType.Spatial;
-                                        break;
-                                    case "fulltext":
-                                        index.IndexType = DbIndexType.Fulltext;
-                                        break;
+                                    var unique = new UniqueInfo(table);
+                                    unique.ObjectId = indexid;
+                                    unique.ConstraintName = ixname;
+                                    indexById[oid + "|" + indexid] = unique;
+                                    table.Uniques.Add(unique);
                                 }
-                                indexById[oid + "|" + indexid] = index;
-                                table.Indexes.Add(index);
+                                else
+                                {
+                                    var index = new IndexInfo(table);
+                                    index.ObjectId = indexid;
+                                    index.IsUnique = isunique;
+                                    index.ConstraintName = ixname;
+                                    switch (typedesc)
+                                    {
+                                        case "clustered":
+                                            index.IndexType = DbIndexType.Clustered;
+                                            break;
+                                        case "xml":
+                                            index.IndexType = DbIndexType.Xml;
+                                            break;
+                                        case "spatial":
+                                            index.IndexType = DbIndexType.Spatial;
+                                            break;
+                                        case "fulltext":
+                                            index.IndexType = DbIndexType.Fulltext;
+                                            break;
+                                    }
+                                    indexById[oid + "|" + indexid] = index;
+                                    table.Indexes.Add(index);
+                                }
                             }
                         }
                     }
                 }
-
-                Timer("index columns...");
-                using (var cmd = Connection.CreateCommand())
+                catch (Exception err)
                 {
-                    cmd.CommandText = CreateQuery("getindexcols.sql", tables: true);
-                    using (var reader = cmd.ExecuteReader())
+                    AddErrorReport("Error loading indexes", err);
+                }
+
+                try
+                {
+                    Timer("index columns...");
+                    using (var cmd = Connection.CreateCommand())
                     {
-                        while (reader.Read())
+                        cmd.CommandText = CreateQuery("getindexcols.sql", tables: true);
+                        using (var reader = cmd.ExecuteReader())
                         {
-                            string oid = reader.SafeString("object_id");
-                            string indexid = reader.SafeString("index_id");
-                            string colid = reader.SafeString("column_id");
-                            bool desc = reader.SafeString("is_descending_key") == "True";
-                            bool inc = reader.SafeString("is_included_column") == "True";
+                            while (reader.Read())
+                            {
+                                string oid = reader.SafeString("object_id");
+                                string indexid = reader.SafeString("index_id");
+                                string colid = reader.SafeString("column_id");
+                                bool desc = reader.SafeString("is_descending_key") == "True";
+                                bool inc = reader.SafeString("is_included_column") == "True";
 
-                            var index = indexById.Get(oid + "|" + indexid);
-                            if (index == null) continue;
-                            var col = index.OwnerTable.Columns.FirstOrDefault(x => x.ObjectId == colid);
-                            if (col == null) continue;
+                                var index = indexById.Get(oid + "|" + indexid);
+                                if (index == null) continue;
+                                var col = index.OwnerTable.Columns.FirstOrDefault(x => x.ObjectId == colid);
+                                if (col == null) continue;
 
-                            index.Columns.Add(new ColumnReference
-                                {
-                                    RefColumn = col,
-                                    IsDescending = desc,
-                                    IsIncluded = inc,
-                                });
+                                index.Columns.Add(new ColumnReference
+                                    {
+                                        RefColumn = col,
+                                        IsDescending = desc,
+                                        IsIncluded = inc,
+                                    });
+                            }
                         }
                     }
                 }
-
-                Timer("check constraints...");
-                using (var cmd = Connection.CreateCommand())
+                catch (Exception err)
                 {
-                    cmd.CommandText = CreateQuery("getchecks.sql", tables: true);
-                    using (var reader = cmd.ExecuteReader())
+                    AddErrorReport("Error loading index columns", err);
+                }
+
+                try
+                {
+                    Timer("check constraints...");
+                    using (var cmd = Connection.CreateCommand())
                     {
-                        while (reader.Read())
+                        cmd.CommandText = CreateQuery("getchecks.sql", tables: true);
+                        using (var reader = cmd.ExecuteReader())
                         {
-                            string oid = reader.SafeString("object_id");
-                            string name = reader.SafeString("name");
-                            string def = SimplifyExpression(reader.SafeString("definition"));
+                            while (reader.Read())
+                            {
+                                string oid = reader.SafeString("object_id");
+                                string name = reader.SafeString("name");
+                                string def = SimplifyExpression(reader.SafeString("definition"));
 
-                            var table = _tablesById.Get(oid);
-                            if (table == null) continue;
+                                var table = _tablesById.Get(oid);
+                                if (table == null) continue;
 
-                            var check = new CheckInfo(table)
-                                {
-                                    ConstraintName = name,
-                                    Definition = def,
-                                };
+                                var check = new CheckInfo(table)
+                                    {
+                                        ConstraintName = name,
+                                        Definition = def,
+                                    };
 
-                            table.Checks.Add(check);
+                                table.Checks.Add(check);
+                            }
                         }
                     }
+                }
+                catch (Exception err)
+                {
+                    AddErrorReport("Error loading check constraints", err);
                 }
             }
 
@@ -385,197 +434,232 @@ namespace DbShell.Driver.SqlServer
             var objs = new Dictionary<NameWithSchema, string>();
             if ((FilterOptions.AnyFunctions || FilterOptions.AnyStoredProcedures || FilterOptions.AnyViews || FilterOptions.AnyTriggers) && (IsViewsPhase || IsFunctionsPhase))
             {
-                Timer("sql code...");
-                // load code text
-                using (var cmd = Connection.CreateCommand())
+                try
                 {
-                    string sql;
-                    if (Phase == DatabaseAnalysePhase.All)
+                    Timer("sql code...");
+                    // load code text
+                    using (var cmd = Connection.CreateCommand())
                     {
-                        sql = CreateQuery("loadsqlcode.sql", views: true, procedures: true, functions: true, triggers: true);
-                        sql = sql.Replace("#TYPECOND#", "1=1");
-                    }
-                    else
-                    {
-                        sql = CreateQuery("loadsqlcode.sql", views: IsViewsPhase, procedures: IsFunctionsPhase, functions: IsFunctionsPhase, triggers: IsFunctionsPhase);
-                        var types = new List<string>();
-                        if (IsViewsPhase)
+                        string sql;
+                        if (Phase == DatabaseAnalysePhase.All)
                         {
-                            types.Add("V");
+                            sql = CreateQuery("loadsqlcode.sql", views: true, procedures: true, functions: true, triggers: true);
+                            sql = sql.Replace("#TYPECOND#", "1=1");
                         }
-                        if (IsFunctionsPhase)
+                        else
                         {
-                            types.Add("P");
-                            types.Add("IF");
-                            types.Add("FN");
-                            types.Add("TF");
-                            types.Add("TR");
-                        }
-                        sql = sql.Replace("#TYPECOND#", "s.type in (" + types.Select(x => "'" + x + "'").CreateDelimitedText(",") + ")");
-                    }
-                    cmd.CommandText = sql;
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        NameWithSchema lastName = null;
-                        while (reader.Read())
-                        {
-                            var name = new NameWithSchema(reader.SafeString("OBJ_SCHEMA"), reader.SafeString("OBJ_NAME"));
-                            string text = reader.SafeString("CODE_TEXT") ?? "";
-                            if (lastName != null && name == lastName)
+                            sql = CreateQuery("loadsqlcode.sql", views: IsViewsPhase, procedures: IsFunctionsPhase, functions: IsFunctionsPhase, triggers: IsFunctionsPhase);
+                            var types = new List<string>();
+                            if (IsViewsPhase)
                             {
-                                objs[name] += text;
+                                types.Add("V");
                             }
-                            else
+                            if (IsFunctionsPhase)
                             {
-                                lastName = name;
-                                objs[name] = text;
+                                types.Add("P");
+                                types.Add("IF");
+                                types.Add("FN");
+                                types.Add("TF");
+                                types.Add("TR");
+                            }
+                            sql = sql.Replace("#TYPECOND#", "s.type in (" + types.Select(x => "'" + x + "'").CreateDelimitedText(",") + ")");
+                        }
+                        cmd.CommandText = sql;
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            NameWithSchema lastName = null;
+                            while (reader.Read())
+                            {
+                                var name = new NameWithSchema(reader.SafeString("OBJ_SCHEMA"), reader.SafeString("OBJ_NAME"));
+                                string text = reader.SafeString("CODE_TEXT") ?? "";
+                                if (lastName != null && name == lastName)
+                                {
+                                    objs[name] += text;
+                                }
+                                else
+                                {
+                                    lastName = name;
+                                    objs[name] = text;
+                                }
                             }
                         }
                     }
+                }
+                catch (Exception err)
+                {
+                    AddErrorReport("Error loading SQL code", err);
                 }
             }
 
             if (FilterOptions.AnyViews && IsViewsPhase)
             {
-                Timer("views...");
-                // load views
-                using (var cmd = Connection.CreateCommand())
+                try
                 {
-                    cmd.CommandText = CreateQuery("loadviews.sql", views: true);
-                    using (var reader = cmd.ExecuteReader())
+                    Timer("views...");
+                    // load views
+                    using (var cmd = Connection.CreateCommand())
                     {
-                        int modifyIndex = reader.GetOrdinal("modify_date");
-                        int createIndex = reader.GetOrdinal("modify_date");
-                        while (reader.Read())
+                        cmd.CommandText = CreateQuery("loadviews.sql", views: true);
+                        using (var reader = cmd.ExecuteReader())
                         {
-                            var name = new NameWithSchema(reader.SafeString("Schema"), reader.SafeString("Name"));
-                            string id = reader.SafeString("object_id");
-                            DateTime modify = reader.GetDateTime(modifyIndex);
-                            DateTime create = reader.GetDateTime(createIndex);
+                            int modifyIndex = reader.GetOrdinal("modify_date");
+                            int createIndex = reader.GetOrdinal("modify_date");
+                            while (reader.Read())
+                            {
+                                var name = new NameWithSchema(reader.SafeString("Schema"), reader.SafeString("Name"));
+                                string id = reader.SafeString("object_id");
+                                DateTime modify = reader.GetDateTime(modifyIndex);
+                                DateTime create = reader.GetDateTime(createIndex);
 
-                            var view = new ViewInfo(Structure)
-                                {
-                                    FullName = name,
-                                    ObjectId = id,
-                                    ModifyDate = modify,
-                                    CreateDate = create,
-                                };
-                            if (objs.ContainsKey(name)) view.CreateSql = objs[name];
-                            Structure.Views.Add(view);
-                            _viewsById[view.ObjectId] = view;
+                                var view = new ViewInfo(Structure)
+                                    {
+                                        FullName = name,
+                                        ObjectId = id,
+                                        ModifyDate = modify,
+                                        CreateDate = create,
+                                    };
+                                if (objs.ContainsKey(name)) view.CreateSql = objs[name];
+                                Structure.Views.Add(view);
+                                _viewsById[view.ObjectId] = view;
+                            }
                         }
                     }
+                }
+                catch (Exception err)
+                {
+                    AddErrorReport("Error loading views", err);
                 }
             }
 
             if (FilterOptions.AnyTriggers && IsFunctionsPhase)
             {
-                Timer("triggers...");
-                // load triggers
-                using (var cmd = Connection.CreateCommand())
+                try
                 {
-                    cmd.CommandText = CreateQuery("gettriggers.sql", triggers: true);
-                    using (var reader = cmd.ExecuteReader())
+                    Timer("triggers...");
+                    // load triggers
+                    using (var cmd = Connection.CreateCommand())
                     {
-                        int modifyIndex = reader.GetOrdinal("modify_date");
-                        int createIndex = reader.GetOrdinal("modify_date");
-                        while (reader.Read())
+                        cmd.CommandText = CreateQuery("gettriggers.sql", triggers: true);
+                        using (var reader = cmd.ExecuteReader())
                         {
-                            var name = new NameWithSchema(reader.SafeString("schema"), reader.SafeString("name"));
-                            string id = reader.SafeString("object_id");
-                            string parentId = reader.SafeString("parent_id");
-                            DateTime modify = reader.GetDateTime(modifyIndex);
-                            DateTime create = reader.GetDateTime(createIndex);
+                            int modifyIndex = reader.GetOrdinal("modify_date");
+                            int createIndex = reader.GetOrdinal("modify_date");
+                            while (reader.Read())
+                            {
+                                var name = new NameWithSchema(reader.SafeString("schema"), reader.SafeString("name"));
+                                string id = reader.SafeString("object_id");
+                                string parentId = reader.SafeString("parent_id");
+                                DateTime modify = reader.GetDateTime(modifyIndex);
+                                DateTime create = reader.GetDateTime(createIndex);
 
-                            var trg = new TriggerInfo(Structure)
-                                {
-                                    FullName = name,
-                                    ObjectId = id,
-                                    ModifyDate = modify,
-                                    CreateDate = create,
-                                };
-                            if (objs.ContainsKey(name)) trg.CreateSql = objs[name];
-                            trg.RelatedTable = _tablesById.Get(parentId);
-                            trg.RelatedView = _viewsById.Get(parentId);
-                            Structure.Triggers.Add(trg);
+                                var trg = new TriggerInfo(Structure)
+                                    {
+                                        FullName = name,
+                                        ObjectId = id,
+                                        ModifyDate = modify,
+                                        CreateDate = create,
+                                    };
+                                if (objs.ContainsKey(name)) trg.CreateSql = objs[name];
+                                trg.RelatedTable = _tablesById.Get(parentId);
+                                trg.RelatedView = _viewsById.Get(parentId);
+                                Structure.Triggers.Add(trg);
+                            }
                         }
                     }
+                }
+                catch (Exception err)
+                {
+                    AddErrorReport("Error loading triggers", err);
                 }
             }
 
             if ((FilterOptions.AnyStoredProcedures || FilterOptions.AnyFunctions) && IsFunctionsPhase)
             {
-                Timer("programmables...");
-                var programmables = new Dictionary<NameWithSchema, ProgrammableInfo>();
-
-                // load procedures and functions
-                using (var cmd = Connection.CreateCommand())
+                try
                 {
-                    cmd.CommandText = CreateQuery("programmables.sql", procedures: true, functions: true);
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        int modifyIndex = reader.GetOrdinal("modify_date");
-                        int createIndex = reader.GetOrdinal("modify_date");
+                    Timer("programmables...");
+                    var programmables = new Dictionary<NameWithSchema, ProgrammableInfo>();
 
-                        while (reader.Read())
+                    // load procedures and functions
+                    using (var cmd = Connection.CreateCommand())
+                    {
+                        cmd.CommandText = CreateQuery("programmables.sql", procedures: true, functions: true);
+                        using (var reader = cmd.ExecuteReader())
                         {
-                            var name = new NameWithSchema(reader.SafeString("schema"), reader.SafeString("name"));
-                            string id = reader.SafeString("object_id");
-                            DateTime modify = reader.GetDateTime(modifyIndex);
-                            DateTime create = reader.GetDateTime(createIndex);
-                            ProgrammableInfo info = null;
-                            string type = reader.SafeString("type");
-                            switch (type.Trim())
+                            int modifyIndex = reader.GetOrdinal("modify_date");
+                            int createIndex = reader.GetOrdinal("modify_date");
+
+                            while (reader.Read())
                             {
-                                case "P":
-                                    info = new StoredProcedureInfo(Structure);
-                                    break;
-                                case "IF":
-                                case "FN":
-                                case "TF":
-                                    info = new FunctionInfo(Structure);
-                                    break;
+                                var name = new NameWithSchema(reader.SafeString("schema"), reader.SafeString("name"));
+                                string id = reader.SafeString("object_id");
+                                DateTime modify = reader.GetDateTime(modifyIndex);
+                                DateTime create = reader.GetDateTime(createIndex);
+                                ProgrammableInfo info = null;
+                                string type = reader.SafeString("type");
+                                switch (type.Trim())
+                                {
+                                    case "P":
+                                        info = new StoredProcedureInfo(Structure);
+                                        break;
+                                    case "IF":
+                                    case "FN":
+                                    case "TF":
+                                        info = new FunctionInfo(Structure);
+                                        break;
+                                }
+                                if (info == null) continue;
+                                info.ObjectId = id;
+                                info.CreateDate = create;
+                                info.ModifyDate = modify;
+                                programmables[name] = info;
+                                info.FullName = name;
+                                if (objs.ContainsKey(name)) info.CreateSql = objs[name];
+                                if (info is StoredProcedureInfo) Structure.StoredProcedures.Add((StoredProcedureInfo) info);
+                                if (info is FunctionInfo) Structure.Functions.Add((FunctionInfo) info);
                             }
-                            if (info == null) continue;
-                            info.ObjectId = id;
-                            info.CreateDate = create;
-                            info.ModifyDate = modify;
-                            programmables[name] = info;
-                            info.FullName = name;
-                            if (objs.ContainsKey(name)) info.CreateSql = objs[name];
-                            if (info is StoredProcedureInfo) Structure.StoredProcedures.Add((StoredProcedureInfo) info);
-                            if (info is FunctionInfo) Structure.Functions.Add((FunctionInfo) info);
                         }
+                    }
+
+                    Timer("parameters...");
+
+                    try
+                    {
+                        // load parameters
+                        using (var cmd = Connection.CreateCommand())
+                        {
+                            cmd.CommandText = CreateQuery("parameters.sql", procedures: true, functions: true);
+                            using (var reader = cmd.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+                                    var name = new NameWithSchema(reader.SafeString("SPECIFIC_SCHEMA"), reader.SafeString("SPECIFIC_NAME"));
+                                    if (!programmables.ContainsKey(name)) continue;
+                                    var prg = programmables[name];
+                                    if (reader.SafeString("IS_RESULT") == "YES")
+                                    {
+                                        var func = prg as FunctionInfo;
+                                        if (func == null) continue;
+                                        func.ResultType = reader.SafeString("DATA_TYPE");
+                                        continue;
+                                    }
+                                    var arg = new ParameterInfo(prg);
+                                    prg.Parameters.Add(arg);
+                                    arg.DataType = reader.SafeString("DATA_TYPE");
+                                    arg.Name = reader.SafeString("PARAMETER_NAME");
+                                    arg.IsOutput = reader.SafeString("PARAMETER_MODE") == "OUT";
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception err)
+                    {
+                        AddErrorReport("Error loading parameters", err);
                     }
                 }
-
-                Timer("parameters...");
-
-                // load parameters
-                using (var cmd = Connection.CreateCommand())
+                catch (Exception err)
                 {
-                    cmd.CommandText = CreateQuery("parameters.sql", procedures: true, functions: true);
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var name = new NameWithSchema(reader.SafeString("SPECIFIC_SCHEMA"), reader.SafeString("SPECIFIC_NAME"));
-                            if (!programmables.ContainsKey(name)) continue;
-                            var prg = programmables[name];
-                            if (reader.SafeString("IS_RESULT") == "YES")
-                            {
-                                var func = prg as FunctionInfo;
-                                if (func == null) continue;
-                                func.ResultType = reader.SafeString("DATA_TYPE");
-                                continue;
-                            }
-                            var arg = new ParameterInfo(prg);
-                            prg.Parameters.Add(arg);
-                            arg.DataType = reader.SafeString("DATA_TYPE");
-                            arg.Name = reader.SafeString("PARAMETER_NAME");
-                            arg.IsOutput = reader.SafeString("PARAMETER_MODE") == "OUT";
-                        }
-                    }
+                    AddErrorReport("Error loading programmables", err);
                 }
             }
 
@@ -583,67 +667,88 @@ namespace DbShell.Driver.SqlServer
 
             if (FilterOptions.AnyViews && IsViewsPhase)
             {
-                // load view structure
-                foreach (var view in Structure.Views)
+                try
                 {
-                    if (FilterOptions.ViewFilter != null && !FilterOptions.ViewFilter.Contains(view.ObjectId))
+                    // load view structure
+                    foreach (var view in Structure.Views)
                     {
-                        continue;
-                    }
-
-                    using (var cmd = Connection.CreateCommand())
-                    {
-                        cmd.CommandText = SqlServerLinkedServer.ReplaceLinkedServer("SELECT * FROM [SERVER]." + dialect.QuoteFullName(view.FullName), LinkedServerName, DatabaseName);
-                        try
+                        if (FilterOptions.ViewFilter != null && !FilterOptions.ViewFilter.Contains(view.ObjectId))
                         {
-                            using (var reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly | CommandBehavior.KeyInfo))
+                            continue;
+                        }
+
+                        using (var cmd = Connection.CreateCommand())
+                        {
+                            cmd.CommandText = SqlServerLinkedServer.ReplaceLinkedServer("SELECT * FROM [SERVER]." + dialect.QuoteFullName(view.FullName), LinkedServerName, DatabaseName);
+                            try
                             {
-                                var queryInfo = reader.GetQueryResultInfo();
-                                view.QueryInfo = queryInfo;
+                                using (var reader = cmd.ExecuteReader(CommandBehavior.SchemaOnly | CommandBehavior.KeyInfo))
+                                {
+                                    var queryInfo = reader.GetQueryResultInfo();
+                                    view.QueryInfo = queryInfo;
+                                }
+                            }
+                            catch (Exception err)
+                            {
+                                view.QueryInfo = null;
                             }
                         }
-                        catch (Exception err)
-                        {
-                            view.QueryInfo = null;
-                        }
                     }
+                }
+                catch (Exception err)
+                {
+                    AddErrorReport("Error loading view structure", err);
                 }
             }
 
             if (FilterOptions.GlobalSettings && IsSettingsPhase)
             {
-                Timer("default schema...");
-
-                // load default schema
-                using (var cmd = Connection.CreateCommand())
+                try
                 {
-                    cmd.CommandText = "SELECT SCHEMA_NAME()";
-                    Structure.DefaultSchema = cmd.ExecuteScalar().ToString();
+                    Timer("default schema...");
+
+                    // load default schema
+                    using (var cmd = Connection.CreateCommand())
+                    {
+                        cmd.CommandText = "SELECT SCHEMA_NAME()";
+                        Structure.DefaultSchema = cmd.ExecuteScalar().ToString();
+                    }
+                }
+                catch (Exception err)
+                {
+                    AddErrorReport("Error loading defgault schema", err);
                 }
             }
 
             if (IsSettingsPhase)
             {
-                Timer("schemas...");
-
-                // load schemas
-                using (var cmd = Connection.CreateCommand())
+                try
                 {
-                    Structure.Schemas.Clear();
-                    cmd.CommandText = CreateQuery("getschemas.sql");
-                    using (var reader = cmd.ExecuteReader())
+                    Timer("schemas...");
+
+                    // load schemas
+                    using (var cmd = Connection.CreateCommand())
                     {
-                        while (reader.Read())
+                        Structure.Schemas.Clear();
+                        cmd.CommandText = CreateQuery("getschemas.sql");
+                        using (var reader = cmd.ExecuteReader())
                         {
-                            string name = reader.SafeString("name");
-                            string id = reader.SafeString("object_id");
-                            Structure.Schemas.Add(new SchemaInfo(Structure)
-                                {
-                                    ObjectId = id,
-                                    Name = name,
-                                });
+                            while (reader.Read())
+                            {
+                                string name = reader.SafeString("name");
+                                string id = reader.SafeString("object_id");
+                                Structure.Schemas.Add(new SchemaInfo(Structure)
+                                    {
+                                        ObjectId = id,
+                                        Name = name,
+                                    });
+                            }
                         }
                     }
+                }
+                catch (Exception err)
+                {
+                    AddErrorReport("Error loading schemas", err);
                 }
             }
 
