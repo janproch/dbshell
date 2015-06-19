@@ -46,7 +46,7 @@ namespace DbShell.Driver.Common.ChangeSet
                 LinkedInfo = item.LinkedInfo,
                 TableOrView = item.TargetTable,
             };
-            var colref = cmd.SingleFrom.GetColumnRef(source, item.TargetTable, StructuredIdentifier.Parse(cond.Column), db);
+            var colref = cmd.SingleFrom.GetColumnRef(source, item.TargetTable, StructuredIdentifier.Parse(cond.Column), db, DmlfJoinType.Inner);
             if (colref == null) return false;
 
             //var table = db.FindTable(item.TargetTable);

@@ -66,7 +66,7 @@ namespace DbShell.Driver.Common.DmlFramework
             }
         }
 
-        private DmlfSource DoAddOrFindRelation(DmlfSource baseSource, NameWithSchema baseTable, StructuredIdentifier relationJoined, StructuredIdentifier relationToJoin, DatabaseInfo db)
+        private DmlfSource DoAddOrFindRelation(DmlfSource baseSource, NameWithSchema baseTable, StructuredIdentifier relationJoined, StructuredIdentifier relationToJoin, DatabaseInfo db, DmlfJoinType joinType)
         {
             if (relationToJoin.IsEmpty) return baseSource;
             string relName = relationToJoin.First;
@@ -91,7 +91,7 @@ namespace DbShell.Driver.Common.DmlFramework
                 var relation = new DmlfRelation
                     {
                         Reference = source,
-                        JoinType = DmlfJoinType.Left,
+                        JoinType = joinType,
                     };
                 for (int i = 0; i < fk.Columns.Count; i++)
                 {
@@ -118,7 +118,7 @@ namespace DbShell.Driver.Common.DmlFramework
                 }
             }
             if (relationToJoin.IsEmpty) return source;
-            return DoAddOrFindRelation(source, source.TableOrView, relationJoined/relationToJoin.First, relationToJoin.WithoutFirst, db);
+            return DoAddOrFindRelation(source, source.TableOrView, relationJoined/relationToJoin.First, relationToJoin.WithoutFirst, db, joinType);
         }
 
         private DmlfSource FindSourceByAlias(string alias)
@@ -130,17 +130,16 @@ namespace DbShell.Driver.Common.DmlFramework
             return null;
         }
 
-        //TODO asi zrusit IDmlfHandler (potreba jen pro evaluate, to vytahnout do jineho interfface)
-        public DmlfSource AddOrFindRelation(DmlfSource baseSource, NameWithSchema baseTable, StructuredIdentifier relationId, DatabaseInfo db)
+        public DmlfSource AddOrFindRelation(DmlfSource baseSource, NameWithSchema baseTable, StructuredIdentifier relationId, DatabaseInfo db, DmlfJoinType joinType)
         {
-            return DoAddOrFindRelation(baseSource, baseTable, new StructuredIdentifier(), relationId, db);
+            return DoAddOrFindRelation(baseSource, baseTable, new StructuredIdentifier(), relationId, db, joinType);
         }
 
-        public DmlfColumnRef GetColumnRef(DmlfSource baseSource, NameWithSchema baseTable, StructuredIdentifier columnId, DatabaseInfo db)
+        public DmlfColumnRef GetColumnRef(DmlfSource baseSource, NameWithSchema baseTable, StructuredIdentifier columnId, DatabaseInfo db, DmlfJoinType joinType)
         {
             var relationId = columnId.WithoutLast;
             string column = columnId.Last;
-            var source = AddOrFindRelation(baseSource, baseTable, relationId, db);
+            var source = AddOrFindRelation(baseSource, baseTable, relationId, db, joinType);
             if (source == null) return null;
             return new DmlfColumnRef
                 {
