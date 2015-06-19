@@ -15,6 +15,9 @@ namespace DbShell.Driver.Common.ChangeSet
 {
     public class ChangeSetModel
     {
+        [XmlCollection(typeof(NameWithSchema))]
+        public List<NameWithSchema> DeleteSkipList { get; set; }
+
         [XmlCollection(typeof (ChangeSetInsertItem))]
         public List<ChangeSetInsertItem> Inserts { get; set; }
 
@@ -38,6 +41,7 @@ namespace DbShell.Driver.Common.ChangeSet
             Inserts = new List<ChangeSetInsertItem>();
             Updates = new List<ChangeSetUpdateItem>();
             Deletes = new List<ChangeSetDeleteItem>();
+            DeleteSkipList = new List<NameWithSchema>();
         }
 
         //public void SaveToXml(XmlElement xml)

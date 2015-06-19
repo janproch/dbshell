@@ -124,6 +124,7 @@ namespace DbShell.Driver.Common.ChangeSet
                 }
             }
 
+            if (model.DeleteReferencesCascade && model.DeleteSkipList != null && model.DeleteSkipList.Contains(TargetTable)) return;
             var cmd = new DmlfDelete();
             cmd.DeleteTarget = new DmlfSource
             {
