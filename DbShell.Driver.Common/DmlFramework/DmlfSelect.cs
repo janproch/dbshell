@@ -204,5 +204,13 @@ namespace DbShell.Driver.Common.DmlFramework
                 }
             }
         }
+
+        public override void ForEachChild(Action<IDmlfNode> action)
+        {
+            base.ForEachChild(action);
+            Columns.ForEach(x=>x.ForEachChild(action));
+            if (OrderBy != null) OrderBy.ForEach(x => x.ForEachChild(action));
+            if (GroupBy != null) GroupBy.ForEach(x => x.ForEachChild(action));
+        }
     }
 }

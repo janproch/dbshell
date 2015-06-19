@@ -15,5 +15,11 @@ namespace DbShell.Driver.Common.DmlFramework
                 dmp.Put("&<");
             }
         }
+
+        public override void ForEachChild(System.Action<IDmlfNode> action)
+        {
+            base.ForEachChild(action);
+            if (Condition != null) Condition.ForEachChild(action);
+        }
     }
 }

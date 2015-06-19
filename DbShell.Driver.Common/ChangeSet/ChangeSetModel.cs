@@ -122,6 +122,12 @@ namespace DbShell.Driver.Common.ChangeSet
 
             foreach (var fk in disableFks) res.DisableConstraint(fk.Item1, fk.Item2, false);
 
+            res.Commands.ForEach(x =>
+                {
+                    var cmd = x as DmlfCommandBase;
+                    if (cmd != null) cmd.SimplifyFromAliases();
+                });
+
             return res;
         }
 

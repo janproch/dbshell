@@ -19,7 +19,8 @@ namespace DbShell.Driver.Common.DmlFramework
         /// </summary>
         [XmlSubElem]
         public DmlfSource Source { get; set; }
-        [XmlCollection(typeof(DmlfRelation), "Relations")]
+
+        [XmlCollection(typeof (DmlfRelation), "Relations")]
         public DmlfRelationCollection Relations { get; set; }
 
         /// <summary>
@@ -146,6 +147,18 @@ namespace DbShell.Driver.Common.DmlFramework
                     ColumnName = column,
                     Source = source,
                 };
+        }
+
+        public void GetSimpleSources(HashSet<DmlfSource> sources)
+        {
+            if (Source != null && Source.IsSimpleSource) sources.Add(Source);
+            foreach (var item in Relations)
+            {
+                if (item.Reference != null && item.Reference.IsSimpleSource)
+                {
+                    sources.Add(item.Reference);
+                }
+            }
         }
     }
 }

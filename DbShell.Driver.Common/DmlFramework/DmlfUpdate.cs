@@ -33,5 +33,11 @@ namespace DbShell.Driver.Common.DmlFramework
             GenerateFrom(dmp);
             if (Where != null) Where.GenSql(dmp);
         }
+
+        public override void ForEachChild(Action<IDmlfNode> action)
+        {
+            base.ForEachChild(action);
+            if (UpdateTarget != null) UpdateTarget.ForEachChild(action);
+        }
     }
 }

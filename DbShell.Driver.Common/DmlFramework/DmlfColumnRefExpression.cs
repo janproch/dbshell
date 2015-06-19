@@ -18,7 +18,7 @@ namespace DbShell.Driver.Common.DmlFramework
         public override void ForEachChild(Action<IDmlfNode> action)
         {
             base.ForEachChild(action);
-            action(Column);
+            if (Column != null) Column.ForEachChild(action);
         }
 
         public override void GenSql(ISqlDumper dmp)

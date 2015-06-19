@@ -43,7 +43,7 @@ namespace DbShell.Driver.Common.DmlFramework
             {
                 if (Where.Condition is DmlfAndCondition)
                 {
-                    ((DmlfAndCondition)Where.Condition).Conditions.Add(cond);
+                    ((DmlfAndCondition) Where.Condition).Conditions.Add(cond);
                 }
                 else
                 {
@@ -72,6 +72,62 @@ namespace DbShell.Driver.Common.DmlFramework
                 From.Clear();
                 From.Add(value);
             }
+        }
+
+        public bool IsSingleFromTable
+        {
+            get { return From.Count == 1 && !From[0].Relations.Any() && From[0].Source.IsSimpleSource; }
+        }
+
+        public void SimplifyFromAliases()
+        {
+            if (IsSingleFromTable)
+            {
+                var source = From[0].Source;
+                ReplaceSimpleSource(source, null);
+            }
+            else
+            {
+                var sources = new HashSet<DmlfSource>();
+                From.ForEach(x => x.GetSimpleSources(sources));
+
+                var usedAliases = new HashSet<string>();
+
+                foreach (var source in sources)
+                {
+                    if (sources.Count(x => x.TableOrView == source.TableOrView) == 1)
+                    {
+                        // use table name as qualifier, remove alias
+                        ReplaceSimpleSource(source, null);
+                    }
+                    else
+                    {
+                        var aliasBase = DmlfSource.GetAliasBase(source.TableOrView.Name);
+                        string alias = DmlfSource.AllocateAlias(usedAliases, aliasBase);
+                        ReplaceSimpleSource(source, alias);
+                    }
+                }
+            }
+        }
+
+        public override void ForEachChild(Action<IDmlfNode> action)
+        {
+            base.ForEachChild(action);
+            if (Where != null) Where.ForEachChild(action);
+            From.ForEach(x => x.ForEachChild(action));
+        }
+
+        public void ReplaceSimpleSource(DmlfSource source, string newAlias)
+        {
+            source = source.GetSimpleSourceCopy();
+            ForEachChild(x =>
+                {
+                    var src = x as DmlfSource;
+                    if (src != null && src == source)
+                    {
+                        src.Alias = newAlias;
+                    }
+                });
         }
     }
 }

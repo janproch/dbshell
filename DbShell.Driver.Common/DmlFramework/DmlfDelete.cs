@@ -24,5 +24,11 @@ namespace DbShell.Driver.Common.DmlFramework
 
             if (Where != null) Where.GenSql(dmp);
         }
+
+        public override void ForEachChild(Action<IDmlfNode> action)
+        {
+            base.ForEachChild(action);
+            if (DeleteTarget != null) DeleteTarget.ForEachChild(action);
+        }
     }
 }

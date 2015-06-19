@@ -27,7 +27,7 @@ namespace DbShell.Driver.Common.DmlFramework
         public override void ForEachChild(Action<IDmlfNode> action)
         {
             base.ForEachChild(action);
-            action(Expr);
+            if (Expr != null) Expr.ForEachChild(action);
         }
     }
 
@@ -39,7 +39,7 @@ namespace DbShell.Driver.Common.DmlFramework
         public override void ForEachChild(Action<IDmlfNode> action)
         {
             base.ForEachChild(action);
-            action(Expr);
+            if (Expr != null) Expr.ForEachChild(action);
         }
 
         public override void GenSql(ISqlDumper dmp)
@@ -108,8 +108,8 @@ namespace DbShell.Driver.Common.DmlFramework
         public override void ForEachChild(Action<IDmlfNode> action)
         {
             base.ForEachChild(action);
-            action(LeftExpr);
-            action(RightExpr);
+            if (LeftExpr != null) LeftExpr.ForEachChild(action);
+            if (RightExpr != null) RightExpr.ForEachChild(action);
         }
 
         public override void SaveToXml(XmlElement xml)
@@ -138,9 +138,9 @@ namespace DbShell.Driver.Common.DmlFramework
         public override void ForEachChild(Action<IDmlfNode> action)
         {
             base.ForEachChild(action);
-            action(Expr);
-            action(LowerBound);
-            action(UpperBound);
+            if (Expr != null) Expr.ForEachChild(action);
+            if (LowerBound != null) LowerBound.ForEachChild(action);
+            if (UpperBound != null) UpperBound.ForEachChild(action);
         }
 
         public override void SaveToXml(XmlElement xml)

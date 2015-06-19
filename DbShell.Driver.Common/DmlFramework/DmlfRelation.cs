@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Xml;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Structure;
@@ -61,9 +63,10 @@ namespace DbShell.Driver.Common.DmlFramework
 
     public class DmlfSource : DmlfBase
     {
-        public readonly static DmlfSource BaseTable = new DmlfSource { Alias = "basetbl" };
+        public static readonly DmlfSource BaseTable = new DmlfSource {Alias = "basetbl"};
 
-        string m_alias;
+        private string m_alias;
+
         [XmlElem]
         public NameWithSchema TableOrView { get; set; }
 
@@ -80,6 +83,7 @@ namespace DbShell.Driver.Common.DmlFramework
                 if (m_alias.IsEmpty()) m_alias = null;
             }
         }
+
         [XmlSubElem]
         public DmlfSelect SubQuery { get; set; }
 
@@ -144,6 +148,11 @@ namespace DbShell.Driver.Common.DmlFramework
             }
         }
 
+        public bool IsSimpleSource
+        {
+            get { return SubQuery == null && SubQueryString == null; }
+        }
+
         public override string ToString()
         {
             //if (m_alias == "basetbl") return "(SOURCE)";
@@ -155,7 +164,7 @@ namespace DbShell.Driver.Common.DmlFramework
             unchecked
             {
                 int res = 0;
-                if (m_alias!=null) res+= m_alias.GetHashCode();
+                if (m_alias != null) res += m_alias.GetHashCode();
                 if (TableOrView != null) res += TableOrView.GetHashCode();
                 return res;
             }
@@ -163,8 +172,44 @@ namespace DbShell.Driver.Common.DmlFramework
 
         public override bool DmlfEquals(DmlfBase obj)
         {
-            var o = (DmlfSource)obj;
+            var o = (DmlfSource) obj;
             return m_alias == o.m_alias && TableOrView == o.TableOrView;
+        }
+
+        public static string GetAliasBase(string name)
+        {
+            var sb = new StringBuilder();
+            bool wasbig = false;
+            bool isfirst = true;
+            foreach (var ch in name)
+            {
+                if (!wasbig && (Char.IsUpper(ch) || isfirst)) sb.Append(Char.ToLower(ch));
+                wasbig = Char.IsUpper(ch);
+                isfirst = false;
+            }
+            return sb.ToString();
+        }
+
+        public static string AllocateAlias(HashSet<string> usedAliases, string aliasBase)
+        {
+            int i = 1;
+            while (usedAliases.Contains(aliasBase + i)) i++;
+            usedAliases.Add(aliasBase + i);
+            return aliasBase + i;
+        }
+
+        public DmlfSource GetSimpleSourceCopy()
+        {
+            if (IsSimpleSource)
+            {
+                return new DmlfSource
+                    {
+                        Alias = Alias,
+                        LinkedInfo = LinkedInfo,
+                        TableOrView = TableOrView,
+                    };
+            }
+            return null;
         }
     }
 
@@ -196,8 +241,8 @@ namespace DbShell.Driver.Common.DmlFramework
         public override void ForEachChild(Action<IDmlfNode> action)
         {
             base.ForEachChild(action);
-            action(Reference);
-            action(Conditions);
+            if (Reference != null) Reference.ForEachChild(action);
+            if (Conditions != null) Conditions.ForEachChild(action);
         }
 
         public override void GenSql(ISqlDumper dmp)
@@ -306,6 +351,12 @@ namespace DbShell.Driver.Common.DmlFramework
             var table = db.FindTable(Source.TableOrView);
             if (table == null) return null;
             return table.FindColumn(ColumnName);
+        }
+
+        public override void ForEachChild(Action<IDmlfNode> action)
+        {
+            base.ForEachChild(action);
+            if (Source != null) Source.ForEachChild(action);
         }
     }
 }

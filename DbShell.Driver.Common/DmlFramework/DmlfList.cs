@@ -12,7 +12,11 @@ namespace DbShell.Driver.Common.DmlFramework
         public virtual void ForEachChild(Action<IDmlfNode> action)
         {
             action(this);
-            foreach (var item in this) action(item);
+            foreach (var item in this)
+            {
+                if (item == null) continue;
+                item.ForEachChild(action);
+            }
         }
 
         #endregion
