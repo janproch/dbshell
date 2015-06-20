@@ -9,5 +9,10 @@ namespace DbShell.Driver.Common.Statistics
     public class TableSizes
     {
         public Dictionary<NameWithSchema, int> RowCount = new Dictionary<NameWithSchema, int>();
+
+        public bool HasDifferences(TableSizes tablesSizes)
+        {
+            return !RowCount.SequenceEqual(tablesSizes.RowCount);
+        }
     }
 }
