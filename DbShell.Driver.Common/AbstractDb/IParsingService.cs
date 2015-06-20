@@ -10,7 +10,7 @@ namespace DbShell.Driver.Common.AbstractDb
     public class AntlrTokens
     {
         public int EOF, F_INC, F_DEC, F_NL, T_IDENT, T_QUOTED_IDENT, DOT, SELECT, ORDER, BY, GROUP, HAVING, WHERE,
-            JOIN, ON, FROM, T_STRING, UPDATE, DELETE, SET, INSERT, LPAREN, RPAREN, INTO;
+            JOIN, ON, FROM, T_STRING, UPDATE, DELETE, SET, INSERT, LPAREN, RPAREN, INTO, AS;
 
         public bool IsIdent(int tokid)
         {

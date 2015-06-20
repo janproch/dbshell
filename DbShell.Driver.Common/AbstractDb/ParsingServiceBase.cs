@@ -46,6 +46,7 @@ namespace DbShell.Driver.Common.AbstractDb
             res.LPAREN = Array.IndexOf(tokenNames, "LPAREN");
             res.RPAREN = Array.IndexOf(tokenNames, "RPAREN");
             res.INTO = Array.IndexOf(tokenNames, "INTO");
+            res.AS = Array.IndexOf(tokenNames, "AS");
             return res;
         }
     }
