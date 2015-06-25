@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.DmlFramework;
 using DbShell.Driver.Common.Sql;
@@ -78,9 +79,11 @@ namespace DbShell.Driver.Common.ChangeSet
         //    }
         //}
 
-        public DmlfBatch GetCommands(DatabaseInfo db)
+        public DmlfBatch GetCommands(DatabaseInfo db, IDatabaseFactory factory)
         {
             var disableFks = new HashSet<Tuple<NameWithSchema, string>>();
+            var dda = factory.CreateDataAdapter();
+            var converter = new CdlValueConvertor(new DataFormatSettings());
 
             foreach (var upd in Updates)
             {
@@ -101,17 +104,17 @@ namespace DbShell.Driver.Common.ChangeSet
 
             foreach (var ins in Inserts)
             {
-                ins.GetCommands(res, db);
+                ins.GetCommands(res, db, dda, converter);
             }
 
             foreach (var upd in Updates)
             {
-                upd.GetInsertCommands(res, db, this);
+                upd.GetInsertCommands(res, db, this, dda, converter);
             }
 
             foreach (var upd in Updates)
             {
-                upd.GetCommands(res, db, this);
+                upd.GetCommands(res, db, this, dda, converter);
             }
 
             foreach (var upd in Updates)
@@ -137,7 +140,7 @@ namespace DbShell.Driver.Common.ChangeSet
 
         public void DumpSql(ISqlDumper dmp, DatabaseInfo db)
         {
-            var commands = GetCommands(db);
+            var commands = GetCommands(db, dmp.Factory);
             commands.GenSql(dmp);
         }
 

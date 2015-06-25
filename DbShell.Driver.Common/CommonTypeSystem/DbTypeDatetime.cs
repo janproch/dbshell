@@ -8,6 +8,9 @@ namespace DbShell.Driver.Common.CommonTypeSystem
     public class DbTypeDatetime : DbTypeBase
     {
         DbDatetimeSubType m_subType = DbDatetimeSubType.Datetime;
+        bool m_hasTimeZone = false;
+        private bool _extendedPrecision = false;
+
         [XmlAttrib("subtype")]
         public DbDatetimeSubType SubType
         {
@@ -15,12 +18,19 @@ namespace DbShell.Driver.Common.CommonTypeSystem
             set { m_subType = value; }
         }
 
-        bool m_hasTimeZone = false;
+
         [XmlAttrib("hastimezone")]
         public bool HasTimeZone
         {
             get { return m_hasTimeZone; }
             set { m_hasTimeZone = value; }
+        }
+
+        [XmlAttrib("extended")]
+        public bool ExtendedPrecision
+        {
+            get { return _extendedPrecision; }
+            set { _extendedPrecision = value; }
         }
 
         public override DbTypeCode Code

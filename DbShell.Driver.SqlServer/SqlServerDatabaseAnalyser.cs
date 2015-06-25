@@ -794,6 +794,7 @@ namespace DbShell.Driver.SqlServer
                     return new DbTypeDatetime
                         {
                             SubType = DbDatetimeSubType.Datetime,
+                            ExtendedPrecision = true,
                         };
                 case "datetimeoffset":
                     return new DbTypeDatetime

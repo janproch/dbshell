@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.DmlFramework;
 using DbShell.Driver.Common.Structure;
@@ -86,7 +88,7 @@ namespace DbShell.Driver.Common.ChangeSet
             return autoinc != null && Values.Any(x => x.Column == autoinc.Name);
         }
 
-        public void GetInsertCommands(DmlfBatch res, DatabaseInfo db, ChangeSetModel model)
+        public void GetInsertCommands(DmlfBatch res, DatabaseInfo db, ChangeSetModel model, IDialectDataAdapter dda, ICdlValueConvertor converter)
         {
             var table = db.FindTable(TargetTable);
             if (table == null) return;
@@ -157,7 +159,7 @@ namespace DbShell.Driver.Common.ChangeSet
             }
         }
 
-        public void GetCommands(DmlfBatch res, DatabaseInfo db, ChangeSetModel model)
+        public void GetCommands(DmlfBatch res, DatabaseInfo db, ChangeSetModel model, IDialectDataAdapter dda, ICdlValueConvertor converter)
         {
             var table = db.FindTable(TargetTable);
             if (table == null) return;
@@ -167,7 +169,7 @@ namespace DbShell.Driver.Common.ChangeSet
                 var refs = GenerateCascadeUpdates(db);
                 foreach (var item in refs)
                 {
-                    item.GetCommands(res, db, model);
+                    item.GetCommands(res, db, model, dda, converter);
                 }
             }
 
@@ -186,7 +188,7 @@ namespace DbShell.Driver.Common.ChangeSet
                     });
                 if (GetConditions(cmd, this, Conditions, db))
                 {
-                    GetValues(cmd.Columns, Values, table);
+                    GetValues(cmd.Columns, Values, table, dda, converter);
                     res.Commands.Add(cmd);
                 }
             }

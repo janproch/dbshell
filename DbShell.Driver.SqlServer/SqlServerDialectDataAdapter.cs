@@ -27,5 +27,25 @@ namespace DbShell.Driver.SqlServer
                 base.ConvertNotNullValue(reader, type, valueHolder, converter);
             }
         }
+
+        protected override void ApplyTypeRestrictions(CdlValueHolder holder, DbTypeBase type)
+        {
+            base.ApplyTypeRestrictions(holder, type);
+
+            var dtt = type as DbTypeDatetime;
+            if (dtt != null)
+            {
+                if (!dtt.ExtendedPrecision)
+                {
+                    var htype = holder.GetFieldType();
+                    if (htype.IsDateRelated())
+                    {
+                        var dt = holder.GetDateTimeValue();
+                        dt.Nanosecond = dt.Nanosecond/1000000*1000000;
+                        holder.SetDateTimeEx(dt);
+                    }
+                }
+            }
+        }
     }
 }

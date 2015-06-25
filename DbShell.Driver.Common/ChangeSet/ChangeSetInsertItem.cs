@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.DmlFramework;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
@@ -19,7 +21,7 @@ namespace DbShell.Driver.Common.ChangeSet
             Values = new List<ChangeSetValue>();
         }
 
-        public void GetCommands(DmlfBatch res, DatabaseInfo db)
+        public void GetCommands(DmlfBatch res, DatabaseInfo db, IDialectDataAdapter dda, ICdlValueConvertor converter)
         {
             var cmd = new DmlfInsert();
             cmd.InsertTarget = TargetTable;
@@ -30,7 +32,7 @@ namespace DbShell.Driver.Common.ChangeSet
             var autoinc = table.FindAutoIncrementColumn();
             bool isAutoInc = autoinc != null && Values.Any(x => x.Column == autoinc.Name);
 
-            GetValues(cmd.Columns, Values, table);
+            GetValues(cmd.Columns, Values, table, dda, converter);
 
             if (isAutoInc)
             {
