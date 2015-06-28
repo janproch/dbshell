@@ -305,12 +305,22 @@ namespace DbShell.Driver.Common.DmlFramework
             return EvalRelation(LeftExpr, RightExpr, Relation, ns);
         }
 
+        private static object ConvertBoolToInt(object value)
+        {
+            var bval = value as bool?;
+            if (bval.HasValue) return bval.Value ? 1 : 0;
+            return value;
+        }
+
         public static bool EvalRelation(DmlfExpression leftExpr, DmlfExpression rightExpr, string relation, IDmlfNamespace ns)
         {
             object left = leftExpr.EvalExpression(ns);
             object right = rightExpr.EvalExpression(ns);
 
             if (left == null || right == null) return false;
+
+            left = ConvertBoolToInt(left);
+            right = ConvertBoolToInt(right);
 
             var leftType = left.GetType();
             var rightType = right.GetType();
@@ -358,7 +368,7 @@ namespace DbShell.Driver.Common.DmlFramework
                 {
                     rightValue = (DateTime) right;
                 }
-                else if (DateTime.TryParse(leftStr, CultureInfo.InvariantCulture, DateTimeStyles.None, out tmp))
+                else if (DateTime.TryParse(rightStr, CultureInfo.InvariantCulture, DateTimeStyles.None, out tmp))
                 {
                     rightValue = tmp;
                 }
