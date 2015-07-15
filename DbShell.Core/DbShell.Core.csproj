@@ -64,6 +64,7 @@
     <Compile Include="CdlFileReader.cs" />
     <Compile Include="CdlFileWriter.cs" />
     <Compile Include="ColumnMapper.cs" />
+    <Compile Include="Download.cs" />
     <Compile Include="FilesExtension.cs" />
     <Compile Include="CreateTable.cs" />
     <Compile Include="FilesProvider.cs" />
