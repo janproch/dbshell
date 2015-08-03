@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DbShell.Driver.Common.Utility;
 
@@ -7,7 +8,7 @@ namespace DbShell.Driver.Common.Structure
     {
         public int GetIndex(string name)
         {
-            return this.IndexOfIf(c => c.Name == name);
+            return this.IndexOfIf(c => String.Compare(c.Name, name, StringComparison.OrdinalIgnoreCase) == 0);
         }
 
         public ColumnInfo this[string name]
