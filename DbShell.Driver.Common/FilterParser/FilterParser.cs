@@ -198,6 +198,7 @@ namespace DbShell.Driver.Common.FilterParser
             bool first = true;
             foreach (string line in expression.Split('\n'))
             {
+                if (String.IsNullOrWhiteSpace(line)) continue;
                 string item = func(line.Trim());
                 if (!first)
                 {
