@@ -27,21 +27,22 @@ namespace DbShell.DataSet.DataSetModels
             Values = values;
         }
 
-        public int IdentityValue
+        public string IdentityValue
         {
             get
             {
                 if (Class.IdentityColumnOrdinal < 0) throw new Exception(String.Format("Please define identity of table {0}", Class.TableName));
-                return Int32.Parse(Values[Class.IdentityColumnOrdinal].ToString());
+                return Values[Class.IdentityColumnOrdinal].ToString();
             }
         }
 
-        public int SimpleKeyValue
+        public string SimpleKeyValue
         {
             get
             {
                 if (Class.SimplePkColIndex < 0) throw new Exception(String.Format("Please define simple key of table {0}", Class.TableName));
-                return Int32.Parse(Values[Class.SimplePkColIndex].ToString());
+                return Values[Class.SimplePkColIndex].ToString();
+                //return Int32.Parse(Values[Class.SimplePkColIndex].ToString());
             }
         }
 

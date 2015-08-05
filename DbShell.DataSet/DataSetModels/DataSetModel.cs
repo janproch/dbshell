@@ -163,9 +163,9 @@ namespace DbShell.DataSet.DataSetModels
             }
         }
 
-        public HashSet<int> GetAllReferences(DataSetClass cls)
+        public HashSet<string> GetAllReferences(DataSetClass cls)
         {
-            var refValues = new HashSet<int>();
+            var refValues = new HashSet<string>();
             foreach (var rcls in Classes.Values)
             {
                 foreach (var r in rcls.References)
@@ -178,7 +178,7 @@ namespace DbShell.DataSet.DataSetModels
                             foreach (var inst in r.BaseClass.AllInstances)
                             {
                                 if (inst.Values[colindex] == null || inst.Values[colindex] == DBNull.Value) continue;
-                                int refid = Int32.Parse(inst.Values[colindex].ToString());
+                                string refid = inst.Values[colindex].ToString();
                                 refValues.Add(refid);
                             }
                         }
@@ -361,7 +361,7 @@ namespace DbShell.DataSet.DataSetModels
                 if (cls.IdentityColumn == null) continue;
                 if (cls.AllInstances.Count == 0) continue;
                 var refs = GetAllReferences(cls);
-                foreach (int refid in refs)
+                foreach (string refid in refs)
                 {
                     if (cls.InstancesBySimpleKey.ContainsKey(refid))
                     {
@@ -384,7 +384,7 @@ namespace DbShell.DataSet.DataSetModels
 
             foreach(var row in cls.AllInstances)
             {
-                int value = row.SimpleKeyValue;
+                string value = row.SimpleKeyValue;
                 if (!refValues.Contains(value)) continue;
                 string[] values = cls.LookupFieldIndexes.Select(x => x >= 0 ? row.Values[x].SafeToString() : null).ToArray();
                 cls.LookupValues[value] = values;
@@ -408,7 +408,9 @@ namespace DbShell.DataSet.DataSetModels
             foreach (var inst in reference.ReferencedClass.AllInstances)
             {
                 if (was) sb.Append(",");
-                sb.Append(inst.IdentityValue);
+                sb.Append("'");
+                sb.Append(inst.SimpleKeyValue);
+                sb.Append("'");
                 was = true;
             }
             sb.Append(")");
@@ -446,10 +448,12 @@ namespace DbShell.DataSet.DataSetModels
             var sb = new StringBuilder();
             sb.AppendFormat("select * from [{0}] where [{1}] in (", cls.TableName, cls.SimplePkCol);
             bool was = false;
-            foreach (int id in refValues)
+            foreach (string id in refValues)
             {
                 if (was) sb.Append(",");
+                sb.Append("'");
                 sb.Append(id);
+                sb.Append("'");
                 was = true;
             }
             sb.Append(")");
@@ -625,7 +629,7 @@ namespace DbShell.DataSet.DataSetModels
                         }
                         else
                         {
-                            int refid = Int32.Parse(inst.Values[i].ToString());
+                            string refid = inst.Values[i].ToString();
                             sdw.WriteVar(r.ReferencedClass.LookupVariables[refid]);
                         }
                     }
@@ -745,9 +749,9 @@ namespace DbShell.DataSet.DataSetModels
             return null;
         }
 
-        public DataSetInstance GetReferenceInstance(string srefid, DataSetClass baseClass, DataSetClass referencedClass, string bindingColumn)
+        public DataSetInstance GetReferenceInstance(string refid, DataSetClass baseClass, DataSetClass referencedClass, string bindingColumn)
         {
-            int refid = Int32.Parse(srefid);
+            //int refid = Int32.Parse(srefid);
             if (!referencedClass.InstancesBySimpleKey.ContainsKey(refid))
             {
                 referencedClass.ReportUndefinedReference(baseClass.TableName, bindingColumn, refid);

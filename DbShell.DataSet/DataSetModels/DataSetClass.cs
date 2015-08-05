@@ -40,14 +40,14 @@ namespace DbShell.DataSet.DataSetModels
 
         public List<DataSetReference> References = new List<DataSetReference>();
         public List<DataSetInstance> AllInstances = new List<DataSetInstance>();
-        public Dictionary<int, DataSetInstance> InstancesBySimpleKey = new Dictionary<int, DataSetInstance>();
+        public Dictionary<string, DataSetInstance> InstancesBySimpleKey = new Dictionary<string, DataSetInstance>();
         public Dictionary<string, DataSetInstance> InstancesByComplexPk = new Dictionary<string, DataSetInstance>();
 
         // dict old lookup value -> lookup mapping tuple
-        public Dictionary<int, string[]> LookupValues = new Dictionary<int, string[]>();
+        public Dictionary<string, string[]> LookupValues = new Dictionary<string, string[]>();
 
         // dict old lookup value -> lookup variable (for WriteSql)
-        public Dictionary<int, int> LookupVariables = new Dictionary<int, int>();
+        public Dictionary<string, int> LookupVariables = new Dictionary<string, int>();
 
         public Dictionary<string, int> ColumnOrdinals = new Dictionary<string, int>();
         public Dictionary<string, UndefinedReferenceReport> _undefinedReferences = new Dictionary<string, UndefinedReferenceReport>();
@@ -170,7 +170,7 @@ namespace DbShell.DataSet.DataSetModels
             return null;
         }
 
-        public DataSetInstance GetInstanceByIdentity(int id)
+        public DataSetInstance GetInstanceByIdentity(string id)
         {
             DataSetInstance res;
             if (InstancesBySimpleKey.TryGetValue(id, out res)) return res;
@@ -190,7 +190,7 @@ namespace DbShell.DataSet.DataSetModels
             return result;
         }
 
-        public void ReportUndefinedReference(string tableName, string bindingColumn, int refid)
+        public void ReportUndefinedReference(string tableName, string bindingColumn, string refid)
         {
             var key = tableName + "||" + bindingColumn;
             if (!_undefinedReferences.ContainsKey(key))
@@ -237,10 +237,10 @@ namespace DbShell.DataSet.DataSetModels
             InstancesBySimpleKey.Clear();
         }
 
-        public HashSet<int> GetMissingKeys()
+        public HashSet<string> GetMissingKeys()
         {
             var refValues = _model.GetAllReferences(this);
-            foreach (int id in InstancesBySimpleKey.Keys) refValues.Remove(id);
+            foreach (string id in InstancesBySimpleKey.Keys) refValues.Remove(id);
             return refValues;
         }
     }

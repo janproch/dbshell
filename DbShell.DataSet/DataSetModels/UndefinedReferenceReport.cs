@@ -9,7 +9,7 @@ namespace DbShell.DataSet.DataSetModels
     {
         public string Table;
         public string Column;
-        public HashSet<int> KeyValues = new HashSet<int>();
+        public HashSet<string> KeyValues = new HashSet<string>();
         public int RefCount;
     }
 }
