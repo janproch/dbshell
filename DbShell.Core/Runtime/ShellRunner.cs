@@ -4,11 +4,14 @@ using System.Threading;
 using System.Windows.Markup;
 using System.Xml;
 using DbShell.Common;
+using log4net;
 
 namespace DbShell.Core.Runtime
 {
     public class ShellRunner : IDisposable
     {
+        private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private IRunnable _main;
         private ShellContext _context;
         private Thread _thread;
@@ -93,6 +96,7 @@ namespace DbShell.Core.Runtime
             }
             catch (Exception err)
             {
+                _log.Error("DBSH-00000 Exception occured when executing DbShell", err);
                 Error = err;
             }
             finally

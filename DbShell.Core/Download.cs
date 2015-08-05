@@ -32,8 +32,10 @@ namespace DbShell.Core
             string file = context.ResolveFile(context.Replace(File), ResolveFileMode.Output);
             string url = context.Replace(Url);
             context.OutputMessage("Downloading from URL " + url);
-            var client = new WebClient();
-            client.DownloadFile(url, file);
+            using (var client = new WebClient())
+            {
+                client.DownloadFile(url, file);
+            }
         }
     }
 }
