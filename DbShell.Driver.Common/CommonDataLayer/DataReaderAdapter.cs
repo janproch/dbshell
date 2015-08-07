@@ -74,14 +74,16 @@ namespace DbShell.Driver.Common.CommonDataLayer
 
     public class DataReaderAdapter : DataRecordAdapterBase, ICdlReader
     {
-        IDataReader _reader;
-        IDatabaseFactory _factory;
+        private IDataReader _reader;
+        private IDatabaseFactory _factory;
+        private bool _includeHiddenColumns;
 
-        public DataReaderAdapter(IDataReader reader, IDatabaseFactory factory)
+        public DataReaderAdapter(IDataReader reader, IDatabaseFactory factory, bool includeHiddenColumns)
         {
             _reader = reader;
             _factory = factory;
-            _structure = reader.GetTableInfo();
+            _includeHiddenColumns = includeHiddenColumns;
+            _structure = reader.GetTableInfo(_includeHiddenColumns);
         }
 
         #region ICdlReader Members

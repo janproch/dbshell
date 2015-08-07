@@ -15,7 +15,7 @@ namespace DbShell.Driver.Common.AbstractDb
 
     public interface IDialectDataAdapter
     {
-        ICdlReader AdaptReader(IDataReader reader);
+        ICdlReader AdaptReader(IDataReader reader, bool includeHiddenColumns = false);
         string GetSqlLiteral(ICdlValueReader reader, DbTypeBase type);
         string GetSqlLiteral(object value, DbTypeBase type);
         void AdaptValue(ICdlValueReader reader, DbTypeBase type, ICdlValueWriter writer, ICdlValueConvertor converter);

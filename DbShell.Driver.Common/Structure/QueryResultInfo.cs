@@ -19,47 +19,22 @@ namespace DbShell.Driver.Common.Structure
             Columns = new List<QueryResultColumnInfo>();
         }
 
-        public TableInfo ToTableInfo()
+        public TableInfo ToTableInfo(bool includeHiddenColumns = false)
         {
             var res = new TableInfo(new DatabaseInfo());
             var pk = new PrimaryKeyInfo(res);
 
-            string table = null, schema = null;
-            foreach (var column in Columns)
+            var tableNames = Columns.Select(x => x.BaseTableName).Where(x => x != null).Distinct().ToList();
+            var schemaNames = Columns.Select(x => x.BaseSchemaName).Where(x => x != null).Distinct().ToList();
+
+            if (tableNames.Count == 1 && schemaNames.Count <= 1)
             {
-                if (column.BaseTableName != null)
-                {
-                    if (table == null)
-                    {
-                        table = column.BaseTableName;
-                    }
-                    else if (table != column.BaseTableName)
-                    {
-                        table = null;
-                        schema = null;
-                        break;
-                    }
-                }
-                if (column.BaseSchemaName != null)
-                {
-                    if (schema == null)
-                    {
-                        schema = column.BaseSchemaName;
-                    }
-                    else if (schema != column.BaseSchemaName)
-                    {
-                        table = null;
-                        schema = null;
-                        break;
-                    }
-                }
+                res.FullName = new NameWithSchema(schemaNames.FirstOrDefault(), tableNames.Single());
             }
 
-            if (table != null) res.FullName = new NameWithSchema(schema, table);
-
             foreach (var column in Columns)
             {
-                if (column.IsHidden) continue;
+                if (column.IsHidden && !includeHiddenColumns) continue;
 
                 var col = new ColumnInfo(res)
                     {

@@ -115,10 +115,10 @@ namespace DbShell.Driver.Common.Utility
             return SchemaTableToInfo(columns);
         }
 
-        public static TableInfo GetTableInfo(this IDataReader reader)
+        public static TableInfo GetTableInfo(this IDataReader reader, bool includeHiddeColumns = false)
         {
             var info = reader.GetQueryResultInfo();
-            if (info != null) return info.ToTableInfo();
+            if (info != null) return info.ToTableInfo(includeHiddeColumns);
             return null;
         }
 
