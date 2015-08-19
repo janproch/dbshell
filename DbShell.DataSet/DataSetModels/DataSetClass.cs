@@ -72,7 +72,7 @@ namespace DbShell.DataSet.DataSetModels
                 if (fk.Columns.Count > 1) continue;
                 if (_targetTable != null && fk.RefTableFullName == _targetTable.FullName) continue;
 
-                var target = _model.GetClass(fk.RefTableName);
+                var target = _model.GetClass(fk.RefTableFullName);
                 var r = new DataSetReference
                     {
                         BaseClass = this,
@@ -120,9 +120,9 @@ namespace DbShell.DataSet.DataSetModels
             }
         }
 
-        public string TableName
+        public NameWithSchema TableName
         {
-            get { return _targetTable.Name; }
+            get { return _targetTable.FullName; }
         }
 
         public TableInfo Structure
@@ -177,20 +177,20 @@ namespace DbShell.DataSet.DataSetModels
             return null;
         }
 
-        public DataSetReference FindReference(string column, string reftable)
+        public DataSetReference FindReference(string column, NameWithSchema reftable)
         {
             DataSetReference result = null;
             foreach (var r in References)
             {
                 if (!String.IsNullOrEmpty(column) && column != r.BindingColumn) continue;
-                if (!String.IsNullOrEmpty(reftable) && reftable != r.ReferencedClass.TableName) continue;
+                if (reftable != null && reftable != r.ReferencedClass.TableName) continue;
                 if (result != null) throw new Exception(String.Format("DBSH-00119 Reference is not unique, Table={0}, Column={1}, RefTable={2}", TableName, column, reftable));
                 result = r;
             }
             return result;
         }
 
-        public void ReportUndefinedReference(string tableName, string bindingColumn, string refid)
+        public void ReportUndefinedReference(NameWithSchema tableName, string bindingColumn, string refid)
         {
             var key = tableName + "||" + bindingColumn;
             if (!_undefinedReferences.ContainsKey(key))

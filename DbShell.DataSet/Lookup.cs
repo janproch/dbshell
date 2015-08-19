@@ -6,11 +6,15 @@ using DbShell.Common;
 using DbShell.Core.Utility;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Utility;
+using DbShell.Driver.Common.Structure;
 
 namespace DbShell.DataSet
 {
     public class Lookup : DataSetItemBase
     {
+        [XamlProperty]
+        public string Schema { get; set; }
+
         [XamlProperty]
         public string Table { get; set; }
 
@@ -19,7 +23,7 @@ namespace DbShell.DataSet
 
         protected override void DoRun(IShellContext context)
         {
-            GetModel(context).DefineLookup(Table, new[] {Column});
+            GetModel(context).DefineLookup(new NameWithSchema(context.Replace(Schema), context.Replace(Table)), new[] {Column});
         }
     }
 

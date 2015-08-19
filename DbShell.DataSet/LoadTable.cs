@@ -7,11 +7,18 @@ using DbShell.Common;
 using DbShell.Core.Utility;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Utility;
+using DbShell.Driver.Common.Structure;
 
 namespace DbShell.DataSet
 {
     public class LoadTable : DataSetItemBase
     {
+        /// <summary>
+        /// name of target table
+        /// </summary>
+        [XamlProperty]
+        public string Schema { get; set; }
+
         /// <summary>
         /// name of target table
         /// </summary>
@@ -42,14 +49,14 @@ namespace DbShell.DataSet
 
             if (SourceExpression != null)
             {
-                source = (ITabularDataSource) context.Evaluate(SourceExpression);
+                source = (ITabularDataSource)context.Evaluate(SourceExpression);
             }
             else
             {
                 source = Source;
             }
 
-            GetModel(context).LoadTable(source, Table, context);
+            GetModel(context).LoadTable(source, new NameWithSchema(context.Replace(Schema), context.Replace(Name)), context);
         }
     }
 }

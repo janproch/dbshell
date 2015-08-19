@@ -6,25 +6,29 @@ using DbShell.Common;
 using DbShell.Core.Utility;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Utility;
+using DbShell.Driver.Common.Structure;
 
 namespace DbShell.DataSet
 {
     public class LoadReference : DataSetItemBase
     {
         [XamlProperty]
+        public string Schema { get; set; }
+        [XamlProperty]
         public string Table { get; set; }
         [XamlProperty]
         public string Column { get; set; }
+        [XamlProperty]
+        public string RefSchema { get; set; }
         [XamlProperty]
         public string RefTable { get; set; }
 
         protected override void DoRun(IShellContext context)
         {
-            string table = context.Replace(Table);
-            string column = context.Replace(Column);
-            string refTable = context.Replace(RefTable);
-
-            GetModel(context).LoadReference(table, column, refTable);
+            GetModel(context).LoadReference(
+                new NameWithSchema(context.Replace(Schema), context.Replace(Table)),
+                context.Replace(Column), 
+                new NameWithSchema(context.Replace(RefSchema), context.Replace(RefTable)));
         }
     }
 }

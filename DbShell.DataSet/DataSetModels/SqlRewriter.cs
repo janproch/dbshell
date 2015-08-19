@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using DbShell.Driver.Common.Structure;
 
 namespace DbShell.DataSet.DataSetModels
 {
     public class SqlJoin
     {
-        public string TargetTable;
+        public NameWithSchema TargetTable;
         public string TableAlias;
         public string OnCondition;
         public DataSetReference Reference;
@@ -17,12 +18,12 @@ namespace DbShell.DataSet.DataSetModels
     public class SqlRewriter
     {
         static Regex _exprRegex = new Regex(@"({[^}]+}\.)+\[[^\]]+\]");
-        string _table;
+        NameWithSchema _table;
         DataSetModel _model;
 
         public List<SqlJoin> Joins = new List<SqlJoin>();
 
-        public SqlRewriter(string table, DataSetModel model)
+        public SqlRewriter(NameWithSchema table, DataSetModel model)
         {
             _table = table;
             _model = model;
@@ -74,7 +75,7 @@ namespace DbShell.DataSet.DataSetModels
         {
             foreach (var join in Joins)
             {
-                sb.AppendFormat(" inner join [{0}] {1} on {2} ", join.TargetTable, join.TableAlias, join.OnCondition);
+                sb.Append($" inner join [{join.TargetTable.Schema}].[{join.TargetTable.Name}] {join.TableAlias} on {join.OnCondition} ");
             }
         }
     }

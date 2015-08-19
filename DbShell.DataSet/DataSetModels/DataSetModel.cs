@@ -22,7 +22,7 @@ namespace DbShell.DataSet.DataSetModels
         private bool _prepared;
         private IShellContext _context;
         private int _idVarCounter;
-        public Dictionary<string, DataSetClass> Classes = new Dictionary<string, DataSetClass>();
+        public Dictionary<NameWithSchema, DataSetClass> Classes = new Dictionary<NameWithSchema, DataSetClass>();
         private IDatabaseFactory _factory;
         private IDialectDataAdapter _dda;
         private List<LoadReferencesDefinition> _loadRefDefs = new List<LoadReferencesDefinition>();
@@ -38,19 +38,20 @@ namespace DbShell.DataSet.DataSetModels
             _dda = _factory.CreateDataAdapter();
         }
 
-        public DataSetClass GetClass(string name)
+        public DataSetClass GetClass(NameWithSchema name)
         {
-            name = name.ToLower();
+            //name = name.ToLower();
             if (Classes.ContainsKey(name)) return Classes[name];
-            var tbl = _targetDatabase.FindTableLike(name);
+            var tbl = _targetDatabase.FindTableLike(name.Schema, name.Name);
             if (tbl == null) throw new Exception("DBSH-00120 Unknown target table in data set:" + name);
+            if (Classes.ContainsKey(tbl.FullName)) return Classes[tbl.FullName];
             var cls = new DataSetClass(this, tbl);
-            Classes[name] = cls;
+            Classes[tbl.FullName] = cls;
             cls.InitializeClass();
             return cls;
         }
 
-        private List<DataSetInstance> DoLoadRows(ICdlReader reader, string targetTable)
+        private List<DataSetInstance> DoLoadRows(ICdlReader reader, NameWithSchema targetTable)
         {
             var loaded = new List<DataSetInstance>();
             var ts = reader.Structure;
@@ -84,7 +85,7 @@ namespace DbShell.DataSet.DataSetModels
             return loaded;
         }
 
-        public void LoadFromReader(ITabularDataSource source, string targetTable, IShellContext context)
+        public void LoadFromReader(ITabularDataSource source, NameWithSchema targetTable, IShellContext context)
         {
             using (var reader = source.CreateReader(context))
             {
@@ -92,7 +93,7 @@ namespace DbShell.DataSet.DataSetModels
             }
         }
 
-        public void LoadTable(ITabularDataSource source, string targetTable, IShellContext context)
+        public void LoadTable(ITabularDataSource source, NameWithSchema targetTable, IShellContext context)
         {
             CheckUnprepared("LoadTable");
             LoadFromReader(source, targetTable, context);
@@ -239,7 +240,7 @@ namespace DbShell.DataSet.DataSetModels
             return res;
         }
 
-        public void LoadReference(string table, string column, string reftable)
+        public void LoadReference(NameWithSchema table, string column, NameWithSchema reftable)
         {
             LoadReference(
                 new LoadReferencesDefinition
@@ -265,7 +266,7 @@ namespace DbShell.DataSet.DataSetModels
                 if (!cls.AllInstances.Any()) continue;
                 foreach (var fk in cls.Structure.GetReferences())
                 {
-                    var rcls = GetClass(fk.OwnerTable.Name);
+                    var rcls = GetClass(fk.OwnerTable.FullName);
                     foreach (var refref in rcls.References)
                     {
                         if (refref.ReferencedClass != cls) continue;
@@ -446,7 +447,7 @@ namespace DbShell.DataSet.DataSetModels
             var refValues = cls.GetMissingKeys();
             if (refValues.Count == 0) return 0;
             var sb = new StringBuilder();
-            sb.AppendFormat("select * from [{0}] where [{1}] in (", cls.TableName, cls.SimplePkCol);
+            sb.Append($"select * from [{cls.TableName.Schema}].[{cls.TableName.Name}] where [{cls.SimplePkCol}] in (");
             bool was = false;
             foreach (string id in refValues)
             {
@@ -771,14 +772,14 @@ namespace DbShell.DataSet.DataSetModels
             return refobj;
         }
 
-        public void AddRows(string table, string condition)
+        public void AddRows(NameWithSchema table, string condition)
         {
             CheckUnprepared("AddRows");
             var cls = GetClass(table);
             cls.AddRowsRequests.Add(condition);
         }
 
-        public void AddRowsByPk(string table, params string[] pks)
+        public void AddRowsByPk(NameWithSchema table, params string[] pks)
         {
             var cls = GetClass(table);
             foreach(string pk in pks)
@@ -787,7 +788,7 @@ namespace DbShell.DataSet.DataSetModels
             }
         }
 
-        private void DoAddRows(DbConnection conn, string table, string condition)
+        private void DoAddRows(DbConnection conn, NameWithSchema table, string condition)
         {
             using (var cmd = conn.CreateCommand())
             {
@@ -796,7 +797,7 @@ namespace DbShell.DataSet.DataSetModels
                 sb.Append("SELECT ");
                 var cls = GetClass(table);
                 sb.Append(cls.Columns.Select(x => "tmain.[" + x + "]").CreateDelimitedText(", "));
-                sb.Append(" FROM [" + table + "] tmain");
+                sb.Append($" FROM [{table.Schema}].[{table.Name}]  tmain");
 
                 if (!String.IsNullOrEmpty(condition))
                 {
@@ -821,21 +822,21 @@ namespace DbShell.DataSet.DataSetModels
             }
         }
 
-        public void LoadMissing(string table)
+        public void LoadMissing(NameWithSchema table)
         {
             CheckUnprepared("LoadMissing");
             var cls = GetClass(table);
             cls.LoadMissingInstances = true;
         }
 
-        public void KeepKey(string table)
+        public void KeepKey(NameWithSchema table)
         {
             CheckUnprepared("KeepKey");
             var cls = GetClass(table);
             cls.KeepKey = true;
         }
 
-        public void DefineLookup(string table, string[] lookupColumns)
+        public void DefineLookup(NameWithSchema table, string[] lookupColumns)
         {
             CheckUnprepared("Lookup");
             var cls = GetClass(table);
