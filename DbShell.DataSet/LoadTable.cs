@@ -56,7 +56,7 @@ namespace DbShell.DataSet
                 source = Source;
             }
 
-            GetModel(context).LoadTable(source, new NameWithSchema(context.Replace(Schema), context.Replace(Name)), context);
+            GetModel(context).LoadTable(source, new NameWithSchema(context.Replace(Schema), context.Replace(Table)), context);
         }
     }
 }
