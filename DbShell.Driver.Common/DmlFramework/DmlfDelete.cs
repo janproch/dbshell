@@ -18,9 +18,17 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             dmp.Put("^delete ");
             if (TopRecords != null) dmp.Put("^top(%s) ", TopRecords);
-            if (DeleteTarget != null) DeleteTarget.GenSqlRef(dmp);
 
-            GenerateFrom(dmp);
+            if (dmp.Factory.DialectCaps.AllowDeleteFrom)
+            {
+                if (DeleteTarget != null) DeleteTarget.GenSqlRef(dmp);
+                GenerateFrom(dmp);
+            }
+            else
+            {
+                dmp.Put("^from ");
+                if (DeleteTarget != null) DeleteTarget.GenSqlRef(dmp);
+            }
 
             if (Where != null) Where.GenSql(dmp);
         }

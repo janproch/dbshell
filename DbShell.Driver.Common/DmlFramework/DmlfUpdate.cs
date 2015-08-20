@@ -30,7 +30,11 @@ namespace DbShell.Driver.Common.DmlFramework
             dmp.Put("&n^set ");
             Columns.GenSql(dmp);
 
-            GenerateFrom(dmp);
+            if (dmp.Factory.DialectCaps.AllowUpdateFrom)
+            {
+                GenerateFrom(dmp);
+            }
+
             if (Where != null) Where.GenSql(dmp);
         }
 

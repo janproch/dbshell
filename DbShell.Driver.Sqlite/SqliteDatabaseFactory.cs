@@ -67,6 +67,9 @@ namespace DbShell.Driver.Sqlite
                 res.NestedTransactions = true;
                 res.AnonymousPrimaryKey = true;
                 res.RangeSelect = true;
+                res.AllowDeleteFrom = false;
+                res.AllowUpdateFrom = false;
+                res.RowId = "rowid";
                 return res;
             }
         }

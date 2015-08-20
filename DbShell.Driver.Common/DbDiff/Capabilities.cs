@@ -231,6 +231,13 @@ namespace DbShell.Driver.Common.DbDiff
 
         public bool SupportBackup;
 
+        public bool AllowDeleteFrom;
+
+        public bool AllowUpdateFrom;
+
+        // name of RowId column automatically added to tables
+        public string RowId;
+
         public bool AllFlags
         {
             set
@@ -256,6 +263,8 @@ namespace DbShell.Driver.Common.DbDiff
                 MultipleDatabase = value;
                 SupportBackup = value;
                 AutoIncrement = value;
+                AllowDeleteFrom = value;
+                AllowUpdateFrom = value;
             }
         }
     }

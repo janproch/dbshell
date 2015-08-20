@@ -150,6 +150,8 @@ namespace DbShell.Driver.SqlServer
                 //if (m_version.Is_2005()) res.LimitSelect = true;
                 res.Domains = true;
                 res.SupportBackup = true;
+                res.AllowDeleteFrom = true;
+                res.AllowUpdateFrom = true;
                 return res;
             }
         }
