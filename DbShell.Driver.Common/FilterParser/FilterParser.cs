@@ -168,6 +168,7 @@ namespace DbShell.Driver.Common.FilterParser
 
         public static DmlfConditionBase ParseFilterExpression(DbTypeBase type, DmlfExpression columnValue, string expression, Action<DbShellFilterAntlrParser> initParser = null)
         {
+            if (expression == null) return null;
             var res = DoParseFilterExpression(type, columnValue, expression, initParser);
             if (res != null) res = res.SimplifyCondition();
             return res;
