@@ -66,6 +66,7 @@
     <Compile Include="CopyTableTest.cs" />
     <Compile Include="RazorTest.cs" />
     <Compile Include="CsvTest.cs" />
+    <Compile Include="RdsTest.cs" />
     <Compile Include="TestUtility.cs" />
     <Compile Include="ToolTests.cs" />
     <Compile Include="XamlReaderTest.cs" />
@@ -87,8 +88,13 @@
       <Project>{80906e4d-1539-4f93-a227-3e072f49baea}</Project>
       <Name>DbShell.Driver.SqlServer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DbShell.RelatedDataSync\DbShell.RelatedDataSync.csproj">
+      <Project>{e08cef81-49a5-4f5c-aa32-da22833ab8ef}</Project>
+      <Name>DbShell.RelatedDataSync</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CreateRds1Data.sql" />
     <Content Include="Ideas.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -195,6 +201,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="mapped_import.xaml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="rds1.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
