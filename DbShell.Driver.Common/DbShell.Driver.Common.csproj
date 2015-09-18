@@ -86,6 +86,7 @@
     <Compile Include="DmlFramework\DmlfBatch.cs" />
     <Compile Include="DmlFramework\DmlfDisableConstraint.cs" />
     <Compile Include="DmlFramework\DmlfInsert.cs" />
+    <Compile Include="DmlFramework\DmlfHaving.cs" />
     <Compile Include="Structure\StructuredIdentifier.cs" />
     <Compile Include="Utility\DateTimeExTypeConverter.cs" />
     <Compile Include="Utility\TargetColumnMap.cs" />

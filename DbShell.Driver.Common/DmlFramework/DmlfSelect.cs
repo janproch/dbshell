@@ -18,6 +18,9 @@ namespace DbShell.Driver.Common.DmlFramework
         [XmlSubElem]
         public DmlfGroupByCollection GroupBy { get; set; }
 
+        [XmlSubElem]
+        public DmlfHaving Having { get; set; }
+
         [XmlElem]
         public int? TopRecords { get; set; }
 
@@ -162,6 +165,7 @@ namespace DbShell.Driver.Common.DmlFramework
                 dmp.Put("&n^group ^by ");
                 GroupBy.GenSql(dmp);
             }
+            if (Having != null) Having.GenSql(dmp);
             if (OrderBy != null && OrderBy.Count > 0)
             {
                 dmp.Put(" ^order ^by ");
