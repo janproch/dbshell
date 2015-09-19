@@ -11,10 +11,15 @@ options {
 using System.Globalization;
 }
 
-sql_name:
+sql_identifier:
   lit1=SQL_LITERAL { Push($lit1.text); }
   (DOT lit2=SQL_LITERAL { Push(Pop<string>() + "." + $lit2.text); } )* 
   ; 
+  
+sql_variable:
+    var=SQL_VARIABLE { Push($var.text); };
+  
+sql_name : sql_identifier | sql_variable;
 
 element:
   T_TRUE { AddTrueCondition();  } 
@@ -63,6 +68,13 @@ SQL_LITERAL:
 	  ']' )
 ;
  
+SQL_VARIABLE:
+    ('@'    
+        ('a'..'z'|'A'..'Z'|'_')
+        ( options{greedy=true;}: ('a'..'z'|'A'..'Z'|'0'..'9'|'_')  )*
+    )
+;
+
  
 A_STRING:
 	  ('\''

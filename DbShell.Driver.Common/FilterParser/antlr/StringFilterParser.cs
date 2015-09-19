@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 StringFilter.g 2015-01-03 12:47:23
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 StringFilter.g 2015-09-19 21:51:32
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 168, 219
@@ -33,6 +33,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
 		"I_STRING", 
 		"SQL_LITERAL", 
 		"DOT", 
+		"SQL_VARIABLE", 
 		"PLUS", 
 		"MINUS", 
 		"LT", 
@@ -83,60 +84,61 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
 		"Z"
     };
 
-    public const int DOLLAR = 19;
-    public const int LT = 11;
-    public const int STAR = 28;
+    public const int DOLLAR = 20;
+    public const int LT = 12;
+    public const int STAR = 29;
     public const int EOF = -1;
     public const int Q_STRING = 4;
-    public const int COMMA = 26;
-    public const int T_NULL = 21;
-    public const int PLUS = 9;
-    public const int DIGIT = 39;
-    public const int EQ = 16;
+    public const int COMMA = 27;
+    public const int T_NULL = 22;
+    public const int PLUS = 10;
+    public const int DIGIT = 40;
+    public const int EQ = 17;
     public const int DOT = 8;
-    public const int NE = 15;
-    public const int D = 43;
-    public const int E = 34;
-    public const int F = 44;
-    public const int GE = 14;
-    public const int G = 45;
+    public const int NE = 16;
+    public const int D = 44;
+    public const int E = 35;
+    public const int F = 45;
+    public const int GE = 15;
+    public const int G = 46;
+    public const int SQL_VARIABLE = 9;
     public const int I_STRING = 6;
-    public const int A = 40;
-    public const int B = 41;
-    public const int NE2 = 25;
-    public const int C = 42;
-    public const int L = 31;
-    public const int M = 35;
-    public const int N = 29;
-    public const int O = 32;
-    public const int H = 46;
-    public const int I = 47;
-    public const int J = 48;
-    public const int K = 49;
-    public const int U = 30;
-    public const int T = 33;
-    public const int W = 54;
-    public const int WHITESPACE = 38;
-    public const int V = 53;
-    public const int Q = 50;
-    public const int P = 36;
-    public const int S = 52;
-    public const int R = 51;
-    public const int MINUS = 10;
-    public const int Y = 37;
-    public const int X = 55;
+    public const int A = 41;
+    public const int B = 42;
+    public const int C = 43;
+    public const int NE2 = 26;
+    public const int L = 32;
+    public const int M = 36;
+    public const int N = 30;
+    public const int O = 33;
+    public const int H = 47;
+    public const int I = 48;
+    public const int J = 49;
+    public const int K = 50;
+    public const int U = 31;
+    public const int T = 34;
+    public const int W = 55;
+    public const int WHITESPACE = 39;
+    public const int V = 54;
+    public const int Q = 51;
+    public const int P = 37;
+    public const int S = 53;
+    public const int R = 52;
+    public const int MINUS = 11;
+    public const int Y = 38;
+    public const int X = 56;
     public const int SQL_LITERAL = 7;
-    public const int EQ2 = 24;
-    public const int Z = 56;
-    public const int NDOLLAR = 20;
-    public const int T_EMPTY = 23;
+    public const int EQ2 = 25;
+    public const int Z = 57;
+    public const int NDOLLAR = 21;
+    public const int T_EMPTY = 24;
     public const int A_STRING = 5;
-    public const int ARROW = 17;
-    public const int GT = 12;
-    public const int ENDLINE = 27;
-    public const int T_NOT = 22;
-    public const int NARROW = 18;
-    public const int LE = 13;
+    public const int ARROW = 18;
+    public const int GT = 13;
+    public const int ENDLINE = 28;
+    public const int T_NOT = 23;
+    public const int NARROW = 19;
+    public const int LE = 14;
 
     // delegates
     // delegators
@@ -239,7 +241,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
     }
     // $ANTLR end "string_lit"
 
-    public class sql_name_return : ParserRuleReturnScope
+    public class sql_identifier_return : ParserRuleReturnScope
     {
         private object tree;
         override public object Tree
@@ -249,11 +251,11 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
         }
     };
 
-    // $ANTLR start "sql_name"
-    // StringFilter.g:16:1: sql_name : lit1= SQL_LITERAL ( DOT lit2= SQL_LITERAL )* ;
-    public StringFilterParser.sql_name_return sql_name() // throws RecognitionException [1]
+    // $ANTLR start "sql_identifier"
+    // StringFilter.g:16:1: sql_identifier : lit1= SQL_LITERAL ( DOT lit2= SQL_LITERAL )* ;
+    public StringFilterParser.sql_identifier_return sql_identifier() // throws RecognitionException [1]
     {   
-        StringFilterParser.sql_name_return retval = new StringFilterParser.sql_name_return();
+        StringFilterParser.sql_identifier_return retval = new StringFilterParser.sql_identifier_return();
         retval.Start = input.LT(1);
 
         object root_0 = null;
@@ -268,12 +270,12 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
 
         try 
     	{
-            // StringFilter.g:16:9: (lit1= SQL_LITERAL ( DOT lit2= SQL_LITERAL )* )
+            // StringFilter.g:16:15: (lit1= SQL_LITERAL ( DOT lit2= SQL_LITERAL )* )
             // StringFilter.g:17:3: lit1= SQL_LITERAL ( DOT lit2= SQL_LITERAL )*
             {
             	root_0 = (object)adaptor.GetNilNode();
 
-            	lit1=(IToken)Match(input,SQL_LITERAL,FOLLOW_SQL_LITERAL_in_sql_name60); 
+            	lit1=(IToken)Match(input,SQL_LITERAL,FOLLOW_SQL_LITERAL_in_sql_identifier60); 
             		lit1_tree = (object)adaptor.Create(lit1);
             		adaptor.AddChild(root_0, lit1_tree);
 
@@ -295,11 +297,11 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
             			case 1 :
             			    // StringFilter.g:18:4: DOT lit2= SQL_LITERAL
             			    {
-            			    	DOT2=(IToken)Match(input,DOT,FOLLOW_DOT_in_sql_name67); 
+            			    	DOT2=(IToken)Match(input,DOT,FOLLOW_DOT_in_sql_identifier67); 
             			    		DOT2_tree = (object)adaptor.Create(DOT2);
             			    		adaptor.AddChild(root_0, DOT2_tree);
 
-            			    	lit2=(IToken)Match(input,SQL_LITERAL,FOLLOW_SQL_LITERAL_in_sql_name71); 
+            			    	lit2=(IToken)Match(input,SQL_LITERAL,FOLLOW_SQL_LITERAL_in_sql_identifier71); 
             			    		lit2_tree = (object)adaptor.Create(lit2);
             			    		adaptor.AddChild(root_0, lit2_tree);
 
@@ -337,6 +339,160 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
         }
         return retval;
     }
+    // $ANTLR end "sql_identifier"
+
+    public class sql_variable_return : ParserRuleReturnScope
+    {
+        private object tree;
+        override public object Tree
+        {
+        	get { return tree; }
+        	set { tree = (object) value; }
+        }
+    };
+
+    // $ANTLR start "sql_variable"
+    // StringFilter.g:21:1: sql_variable : var= SQL_VARIABLE ;
+    public StringFilterParser.sql_variable_return sql_variable() // throws RecognitionException [1]
+    {   
+        StringFilterParser.sql_variable_return retval = new StringFilterParser.sql_variable_return();
+        retval.Start = input.LT(1);
+
+        object root_0 = null;
+
+        IToken var = null;
+
+        object var_tree=null;
+
+        try 
+    	{
+            // StringFilter.g:21:13: (var= SQL_VARIABLE )
+            // StringFilter.g:22:5: var= SQL_VARIABLE
+            {
+            	root_0 = (object)adaptor.GetNilNode();
+
+            	var=(IToken)Match(input,SQL_VARIABLE,FOLLOW_SQL_VARIABLE_in_sql_variable96); 
+            		var_tree = (object)adaptor.Create(var);
+            		adaptor.AddChild(root_0, var_tree);
+
+            	 Push(((var != null) ? var.Text : null)); 
+
+            }
+
+            retval.Stop = input.LT(-1);
+
+            	retval.Tree = (object)adaptor.RulePostProcessing(root_0);
+            	adaptor.SetTokenBoundaries(retval.Tree, (IToken) retval.Start, (IToken) retval.Stop);
+        }
+        catch (RecognitionException re) 
+    	{
+            ReportError(re);
+            Recover(input,re);
+    	// Conversion of the second argument necessary, but harmless
+    	retval.Tree = (object)adaptor.ErrorNode(input, (IToken) retval.Start, input.LT(-1), re);
+
+        }
+        finally 
+    	{
+        }
+        return retval;
+    }
+    // $ANTLR end "sql_variable"
+
+    public class sql_name_return : ParserRuleReturnScope
+    {
+        private object tree;
+        override public object Tree
+        {
+        	get { return tree; }
+        	set { tree = (object) value; }
+        }
+    };
+
+    // $ANTLR start "sql_name"
+    // StringFilter.g:24:1: sql_name : ( sql_identifier | sql_variable );
+    public StringFilterParser.sql_name_return sql_name() // throws RecognitionException [1]
+    {   
+        StringFilterParser.sql_name_return retval = new StringFilterParser.sql_name_return();
+        retval.Start = input.LT(1);
+
+        object root_0 = null;
+
+        StringFilterParser.sql_identifier_return sql_identifier3 = default(StringFilterParser.sql_identifier_return);
+
+        StringFilterParser.sql_variable_return sql_variable4 = default(StringFilterParser.sql_variable_return);
+
+
+
+        try 
+    	{
+            // StringFilter.g:24:10: ( sql_identifier | sql_variable )
+            int alt2 = 2;
+            int LA2_0 = input.LA(1);
+
+            if ( (LA2_0 == SQL_LITERAL) )
+            {
+                alt2 = 1;
+            }
+            else if ( (LA2_0 == SQL_VARIABLE) )
+            {
+                alt2 = 2;
+            }
+            else 
+            {
+                NoViableAltException nvae_d2s0 =
+                    new NoViableAltException("", 2, 0, input);
+
+                throw nvae_d2s0;
+            }
+            switch (alt2) 
+            {
+                case 1 :
+                    // StringFilter.g:24:12: sql_identifier
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	PushFollow(FOLLOW_sql_identifier_in_sql_name108);
+                    	sql_identifier3 = sql_identifier();
+                    	state.followingStackPointer--;
+
+                    	adaptor.AddChild(root_0, sql_identifier3.Tree);
+
+                    }
+                    break;
+                case 2 :
+                    // StringFilter.g:24:29: sql_variable
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	PushFollow(FOLLOW_sql_variable_in_sql_name112);
+                    	sql_variable4 = sql_variable();
+                    	state.followingStackPointer--;
+
+                    	adaptor.AddChild(root_0, sql_variable4.Tree);
+
+                    }
+                    break;
+
+            }
+            retval.Stop = input.LT(-1);
+
+            	retval.Tree = (object)adaptor.RulePostProcessing(root_0);
+            	adaptor.SetTokenBoundaries(retval.Tree, (IToken) retval.Start, (IToken) retval.Stop);
+        }
+        catch (RecognitionException re) 
+    	{
+            ReportError(re);
+            Recover(input,re);
+    	// Conversion of the second argument necessary, but harmless
+    	retval.Tree = (object)adaptor.ErrorNode(input, (IToken) retval.Start, input.LT(-1), re);
+
+        }
+        finally 
+    	{
+        }
+        return retval;
+    }
     // $ANTLR end "sql_name"
 
     public class element_return : ParserRuleReturnScope
@@ -350,7 +506,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
     };
 
     // $ANTLR start "element"
-    // StringFilter.g:21:1: element : (s1= string_lit | PLUS s1= string_lit | MINUS s1= string_lit | LT s1= string_lit | GT s1= string_lit | LE s1= string_lit | GE s1= string_lit | NE s1= string_lit | EQ s1= string_lit | ARROW s1= string_lit | NARROW s1= string_lit | DOLLAR s1= string_lit | NDOLLAR s1= string_lit | T_NULL | T_NOT T_NULL | T_EMPTY | T_NOT T_EMPTY | LT sql_name | GT sql_name | LE sql_name | GE sql_name | NE sql_name | EQ sql_name | EQ2 sql_name | NE2 sql_name );
+    // StringFilter.g:26:1: element : (s1= string_lit | PLUS s1= string_lit | MINUS s1= string_lit | LT s1= string_lit | GT s1= string_lit | LE s1= string_lit | GE s1= string_lit | NE s1= string_lit | EQ s1= string_lit | ARROW s1= string_lit | NARROW s1= string_lit | DOLLAR s1= string_lit | NDOLLAR s1= string_lit | T_NULL | T_NOT T_NULL | T_EMPTY | T_NOT T_EMPTY | LT sql_name | GT sql_name | LE sql_name | GE sql_name | NE sql_name | EQ sql_name | EQ2 sql_name | NE2 sql_name );
     public StringFilterParser.element_return element() // throws RecognitionException [1]
     {   
         StringFilterParser.element_return retval = new StringFilterParser.element_return();
@@ -358,35 +514,33 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
 
         object root_0 = null;
 
-        IToken PLUS3 = null;
-        IToken MINUS4 = null;
-        IToken LT5 = null;
-        IToken GT6 = null;
-        IToken LE7 = null;
-        IToken GE8 = null;
-        IToken NE9 = null;
-        IToken EQ10 = null;
-        IToken ARROW11 = null;
-        IToken NARROW12 = null;
-        IToken DOLLAR13 = null;
-        IToken NDOLLAR14 = null;
-        IToken T_NULL15 = null;
-        IToken T_NOT16 = null;
+        IToken PLUS5 = null;
+        IToken MINUS6 = null;
+        IToken LT7 = null;
+        IToken GT8 = null;
+        IToken LE9 = null;
+        IToken GE10 = null;
+        IToken NE11 = null;
+        IToken EQ12 = null;
+        IToken ARROW13 = null;
+        IToken NARROW14 = null;
+        IToken DOLLAR15 = null;
+        IToken NDOLLAR16 = null;
         IToken T_NULL17 = null;
-        IToken T_EMPTY18 = null;
-        IToken T_NOT19 = null;
+        IToken T_NOT18 = null;
+        IToken T_NULL19 = null;
         IToken T_EMPTY20 = null;
-        IToken LT21 = null;
-        IToken GT23 = null;
-        IToken LE25 = null;
-        IToken GE27 = null;
-        IToken NE29 = null;
-        IToken EQ31 = null;
-        IToken EQ233 = null;
-        IToken NE235 = null;
+        IToken T_NOT21 = null;
+        IToken T_EMPTY22 = null;
+        IToken LT23 = null;
+        IToken GT25 = null;
+        IToken LE27 = null;
+        IToken GE29 = null;
+        IToken NE31 = null;
+        IToken EQ33 = null;
+        IToken EQ235 = null;
+        IToken NE237 = null;
         StringFilterParser.string_lit_return s1 = default(StringFilterParser.string_lit_return);
-
-        StringFilterParser.sql_name_return sql_name22 = default(StringFilterParser.sql_name_return);
 
         StringFilterParser.sql_name_return sql_name24 = default(StringFilterParser.sql_name_return);
 
@@ -402,47 +556,49 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
 
         StringFilterParser.sql_name_return sql_name36 = default(StringFilterParser.sql_name_return);
 
+        StringFilterParser.sql_name_return sql_name38 = default(StringFilterParser.sql_name_return);
 
-        object PLUS3_tree=null;
-        object MINUS4_tree=null;
-        object LT5_tree=null;
-        object GT6_tree=null;
-        object LE7_tree=null;
-        object GE8_tree=null;
-        object NE9_tree=null;
-        object EQ10_tree=null;
-        object ARROW11_tree=null;
-        object NARROW12_tree=null;
-        object DOLLAR13_tree=null;
-        object NDOLLAR14_tree=null;
-        object T_NULL15_tree=null;
-        object T_NOT16_tree=null;
+
+        object PLUS5_tree=null;
+        object MINUS6_tree=null;
+        object LT7_tree=null;
+        object GT8_tree=null;
+        object LE9_tree=null;
+        object GE10_tree=null;
+        object NE11_tree=null;
+        object EQ12_tree=null;
+        object ARROW13_tree=null;
+        object NARROW14_tree=null;
+        object DOLLAR15_tree=null;
+        object NDOLLAR16_tree=null;
         object T_NULL17_tree=null;
-        object T_EMPTY18_tree=null;
-        object T_NOT19_tree=null;
+        object T_NOT18_tree=null;
+        object T_NULL19_tree=null;
         object T_EMPTY20_tree=null;
-        object LT21_tree=null;
-        object GT23_tree=null;
-        object LE25_tree=null;
-        object GE27_tree=null;
-        object NE29_tree=null;
-        object EQ31_tree=null;
-        object EQ233_tree=null;
-        object NE235_tree=null;
+        object T_NOT21_tree=null;
+        object T_EMPTY22_tree=null;
+        object LT23_tree=null;
+        object GT25_tree=null;
+        object LE27_tree=null;
+        object GE29_tree=null;
+        object NE31_tree=null;
+        object EQ33_tree=null;
+        object EQ235_tree=null;
+        object NE237_tree=null;
 
         try 
     	{
-            // StringFilter.g:21:8: (s1= string_lit | PLUS s1= string_lit | MINUS s1= string_lit | LT s1= string_lit | GT s1= string_lit | LE s1= string_lit | GE s1= string_lit | NE s1= string_lit | EQ s1= string_lit | ARROW s1= string_lit | NARROW s1= string_lit | DOLLAR s1= string_lit | NDOLLAR s1= string_lit | T_NULL | T_NOT T_NULL | T_EMPTY | T_NOT T_EMPTY | LT sql_name | GT sql_name | LE sql_name | GE sql_name | NE sql_name | EQ sql_name | EQ2 sql_name | NE2 sql_name )
-            int alt2 = 25;
-            alt2 = dfa2.Predict(input);
-            switch (alt2) 
+            // StringFilter.g:26:8: (s1= string_lit | PLUS s1= string_lit | MINUS s1= string_lit | LT s1= string_lit | GT s1= string_lit | LE s1= string_lit | GE s1= string_lit | NE s1= string_lit | EQ s1= string_lit | ARROW s1= string_lit | NARROW s1= string_lit | DOLLAR s1= string_lit | NDOLLAR s1= string_lit | T_NULL | T_NOT T_NULL | T_EMPTY | T_NOT T_EMPTY | LT sql_name | GT sql_name | LE sql_name | GE sql_name | NE sql_name | EQ sql_name | EQ2 sql_name | NE2 sql_name )
+            int alt3 = 25;
+            alt3 = dfa3.Predict(input);
+            switch (alt3) 
             {
                 case 1 :
-                    // StringFilter.g:22:3: s1= string_lit
+                    // StringFilter.g:27:3: s1= string_lit
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	PushFollow(FOLLOW_string_lit_in_element92);
+                    	PushFollow(FOLLOW_string_lit_in_element123);
                     	s1 = string_lit();
                     	state.followingStackPointer--;
 
@@ -452,15 +608,15 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                     }
                     break;
                 case 2 :
-                    // StringFilter.g:23:5: PLUS s1= string_lit
+                    // StringFilter.g:28:5: PLUS s1= string_lit
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	PLUS3=(IToken)Match(input,PLUS,FOLLOW_PLUS_in_element101); 
-                    		PLUS3_tree = (object)adaptor.Create(PLUS3);
-                    		adaptor.AddChild(root_0, PLUS3_tree);
+                    	PLUS5=(IToken)Match(input,PLUS,FOLLOW_PLUS_in_element132); 
+                    		PLUS5_tree = (object)adaptor.Create(PLUS5);
+                    		adaptor.AddChild(root_0, PLUS5_tree);
 
-                    	PushFollow(FOLLOW_string_lit_in_element105);
+                    	PushFollow(FOLLOW_string_lit_in_element136);
                     	s1 = string_lit();
                     	state.followingStackPointer--;
 
@@ -470,15 +626,15 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                     }
                     break;
                 case 3 :
-                    // StringFilter.g:24:5: MINUS s1= string_lit
+                    // StringFilter.g:29:5: MINUS s1= string_lit
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	MINUS4=(IToken)Match(input,MINUS,FOLLOW_MINUS_in_element114); 
-                    		MINUS4_tree = (object)adaptor.Create(MINUS4);
-                    		adaptor.AddChild(root_0, MINUS4_tree);
+                    	MINUS6=(IToken)Match(input,MINUS,FOLLOW_MINUS_in_element145); 
+                    		MINUS6_tree = (object)adaptor.Create(MINUS6);
+                    		adaptor.AddChild(root_0, MINUS6_tree);
 
-                    	PushFollow(FOLLOW_string_lit_in_element118);
+                    	PushFollow(FOLLOW_string_lit_in_element149);
                     	s1 = string_lit();
                     	state.followingStackPointer--;
 
@@ -488,15 +644,15 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                     }
                     break;
                 case 4 :
-                    // StringFilter.g:25:5: LT s1= string_lit
+                    // StringFilter.g:30:5: LT s1= string_lit
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	LT5=(IToken)Match(input,LT,FOLLOW_LT_in_element127); 
-                    		LT5_tree = (object)adaptor.Create(LT5);
-                    		adaptor.AddChild(root_0, LT5_tree);
+                    	LT7=(IToken)Match(input,LT,FOLLOW_LT_in_element158); 
+                    		LT7_tree = (object)adaptor.Create(LT7);
+                    		adaptor.AddChild(root_0, LT7_tree);
 
-                    	PushFollow(FOLLOW_string_lit_in_element131);
+                    	PushFollow(FOLLOW_string_lit_in_element162);
                     	s1 = string_lit();
                     	state.followingStackPointer--;
 
@@ -506,15 +662,15 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                     }
                     break;
                 case 5 :
-                    // StringFilter.g:26:5: GT s1= string_lit
+                    // StringFilter.g:31:5: GT s1= string_lit
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	GT6=(IToken)Match(input,GT,FOLLOW_GT_in_element140); 
-                    		GT6_tree = (object)adaptor.Create(GT6);
-                    		adaptor.AddChild(root_0, GT6_tree);
+                    	GT8=(IToken)Match(input,GT,FOLLOW_GT_in_element171); 
+                    		GT8_tree = (object)adaptor.Create(GT8);
+                    		adaptor.AddChild(root_0, GT8_tree);
 
-                    	PushFollow(FOLLOW_string_lit_in_element144);
+                    	PushFollow(FOLLOW_string_lit_in_element175);
                     	s1 = string_lit();
                     	state.followingStackPointer--;
 
@@ -524,15 +680,15 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                     }
                     break;
                 case 6 :
-                    // StringFilter.g:27:5: LE s1= string_lit
+                    // StringFilter.g:32:5: LE s1= string_lit
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	LE7=(IToken)Match(input,LE,FOLLOW_LE_in_element153); 
-                    		LE7_tree = (object)adaptor.Create(LE7);
-                    		adaptor.AddChild(root_0, LE7_tree);
+                    	LE9=(IToken)Match(input,LE,FOLLOW_LE_in_element184); 
+                    		LE9_tree = (object)adaptor.Create(LE9);
+                    		adaptor.AddChild(root_0, LE9_tree);
 
-                    	PushFollow(FOLLOW_string_lit_in_element157);
+                    	PushFollow(FOLLOW_string_lit_in_element188);
                     	s1 = string_lit();
                     	state.followingStackPointer--;
 
@@ -542,15 +698,15 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                     }
                     break;
                 case 7 :
-                    // StringFilter.g:28:5: GE s1= string_lit
+                    // StringFilter.g:33:5: GE s1= string_lit
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	GE8=(IToken)Match(input,GE,FOLLOW_GE_in_element166); 
-                    		GE8_tree = (object)adaptor.Create(GE8);
-                    		adaptor.AddChild(root_0, GE8_tree);
+                    	GE10=(IToken)Match(input,GE,FOLLOW_GE_in_element197); 
+                    		GE10_tree = (object)adaptor.Create(GE10);
+                    		adaptor.AddChild(root_0, GE10_tree);
 
-                    	PushFollow(FOLLOW_string_lit_in_element170);
+                    	PushFollow(FOLLOW_string_lit_in_element201);
                     	s1 = string_lit();
                     	state.followingStackPointer--;
 
@@ -560,15 +716,15 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                     }
                     break;
                 case 8 :
-                    // StringFilter.g:29:5: NE s1= string_lit
+                    // StringFilter.g:34:5: NE s1= string_lit
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	NE9=(IToken)Match(input,NE,FOLLOW_NE_in_element179); 
-                    		NE9_tree = (object)adaptor.Create(NE9);
-                    		adaptor.AddChild(root_0, NE9_tree);
+                    	NE11=(IToken)Match(input,NE,FOLLOW_NE_in_element210); 
+                    		NE11_tree = (object)adaptor.Create(NE11);
+                    		adaptor.AddChild(root_0, NE11_tree);
 
-                    	PushFollow(FOLLOW_string_lit_in_element183);
+                    	PushFollow(FOLLOW_string_lit_in_element214);
                     	s1 = string_lit();
                     	state.followingStackPointer--;
 
@@ -578,15 +734,15 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                     }
                     break;
                 case 9 :
-                    // StringFilter.g:30:5: EQ s1= string_lit
+                    // StringFilter.g:35:5: EQ s1= string_lit
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	EQ10=(IToken)Match(input,EQ,FOLLOW_EQ_in_element192); 
-                    		EQ10_tree = (object)adaptor.Create(EQ10);
-                    		adaptor.AddChild(root_0, EQ10_tree);
+                    	EQ12=(IToken)Match(input,EQ,FOLLOW_EQ_in_element223); 
+                    		EQ12_tree = (object)adaptor.Create(EQ12);
+                    		adaptor.AddChild(root_0, EQ12_tree);
 
-                    	PushFollow(FOLLOW_string_lit_in_element196);
+                    	PushFollow(FOLLOW_string_lit_in_element227);
                     	s1 = string_lit();
                     	state.followingStackPointer--;
 
@@ -596,15 +752,15 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                     }
                     break;
                 case 10 :
-                    // StringFilter.g:31:5: ARROW s1= string_lit
+                    // StringFilter.g:36:5: ARROW s1= string_lit
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	ARROW11=(IToken)Match(input,ARROW,FOLLOW_ARROW_in_element205); 
-                    		ARROW11_tree = (object)adaptor.Create(ARROW11);
-                    		adaptor.AddChild(root_0, ARROW11_tree);
+                    	ARROW13=(IToken)Match(input,ARROW,FOLLOW_ARROW_in_element236); 
+                    		ARROW13_tree = (object)adaptor.Create(ARROW13);
+                    		adaptor.AddChild(root_0, ARROW13_tree);
 
-                    	PushFollow(FOLLOW_string_lit_in_element209);
+                    	PushFollow(FOLLOW_string_lit_in_element240);
                     	s1 = string_lit();
                     	state.followingStackPointer--;
 
@@ -614,15 +770,15 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                     }
                     break;
                 case 11 :
-                    // StringFilter.g:32:5: NARROW s1= string_lit
+                    // StringFilter.g:37:5: NARROW s1= string_lit
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	NARROW12=(IToken)Match(input,NARROW,FOLLOW_NARROW_in_element218); 
-                    		NARROW12_tree = (object)adaptor.Create(NARROW12);
-                    		adaptor.AddChild(root_0, NARROW12_tree);
+                    	NARROW14=(IToken)Match(input,NARROW,FOLLOW_NARROW_in_element249); 
+                    		NARROW14_tree = (object)adaptor.Create(NARROW14);
+                    		adaptor.AddChild(root_0, NARROW14_tree);
 
-                    	PushFollow(FOLLOW_string_lit_in_element222);
+                    	PushFollow(FOLLOW_string_lit_in_element253);
                     	s1 = string_lit();
                     	state.followingStackPointer--;
 
@@ -632,15 +788,15 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                     }
                     break;
                 case 12 :
-                    // StringFilter.g:33:5: DOLLAR s1= string_lit
+                    // StringFilter.g:38:5: DOLLAR s1= string_lit
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	DOLLAR13=(IToken)Match(input,DOLLAR,FOLLOW_DOLLAR_in_element231); 
-                    		DOLLAR13_tree = (object)adaptor.Create(DOLLAR13);
-                    		adaptor.AddChild(root_0, DOLLAR13_tree);
+                    	DOLLAR15=(IToken)Match(input,DOLLAR,FOLLOW_DOLLAR_in_element262); 
+                    		DOLLAR15_tree = (object)adaptor.Create(DOLLAR15);
+                    		adaptor.AddChild(root_0, DOLLAR15_tree);
 
-                    	PushFollow(FOLLOW_string_lit_in_element235);
+                    	PushFollow(FOLLOW_string_lit_in_element266);
                     	s1 = string_lit();
                     	state.followingStackPointer--;
 
@@ -650,15 +806,15 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                     }
                     break;
                 case 13 :
-                    // StringFilter.g:34:5: NDOLLAR s1= string_lit
+                    // StringFilter.g:39:5: NDOLLAR s1= string_lit
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	NDOLLAR14=(IToken)Match(input,NDOLLAR,FOLLOW_NDOLLAR_in_element244); 
-                    		NDOLLAR14_tree = (object)adaptor.Create(NDOLLAR14);
-                    		adaptor.AddChild(root_0, NDOLLAR14_tree);
+                    	NDOLLAR16=(IToken)Match(input,NDOLLAR,FOLLOW_NDOLLAR_in_element275); 
+                    		NDOLLAR16_tree = (object)adaptor.Create(NDOLLAR16);
+                    		adaptor.AddChild(root_0, NDOLLAR16_tree);
 
-                    	PushFollow(FOLLOW_string_lit_in_element248);
+                    	PushFollow(FOLLOW_string_lit_in_element279);
                     	s1 = string_lit();
                     	state.followingStackPointer--;
 
@@ -668,205 +824,205 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                     }
                     break;
                 case 14 :
-                    // StringFilter.g:35:5: T_NULL
+                    // StringFilter.g:40:5: T_NULL
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	T_NULL15=(IToken)Match(input,T_NULL,FOLLOW_T_NULL_in_element257); 
-                    		T_NULL15_tree = (object)adaptor.Create(T_NULL15);
-                    		adaptor.AddChild(root_0, T_NULL15_tree);
+                    	T_NULL17=(IToken)Match(input,T_NULL,FOLLOW_T_NULL_in_element288); 
+                    		T_NULL17_tree = (object)adaptor.Create(T_NULL17);
+                    		adaptor.AddChild(root_0, T_NULL17_tree);
 
                     	 AddIsNullCondition(); 
 
                     }
                     break;
                 case 15 :
-                    // StringFilter.g:36:5: T_NOT T_NULL
+                    // StringFilter.g:41:5: T_NOT T_NULL
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	T_NOT16=(IToken)Match(input,T_NOT,FOLLOW_T_NOT_in_element265); 
-                    		T_NOT16_tree = (object)adaptor.Create(T_NOT16);
-                    		adaptor.AddChild(root_0, T_NOT16_tree);
+                    	T_NOT18=(IToken)Match(input,T_NOT,FOLLOW_T_NOT_in_element296); 
+                    		T_NOT18_tree = (object)adaptor.Create(T_NOT18);
+                    		adaptor.AddChild(root_0, T_NOT18_tree);
 
-                    	T_NULL17=(IToken)Match(input,T_NULL,FOLLOW_T_NULL_in_element267); 
-                    		T_NULL17_tree = (object)adaptor.Create(T_NULL17);
-                    		adaptor.AddChild(root_0, T_NULL17_tree);
+                    	T_NULL19=(IToken)Match(input,T_NULL,FOLLOW_T_NULL_in_element298); 
+                    		T_NULL19_tree = (object)adaptor.Create(T_NULL19);
+                    		adaptor.AddChild(root_0, T_NULL19_tree);
 
                     	 AddIsNotNullCondition(); 
 
                     }
                     break;
                 case 16 :
-                    // StringFilter.g:37:5: T_EMPTY
+                    // StringFilter.g:42:5: T_EMPTY
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	T_EMPTY18=(IToken)Match(input,T_EMPTY,FOLLOW_T_EMPTY_in_element275); 
-                    		T_EMPTY18_tree = (object)adaptor.Create(T_EMPTY18);
-                    		adaptor.AddChild(root_0, T_EMPTY18_tree);
+                    	T_EMPTY20=(IToken)Match(input,T_EMPTY,FOLLOW_T_EMPTY_in_element306); 
+                    		T_EMPTY20_tree = (object)adaptor.Create(T_EMPTY20);
+                    		adaptor.AddChild(root_0, T_EMPTY20_tree);
 
                     	 AddIsEmptyCondition(); 
 
                     }
                     break;
                 case 17 :
-                    // StringFilter.g:38:5: T_NOT T_EMPTY
+                    // StringFilter.g:43:5: T_NOT T_EMPTY
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	T_NOT19=(IToken)Match(input,T_NOT,FOLLOW_T_NOT_in_element283); 
-                    		T_NOT19_tree = (object)adaptor.Create(T_NOT19);
-                    		adaptor.AddChild(root_0, T_NOT19_tree);
+                    	T_NOT21=(IToken)Match(input,T_NOT,FOLLOW_T_NOT_in_element314); 
+                    		T_NOT21_tree = (object)adaptor.Create(T_NOT21);
+                    		adaptor.AddChild(root_0, T_NOT21_tree);
 
-                    	T_EMPTY20=(IToken)Match(input,T_EMPTY,FOLLOW_T_EMPTY_in_element285); 
-                    		T_EMPTY20_tree = (object)adaptor.Create(T_EMPTY20);
-                    		adaptor.AddChild(root_0, T_EMPTY20_tree);
+                    	T_EMPTY22=(IToken)Match(input,T_EMPTY,FOLLOW_T_EMPTY_in_element316); 
+                    		T_EMPTY22_tree = (object)adaptor.Create(T_EMPTY22);
+                    		adaptor.AddChild(root_0, T_EMPTY22_tree);
 
                     	 AddIsNotEmptyCondition(); 
 
                     }
                     break;
                 case 18 :
-                    // StringFilter.g:40:5: LT sql_name
+                    // StringFilter.g:45:5: LT sql_name
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	LT21=(IToken)Match(input,LT,FOLLOW_LT_in_element296); 
-                    		LT21_tree = (object)adaptor.Create(LT21);
-                    		adaptor.AddChild(root_0, LT21_tree);
+                    	LT23=(IToken)Match(input,LT,FOLLOW_LT_in_element327); 
+                    		LT23_tree = (object)adaptor.Create(LT23);
+                    		adaptor.AddChild(root_0, LT23_tree);
 
-                    	PushFollow(FOLLOW_sql_name_in_element298);
-                    	sql_name22 = sql_name();
+                    	PushFollow(FOLLOW_sql_name_in_element329);
+                    	sql_name24 = sql_name();
                     	state.followingStackPointer--;
 
-                    	adaptor.AddChild(root_0, sql_name22.Tree);
+                    	adaptor.AddChild(root_0, sql_name24.Tree);
                     	 AddSqlLiteralRelation(Pop<string>(), "<"); 
 
                     }
                     break;
                 case 19 :
-                    // StringFilter.g:41:5: GT sql_name
+                    // StringFilter.g:46:5: GT sql_name
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	GT23=(IToken)Match(input,GT,FOLLOW_GT_in_element307); 
-                    		GT23_tree = (object)adaptor.Create(GT23);
-                    		adaptor.AddChild(root_0, GT23_tree);
+                    	GT25=(IToken)Match(input,GT,FOLLOW_GT_in_element338); 
+                    		GT25_tree = (object)adaptor.Create(GT25);
+                    		adaptor.AddChild(root_0, GT25_tree);
 
-                    	PushFollow(FOLLOW_sql_name_in_element309);
-                    	sql_name24 = sql_name();
+                    	PushFollow(FOLLOW_sql_name_in_element340);
+                    	sql_name26 = sql_name();
                     	state.followingStackPointer--;
 
-                    	adaptor.AddChild(root_0, sql_name24.Tree);
+                    	adaptor.AddChild(root_0, sql_name26.Tree);
                     	 AddSqlLiteralRelation(Pop<string>(), ">"); 
 
                     }
                     break;
                 case 20 :
-                    // StringFilter.g:42:5: LE sql_name
+                    // StringFilter.g:47:5: LE sql_name
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	LE25=(IToken)Match(input,LE,FOLLOW_LE_in_element318); 
-                    		LE25_tree = (object)adaptor.Create(LE25);
-                    		adaptor.AddChild(root_0, LE25_tree);
+                    	LE27=(IToken)Match(input,LE,FOLLOW_LE_in_element349); 
+                    		LE27_tree = (object)adaptor.Create(LE27);
+                    		adaptor.AddChild(root_0, LE27_tree);
 
-                    	PushFollow(FOLLOW_sql_name_in_element320);
-                    	sql_name26 = sql_name();
+                    	PushFollow(FOLLOW_sql_name_in_element351);
+                    	sql_name28 = sql_name();
                     	state.followingStackPointer--;
 
-                    	adaptor.AddChild(root_0, sql_name26.Tree);
+                    	adaptor.AddChild(root_0, sql_name28.Tree);
                     	 AddSqlLiteralRelation(Pop<string>(), "<="); 
 
                     }
                     break;
                 case 21 :
-                    // StringFilter.g:43:5: GE sql_name
+                    // StringFilter.g:48:5: GE sql_name
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	GE27=(IToken)Match(input,GE,FOLLOW_GE_in_element329); 
-                    		GE27_tree = (object)adaptor.Create(GE27);
-                    		adaptor.AddChild(root_0, GE27_tree);
+                    	GE29=(IToken)Match(input,GE,FOLLOW_GE_in_element360); 
+                    		GE29_tree = (object)adaptor.Create(GE29);
+                    		adaptor.AddChild(root_0, GE29_tree);
 
-                    	PushFollow(FOLLOW_sql_name_in_element331);
-                    	sql_name28 = sql_name();
+                    	PushFollow(FOLLOW_sql_name_in_element362);
+                    	sql_name30 = sql_name();
                     	state.followingStackPointer--;
 
-                    	adaptor.AddChild(root_0, sql_name28.Tree);
+                    	adaptor.AddChild(root_0, sql_name30.Tree);
                     	 AddSqlLiteralRelation(Pop<string>(), ">="); 
 
                     }
                     break;
                 case 22 :
-                    // StringFilter.g:44:5: NE sql_name
+                    // StringFilter.g:49:5: NE sql_name
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	NE29=(IToken)Match(input,NE,FOLLOW_NE_in_element340); 
-                    		NE29_tree = (object)adaptor.Create(NE29);
-                    		adaptor.AddChild(root_0, NE29_tree);
+                    	NE31=(IToken)Match(input,NE,FOLLOW_NE_in_element371); 
+                    		NE31_tree = (object)adaptor.Create(NE31);
+                    		adaptor.AddChild(root_0, NE31_tree);
 
-                    	PushFollow(FOLLOW_sql_name_in_element342);
-                    	sql_name30 = sql_name();
+                    	PushFollow(FOLLOW_sql_name_in_element373);
+                    	sql_name32 = sql_name();
                     	state.followingStackPointer--;
 
-                    	adaptor.AddChild(root_0, sql_name30.Tree);
+                    	adaptor.AddChild(root_0, sql_name32.Tree);
                     	 AddSqlLiteralRelation(Pop<string>(), "<>"); 
 
                     }
                     break;
                 case 23 :
-                    // StringFilter.g:45:5: EQ sql_name
+                    // StringFilter.g:50:5: EQ sql_name
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	EQ31=(IToken)Match(input,EQ,FOLLOW_EQ_in_element351); 
-                    		EQ31_tree = (object)adaptor.Create(EQ31);
-                    		adaptor.AddChild(root_0, EQ31_tree);
+                    	EQ33=(IToken)Match(input,EQ,FOLLOW_EQ_in_element382); 
+                    		EQ33_tree = (object)adaptor.Create(EQ33);
+                    		adaptor.AddChild(root_0, EQ33_tree);
 
-                    	PushFollow(FOLLOW_sql_name_in_element353);
-                    	sql_name32 = sql_name();
+                    	PushFollow(FOLLOW_sql_name_in_element384);
+                    	sql_name34 = sql_name();
                     	state.followingStackPointer--;
 
-                    	adaptor.AddChild(root_0, sql_name32.Tree);
+                    	adaptor.AddChild(root_0, sql_name34.Tree);
                     	 AddSqlLiteralRelation(Pop<string>(), "="); 
 
                     }
                     break;
                 case 24 :
-                    // StringFilter.g:46:5: EQ2 sql_name
+                    // StringFilter.g:51:5: EQ2 sql_name
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	EQ233=(IToken)Match(input,EQ2,FOLLOW_EQ2_in_element361); 
-                    		EQ233_tree = (object)adaptor.Create(EQ233);
-                    		adaptor.AddChild(root_0, EQ233_tree);
+                    	EQ235=(IToken)Match(input,EQ2,FOLLOW_EQ2_in_element392); 
+                    		EQ235_tree = (object)adaptor.Create(EQ235);
+                    		adaptor.AddChild(root_0, EQ235_tree);
 
-                    	PushFollow(FOLLOW_sql_name_in_element363);
-                    	sql_name34 = sql_name();
+                    	PushFollow(FOLLOW_sql_name_in_element394);
+                    	sql_name36 = sql_name();
                     	state.followingStackPointer--;
 
-                    	adaptor.AddChild(root_0, sql_name34.Tree);
+                    	adaptor.AddChild(root_0, sql_name36.Tree);
                     	 AddSqlLiteralRelationWithNullTest_EQ(Pop<string>()); 
 
                     }
                     break;
                 case 25 :
-                    // StringFilter.g:47:5: NE2 sql_name
+                    // StringFilter.g:52:5: NE2 sql_name
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	NE235=(IToken)Match(input,NE2,FOLLOW_NE2_in_element372); 
-                    		NE235_tree = (object)adaptor.Create(NE235);
-                    		adaptor.AddChild(root_0, NE235_tree);
+                    	NE237=(IToken)Match(input,NE2,FOLLOW_NE2_in_element403); 
+                    		NE237_tree = (object)adaptor.Create(NE237);
+                    		adaptor.AddChild(root_0, NE237_tree);
 
-                    	PushFollow(FOLLOW_sql_name_in_element374);
-                    	sql_name36 = sql_name();
+                    	PushFollow(FOLLOW_sql_name_in_element405);
+                    	sql_name38 = sql_name();
                     	state.followingStackPointer--;
 
-                    	adaptor.AddChild(root_0, sql_name36.Tree);
+                    	adaptor.AddChild(root_0, sql_name38.Tree);
                     	 AddSqlLiteralRelationWithNullTest_NE(Pop<string>()); 
 
                     }
@@ -904,7 +1060,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
     };
 
     // $ANTLR start "factor"
-    // StringFilter.g:50:1: factor : ( element )+ ;
+    // StringFilter.g:55:1: factor : ( element )+ ;
     public StringFilterParser.factor_return factor() // throws RecognitionException [1]
     {   
         StringFilterParser.factor_return retval = new StringFilterParser.factor_return();
@@ -912,55 +1068,55 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
 
         object root_0 = null;
 
-        StringFilterParser.element_return element37 = default(StringFilterParser.element_return);
+        StringFilterParser.element_return element39 = default(StringFilterParser.element_return);
 
 
 
         try 
     	{
-            // StringFilter.g:50:7: ( ( element )+ )
-            // StringFilter.g:51:3: ( element )+
+            // StringFilter.g:55:7: ( ( element )+ )
+            // StringFilter.g:56:3: ( element )+
             {
             	root_0 = (object)adaptor.GetNilNode();
 
-            	// StringFilter.g:51:3: ( element )+
-            	int cnt3 = 0;
+            	// StringFilter.g:56:3: ( element )+
+            	int cnt4 = 0;
             	do 
             	{
-            	    int alt3 = 2;
-            	    int LA3_0 = input.LA(1);
+            	    int alt4 = 2;
+            	    int LA4_0 = input.LA(1);
 
-            	    if ( ((LA3_0 >= Q_STRING && LA3_0 <= I_STRING) || (LA3_0 >= PLUS && LA3_0 <= NE2)) )
+            	    if ( ((LA4_0 >= Q_STRING && LA4_0 <= I_STRING) || (LA4_0 >= PLUS && LA4_0 <= NE2)) )
             	    {
-            	        alt3 = 1;
+            	        alt4 = 1;
             	    }
 
 
-            	    switch (alt3) 
+            	    switch (alt4) 
             		{
             			case 1 :
-            			    // StringFilter.g:51:3: element
+            			    // StringFilter.g:56:3: element
             			    {
-            			    	PushFollow(FOLLOW_element_in_factor389);
-            			    	element37 = element();
+            			    	PushFollow(FOLLOW_element_in_factor420);
+            			    	element39 = element();
             			    	state.followingStackPointer--;
 
-            			    	adaptor.AddChild(root_0, element37.Tree);
+            			    	adaptor.AddChild(root_0, element39.Tree);
 
             			    }
             			    break;
 
             			default:
-            			    if ( cnt3 >= 1 ) goto loop3;
-            		            EarlyExitException eee3 =
-            		                new EarlyExitException(3, input);
-            		            throw eee3;
+            			    if ( cnt4 >= 1 ) goto loop4;
+            		            EarlyExitException eee4 =
+            		                new EarlyExitException(4, input);
+            		            throw eee4;
             	    }
-            	    cnt3++;
+            	    cnt4++;
             	} while (true);
 
-            	loop3:
-            		;	// Stops C# compiler whining that label 'loop3' has no statements
+            	loop4:
+            		;	// Stops C# compiler whining that label 'loop4' has no statements
 
 
             }
@@ -996,7 +1152,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
     };
 
     // $ANTLR start "list"
-    // StringFilter.g:53:1: list : factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )* ;
+    // StringFilter.g:58:1: list : factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )* ;
     public StringFilterParser.list_return list() // throws RecognitionException [1]
     {   
         StringFilterParser.list_return retval = new StringFilterParser.list_return();
@@ -1004,114 +1160,114 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
 
         object root_0 = null;
 
-        IToken COMMA39 = null;
-        IToken ENDLINE40 = null;
+        IToken COMMA41 = null;
         IToken ENDLINE42 = null;
-        StringFilterParser.factor_return factor38 = default(StringFilterParser.factor_return);
+        IToken ENDLINE44 = null;
+        StringFilterParser.factor_return factor40 = default(StringFilterParser.factor_return);
 
-        StringFilterParser.factor_return factor41 = default(StringFilterParser.factor_return);
+        StringFilterParser.factor_return factor43 = default(StringFilterParser.factor_return);
 
 
-        object COMMA39_tree=null;
-        object ENDLINE40_tree=null;
+        object COMMA41_tree=null;
         object ENDLINE42_tree=null;
+        object ENDLINE44_tree=null;
 
         try 
     	{
-            // StringFilter.g:53:5: ( factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )* )
-            // StringFilter.g:54:3: factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )*
+            // StringFilter.g:58:5: ( factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )* )
+            // StringFilter.g:59:3: factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )*
             {
             	root_0 = (object)adaptor.GetNilNode();
 
-            	PushFollow(FOLLOW_factor_in_list400);
-            	factor38 = factor();
+            	PushFollow(FOLLOW_factor_in_list431);
+            	factor40 = factor();
             	state.followingStackPointer--;
 
-            	adaptor.AddChild(root_0, factor38.Tree);
-            	// StringFilter.g:54:10: ( ( COMMA | ( ( ENDLINE )+ ) ) factor )*
+            	adaptor.AddChild(root_0, factor40.Tree);
+            	// StringFilter.g:59:10: ( ( COMMA | ( ( ENDLINE )+ ) ) factor )*
             	do 
             	{
-            	    int alt6 = 2;
-            	    alt6 = dfa6.Predict(input);
-            	    switch (alt6) 
+            	    int alt7 = 2;
+            	    alt7 = dfa7.Predict(input);
+            	    switch (alt7) 
             		{
             			case 1 :
-            			    // StringFilter.g:54:12: ( COMMA | ( ( ENDLINE )+ ) ) factor
+            			    // StringFilter.g:59:12: ( COMMA | ( ( ENDLINE )+ ) ) factor
             			    {
-            			    	// StringFilter.g:54:12: ( COMMA | ( ( ENDLINE )+ ) )
-            			    	int alt5 = 2;
-            			    	int LA5_0 = input.LA(1);
+            			    	// StringFilter.g:59:12: ( COMMA | ( ( ENDLINE )+ ) )
+            			    	int alt6 = 2;
+            			    	int LA6_0 = input.LA(1);
 
-            			    	if ( (LA5_0 == COMMA) )
+            			    	if ( (LA6_0 == COMMA) )
             			    	{
-            			    	    alt5 = 1;
+            			    	    alt6 = 1;
             			    	}
-            			    	else if ( (LA5_0 == ENDLINE) )
+            			    	else if ( (LA6_0 == ENDLINE) )
             			    	{
-            			    	    alt5 = 2;
+            			    	    alt6 = 2;
             			    	}
             			    	else 
             			    	{
-            			    	    NoViableAltException nvae_d5s0 =
-            			    	        new NoViableAltException("", 5, 0, input);
+            			    	    NoViableAltException nvae_d6s0 =
+            			    	        new NoViableAltException("", 6, 0, input);
 
-            			    	    throw nvae_d5s0;
+            			    	    throw nvae_d6s0;
             			    	}
-            			    	switch (alt5) 
+            			    	switch (alt6) 
             			    	{
             			    	    case 1 :
-            			    	        // StringFilter.g:54:13: COMMA
+            			    	        // StringFilter.g:59:13: COMMA
             			    	        {
-            			    	        	COMMA39=(IToken)Match(input,COMMA,FOLLOW_COMMA_in_list405); 
-            			    	        		COMMA39_tree = (object)adaptor.Create(COMMA39);
-            			    	        		adaptor.AddChild(root_0, COMMA39_tree);
+            			    	        	COMMA41=(IToken)Match(input,COMMA,FOLLOW_COMMA_in_list436); 
+            			    	        		COMMA41_tree = (object)adaptor.Create(COMMA41);
+            			    	        		adaptor.AddChild(root_0, COMMA41_tree);
 
 
             			    	        }
             			    	        break;
             			    	    case 2 :
-            			    	        // StringFilter.g:54:21: ( ( ENDLINE )+ )
+            			    	        // StringFilter.g:59:21: ( ( ENDLINE )+ )
             			    	        {
-            			    	        	// StringFilter.g:54:21: ( ( ENDLINE )+ )
-            			    	        	// StringFilter.g:54:22: ( ENDLINE )+
+            			    	        	// StringFilter.g:59:21: ( ( ENDLINE )+ )
+            			    	        	// StringFilter.g:59:22: ( ENDLINE )+
             			    	        	{
-            			    	        		// StringFilter.g:54:22: ( ENDLINE )+
-            			    	        		int cnt4 = 0;
+            			    	        		// StringFilter.g:59:22: ( ENDLINE )+
+            			    	        		int cnt5 = 0;
             			    	        		do 
             			    	        		{
-            			    	        		    int alt4 = 2;
-            			    	        		    int LA4_0 = input.LA(1);
+            			    	        		    int alt5 = 2;
+            			    	        		    int LA5_0 = input.LA(1);
 
-            			    	        		    if ( (LA4_0 == ENDLINE) )
+            			    	        		    if ( (LA5_0 == ENDLINE) )
             			    	        		    {
-            			    	        		        alt4 = 1;
+            			    	        		        alt5 = 1;
             			    	        		    }
 
 
-            			    	        		    switch (alt4) 
+            			    	        		    switch (alt5) 
             			    	        			{
             			    	        				case 1 :
-            			    	        				    // StringFilter.g:54:22: ENDLINE
+            			    	        				    // StringFilter.g:59:22: ENDLINE
             			    	        				    {
-            			    	        				    	ENDLINE40=(IToken)Match(input,ENDLINE,FOLLOW_ENDLINE_in_list410); 
-            			    	        				    		ENDLINE40_tree = (object)adaptor.Create(ENDLINE40);
-            			    	        				    		adaptor.AddChild(root_0, ENDLINE40_tree);
+            			    	        				    	ENDLINE42=(IToken)Match(input,ENDLINE,FOLLOW_ENDLINE_in_list441); 
+            			    	        				    		ENDLINE42_tree = (object)adaptor.Create(ENDLINE42);
+            			    	        				    		adaptor.AddChild(root_0, ENDLINE42_tree);
 
 
             			    	        				    }
             			    	        				    break;
 
             			    	        				default:
-            			    	        				    if ( cnt4 >= 1 ) goto loop4;
-            			    	        			            EarlyExitException eee4 =
-            			    	        			                new EarlyExitException(4, input);
-            			    	        			            throw eee4;
+            			    	        				    if ( cnt5 >= 1 ) goto loop5;
+            			    	        			            EarlyExitException eee5 =
+            			    	        			                new EarlyExitException(5, input);
+            			    	        			            throw eee5;
             			    	        		    }
-            			    	        		    cnt4++;
+            			    	        		    cnt5++;
             			    	        		} while (true);
 
-            			    	        		loop4:
-            			    	        			;	// Stops C# compiler whining that label 'loop4' has no statements
+            			    	        		loop5:
+            			    	        			;	// Stops C# compiler whining that label 'loop5' has no statements
 
 
             			    	        	}
@@ -1123,44 +1279,11 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
             			    	}
 
             			    	 AddAndCondition(); 
-            			    	PushFollow(FOLLOW_factor_in_list417);
-            			    	factor41 = factor();
+            			    	PushFollow(FOLLOW_factor_in_list448);
+            			    	factor43 = factor();
             			    	state.followingStackPointer--;
 
-            			    	adaptor.AddChild(root_0, factor41.Tree);
-
-            			    }
-            			    break;
-
-            			default:
-            			    goto loop6;
-            	    }
-            	} while (true);
-
-            	loop6:
-            		;	// Stops C# compiler whining that label 'loop6' has no statements
-
-            	// StringFilter.g:54:67: ( ENDLINE )*
-            	do 
-            	{
-            	    int alt7 = 2;
-            	    int LA7_0 = input.LA(1);
-
-            	    if ( (LA7_0 == ENDLINE) )
-            	    {
-            	        alt7 = 1;
-            	    }
-
-
-            	    switch (alt7) 
-            		{
-            			case 1 :
-            			    // StringFilter.g:54:67: ENDLINE
-            			    {
-            			    	ENDLINE42=(IToken)Match(input,ENDLINE,FOLLOW_ENDLINE_in_list423); 
-            			    		ENDLINE42_tree = (object)adaptor.Create(ENDLINE42);
-            			    		adaptor.AddChild(root_0, ENDLINE42_tree);
-
+            			    	adaptor.AddChild(root_0, factor43.Tree);
 
             			    }
             			    break;
@@ -1172,6 +1295,39 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
 
             	loop7:
             		;	// Stops C# compiler whining that label 'loop7' has no statements
+
+            	// StringFilter.g:59:67: ( ENDLINE )*
+            	do 
+            	{
+            	    int alt8 = 2;
+            	    int LA8_0 = input.LA(1);
+
+            	    if ( (LA8_0 == ENDLINE) )
+            	    {
+            	        alt8 = 1;
+            	    }
+
+
+            	    switch (alt8) 
+            		{
+            			case 1 :
+            			    // StringFilter.g:59:67: ENDLINE
+            			    {
+            			    	ENDLINE44=(IToken)Match(input,ENDLINE,FOLLOW_ENDLINE_in_list454); 
+            			    		ENDLINE44_tree = (object)adaptor.Create(ENDLINE44);
+            			    		adaptor.AddChild(root_0, ENDLINE44_tree);
+
+
+            			    }
+            			    break;
+
+            			default:
+            			    goto loop8;
+            	    }
+            	} while (true);
+
+            	loop8:
+            		;	// Stops C# compiler whining that label 'loop8' has no statements
 
 
             }
@@ -1207,7 +1363,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
     };
 
     // $ANTLR start "expr"
-    // StringFilter.g:56:1: expr : list ;
+    // StringFilter.g:61:1: expr : list ;
     public StringFilterParser.expr_return expr() // throws RecognitionException [1]
     {   
         StringFilterParser.expr_return retval = new StringFilterParser.expr_return();
@@ -1215,22 +1371,22 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
 
         object root_0 = null;
 
-        StringFilterParser.list_return list43 = default(StringFilterParser.list_return);
+        StringFilterParser.list_return list45 = default(StringFilterParser.list_return);
 
 
 
         try 
     	{
-            // StringFilter.g:56:5: ( list )
-            // StringFilter.g:56:7: list
+            // StringFilter.g:61:5: ( list )
+            // StringFilter.g:61:7: list
             {
             	root_0 = (object)adaptor.GetNilNode();
 
-            	PushFollow(FOLLOW_list_in_expr433);
-            	list43 = list();
+            	PushFollow(FOLLOW_list_in_expr464);
+            	list45 = list();
             	state.followingStackPointer--;
 
-            	adaptor.AddChild(root_0, list43.Tree);
+            	adaptor.AddChild(root_0, list45.Tree);
 
             }
 
@@ -1257,42 +1413,42 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
     // Delegated rules
 
 
-   	protected DFA2 dfa2;
-   	protected DFA6 dfa6;
+   	protected DFA3 dfa3;
+   	protected DFA7 dfa7;
 	private void InitializeCyclicDFAs()
 	{
-    	this.dfa2 = new DFA2(this);
-    	this.dfa6 = new DFA6(this);
+    	this.dfa3 = new DFA3(this);
+    	this.dfa7 = new DFA7(this);
 	}
 
-    const string DFA2_eotS =
+    const string DFA3_eotS =
         "\x21\uffff";
-    const string DFA2_eofS =
+    const string DFA3_eofS =
         "\x21\uffff";
-    const string DFA2_minS =
-        "\x01\x04\x03\uffff\x06\x04\x05\uffff\x01\x15\x11\uffff";
-    const string DFA2_maxS =
-        "\x01\x19\x03\uffff\x06\x07\x05\uffff\x01\x17\x11\uffff";
-    const string DFA2_acceptS =
+    const string DFA3_minS =
+        "\x01\x04\x03\uffff\x06\x04\x05\uffff\x01\x16\x11\uffff";
+    const string DFA3_maxS =
+        "\x01\x1a\x03\uffff\x06\x09\x05\uffff\x01\x18\x11\uffff";
+    const string DFA3_acceptS =
         "\x01\uffff\x01\x01\x01\x02\x01\x03\x06\uffff\x01\x0a\x01\x0b\x01"+
-        "\x0c\x01\x0d\x01\x0e\x01\uffff\x01\x10\x01\x18\x01\x19\x01\x12\x01"+
-        "\x04\x01\x05\x01\x13\x01\x06\x01\x14\x01\x07\x01\x15\x01\x08\x01"+
-        "\x16\x01\x09\x01\x17\x01\x0f\x01\x11";
-    const string DFA2_specialS =
+        "\x0c\x01\x0d\x01\x0e\x01\uffff\x01\x10\x01\x18\x01\x19\x01\x04\x01"+
+        "\x12\x01\x05\x01\x13\x01\x06\x01\x14\x01\x07\x01\x15\x01\x16\x01"+
+        "\x08\x01\x17\x01\x09\x01\x0f\x01\x11";
+    const string DFA3_specialS =
         "\x21\uffff}>";
-    static readonly string[] DFA2_transitionS = {
-            "\x03\x01\x02\uffff\x01\x02\x01\x03\x01\x04\x01\x05\x01\x06"+
+    static readonly string[] DFA3_transitionS = {
+            "\x03\x01\x03\uffff\x01\x02\x01\x03\x01\x04\x01\x05\x01\x06"+
             "\x01\x07\x01\x08\x01\x09\x01\x0a\x01\x0b\x01\x0c\x01\x0d\x01"+
             "\x0e\x01\x0f\x01\x10\x01\x11\x01\x12",
             "",
             "",
             "",
-            "\x03\x14\x01\x13",
-            "\x03\x15\x01\x16",
-            "\x03\x17\x01\x18",
-            "\x03\x19\x01\x1a",
-            "\x03\x1b\x01\x1c",
-            "\x03\x1d\x01\x1e",
+            "\x03\x13\x01\x14\x01\uffff\x01\x14",
+            "\x03\x15\x01\x16\x01\uffff\x01\x16",
+            "\x03\x17\x01\x18\x01\uffff\x01\x18",
+            "\x03\x19\x01\x1a\x01\uffff\x01\x1a",
+            "\x03\x1c\x01\x1b\x01\uffff\x01\x1b",
+            "\x03\x1e\x01\x1d\x01\uffff\x01\x1d",
             "",
             "",
             "",
@@ -1318,83 +1474,83 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
             ""
     };
 
-    static readonly short[] DFA2_eot = DFA.UnpackEncodedString(DFA2_eotS);
-    static readonly short[] DFA2_eof = DFA.UnpackEncodedString(DFA2_eofS);
-    static readonly char[] DFA2_min = DFA.UnpackEncodedStringToUnsignedChars(DFA2_minS);
-    static readonly char[] DFA2_max = DFA.UnpackEncodedStringToUnsignedChars(DFA2_maxS);
-    static readonly short[] DFA2_accept = DFA.UnpackEncodedString(DFA2_acceptS);
-    static readonly short[] DFA2_special = DFA.UnpackEncodedString(DFA2_specialS);
-    static readonly short[][] DFA2_transition = DFA.UnpackEncodedStringArray(DFA2_transitionS);
+    static readonly short[] DFA3_eot = DFA.UnpackEncodedString(DFA3_eotS);
+    static readonly short[] DFA3_eof = DFA.UnpackEncodedString(DFA3_eofS);
+    static readonly char[] DFA3_min = DFA.UnpackEncodedStringToUnsignedChars(DFA3_minS);
+    static readonly char[] DFA3_max = DFA.UnpackEncodedStringToUnsignedChars(DFA3_maxS);
+    static readonly short[] DFA3_accept = DFA.UnpackEncodedString(DFA3_acceptS);
+    static readonly short[] DFA3_special = DFA.UnpackEncodedString(DFA3_specialS);
+    static readonly short[][] DFA3_transition = DFA.UnpackEncodedStringArray(DFA3_transitionS);
 
-    protected class DFA2 : DFA
+    protected class DFA3 : DFA
     {
-        public DFA2(BaseRecognizer recognizer)
+        public DFA3(BaseRecognizer recognizer)
         {
             this.recognizer = recognizer;
-            this.decisionNumber = 2;
-            this.eot = DFA2_eot;
-            this.eof = DFA2_eof;
-            this.min = DFA2_min;
-            this.max = DFA2_max;
-            this.accept = DFA2_accept;
-            this.special = DFA2_special;
-            this.transition = DFA2_transition;
+            this.decisionNumber = 3;
+            this.eot = DFA3_eot;
+            this.eof = DFA3_eof;
+            this.min = DFA3_min;
+            this.max = DFA3_max;
+            this.accept = DFA3_accept;
+            this.special = DFA3_special;
+            this.transition = DFA3_transition;
 
         }
 
         override public string Description
         {
-            get { return "21:1: element : (s1= string_lit | PLUS s1= string_lit | MINUS s1= string_lit | LT s1= string_lit | GT s1= string_lit | LE s1= string_lit | GE s1= string_lit | NE s1= string_lit | EQ s1= string_lit | ARROW s1= string_lit | NARROW s1= string_lit | DOLLAR s1= string_lit | NDOLLAR s1= string_lit | T_NULL | T_NOT T_NULL | T_EMPTY | T_NOT T_EMPTY | LT sql_name | GT sql_name | LE sql_name | GE sql_name | NE sql_name | EQ sql_name | EQ2 sql_name | NE2 sql_name );"; }
+            get { return "26:1: element : (s1= string_lit | PLUS s1= string_lit | MINUS s1= string_lit | LT s1= string_lit | GT s1= string_lit | LE s1= string_lit | GE s1= string_lit | NE s1= string_lit | EQ s1= string_lit | ARROW s1= string_lit | NARROW s1= string_lit | DOLLAR s1= string_lit | NDOLLAR s1= string_lit | T_NULL | T_NOT T_NULL | T_EMPTY | T_NOT T_EMPTY | LT sql_name | GT sql_name | LE sql_name | GE sql_name | NE sql_name | EQ sql_name | EQ2 sql_name | NE2 sql_name );"; }
         }
 
     }
 
-    const string DFA6_eotS =
+    const string DFA7_eotS =
         "\x04\uffff";
-    const string DFA6_eofS =
+    const string DFA7_eofS =
         "\x02\x02\x02\uffff";
-    const string DFA6_minS =
-        "\x01\x1a\x01\x04\x02\uffff";
-    const string DFA6_maxS =
-        "\x02\x1b\x02\uffff";
-    const string DFA6_acceptS =
+    const string DFA7_minS =
+        "\x01\x1b\x01\x04\x02\uffff";
+    const string DFA7_maxS =
+        "\x02\x1c\x02\uffff";
+    const string DFA7_acceptS =
         "\x02\uffff\x01\x02\x01\x01";
-    const string DFA6_specialS =
+    const string DFA7_specialS =
         "\x04\uffff}>";
-    static readonly string[] DFA6_transitionS = {
+    static readonly string[] DFA7_transitionS = {
             "\x01\x03\x01\x01",
-            "\x03\x03\x02\uffff\x11\x03\x01\uffff\x01\x01",
+            "\x03\x03\x03\uffff\x11\x03\x01\uffff\x01\x01",
             "",
             ""
     };
 
-    static readonly short[] DFA6_eot = DFA.UnpackEncodedString(DFA6_eotS);
-    static readonly short[] DFA6_eof = DFA.UnpackEncodedString(DFA6_eofS);
-    static readonly char[] DFA6_min = DFA.UnpackEncodedStringToUnsignedChars(DFA6_minS);
-    static readonly char[] DFA6_max = DFA.UnpackEncodedStringToUnsignedChars(DFA6_maxS);
-    static readonly short[] DFA6_accept = DFA.UnpackEncodedString(DFA6_acceptS);
-    static readonly short[] DFA6_special = DFA.UnpackEncodedString(DFA6_specialS);
-    static readonly short[][] DFA6_transition = DFA.UnpackEncodedStringArray(DFA6_transitionS);
+    static readonly short[] DFA7_eot = DFA.UnpackEncodedString(DFA7_eotS);
+    static readonly short[] DFA7_eof = DFA.UnpackEncodedString(DFA7_eofS);
+    static readonly char[] DFA7_min = DFA.UnpackEncodedStringToUnsignedChars(DFA7_minS);
+    static readonly char[] DFA7_max = DFA.UnpackEncodedStringToUnsignedChars(DFA7_maxS);
+    static readonly short[] DFA7_accept = DFA.UnpackEncodedString(DFA7_acceptS);
+    static readonly short[] DFA7_special = DFA.UnpackEncodedString(DFA7_specialS);
+    static readonly short[][] DFA7_transition = DFA.UnpackEncodedStringArray(DFA7_transitionS);
 
-    protected class DFA6 : DFA
+    protected class DFA7 : DFA
     {
-        public DFA6(BaseRecognizer recognizer)
+        public DFA7(BaseRecognizer recognizer)
         {
             this.recognizer = recognizer;
-            this.decisionNumber = 6;
-            this.eot = DFA6_eot;
-            this.eof = DFA6_eof;
-            this.min = DFA6_min;
-            this.max = DFA6_max;
-            this.accept = DFA6_accept;
-            this.special = DFA6_special;
-            this.transition = DFA6_transition;
+            this.decisionNumber = 7;
+            this.eot = DFA7_eot;
+            this.eof = DFA7_eof;
+            this.min = DFA7_min;
+            this.max = DFA7_max;
+            this.accept = DFA7_accept;
+            this.special = DFA7_special;
+            this.transition = DFA7_transition;
 
         }
 
         override public string Description
         {
-            get { return "()* loopback of 54:10: ( ( COMMA | ( ( ENDLINE )+ ) ) factor )*"; }
+            get { return "()* loopback of 59:10: ( ( COMMA | ( ( ENDLINE )+ ) ) factor )*"; }
         }
 
     }
@@ -1402,62 +1558,65 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
  
 
     public static readonly BitSet FOLLOW_set_in_string_lit0 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_SQL_LITERAL_in_sql_name60 = new BitSet(new ulong[]{0x0000000000000102UL});
-    public static readonly BitSet FOLLOW_DOT_in_sql_name67 = new BitSet(new ulong[]{0x0000000000000080UL});
-    public static readonly BitSet FOLLOW_SQL_LITERAL_in_sql_name71 = new BitSet(new ulong[]{0x0000000000000102UL});
-    public static readonly BitSet FOLLOW_string_lit_in_element92 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_PLUS_in_element101 = new BitSet(new ulong[]{0x0000000000000070UL});
-    public static readonly BitSet FOLLOW_string_lit_in_element105 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_MINUS_in_element114 = new BitSet(new ulong[]{0x0000000000000070UL});
-    public static readonly BitSet FOLLOW_string_lit_in_element118 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_LT_in_element127 = new BitSet(new ulong[]{0x0000000000000070UL});
-    public static readonly BitSet FOLLOW_string_lit_in_element131 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_GT_in_element140 = new BitSet(new ulong[]{0x0000000000000070UL});
-    public static readonly BitSet FOLLOW_string_lit_in_element144 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_LE_in_element153 = new BitSet(new ulong[]{0x0000000000000070UL});
-    public static readonly BitSet FOLLOW_string_lit_in_element157 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_GE_in_element166 = new BitSet(new ulong[]{0x0000000000000070UL});
-    public static readonly BitSet FOLLOW_string_lit_in_element170 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_NE_in_element179 = new BitSet(new ulong[]{0x0000000000000070UL});
-    public static readonly BitSet FOLLOW_string_lit_in_element183 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_EQ_in_element192 = new BitSet(new ulong[]{0x0000000000000070UL});
-    public static readonly BitSet FOLLOW_string_lit_in_element196 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_ARROW_in_element205 = new BitSet(new ulong[]{0x0000000000000070UL});
-    public static readonly BitSet FOLLOW_string_lit_in_element209 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_NARROW_in_element218 = new BitSet(new ulong[]{0x0000000000000070UL});
-    public static readonly BitSet FOLLOW_string_lit_in_element222 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_DOLLAR_in_element231 = new BitSet(new ulong[]{0x0000000000000070UL});
-    public static readonly BitSet FOLLOW_string_lit_in_element235 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_NDOLLAR_in_element244 = new BitSet(new ulong[]{0x0000000000000070UL});
-    public static readonly BitSet FOLLOW_string_lit_in_element248 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_T_NULL_in_element257 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_T_NOT_in_element265 = new BitSet(new ulong[]{0x0000000000200000UL});
-    public static readonly BitSet FOLLOW_T_NULL_in_element267 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_T_EMPTY_in_element275 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_T_NOT_in_element283 = new BitSet(new ulong[]{0x0000000000800000UL});
-    public static readonly BitSet FOLLOW_T_EMPTY_in_element285 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_LT_in_element296 = new BitSet(new ulong[]{0x0000000000000080UL});
-    public static readonly BitSet FOLLOW_sql_name_in_element298 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_GT_in_element307 = new BitSet(new ulong[]{0x0000000000000080UL});
-    public static readonly BitSet FOLLOW_sql_name_in_element309 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_LE_in_element318 = new BitSet(new ulong[]{0x0000000000000080UL});
-    public static readonly BitSet FOLLOW_sql_name_in_element320 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_GE_in_element329 = new BitSet(new ulong[]{0x0000000000000080UL});
-    public static readonly BitSet FOLLOW_sql_name_in_element331 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_NE_in_element340 = new BitSet(new ulong[]{0x0000000000000080UL});
-    public static readonly BitSet FOLLOW_sql_name_in_element342 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_EQ_in_element351 = new BitSet(new ulong[]{0x0000000000000080UL});
-    public static readonly BitSet FOLLOW_sql_name_in_element353 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_EQ2_in_element361 = new BitSet(new ulong[]{0x0000000000000080UL});
-    public static readonly BitSet FOLLOW_sql_name_in_element363 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_NE2_in_element372 = new BitSet(new ulong[]{0x0000000000000080UL});
-    public static readonly BitSet FOLLOW_sql_name_in_element374 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_element_in_factor389 = new BitSet(new ulong[]{0x0000000003FFFE72UL});
-    public static readonly BitSet FOLLOW_factor_in_list400 = new BitSet(new ulong[]{0x000000000C000002UL});
-    public static readonly BitSet FOLLOW_COMMA_in_list405 = new BitSet(new ulong[]{0x0000000003FFFE70UL});
-    public static readonly BitSet FOLLOW_ENDLINE_in_list410 = new BitSet(new ulong[]{0x000000000BFFFE70UL});
-    public static readonly BitSet FOLLOW_factor_in_list417 = new BitSet(new ulong[]{0x000000000C000002UL});
-    public static readonly BitSet FOLLOW_ENDLINE_in_list423 = new BitSet(new ulong[]{0x0000000008000002UL});
-    public static readonly BitSet FOLLOW_list_in_expr433 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_SQL_LITERAL_in_sql_identifier60 = new BitSet(new ulong[]{0x0000000000000102UL});
+    public static readonly BitSet FOLLOW_DOT_in_sql_identifier67 = new BitSet(new ulong[]{0x0000000000000080UL});
+    public static readonly BitSet FOLLOW_SQL_LITERAL_in_sql_identifier71 = new BitSet(new ulong[]{0x0000000000000102UL});
+    public static readonly BitSet FOLLOW_SQL_VARIABLE_in_sql_variable96 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_sql_identifier_in_sql_name108 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_sql_variable_in_sql_name112 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_string_lit_in_element123 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_PLUS_in_element132 = new BitSet(new ulong[]{0x0000000000000070UL});
+    public static readonly BitSet FOLLOW_string_lit_in_element136 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_MINUS_in_element145 = new BitSet(new ulong[]{0x0000000000000070UL});
+    public static readonly BitSet FOLLOW_string_lit_in_element149 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_LT_in_element158 = new BitSet(new ulong[]{0x0000000000000070UL});
+    public static readonly BitSet FOLLOW_string_lit_in_element162 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_GT_in_element171 = new BitSet(new ulong[]{0x0000000000000070UL});
+    public static readonly BitSet FOLLOW_string_lit_in_element175 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_LE_in_element184 = new BitSet(new ulong[]{0x0000000000000070UL});
+    public static readonly BitSet FOLLOW_string_lit_in_element188 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_GE_in_element197 = new BitSet(new ulong[]{0x0000000000000070UL});
+    public static readonly BitSet FOLLOW_string_lit_in_element201 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_NE_in_element210 = new BitSet(new ulong[]{0x0000000000000070UL});
+    public static readonly BitSet FOLLOW_string_lit_in_element214 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_EQ_in_element223 = new BitSet(new ulong[]{0x0000000000000070UL});
+    public static readonly BitSet FOLLOW_string_lit_in_element227 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_ARROW_in_element236 = new BitSet(new ulong[]{0x0000000000000070UL});
+    public static readonly BitSet FOLLOW_string_lit_in_element240 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_NARROW_in_element249 = new BitSet(new ulong[]{0x0000000000000070UL});
+    public static readonly BitSet FOLLOW_string_lit_in_element253 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_DOLLAR_in_element262 = new BitSet(new ulong[]{0x0000000000000070UL});
+    public static readonly BitSet FOLLOW_string_lit_in_element266 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_NDOLLAR_in_element275 = new BitSet(new ulong[]{0x0000000000000070UL});
+    public static readonly BitSet FOLLOW_string_lit_in_element279 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_T_NULL_in_element288 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_T_NOT_in_element296 = new BitSet(new ulong[]{0x0000000000400000UL});
+    public static readonly BitSet FOLLOW_T_NULL_in_element298 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_T_EMPTY_in_element306 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_T_NOT_in_element314 = new BitSet(new ulong[]{0x0000000001000000UL});
+    public static readonly BitSet FOLLOW_T_EMPTY_in_element316 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_LT_in_element327 = new BitSet(new ulong[]{0x0000000000000280UL});
+    public static readonly BitSet FOLLOW_sql_name_in_element329 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_GT_in_element338 = new BitSet(new ulong[]{0x0000000000000280UL});
+    public static readonly BitSet FOLLOW_sql_name_in_element340 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_LE_in_element349 = new BitSet(new ulong[]{0x0000000000000280UL});
+    public static readonly BitSet FOLLOW_sql_name_in_element351 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_GE_in_element360 = new BitSet(new ulong[]{0x0000000000000280UL});
+    public static readonly BitSet FOLLOW_sql_name_in_element362 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_NE_in_element371 = new BitSet(new ulong[]{0x0000000000000280UL});
+    public static readonly BitSet FOLLOW_sql_name_in_element373 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_EQ_in_element382 = new BitSet(new ulong[]{0x0000000000000280UL});
+    public static readonly BitSet FOLLOW_sql_name_in_element384 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_EQ2_in_element392 = new BitSet(new ulong[]{0x0000000000000280UL});
+    public static readonly BitSet FOLLOW_sql_name_in_element394 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_NE2_in_element403 = new BitSet(new ulong[]{0x0000000000000280UL});
+    public static readonly BitSet FOLLOW_sql_name_in_element405 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_element_in_factor420 = new BitSet(new ulong[]{0x0000000007FFFC72UL});
+    public static readonly BitSet FOLLOW_factor_in_list431 = new BitSet(new ulong[]{0x0000000018000002UL});
+    public static readonly BitSet FOLLOW_COMMA_in_list436 = new BitSet(new ulong[]{0x0000000007FFFC70UL});
+    public static readonly BitSet FOLLOW_ENDLINE_in_list441 = new BitSet(new ulong[]{0x0000000017FFFC70UL});
+    public static readonly BitSet FOLLOW_factor_in_list448 = new BitSet(new ulong[]{0x0000000018000002UL});
+    public static readonly BitSet FOLLOW_ENDLINE_in_list454 = new BitSet(new ulong[]{0x0000000010000002UL});
+    public static readonly BitSet FOLLOW_list_in_expr464 = new BitSet(new ulong[]{0x0000000000000002UL});
 
 }

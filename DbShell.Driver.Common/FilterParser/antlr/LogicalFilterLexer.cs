@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 LogicalFilter.g 2015-01-03 12:47:25
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 LogicalFilter.g 2015-09-19 21:51:35
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 168, 219
@@ -15,51 +15,52 @@ using Stack 		= Antlr.Runtime.Collections.StackList;
 
 public partial class LogicalFilterLexer : Lexer {
     public const int EOF = -1;
-    public const int Q_STRING = 32;
-    public const int DIGIT_0 = 28;
-    public const int DIGIT_1 = 29;
-    public const int COMMA = 16;
-    public const int T_NULL = 10;
-    public const int T_TRUE = 6;
-    public const int EQ = 13;
+    public const int Q_STRING = 33;
+    public const int DIGIT_0 = 29;
+    public const int DIGIT_1 = 30;
+    public const int COMMA = 17;
+    public const int T_NULL = 11;
+    public const int T_TRUE = 7;
+    public const int EQ = 14;
     public const int DOT = 5;
-    public const int NE = 12;
-    public const int D = 35;
-    public const int E = 24;
-    public const int F = 25;
-    public const int G = 36;
-    public const int A = 26;
-    public const int B = 33;
-    public const int NE2 = 15;
-    public const int C = 34;
-    public const int L = 20;
-    public const int M = 41;
-    public const int N = 18;
-    public const int O = 21;
-    public const int H = 37;
-    public const int I = 38;
-    public const int J = 39;
-    public const int K = 40;
-    public const int U = 19;
-    public const int T = 22;
-    public const int W = 45;
-    public const int WHITESPACE = 30;
-    public const int V = 44;
-    public const int Q = 43;
-    public const int P = 42;
-    public const int S = 27;
-    public const int R = 23;
-    public const int Y = 47;
-    public const int X = 46;
-    public const int EQ2 = 14;
+    public const int NE = 13;
+    public const int D = 36;
+    public const int E = 25;
+    public const int F = 26;
+    public const int G = 37;
+    public const int A = 27;
+    public const int SQL_VARIABLE = 6;
+    public const int B = 34;
+    public const int NE2 = 16;
+    public const int C = 35;
+    public const int L = 21;
+    public const int M = 42;
+    public const int N = 19;
+    public const int O = 22;
+    public const int H = 38;
+    public const int I = 39;
+    public const int J = 40;
+    public const int K = 41;
+    public const int U = 20;
+    public const int T = 23;
+    public const int W = 46;
+    public const int WHITESPACE = 31;
+    public const int V = 45;
+    public const int Q = 44;
+    public const int P = 43;
+    public const int S = 28;
+    public const int R = 24;
+    public const int Y = 48;
+    public const int X = 47;
+    public const int EQ2 = 15;
     public const int SQL_LITERAL = 4;
-    public const int Z = 48;
-    public const int T_FALSE = 7;
-    public const int T_1 = 8;
-    public const int T_0 = 9;
-    public const int A_STRING = 31;
-    public const int ENDLINE = 17;
-    public const int T_NOT = 11;
+    public const int Z = 49;
+    public const int T_FALSE = 8;
+    public const int T_1 = 9;
+    public const int T_0 = 10;
+    public const int A_STRING = 32;
+    public const int ENDLINE = 18;
+    public const int T_NOT = 12;
 
     // delegates
     // delegators
@@ -89,8 +90,8 @@ public partial class LogicalFilterLexer : Lexer {
     		{
             int _type = T_NULL;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // LogicalFilter.g:41:7: ( N U L L )
-            // LogicalFilter.g:41:9: N U L L
+            // LogicalFilter.g:46:7: ( N U L L )
+            // LogicalFilter.g:46:9: N U L L
             {
             	mN(); 
             	mU(); 
@@ -115,8 +116,8 @@ public partial class LogicalFilterLexer : Lexer {
     		{
             int _type = T_NOT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // LogicalFilter.g:42:6: ( N O T )
-            // LogicalFilter.g:42:8: N O T
+            // LogicalFilter.g:47:6: ( N O T )
+            // LogicalFilter.g:47:8: N O T
             {
             	mN(); 
             	mO(); 
@@ -140,8 +141,8 @@ public partial class LogicalFilterLexer : Lexer {
     		{
             int _type = T_TRUE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // LogicalFilter.g:43:7: ( T R U E )
-            // LogicalFilter.g:43:9: T R U E
+            // LogicalFilter.g:48:7: ( T R U E )
+            // LogicalFilter.g:48:9: T R U E
             {
             	mT(); 
             	mR(); 
@@ -166,8 +167,8 @@ public partial class LogicalFilterLexer : Lexer {
     		{
             int _type = T_FALSE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // LogicalFilter.g:44:8: ( F A L S E )
-            // LogicalFilter.g:44:10: F A L S E
+            // LogicalFilter.g:49:8: ( F A L S E )
+            // LogicalFilter.g:49:10: F A L S E
             {
             	mF(); 
             	mA(); 
@@ -193,8 +194,8 @@ public partial class LogicalFilterLexer : Lexer {
     		{
             int _type = T_0;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // LogicalFilter.g:45:4: ( DIGIT_0 )
-            // LogicalFilter.g:45:6: DIGIT_0
+            // LogicalFilter.g:50:4: ( DIGIT_0 )
+            // LogicalFilter.g:50:6: DIGIT_0
             {
             	mDIGIT_0(); 
 
@@ -216,8 +217,8 @@ public partial class LogicalFilterLexer : Lexer {
     		{
             int _type = T_1;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // LogicalFilter.g:46:4: ( DIGIT_1 )
-            // LogicalFilter.g:46:6: DIGIT_1
+            // LogicalFilter.g:51:4: ( DIGIT_1 )
+            // LogicalFilter.g:51:6: DIGIT_1
             {
             	mDIGIT_1(); 
 
@@ -239,8 +240,8 @@ public partial class LogicalFilterLexer : Lexer {
     		{
             int _type = NE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // LogicalFilter.g:48:3: ( '<>' )
-            // LogicalFilter.g:48:6: '<>'
+            // LogicalFilter.g:53:3: ( '<>' )
+            // LogicalFilter.g:53:6: '<>'
             {
             	Match("<>"); 
 
@@ -263,8 +264,8 @@ public partial class LogicalFilterLexer : Lexer {
     		{
             int _type = EQ;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // LogicalFilter.g:49:3: ( '=' )
-            // LogicalFilter.g:49:6: '='
+            // LogicalFilter.g:54:3: ( '=' )
+            // LogicalFilter.g:54:6: '='
             {
             	Match('='); 
 
@@ -286,8 +287,8 @@ public partial class LogicalFilterLexer : Lexer {
     		{
             int _type = COMMA;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // LogicalFilter.g:50:6: ( ',' )
-            // LogicalFilter.g:50:8: ','
+            // LogicalFilter.g:55:6: ( ',' )
+            // LogicalFilter.g:55:8: ','
             {
             	Match(','); 
 
@@ -309,8 +310,8 @@ public partial class LogicalFilterLexer : Lexer {
     		{
             int _type = DOT;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // LogicalFilter.g:51:4: ( '.' )
-            // LogicalFilter.g:51:6: '.'
+            // LogicalFilter.g:56:4: ( '.' )
+            // LogicalFilter.g:56:6: '.'
             {
             	Match('.'); 
 
@@ -332,8 +333,8 @@ public partial class LogicalFilterLexer : Lexer {
     		{
             int _type = EQ2;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // LogicalFilter.g:52:4: ( '==' )
-            // LogicalFilter.g:52:7: '=='
+            // LogicalFilter.g:57:4: ( '==' )
+            // LogicalFilter.g:57:7: '=='
             {
             	Match("=="); 
 
@@ -356,8 +357,8 @@ public partial class LogicalFilterLexer : Lexer {
     		{
             int _type = NE2;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // LogicalFilter.g:53:4: ( '!=' )
-            // LogicalFilter.g:53:7: '!='
+            // LogicalFilter.g:58:4: ( '!=' )
+            // LogicalFilter.g:58:7: '!='
             {
             	Match("!="); 
 
@@ -380,10 +381,10 @@ public partial class LogicalFilterLexer : Lexer {
     		{
             int _type = WHITESPACE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // LogicalFilter.g:55:12: ( ( '\\t' | ' ' | '\\u000C' )+ )
-            // LogicalFilter.g:55:14: ( '\\t' | ' ' | '\\u000C' )+
+            // LogicalFilter.g:60:12: ( ( '\\t' | ' ' | '\\u000C' )+ )
+            // LogicalFilter.g:60:14: ( '\\t' | ' ' | '\\u000C' )+
             {
-            	// LogicalFilter.g:55:14: ( '\\t' | ' ' | '\\u000C' )+
+            	// LogicalFilter.g:60:14: ( '\\t' | ' ' | '\\u000C' )+
             	int cnt1 = 0;
             	do 
             	{
@@ -448,10 +449,10 @@ public partial class LogicalFilterLexer : Lexer {
     		{
             int _type = ENDLINE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // LogicalFilter.g:56:8: ( ( '\\r' | '\\n' )+ )
-            // LogicalFilter.g:56:10: ( '\\r' | '\\n' )+
+            // LogicalFilter.g:61:8: ( ( '\\r' | '\\n' )+ )
+            // LogicalFilter.g:61:10: ( '\\r' | '\\n' )+
             {
-            	// LogicalFilter.g:56:10: ( '\\r' | '\\n' )+
+            	// LogicalFilter.g:61:10: ( '\\r' | '\\n' )+
             	int cnt2 = 0;
             	do 
             	{
@@ -515,14 +516,14 @@ public partial class LogicalFilterLexer : Lexer {
     		{
             int _type = SQL_LITERAL;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // LogicalFilter.g:58:12: ( ( '[' ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )* ']' ) )
-            // LogicalFilter.g:59:4: ( '[' ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )* ']' )
+            // LogicalFilter.g:63:12: ( ( '[' ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )* ']' ) )
+            // LogicalFilter.g:64:4: ( '[' ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )* ']' )
             {
-            	// LogicalFilter.g:59:4: ( '[' ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )* ']' )
-            	// LogicalFilter.g:59:5: '[' ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )* ']'
+            	// LogicalFilter.g:64:4: ( '[' ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )* ']' )
+            	// LogicalFilter.g:64:5: '[' ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )* ']'
             	{
             		Match('['); 
-            		// LogicalFilter.g:60:5: ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )*
+            		// LogicalFilter.g:65:5: ( options {greedy=true; } : ~ ( ']' | '\\r' | '\\n' ) )*
             		do 
             		{
             		    int alt3 = 2;
@@ -537,7 +538,7 @@ public partial class LogicalFilterLexer : Lexer {
             		    switch (alt3) 
             			{
             				case 1 :
-            				    // LogicalFilter.g:61:31: ~ ( ']' | '\\r' | '\\n' )
+            				    // LogicalFilter.g:66:31: ~ ( ']' | '\\r' | '\\n' )
             				    {
             				    	if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t') || (input.LA(1) >= '\u000B' && input.LA(1) <= '\f') || (input.LA(1) >= '\u000E' && input.LA(1) <= '\\') || (input.LA(1) >= '^' && input.LA(1) <= '\uFFFF') ) 
             				    	{
@@ -578,38 +579,38 @@ public partial class LogicalFilterLexer : Lexer {
     }
     // $ANTLR end "SQL_LITERAL"
 
-    // $ANTLR start "A_STRING"
-    public void mA_STRING() // throws RecognitionException [2]
+    // $ANTLR start "SQL_VARIABLE"
+    public void mSQL_VARIABLE() // throws RecognitionException [2]
     {
     		try
     		{
-            int _type = A_STRING;
+            int _type = SQL_VARIABLE;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // LogicalFilter.g:67:9: ( ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' ) )
-            // LogicalFilter.g:68:4: ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
+            // LogicalFilter.g:71:13: ( ( '@' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( options {greedy=true; } : ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' ) )* ) )
+            // LogicalFilter.g:72:5: ( '@' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( options {greedy=true; } : ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' ) )* )
             {
-            	// LogicalFilter.g:68:4: ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
-            	// LogicalFilter.g:68:5: '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\''
+            	// LogicalFilter.g:72:5: ( '@' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( options {greedy=true; } : ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' ) )* )
+            	// LogicalFilter.g:72:6: '@' ( 'a' .. 'z' | 'A' .. 'Z' | '_' ) ( options {greedy=true; } : ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' ) )*
             	{
-            		Match('\''); 
-            		// LogicalFilter.g:69:5: ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )*
+            		Match('@'); 
+            		if ( (input.LA(1) >= 'A' && input.LA(1) <= 'Z') || input.LA(1) == '_' || (input.LA(1) >= 'a' && input.LA(1) <= 'z') ) 
+            		{
+            		    input.Consume();
+
+            		}
+            		else 
+            		{
+            		    MismatchedSetException mse = new MismatchedSetException(null,input);
+            		    Recover(mse);
+            		    throw mse;}
+
+            		// LogicalFilter.g:74:9: ( options {greedy=true; } : ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' ) )*
             		do 
             		{
-            		    int alt4 = 3;
+            		    int alt4 = 2;
             		    int LA4_0 = input.LA(1);
 
-            		    if ( (LA4_0 == '\'') )
-            		    {
-            		        int LA4_1 = input.LA(2);
-
-            		        if ( (LA4_1 == '\'') )
-            		        {
-            		            alt4 = 2;
-            		        }
-
-
-            		    }
-            		    else if ( ((LA4_0 >= '\u0000' && LA4_0 <= '\t') || (LA4_0 >= '\u000B' && LA4_0 <= '\f') || (LA4_0 >= '\u000E' && LA4_0 <= '&') || (LA4_0 >= '(' && LA4_0 <= '\uFFFF')) )
+            		    if ( ((LA4_0 >= '0' && LA4_0 <= '9') || (LA4_0 >= 'A' && LA4_0 <= 'Z') || LA4_0 == '_' || (LA4_0 >= 'a' && LA4_0 <= 'z')) )
             		    {
             		        alt4 = 1;
             		    }
@@ -618,7 +619,87 @@ public partial class LogicalFilterLexer : Lexer {
             		    switch (alt4) 
             			{
             				case 1 :
-            				    // LogicalFilter.g:70:31: ~ ( '\\'' | '\\r' | '\\n' )
+            				    // LogicalFilter.g:74:34: ( 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' | '_' )
+            				    {
+            				    	if ( (input.LA(1) >= '0' && input.LA(1) <= '9') || (input.LA(1) >= 'A' && input.LA(1) <= 'Z') || input.LA(1) == '_' || (input.LA(1) >= 'a' && input.LA(1) <= 'z') ) 
+            				    	{
+            				    	    input.Consume();
+
+            				    	}
+            				    	else 
+            				    	{
+            				    	    MismatchedSetException mse = new MismatchedSetException(null,input);
+            				    	    Recover(mse);
+            				    	    throw mse;}
+
+
+            				    }
+            				    break;
+
+            				default:
+            				    goto loop4;
+            		    }
+            		} while (true);
+
+            		loop4:
+            			;	// Stops C# compiler whining that label 'loop4' has no statements
+
+
+            	}
+
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally 
+    	{
+        }
+    }
+    // $ANTLR end "SQL_VARIABLE"
+
+    // $ANTLR start "A_STRING"
+    public void mA_STRING() // throws RecognitionException [2]
+    {
+    		try
+    		{
+            int _type = A_STRING;
+    	int _channel = DEFAULT_TOKEN_CHANNEL;
+            // LogicalFilter.g:79:9: ( ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' ) )
+            // LogicalFilter.g:80:4: ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
+            {
+            	// LogicalFilter.g:80:4: ( '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\'' )
+            	// LogicalFilter.g:80:5: '\\'' ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )* '\\''
+            	{
+            		Match('\''); 
+            		// LogicalFilter.g:81:5: ( options {greedy=true; } : ~ ( '\\'' | '\\r' | '\\n' ) | '\\'' '\\'' )*
+            		do 
+            		{
+            		    int alt5 = 3;
+            		    int LA5_0 = input.LA(1);
+
+            		    if ( (LA5_0 == '\'') )
+            		    {
+            		        int LA5_1 = input.LA(2);
+
+            		        if ( (LA5_1 == '\'') )
+            		        {
+            		            alt5 = 2;
+            		        }
+
+
+            		    }
+            		    else if ( ((LA5_0 >= '\u0000' && LA5_0 <= '\t') || (LA5_0 >= '\u000B' && LA5_0 <= '\f') || (LA5_0 >= '\u000E' && LA5_0 <= '&') || (LA5_0 >= '(' && LA5_0 <= '\uFFFF')) )
+            		    {
+            		        alt5 = 1;
+            		    }
+
+
+            		    switch (alt5) 
+            			{
+            				case 1 :
+            				    // LogicalFilter.g:82:31: ~ ( '\\'' | '\\r' | '\\n' )
             				    {
             				    	if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t') || (input.LA(1) >= '\u000B' && input.LA(1) <= '\f') || (input.LA(1) >= '\u000E' && input.LA(1) <= '&') || (input.LA(1) >= '(' && input.LA(1) <= '\uFFFF') ) 
             				    	{
@@ -635,7 +716,7 @@ public partial class LogicalFilterLexer : Lexer {
             				    }
             				    break;
             				case 2 :
-            				    // LogicalFilter.g:70:56: '\\'' '\\''
+            				    // LogicalFilter.g:82:56: '\\'' '\\''
             				    {
             				    	Match('\''); 
             				    	Match('\''); 
@@ -644,12 +725,12 @@ public partial class LogicalFilterLexer : Lexer {
             				    break;
 
             				default:
-            				    goto loop4;
+            				    goto loop5;
             		    }
             		} while (true);
 
-            		loop4:
-            			;	// Stops C# compiler whining that label 'loop4' has no statements
+            		loop5:
+            			;	// Stops C# compiler whining that label 'loop5' has no statements
 
             		Match('\''); 
 
@@ -674,40 +755,40 @@ public partial class LogicalFilterLexer : Lexer {
     		{
             int _type = Q_STRING;
     	int _channel = DEFAULT_TOKEN_CHANNEL;
-            // LogicalFilter.g:75:9: ( ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' ) )
-            // LogicalFilter.g:76:4: ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' )
+            // LogicalFilter.g:87:9: ( ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' ) )
+            // LogicalFilter.g:88:4: ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' )
             {
-            	// LogicalFilter.g:76:4: ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' )
-            	// LogicalFilter.g:76:5: '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"'
+            	// LogicalFilter.g:88:4: ( '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"' )
+            	// LogicalFilter.g:88:5: '\\\"' ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )* '\\\"'
             	{
             		Match('\"'); 
-            		// LogicalFilter.g:77:5: ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )*
+            		// LogicalFilter.g:89:5: ( options {greedy=true; } : ~ ( '\\\"' | '\\r' | '\\n' ) | '\\\"' '\\\"' )*
             		do 
             		{
-            		    int alt5 = 3;
-            		    int LA5_0 = input.LA(1);
+            		    int alt6 = 3;
+            		    int LA6_0 = input.LA(1);
 
-            		    if ( (LA5_0 == '\"') )
+            		    if ( (LA6_0 == '\"') )
             		    {
-            		        int LA5_1 = input.LA(2);
+            		        int LA6_1 = input.LA(2);
 
-            		        if ( (LA5_1 == '\"') )
+            		        if ( (LA6_1 == '\"') )
             		        {
-            		            alt5 = 2;
+            		            alt6 = 2;
             		        }
 
 
             		    }
-            		    else if ( ((LA5_0 >= '\u0000' && LA5_0 <= '\t') || (LA5_0 >= '\u000B' && LA5_0 <= '\f') || (LA5_0 >= '\u000E' && LA5_0 <= '!') || (LA5_0 >= '#' && LA5_0 <= '\uFFFF')) )
+            		    else if ( ((LA6_0 >= '\u0000' && LA6_0 <= '\t') || (LA6_0 >= '\u000B' && LA6_0 <= '\f') || (LA6_0 >= '\u000E' && LA6_0 <= '!') || (LA6_0 >= '#' && LA6_0 <= '\uFFFF')) )
             		    {
-            		        alt5 = 1;
+            		        alt6 = 1;
             		    }
 
 
-            		    switch (alt5) 
+            		    switch (alt6) 
             			{
             				case 1 :
-            				    // LogicalFilter.g:78:31: ~ ( '\\\"' | '\\r' | '\\n' )
+            				    // LogicalFilter.g:90:31: ~ ( '\\\"' | '\\r' | '\\n' )
             				    {
             				    	if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t') || (input.LA(1) >= '\u000B' && input.LA(1) <= '\f') || (input.LA(1) >= '\u000E' && input.LA(1) <= '!') || (input.LA(1) >= '#' && input.LA(1) <= '\uFFFF') ) 
             				    	{
@@ -724,7 +805,7 @@ public partial class LogicalFilterLexer : Lexer {
             				    }
             				    break;
             				case 2 :
-            				    // LogicalFilter.g:78:56: '\\\"' '\\\"'
+            				    // LogicalFilter.g:90:56: '\\\"' '\\\"'
             				    {
             				    	Match('\"'); 
             				    	Match('\"'); 
@@ -733,12 +814,12 @@ public partial class LogicalFilterLexer : Lexer {
             				    break;
 
             				default:
-            				    goto loop5;
+            				    goto loop6;
             		    }
             		} while (true);
 
-            		loop5:
-            			;	// Stops C# compiler whining that label 'loop5' has no statements
+            		loop6:
+            			;	// Stops C# compiler whining that label 'loop6' has no statements
 
             		Match('\"'); 
 
@@ -761,8 +842,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:83:19: ( '0' )
-            // LogicalFilter.g:83:21: '0'
+            // LogicalFilter.g:95:19: ( '0' )
+            // LogicalFilter.g:95:21: '0'
             {
             	Match('0'); 
 
@@ -780,8 +861,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:84:19: ( '1' )
-            // LogicalFilter.g:84:21: '1'
+            // LogicalFilter.g:96:19: ( '1' )
+            // LogicalFilter.g:96:21: '1'
             {
             	Match('1'); 
 
@@ -799,8 +880,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:86:11: ( 'A' )
-            // LogicalFilter.g:86:13: 'A'
+            // LogicalFilter.g:98:11: ( 'A' )
+            // LogicalFilter.g:98:13: 'A'
             {
             	Match('A'); 
 
@@ -818,8 +899,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:87:11: ( 'B' )
-            // LogicalFilter.g:87:13: 'B'
+            // LogicalFilter.g:99:11: ( 'B' )
+            // LogicalFilter.g:99:13: 'B'
             {
             	Match('B'); 
 
@@ -837,8 +918,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:88:11: ( 'C' )
-            // LogicalFilter.g:88:13: 'C'
+            // LogicalFilter.g:100:11: ( 'C' )
+            // LogicalFilter.g:100:13: 'C'
             {
             	Match('C'); 
 
@@ -856,8 +937,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:89:11: ( 'D' )
-            // LogicalFilter.g:89:13: 'D'
+            // LogicalFilter.g:101:11: ( 'D' )
+            // LogicalFilter.g:101:13: 'D'
             {
             	Match('D'); 
 
@@ -875,8 +956,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:90:11: ( 'E' )
-            // LogicalFilter.g:90:13: 'E'
+            // LogicalFilter.g:102:11: ( 'E' )
+            // LogicalFilter.g:102:13: 'E'
             {
             	Match('E'); 
 
@@ -894,8 +975,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:91:11: ( 'F' )
-            // LogicalFilter.g:91:13: 'F'
+            // LogicalFilter.g:103:11: ( 'F' )
+            // LogicalFilter.g:103:13: 'F'
             {
             	Match('F'); 
 
@@ -913,8 +994,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:92:11: ( 'G' )
-            // LogicalFilter.g:92:13: 'G'
+            // LogicalFilter.g:104:11: ( 'G' )
+            // LogicalFilter.g:104:13: 'G'
             {
             	Match('G'); 
 
@@ -932,8 +1013,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:93:11: ( 'H' )
-            // LogicalFilter.g:93:13: 'H'
+            // LogicalFilter.g:105:11: ( 'H' )
+            // LogicalFilter.g:105:13: 'H'
             {
             	Match('H'); 
 
@@ -951,8 +1032,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:94:11: ( 'I' )
-            // LogicalFilter.g:94:13: 'I'
+            // LogicalFilter.g:106:11: ( 'I' )
+            // LogicalFilter.g:106:13: 'I'
             {
             	Match('I'); 
 
@@ -970,8 +1051,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:95:11: ( 'J' )
-            // LogicalFilter.g:95:13: 'J'
+            // LogicalFilter.g:107:11: ( 'J' )
+            // LogicalFilter.g:107:13: 'J'
             {
             	Match('J'); 
 
@@ -989,8 +1070,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:96:11: ( 'K' )
-            // LogicalFilter.g:96:13: 'K'
+            // LogicalFilter.g:108:11: ( 'K' )
+            // LogicalFilter.g:108:13: 'K'
             {
             	Match('K'); 
 
@@ -1008,8 +1089,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:97:11: ( 'L' )
-            // LogicalFilter.g:97:13: 'L'
+            // LogicalFilter.g:109:11: ( 'L' )
+            // LogicalFilter.g:109:13: 'L'
             {
             	Match('L'); 
 
@@ -1027,8 +1108,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:98:11: ( 'M' )
-            // LogicalFilter.g:98:13: 'M'
+            // LogicalFilter.g:110:11: ( 'M' )
+            // LogicalFilter.g:110:13: 'M'
             {
             	Match('M'); 
 
@@ -1046,8 +1127,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:99:11: ( 'N' )
-            // LogicalFilter.g:99:13: 'N'
+            // LogicalFilter.g:111:11: ( 'N' )
+            // LogicalFilter.g:111:13: 'N'
             {
             	Match('N'); 
 
@@ -1065,8 +1146,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:100:11: ( 'O' )
-            // LogicalFilter.g:100:13: 'O'
+            // LogicalFilter.g:112:11: ( 'O' )
+            // LogicalFilter.g:112:13: 'O'
             {
             	Match('O'); 
 
@@ -1084,8 +1165,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:101:11: ( 'P' )
-            // LogicalFilter.g:101:13: 'P'
+            // LogicalFilter.g:113:11: ( 'P' )
+            // LogicalFilter.g:113:13: 'P'
             {
             	Match('P'); 
 
@@ -1103,8 +1184,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:102:11: ( 'Q' )
-            // LogicalFilter.g:102:13: 'Q'
+            // LogicalFilter.g:114:11: ( 'Q' )
+            // LogicalFilter.g:114:13: 'Q'
             {
             	Match('Q'); 
 
@@ -1122,8 +1203,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:103:11: ( 'R' )
-            // LogicalFilter.g:103:13: 'R'
+            // LogicalFilter.g:115:11: ( 'R' )
+            // LogicalFilter.g:115:13: 'R'
             {
             	Match('R'); 
 
@@ -1141,8 +1222,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:104:11: ( 'S' )
-            // LogicalFilter.g:104:13: 'S'
+            // LogicalFilter.g:116:11: ( 'S' )
+            // LogicalFilter.g:116:13: 'S'
             {
             	Match('S'); 
 
@@ -1160,8 +1241,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:105:11: ( 'T' )
-            // LogicalFilter.g:105:13: 'T'
+            // LogicalFilter.g:117:11: ( 'T' )
+            // LogicalFilter.g:117:13: 'T'
             {
             	Match('T'); 
 
@@ -1179,8 +1260,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:106:11: ( 'U' )
-            // LogicalFilter.g:106:13: 'U'
+            // LogicalFilter.g:118:11: ( 'U' )
+            // LogicalFilter.g:118:13: 'U'
             {
             	Match('U'); 
 
@@ -1198,8 +1279,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:107:11: ( 'V' )
-            // LogicalFilter.g:107:13: 'V'
+            // LogicalFilter.g:119:11: ( 'V' )
+            // LogicalFilter.g:119:13: 'V'
             {
             	Match('V'); 
 
@@ -1217,8 +1298,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:108:11: ( 'W' )
-            // LogicalFilter.g:108:13: 'W'
+            // LogicalFilter.g:120:11: ( 'W' )
+            // LogicalFilter.g:120:13: 'W'
             {
             	Match('W'); 
 
@@ -1236,8 +1317,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:109:11: ( 'X' )
-            // LogicalFilter.g:109:13: 'X'
+            // LogicalFilter.g:121:11: ( 'X' )
+            // LogicalFilter.g:121:13: 'X'
             {
             	Match('X'); 
 
@@ -1255,8 +1336,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:110:11: ( 'Y' )
-            // LogicalFilter.g:110:13: 'Y'
+            // LogicalFilter.g:122:11: ( 'Y' )
+            // LogicalFilter.g:122:13: 'Y'
             {
             	Match('Y'); 
 
@@ -1274,8 +1355,8 @@ public partial class LogicalFilterLexer : Lexer {
     {
     		try
     		{
-            // LogicalFilter.g:111:11: ( 'Z' )
-            // LogicalFilter.g:111:13: 'Z'
+            // LogicalFilter.g:123:11: ( 'Z' )
+            // LogicalFilter.g:123:13: 'Z'
             {
             	Match('Z'); 
 
@@ -1290,10 +1371,10 @@ public partial class LogicalFilterLexer : Lexer {
 
     override public void mTokens() // throws RecognitionException 
     {
-        // LogicalFilter.g:1:8: ( T_NULL | T_NOT | T_TRUE | T_FALSE | T_0 | T_1 | NE | EQ | COMMA | DOT | EQ2 | NE2 | WHITESPACE | ENDLINE | SQL_LITERAL | A_STRING | Q_STRING )
-        int alt6 = 17;
-        alt6 = dfa6.Predict(input);
-        switch (alt6) 
+        // LogicalFilter.g:1:8: ( T_NULL | T_NOT | T_TRUE | T_FALSE | T_0 | T_1 | NE | EQ | COMMA | DOT | EQ2 | NE2 | WHITESPACE | ENDLINE | SQL_LITERAL | SQL_VARIABLE | A_STRING | Q_STRING )
+        int alt7 = 18;
+        alt7 = dfa7.Predict(input);
+        switch (alt7) 
         {
             case 1 :
                 // LogicalFilter.g:1:10: T_NULL
@@ -1401,14 +1482,21 @@ public partial class LogicalFilterLexer : Lexer {
                 }
                 break;
             case 16 :
-                // LogicalFilter.g:1:101: A_STRING
+                // LogicalFilter.g:1:101: SQL_VARIABLE
+                {
+                	mSQL_VARIABLE(); 
+
+                }
+                break;
+            case 17 :
+                // LogicalFilter.g:1:114: A_STRING
                 {
                 	mA_STRING(); 
 
                 }
                 break;
-            case 17 :
-                // LogicalFilter.g:1:110: Q_STRING
+            case 18 :
+                // LogicalFilter.g:1:123: Q_STRING
                 {
                 	mQ_STRING(); 
 
@@ -1420,39 +1508,40 @@ public partial class LogicalFilterLexer : Lexer {
     }
 
 
-    protected DFA6 dfa6;
+    protected DFA7 dfa7;
 	private void InitializeCyclicDFAs()
 	{
-	    this.dfa6 = new DFA6(this);
+	    this.dfa7 = new DFA7(this);
 	}
 
-    const string DFA6_eotS =
-        "\x07\uffff\x01\x13\x0c\uffff";
-    const string DFA6_eofS =
-        "\x14\uffff";
-    const string DFA6_minS =
-        "\x01\x09\x01\x4f\x05\uffff\x01\x3d\x0c\uffff";
-    const string DFA6_maxS =
-        "\x01\x5b\x01\x55\x05\uffff\x01\x3d\x0c\uffff";
-    const string DFA6_acceptS =
+    const string DFA7_eotS =
+        "\x07\uffff\x01\x14\x0d\uffff";
+    const string DFA7_eofS =
+        "\x15\uffff";
+    const string DFA7_minS =
+        "\x01\x09\x01\x4f\x05\uffff\x01\x3d\x0d\uffff";
+    const string DFA7_maxS =
+        "\x01\x5b\x01\x55\x05\uffff\x01\x3d\x0d\uffff";
+    const string DFA7_acceptS =
         "\x02\uffff\x01\x03\x01\x04\x01\x05\x01\x06\x01\x07\x01\uffff\x01"+
         "\x09\x01\x0a\x01\x0c\x01\x0d\x01\x0e\x01\x0f\x01\x10\x01\x11\x01"+
-        "\x01\x01\x02\x01\x0b\x01\x08";
-    const string DFA6_specialS =
-        "\x14\uffff}>";
-    static readonly string[] DFA6_transitionS = {
+        "\x12\x01\x01\x01\x02\x01\x0b\x01\x08";
+    const string DFA7_specialS =
+        "\x15\uffff}>";
+    static readonly string[] DFA7_transitionS = {
             "\x01\x0b\x01\x0c\x01\uffff\x01\x0b\x01\x0c\x12\uffff\x01\x0b"+
-            "\x01\x0a\x01\x0f\x04\uffff\x01\x0e\x04\uffff\x01\x08\x01\uffff"+
+            "\x01\x0a\x01\x10\x04\uffff\x01\x0f\x04\uffff\x01\x08\x01\uffff"+
             "\x01\x09\x01\uffff\x01\x04\x01\x05\x0a\uffff\x01\x06\x01\x07"+
-            "\x08\uffff\x01\x03\x07\uffff\x01\x01\x05\uffff\x01\x02\x06\uffff"+
-            "\x01\x0d",
-            "\x01\x11\x05\uffff\x01\x10",
+            "\x02\uffff\x01\x0e\x05\uffff\x01\x03\x07\uffff\x01\x01\x05\uffff"+
+            "\x01\x02\x06\uffff\x01\x0d",
+            "\x01\x12\x05\uffff\x01\x11",
             "",
             "",
             "",
             "",
             "",
-            "\x01\x12",
+            "\x01\x13",
+            "",
             "",
             "",
             "",
@@ -1467,33 +1556,33 @@ public partial class LogicalFilterLexer : Lexer {
             ""
     };
 
-    static readonly short[] DFA6_eot = DFA.UnpackEncodedString(DFA6_eotS);
-    static readonly short[] DFA6_eof = DFA.UnpackEncodedString(DFA6_eofS);
-    static readonly char[] DFA6_min = DFA.UnpackEncodedStringToUnsignedChars(DFA6_minS);
-    static readonly char[] DFA6_max = DFA.UnpackEncodedStringToUnsignedChars(DFA6_maxS);
-    static readonly short[] DFA6_accept = DFA.UnpackEncodedString(DFA6_acceptS);
-    static readonly short[] DFA6_special = DFA.UnpackEncodedString(DFA6_specialS);
-    static readonly short[][] DFA6_transition = DFA.UnpackEncodedStringArray(DFA6_transitionS);
+    static readonly short[] DFA7_eot = DFA.UnpackEncodedString(DFA7_eotS);
+    static readonly short[] DFA7_eof = DFA.UnpackEncodedString(DFA7_eofS);
+    static readonly char[] DFA7_min = DFA.UnpackEncodedStringToUnsignedChars(DFA7_minS);
+    static readonly char[] DFA7_max = DFA.UnpackEncodedStringToUnsignedChars(DFA7_maxS);
+    static readonly short[] DFA7_accept = DFA.UnpackEncodedString(DFA7_acceptS);
+    static readonly short[] DFA7_special = DFA.UnpackEncodedString(DFA7_specialS);
+    static readonly short[][] DFA7_transition = DFA.UnpackEncodedStringArray(DFA7_transitionS);
 
-    protected class DFA6 : DFA
+    protected class DFA7 : DFA
     {
-        public DFA6(BaseRecognizer recognizer)
+        public DFA7(BaseRecognizer recognizer)
         {
             this.recognizer = recognizer;
-            this.decisionNumber = 6;
-            this.eot = DFA6_eot;
-            this.eof = DFA6_eof;
-            this.min = DFA6_min;
-            this.max = DFA6_max;
-            this.accept = DFA6_accept;
-            this.special = DFA6_special;
-            this.transition = DFA6_transition;
+            this.decisionNumber = 7;
+            this.eot = DFA7_eot;
+            this.eof = DFA7_eof;
+            this.min = DFA7_min;
+            this.max = DFA7_max;
+            this.accept = DFA7_accept;
+            this.special = DFA7_special;
+            this.transition = DFA7_transition;
 
         }
 
         override public string Description
         {
-            get { return "1:1: Tokens : ( T_NULL | T_NOT | T_TRUE | T_FALSE | T_0 | T_1 | NE | EQ | COMMA | DOT | EQ2 | NE2 | WHITESPACE | ENDLINE | SQL_LITERAL | A_STRING | Q_STRING );"; }
+            get { return "1:1: Tokens : ( T_NULL | T_NOT | T_TRUE | T_FALSE | T_0 | T_1 | NE | EQ | COMMA | DOT | EQ2 | NE2 | WHITESPACE | ENDLINE | SQL_LITERAL | SQL_VARIABLE | A_STRING | Q_STRING );"; }
         }
 
     }
