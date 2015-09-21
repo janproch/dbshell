@@ -182,6 +182,12 @@ namespace DbShell.Driver.Common.Structure
             return res;
         }
 
+        public bool IsSingleColumnPk()
+        {
+            if (OwnerTable?.PrimaryKey?.Columns?.Count != 1) return false;
+            return OwnerTable.PrimaryKey.Columns[0].RefColumn == this;
+        }
+
         public string LengthDisplay
         {
             get
