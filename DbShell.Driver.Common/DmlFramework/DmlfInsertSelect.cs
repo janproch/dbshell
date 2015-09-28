@@ -25,7 +25,7 @@ namespace DbShell.Driver.Common.DmlFramework
 
         public override void GenSql(AbstractDb.ISqlDumper dmp)
         {
-            dmp.Put("^insert into %f (%,i)&n", TargetTable, TargetColumns);
+            dmp.Put("^insert ^into %f (%,i)&n", TargetTable, TargetColumns);
             Select.GenSql(dmp);
         }
     }

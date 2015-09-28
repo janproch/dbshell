@@ -19,7 +19,13 @@ namespace DbShell.Driver.Common.Utility
         public static void SortByKey<ElementType, KeyType>(this List<ElementType> lst, Func<ElementType, KeyType> key)
             where KeyType : IComparable
         {
-            lst.Sort((Comparison<ElementType>) (delegate(ElementType a, ElementType b) { return key(a).CompareTo(key(b)); }));
+            lst.Sort((Comparison<ElementType>)(delegate (ElementType a, ElementType b) { return key(a).CompareTo(key(b)); }));
+        }
+
+        public static void SortByKeyDesc<ElementType, KeyType>(this List<ElementType> lst, Func<ElementType, KeyType> key)
+            where KeyType : IComparable
+        {
+            lst.Sort((Comparison<ElementType>)(delegate (ElementType a, ElementType b) { return key(b).CompareTo(key(a)); }));
         }
 
         public static void RemoveIf<T>(this IList<T> list, Func<T, bool> testFunc)
