@@ -6,11 +6,14 @@ using System.Text;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Utility;
+using log4net;
 
 namespace DbShell.Driver.SqlServer
 {
     public class SqlServerBulkInserter : BulkInserterBase
     {
+        private readonly static ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         protected override void RunBulkCopy(Common.CommonDataLayer.ICdlReader reader)
         {
             var ts = reader.Structure;
@@ -20,11 +23,11 @@ namespace DbShell.Driver.SqlServer
                 return;
             }
             var dialect = Factory.CreateDialect();
-            using (SqlBulkCopy bcp = new SqlBulkCopy( (SqlConnection)Connection, SqlBulkCopyOptions.KeepIdentity | SqlBulkCopyOptions.KeepNulls, null))
+            using (SqlBulkCopy bcp = new SqlBulkCopy((SqlConnection)Connection, SqlBulkCopyOptions.KeepIdentity | SqlBulkCopyOptions.KeepNulls, null))
             {
                 bcp.DestinationTableName = dialect.QuoteFullName(DestinationTable.FullName);
 
-                foreach(var item in _columnMap.Items)
+                foreach (var item in _columnMap.Items)
                 {
                     var map = new SqlBulkCopyColumnMapping(item.Source, item.Target);
                     bcp.ColumnMappings.Add(map);
@@ -64,7 +67,8 @@ namespace DbShell.Driver.SqlServer
                 }
                 catch (Exception err)
                 {
-                    LogError(String.Format("Error inserting into table {0}:{1}", DestinationTable.FullName, err.Message));
+                    LogError($"DBSH-00000 Error inserting into table {DestinationTable.FullName}:{err.Message}");
+                    _log.Error($"DBSH-00000 Error inserting into table {DestinationTable.FullName}", err);
                     //ILogger logger = ProgressInfo;
                     //if (err is QueueClosedError) logger = Logging.Root;
                     //logger.LogMessageDetail(

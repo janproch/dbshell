@@ -42,7 +42,21 @@ namespace DbShell.Driver.SqlServer
                     {
                         var dt = holder.GetDateTimeValue();
                         dt.Nanosecond = dt.Nanosecond/1000000*1000000;
-                        holder.SetDateTimeEx(dt);
+                        switch (htype)
+                        {
+                            case TypeStorage.DateEx:
+                                holder.SetDateEx(dt.DatePart);
+                                break;
+                            case TypeStorage.TimeEx:
+                                holder.SetTimeEx(dt.TimePart);
+                                break;
+                            case TypeStorage.DateTimeEx:
+                                holder.SetDateTimeEx(dt);
+                                break;
+                            case TypeStorage.DateTime:
+                                holder.SetDateTime(dt.AsDateTime);
+                                break;
+                        }
                     }
                 }
             }
