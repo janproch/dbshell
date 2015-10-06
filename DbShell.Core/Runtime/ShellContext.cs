@@ -130,7 +130,7 @@ namespace DbShell.Core.Runtime
 
         public void CreateScope()
         {
-            if (_scope != null) throw new Exception("DBSH-0000 Scope already created");
+            if (_scope != null) throw new Exception("DBSH-00210 Scope already created");
             _scope = _engine.CreateScope(Scope);
         }
 

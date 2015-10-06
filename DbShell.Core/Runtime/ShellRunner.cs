@@ -96,7 +96,7 @@ namespace DbShell.Core.Runtime
             }
             catch (Exception err)
             {
-                _log.Error("DBSH-00000 Exception occured when executing DbShell", err);
+                _log.Error("DBSH-00198 Exception occured when executing DbShell", err);
                 Error = err;
             }
             finally

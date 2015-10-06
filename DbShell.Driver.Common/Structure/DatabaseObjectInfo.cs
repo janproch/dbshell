@@ -70,7 +70,7 @@ namespace DbShell.Driver.Common.Structure
 
         public virtual DatabaseObjectInfo CloneObject(DatabaseObjectInfo owner)
         {
-            throw new Exception(String.Format("DBSH-0000 Object {0} is not cloneable", GetType().FullName));
+            throw new Exception(String.Format("DBSH-00211 Object {0} is not cloneable", GetType().FullName));
         }
 
         public LinkedDatabaseInfo GetLinkedInfo()

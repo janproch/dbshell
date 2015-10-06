@@ -67,8 +67,8 @@ namespace DbShell.Driver.SqlServer
                 }
                 catch (Exception err)
                 {
-                    LogError($"DBSH-00000 Error inserting into table {DestinationTable.FullName}:{err.Message}");
-                    _log.Error($"DBSH-00000 Error inserting into table {DestinationTable.FullName}", err);
+                    LogError($"DBSH-00200 Error inserting into table {DestinationTable.FullName}:{err.Message}");
+                    _log.Error($"DBSH-00201 Error inserting into table {DestinationTable.FullName}", err);
                     //ILogger logger = ProgressInfo;
                     //if (err is QueueClosedError) logger = Logging.Root;
                     //logger.LogMessageDetail(

@@ -173,7 +173,7 @@ namespace DbShell.Driver.Common.AbstractDb
 
                     if (failRowCount > 0)
                     {
-                        LogError($"DBSH-00000 Error inserting into table {DestinationTable}, correct inserts {okRowCount}, failed inserts {failRowCount}");
+                        LogError($"DBSH-00199 Error inserting into table {DestinationTable}, correct inserts {okRowCount}, failed inserts {failRowCount}");
                         LogError(insertErrors.CreateDelimitedText("\n"));
 
                     }
