@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Batch 
+    xmlns="http://schemas.dbshell.com/core"
+    xmlns:rds="http://schemas.dbshell.com/datasync"
+    >
+    <rds:SyncModel >
+        <rds:SyncModel.Sources>
+            <rds:Source DataSource="{Table SourceMaster}">
+                <rds:SourceColumn Name="Id" Alias="SourceMasterId" />
+                <rds:SourceColumn Name="Value" Alias="MasterValue" />
+            </rds:Source>
+            <rds:Source DataSource="{Table SourceDetail}">
+                <rds:SourceColumn Name="Id" Alias="SourceDetailId" />
+                <rds:SourceColumn Name="MasterId" Alias="SourceMasterId" />
+                <rds:SourceColumn Name="Value" Alias="DetailValue" />
+            </rds:Source>
+        </rds:SyncModel.Sources>
+
+        <rds:SyncModel.Targets>
+            <rds:Target TableName="Target">
+                <rds:TargetColumn Name="TargetIdOriginalMaster" SourceName="SourceMasterId" IsKey="True"/>
+                <rds:TargetColumn Name="MasterValue" SourceName="MasterValue" />
+                <rds:TargetColumn Name="TargetIdOriginalDetail" SourceName="SourceDetailId" IsKey="True"/>
+                <rds:TargetColumn Name="DetailValue" SourceName="DetailValue" />
+            </rds:Target>
+        </rds:SyncModel.Targets>
+    </rds:SyncModel>
+    
+    <rds:CreateProcedure ProcName="RunSync1" />
+    <rds:CreateProcedure ProcName="RunSync2" />
+
+    <rds:Run />
+    <rds:Run />
+</Batch>

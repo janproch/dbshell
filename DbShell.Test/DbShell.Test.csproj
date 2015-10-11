@@ -95,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CreateRds1Data.sql" />
+    <EmbeddedResource Include="CreateRds2Data.sql" />
     <Content Include="Ideas.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -207,6 +208,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="rds1.xaml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="rds2.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

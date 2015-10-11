@@ -27,5 +27,18 @@ namespace DbShell.Test
                 runner.Run();
             }
         }
+
+        [DeploymentItem("rds2.xaml")]
+        [TestMethod]
+        public void SourceJoinSyncTest()
+        {
+            InitDatabase();
+            RunEmbeddedScript("CreateRds2Data.sql");
+            using (var runner = CreateRunner())
+            {
+                runner.LoadFile("rds2.xaml");
+                runner.Run();
+            }
+        }
     }
 }

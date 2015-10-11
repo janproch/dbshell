@@ -24,14 +24,15 @@ namespace DbShell.RelatedDataSync.SqlModel
             switch (_dbsh.RealValueType)
             {
                 case TargetColumnValueType.Source:
+                    var entity = sourceJoinModel[_dbsh.SourceName].Entities.First();
                     return new DmlfColumnRefExpression
                     {
                         Column = new DmlfColumnRef
                         {
-                            ColumnName = sourceJoinModel[_dbsh.SourceName].Alias,
+                            ColumnName = entity.GetColumnName(sourceJoinModel[_dbsh.SourceName].Alias),
                             Source = new DmlfSource
                             {
-                                Alias = sourceJoinModel[_dbsh.SourceName].Entities.First().SqlAlias,
+                                Alias = entity.SqlAlias,
                             }
                         }
                     };

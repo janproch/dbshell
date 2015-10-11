@@ -33,5 +33,12 @@ namespace DbShell.RelatedDataSync.SqlModel
                 return null;
             }
         }
+
+        public string GetColumnName(string alias)
+        {
+            int index = Columns.FindIndex(x => x.Alias == alias);
+            if (index >= 0) return _dbsh.Columns[index].Name;
+            return alias;
+        }
     }
 }
