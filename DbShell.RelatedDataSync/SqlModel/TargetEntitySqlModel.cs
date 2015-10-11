@@ -81,6 +81,15 @@ namespace DbShell.RelatedDataSync.SqlModel
                 Alias = "tested",
             };
             existSelect.SelectAll = true;
+            CreateKeyCondition(existSelect, "tested");
+
+            res.Select.AddAndCondition(new DmlfNotExistCondition { Select = existSelect });
+
+            return res;
+        }
+
+        private void CreateKeyCondition(DmlfCommandBase cmd, string targetEntityAlias)
+        {
             foreach (var column in TargetColumns.Where(x => x.IsKey))
             {
                 var cond = new DmlfEqualCondition
@@ -90,7 +99,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                     {
                         Column = new DmlfColumnRef
                         {
-                            Source = new DmlfSource { Alias = "tested" },
+                            Source = new DmlfSource { Alias = targetEntityAlias },
                             ColumnName = column.Name,
                         }
                     },
@@ -98,11 +107,52 @@ namespace DbShell.RelatedDataSync.SqlModel
                     // source column
                     RightExpr = column.CreateSourceExpression(SourceJoinModel),
                 };
-                existSelect.AddAndCondition(cond);
+                cmd.AddAndCondition(cond);
             }
+        }
 
-            res.Select.AddAndCondition(new DmlfNotExistCondition { Select = existSelect });
+        private DmlfUpdate CompileUpdate()
+        {
+            var res = new DmlfUpdate();
+            res.UpdateTarget = new DmlfSource { Alias = "target" };
+            res.From.Add(SourceJoinModel.SourceJoin);
+            res.From.Add(new DmlfFromItem
+            {
+                Source = new DmlfSource
+                {
+                    Alias = "target",
+                    TableOrView = TargetTable,
+                }
+            });
+            CreateKeyCondition(res, "target");
+            foreach (var column in TargetColumns.Where(x => !x.IsKey))
+            {
+                res.Columns.Add(new DmlfUpdateField
+                {
+                    TargetColumn = column.Name,
+                    Expr = column.CreateSourceExpression(SourceJoinModel),
+                });
+            }
+            return res;
+        }
 
+        private DmlfDelete CompileDelete()
+        {
+            var res = new DmlfDelete();
+            res.DeleteTarget = new DmlfSource { Alias = "target" };
+            res.SingleFrom.Source = new DmlfSource
+            {
+                Alias = "target",
+                TableOrView = TargetTable,
+            };
+            var existSelect = new DmlfSelect();
+            res.AddAndCondition(new DmlfNotExistCondition
+            {
+                Select = existSelect,
+            });
+            existSelect.SelectAll = true;
+            existSelect.From.Add(SourceJoinModel.SourceJoin);
+            CreateKeyCondition(existSelect, "target");
             return res;
         }
 
@@ -110,6 +160,14 @@ namespace DbShell.RelatedDataSync.SqlModel
         {
             var insert = CompileInsert();
             insert.GenSql(dmp);
+            dmp.EndCommand();
+
+            var update = CompileUpdate();
+            update.GenSql(dmp);
+            dmp.EndCommand();
+
+            var delete = CompileDelete();
+            delete.GenSql(dmp);
             dmp.EndCommand();
         }
 
