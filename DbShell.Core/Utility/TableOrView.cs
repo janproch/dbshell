@@ -66,7 +66,7 @@ namespace DbShell.Core.Utility
 
         protected abstract TableInfo GetRowFormat(IShellContext context);
 
-        protected NameWithSchema GetFullName(IShellContext context)
+        public NameWithSchema GetFullName(IShellContext context)
         {
             return new NameWithSchema(context.Replace(Schema), context.Replace(Name));
         }

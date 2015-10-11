@@ -27,5 +27,18 @@ namespace DbShell.RelatedDataSync
 
         [XamlProperty]
         public bool IsKey { get; set; }
+
+        [XamlProperty]
+        public TargetColumnValueType RealValueType
+        {
+            get
+            {
+                if (ValueType == TargetColumnValueType.Auto)
+                {
+                    if (!String.IsNullOrEmpty(SourceName)) return TargetColumnValueType.Source;
+                }
+                return TargetColumnValueType.Auto;
+            }
+        }
     }
 }

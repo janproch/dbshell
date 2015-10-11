@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DbShell.RelatedDataSync.SqlModel
 {
-    public class EntityColumn
+    public class EntitySourceColumn
     {
     }
 }

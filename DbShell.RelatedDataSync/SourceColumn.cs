@@ -16,5 +16,10 @@ namespace DbShell.RelatedDataSync
 
         [XamlProperty]
         public bool IsKey { get; set; }
+
+        public string AliasOrName
+        {
+            get { return Alias ?? Name; }
+        }
     }
 }

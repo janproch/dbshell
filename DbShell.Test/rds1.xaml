@@ -18,5 +18,9 @@
         </rds:SyncModel.Targets>
     </rds:SyncModel>
     
+    <rds:CreateProcedure ProcName="RunSync1" />
+    <rds:CreateProcedure ProcName="RunSync2" />
+
+    <rds:Run />
     <rds:Run />
 </Batch>
