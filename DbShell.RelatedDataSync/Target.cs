@@ -16,6 +16,9 @@ namespace DbShell.RelatedDataSync
         [XamlProperty]
         public string TableName { get; set; }
 
+        [XamlProperty]
+        public string PrimarySource { get; set; }
+
         public List<TargetColumn> Columns { get; private set; } = new List<TargetColumn>();
     }
 }

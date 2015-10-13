@@ -14,20 +14,21 @@ namespace DbShell.RelatedDataSync.SqlModel
     public class TargetEntitySqlModel
     {
         private DataSyncSqlModel _dataSyncSqlModel;
-        private Target _entity;
+        private Target _dbsh;
         public NameWithSchema TargetTable;
         public HashSet<SourceColumnSqlModel> RequiredSourceColumns = new HashSet<SourceColumnSqlModel>();
         public HashSet<SourceColumnSqlModel> KeySourceColumns = new HashSet<SourceColumnSqlModel>();
         public List<TargetColumnSqlModel> TargetColumns = new List<TargetColumnSqlModel>();
         public SourceJoinSqlModel SourceJoinModel;
+        public bool RequiresGrouping;
 
-        public TargetEntitySqlModel(DataSyncSqlModel dataSyncSqlModel, Target entity, IShellContext context)
+        public TargetEntitySqlModel(DataSyncSqlModel dataSyncSqlModel, Target dbsh, IShellContext context)
         {
             this._dataSyncSqlModel = dataSyncSqlModel;
-            this._entity = entity;
-            TargetTable = new NameWithSchema(context.Replace(entity.TableSchema), context.Replace(entity.TableName));
+            this._dbsh = dbsh;
+            TargetTable = new NameWithSchema(context.Replace(dbsh.TableSchema), context.Replace(dbsh.TableName));
 
-            foreach (var col in entity.Columns)
+            foreach (var col in dbsh.Columns)
             {
                 var targetCol = new TargetColumnSqlModel(col);
                 TargetColumns.Add(targetCol);
@@ -43,11 +44,34 @@ namespace DbShell.RelatedDataSync.SqlModel
 
             if (!KeySourceColumns.Any())
             {
-                throw new Exception($"DBSH-00000 Entity {entity.TableName} has no source for key");
+                throw new Exception($"DBSH-00000 Entity {dbsh.TableName} has no source for key");
             }
 
-            SourceJoinModel = new SourceJoinSqlModel(this);
+            SourceJoinModel = new SourceJoinSqlModel(this, dataSyncSqlModel.SourceGraphModel);
 
+            RequiresGrouping = DetectGrouping();
+        }
+
+        private bool DetectGrouping()
+        {
+            // if primary source is not defined, group=TRUE
+            if (SourceJoinModel.PrimarySource == null) return true;
+            // if primary source has not key, group=TRUE
+            if (!SourceJoinModel.PrimarySource.KeyColumns.Any()) return true;
+
+            // all columns is source key must be in entity key
+            foreach (var col in SourceJoinModel.PrimarySource.KeyColumns)
+            {
+                if (!KeySourceColumns.Any(x => x.Alias == col.Alias)) return true;
+            }
+
+            // source key is covered by this key => grouping is not required
+            return false;
+        }
+
+        public Target Dbsh
+        {
+            get { return _dbsh; }
         }
 
         private IEnumerable<string> ExtractColumnSources(TargetColumn col)
@@ -68,10 +92,24 @@ namespace DbShell.RelatedDataSync.SqlModel
             foreach (var col in TargetColumns)
             {
                 res.TargetColumns.Add(col.Name);
+                var expr = col.CreateSourceExpression(SourceJoinModel, RequiresGrouping && !col.IsKey);
                 res.Select.Columns.Add(new DmlfResultField
                 {
-                    Expr = col.CreateSourceExpression(SourceJoinModel),
+                    Expr = expr,
                 });
+            }
+
+            if (RequiresGrouping)
+            {
+                res.Select.GroupBy = new DmlfGroupByCollection();
+                foreach(var col in TargetColumns.Where(x => x.IsKey))
+                {
+                    var expr = col.CreateSourceExpression(SourceJoinModel, false);
+                    res.Select.GroupBy.Add(new DmlfGroupByItem
+                    {
+                        Expr = expr,
+                    });
+                }
             }
 
             var existSelect = new DmlfSelect();
@@ -105,7 +143,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                     },
 
                     // source column
-                    RightExpr = column.CreateSourceExpression(SourceJoinModel),
+                    RightExpr = column.CreateSourceExpression(SourceJoinModel, false),
                 };
                 cmd.AddAndCondition(cond);
             }
@@ -130,9 +168,10 @@ namespace DbShell.RelatedDataSync.SqlModel
                 res.Columns.Add(new DmlfUpdateField
                 {
                     TargetColumn = column.Name,
-                    Expr = column.CreateSourceExpression(SourceJoinModel),
+                    Expr = column.CreateSourceExpression(SourceJoinModel, false),
                 });
             }
+            if (!res.Columns.Any()) return null;
             return res;
         }
 
@@ -159,16 +198,25 @@ namespace DbShell.RelatedDataSync.SqlModel
         public void Run(ISqlDumper dmp)
         {
             var insert = CompileInsert();
-            insert.GenSql(dmp);
-            dmp.EndCommand();
+            if (insert != null)
+            {
+                insert.GenSql(dmp);
+                dmp.EndCommand();
+            }
 
             var update = CompileUpdate();
-            update.GenSql(dmp);
-            dmp.EndCommand();
+            if (update != null)
+            {
+                update.GenSql(dmp);
+                dmp.EndCommand();
+            }
 
             var delete = CompileDelete();
-            delete.GenSql(dmp);
-            dmp.EndCommand();
+            if (delete != null)
+            {
+                delete.GenSql(dmp);
+                dmp.EndCommand();
+            }
         }
 
         public void Run(DbConnection conn, IDatabaseFactory factory)

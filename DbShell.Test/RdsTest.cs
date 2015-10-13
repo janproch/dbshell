@@ -40,5 +40,20 @@ namespace DbShell.Test
                 runner.Run();
             }
         }
+
+        
+
+        [DeploymentItem("rdscountry_natural.xaml")]
+        [TestMethod]
+        public void CountryNaturalKeysTest()
+        {
+            InitDatabase();
+            RunEmbeddedScript("CreateRdsGeoDataNatualKeys.sql");
+            using (var runner = CreateRunner())
+            {
+                runner.LoadFile("rdscountry_natural.xaml");
+                runner.Run();
+            }
+        }
     }
 }

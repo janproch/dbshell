@@ -14,6 +14,9 @@ namespace DbShell.RelatedDataSync
         [XamlProperty]
         public ITabularDataSource DataSource { get; set; }
 
+        [XamlProperty]
+        public string Alias { get; set; }
+
         public List<SourceColumn> Columns { get; private set; } = new List<SourceColumn>();
     }
 }

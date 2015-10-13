@@ -40,5 +40,19 @@ namespace DbShell.RelatedDataSync.SqlModel
             if (index >= 0) return _dbsh.Columns[index].Name;
             return alias;
         }
+
+        public List<SourceColumnSqlModel> KeyColumns
+        {
+            get
+            {
+                var res = new List<SourceColumnSqlModel>();
+                for (int i = 0; i < _dbsh.Columns.Count; i++)
+                {
+                    if (!_dbsh.Columns[i].IsKey) continue;
+                    res.Add(Columns[i]);
+                }
+                return res;
+            }
+        }
     }
 }

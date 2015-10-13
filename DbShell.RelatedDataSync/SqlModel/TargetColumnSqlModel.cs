@@ -19,13 +19,23 @@ namespace DbShell.RelatedDataSync.SqlModel
             Name = dbsh.Name;
         }
 
-        public DmlfExpression CreateSourceExpression(SourceJoinSqlModel sourceJoinModel)
+        private DmlfExpression CreateAggregate(DmlfExpression expr)
+        {
+            var res = new DmlfFuncCallExpression
+            {
+                FuncName = "MAX",
+            };
+            res.Arguments.Add(expr);
+            return res;
+        }
+
+        public DmlfExpression CreateSourceExpression(SourceJoinSqlModel sourceJoinModel, bool aggregate)
         {
             switch (_dbsh.RealValueType)
             {
                 case TargetColumnValueType.Source:
                     var entity = sourceJoinModel[_dbsh.SourceName].Entities.First();
-                    return new DmlfColumnRefExpression
+                    var res = new DmlfColumnRefExpression
                     {
                         Column = new DmlfColumnRef
                         {
@@ -36,6 +46,8 @@ namespace DbShell.RelatedDataSync.SqlModel
                             }
                         }
                     };
+                    if (aggregate) return CreateAggregate(res);
+                    return res;
             }
             throw new Exception("DBSH-00000 Cannot create expression");
         }

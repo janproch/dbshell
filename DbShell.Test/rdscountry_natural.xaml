@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Batch 
+    xmlns="http://schemas.dbshell.com/core"
+    xmlns:rds="http://schemas.dbshell.com/datasync"
+    >
+    <rds:SyncModel >
+        <rds:SyncModel.Sources>
+            <rds:Source DataSource="{Table Continent}" Alias="src_continent">
+                <rds:SourceColumn Name="ContinentName" IsKey="True" />
+            </rds:Source>
+            <rds:Source DataSource="{Table Country}">
+                <rds:SourceColumn Name="CountryCode" IsKey="True" />
+                <rds:SourceColumn Name="CountryName"  />
+                <rds:SourceColumn Name="ContinentName" />
+            </rds:Source>
+            <rds:Source DataSource="{Table City}">
+                <rds:SourceColumn Name="CityName" IsKey="True" />
+                <rds:SourceColumn Name="CountryCode"  />
+                <rds:SourceColumn Name="CityCitizens" />
+            </rds:Source>
+            <rds:Source DataSource="{Table CityPart}">
+                <rds:SourceColumn Name="CityPartName" IsKey="True" />
+                <rds:SourceColumn Name="CityName"  />
+            </rds:Source>
+        </rds:SyncModel.Sources>
+
+        <rds:SyncModel.Targets>
+            <!--
+            <rds:Target TableName="TargetCityParts">
+                <rds:TargetColumn Name="ContinentName" SourceName="ContinentName" />
+                <rds:TargetColumn Name="CityPartName" SourceName="CityPartName" IsKey="True" />
+            </rds:Target>
+            -->
+
+            <rds:Target TableName="TargetContinents" >
+                <rds:TargetColumn Name="ContinentName" SourceName="ContinentName" IsKey="True" />
+            </rds:Target>
+        </rds:SyncModel.Targets>
+    </rds:SyncModel>
+    
+    <rds:CreateProcedure ProcName="RunSync1" />
+    <rds:CreateProcedure ProcName="RunSync2" />
+
+    <rds:Run />
+    <rds:Run />
+</Batch>

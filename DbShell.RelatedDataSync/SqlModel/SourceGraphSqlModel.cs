@@ -18,7 +18,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             {
                 var src = new SourceEntitySqlModel(item);
                 Entities.Add(src);
-                src.SqlAlias = "src_" + Entities.Count;
+                src.SqlAlias = item.Alias ?? "src_" + Entities.Count;
                 var tableOrView = item.DataSource as DbShell.Core.Utility.TableOrView;
                 if (tableOrView != null) src.TableName = tableOrView.GetFullName(context);
                 foreach (var colItem in item.Columns)
