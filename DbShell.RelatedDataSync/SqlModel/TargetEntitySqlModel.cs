@@ -18,8 +18,10 @@ namespace DbShell.RelatedDataSync.SqlModel
         public NameWithSchema TargetTable;
         public HashSet<SourceColumnSqlModel> RequiredSourceColumns = new HashSet<SourceColumnSqlModel>();
         public HashSet<SourceColumnSqlModel> KeySourceColumns = new HashSet<SourceColumnSqlModel>();
-        public List<TargetColumnSqlModel> TargetColumns = new List<TargetColumnSqlModel>();
+        public List<TargetColumnSqlModelBase> TargetColumns = new List<TargetColumnSqlModelBase>();
+        public Dictionary<TargetReference, TargetEntitySqlModel> RefEntities = new Dictionary<TargetReference, TargetEntitySqlModel>();
         public SourceJoinSqlModel SourceJoinModel;
+        public string SqlAlias;
         public bool RequiresGrouping;
 
         public TargetEntitySqlModel(DataSyncSqlModel dataSyncSqlModel, Target dbsh, IShellContext context)
@@ -27,10 +29,11 @@ namespace DbShell.RelatedDataSync.SqlModel
             this._dataSyncSqlModel = dataSyncSqlModel;
             this._dbsh = dbsh;
             TargetTable = new NameWithSchema(context.Replace(dbsh.TableSchema), context.Replace(dbsh.TableName));
+            SqlAlias = _dbsh.Alias ?? "dst_" + _dataSyncSqlModel.Entities.Count;
 
             foreach (var col in dbsh.Columns)
             {
-                var targetCol = new TargetColumnSqlModel(col);
+                var targetCol = new TargetNoRefColumnSqlModel(col);
                 TargetColumns.Add(targetCol);
 
                 foreach (string alias in ExtractColumnSources(col))
@@ -38,7 +41,27 @@ namespace DbShell.RelatedDataSync.SqlModel
                     var source = dataSyncSqlModel.SourceGraphModel[alias];
                     RequiredSourceColumns.Add(source);
                     if (col.IsKey) KeySourceColumns.Add(source);
-                    targetCol.Sources.Add(source);
+                    //targetCol.Sources.Add(source);
+                }
+            }
+
+            foreach (var fk in dbsh.References)
+            {
+                string replaced = context.Replace(fk.Target);
+                var fullName = StructuredIdentifier.Parse(replaced);
+                var entity = _dataSyncSqlModel.Entities.FirstOrDefault(x => x.Match(fullName));
+                if (entity == null) throw new Exception($"DBSH-00000 Target entity {replaced} not found");
+                RefEntities[fk] = entity;
+
+                foreach(var col in fk.Columns)
+                {
+                    TargetColumns.Add(new TargetRefColumnSqlModel(fk, col, entity));
+                }
+
+                foreach (var col in entity.KeySourceColumns)
+                {
+                    RequiredSourceColumns.Add(col);
+                    if (fk.IsKey) KeySourceColumns.Add(col);
                 }
             }
 
@@ -50,6 +73,55 @@ namespace DbShell.RelatedDataSync.SqlModel
             SourceJoinModel = new SourceJoinSqlModel(this, dataSyncSqlModel.SourceGraphModel);
 
             RequiresGrouping = DetectGrouping();
+        }
+
+        public DmlfSource GetRefSource(DmlfFromItem from, SourceJoinSqlModel joinModel)
+        {
+            var res = from.FindSourceWithAlias(SqlAlias);
+            if (res != null) return res;
+            res = new DmlfSource
+            {
+                Alias = SqlAlias,
+                TableOrView = TargetTable,
+            };
+            var rel = new DmlfRelation
+            {
+                JoinType = DmlfJoinType.Left,
+                Reference = res,
+            };
+            from.Relations.Add(rel);
+
+            foreach (var keycol in TargetColumns.Where(x => x.IsKey))
+            {
+                rel.Conditions.Add(new DmlfEqualCondition
+                {
+                    LeftExpr = keycol.CreateSourceExpression(joinModel, false),
+                    RightExpr = new DmlfColumnRefExpression
+                    {
+                        Column = new DmlfColumnRef
+                        {
+                            ColumnName = keycol.Name,
+                            Source = res,
+                        }
+                    }
+                });
+            }
+            return res;
+        }
+
+        public bool Match(StructuredIdentifier name)
+        {
+            if (name.Count == 1)
+            {
+                if (_dbsh.Alias == name.First) return true;
+                if (_dbsh.Alias == null && TargetTable.Name == name.First) return true;
+            }
+            if (name.Count == 2)
+            {
+                if (_dbsh.Alias != null) return false;
+                return TargetTable.Schema == name[0] && TargetTable.Name == name[1];
+            }
+            return false;
         }
 
         private bool DetectGrouping()
@@ -87,7 +159,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             var res = new DmlfInsertSelect();
             res.TargetTable = TargetTable;
             res.Select = new DmlfSelect();
-            res.Select.From.Add(SourceJoinModel.SourceJoin);
+            res.Select.From.Add(SourceJoinModel.SourceToRefsJoin);
 
             foreach (var col in TargetColumns)
             {
@@ -102,7 +174,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             if (RequiresGrouping)
             {
                 res.Select.GroupBy = new DmlfGroupByCollection();
-                foreach(var col in TargetColumns.Where(x => x.IsKey))
+                foreach (var col in TargetColumns.Where(x => x.IsKey))
                 {
                     var expr = col.CreateSourceExpression(SourceJoinModel, false);
                     res.Select.GroupBy.Add(new DmlfGroupByItem
@@ -153,7 +225,7 @@ namespace DbShell.RelatedDataSync.SqlModel
         {
             var res = new DmlfUpdate();
             res.UpdateTarget = new DmlfSource { Alias = "target" };
-            res.From.Add(SourceJoinModel.SourceJoin);
+            res.From.Add(SourceJoinModel.SourceToRefsJoin);
             res.From.Add(new DmlfFromItem
             {
                 Source = new DmlfSource
@@ -190,7 +262,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 Select = existSelect,
             });
             existSelect.SelectAll = true;
-            existSelect.From.Add(SourceJoinModel.SourceJoin);
+            existSelect.From.Add(SourceJoinModel.SourceToRefsJoin);
             CreateKeyCondition(existSelect, "target");
             return res;
         }

@@ -43,7 +43,7 @@ namespace DbShell.Driver.Common.DmlFramework
             {
                 if (Where.Condition is DmlfAndCondition)
                 {
-                    ((DmlfAndCondition) Where.Condition).Conditions.Add(cond);
+                    ((DmlfAndCondition)Where.Condition).Conditions.Add(cond);
                 }
                 else
                 {
@@ -108,6 +108,16 @@ namespace DbShell.Driver.Common.DmlFramework
                     }
                 }
             }
+        }
+
+        public DmlfSource FindSourceWithAlias(string alias)
+        {
+            foreach (var item in From)
+            {
+                var res = item.FindSourceWithAlias(alias);
+                if (res != null) return res;
+            }
+            return null;
         }
 
         public override void ForEachChild(Action<IDmlfNode> action)

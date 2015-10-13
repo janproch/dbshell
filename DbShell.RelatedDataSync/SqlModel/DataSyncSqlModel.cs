@@ -27,6 +27,11 @@ namespace DbShell.RelatedDataSync.SqlModel
             }
         }
 
+        public SyncModel Dbsh
+        {
+            get { return _model; }
+        }
+
         public void Run(DbConnection conn, IDatabaseFactory factory)
         {
             foreach (var ent in Entities)

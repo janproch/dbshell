@@ -32,9 +32,26 @@
             </rds:Target>
             -->
 
+            <!--
             <rds:Target TableName="TargetContinents" >
                 <rds:TargetColumn Name="ContinentName" SourceName="ContinentName" IsKey="True" />
             </rds:Target>
+            -->
+
+            <rds:Target TableName="TargetContinentList">
+                <rds:TargetColumn Name="Name" SourceName="ContinentName" IsKey="True"/>
+            </rds:Target>
+
+            <rds:Target TableName="TargetCityPartList">
+                <rds:TargetColumn Name="Name" SourceName="CityPartName" IsKey="True"/>
+
+                <rds:Target.References>
+                    <rds:TargetReference Target="TargetContinentList">
+                        <rds:TargetReferenceColumn BaseName="ID_CONTINENT" RefName="ID" />
+                    </rds:TargetReference>
+                </rds:Target.References>
+            </rds:Target>
+
         </rds:SyncModel.Targets>
     </rds:SyncModel>
     

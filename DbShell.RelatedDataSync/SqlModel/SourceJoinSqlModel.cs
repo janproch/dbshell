@@ -9,7 +9,7 @@ namespace DbShell.RelatedDataSync.SqlModel
     public class SourceJoinSqlModel : SourceGraphSqlModelBase
     {
         private TargetEntitySqlModel _targetEntitySqlModel;
-        public DmlfFromItem SourceJoin;
+        public DmlfFromItem SourceToRefsJoin;
         private List<SourceEntitySqlModel> _processedEntities = new List<SourceEntitySqlModel>();
         private List<SourceEntitySqlModel> _entityQueue = new List<SourceEntitySqlModel>();
         private SourceGraphSqlModel _sourceGraph;
@@ -20,7 +20,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             _targetEntitySqlModel = targetEntitySqlModel;
             _sourceGraph = sourceGraph;
 
-            SourceJoin = new DmlfFromItem();
+            SourceToRefsJoin = new DmlfFromItem();
 
 
             //foreach (var column in _targetEntitySqlModel.RequiredSourceColumns)
@@ -63,13 +63,14 @@ namespace DbShell.RelatedDataSync.SqlModel
 
             CreateSourceJoin();
 
+            AddRefsToJoin();
         }
 
         private void CreateSourceJoin()
         {
             var ent0 = PopEntityFromQueue();
 
-            SourceJoin.Source = new DmlfSource
+            SourceToRefsJoin.Source = new DmlfSource
             {
                 Alias = ent0.SqlAlias,
                 TableOrView = ent0.TableName,
@@ -125,8 +126,16 @@ namespace DbShell.RelatedDataSync.SqlModel
                     }
                 }
 
-                SourceJoin.Relations.Add(relation);
+                SourceToRefsJoin.Relations.Add(relation);
                 _processedEntities.Add(ent);
+            }
+        }
+
+        private void AddRefsToJoin()
+        {
+            foreach(var fk in _targetEntitySqlModel.RefEntities.Values)
+            {
+                fk.GetRefSource(SourceToRefsJoin, this);
             }
         }
 
@@ -216,7 +225,9 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         private bool EntityHasKey(SourceEntitySqlModel entity)
         {
-            return _targetEntitySqlModel.TargetColumns.Where(x => x.IsKey).Any(x => x.Sources.Any(y => entity.Columns.Any(z => z.Alias == y.Alias)));
+            return _targetEntitySqlModel.KeySourceColumns.Any(x => entity.Columns.Any(y => y.Alias == x.Alias));
+            //return _targetEntitySqlModel.TargetColumns.Where(x => x.IsKey).Any(x => x.Sources.Any(y => entity.Columns.Any(z => z.Alias == y.Alias)));
+
         }
 
         private SourceEntitySqlModel FindEntityFromQueue()

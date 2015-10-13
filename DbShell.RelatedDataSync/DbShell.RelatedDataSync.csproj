@@ -49,15 +49,20 @@
     <Compile Include="SqlModel\SourceEntitySqlModel.cs" />
     <Compile Include="SqlModel\SourceGraphSqlModelBase.cs" />
     <Compile Include="SqlModel\SourceJoinSqlModel.cs" />
-    <Compile Include="SqlModel\TargetColumnSqlModel.cs" />
+    <Compile Include="SqlModel\TargetNoRefColumnSqlModel.cs" />
+    <Compile Include="SqlModel\TargetColumnSqlModelBase.cs" />
     <Compile Include="SqlModel\TargetEntitySqlModel.cs" />
     <Compile Include="SqlModel\SourceGraphSqlModel.cs" />
+    <Compile Include="SqlModel\TargetRefColumnSqlModel.cs" />
     <Compile Include="SyncModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source.cs" />
     <Compile Include="Target.cs" />
     <Compile Include="SourceColumn.cs" />
     <Compile Include="TargetColumn.cs" />
+    <Compile Include="TargetReference.cs" />
+    <Compile Include="TargetReferenceColumn.cs" />
+    <Compile Include="XmlPropertyAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DbShell.Common\DbShell.Common.csproj">

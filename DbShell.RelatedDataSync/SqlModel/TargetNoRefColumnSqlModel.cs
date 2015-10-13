@@ -6,18 +6,19 @@ using DbShell.Driver.Common.DmlFramework;
 
 namespace DbShell.RelatedDataSync.SqlModel
 {
-    public class TargetColumnSqlModel
+    public class TargetNoRefColumnSqlModel : TargetColumnSqlModelBase
     {
-        public string Name;
+        //public List<SourceColumnSqlModel> Sources = new List<SourceColumnSqlModel>();
 
-        public List<SourceColumnSqlModel> Sources = new List<SourceColumnSqlModel>();
         private TargetColumn _dbsh;
 
-        public TargetColumnSqlModel(TargetColumn dbsh)
+        public TargetNoRefColumnSqlModel(TargetColumn dbsh)
         {
             _dbsh = dbsh;
-            Name = dbsh.Name;
         }
+
+        public override bool IsKey => _dbsh.IsKey;
+        public override string Name => _dbsh.Name;
 
         private DmlfExpression CreateAggregate(DmlfExpression expr)
         {
@@ -29,7 +30,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             return res;
         }
 
-        public DmlfExpression CreateSourceExpression(SourceJoinSqlModel sourceJoinModel, bool aggregate)
+        public override DmlfExpression CreateSourceExpression(SourceJoinSqlModel sourceJoinModel, bool aggregate)
         {
             switch (_dbsh.RealValueType)
             {
@@ -50,11 +51,6 @@ namespace DbShell.RelatedDataSync.SqlModel
                     return res;
             }
             throw new Exception("DBSH-00000 Cannot create expression");
-        }
-
-        public bool IsKey
-        {
-            get { return _dbsh.IsKey; }
         }
     }
 }
