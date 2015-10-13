@@ -11,5 +11,6 @@ namespace DbShell.RelatedDataSync.SqlModel
         public abstract DmlfExpression CreateSourceExpression(SourceJoinSqlModel sourceJoinModel, bool aggregate);
         public abstract string Name { get; }
         public abstract bool IsKey { get; }
+        public virtual bool IsRestriction => false;
     }
 }

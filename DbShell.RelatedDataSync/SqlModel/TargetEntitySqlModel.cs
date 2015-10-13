@@ -8,6 +8,7 @@ using System.Text;
 using System.Data.Common;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Sql;
+using System.Text.RegularExpressions;
 
 namespace DbShell.RelatedDataSync.SqlModel
 {
@@ -23,6 +24,8 @@ namespace DbShell.RelatedDataSync.SqlModel
         public SourceJoinSqlModel SourceJoinModel;
         public string SqlAlias;
         public bool RequiresGrouping;
+
+        public static string ExpressionColumnRegex = @"\{([^\}]+)\}";
 
         public TargetEntitySqlModel(DataSyncSqlModel dataSyncSqlModel, Target dbsh, IShellContext context)
         {
@@ -90,7 +93,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 Reference = res,
             };
 
-            foreach (var keycol in TargetColumns.Where(x => x.IsKey))
+            foreach (var keycol in TargetColumns.Where(x => x.IsKey || x.IsRestriction))
             {
                 rel.Conditions.Add(new DmlfEqualCondition
                 {
@@ -152,7 +155,14 @@ namespace DbShell.RelatedDataSync.SqlModel
         {
             if (col.RealValueType == TargetColumnValueType.Source)
             {
-                yield return col.SourceName;
+                yield return col.Source;
+            }
+            if (col.RealValueType == TargetColumnValueType.Expression)
+            {
+                foreach (Match m in Regex.Matches(col.Expression, ExpressionColumnRegex))
+                {
+                    yield return m.Groups[1].Value;
+                }
             }
         }
 
@@ -166,7 +176,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             foreach (var col in TargetColumns)
             {
                 res.TargetColumns.Add(col.Name);
-                var expr = col.CreateSourceExpression(SourceJoinModel, RequiresGrouping && !col.IsKey);
+                var expr = col.CreateSourceExpression(SourceJoinModel, RequiresGrouping && !col.IsKey && !col.IsRestriction);
                 res.Select.Columns.Add(new DmlfResultField
                 {
                     Expr = expr,
@@ -214,9 +224,9 @@ namespace DbShell.RelatedDataSync.SqlModel
             }
         }
 
-        private void CreateKeyCondition(DmlfCommandBase cmd, string targetEntityAlias)
+        private void CreateTargetColumsnCondition(DmlfCommandBase cmd, string targetEntityAlias, Func<TargetColumnSqlModelBase, bool> useThisColumns)
         {
-            foreach (var column in TargetColumns.Where(x => x.IsKey))
+            foreach (var column in TargetColumns.Where(useThisColumns))
             {
                 var cond = new DmlfEqualCondition
                 {
@@ -235,6 +245,17 @@ namespace DbShell.RelatedDataSync.SqlModel
                 };
                 cmd.AddAndCondition(cond);
             }
+
+        }
+
+        private void CreateKeyCondition(DmlfCommandBase cmd, string targetEntityAlias)
+        {
+            CreateTargetColumsnCondition(cmd, targetEntityAlias, x => x.IsKey || x.IsRestriction);
+        }
+
+        private void CreateRestrictionCondition(DmlfCommandBase cmd, string targetEntityAlias)
+        {
+            CreateTargetColumsnCondition(cmd, targetEntityAlias, x => x.IsRestriction);
         }
 
         private DmlfUpdate CompileUpdate()
@@ -251,7 +272,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 }
             });
             CreateKeyCondition(res, "target");
-            foreach (var column in TargetColumns.Where(x => !x.IsKey))
+            foreach (var column in TargetColumns.Where(x => !x.IsKey && !x.IsRestriction))
             {
                 res.Columns.Add(new DmlfUpdateField
                 {
@@ -280,6 +301,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             existSelect.SelectAll = true;
             existSelect.From.Add(SourceJoinModel.SourceToRefsJoin);
             CreateKeyCondition(existSelect, "target");
+            CreateRestrictionCondition(res, "target");
             return res;
         }
 

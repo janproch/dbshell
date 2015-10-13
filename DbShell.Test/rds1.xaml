@@ -12,8 +12,8 @@
         </rds:SyncModel.Sources>
         <rds:SyncModel.Targets>
             <rds:Target TableName="Target">
-                <rds:TargetColumn Name="TargetIdOriginal" SourceName="SourceId" IsKey="True"/>
-                <rds:TargetColumn Name="Value" SourceName="Value" />
+                <rds:TargetColumn Name="TargetIdOriginal" Source="SourceId" IsKey="True"/>
+                <rds:TargetColumn Name="Value" Source="Value" />
             </rds:Target>
         </rds:SyncModel.Targets>
     </rds:SyncModel>

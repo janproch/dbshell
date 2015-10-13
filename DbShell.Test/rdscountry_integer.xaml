@@ -30,26 +30,28 @@
 
         <rds:SyncModel.Targets>
             <rds:Target TableName="TargetCityParts">
-                <rds:TargetColumn Name="ContinentName" SourceName="ContinentName" />
-                <rds:TargetColumn Name="CityPartIdOriginal" SourceName="CityPartId"  IsKey="True"/>
-                <rds:TargetColumn Name="CityPartName" SourceName="CityPartName" />
+                <rds:TargetColumn Name="ContinentName" Source="ContinentName" />
+                <rds:TargetColumn Name="CityPartIdOriginal" Source="CityPartId"  IsKey="True"/>
+                <rds:TargetColumn Name="CityPartName" Source="CityPartName" />
+                <rds:TargetColumn Name="InfoData" Expression="'' + {CityPartName} + ' ' + {CityName}" />
+                <rds:TargetColumn Name="IsImported" Value="1" IsRestriction="True" />
             </rds:Target>
 
             <!--
             <rds:Target TableName="TargetContinents" >
-                <rds:TargetColumn Name="ContinentName" SourceName="ContinentName" IsKey="True" />
+                <rds:TargetColumn Name="ContinentName" Source="ContinentName" IsKey="True" />
             </rds:Target>
             -->
 
             <!--
             <rds:Target TableName="TargetContinentList">
-                <rds:TargetColumn Name="Name" SourceName="ContinentName" IsKey="True"/>
+                <rds:TargetColumn Name="Name" Source="ContinentName" IsKey="True"/>
             </rds:Target>
             -->
 
             <!--
             <rds:Target TableName="TargetCityPartByContinentList">
-                <rds:TargetColumn Name="Name" SourceName="CityPartName" IsKey="True"/>
+                <rds:TargetColumn Name="Name" Source="CityPartName" IsKey="True"/>
 
                 <rds:Target.References>
                     <rds:TargetReference Target="TargetContinentList">
@@ -61,7 +63,7 @@
 
             <!--
             <rds:Target TableName="TargetCountryList">
-                <rds:TargetColumn Name="Name" SourceName="CountryName" IsKey="True"/>
+                <rds:TargetColumn Name="Name" Source="CountryName" IsKey="True"/>
 
                 <rds:Target.References>
                     <rds:TargetReference Target="TargetContinentList" IsKey="True">
@@ -71,7 +73,7 @@
             </rds:Target>
 
             <rds:Target TableName="TargetCityList">
-                <rds:TargetColumn Name="Name" SourceName="CityName" IsKey="True"/>
+                <rds:TargetColumn Name="Name" Source="CityName" IsKey="True"/>
 
                 <rds:Target.References>
                     <rds:TargetReference Target="TargetCountryList" IsKey="True">
@@ -81,7 +83,7 @@
             </rds:Target>
 
             <rds:Target TableName="TargetCityPartList">
-                <rds:TargetColumn Name="Name" SourceName="CityPartName" IsKey="True"/>
+                <rds:TargetColumn Name="Name" Source="CityPartName" IsKey="True"/>
 
                 <rds:Target.References>
                     <rds:TargetReference Target="TargetCityList" IsKey="True">

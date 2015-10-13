@@ -18,10 +18,10 @@
 
         <rds:SyncModel.Targets>
             <rds:Target TableName="Target">
-                <rds:TargetColumn Name="TargetIdOriginalMaster" SourceName="SourceMasterId" IsKey="True"/>
-                <rds:TargetColumn Name="MasterValue" SourceName="MasterValue" />
-                <rds:TargetColumn Name="TargetIdOriginalDetail" SourceName="SourceDetailId" IsKey="True"/>
-                <rds:TargetColumn Name="DetailValue" SourceName="DetailValue" />
+                <rds:TargetColumn Name="TargetIdOriginalMaster" Sourc="SourceMasterId" IsKey="True"/>
+                <rds:TargetColumn Name="MasterValue" Source="MasterValue" />
+                <rds:TargetColumn Name="TargetIdOriginalDetail" Source="SourceDetailId" IsKey="True"/>
+                <rds:TargetColumn Name="DetailValue" Source="DetailValue" />
             </rds:Target>
         </rds:SyncModel.Targets>
     </rds:SyncModel>

@@ -59,7 +59,11 @@ CREATE TABLE TargetCityParts (
     ContinentName NVARCHAR(250),
 	CityPartName NVARCHAR(250),
 	CityPartIdOriginal INT,
+	InfoData NVARCHAR(250),
+	IsImported BIT
 )
+
+INSERT INTO TargetCityParts (CityPartName, CityPartIdOriginal, IsImported) VALUES ('Foo', 0, 0);
 
 CREATE TABLE TargetContinents ( 
     ContinentName NVARCHAR(250),

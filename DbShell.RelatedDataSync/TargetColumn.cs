@@ -20,7 +20,13 @@ namespace DbShell.RelatedDataSync
         public string Name { get; set; }
 
         [XamlProperty]
-        public string SourceName { get; set; }
+        public string Source { get; set; }
+
+        [XamlProperty]
+        public string Expression { get; set; }
+
+        [XamlProperty]
+        public string Value { get; set; }
 
         [XamlProperty]
         public TargetColumnValueType ValueType { get; set; } = TargetColumnValueType.Auto;
@@ -29,13 +35,18 @@ namespace DbShell.RelatedDataSync
         public bool IsKey { get; set; }
 
         [XamlProperty]
+        public bool IsRestriction { get; set; }
+
+        [XamlProperty]
         public TargetColumnValueType RealValueType
         {
             get
             {
                 if (ValueType == TargetColumnValueType.Auto)
                 {
-                    if (!String.IsNullOrEmpty(SourceName)) return TargetColumnValueType.Source;
+                    if (!String.IsNullOrEmpty(Source)) return TargetColumnValueType.Source;
+                    if (!String.IsNullOrEmpty(Expression)) return TargetColumnValueType.Expression;
+                    if (!String.IsNullOrEmpty(Value)) return TargetColumnValueType.Value;
                 }
                 return TargetColumnValueType.Auto;
             }
