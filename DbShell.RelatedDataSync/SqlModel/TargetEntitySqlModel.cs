@@ -89,7 +89,6 @@ namespace DbShell.RelatedDataSync.SqlModel
                 JoinType = DmlfJoinType.Left,
                 Reference = res,
             };
-            from.Relations.Add(rel);
 
             foreach (var keycol in TargetColumns.Where(x => x.IsKey))
             {
@@ -106,6 +105,9 @@ namespace DbShell.RelatedDataSync.SqlModel
                     }
                 });
             }
+
+            from.Relations.Add(rel);
+
             return res;
         }
 
@@ -184,6 +186,8 @@ namespace DbShell.RelatedDataSync.SqlModel
                 }
             }
 
+            CreateKeyNotNullCondition(res.Select);
+
             var existSelect = new DmlfSelect();
             existSelect.SingleFrom.Source = new DmlfSource
             {
@@ -196,6 +200,18 @@ namespace DbShell.RelatedDataSync.SqlModel
             res.Select.AddAndCondition(new DmlfNotExistCondition { Select = existSelect });
 
             return res;
+        }
+
+        private void CreateKeyNotNullCondition(DmlfCommandBase cmd)
+        {
+            foreach (var column in TargetColumns.Where(x => x.IsKey))
+            {
+                var cond = new DmlfIsNotNullCondition
+                {
+                    Expr = column.CreateSourceExpression(SourceJoinModel, false),
+                };
+                cmd.AddAndCondition(cond);
+            }
         }
 
         private void CreateKeyCondition(DmlfCommandBase cmd, string targetEntityAlias)

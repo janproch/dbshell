@@ -55,5 +55,19 @@ namespace DbShell.Test
                 runner.Run();
             }
         }
+
+        [DeploymentItem("rdscountry_integer.xaml")]
+        [TestMethod]
+        public void CountryIntegerKeysTest()
+        {
+            InitDatabase();
+            RunEmbeddedScript("CreateRdsGeoDataIntegerKeys.sql");
+            using (var runner = CreateRunner())
+            {
+                runner.LoadFile("rdscountry_integer.xaml");
+                runner.Run();
+            }
+        }
+
     }
 }

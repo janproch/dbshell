@@ -1,4 +1,5 @@
 ﻿using DbShell.Driver.Common.DmlFramework;
+using DbShell.Driver.Common.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -282,6 +283,11 @@ namespace DbShell.RelatedDataSync.SqlModel
                 Columns[alias].Entities.Add(src);
                 src.Columns.Add(Columns[alias]);
             }
+        }
+
+        public override string ToString()
+        {
+            return Entities.Select(x => $"{x.TableName} {x.SqlAlias}").CreateDelimitedText(",");
         }
     }
 }

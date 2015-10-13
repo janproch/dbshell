@@ -6,31 +6,34 @@
     <rds:SyncModel >
         <rds:SyncModel.Sources>
             <rds:Source DataSource="{Table Continent}" Alias="src_continent">
-                <rds:SourceColumn Name="ContinentName" IsKey="True" />
-            </rds:Source>
-            <rds:Source DataSource="{Table Country}">
-                <rds:SourceColumn Name="CountryCode" IsKey="True" />
-                <rds:SourceColumn Name="CountryName"  />
+                <rds:SourceColumn Name="ContinentId" IsKey="True" />
                 <rds:SourceColumn Name="ContinentName" />
             </rds:Source>
+            <rds:Source DataSource="{Table Country}">
+                <rds:SourceColumn Name="CountryId" IsKey="True" />
+                <rds:SourceColumn Name="CountryCode" />
+                <rds:SourceColumn Name="CountryName"  />
+                <rds:SourceColumn Name="ContinentId"  />
+            </rds:Source>
             <rds:Source DataSource="{Table City}">
-                <rds:SourceColumn Name="CityName" IsKey="True" />
-                <rds:SourceColumn Name="CountryCode"  />
+                <rds:SourceColumn Name="CityId" IsKey="True" />
+                <rds:SourceColumn Name="CityName" />
+                <rds:SourceColumn Name="CountryId"  />
                 <rds:SourceColumn Name="CityCitizens" />
             </rds:Source>
             <rds:Source DataSource="{Table CityPart}">
-                <rds:SourceColumn Name="CityPartName" IsKey="True" />
-                <rds:SourceColumn Name="CityName"  />
+                <rds:SourceColumn Name="CityPartId" IsKey="True" />
+                <rds:SourceColumn Name="CityPartName" />
+                <rds:SourceColumn Name="CityId"  />
             </rds:Source>
         </rds:SyncModel.Sources>
 
         <rds:SyncModel.Targets>
-            <!--
             <rds:Target TableName="TargetCityParts">
                 <rds:TargetColumn Name="ContinentName" SourceName="ContinentName" />
-                <rds:TargetColumn Name="CityPartName" SourceName="CityPartName" IsKey="True" />
+                <rds:TargetColumn Name="CityPartIdOriginal" SourceName="CityPartId"  IsKey="True"/>
+                <rds:TargetColumn Name="CityPartName" SourceName="CityPartName" />
             </rds:Target>
-            -->
 
             <!--
             <rds:Target TableName="TargetContinents" >
@@ -38,9 +41,11 @@
             </rds:Target>
             -->
 
+            <!--
             <rds:Target TableName="TargetContinentList">
                 <rds:TargetColumn Name="Name" SourceName="ContinentName" IsKey="True"/>
             </rds:Target>
+            -->
 
             <!--
             <rds:Target TableName="TargetCityPartByContinentList">
@@ -54,6 +59,7 @@
             </rds:Target>
             -->
 
+            <!--
             <rds:Target TableName="TargetCountryList">
                 <rds:TargetColumn Name="Name" SourceName="CountryName" IsKey="True"/>
 
@@ -83,6 +89,7 @@
                     </rds:TargetReference>
                 </rds:Target.References>
             </rds:Target>
+            -->
 
         </rds:SyncModel.Targets>
     </rds:SyncModel>

@@ -51,6 +51,7 @@ INSERT INTO CityPart (CityPartName, CityName) VALUES ('Long Island', 'New York')
 INSERT INTO CityPart (CityPartName, CityName) VALUES ('Medford', 'New York');
 
 
+
 CREATE TABLE TargetCityParts ( 
     ContinentName NVARCHAR(250),
 	CityPartName NVARCHAR(250)
@@ -65,8 +66,26 @@ CREATE TABLE TargetContinentList (
 	Name NVARCHAR(250)
 )
 
-CREATE TABLE TargetCityPartList (
+CREATE TABLE TargetCityPartByContinentList (
 	ID INT NOT NULL IDENTITY PRIMARY KEY,
 	ID_CONTINENT INT NOT NULL REFERENCES TargetContinentList(ID),
+	Name NVARCHAR(250)
+)
+
+CREATE TABLE TargetCountryList (
+	ID INT NOT NULL IDENTITY PRIMARY KEY,
+	ID_CONTINENT INT NOT NULL REFERENCES TargetContinentList(ID),
+	Name NVARCHAR(250)
+)
+
+CREATE TABLE TargetCityList (
+	ID INT NOT NULL IDENTITY PRIMARY KEY,
+	ID_COUNTRY INT NOT NULL REFERENCES TargetCountryList(ID),
+	Name NVARCHAR(250)
+)
+
+CREATE TABLE TargetCityPartList (
+	ID INT NOT NULL IDENTITY PRIMARY KEY,
+	ID_City INT NOT NULL REFERENCES TargetCityList(ID),
 	Name NVARCHAR(250)
 )

@@ -97,6 +97,7 @@
     <EmbeddedResource Include="CreateRds1Data.sql" />
     <EmbeddedResource Include="CreateRds2Data.sql" />
     <EmbeddedResource Include="CreateRdsGeoDataNatualKeys.sql" />
+    <EmbeddedResource Include="CreateRdsGeoDataIntegerKeys.sql" />
     <Content Include="Ideas.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -221,6 +222,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="rdscountry_natural.xaml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="rdscountry_integer.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
