@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Batch 
+    xmlns="http://schemas.dbshell.com/core"
+    xmlns:rds="http://schemas.dbshell.com/datasync"
+    >
+    <rds:SyncModel >
+        <rds:SyncModel.Sources>
+            <rds:Source DataSource="{Table Source}" >
+                <rds:SourceColumn Name="Id" IsKey="True" />
+                <rds:SourceColumn Name="A" />
+                <rds:SourceColumn Name="B" />
+                <rds:SourceColumn Name="C" />
+            </rds:Source>
+        </rds:SyncModel.Sources>
+
+        <rds:SyncModel.Targets>
+
+            <rds:Target TableName="Target" Alias="target_simple">
+                <rds:TargetColumn Name="IdOriginal" Source="Id" IsKey="True"/>
+                <rds:TargetColumn Name="A" Source="A" />
+                <rds:TargetColumn Name="B" Source="B" />
+                <rds:TargetColumn Name="C" Source="C" />
+                <rds:TargetColumn Name="ImportGroup" Value="simple" IsRestriction="True" />
+                <rds:Target.LifetimeHandler>
+                    <rds:SimpleLifetimeHandler 
+                            Delete="True"
+                        />
+                </rds:Target.LifetimeHandler>
+
+            </rds:Target>
+
+            <rds:Target TableName="Target" Alias="target_markdelete">
+                <rds:TargetColumn Name="IdOriginal" Source="Id" IsKey="True"/>
+                <rds:TargetColumn Name="A" Source="A" />
+                <rds:TargetColumn Name="B" Source="B" />
+                <rds:TargetColumn Name="C" Source="C" />
+                <rds:TargetColumn Name="ImportGroup" Value="markdelete" IsRestriction="True" />
+                <rds:Target.LifetimeHandler>
+                    <rds:MarkDeleteLifetimeHandler 
+                            DeletedDateColumn="DeletedDate"
+                        />
+                </rds:Target.LifetimeHandler>
+            </rds:Target>
+
+            <rds:Target TableName="Target" Alias="target_keephistory">
+                <rds:TargetColumn Name="IdOriginal" Source="Id" IsKey="True"/>
+                <rds:TargetColumn Name="A" Source="A" Compare="True" />
+                <rds:TargetColumn Name="B" Source="B" Compare="True" />
+                <rds:TargetColumn Name="C" Source="C" Compare="True" />
+                <rds:TargetColumn Name="ImportGroup" Value="keephistory" IsRestriction="True" />
+                <rds:Target.LifetimeHandler>
+                    <rds:KeepHistoryLifetimeHandler 
+                            ValidFromColumn="ValidFrom"
+                            ValidToColumn="ValidTo"
+                        >
+                    </rds:KeepHistoryLifetimeHandler>
+                </rds:Target.LifetimeHandler>
+            </rds:Target>
+
+        </rds:SyncModel.Targets>
+    </rds:SyncModel>
+    
+    <rds:CreateProcedure ProcName="RunSync1" />
+    <rds:CreateProcedure ProcName="RunSync2" />
+</Batch>

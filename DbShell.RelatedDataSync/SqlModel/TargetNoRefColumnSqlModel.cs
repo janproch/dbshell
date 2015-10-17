@@ -21,6 +21,9 @@ namespace DbShell.RelatedDataSync.SqlModel
         public override bool IsKey => _dbsh.IsKey;
         public override bool IsRestriction => _dbsh.IsRestriction;
         public override string Name => _dbsh.Name;
+        public override bool Update => _dbsh.Update;
+        public override bool Insert => _dbsh.Insert;
+        public override bool Compare => _dbsh.Compare;
 
         private DmlfExpression CreateAggregate(DmlfExpression expr)
         {
@@ -80,6 +83,46 @@ namespace DbShell.RelatedDataSync.SqlModel
                             Value = _dbsh.Expression,
                         };
                     }
+                case TargetColumnValueType.Special:
+                    switch (_dbsh.SpecialValue)
+                    {
+                        case TargetColumnSpecialValue.CurrentDateTime:
+                            return new DmlfFuncCallExpression
+                            {
+                                FuncName = "GETDATE",
+                            };
+                        case TargetColumnSpecialValue.CurrentDate:
+                            return new DmlfSqlValueExpression
+                            {
+                                Value = "DATEADD(dd, 0, DATEDIFF(dd, 0, GETDATE()))",
+                            };
+                        case TargetColumnSpecialValue.CurrentUtcDateTime:
+                            return new DmlfFuncCallExpression
+                            {
+                                FuncName = "GETUTCDATE",
+                            };
+                        case TargetColumnSpecialValue.CurrentUtcDate:
+                            return new DmlfSqlValueExpression
+                            {
+                                Value = "DATEADD(dd, 0, DATEDIFF(dd, 0, GETUTCDATE()))",
+                            };
+                        case TargetColumnSpecialValue.NewGUID:
+                            return new DmlfFuncCallExpression
+                            {
+                                FuncName = "NEWID",
+                            };
+                        case TargetColumnSpecialValue.ImportDateTime:
+                            return new DmlfSqlValueExpression
+                            {
+                                Value = "@importDateTime",
+                            };
+                        case TargetColumnSpecialValue.ImportDate:
+                            return new DmlfSqlValueExpression
+                            {
+                                Value = "@importDate",
+                            };
+                    }
+                    break;
 
             }
             throw new Exception("DBSH-00000 Cannot create expression");

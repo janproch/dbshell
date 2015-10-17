@@ -12,5 +12,25 @@ namespace DbShell.RelatedDataSync.SqlModel
         public abstract string Name { get; }
         public abstract bool IsKey { get; }
         public virtual bool IsRestriction => false;
+        public virtual bool Update => true;
+        public virtual bool Insert => true;
+        public virtual bool Compare => true;
+
+        public DmlfExpression CreateTargetExpression(DmlfSource targetSource)
+        {
+            return new DmlfColumnRefExpression
+            {
+                Column = new DmlfColumnRef
+                {
+                    Source = targetSource,
+                    ColumnName = Name,
+                }
+            };
+        }
+
+        public DmlfExpression CreateTargetExpression(string targetEntityAlias)
+        {
+            return CreateTargetExpression(new DmlfSource { Alias = targetEntityAlias });
+        }
     }
 }

@@ -40,11 +40,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColumnName.cs" />
     <Compile Include="CreateProcedure.cs" />
     <Compile Include="DataSyncItemBase.cs" />
+    <Compile Include="KeepHistoryLifetimeHandler.cs" />
+    <Compile Include="LifetimeHandlerBase.cs" />
+    <Compile Include="MarkDeleteLifetimeHandler.cs" />
     <Compile Include="Run.cs" />
+    <Compile Include="SimpleLifetimeHandler.cs" />
     <Compile Include="SqlModel\DataSyncSqlModel.cs" />
-    <Compile Include="SqlModel\EntitySourceColumn.cs" />
     <Compile Include="SqlModel\SourceColumnSqlModel.cs" />
     <Compile Include="SqlModel\SourceEntitySqlModel.cs" />
     <Compile Include="SqlModel\SourceGraphSqlModelBase.cs" />
@@ -54,6 +58,7 @@
     <Compile Include="SqlModel\TargetEntitySqlModel.cs" />
     <Compile Include="SqlModel\SourceGraphSqlModel.cs" />
     <Compile Include="SqlModel\TargetRefColumnSqlModel.cs" />
+    <Compile Include="SqlModel\TargetValidFromColumnSqlModel.cs" />
     <Compile Include="SyncModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source.cs" />

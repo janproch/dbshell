@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
 using DbShell.Core.Runtime;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DbShell.Test
 {
@@ -54,6 +55,18 @@ CREATE DATABASE {0}",
             SqlConnection.ClearAllPools();
         }
 
+        public void RunScript(string sql)
+        {
+            using (var conn = OpenConnection(true))
+            {
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = sql;
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
         public void RunEmbeddedScript(string name)
         {
             using (var conn = OpenConnection(true))
@@ -77,6 +90,36 @@ CREATE DATABASE {0}",
                     return sr.ReadToEnd();
                 }
             }
+        }
+
+        public object ExecuteScalar(string sql)
+        {
+            using (var conn = OpenConnection(true))
+            {
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = sql;
+                    return cmd.ExecuteScalar();
+                }
+            }
+        }
+
+        public void AssertIsNotNull(string sql)
+        {
+            object value = ExecuteScalar(sql);
+            Assert.IsTrue(value != null && value != DBNull.Value);
+        }
+
+        public void AssertIsNull(string sql)
+        {
+            object value = ExecuteScalar(sql);
+            Assert.IsTrue(value == null || value == DBNull.Value);
+        }
+
+        public void AssertIsValue(string svalue, string sql)
+        {
+            object value = ExecuteScalar(sql);
+            Assert.IsTrue(value?.ToString() == svalue);
         }
     }
 }
