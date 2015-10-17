@@ -115,6 +115,7 @@ namespace DbShell.RelatedDataSync
             if (insert.Columns.Any())
             {
                 insert.GenSql(dmp);
+                dmp.Put("&n");
             }
         }
     }

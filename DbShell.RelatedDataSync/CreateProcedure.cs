@@ -19,6 +19,9 @@ namespace DbShell.RelatedDataSync
         /// procedure schema
         public string ProcSchema { get; set; }
 
+        [XamlProperty]
+        public bool UseTransaction { get; set; }
+
         protected override void DoRun(IShellContext context)
         {
             var model = GetModel(context);
@@ -27,7 +30,7 @@ namespace DbShell.RelatedDataSync
             var connection = GetConnectionProvider(context);
             using (var conn = connection.Connect())
             {
-                sqlModel.CreateProcedure(conn, connection.Factory, new NameWithSchema(context.Replace(ProcSchema), context.Replace(ProcName)), context);
+                sqlModel.CreateProcedure(conn, connection.Factory, new NameWithSchema(context.Replace(ProcSchema), context.Replace(ProcName)), context, UseTransaction);
             }
         }
     }

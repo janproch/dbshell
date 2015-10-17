@@ -38,6 +38,7 @@ namespace DbShell.RelatedDataSync.SqlModel
         private DataSyncSqlModel _datasync;
         private IShellContext _context;
         private string _procName;
+        private bool _inTransaction;
 
         public SqlScriptCompiler(ISqlDumper dmp, DataSyncSqlModel datasync, IShellContext context, string procName)
         {
@@ -87,7 +88,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             Put($"^if ({ImportDateTimeVariableName} ^is ^null) ^set {ImportDateTimeVariableName} = ^getdate();&n");
         }
 
-        public void PutCommonProlog()
+        public void PutCommonProlog(bool useTransaction)
         {
             Put($"^declare {ImportDateVariableName} ^datetime;&n");
             Put($"^set {ImportDateVariableName} = ^dateadd(dd, 0, ^datediff(dd, 0, {ImportDateTimeVariableName}));&n");
@@ -97,10 +98,20 @@ namespace DbShell.RelatedDataSync.SqlModel
             Put("^declare @messages ^table (ID INT NOT NULL PRIMARY KEY IDENTITY, Message NVARCHAR(MAX), Created DATETIME NOT NULL DEFAULT GETDATE(), Duration FLOAT, Operation NVARCHAR(100), TargetEntity  NVARCHAR(250))");
             PutLogMessage(null, LogOperationType.Start, "Import started", null);
             StartTimeMeasure("IMPORT");
+
+            if (useTransaction)
+            {
+                PutBeginTransaction();
+            }
         }
 
-        public void PutCommonEpilog()
+        public void PutCommonEpilog(bool useTransaction)
         {
+            if (useTransaction)
+            {
+                PutEndTransaction();
+            }
+
             PutLogMessage(null, LogOperationType.Finish, "Import finished", "IMPORT");
             Put("^select * from @messages;&n");
         }
@@ -118,16 +129,44 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         public void PutBeginTryCatch(TargetEntitySqlModel entity)
         {
+            if (_inTransaction) return;
             Put("^begin ^try&n");
         }
 
         public void PutEndTryCatch(TargetEntitySqlModel entity)
         {
+            if (_inTransaction) return;
             Put("^end ^try&n");
             Put("^begin ^catch&n");
+            Put("&>");
             PutLogMessage(entity, LogOperationType.Error, null, null);
+            Put("&<");
             Put("^end ^catch&n");
         }
+
+        private void PutBeginTransaction()
+        {
+            if (_inTransaction) throw new Exception("DBSH-00000 Nested transactions are not allowed");
+            Put("BEGIN TRANSACTION&n");
+            Put("BEGIN TRY&n");
+            Put("&>");
+            _inTransaction = true;
+        }
+
+        private void PutEndTransaction()
+        {
+            _inTransaction = false;
+            Put("&<");
+            Put("COMMIT TRANSACTION&n");
+            Put("END TRY&n");
+            Put("BEGIN CATCH&n");
+            Put("&>");
+            Put("ROLLBACK TRANSACTION&n");
+            PutLogMessage(null, LogOperationType.Error, null, null);
+            Put("&<");
+            Put("^end ^catch&n");
+        }
+
 
         public void PutLogMessage(TargetEntitySqlModel entity, LogOperationType operation, string message, string durationName)
         {

@@ -32,7 +32,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             get { return _model; }
         }
 
-        private void RunScript(DbConnection conn, IDatabaseFactory factory, Action<SqlScriptCompiler> prolog, Action<SqlScriptCompiler> epilog, IShellContext context, string procname)
+        private void RunScript(DbConnection conn, IDatabaseFactory factory, Action<SqlScriptCompiler> prolog, Action<SqlScriptCompiler> epilog, IShellContext context, string procname, bool useTransaction)
         {
             var sw = new StringWriter();
             var so = new SqlOutputStream(factory.CreateDialect(), sw, new SqlFormatProperties());
@@ -42,13 +42,13 @@ namespace DbShell.RelatedDataSync.SqlModel
 
             if (prolog != null) prolog(cmp);
 
-            cmp.PutCommonProlog();
+            cmp.PutCommonProlog(useTransaction);
 
             foreach (var ent in Entities)
             {
                 ent.Run(cmp);
             }
-            cmp.PutCommonEpilog();
+            cmp.PutCommonEpilog(useTransaction);
 
             if (epilog != null) epilog(cmp);
 
@@ -59,14 +59,14 @@ namespace DbShell.RelatedDataSync.SqlModel
             }
         }
 
-        public void Run(DbConnection conn, IDatabaseFactory factory, IShellContext context)
+        public void Run(DbConnection conn, IDatabaseFactory factory, IShellContext context, bool useTransaction)
         {
-            RunScript(conn, factory, cmp => cmp.PutScriptProlog(), cmp => { }, context, null);
+            RunScript(conn, factory, cmp => cmp.PutScriptProlog(), cmp => { }, context, null, useTransaction);
         }
 
-        public void CreateProcedure(DbConnection conn, IDatabaseFactory factory, NameWithSchema name, IShellContext context)
+        public void CreateProcedure(DbConnection conn, IDatabaseFactory factory, NameWithSchema name, IShellContext context, bool useTransaction)
         {
-            RunScript(conn, factory, cmp => cmp.PutProcedureHeader(name), cmd => cmd.PutProcedureFooter(), context, name.ToString());
+            RunScript(conn, factory, cmp => cmp.PutProcedureHeader(name), cmd => cmd.PutProcedureFooter(), context, name.ToString(), useTransaction);
         }
 
     }

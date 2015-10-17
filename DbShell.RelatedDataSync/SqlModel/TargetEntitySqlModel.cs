@@ -471,7 +471,9 @@ namespace DbShell.RelatedDataSync.SqlModel
             cmp.StartTimeMeasure("TABLE");
 
             cmp.PutBeginTryCatch(this);
+            cmp.Put("&>");
             RunCore(cmp);
+            cmp.Put("&<");
             cmp.PutEndTryCatch(this);
 
             cmp.PutLogMessage(this, LogOperationType.TableSynchronized, "table synchronized", "TABLE");
