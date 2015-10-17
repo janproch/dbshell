@@ -112,14 +112,13 @@ namespace DbShell.RelatedDataSync.SqlModel
                                 FuncName = "NEWID",
                             };
                         case TargetColumnSpecialValue.ImportDateTime:
-                            return new DmlfSqlValueExpression
                             {
-                                Value = "@importDateTime",
-                            };
+                                return SqlScriptCompiler.ImportDateTimeExpression;
+                            }
                         case TargetColumnSpecialValue.ImportDate:
                             return new DmlfSqlValueExpression
                             {
-                                Value = "@importDate",
+                                Value = SqlScriptCompiler.ImportDateVariableName,
                             };
                     }
                     break;

@@ -121,5 +121,11 @@ CREATE DATABASE {0}",
             object value = ExecuteScalar(sql);
             Assert.IsTrue(value?.ToString() == svalue);
         }
+
+        public void AssertExists(string sql)
+        {
+            string existSql = $"select case when exists({sql}) then 1 else 0 end";
+            AssertIsValue("1", existSql);
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         public override DmlfExpression CreateSourceExpression(SourceJoinSqlModel sourceJoinModel, bool aggregate)
         {
-            return new DmlfSqlValueExpression { Value = "@importDateTime" };
+            return SqlScriptCompiler.ImportDateTimeExpression;
         }
     }
 }

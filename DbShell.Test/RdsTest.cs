@@ -92,6 +92,10 @@ namespace DbShell.Test
             AssertIsNull("select ValidTo from Target where IdOriginal='3' and ImportGroup='keephistory'");
             AssertIsNotNull("select ValidTo from Target where IdOriginal='1' and ImportGroup='keephistory'");
             AssertIsValue("1a.v2", "select A from Target where IdOriginal = '1' and ImportGroup = 'keephistory' and ValidTo is null");
+
+            RunScript("update Source set A=null where Id=4");
+            RunScript("exec RunSync1");
+            AssertExists("select * from ImportLog where Operation='error'");
         }
     }
 }

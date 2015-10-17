@@ -45,6 +45,7 @@
     <Compile Include="DataSyncItemBase.cs" />
     <Compile Include="KeepHistoryLifetimeHandler.cs" />
     <Compile Include="LifetimeHandlerBase.cs" />
+    <Compile Include="LogHandlerBase.cs" />
     <Compile Include="MarkDeleteLifetimeHandler.cs" />
     <Compile Include="Run.cs" />
     <Compile Include="SimpleLifetimeHandler.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="SqlModel\SourceEntitySqlModel.cs" />
     <Compile Include="SqlModel\SourceGraphSqlModelBase.cs" />
     <Compile Include="SqlModel\SourceJoinSqlModel.cs" />
+    <Compile Include="SqlModel\SqlScriptCompiler.cs" />
     <Compile Include="SqlModel\TargetNoRefColumnSqlModel.cs" />
     <Compile Include="SqlModel\TargetColumnSqlModelBase.cs" />
     <Compile Include="SqlModel\TargetEntitySqlModel.cs" />
@@ -62,6 +64,7 @@
     <Compile Include="SyncModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source.cs" />
+    <Compile Include="TableLogHandler.cs" />
     <Compile Include="Target.cs" />
     <Compile Include="SourceColumn.cs" />
     <Compile Include="TargetColumn.cs" />

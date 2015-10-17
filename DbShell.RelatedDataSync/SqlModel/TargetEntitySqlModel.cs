@@ -27,6 +27,8 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         public static string ExpressionColumnRegex = @"\{([^\}]+)\}";
 
+        public string LogName => _dbsh.Alias ?? TargetTable.ToString();
+
         public TargetEntitySqlModel(DataSyncSqlModel dataSyncSqlModel, Target dbsh, IShellContext context)
         {
             this._dataSyncSqlModel = dataSyncSqlModel;
@@ -381,16 +383,18 @@ namespace DbShell.RelatedDataSync.SqlModel
             _dbsh.LifetimeHandler.CreateLifetimeConditions(res, targetEntityAlias, this);
         }
 
-        public void Run(ISqlDumper dmp)
+        private void RunCore(SqlScriptCompiler cmp)
         {
             if (_dbsh.LifetimeHandler.CreateMarkRelived)
             {
                 var update = CompileMarkRelived();
                 if (update != null)
                 {
-                    DataSyncSqlModel.WriteSeparatorTitle(dmp, "MARK RELIVED");
-                    update.GenSql(dmp);
-                    dmp.EndCommand();
+                    cmp.StartTimeMeasure("OP");
+                    cmp.PutSmallTitleComment( "MARK RELIVED");
+                    update.GenSql(cmp.Dumper);
+                    cmp.EndCommand();
+                    cmp.PutLogMessage(this, LogOperationType.MarkRelived, "@rows rows marked as relived", "OP");
                 }
             }
 
@@ -399,9 +403,11 @@ namespace DbShell.RelatedDataSync.SqlModel
                 var update = CompileMarkDeleted();
                 if (update != null)
                 {
-                    DataSyncSqlModel.WriteSeparatorTitle(dmp, "MARK DELETED");
-                    update.GenSql(dmp);
-                    dmp.EndCommand();
+                    cmp.StartTimeMeasure("OP");
+                    cmp.PutSmallTitleComment( "MARK DELETED");
+                    update.GenSql(cmp.Dumper);
+                    cmp.EndCommand();
+                    cmp.PutLogMessage(this, LogOperationType.MarkDeleted, "@rows rows marked as deleted", "OP");
                 }
             }
 
@@ -410,9 +416,11 @@ namespace DbShell.RelatedDataSync.SqlModel
                 var update = CompileMarkUpdated();
                 if (update != null)
                 {
-                    DataSyncSqlModel.WriteSeparatorTitle(dmp, "MARK UPDATED");
-                    update.GenSql(dmp);
-                    dmp.EndCommand();
+                    cmp.StartTimeMeasure("OP");
+                    cmp.PutSmallTitleComment( "MARK UPDATED");
+                    update.GenSql(cmp.Dumper);
+                    cmp.EndCommand();
+                    cmp.PutLogMessage(this, LogOperationType.MarkUpdated, "@rows rows marked as updated", "OP");
                 }
             }
 
@@ -421,9 +429,11 @@ namespace DbShell.RelatedDataSync.SqlModel
                 var insert = CompileInsert();
                 if (insert != null)
                 {
-                    DataSyncSqlModel.WriteSeparatorTitle(dmp, "INSERT");
-                    insert.GenSql(dmp);
-                    dmp.EndCommand();
+                    cmp.StartTimeMeasure("OP");
+                    cmp.PutSmallTitleComment("INSERT");
+                    insert.GenSql(cmp.Dumper);
+                    cmp.EndCommand();
+                    cmp.PutLogMessage(this, LogOperationType.Insert, "@rows rows inserted", "OP");
                 }
             }
 
@@ -432,9 +442,11 @@ namespace DbShell.RelatedDataSync.SqlModel
                 var update = CompileUpdate();
                 if (update != null)
                 {
-                    DataSyncSqlModel.WriteSeparatorTitle(dmp, "UPDATE");
-                    update.GenSql(dmp);
-                    dmp.EndCommand();
+                    cmp.StartTimeMeasure("OP");
+                    cmp.PutSmallTitleComment("UPDATE");
+                    update.GenSql(cmp.Dumper);
+                    cmp.EndCommand();
+                    cmp.PutLogMessage(this, LogOperationType.Update, "@rows rows updated", "OP");
                 }
             }
 
@@ -443,18 +455,34 @@ namespace DbShell.RelatedDataSync.SqlModel
                 var delete = CompileDelete();
                 if (delete != null)
                 {
-                    DataSyncSqlModel.WriteSeparatorTitle(dmp, "DELETE");
-                    delete.GenSql(dmp);
-                    dmp.EndCommand();
+                    cmp.StartTimeMeasure("OP");
+                    cmp.PutSmallTitleComment("DELETE");
+                    delete.GenSql(cmp.Dumper);
+                    cmp.EndCommand();
+                    cmp.PutLogMessage(this, LogOperationType.Delete, "@rows rows deleted", "OP");
                 }
             }
         }
 
-        public void Run(DbConnection conn, IDatabaseFactory factory)
+        public void Run(SqlScriptCompiler cmp)
         {
-            var so = new ConnectionSqlOutputStream(conn, null, factory.CreateDialect());
-            var dmp = factory.CreateDumper(so, new SqlFormatProperties());
-            Run(dmp);
+            cmp.PutMainTitleComment($"Synchronize entity {SqlAlias} (table {TargetTable})");
+
+            cmp.StartTimeMeasure("TABLE");
+
+            cmp.PutBeginTryCatch(this);
+            RunCore(cmp);
+            cmp.PutEndTryCatch(this);
+
+            cmp.PutLogMessage(this, LogOperationType.TableSynchronized, "table synchronized", "TABLE");
         }
+
+        //public void Run(DbConnection conn, IDatabaseFactory factory)
+        //{
+        //    var so = new ConnectionSqlOutputStream(conn, null, factory.CreateDialect());
+        //    var dmp = factory.CreateDumper(so, new SqlFormatProperties());
+        //    var compiler = new SqlScriptCompiler(dmp);
+        //    Run(compiler);
+        //}
     }
 }

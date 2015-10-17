@@ -27,7 +27,7 @@ namespace DbShell.RelatedDataSync
             var connection = GetConnectionProvider(context);
             using (var conn = connection.Connect())
             {
-                sqlModel.CreateProcedure(conn, connection.Factory, new NameWithSchema(context.Replace(ProcSchema), context.Replace(ProcName)));
+                sqlModel.CreateProcedure(conn, connection.Factory, new NameWithSchema(context.Replace(ProcSchema), context.Replace(ProcName)), context);
             }
         }
     }

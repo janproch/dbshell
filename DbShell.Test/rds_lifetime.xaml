@@ -56,8 +56,18 @@
                     </rds:KeepHistoryLifetimeHandler>
                 </rds:Target.LifetimeHandler>
             </rds:Target>
-
+            
         </rds:SyncModel.Targets>
+        <rds:SyncModel.LogHandlers>
+            <rds:TableLogHandler
+                TableName="ImportLog"
+                MessageColumn="Message"
+                OperationColumn="Operation"
+                ImportDateColumn="ImportDate"
+                MessageDateColumn="MessageDate"
+                TargetEntityColumn="TargetEntity"
+                />
+        </rds:SyncModel.LogHandlers>
     </rds:SyncModel>
     
     <rds:CreateProcedure ProcName="RunSync1" />

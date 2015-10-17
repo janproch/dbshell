@@ -32,23 +32,25 @@ namespace DbShell.RelatedDataSync.SqlModel
             get { return _model; }
         }
 
-        private void RunScript(DbConnection conn, IDatabaseFactory factory, Action<ISqlDumper> prolog, Action<ISqlDumper> epilog)
+        private void RunScript(DbConnection conn, IDatabaseFactory factory, Action<SqlScriptCompiler> prolog, Action<SqlScriptCompiler> epilog, IShellContext context, string procname)
         {
             var sw = new StringWriter();
             var so = new SqlOutputStream(factory.CreateDialect(), sw, new SqlFormatProperties());
             so.OverrideCommandDelimiter(";");
             var dmp = factory.CreateDumper(so, new SqlFormatProperties());
-            if (prolog != null) prolog(dmp);
+            var cmp = new SqlScriptCompiler(dmp, this, context, procname);
 
-            dmp.Put("^declare @importDate ^datetime;&n");
-            dmp.Put("^set @importDate = ^dateadd(dd, 0, ^datediff(dd, 0, @importDateTime));&n");
+            if (prolog != null) prolog(cmp);
+
+            cmp.PutCommonProlog();
 
             foreach (var ent in Entities)
             {
-                WriteHeader(dmp, $"Synchronize entity {ent.SqlAlias} (table {ent.TargetTable})");
-                ent.Run(dmp);
+                ent.Run(cmp);
             }
-            if (epilog != null) epilog(dmp);
+            cmp.PutCommonEpilog();
+
+            if (epilog != null) epilog(cmp);
 
             using (var cmd = conn.CreateCommand())
             {
@@ -57,56 +59,14 @@ namespace DbShell.RelatedDataSync.SqlModel
             }
         }
 
-        public void Run(DbConnection conn, IDatabaseFactory factory)
+        public void Run(DbConnection conn, IDatabaseFactory factory, IShellContext context)
         {
-            RunScript(conn, factory, dmp =>
-             {
-                 dmp.Put("^declare @importDateTime ^datetime;&n");
-                 dmp.Put("^^set @importDateTime = ^getdate();&n");
-             },
-            dmp => { });
+            RunScript(conn, factory, cmp => cmp.PutScriptProlog(), cmp => { }, context, null);
         }
 
-        public void CreateProcedure(DbConnection conn, IDatabaseFactory factory, NameWithSchema name)
+        public void CreateProcedure(DbConnection conn, IDatabaseFactory factory, NameWithSchema name, IShellContext context)
         {
-            RunScript(conn, factory,
-                dmp =>
-                {
-                    dmp.Put("^create ^procedure %f (@importDateTime ^datetime = ^null) ^as &n", name);
-                    dmp.Put("^begin&>&n");
-                    dmp.Put("^if (@importDateTime ^is ^null) ^set @importDateTime = ^getdate();&n");
-                },
-                dmp =>
-                {
-                    dmp.Put("&<&n^end&n");
-                });
-        }
-
-        private const string SEPARATOR =
-            "------------------------------------------------------------------------------------------------";
-
-        public static void WriteSeparatorTitle(ISqlDumper dmp, string title)
-        {
-            dmp.Put("&n");
-            string s = "-- " + title + " ";
-            while (s.Length < SEPARATOR.Length) s += "-";
-            dmp.Put(s);
-            dmp.Put("&n");
-        }
-
-        public static void WriteSeparator(ISqlDumper dmp)
-        {
-            dmp.Put(SEPARATOR);
-            dmp.Put("&n");
-        }
-
-        public static void WriteHeader(ISqlDumper dmp, string msg)
-        {
-            dmp.Put("&n");
-            WriteSeparator(dmp);
-            dmp.Put("-- %s &n", msg);
-            WriteSeparator(dmp);
-            dmp.Put("&n");
+            RunScript(conn, factory, cmp => cmp.PutProcedureHeader(name), cmd => cmd.PutProcedureFooter(), context, name.ToString());
         }
 
     }

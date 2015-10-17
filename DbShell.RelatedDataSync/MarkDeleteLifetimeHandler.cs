@@ -103,7 +103,7 @@ namespace DbShell.RelatedDataSync
                 cmd.Columns.Add(new DmlfUpdateField
                 {
                     TargetColumn = DeletedDateColumn,
-                    Expr = new DmlfSqlValueExpression { Value = "@importDateTime" }
+                    Expr = SqlScriptCompiler.ImportDateTimeExpression
                 });
             }
             if (!String.IsNullOrEmpty(IsDeletedColumn))

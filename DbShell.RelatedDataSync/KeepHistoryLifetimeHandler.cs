@@ -30,7 +30,7 @@ namespace DbShell.RelatedDataSync
             cmd.Columns.Add(new DmlfUpdateField
             {
                 TargetColumn = ValidToColumn,
-                Expr = new DmlfSqlValueExpression { Value = "@importDateTime" }
+                Expr = SqlScriptCompiler.ImportDateTimeExpression
             });
         }
 
@@ -39,7 +39,7 @@ namespace DbShell.RelatedDataSync
             cmd.Columns.Add(new DmlfUpdateField
             {
                 TargetColumn = ValidToColumn,
-                Expr = new DmlfSqlValueExpression { Value = "@importDateTime" }
+                Expr = SqlScriptCompiler.ImportDateTimeExpression
             });
         }
 
