@@ -13,6 +13,7 @@ namespace DbShell.Test
         public RdsTest()
         {
             new SyncModel();
+            new Excel.Open();
         }
 
         [DeploymentItem("rds1.xaml")]
@@ -97,5 +98,23 @@ namespace DbShell.Test
             RunScript("exec RunSync1");
             AssertExists("select * from ImportLog where Operation='error'");
         }
+
+        [DeploymentItem("rds_excel.xaml")]
+        [DeploymentItem("rds.xlsx")]
+        [TestMethod]
+        public void RdsExcelTest()
+        { 
+            InitDatabase();
+            RunEmbeddedScript("CreateRdsExcel.sql");
+
+            using (var runner = CreateRunner())
+            {
+                runner.LoadFile("rds_excel.xaml");
+                runner.Run();
+            }
+
+            AssertExists("select * from ExcelTarget");
+        }
+
     }
 }

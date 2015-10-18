@@ -15,12 +15,15 @@ namespace DbShell.RelatedDataSync.SqlModel
     {
         public List<TargetEntitySqlModel> Entities = new List<TargetEntitySqlModel>();
         public SourceGraphSqlModel SourceGraphModel;
+        private bool _allowExternalSources;
+        private List<SourceEntitySqlModel> _externalSources = new List<SourceEntitySqlModel>();
 
         SyncModel _model;
-        public DataSyncSqlModel(SyncModel model, IShellContext context)
+        public DataSyncSqlModel(SyncModel model, IShellContext context, bool allowExternalSources)
         {
             _model = model;
-            SourceGraphModel = new SourceGraphSqlModel(model, context);
+            _allowExternalSources = allowExternalSources;
+            SourceGraphModel = new SourceGraphSqlModel(model, context, this);
             foreach (var entity in model.Targets)
             {
                 Entities.Add(new TargetEntitySqlModel(this, entity, context));
@@ -44,10 +47,21 @@ namespace DbShell.RelatedDataSync.SqlModel
 
             cmp.PutCommonProlog(useTransaction);
 
+            foreach (var source in SourceGraphModel.Entities)
+            {
+                source.PutMaterialize(cmp);
+            }
+
             foreach (var ent in Entities)
             {
                 ent.Run(cmp);
             }
+
+            foreach (var source in SourceGraphModel.Entities)
+            {
+                source.PutDropMaterialized(cmp);
+            }
+
             cmp.PutCommonEpilog(useTransaction);
 
             if (epilog != null) epilog(cmp);
@@ -59,9 +73,67 @@ namespace DbShell.RelatedDataSync.SqlModel
             }
         }
 
+        public void AddExternalSource(SourceEntitySqlModel sourceEntity)
+        {
+            if (!_allowExternalSources) throw new Exception("DBSH-00000 External sources not supported in this context");
+            _externalSources.Add(sourceEntity);
+        }
+
+        private void FillExternalSources(DbConnection conn, IDatabaseFactory factory, IShellContext context)
+        {
+            if (!_externalSources.Any()) return;
+
+            var sw = new StringWriter();
+            var so = new ConnectionSqlOutputStream(conn, null, factory.CreateDialect());
+            var dmp = factory.CreateDumper(so, new SqlFormatProperties());
+
+            foreach (var exSource in _externalSources)
+            {
+                var tbl = new TableInfo(null) { FullName = exSource.ExternalDataName };
+                foreach(var col in exSource.Dbsh.Columns)
+                {
+                    tbl.Columns.Add(new ColumnInfo(tbl)
+                    {
+                        Name = col.Name,
+                        DataType = col.DataType ?? "nvarchar(500)",
+                    });
+                }
+                dmp.CreateTable(tbl);
+
+                var copyTable = new DbShell.Core.CopyTable
+                {
+                    Source = exSource.Dbsh.DataSource,
+                    Target = new DbShell.Core.Table
+                    {
+                        Name = exSource.ExternalDataName.Name,
+                        StructureOverride = tbl,
+                    },
+                };
+                var runnable = (IRunnable)copyTable;
+                runnable.Run(context);
+            }
+        }
+
+        private void FreeExternalSources(DbConnection conn, IDatabaseFactory factory, IShellContext context)
+        {
+            if (!_externalSources.Any()) return;
+
+            var sw = new StringWriter();
+            var so = new ConnectionSqlOutputStream(conn, null, factory.CreateDialect());
+            var dmp = factory.CreateDumper(so, new SqlFormatProperties());
+
+            foreach (var exSource in _externalSources)
+            {
+                var tbl = new TableInfo(null) { FullName = exSource.ExternalDataName };
+                dmp.DropTable(tbl, false);
+            }
+        }
+
         public void Run(DbConnection conn, IDatabaseFactory factory, IShellContext context, bool useTransaction)
         {
-            RunScript(conn, factory, cmp => cmp.PutScriptProlog(), cmp => { }, context, null, useTransaction);
+            FillExternalSources(conn, factory, context);
+            RunScript(conn, factory, cmp => { cmp.PutScriptProlog(); }, cmp => { }, context, null, useTransaction);
+            FreeExternalSources(conn, factory, context);
         }
 
         public void CreateProcedure(DbConnection conn, IDatabaseFactory factory, NameWithSchema name, IShellContext context, bool useTransaction)

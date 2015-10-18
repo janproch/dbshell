@@ -88,6 +88,10 @@
       <Project>{80906e4d-1539-4f93-a227-3e072f49baea}</Project>
       <Name>DbShell.Driver.SqlServer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DbShell.Excel\DbShell.Excel.csproj">
+      <Project>{af992d15-1c15-4db4-9df4-a4ef9a0bc92a}</Project>
+      <Name>DbShell.Excel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DbShell.RelatedDataSync\DbShell.RelatedDataSync.csproj">
       <Project>{e08cef81-49a5-4f5c-aa32-da22833ab8ef}</Project>
       <Name>DbShell.RelatedDataSync</Name>
@@ -99,6 +103,7 @@
     <EmbeddedResource Include="CreateRdsGeoDataNatualKeys.sql" />
     <EmbeddedResource Include="CreateRdsGeoDataIntegerKeys.sql" />
     <EmbeddedResource Include="CreateRds2Lifetime.sql" />
+    <EmbeddedResource Include="CreateRdsExcel.sql" />
     <Content Include="Ideas.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -202,6 +207,9 @@
     <Content Include="ImportedData.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="rds.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="mapped_import.xaml">
@@ -235,6 +243,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="rdscountry_natural.xaml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="rds_excel.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

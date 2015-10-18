@@ -21,8 +21,8 @@ namespace DbShell.RelatedDataSync.SqlModel
         MarkDeleted,
         Error,
         TableSynchronized,
+        Materialize,
 
-        //Materialize,
         //Script,
         //SetValidToDelete,
         //SetValidToUpdate,
@@ -51,11 +51,16 @@ namespace DbShell.RelatedDataSync.SqlModel
         public ISqlDumper Dumper => _dmp;
         public void Put(string format, params object[] args) => _dmp.Put(format, args);
         public void PutCmd(string format, params object[] args) => _dmp.PutCmd(format, args);
-        public void EndCommand() => _dmp.EndCommand();
         public static DmlfExpression ImportDateTimeExpression => new DmlfSqlValueExpression { Value = ImportDateTimeVariableName };
 
         private const string SEPARATOR =
             "------------------------------------------------------------------------------------------------";
+
+        public void EndCommand()
+        {
+            _dmp.EndCommand();
+            _dmp.Put("&n");
+        }
 
         public void PutSmallTitleComment(string title)
         {
@@ -95,7 +100,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             Put("^declare @rows ^nvarchar(100);&n");
             Put("^declare @msg ^nvarchar(^max);&n");
             Put("^declare @lastLogDiff ^float;");
-            Put("^declare @messages ^table (ID INT NOT NULL PRIMARY KEY IDENTITY, Message NVARCHAR(MAX), Created DATETIME NOT NULL DEFAULT GETDATE(), Duration FLOAT, Operation NVARCHAR(100), TargetEntity  NVARCHAR(250))");
+            Put("^declare @messages ^table (ID INT NOT NULL PRIMARY KEY IDENTITY, Message NVARCHAR(MAX), Created DATETIME NOT NULL DEFAULT GETDATE(), Duration FLOAT, Operation NVARCHAR(100), TargetEntity  NVARCHAR(250), Rows INT)");
             PutLogMessage(null, LogOperationType.Start, "Import started", null);
             StartTimeMeasure("IMPORT");
 
@@ -170,6 +175,7 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         public void PutLogMessage(TargetEntitySqlModel entity, LogOperationType operation, string message, string durationName)
         {
+            Put("set @rows = cast(@@ROWCOUNT as nvarchar);&n");
             if (message == null)
             {
                 Put("set @msg = cast(ERROR_MESSAGE() as nvarchar(max))"
@@ -184,7 +190,6 @@ namespace DbShell.RelatedDataSync.SqlModel
 
                 if (message.Contains("@rows"))
                 {
-                    Put("set @rows = cast(@@ROWCOUNT as nvarchar);&n");
                     Put($"set @msg = REPLACE('{message}','@rows',@rows);&n");
                 }
                 else
@@ -211,7 +216,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 Put("set @lastLogDiff = NULL;&n");
             }
 
-            Put($"INSERT INTO @messages (Message, Duration, Operation, TargetEntity) VALUES (@msg, @lastLogDiff, '{operation}', %v);&n", entity?.LogName);
+            Put($"INSERT INTO @messages (Message, Duration, Operation, TargetEntity, Rows) VALUES (@msg, @lastLogDiff, '{operation}', %v, @rows);&n", entity?.LogName);
             Put("PRINT @msg; &n");
             _datasync.Dbsh.LogHandlers.ForEach(x => x.PutLogMessage(
                 Dumper,
@@ -220,6 +225,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 "@msg",
                 "@lastLogDiff",
                 _procName == null ? "NULL" : $"'{_procName}'",
+                "@rows",
                 _context));
 
             //sb.AppendFormat(

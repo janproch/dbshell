@@ -53,10 +53,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                             Column = new DmlfColumnRef
                             {
                                 ColumnName = entity.GetColumnName(sourceJoinModel[_dbsh.Source].Alias),
-                                Source = new DmlfSource
-                                {
-                                    Alias = entity.SqlAlias,
-                                }
+                                Source = entity.QuerySource,
                             }
                         }, aggregate);
                 case TargetColumnValueType.Value:

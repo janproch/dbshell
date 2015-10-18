@@ -40,6 +40,9 @@ namespace DbShell.RelatedDataSync
         [XamlProperty]
         public string TargetEntityColumn { get; set; }
 
+        [XamlProperty]
+        public string RowsColumn { get; set; }
+
         public override void PutLogMessage(
             ISqlDumper dmp, 
             string operationExpr, 
@@ -47,6 +50,7 @@ namespace DbShell.RelatedDataSync
             string messageExpr, 
             string durationExpr, 
             string procedureExpr, 
+            string rowsExpr,
             IShellContext context)
         {
             if (String.IsNullOrEmpty(TableName)) return;
@@ -109,6 +113,14 @@ namespace DbShell.RelatedDataSync
                 {
                     TargetColumn = ProcedureColumn,
                     Expr = new DmlfSqlValueExpression { Value = procedureExpr },
+                });
+            }
+            if (!String.IsNullOrEmpty(RowsColumn))
+            {
+                insert.Columns.Add(new DmlfUpdateField
+                {
+                    TargetColumn = RowsColumn,
+                    Expr = new DmlfSqlValueExpression { Value = rowsExpr },
                 });
             }
 

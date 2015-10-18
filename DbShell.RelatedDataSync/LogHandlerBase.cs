@@ -16,6 +16,7 @@ namespace DbShell.RelatedDataSync
             string messageExpr, 
             string durationExpr, 
             string procedureExpr, 
+            string rowsExpr,
             IShellContext context);
     }
 }

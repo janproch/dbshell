@@ -31,12 +31,18 @@ namespace DbShell.Driver.SqlServer
 
         public override Type SpecificTypeEnum
         {
-            get { return typeof (SqlTypeCode); }
+            get { return typeof(SqlTypeCode); }
         }
 
         public override Common.CommonTypeSystem.DbTypeBase CreateCommonType(Common.Structure.ColumnInfo column)
         {
             return SqlServerDatabaseAnalyser.AnalyseType(column.DataType, column.Length, column.Precision, column.Scale);
         }
+
+        //    public override string QuoteIdentifier(string ident)
+        //    {
+        //        if (ident != null && ident.StartsWith("#")) return ident;
+        //        return base.QuoteIdentifier(ident);
+        //    }
     }
 }

@@ -16,7 +16,7 @@ namespace DbShell.RelatedDataSync
         protected override void DoRun(IShellContext context)
         {
             var model = GetModel(context);
-            var sqlModel = new DataSyncSqlModel(model, context);
+            var sqlModel = new DataSyncSqlModel(model, context, true);
 
             var connection = GetConnectionProvider(context);
             using (var conn = connection.Connect())
