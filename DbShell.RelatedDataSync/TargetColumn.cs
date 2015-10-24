@@ -17,6 +17,7 @@ namespace DbShell.RelatedDataSync
 
     public enum TargetColumnSpecialValue
     {
+        Null,
         ImportDateTime,
         ImportDate,
         CurrentDateTime,

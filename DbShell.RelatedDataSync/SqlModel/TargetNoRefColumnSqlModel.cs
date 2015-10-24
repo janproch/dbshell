@@ -83,6 +83,11 @@ namespace DbShell.RelatedDataSync.SqlModel
                 case TargetColumnValueType.Special:
                     switch (_dbsh.SpecialValue)
                     {
+                        case TargetColumnSpecialValue.Null:
+                            return new DmlfLiteralExpression
+                            {
+                                Value = null,
+                            };
                         case TargetColumnSpecialValue.CurrentDateTime:
                             return new DmlfFuncCallExpression
                             {
