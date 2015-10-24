@@ -20,6 +20,7 @@ namespace DbShell.RelatedDataSync
         [XamlProperty]
         public bool Materialize { get; set; }
 
+        [XamlProperty]
         public List<SourceColumn> Columns { get; private set; } = new List<SourceColumn>();
     }
 }

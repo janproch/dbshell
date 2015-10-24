@@ -70,7 +70,6 @@
     <Compile Include="TargetColumn.cs" />
     <Compile Include="TargetReference.cs" />
     <Compile Include="TargetReferenceColumn.cs" />
-    <Compile Include="XmlPropertyAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DbShell.Common\DbShell.Common.csproj">
