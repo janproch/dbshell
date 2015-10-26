@@ -151,7 +151,7 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         private void PutBeginTransaction()
         {
-            if (_inTransaction) throw new Exception("DBSH-00000 Nested transactions are not allowed");
+            if (_inTransaction) throw new Exception("DBSH-00217 Nested transactions are not allowed");
             Put("BEGIN TRANSACTION&n");
             Put("BEGIN TRY&n");
             Put("&>");
@@ -208,7 +208,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             if (durationName != null)
             {
                 if (!_startedDurations.Contains(durationName))
-                    throw new Exception("DBSH-00000 Duration name not defined: " + durationName);
+                    throw new Exception("DBSH-00218 Duration name not defined: " + durationName);
                 Put($"set @lastLogDiff = DATEDIFF(second, @lastLogTime_{durationName}, GETDATE());&n");
             }
             else

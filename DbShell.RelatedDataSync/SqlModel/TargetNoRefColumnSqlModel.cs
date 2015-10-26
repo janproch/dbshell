@@ -126,7 +126,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                     break;
 
             }
-            throw new Exception("DBSH-00000 Cannot create expression");
+            throw new Exception("DBSH-00221 Cannot create expression");
         }
 
         private string GetColumnExpression(SourceJoinSqlModel sourceJoinModel, string colname)

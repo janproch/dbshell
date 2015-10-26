@@ -55,7 +55,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 string replaced = context.Replace(fk.Target);
                 var fullName = StructuredIdentifier.Parse(replaced);
                 var entity = _dataSyncSqlModel.Entities.FirstOrDefault(x => x.Match(fullName));
-                if (entity == null) throw new Exception($"DBSH-00000 Target entity {replaced} not found");
+                if (entity == null) throw new Exception($"DBSH-00219 Target entity {replaced} not found");
                 RefEntities[fk] = entity;
 
                 foreach (var col in fk.Columns)
@@ -74,7 +74,7 @@ namespace DbShell.RelatedDataSync.SqlModel
 
             if (!KeySourceColumns.Any())
             {
-                throw new Exception($"DBSH-00000 Entity {dbsh.TableName} has no source for key");
+                throw new Exception($"DBSH-00220 Entity {dbsh.TableName} has no source for key");
             }
 
             SourceJoinModel = new SourceJoinSqlModel(this, dataSyncSqlModel.SourceGraphModel);

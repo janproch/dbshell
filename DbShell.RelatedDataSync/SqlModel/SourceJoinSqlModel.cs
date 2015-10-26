@@ -135,7 +135,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 PrimarySource = _sourceGraph.Entities.FirstOrDefault(x => x.SqlAlias == _targetEntitySqlModel.Dbsh.PrimarySource);
                 if (PrimarySource == null)
                 {
-                    throw new Exception($"DBSH-00000 Primary source {_targetEntitySqlModel.Dbsh.PrimarySource} for target {_targetEntitySqlModel.TargetTable} not found");
+                    throw new Exception($"DBSH-00216 Primary source {_targetEntitySqlModel.Dbsh.PrimarySource} for target {_targetEntitySqlModel.TargetTable} not found");
                 }
             }
             else

@@ -35,16 +35,8 @@ namespace DbShell.RelatedDataSync.SqlModel
             get { return _model; }
         }
 
-        private void RunScript(DbConnection conn, IDatabaseFactory factory, Action<SqlScriptCompiler> prolog, Action<SqlScriptCompiler> epilog, IShellContext context, string procname, bool useTransaction)
+        private void DumpScript(SqlScriptCompiler cmp, bool useTransaction)
         {
-            var sw = new StringWriter();
-            var so = new SqlOutputStream(factory.CreateDialect(), sw, new SqlFormatProperties());
-            so.OverrideCommandDelimiter(";");
-            var dmp = factory.CreateDumper(so, new SqlFormatProperties());
-            var cmp = new SqlScriptCompiler(dmp, this, context, procname);
-
-            if (prolog != null) prolog(cmp);
-
             cmp.PutCommonProlog(useTransaction);
 
             foreach (var source in SourceGraphModel.Entities)
@@ -63,6 +55,19 @@ namespace DbShell.RelatedDataSync.SqlModel
             }
 
             cmp.PutCommonEpilog(useTransaction);
+        }
+
+        private void RunScript(DbConnection conn, IDatabaseFactory factory, Action<SqlScriptCompiler> prolog, Action<SqlScriptCompiler> epilog, IShellContext context, string procname, bool useTransaction)
+        {
+            var sw = new StringWriter();
+            var so = new SqlOutputStream(factory.CreateDialect(), sw, new SqlFormatProperties());
+            so.OverrideCommandDelimiter(";");
+            var dmp = factory.CreateDumper(so, new SqlFormatProperties());
+            var cmp = new SqlScriptCompiler(dmp, this, context, procname);
+
+            if (prolog != null) prolog(cmp);
+
+            DumpScript(cmp, useTransaction);
 
             if (epilog != null) epilog(cmp);
 
@@ -75,7 +80,7 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         public void AddExternalSource(SourceEntitySqlModel sourceEntity)
         {
-            if (!_allowExternalSources) throw new Exception("DBSH-00000 External sources not supported in this context");
+            if (!_allowExternalSources) throw new Exception("DBSH-00214 External sources not supported in this context");
             _externalSources.Add(sourceEntity);
         }
 
@@ -141,5 +146,18 @@ namespace DbShell.RelatedDataSync.SqlModel
             RunScript(conn, factory, cmp => cmp.PutProcedureHeader(name), cmd => cmd.PutProcedureFooter(), context, name.ToString(), useTransaction);
         }
 
+        public string GenerateScript(IDatabaseFactory factory, IShellContext context, bool useTransaction)
+        {
+            var sw = new StringWriter();
+            var so = new SqlOutputStream(factory.CreateDialect(), sw, new SqlFormatProperties());
+            so.OverrideCommandDelimiter(";");
+            var dmp = factory.CreateDumper(so, new SqlFormatProperties());
+            var cmp = new SqlScriptCompiler(dmp, this, context, null);
+
+            cmp.PutScriptProlog();
+            DumpScript(cmp, useTransaction);
+
+            return sw.ToString();
+        }
     }
 }

@@ -62,7 +62,6 @@ namespace DbShell.RelatedDataSync
         [XamlProperty]
         public bool Insert { get; set; } = true;
 
-        [XamlProperty]
         public TargetColumnValueType RealValueType
         {
             get
@@ -74,7 +73,7 @@ namespace DbShell.RelatedDataSync
                     if (!String.IsNullOrEmpty(Value)) return TargetColumnValueType.Value;
                     if (SpecialValue.HasValue) return TargetColumnValueType.Special;
                 }
-                return TargetColumnValueType.Auto;
+                return ValueType;
             }
         }
     }
