@@ -192,5 +192,12 @@ namespace DbShell.Driver.Common.Structure
             if (dotPos >= 0) return new NameWithSchema(value.Substring(0, dotPos), value.Substring(dotPos + 1));
             else return new NameWithSchema(value);
         }
+
+        public StructuredIdentifier ToStructuredIdentifier()
+        {
+            if (Schema != null && Name != null) return new StructuredIdentifier(new string[] { Schema, Name });
+            if (Name != null) return new StructuredIdentifier(new string[] { Name });
+            return null;
+        }
     }
 }
