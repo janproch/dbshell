@@ -72,4 +72,5 @@
     
     <rds:CreateProcedure ProcName="RunSync1" />
     <rds:CreateProcedure ProcName="RunSync2" UseTransaction="True" />
+    <rds:CreateProcedure ProcName="RunSync1" OverwriteExisting="True"/>
 </Batch>

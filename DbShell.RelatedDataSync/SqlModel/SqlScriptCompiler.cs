@@ -1,9 +1,11 @@
 ﻿using DbShell.Common;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.DmlFramework;
+using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Structure;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -22,6 +24,7 @@ namespace DbShell.RelatedDataSync.SqlModel
         Error,
         TableSynchronized,
         Materialize,
+        Rollback,
 
         //Script,
         //SetValidToDelete,
@@ -38,20 +41,25 @@ namespace DbShell.RelatedDataSync.SqlModel
         private DataSyncSqlModel _datasync;
         private IShellContext _context;
         private string _procName;
-        private bool _inTransaction;
+        private StringWriter _sw;
 
-        public SqlScriptCompiler(ISqlDumper dmp, DataSyncSqlModel datasync, IShellContext context, string procName)
+        public SqlScriptCompiler(IDatabaseFactory factory, DataSyncSqlModel datasync, IShellContext context, string procName)
         {
-            _dmp = dmp;
-            _datasync = datasync;
             _context = context;
             _procName = procName;
+            _datasync = datasync;
+
+            _sw = new StringWriter();
+            var so = new SqlOutputStream(factory.CreateDialect(), _sw, new SqlFormatProperties());
+            so.OverrideCommandDelimiter(";");
+            _dmp = factory.CreateDumper(so, new SqlFormatProperties());
         }
 
         public ISqlDumper Dumper => _dmp;
         public void Put(string format, params object[] args) => _dmp.Put(format, args);
         public void PutCmd(string format, params object[] args) => _dmp.PutCmd(format, args);
         public static DmlfExpression ImportDateTimeExpression => new DmlfSqlValueExpression { Value = ImportDateTimeVariableName };
+        public string GetCompiledSql() => _sw.ToString();
 
         private const string SEPARATOR =
             "------------------------------------------------------------------------------------------------";
@@ -86,36 +94,61 @@ namespace DbShell.RelatedDataSync.SqlModel
             _dmp.Put("&n");
         }
 
-        public void PutProcedureHeader(NameWithSchema name)
+        public void PutProcedureHeader(NameWithSchema name, bool useTransaction, string createKeyword)
         {
-            Put($"^create ^procedure %f ({ImportDateTimeVariableName} ^datetime = ^null) ^as &n", name);
+            Put($"%k ^procedure %f ({ImportDateTimeVariableName} ^datetime = ^null", createKeyword, name);
+            if (useTransaction) Put(", @useTransaction bit = 1");
+            Put($") ^as &n");
             Put("^begin&>&n");
             Put($"^if ({ImportDateTimeVariableName} ^is ^null) ^set {ImportDateTimeVariableName} = ^getdate();&n");
         }
 
-        public void PutCommonProlog(bool useTransaction)
+        public void PutCommonProlog(bool useTransaction, string sqlPrologBeforeBeginTransaction, string sqlPrologAfterBeginTransaction)
         {
             Put($"^declare {ImportDateVariableName} ^datetime;&n");
             Put($"^set {ImportDateVariableName} = ^dateadd(dd, 0, ^datediff(dd, 0, {ImportDateTimeVariableName}));&n");
             Put("^declare @rows ^nvarchar(100);&n");
             Put("^declare @msg ^nvarchar(^max);&n");
-            Put("^declare @lastLogDiff ^float;");
+            Put("^declare @lastLogDiff ^float;&n");
+
+            Put("DECLARE @CatchErrorMessage NVARCHAR(4000);&n");
+            Put("DECLARE @CatchErrorSeverity INT;;&n");
+            Put("DECLARE @CatchErrorState INT;&n");
+
             Put("^declare @messages ^table (ID INT NOT NULL PRIMARY KEY IDENTITY, Message NVARCHAR(MAX), Created DATETIME NOT NULL DEFAULT GETDATE(), Duration FLOAT, Operation NVARCHAR(100), TargetEntity  NVARCHAR(250), Rows INT)");
             PutLogMessage(null, LogOperationType.Start, "Import started", null);
             StartTimeMeasure("IMPORT");
+
+            PutSqlScript(sqlPrologBeforeBeginTransaction);
 
             if (useTransaction)
             {
                 PutBeginTransaction();
             }
+
+            PutSqlScript(sqlPrologAfterBeginTransaction);
         }
 
-        public void PutCommonEpilog(bool useTransaction)
+        private void PutSqlScript(string sql)
         {
+            if (String.IsNullOrEmpty(sql)) return;
+            foreach (var item in GoSplitter.GoSplit(sql))
+            {
+                Put("&r"); // dump separator if needed
+                _dmp.WriteRaw(item.Data);
+                _dmp.EndCommand();
+                Put("&d"); // mark data dumped state
+            }
+        }
+
+        public void PutCommonEpilog(bool useTransaction, string sqlEpilogBeforeCommitTransaction, string sqlEpilogAfterCommitTransaction)
+        {
+            PutSqlScript(sqlEpilogBeforeCommitTransaction);
             if (useTransaction)
             {
                 PutEndTransaction();
             }
+            PutSqlScript(sqlEpilogAfterCommitTransaction);
 
             PutLogMessage(null, LogOperationType.Finish, "Import finished", "IMPORT");
             Put("^select * from @messages;&n");
@@ -126,50 +159,87 @@ namespace DbShell.RelatedDataSync.SqlModel
             Put("&<&n^end&n");
         }
 
-        public void PutScriptProlog()
+        public void PutScriptProlog(bool useTransaction)
         {
             Put($"^declare {ImportDateTimeVariableName} ^ datetime;&n");
-            Put($"^^set {ImportDateTimeVariableName} = ^getdate();&n");
+            Put($"^set {ImportDateTimeVariableName} = ^getdate();&n");
+            if (useTransaction)
+            {
+                Put("^declare @useTransaction bit;&n");
+                Put("^set @useTransaction = 1;&n");
+            }
         }
 
         public void PutBeginTryCatch(TargetEntitySqlModel entity)
         {
-            if (_inTransaction) return;
             Put("^begin ^try&n");
         }
 
-        public void PutEndTryCatch(TargetEntitySqlModel entity)
+        public void PutEndTryCatch(TargetEntitySqlModel entity, bool useTransaction)
         {
-            if (_inTransaction) return;
             Put("^end ^try&n");
             Put("^begin ^catch&n");
             Put("&>");
             PutLogMessage(entity, LogOperationType.Error, null, null);
             Put("&<");
+            if (useTransaction)
+            {
+                Put("^if (@useTransaction = 1) begin SELECT @CatchErrorMessage = ERROR_MESSAGE(),@CatchErrorSeverity = ERROR_SEVERITY(), @CatchErrorState = ERROR_STATE();RAISERROR (@CatchErrorMessage, @CatchErrorSeverity, @CatchErrorState);^end;");
+            }
             Put("^end ^catch&n");
         }
 
         private void PutBeginTransaction()
         {
-            if (_inTransaction) throw new Exception("DBSH-00217 Nested transactions are not allowed");
+            PutIfTransactionStart();
             Put("BEGIN TRANSACTION&n");
+            PutIfTransactionEnd();
             Put("BEGIN TRY&n");
             Put("&>");
-            _inTransaction = true;
         }
 
         private void PutEndTransaction()
         {
-            _inTransaction = false;
             Put("&<");
+            PutIfTransactionStart();
             Put("COMMIT TRANSACTION&n");
+            PutIfTransactionEnd();
             Put("END TRY&n");
             Put("BEGIN CATCH&n");
             Put("&>");
+            PutIfTransactionStart();
             Put("ROLLBACK TRANSACTION&n");
-            PutLogMessage(null, LogOperationType.Error, null, null);
+            PutIfTransactionEnd();
+            PutLogMessage(null, LogOperationType.Rollback, "Import failed, transaction rollbacked", null);
+            //PutLogMessage(null, LogOperationType.Error, null, null);
             Put("&<");
             Put("^end ^catch&n");
+        }
+
+        public void CreateOrAlterProcedure(NameWithSchema name, string sqlCore)
+        {
+            Put("^declare @procedureText ^nvarchar(^max);&n");
+            Put("^set @procedureText = %v;&n", sqlCore);
+            if (name.Schema != null)
+            {
+                Put("^if (^exists (^select * from sys.objects inner join sys.schemas on schemas.schema_id = objects.schema_id where type='P' and schemas.name=%v and objects.name=%v))&n", name.Schema, name.Name);
+            }
+            else
+            {
+                Put("^if (^exists (^select * from sys.objects inner join sys.schemas on schemas.schema_id = objects.schema_id where type='P' and objects.name=%v))&n", name.Name);
+            }
+            Put("begin&nset @procedureText = 'alter' + @procedureText&nend&nelse&nbegin&nset @procedureText = 'create' + @procedureText&nend&n");
+            Put("exec sp_executesql @procedureText;&n");
+        }
+
+        private void PutIfTransactionEnd()
+        {
+            Put("^end&<&n");
+        }
+
+        private void PutIfTransactionStart()
+        {
+            Put("^if (@useTransaction = 1)&>&n^begin&nIF NULL=NULL SELECT NULL;&n");
         }
 
 

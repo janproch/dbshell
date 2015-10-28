@@ -43,6 +43,7 @@
     <Compile Include="ColumnName.cs" />
     <Compile Include="CreateProcedure.cs" />
     <Compile Include="DataSyncItemBase.cs" />
+    <Compile Include="DataSyncScriptable.cs" />
     <Compile Include="KeepHistoryLifetimeHandler.cs" />
     <Compile Include="LifetimeHandlerBase.cs" />
     <Compile Include="LogHandlerBase.cs" />

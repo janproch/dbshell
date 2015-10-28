@@ -37,7 +37,7 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         private void DumpScript(SqlScriptCompiler cmp, bool useTransaction)
         {
-            cmp.PutCommonProlog(useTransaction);
+            cmp.PutCommonProlog(useTransaction, _model.SqlPrologBeforeBeginTransaction, _model.SqlPrologAfterBeginTransaction);
 
             foreach (var source in SourceGraphModel.Entities)
             {
@@ -46,7 +46,7 @@ namespace DbShell.RelatedDataSync.SqlModel
 
             foreach (var ent in Entities)
             {
-                ent.Run(cmp);
+                ent.Run(cmp, useTransaction);
             }
 
             foreach (var source in SourceGraphModel.Entities)
@@ -54,29 +54,31 @@ namespace DbShell.RelatedDataSync.SqlModel
                 source.PutDropMaterialized(cmp);
             }
 
-            cmp.PutCommonEpilog(useTransaction);
+            cmp.PutCommonEpilog(useTransaction, _model.SqlEpilogBeforeCommitTransaction, _model.SqlEpilogAfterCommitTransaction);
         }
 
-        private void RunScript(DbConnection conn, IDatabaseFactory factory, Action<SqlScriptCompiler> prolog, Action<SqlScriptCompiler> epilog, IShellContext context, string procname, bool useTransaction)
-        {
-            var sw = new StringWriter();
-            var so = new SqlOutputStream(factory.CreateDialect(), sw, new SqlFormatProperties());
-            so.OverrideCommandDelimiter(";");
-            var dmp = factory.CreateDumper(so, new SqlFormatProperties());
-            var cmp = new SqlScriptCompiler(dmp, this, context, procname);
+        //private void RunScript(DbConnection conn, IDatabaseFactory factory, Action<SqlScriptCompiler> prolog, Action<SqlScriptCompiler> epilog, IShellContext context, string procname, bool useTransaction)
+        //{
+        //    var cmp = new SqlScriptCompiler(factory, this, context, name.ToString());
 
-            if (prolog != null) prolog(cmp);
+        //    var sw = new StringWriter();
+        //    var so = new SqlOutputStream(factory.CreateDialect(), sw, new SqlFormatProperties());
+        //    so.OverrideCommandDelimiter(";");
+        //    var dmp = factory.CreateDumper(so, new SqlFormatProperties());
+        //    var cmp = new SqlScriptCompiler(dmp, this, context, procname);
 
-            DumpScript(cmp, useTransaction);
+        //    if (prolog != null) prolog(cmp);
 
-            if (epilog != null) epilog(cmp);
+        //    DumpScript(cmp, useTransaction);
 
-            using (var cmd = conn.CreateCommand())
-            {
-                cmd.CommandText = sw.ToString();
-                cmd.ExecuteNonQuery();
-            }
-        }
+        //    if (epilog != null) epilog(cmp);
+
+        //    using (var cmd = conn.CreateCommand())
+        //    {
+        //        cmd.CommandText = sw.ToString();
+        //        cmd.ExecuteNonQuery();
+        //    }
+        //}
 
         public void AddExternalSource(SourceEntitySqlModel sourceEntity)
         {
@@ -137,27 +139,60 @@ namespace DbShell.RelatedDataSync.SqlModel
         public void Run(DbConnection conn, IDatabaseFactory factory, IShellContext context, bool useTransaction)
         {
             FillExternalSources(conn, factory, context);
-            RunScript(conn, factory, cmp => { cmp.PutScriptProlog(); }, cmp => { }, context, null, useTransaction);
+            var cmp = new SqlScriptCompiler(factory, this, context, null);
+            cmp.PutScriptProlog(useTransaction);
+            DumpScript(cmp, useTransaction);
+            ExecuteScript(conn, cmp.GetCompiledSql());
             FreeExternalSources(conn, factory, context);
         }
 
-        public void CreateProcedure(DbConnection conn, IDatabaseFactory factory, NameWithSchema name, IShellContext context, bool useTransaction)
+        public void CreateProcedure(DbConnection conn, IDatabaseFactory factory, NameWithSchema name, IShellContext context, bool useTransaction, bool overwriteExisting)
         {
-            RunScript(conn, factory, cmp => cmp.PutProcedureHeader(name), cmd => cmd.PutProcedureFooter(), context, name.ToString(), useTransaction);
+            string sql = GenerateCreateProcedure(factory, name, context, useTransaction, overwriteExisting);
+            ExecuteScript(conn, sql);
+        }
+
+        private void ExecuteScript(DbConnection conn, string sql)
+        {
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = sql;
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private string GenerateCreateProcedureCore(IDatabaseFactory factory, NameWithSchema name, IShellContext context, bool useTransaction, string createKeyword)
+        {
+            var cmp = new SqlScriptCompiler(factory, this, context, name.ToString());
+            cmp.PutProcedureHeader(name, useTransaction, createKeyword);
+            DumpScript(cmp, useTransaction);
+            cmp.PutProcedureFooter();
+            return cmp.GetCompiledSql();
+        }
+
+        public string GenerateCreateProcedure(IDatabaseFactory factory, NameWithSchema name, IShellContext context, bool useTransaction, bool overwriteExisting)
+        {
+            if (overwriteExisting)
+            {
+                string sqlCore = GenerateCreateProcedureCore(factory, name, context, useTransaction, "");
+                var cmp = new SqlScriptCompiler(factory, this, context, name.ToString());
+                cmp.CreateOrAlterProcedure(name, sqlCore);
+                return cmp.GetCompiledSql();
+            }
+            else
+            {
+                return GenerateCreateProcedureCore(factory, name, context, useTransaction, "create");
+            }
         }
 
         public string GenerateScript(IDatabaseFactory factory, IShellContext context, bool useTransaction)
         {
-            var sw = new StringWriter();
-            var so = new SqlOutputStream(factory.CreateDialect(), sw, new SqlFormatProperties());
-            so.OverrideCommandDelimiter(";");
-            var dmp = factory.CreateDumper(so, new SqlFormatProperties());
-            var cmp = new SqlScriptCompiler(dmp, this, context, null);
+            var cmp = new SqlScriptCompiler(factory, this, context, null);
 
-            cmp.PutScriptProlog();
+            cmp.PutScriptProlog(useTransaction);
             DumpScript(cmp, useTransaction);
 
-            return sw.ToString();
+            return cmp.GetCompiledSql();
         }
     }
 }

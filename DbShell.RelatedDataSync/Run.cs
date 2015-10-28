@@ -6,14 +6,12 @@ using DbShell.Common;
 using DbShell.RelatedDataSync.SqlModel;
 using DbShell.Driver.Common.Utility;
 using System.Data.SqlClient;
+using DbShell.Driver.Common.AbstractDb;
 
 namespace DbShell.RelatedDataSync
 {
-    public class Run : DataSyncItemBase
+    public class Run : DataSyncScriptable
     {
-        [XamlProperty]
-        public bool UseTransaction { get; set; }
-
         protected override void DoRun(IShellContext context)
         {
             var model = GetModel(context);
@@ -35,6 +33,13 @@ namespace DbShell.RelatedDataSync
                 }
                 sqlModel.Run(conn, connection.Factory, context, UseTransaction);
             }
+        }
+
+        public override string GenerateSql(IDatabaseFactory factory, IShellContext context)
+        {
+            var model = GetModel(context);
+            var sqlModel = new DataSyncSqlModel(model, context, true);
+            return sqlModel.GenerateScript(factory, context, UseTransaction);
         }
     }
 }

@@ -464,7 +464,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             }
         }
 
-        public void Run(SqlScriptCompiler cmp)
+        public void Run(SqlScriptCompiler cmp, bool useTransaction)
         {
             cmp.PutMainTitleComment($"Synchronize entity {SqlAlias} (table {TargetTable})");
 
@@ -474,7 +474,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             cmp.Put("&>");
             RunCore(cmp);
             cmp.Put("&<");
-            cmp.PutEndTryCatch(this);
+            cmp.PutEndTryCatch(this, useTransaction);
 
             cmp.PutLogMessage(this, LogOperationType.TableSynchronized, "table synchronized", "TABLE");
         }

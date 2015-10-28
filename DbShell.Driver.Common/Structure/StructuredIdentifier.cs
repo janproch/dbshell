@@ -134,7 +134,7 @@ namespace DbShell.Driver.Common.Structure
         public NameWithSchema ToNameWithSchema()
         {
             if (Count == 2) return new NameWithSchema(this[0], this[1]);
-            if (Count == 1) return new NameWithSchema(this[1]);
+            if (Count == 1) return new NameWithSchema(this[0]);
             return null;
         }
 
