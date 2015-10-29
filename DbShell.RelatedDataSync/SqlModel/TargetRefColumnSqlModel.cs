@@ -27,7 +27,7 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         public override DmlfExpression CreateSourceExpression(SourceJoinSqlModel sourceJoinModel, bool aggregate)
         {
-            return new DmlfColumnRefExpression
+            var expr = new DmlfColumnRefExpression
             {
                 Column = new DmlfColumnRef
                 {
@@ -35,6 +35,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                     Source = _targetSqlModel.GetRefSource(sourceJoinModel.SourceToRefsJoin, sourceJoinModel),
                 }
             };
+            return GetExprOrAggregate(expr, aggregate);
         }
     }
 }

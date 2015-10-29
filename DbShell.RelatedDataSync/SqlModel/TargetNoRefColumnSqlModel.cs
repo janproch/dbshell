@@ -25,22 +25,6 @@ namespace DbShell.RelatedDataSync.SqlModel
         public override bool Insert => _dbsh.Insert;
         public override bool Compare => _dbsh.Compare;
 
-        private DmlfExpression CreateAggregate(DmlfExpression expr)
-        {
-            var res = new DmlfFuncCallExpression
-            {
-                FuncName = "MAX",
-            };
-            res.Arguments.Add(expr);
-            return res;
-        }
-
-        private DmlfExpression GetExprOrAggregate(DmlfExpression expr, bool aggregate)
-        {
-            if (aggregate) return CreateAggregate(expr);
-            return expr;
-        }
-
         public override DmlfExpression CreateSourceExpression(SourceJoinSqlModel sourceJoinModel, bool aggregate)
         {
             switch (_dbsh.RealValueType)

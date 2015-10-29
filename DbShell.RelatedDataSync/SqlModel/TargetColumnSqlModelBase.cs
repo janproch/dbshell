@@ -32,5 +32,21 @@ namespace DbShell.RelatedDataSync.SqlModel
         {
             return CreateTargetExpression(new DmlfSource { Alias = targetEntityAlias });
         }
+
+        protected DmlfExpression CreateAggregate(DmlfExpression expr)
+        {
+            var res = new DmlfFuncCallExpression
+            {
+                FuncName = "MAX",
+            };
+            res.Arguments.Add(expr);
+            return res;
+        }
+
+        protected DmlfExpression GetExprOrAggregate(DmlfExpression expr, bool aggregate)
+        {
+            if (aggregate) return CreateAggregate(expr);
+            return expr;
+        }
     }
 }
