@@ -72,10 +72,10 @@ namespace DbShell.RelatedDataSync.SqlModel
 
             _dbsh.LifetimeHandler.AddTargetColumns(this);
 
-            if (!KeySourceColumns.Any())
-            {
-                throw new Exception($"DBSH-00220 Entity {dbsh.TableName} has no source for key");
-            }
+            //if (!KeySourceColumns.Any())
+            //{
+            //    throw new Exception($"DBSH-00220 Entity {dbsh.TableName} has no source for key");
+            //}
 
             SourceJoinModel = new SourceJoinSqlModel(this, dataSyncSqlModel.SourceGraphModel);
 

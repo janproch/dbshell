@@ -173,6 +173,7 @@ namespace DbShell.RelatedDataSync.SqlModel
         public void PutBeginTryCatch(TargetEntitySqlModel entity)
         {
             Put("^begin ^try&n");
+            Put("IF NULL = NULL SELECT NULL;&n");
         }
 
         public void PutEndTryCatch(TargetEntitySqlModel entity, bool useTransaction)
