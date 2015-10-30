@@ -51,11 +51,17 @@ namespace DbShell.RelatedDataSync.SqlModel
                         string expr = Regex.Replace(
                             _dbsh.Expression, 
                             TargetEntitySqlModel.ExpressionColumnRegex, 
-                            m => GetColumnExpression(sourceJoinModel, m.Groups[1].Value));
-                        return GetExprOrAggregate(new DmlfSqlValueExpression
+                            m => GetColumnExpression(sourceJoinModel, m.Groups[1].Value, aggregate));
+
+                        return new DmlfSqlValueExpression
                         {
                             Value = expr,
-                        }, aggregate);
+                        };
+
+                        //return GetExprOrAggregate(new DmlfSqlValueExpression
+                        //{
+                        //    Value = expr,
+                        //}, aggregate);
                     }
                     else
                     {
@@ -113,10 +119,12 @@ namespace DbShell.RelatedDataSync.SqlModel
             throw new Exception("DBSH-00221 Cannot create expression");
         }
 
-        private string GetColumnExpression(SourceJoinSqlModel sourceJoinModel, string colname)
+        private string GetColumnExpression(SourceJoinSqlModel sourceJoinModel, string colname, bool aggregate)
         {
             var entity = sourceJoinModel[colname].Entities.First();
-            return $"[{entity.SqlAlias}].[{entity.GetColumnName(sourceJoinModel[colname].Alias)}]";
+            string res = $"[{entity.SqlAlias}].[{entity.GetColumnName(sourceJoinModel[colname].Alias)}]";
+            if (aggregate) res = $"MAX({res})";
+            return res;
         }
     }
 }
