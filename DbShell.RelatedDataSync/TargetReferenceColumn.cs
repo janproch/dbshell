@@ -9,10 +9,10 @@ namespace DbShell.RelatedDataSync
 {
     public class TargetReferenceColumn
     {
-        [XmlProperty]
+        [XamlProperty]
         public string BaseName { get; set; }
 
-        [XmlProperty]
+        [XamlProperty]
         public string RefName { get; set; }
     }
 }

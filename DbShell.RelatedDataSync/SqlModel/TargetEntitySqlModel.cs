@@ -27,6 +27,8 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         public static string ExpressionColumnRegex = @"\{([^\}]+)\}";
 
+        public string LogName => _dbsh.Alias ?? TargetTable.ToString();
+
         public TargetEntitySqlModel(DataSyncSqlModel dataSyncSqlModel, Target dbsh, IShellContext context)
         {
             this._dataSyncSqlModel = dataSyncSqlModel;
@@ -53,10 +55,10 @@ namespace DbShell.RelatedDataSync.SqlModel
                 string replaced = context.Replace(fk.Target);
                 var fullName = StructuredIdentifier.Parse(replaced);
                 var entity = _dataSyncSqlModel.Entities.FirstOrDefault(x => x.Match(fullName));
-                if (entity == null) throw new Exception($"DBSH-00000 Target entity {replaced} not found");
+                if (entity == null) throw new Exception($"DBSH-00219 Target entity {replaced} not found");
                 RefEntities[fk] = entity;
 
-                foreach(var col in fk.Columns)
+                foreach (var col in fk.Columns)
                 {
                     TargetColumns.Add(new TargetRefColumnSqlModel(fk, col, entity));
                 }
@@ -68,9 +70,11 @@ namespace DbShell.RelatedDataSync.SqlModel
                 }
             }
 
+            _dbsh.LifetimeHandler.AddTargetColumns(this);
+
             if (!KeySourceColumns.Any())
             {
-                throw new Exception($"DBSH-00000 Entity {dbsh.TableName} has no source for key");
+                throw new Exception($"DBSH-00220 Entity {dbsh.TableName} has no source for key");
             }
 
             SourceJoinModel = new SourceJoinSqlModel(this, dataSyncSqlModel.SourceGraphModel);
@@ -98,14 +102,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 rel.Conditions.Add(new DmlfEqualCondition
                 {
                     LeftExpr = keycol.CreateSourceExpression(joinModel, false),
-                    RightExpr = new DmlfColumnRefExpression
-                    {
-                        Column = new DmlfColumnRef
-                        {
-                            ColumnName = keycol.Name,
-                            Source = res,
-                        }
-                    }
+                    RightExpr = keycol.CreateTargetExpression(res),
                 });
             }
 
@@ -206,6 +203,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             };
             existSelect.SelectAll = true;
             CreateKeyCondition(existSelect, "tested");
+            CreateLifetimeConditions(existSelect, "tested");
 
             res.Select.AddAndCondition(new DmlfNotExistCondition { Select = existSelect });
 
@@ -231,14 +229,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 var cond = new DmlfEqualCondition
                 {
                     // target columns
-                    LeftExpr = new DmlfColumnRefExpression
-                    {
-                        Column = new DmlfColumnRef
-                        {
-                            Source = new DmlfSource { Alias = targetEntityAlias },
-                            ColumnName = column.Name,
-                        }
-                    },
+                    LeftExpr = column.CreateTargetExpression(targetEntityAlias),
 
                     // source column
                     RightExpr = column.CreateSourceExpression(SourceJoinModel, false),
@@ -258,7 +249,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             CreateTargetColumsnCondition(cmd, targetEntityAlias, x => x.IsRestriction);
         }
 
-        private DmlfUpdate CompileUpdate()
+        private DmlfUpdate CompileMarkRelived()
         {
             var res = new DmlfUpdate();
             res.UpdateTarget = new DmlfSource { Alias = "target" };
@@ -272,16 +263,97 @@ namespace DbShell.RelatedDataSync.SqlModel
                 }
             });
             CreateKeyCondition(res, "target");
-            foreach (var column in TargetColumns.Where(x => !x.IsKey && !x.IsRestriction))
+            _dbsh.LifetimeHandler.CreateReliveConditions(res, "target", this);
+            _dbsh.LifetimeHandler.CreateReliveUpdateFields(res, "target", this);
+            return res;
+        }
+
+        private DmlfUpdate CompileMarkDeleted()
+        {
+            var res = new DmlfUpdate();
+            res.UpdateTarget = new DmlfSource { Alias = "target" };
+            res.SingleFrom.Source = new DmlfSource
             {
-                res.Columns.Add(new DmlfUpdateField
+                Alias = "target",
+                TableOrView = TargetTable,
+            };
+            var existSelect = new DmlfSelect();
+            res.AddAndCondition(new DmlfNotExistCondition
+            {
+                Select = existSelect,
+            });
+            existSelect.SelectAll = true;
+            existSelect.From.Add(SourceJoinModel.SourceToRefsJoin);
+            CreateKeyCondition(existSelect, "target");
+            CreateRestrictionCondition(res, "target");
+            CreateLifetimeConditions(res, "target");
+            _dbsh.LifetimeHandler.CreateSetDeletedUpdateFields(res, "target", this);
+            return res;
+        }
+
+        private DmlfUpdate CompileUpdateCore(Func<TargetColumnSqlModelBase, bool> compareColumn, Func<TargetColumnSqlModelBase, bool> updateColumn, Action<DmlfUpdate> createUpdateSpecialColumns, CompareColumnContext compareContext, UpdateColumnContext updateContext)
+        {
+            var cmd = new DmlfUpdate();
+            cmd.UpdateTarget = new DmlfSource { Alias = "target" };
+            cmd.From.Add(SourceJoinModel.SourceToRefsJoin);
+            cmd.From.Add(new DmlfFromItem
+            {
+                Source = new DmlfSource
+                {
+                    Alias = "target",
+                    TableOrView = TargetTable,
+                }
+            });
+            CreateKeyCondition(cmd, "target");
+            CreateLifetimeConditions(cmd, "target");
+
+            createUpdateSpecialColumns(cmd);
+
+            foreach (var column in TargetColumns)
+            {
+                bool? update = _dbsh.LifetimeHandler.UpdateColumn(column.Name, updateContext);
+                if (update == null) update = updateColumn(column);
+                if (!update.Value) continue;
+                cmd.Columns.Add(new DmlfUpdateField
                 {
                     TargetColumn = column.Name,
                     Expr = column.CreateSourceExpression(SourceJoinModel, false),
                 });
             }
-            if (!res.Columns.Any()) return null;
-            return res;
+
+            var orCondition = new DmlfOrCondition();
+            foreach (var column in TargetColumns)
+            {
+                bool? compare = _dbsh.LifetimeHandler.CompareColumn(column.Name, compareContext);
+
+                if (compare == null) compare = compareColumn(column);
+                if (!compare.Value) continue;
+
+                orCondition.Conditions.Add(new DmlfNotEqualWithNullTestCondition
+                {
+                    LeftExpr = column.CreateSourceExpression(SourceJoinModel, false),
+                    RightExpr = column.CreateTargetExpression("target"),
+                });
+            }
+            if (orCondition.Conditions.Any()) cmd.AddAndCondition(orCondition);
+
+            if (!cmd.Columns.Any()) return null;
+            return cmd;
+        }
+
+        private DmlfUpdate CompileUpdate()
+        {
+            return CompileUpdateCore(x => x.Compare, x => !x.IsKey && !x.IsRestriction && x.Update,
+                cmd => { }, CompareColumnContext.Update, UpdateColumnContext.Update);
+        }
+
+        private DmlfUpdate CompileMarkUpdated()
+        {
+            return CompileUpdateCore(x => x.Compare, x => false,
+                cmd =>
+                {
+                    _dbsh.LifetimeHandler.CreateSetUpdatedUpdateFields(cmd, "target", this);
+                }, CompareColumnContext.MarkUpdated, UpdateColumnContext.MarkUpdated);
         }
 
         private DmlfDelete CompileDelete()
@@ -302,38 +374,117 @@ namespace DbShell.RelatedDataSync.SqlModel
             existSelect.From.Add(SourceJoinModel.SourceToRefsJoin);
             CreateKeyCondition(existSelect, "target");
             CreateRestrictionCondition(res, "target");
+            CreateLifetimeConditions(res, "target");
             return res;
         }
 
-        public void Run(ISqlDumper dmp)
+        private void CreateLifetimeConditions(DmlfCommandBase res, string targetEntityAlias)
         {
-            var insert = CompileInsert();
-            if (insert != null)
+            _dbsh.LifetimeHandler.CreateLifetimeConditions(res, targetEntityAlias, this);
+        }
+
+        private void RunCore(SqlScriptCompiler cmp)
+        {
+            if (_dbsh.LifetimeHandler.CreateMarkRelived)
             {
-                insert.GenSql(dmp);
-                dmp.EndCommand();
+                var update = CompileMarkRelived();
+                if (update != null)
+                {
+                    cmp.StartTimeMeasure("OP");
+                    cmp.PutSmallTitleComment( "MARK RELIVED");
+                    update.GenSql(cmp.Dumper);
+                    cmp.EndCommand();
+                    cmp.PutLogMessage(this, LogOperationType.MarkRelived, "@rows rows marked as relived", "OP");
+                }
             }
 
-            var update = CompileUpdate();
-            if (update != null)
+            if (_dbsh.LifetimeHandler.CreateMarkDeleted)
             {
-                update.GenSql(dmp);
-                dmp.EndCommand();
+                var update = CompileMarkDeleted();
+                if (update != null)
+                {
+                    cmp.StartTimeMeasure("OP");
+                    cmp.PutSmallTitleComment( "MARK DELETED");
+                    update.GenSql(cmp.Dumper);
+                    cmp.EndCommand();
+                    cmp.PutLogMessage(this, LogOperationType.MarkDeleted, "@rows rows marked as deleted", "OP");
+                }
             }
 
-            var delete = CompileDelete();
-            if (delete != null)
+            if (_dbsh.LifetimeHandler.CreateMarkUpdated)
             {
-                delete.GenSql(dmp);
-                dmp.EndCommand();
+                var update = CompileMarkUpdated();
+                if (update != null)
+                {
+                    cmp.StartTimeMeasure("OP");
+                    cmp.PutSmallTitleComment( "MARK UPDATED");
+                    update.GenSql(cmp.Dumper);
+                    cmp.EndCommand();
+                    cmp.PutLogMessage(this, LogOperationType.MarkUpdated, "@rows rows marked as updated", "OP");
+                }
+            }
+
+            if (_dbsh.LifetimeHandler.CreateInsert)
+            {
+                var insert = CompileInsert();
+                if (insert != null)
+                {
+                    cmp.StartTimeMeasure("OP");
+                    cmp.PutSmallTitleComment("INSERT");
+                    insert.GenSql(cmp.Dumper);
+                    cmp.EndCommand();
+                    cmp.PutLogMessage(this, LogOperationType.Insert, "@rows rows inserted", "OP");
+                }
+            }
+
+            if (_dbsh.LifetimeHandler.CreateUpdate)
+            {
+                var update = CompileUpdate();
+                if (update != null)
+                {
+                    cmp.StartTimeMeasure("OP");
+                    cmp.PutSmallTitleComment("UPDATE");
+                    update.GenSql(cmp.Dumper);
+                    cmp.EndCommand();
+                    cmp.PutLogMessage(this, LogOperationType.Update, "@rows rows updated", "OP");
+                }
+            }
+
+            if (_dbsh.LifetimeHandler.CreateDelete)
+            {
+                var delete = CompileDelete();
+                if (delete != null)
+                {
+                    cmp.StartTimeMeasure("OP");
+                    cmp.PutSmallTitleComment("DELETE");
+                    delete.GenSql(cmp.Dumper);
+                    cmp.EndCommand();
+                    cmp.PutLogMessage(this, LogOperationType.Delete, "@rows rows deleted", "OP");
+                }
             }
         }
 
-        public void Run(DbConnection conn, IDatabaseFactory factory)
+        public void Run(SqlScriptCompiler cmp, bool useTransaction)
         {
-            var so = new ConnectionSqlOutputStream(conn, null, factory.CreateDialect());
-            var dmp = factory.CreateDumper(so, new SqlFormatProperties());
-            Run(dmp);
+            cmp.PutMainTitleComment($"Synchronize entity {SqlAlias} (table {TargetTable})");
+
+            cmp.StartTimeMeasure("TABLE");
+
+            cmp.PutBeginTryCatch(this);
+            cmp.Put("&>");
+            RunCore(cmp);
+            cmp.Put("&<");
+            cmp.PutEndTryCatch(this, useTransaction);
+
+            cmp.PutLogMessage(this, LogOperationType.TableSynchronized, "table synchronized", "TABLE");
         }
+
+        //public void Run(DbConnection conn, IDatabaseFactory factory)
+        //{
+        //    var so = new ConnectionSqlOutputStream(conn, null, factory.CreateDialect());
+        //    var dmp = factory.CreateDumper(so, new SqlFormatProperties());
+        //    var compiler = new SqlScriptCompiler(dmp);
+        //    Run(compiler);
+        //}
     }
 }

@@ -41,6 +41,9 @@ namespace DbShell.Core.Utility
         [XamlProperty]
         public string LinkedDatabaseName { get; set; }
 
+        // fill this if structure cannot be parsed
+        public TableInfo StructureOverride;
+
         public LinkedDatabaseInfo LinkedInfo
         {
             get { return new LinkedDatabaseInfo(LinkedServerName, LinkedDatabaseName); }
@@ -105,7 +108,7 @@ namespace DbShell.Core.Utility
 
         ICdlWriter ITabularDataTarget.CreateWriter(TableInfo inputRowFormat, CopyTableTargetOptions options, IShellContext context, DataFormatSettings sourceDataFormat)
         {
-            return new TableWriter(context, GetConnectionProvider(context), GetFullName(context), inputRowFormat, options, null, LinkedInfo, sourceDataFormat);
+            return new TableWriter(context, GetConnectionProvider(context), GetFullName(context), inputRowFormat, options, StructureOverride, LinkedInfo, sourceDataFormat);
         }
 
         TableInfo ITabularDataTarget.GetRowFormat(IShellContext context)

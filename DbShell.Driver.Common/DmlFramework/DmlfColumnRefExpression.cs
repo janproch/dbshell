@@ -50,6 +50,21 @@ namespace DbShell.Driver.Common.DmlFramework
             return "col";
         }
 
+        public static DmlfColumnRefExpression Create(string tableAlias, string column)
+        {
+            return new DmlfColumnRefExpression
+            {
+                Column = new DmlfColumnRef
+                {
+                    ColumnName = column,
+                    Source = new DmlfSource
+                    {
+                        Alias = tableAlias,
+                    }
+                }
+            };
+        }
+
         public override int GetHashCode()
         {
             if (Column != null) return Column.GetHashCode();

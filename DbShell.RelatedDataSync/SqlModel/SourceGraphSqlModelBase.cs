@@ -14,7 +14,7 @@ namespace DbShell.RelatedDataSync.SqlModel
         {
             get
             {
-                if (!Columns.ContainsKey(alias)) throw new Exception($"DBSH-00000 Source alias not found: {alias}");
+                if (!Columns.ContainsKey(alias)) throw new Exception($"DBSH-00215 Source alias not found: {alias}");
                 return Columns[alias];
             }
         }

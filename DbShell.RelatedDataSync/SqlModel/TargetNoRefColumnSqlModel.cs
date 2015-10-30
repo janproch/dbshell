@@ -21,22 +21,9 @@ namespace DbShell.RelatedDataSync.SqlModel
         public override bool IsKey => _dbsh.IsKey;
         public override bool IsRestriction => _dbsh.IsRestriction;
         public override string Name => _dbsh.Name;
-
-        private DmlfExpression CreateAggregate(DmlfExpression expr)
-        {
-            var res = new DmlfFuncCallExpression
-            {
-                FuncName = "MAX",
-            };
-            res.Arguments.Add(expr);
-            return res;
-        }
-
-        private DmlfExpression GetExprOrAggregate(DmlfExpression expr, bool aggregate)
-        {
-            if (aggregate) return CreateAggregate(expr);
-            return expr;
-        }
+        public override bool Update => _dbsh.Update;
+        public override bool Insert => _dbsh.Insert;
+        public override bool Compare => _dbsh.Compare;
 
         public override DmlfExpression CreateSourceExpression(SourceJoinSqlModel sourceJoinModel, bool aggregate)
         {
@@ -50,10 +37,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                             Column = new DmlfColumnRef
                             {
                                 ColumnName = entity.GetColumnName(sourceJoinModel[_dbsh.Source].Alias),
-                                Source = new DmlfSource
-                                {
-                                    Alias = entity.SqlAlias,
-                                }
+                                Source = entity.QuerySource,
                             }
                         }, aggregate);
                 case TargetColumnValueType.Value:
@@ -80,9 +64,53 @@ namespace DbShell.RelatedDataSync.SqlModel
                             Value = _dbsh.Expression,
                         };
                     }
+                case TargetColumnValueType.Special:
+                    switch (_dbsh.SpecialValue)
+                    {
+                        case TargetColumnSpecialValue.Null:
+                            return new DmlfLiteralExpression
+                            {
+                                Value = null,
+                            };
+                        case TargetColumnSpecialValue.CurrentDateTime:
+                            return new DmlfFuncCallExpression
+                            {
+                                FuncName = "GETDATE",
+                            };
+                        case TargetColumnSpecialValue.CurrentDate:
+                            return new DmlfSqlValueExpression
+                            {
+                                Value = "DATEADD(dd, 0, DATEDIFF(dd, 0, GETDATE()))",
+                            };
+                        case TargetColumnSpecialValue.CurrentUtcDateTime:
+                            return new DmlfFuncCallExpression
+                            {
+                                FuncName = "GETUTCDATE",
+                            };
+                        case TargetColumnSpecialValue.CurrentUtcDate:
+                            return new DmlfSqlValueExpression
+                            {
+                                Value = "DATEADD(dd, 0, DATEDIFF(dd, 0, GETUTCDATE()))",
+                            };
+                        case TargetColumnSpecialValue.NewGUID:
+                            return new DmlfFuncCallExpression
+                            {
+                                FuncName = "NEWID",
+                            };
+                        case TargetColumnSpecialValue.ImportDateTime:
+                            {
+                                return SqlScriptCompiler.ImportDateTimeExpression;
+                            }
+                        case TargetColumnSpecialValue.ImportDate:
+                            return new DmlfSqlValueExpression
+                            {
+                                Value = SqlScriptCompiler.ImportDateVariableName,
+                            };
+                    }
+                    break;
 
             }
-            throw new Exception("DBSH-00000 Cannot create expression");
+            throw new Exception("DBSH-00221 Cannot create expression");
         }
 
         private string GetColumnExpression(SourceJoinSqlModel sourceJoinModel, string colname)

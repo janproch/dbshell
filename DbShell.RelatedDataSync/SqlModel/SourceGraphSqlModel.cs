@@ -1,4 +1,5 @@
 ﻿using DbShell.Common;
+using DbShell.Driver.Common.DmlFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +10,22 @@ namespace DbShell.RelatedDataSync.SqlModel
     public class SourceGraphSqlModel : SourceGraphSqlModelBase
     {
         private SyncModel _model;
+        private DataSyncSqlModel _dataSync;
 
-        public SourceGraphSqlModel(SyncModel model, IShellContext context)
+        public DataSyncSqlModel DataSync => _dataSync;
+
+        public SourceGraphSqlModel(SyncModel model, IShellContext context, DataSyncSqlModel dataSync)
         {
             _model = model;
 
             foreach (var item in model.Sources)
             {
-                var src = new SourceEntitySqlModel(item);
+                var src = new SourceEntitySqlModel(item, dataSync);
                 Entities.Add(src);
                 src.SqlAlias = item.Alias ?? "src_" + Entities.Count;
-                var tableOrView = item.DataSource as DbShell.Core.Utility.TableOrView;
-                if (tableOrView != null) src.TableName = tableOrView.GetFullName(context);
+                src.InitializeQuerySource(item.DataSource, context);
+                src.MaterializeIfNeeded();
+
                 foreach (var colItem in item.Columns)
                 {
                     string alias = colItem.AliasOrName;

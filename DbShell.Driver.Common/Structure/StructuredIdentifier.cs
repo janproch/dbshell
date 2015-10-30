@@ -57,6 +57,11 @@ namespace DbShell.Driver.Common.Structure
             }
         }
 
+        public StructuredIdentifier(IEnumerable<string> source)
+        {
+            _nameItems.AddRange(source);
+        }
+
         public static StructuredIdentifier Parse(string s)
         {
             var res = new StructuredIdentifier();
@@ -124,6 +129,13 @@ namespace DbShell.Driver.Common.Structure
                 default:
                     return _nameItems.Select(QuoteNameIfNecessary).CreateDelimitedText(".");
             }
+        }
+
+        public NameWithSchema ToNameWithSchema()
+        {
+            if (Count == 2) return new NameWithSchema(this[0], this[1]);
+            if (Count == 1) return new NameWithSchema(this[0]);
+            return null;
         }
 
         public override string ToString()

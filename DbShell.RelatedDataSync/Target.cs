@@ -27,5 +27,8 @@ namespace DbShell.RelatedDataSync
 
         [XamlProperty]
         public List<TargetReference> References { get; private set; } = new List<TargetReference>();
+
+        [XamlProperty]
+        public LifetimeHandlerBase LifetimeHandler { get; set; } = new LifetimeHandlerBase();
     }
 }

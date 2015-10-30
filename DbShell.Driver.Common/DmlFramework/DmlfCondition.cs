@@ -205,6 +205,34 @@ namespace DbShell.Driver.Common.DmlFramework
         }
     }
 
+    public class DmlfEqualWithNullTestCondition : DmlfBinaryCondition
+    {
+        public override void GenSql(ISqlDumper dmp)
+        {
+            dmp.Put("(");
+
+            LeftExpr.GenSql(dmp);
+            dmp.Put("=");
+            RightExpr.GenSql(dmp);
+
+            dmp.Put("or");
+            dmp.Put("(");
+            LeftExpr.GenSql(dmp);
+            dmp.Put("is null");
+            dmp.Put("and");
+            RightExpr.GenSql(dmp);
+            dmp.Put("is null");
+            dmp.Put(")");
+
+            dmp.Put(")");
+        }
+
+        public override bool EvalCondition(IDmlfNamespace ns)
+        {
+            return DmlfRelationCondition.EvalRelation(LeftExpr, RightExpr, "=", ns);
+        }
+    }
+
     public class DmlfNotEqualCondition : DmlfBinaryCondition
     {
         public override void GenSql(ISqlDumper dmp)
@@ -212,6 +240,43 @@ namespace DbShell.Driver.Common.DmlFramework
             LeftExpr.GenSql(dmp);
             dmp.Put("<>");
             RightExpr.GenSql(dmp);
+        }
+
+        public override bool EvalCondition(IDmlfNamespace ns)
+        {
+            return DmlfRelationCondition.EvalRelation(LeftExpr, RightExpr, "<>", ns);
+        }
+    }
+
+    public class DmlfNotEqualWithNullTestCondition : DmlfBinaryCondition
+    {
+        public override void GenSql(ISqlDumper dmp)
+        {
+            dmp.Put("(");
+
+            LeftExpr.GenSql(dmp);
+            dmp.Put("<>");
+            RightExpr.GenSql(dmp);
+
+            dmp.Put("^or");
+            dmp.Put("(");
+            LeftExpr.GenSql(dmp);
+            dmp.Put("^is ^null");
+            dmp.Put(" ^and");
+            RightExpr.GenSql(dmp);
+            dmp.Put("^is ^not ^null");
+            dmp.Put(")");
+
+            dmp.Put("or");
+            dmp.Put("(");
+            LeftExpr.GenSql(dmp);
+            dmp.Put("^is ^not ^null");
+            dmp.Put(" ^and");
+            RightExpr.GenSql(dmp);
+            dmp.Put("^is ^null");
+            dmp.Put(")");
+
+            dmp.Put(")");
         }
 
         public override bool EvalCondition(IDmlfNamespace ns)

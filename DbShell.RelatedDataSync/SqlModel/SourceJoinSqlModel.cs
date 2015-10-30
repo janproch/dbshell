@@ -71,11 +71,7 @@ namespace DbShell.RelatedDataSync.SqlModel
         {
             var ent0 = PopEntityFromQueue();
 
-            SourceToRefsJoin.Source = new DmlfSource
-            {
-                Alias = ent0.SqlAlias,
-                TableOrView = ent0.TableName,
-            };
+            SourceToRefsJoin.Source = ent0.QuerySource;
             _processedEntities.Add(ent0);
 
             while (_entityQueue.Any())
@@ -85,11 +81,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 var relation = new DmlfRelation
                 {
                     JoinType = PrimarySource == null ? DmlfJoinType.Outer : DmlfJoinType.Left,
-                    Reference = new DmlfSource
-                    {
-                        Alias = ent.SqlAlias,
-                        TableOrView = ent.TableName,
-                    }
+                    Reference = ent.QuerySource,
                 };
 
                 foreach (var column in ent.Columns)
@@ -105,10 +97,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                                     Column = new DmlfColumnRef
                                     {
                                         ColumnName = ent.GetColumnName(column.Alias),
-                                        Source = new DmlfSource
-                                        {
-                                            Alias = ent.SqlAlias,
-                                        }
+                                        Source = ent.QuerySource,
                                     }
                                 },
                                 RightExpr = new DmlfColumnRefExpression
@@ -116,10 +105,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                                     Column = new DmlfColumnRef
                                     {
                                         ColumnName = ent2.GetColumnName(column.Alias),
-                                        Source = new DmlfSource
-                                        {
-                                            Alias = ent2.SqlAlias,
-                                        }
+                                        Source = ent2.QuerySource,
                                     }
                                 },
                             });
@@ -149,7 +135,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 PrimarySource = _sourceGraph.Entities.FirstOrDefault(x => x.SqlAlias == _targetEntitySqlModel.Dbsh.PrimarySource);
                 if (PrimarySource == null)
                 {
-                    throw new Exception($"DBSH-00000 Primary source {_targetEntitySqlModel.Dbsh.PrimarySource} for target {_targetEntitySqlModel.TargetTable} not found");
+                    throw new Exception($"DBSH-00216 Primary source {_targetEntitySqlModel.Dbsh.PrimarySource} for target {_targetEntitySqlModel.TargetTable} not found");
                 }
             }
             else
@@ -265,10 +251,12 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         private void AddEntity(SourceEntitySqlModel sourceEntity)
         {
-            var src = new SourceEntitySqlModel(sourceEntity.Dbsh);
+            var src = new SourceEntitySqlModel(sourceEntity.Dbsh, _sourceGraph.DataSync);
             Entities.Add(src);
             src.SqlAlias = sourceEntity.SqlAlias;
+            src.QuerySource = sourceEntity.QuerySource;
             src.TableName = sourceEntity.TableName;
+            src.IsExternal = sourceEntity.IsExternal;
             foreach (var colItem in sourceEntity.Dbsh.Columns)
             {
                 string alias = colItem.AliasOrName;

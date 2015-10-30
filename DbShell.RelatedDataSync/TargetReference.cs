@@ -18,5 +18,14 @@ namespace DbShell.RelatedDataSync
 
         [XamlProperty]
         public bool IsKey { get; set; }
+
+        [XamlProperty]
+        public bool Compare { get; set; }
+
+        [XamlProperty]
+        public bool Update { get; set; } = true;
+
+        [XamlProperty]
+        public bool Insert { get; set; } = true;
     }
 }

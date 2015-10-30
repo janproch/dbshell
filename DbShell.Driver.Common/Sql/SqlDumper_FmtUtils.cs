@@ -193,6 +193,12 @@ namespace DbShell.Driver.Common.Sql
                                     if (state != null) state.SeparatorNeeded = true;
                                     else sb.Append(" ");
                                     break;
+                                case 'r':
+                                    DumpSeparatorIfNeeded(sb, props, state);
+                                    break;
+                                case 'd':
+                                    DataDumped(state);
+                                    break;
                                 default:
                                     throw new InternalError("DBSH-00042 Unknown & formatting instruction:" + c);
                             }

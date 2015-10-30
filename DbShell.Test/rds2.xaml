@@ -5,11 +5,11 @@
     >
     <rds:SyncModel >
         <rds:SyncModel.Sources>
-            <rds:Source DataSource="{Table SourceMaster}">
+            <rds:Source DataSource="{Query 'SELECT * FROM SourceMaster'}">
                 <rds:SourceColumn Name="Id" Alias="SourceMasterId" />
                 <rds:SourceColumn Name="Value" Alias="MasterValue" />
             </rds:Source>
-            <rds:Source DataSource="{Table SourceDetail}">
+            <rds:Source DataSource="{Table SourceDetail}" Materialize="True">
                 <rds:SourceColumn Name="Id" Alias="SourceDetailId" />
                 <rds:SourceColumn Name="MasterId" Alias="SourceMasterId" />
                 <rds:SourceColumn Name="Value" Alias="DetailValue" />
@@ -18,7 +18,7 @@
 
         <rds:SyncModel.Targets>
             <rds:Target TableName="Target">
-                <rds:TargetColumn Name="TargetIdOriginalMaster" Sourc="SourceMasterId" IsKey="True"/>
+                <rds:TargetColumn Name="TargetIdOriginalMaster" Source="SourceMasterId" IsKey="True"/>
                 <rds:TargetColumn Name="MasterValue" Source="MasterValue" />
                 <rds:TargetColumn Name="TargetIdOriginalDetail" Source="SourceDetailId" IsKey="True"/>
                 <rds:TargetColumn Name="DetailValue" Source="DetailValue" />

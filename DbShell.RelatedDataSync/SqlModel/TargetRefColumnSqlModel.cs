@@ -21,10 +21,13 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         public override bool IsKey => _fk.IsKey;
         public override string Name => _col.BaseName;
+        public override bool Update => _fk.Update;
+        public override bool Insert => _fk.Insert;
+        public override bool Compare => _fk.Compare;
 
         public override DmlfExpression CreateSourceExpression(SourceJoinSqlModel sourceJoinModel, bool aggregate)
         {
-            return new DmlfColumnRefExpression
+            var expr = new DmlfColumnRefExpression
             {
                 Column = new DmlfColumnRef
                 {
@@ -32,6 +35,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                     Source = _targetSqlModel.GetRefSource(sourceJoinModel.SourceToRefsJoin, sourceJoinModel),
                 }
             };
+            return GetExprOrAggregate(expr, aggregate);
         }
     }
 }

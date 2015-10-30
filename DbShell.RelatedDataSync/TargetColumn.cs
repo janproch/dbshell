@@ -12,6 +12,19 @@ namespace DbShell.RelatedDataSync
         Value,
         Source,
         Expression,
+        Special,
+    }
+
+    public enum TargetColumnSpecialValue
+    {
+        Null,
+        ImportDateTime,
+        ImportDate,
+        CurrentDateTime,
+        CurrentDate,
+        CurrentUtcDateTime,
+        CurrentUtcDate,
+        NewGUID,
     }
 
     public class TargetColumn
@@ -29,6 +42,9 @@ namespace DbShell.RelatedDataSync
         public string Value { get; set; }
 
         [XamlProperty]
+        public TargetColumnSpecialValue? SpecialValue { get; set; }
+
+        [XamlProperty]
         public TargetColumnValueType ValueType { get; set; } = TargetColumnValueType.Auto;
 
         [XamlProperty]
@@ -38,6 +54,14 @@ namespace DbShell.RelatedDataSync
         public bool IsRestriction { get; set; }
 
         [XamlProperty]
+        public bool Compare { get; set; }
+
+        [XamlProperty]
+        public bool Update { get; set; } = true;
+
+        [XamlProperty]
+        public bool Insert { get; set; } = true;
+
         public TargetColumnValueType RealValueType
         {
             get
@@ -47,8 +71,9 @@ namespace DbShell.RelatedDataSync
                     if (!String.IsNullOrEmpty(Source)) return TargetColumnValueType.Source;
                     if (!String.IsNullOrEmpty(Expression)) return TargetColumnValueType.Expression;
                     if (!String.IsNullOrEmpty(Value)) return TargetColumnValueType.Value;
+                    if (SpecialValue.HasValue) return TargetColumnValueType.Special;
                 }
-                return TargetColumnValueType.Auto;
+                return ValueType;
             }
         }
     }

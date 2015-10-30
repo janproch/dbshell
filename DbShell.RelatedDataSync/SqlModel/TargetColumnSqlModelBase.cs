@@ -12,5 +12,41 @@ namespace DbShell.RelatedDataSync.SqlModel
         public abstract string Name { get; }
         public abstract bool IsKey { get; }
         public virtual bool IsRestriction => false;
+        public virtual bool Update => true;
+        public virtual bool Insert => true;
+        public virtual bool Compare => true;
+
+        public DmlfExpression CreateTargetExpression(DmlfSource targetSource)
+        {
+            return new DmlfColumnRefExpression
+            {
+                Column = new DmlfColumnRef
+                {
+                    Source = targetSource,
+                    ColumnName = Name,
+                }
+            };
+        }
+
+        public DmlfExpression CreateTargetExpression(string targetEntityAlias)
+        {
+            return CreateTargetExpression(new DmlfSource { Alias = targetEntityAlias });
+        }
+
+        protected DmlfExpression CreateAggregate(DmlfExpression expr)
+        {
+            var res = new DmlfFuncCallExpression
+            {
+                FuncName = "MAX",
+            };
+            res.Arguments.Add(expr);
+            return res;
+        }
+
+        protected DmlfExpression GetExprOrAggregate(DmlfExpression expr, bool aggregate)
+        {
+            if (aggregate) return CreateAggregate(expr);
+            return expr;
+        }
     }
 }

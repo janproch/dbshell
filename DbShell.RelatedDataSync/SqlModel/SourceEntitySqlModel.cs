@@ -1,8 +1,10 @@
-﻿using DbShell.Driver.Common.Structure;
+﻿using DbShell.Driver.Common.DmlFramework;
+using DbShell.Driver.Common.Structure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DbShell.Common;
 
 namespace DbShell.RelatedDataSync.SqlModel
 {
@@ -11,17 +13,92 @@ namespace DbShell.RelatedDataSync.SqlModel
         public NameWithSchema TableName;
 
         public List<SourceColumnSqlModel> Columns = new List<SourceColumnSqlModel>();
+        private DataSyncSqlModel _dataSync;
         private Source _dbsh;
         public string SqlAlias;
+        public DmlfSource QuerySource;
+        public bool IsExternal;
+        private NameWithSchema _materializedName;
+        private DmlfSelect _materializeSelect;
+        private NameWithSchema _externalDataName;
 
-        public SourceEntitySqlModel(Source dbsh)
+        public SourceEntitySqlModel(Source dbsh, DataSyncSqlModel dataSync)
         {
-            this._dbsh = dbsh;
+            _dbsh = dbsh;
+            _dataSync = dataSync;
         }
 
-        public Source Dbsh
+        public Source Dbsh => _dbsh;
+        public NameWithSchema ExternalDataName => _externalDataName;
+
+        public void InitializeQuerySource(ITabularDataSource dataSource, IShellContext context)
         {
-            get { return _dbsh; }
+            var tableOrView = dataSource as DbShell.Core.Utility.TableOrView;
+            if (tableOrView != null)
+            {
+                TableName = tableOrView.GetFullName(context);
+                QuerySource = new DmlfSource
+                {
+                    Alias = SqlAlias,
+                    TableOrView = TableName,
+                };
+                return;
+            }
+            var query = dataSource as DbShell.Core.Query;
+            if (query != null)
+            {
+                string sql = context.Replace(query.Text);
+                QuerySource = new DmlfSource
+                {
+                    Alias = SqlAlias,
+                    SubQueryString = sql,
+                };
+                return;
+            }
+
+            IsExternal = true;
+            _externalDataName = new NameWithSchema($"##{SqlAlias}_{new Random().Next(10000, 100000)}");
+            QuerySource = new DmlfSource
+            {
+                Alias = SqlAlias,
+                TableOrView = _externalDataName,
+            };
+            _dataSync.AddExternalSource(this);
+        }
+
+        public void MaterializeIfNeeded()
+        {
+            if (IsExternal) return;
+            if (!_dbsh.Materialize) return;
+
+            _materializedName = new NameWithSchema("#" + SqlAlias);
+            _materializeSelect = new DmlfSelect();
+            _materializeSelect.SingleFrom.Source = QuerySource;
+            _materializeSelect.SelectIntoTable = _materializedName;
+            _materializeSelect.SelectAll = true;
+
+            QuerySource = new DmlfSource
+            {
+                Alias = SqlAlias,
+                TableOrView = _materializedName,
+            };
+        }
+
+        public void PutMaterialize(SqlScriptCompiler cmp)
+        {
+            if (_materializedName == null) return;
+            cmp.PutSmallTitleComment($"Materialize of entity {SqlAlias}");
+            cmp.StartTimeMeasure("OP");
+            _materializeSelect.GenSql(cmp.Dumper);
+            cmp.PutLogMessage(null, LogOperationType.Materialize, $"@rows rows of {SqlAlias} materialized", "OP");
+            cmp.EndCommand();
+        }
+
+        public void PutDropMaterialized(SqlScriptCompiler cmp)
+        {
+            if (_materializedName == null) return;
+            cmp.Dumper.DropTable(new TableInfo(null) { FullName = _materializedName }, false);
+            cmp.EndCommand();
         }
 
         public string SingleKeyColumn

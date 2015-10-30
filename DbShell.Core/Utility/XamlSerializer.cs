@@ -46,6 +46,8 @@ namespace DbShell.Core.Utility
                     return "http://schemas.dbmouse.com/dbshell";
                 case "DbShell.Driver.Common.CommonDataLayer":
                     return "http://schemas.dbshell.com/cdl";
+                case "DbShell.RelatedDataSync":
+                    return "http://schemas.dbshell.com/datasync";
             }
             return "clr-namespace:" + codeNs;
         }
