@@ -42,8 +42,6 @@ namespace DbShell.Test
             }
         }
 
-        
-
         [DeploymentItem("rdscountry_natural.xaml")]
         [TestMethod]
         public void CountryNaturalKeysTest()
@@ -55,6 +53,7 @@ namespace DbShell.Test
                 runner.LoadFile("rdscountry_natural.xaml");
                 runner.Run();
             }
+            AssertExists("select * from TargetCityPartByContinentList");
         }
 
         [DeploymentItem("rdscountry_integer.xaml")]

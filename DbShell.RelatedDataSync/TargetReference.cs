@@ -14,6 +14,9 @@ namespace DbShell.RelatedDataSync
         public List<TargetReferenceColumn> Columns { get; private set; } = new List<TargetReferenceColumn>();
 
         [XamlProperty]
+        public string Source { get; set; }
+
+        [XamlProperty]
         public string Target { get; set; }
 
         [XamlProperty]

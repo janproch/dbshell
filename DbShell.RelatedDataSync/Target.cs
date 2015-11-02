@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Markup;
+using DbShell.Common;
 
 namespace DbShell.RelatedDataSync
 {
@@ -24,9 +25,6 @@ namespace DbShell.RelatedDataSync
 
         [XamlProperty]
         public List<TargetColumn> Columns { get; private set; } = new List<TargetColumn>();
-
-        [XamlProperty]
-        public List<TargetReference> References { get; private set; } = new List<TargetReference>();
 
         [XamlProperty]
         public LifetimeHandlerBase LifetimeHandler { get; set; } = new LifetimeHandlerBase();

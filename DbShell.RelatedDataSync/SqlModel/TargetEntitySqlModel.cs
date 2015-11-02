@@ -49,27 +49,26 @@ namespace DbShell.RelatedDataSync.SqlModel
                     //targetCol.Sources.Add(source);
                 }
             }
+        }
 
-            foreach (var fk in dbsh.References)
+        public void AddReference(TargetReference fk, TargetEntitySqlModel targetEntity)
+        {
+            RefEntities[fk] = targetEntity;
+
+            foreach (var col in fk.Columns)
             {
-                string replaced = context.Replace(fk.Target);
-                var fullName = StructuredIdentifier.Parse(replaced);
-                var entity = _dataSyncSqlModel.Entities.FirstOrDefault(x => x.Match(fullName));
-                if (entity == null) throw new Exception($"DBSH-00219 Target entity {replaced} not found");
-                RefEntities[fk] = entity;
-
-                foreach (var col in fk.Columns)
-                {
-                    TargetColumns.Add(new TargetRefColumnSqlModel(fk, col, entity));
-                }
-
-                foreach (var col in entity.KeySourceColumns)
-                {
-                    RequiredSourceColumns.Add(col);
-                    if (fk.IsKey) KeySourceColumns.Add(col);
-                }
+                TargetColumns.Add(new TargetRefColumnSqlModel(fk, col, targetEntity));
             }
 
+            foreach (var col in targetEntity.KeySourceColumns)
+            {
+                RequiredSourceColumns.Add(col);
+                if (fk.IsKey) KeySourceColumns.Add(col);
+            }
+        }
+
+        public void CreateJoinModel()
+        {
             _dbsh.LifetimeHandler.AddTargetColumns(this);
 
             //if (!KeySourceColumns.Any())
@@ -77,7 +76,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             //    throw new Exception($"DBSH-00220 Entity {dbsh.TableName} has no source for key");
             //}
 
-            SourceJoinModel = new SourceJoinSqlModel(this, dataSyncSqlModel.SourceGraphModel);
+            SourceJoinModel = new SourceJoinSqlModel(this, _dataSyncSqlModel.SourceGraphModel);
 
             RequiresGrouping = DetectGrouping();
         }
@@ -383,7 +382,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             _dbsh.LifetimeHandler.CreateLifetimeConditions(res, targetEntityAlias, this);
         }
 
-        private void RunCore(SqlScriptCompiler cmp)
+        private void RunCoreRound1(SqlScriptCompiler cmp)
         {
             if (_dbsh.LifetimeHandler.CreateMarkRelived)
             {
@@ -391,7 +390,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 if (update != null)
                 {
                     cmp.StartTimeMeasure("OP");
-                    cmp.PutSmallTitleComment( "MARK RELIVED");
+                    cmp.PutSmallTitleComment("MARK RELIVED");
                     update.GenSql(cmp.Dumper);
                     cmp.EndCommand();
                     cmp.PutLogMessage(this, LogOperationType.MarkRelived, "@rows rows marked as relived", "OP");
@@ -404,7 +403,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 if (update != null)
                 {
                     cmp.StartTimeMeasure("OP");
-                    cmp.PutSmallTitleComment( "MARK DELETED");
+                    cmp.PutSmallTitleComment("MARK DELETED");
                     update.GenSql(cmp.Dumper);
                     cmp.EndCommand();
                     cmp.PutLogMessage(this, LogOperationType.MarkDeleted, "@rows rows marked as deleted", "OP");
@@ -417,7 +416,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 if (update != null)
                 {
                     cmp.StartTimeMeasure("OP");
-                    cmp.PutSmallTitleComment( "MARK UPDATED");
+                    cmp.PutSmallTitleComment("MARK UPDATED");
                     update.GenSql(cmp.Dumper);
                     cmp.EndCommand();
                     cmp.PutLogMessage(this, LogOperationType.MarkUpdated, "@rows rows marked as updated", "OP");
@@ -449,7 +448,10 @@ namespace DbShell.RelatedDataSync.SqlModel
                     cmp.PutLogMessage(this, LogOperationType.Update, "@rows rows updated", "OP");
                 }
             }
+        }
 
+        private void RunCoreRound2Reverted(SqlScriptCompiler cmp)
+        {
             if (_dbsh.LifetimeHandler.CreateDelete)
             {
                 var delete = CompileDelete();
@@ -464,19 +466,45 @@ namespace DbShell.RelatedDataSync.SqlModel
             }
         }
 
-        public void Run(SqlScriptCompiler cmp, bool useTransaction)
+        private void RunCore(SqlScriptCompiler cmp, bool useTransaction, Action<SqlScriptCompiler> doRun, int round)
         {
-            cmp.PutMainTitleComment($"Synchronize entity {SqlAlias} (table {TargetTable})");
+            cmp.PutMainTitleComment($"Synchronize entity {SqlAlias} (table {TargetTable}) - round {round}");
 
             cmp.StartTimeMeasure("TABLE");
 
             cmp.PutBeginTryCatch(this);
             cmp.Put("&>");
-            RunCore(cmp);
+            doRun(cmp);
             cmp.Put("&<");
             cmp.PutEndTryCatch(this, useTransaction);
 
-            cmp.PutLogMessage(this, LogOperationType.TableSynchronized, "table synchronized", "TABLE");
+            cmp.PutLogMessage(this, LogOperationType.TableSynchronized, $"table synchronized - round {round}", "TABLE");
+        }
+
+        public void RunRound1(SqlScriptCompiler cmp, bool useTransaction)
+        {
+            if (
+                   !_dbsh.LifetimeHandler.CreateMarkRelived
+                && !_dbsh.LifetimeHandler.CreateMarkDeleted
+                && !_dbsh.LifetimeHandler.CreateMarkUpdated
+                && !_dbsh.LifetimeHandler.CreateInsert
+                && !_dbsh.LifetimeHandler.CreateUpdate
+                )
+            {
+                return;
+            }
+
+            RunCore(cmp, useTransaction, RunCoreRound1, 1);
+        }
+
+        public void RunRound2Reverted(SqlScriptCompiler cmp, bool useTransaction)
+        {
+            if (_dbsh.LifetimeHandler.CreateDelete)
+            {
+                return;
+            }
+
+            RunCore(cmp, useTransaction, RunCoreRound2Reverted, 2);
         }
 
         //public void Run(DbConnection conn, IDatabaseFactory factory)

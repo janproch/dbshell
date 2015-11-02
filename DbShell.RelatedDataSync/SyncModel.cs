@@ -17,6 +17,9 @@ namespace DbShell.RelatedDataSync
         public List<Target> Targets { get; private set; } = new List<Target>();
 
         [XamlProperty]
+        public List<TargetReference> TargetReferences { get; private set; } = new List<TargetReference>();
+
+        [XamlProperty]
         public List<LogHandlerBase> LogHandlers { get; private set; } = new List<LogHandlerBase>();
 
         [XamlProperty]

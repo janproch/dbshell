@@ -8,6 +8,7 @@ using System.Text;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Sql;
 using System.IO;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.RelatedDataSync.SqlModel
 {
@@ -28,6 +29,50 @@ namespace DbShell.RelatedDataSync.SqlModel
             {
                 Entities.Add(new TargetEntitySqlModel(this, entity, context));
             }
+            foreach (var fk in model.TargetReferences)
+            {
+                var sourceReplaced = context.Replace(fk.Source);
+                var sourceEntity = FindTarget(sourceReplaced);
+                string targetReplaced = context.Replace(fk.Target);
+                var targetEntity = FindTarget(targetReplaced);
+                if (sourceEntity == null) throw new Exception($"DBSH-00000 Source entity {sourceReplaced} not found");
+                if (targetEntity == null) throw new Exception($"DBSH-00219 Target entity {targetReplaced} not found");
+
+                sourceEntity.AddReference(fk, targetEntity);
+            }
+
+            PartialSortEntitiesByRefs();
+
+            foreach (var entity in Entities)
+            {
+                entity.CreateJoinModel();
+            }
+        }
+
+        private void PartialSortEntitiesByRefs()
+        {
+            var newList = new List<TargetEntitySqlModel>();
+            var queue = new List<TargetEntitySqlModel>(Entities);
+            while (queue.Any())
+            {
+                TargetEntitySqlModel nextEntity = null;
+                foreach (var elem in queue)
+                {
+                    if (elem.RefEntities.Values.All(x => newList.Contains(x)))
+                    {
+                        nextEntity = elem;
+                        break;
+                    }
+                }
+                if (nextEntity == null)
+                {
+                    throw new Exception($"DBSH-00000 Cycle in entity references, {queue.Select(x => x.LogName).CreateDelimitedText(",")} ");
+                }
+                newList.Add(nextEntity);
+                queue.Remove(nextEntity);
+            }
+
+            Entities = newList;
         }
 
         public SyncModel Dbsh
@@ -46,7 +91,15 @@ namespace DbShell.RelatedDataSync.SqlModel
 
             foreach (var ent in Entities)
             {
-                ent.Run(cmp, useTransaction);
+                ent.RunRound1(cmp, useTransaction);
+            }
+
+            var reverted = new List<TargetEntitySqlModel>(Entities);
+            reverted.Reverse();
+
+            foreach (var ent in reverted)
+            {
+                ent.RunRound2Reverted(cmp, useTransaction);
             }
 
             foreach (var source in SourceGraphModel.Entities)
@@ -55,6 +108,13 @@ namespace DbShell.RelatedDataSync.SqlModel
             }
 
             cmp.PutCommonEpilog(useTransaction, _model.SqlEpilogBeforeCommitTransaction, _model.SqlEpilogAfterCommitTransaction);
+        }
+
+        public TargetEntitySqlModel FindTarget(string name)
+        {
+            var fullName = StructuredIdentifier.Parse(name);
+            var entity = Entities.FirstOrDefault(x => x.Match(fullName));
+            return entity;
         }
 
         //private void RunScript(DbConnection conn, IDatabaseFactory factory, Action<SqlScriptCompiler> prolog, Action<SqlScriptCompiler> epilog, IShellContext context, string procname, bool useTransaction)
@@ -97,7 +157,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             foreach (var exSource in _externalSources)
             {
                 var tbl = new TableInfo(null) { FullName = exSource.ExternalDataName };
-                foreach(var col in exSource.Dbsh.Columns)
+                foreach (var col in exSource.Dbsh.Columns)
                 {
                     tbl.Columns.Add(new ColumnInfo(tbl)
                     {

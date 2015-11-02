@@ -26,56 +26,51 @@
 
         <rds:SyncModel.Targets>
 
-            <rds:Target TableName="TargetContinentList">
-                <rds:TargetColumn Name="Name" Source="ContinentName" IsKey="True"/>
-            </rds:Target>
-
             <rds:Target TableName="TargetCityPartByContinentList">
                 <rds:TargetColumn Name="Name" Source="CityPartName" IsKey="True"/>
-
-                <rds:Target.References>
-                    <rds:TargetReference Target="TargetContinentList">
-                        <rds:TargetReferenceColumn BaseName="ID_CONTINENT" RefName="ID" />
-                    </rds:TargetReference>
-                </rds:Target.References>
             </rds:Target>
 
             <rds:Target TableName="TargetCountryList">
                 <rds:TargetColumn Name="Name" Source="CountryName" IsKey="True"/>
-
-                <rds:Target.References>
-                    <rds:TargetReference Target="TargetContinentList" IsKey="True">
-                        <rds:TargetReferenceColumn BaseName="ID_CONTINENT" RefName="ID" />
-                    </rds:TargetReference>
-                </rds:Target.References>
             </rds:Target>
 
             <rds:Target TableName="TargetCityList">
                 <rds:TargetColumn Name="Name" Source="CityName" IsKey="True"/>
-
-                <rds:Target.References>
-                    <rds:TargetReference Target="TargetCountryList" IsKey="True">
-                        <rds:TargetReferenceColumn BaseName="ID_COUNTRY" RefName="ID" />
-                    </rds:TargetReference>
-                </rds:Target.References>
             </rds:Target>
 
             <rds:Target TableName="TargetCityPartList">
                 <rds:TargetColumn Name="Name" Source="CityPartName" IsKey="True"/>
+            </rds:Target>
 
-                <rds:Target.References>
-                    <rds:TargetReference Target="TargetCityList" IsKey="True">
-                        <rds:TargetReferenceColumn BaseName="ID_CITY" RefName="ID" />
-                    </rds:TargetReference>
-                </rds:Target.References>
+            <rds:Target TableName="TargetContinentList">
+                <rds:TargetColumn Name="Name" Source="ContinentName" IsKey="True"/>
             </rds:Target>
 
         </rds:SyncModel.Targets>
+        <rds:SyncModel.TargetReferences>
+            <rds:TargetReference Source="TargetCityPartByContinentList" Target="TargetContinentList">
+                <rds:TargetReferenceColumn BaseName="ID_CONTINENT" RefName="ID" />
+            </rds:TargetReference>
+
+            <rds:TargetReference Source="TargetCountryList" Target="TargetContinentList" IsKey="True">
+                <rds:TargetReferenceColumn BaseName="ID_CONTINENT" RefName="ID" />
+            </rds:TargetReference>
+
+            <rds:TargetReference Source="TargetCityList" Target="TargetCountryList" IsKey="True">
+                <rds:TargetReferenceColumn BaseName="ID_COUNTRY" RefName="ID" />
+            </rds:TargetReference>
+
+            <rds:TargetReference Source="TargetCityPartList" Target="TargetCityList" IsKey="True">
+                <rds:TargetReferenceColumn BaseName="ID_CITY" RefName="ID" />
+            </rds:TargetReference>
+        </rds:SyncModel.TargetReferences>
     </rds:SyncModel>
     
     <rds:CreateProcedure ProcName="RunSync1" />
     <rds:CreateProcedure ProcName="RunSync2" />
 
+    <!--
     <rds:Run />
+    -->
     <rds:Run />
 </Batch>
