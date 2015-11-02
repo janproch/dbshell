@@ -18,12 +18,14 @@ namespace DbShell.RelatedDataSync.SqlModel
         public SourceGraphSqlModel SourceGraphModel;
         private bool _allowExternalSources;
         private List<SourceEntitySqlModel> _externalSources = new List<SourceEntitySqlModel>();
+        public string ProviderString { get; private set; }
 
         SyncModel _model;
-        public DataSyncSqlModel(SyncModel model, IShellContext context, bool allowExternalSources)
+        public DataSyncSqlModel(SyncModel model, IShellContext context, bool allowExternalSources, string providerString)
         {
             _model = model;
             _allowExternalSources = allowExternalSources;
+            ProviderString = providerString;
             SourceGraphModel = new SourceGraphSqlModel(model, context, this);
             foreach (var entity in model.Targets)
             {

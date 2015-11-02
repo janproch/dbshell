@@ -59,7 +59,7 @@ namespace DbShell.Core.Utility
         [XamlProperty]
         public string Connection { get; set; }
 
-        protected IConnectionProvider GetConnectionProvider(IShellContext context)
+        public IConnectionProvider GetConnectionProvider(IShellContext context)
         {
             string providerString = GetProviderString(context);
             string providerStringReplaced = context.Replace(providerString);
@@ -71,7 +71,7 @@ namespace DbShell.Core.Utility
             return conn;
         }
 
-        protected string GetProviderString(IShellContext context)
+        public string GetProviderString(IShellContext context)
         {
             string providerString = Connection ?? context.GetDefaultConnection();
             if (providerString == null)

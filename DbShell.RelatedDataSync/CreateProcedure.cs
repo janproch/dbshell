@@ -26,7 +26,7 @@ namespace DbShell.RelatedDataSync
         protected override void DoRun(IShellContext context)
         {
             var model = GetModel(context);
-            var sqlModel = new DataSyncSqlModel(model, context, false);
+            var sqlModel = new DataSyncSqlModel(model, context, false, context.Replace(GetProviderString(context)));
 
             var connection = GetConnectionProvider(context);
             using (var conn = connection.Connect())
@@ -38,7 +38,7 @@ namespace DbShell.RelatedDataSync
         public override string GenerateSql(IDatabaseFactory factory, IShellContext context)
         {
             var model = GetModel(context);
-            var sqlModel = new DataSyncSqlModel(model, context, false);
+            var sqlModel = new DataSyncSqlModel(model, context, false, context.Replace(GetProviderString(context)));
             return sqlModel.GenerateCreateProcedure(factory, new NameWithSchema(context.Replace(ProcSchema), context.Replace(ProcName)), context, UseTransaction, OverwriteExisting);
         }
     }

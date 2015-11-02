@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DbShell.Common;
+using DbShell.Core;
 
 namespace DbShell.RelatedDataSync.SqlModel
 {
@@ -34,18 +35,43 @@ namespace DbShell.RelatedDataSync.SqlModel
         public void InitializeQuerySource(ITabularDataSource dataSource, IShellContext context)
         {
             var tableOrView = dataSource as DbShell.Core.Utility.TableOrView;
+
             if (tableOrView != null)
             {
-                TableName = tableOrView.GetFullName(context);
-                QuerySource = new DmlfSource
+                bool canUseTable = true;
+                LinkedDatabaseInfo linked = null;
+
+                string tableConn = tableOrView.GetProviderString(context);
+                if (tableConn != context.GetDefaultConnection())
                 {
-                    Alias = SqlAlias,
-                    TableOrView = TableName,
-                };
-                return;
+                    if (ConnectionProvider.IsTheSameExceptDatabase(tableConn, context.GetDefaultConnection()))
+                    {
+                        linked = new LinkedDatabaseInfo
+                        {
+                            ExplicitDatabaseName = ConnectionProvider.ExtractDatabaseName(tableConn),
+                        };
+                    }
+                    else
+                    {
+                        canUseTable = false;
+                    }
+                }
+
+                if (canUseTable)
+                {
+                    TableName = tableOrView.GetFullName(context);
+                    QuerySource = new DmlfSource
+                    {
+                        Alias = SqlAlias,
+                        TableOrView = TableName,
+                        LinkedInfo = linked,
+                    };
+                    return;
+                }
             }
+
             var query = dataSource as DbShell.Core.Query;
-            if (query != null)
+            if (query != null && query.GetProviderString(context) == context.GetDefaultConnection())
             {
                 string sql = context.Replace(query.Text);
                 QuerySource = new DmlfSource

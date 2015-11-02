@@ -66,5 +66,25 @@ namespace DbShell.Core
             }
             return null;
         }
+
+        public static string ExtractDatabaseName(string connectionString)
+        {
+            var m = Regex.Match(connectionString, "(^|;)(initial catalog|database)=([^;]*)($|;)", RegexOptions.IgnoreCase);
+            if (m.Success) return m.Groups[3].Value;
+            return null;
+        }
+
+        public static string ReplaceDatabaseName(string connectionString, string newDatabase)
+        {
+            return Regex.Replace(connectionString, "(^|;)(initial catalog|database)=([^;]*)($|;)",
+                                 m => m.Groups[1].Value + m.Groups[2].Value + "=" + newDatabase + m.Groups[4].Value, RegexOptions.IgnoreCase);
+        }
+
+        public static bool IsTheSameExceptDatabase(string connectionString1, string connectionString2)
+        {
+            string repl1 = ReplaceDatabaseName(connectionString1, "GenericDatabase");
+            string repl2 = ReplaceDatabaseName(connectionString2, "GenericDatabase");
+            return repl1 == repl2;
+        }
     }
 }
