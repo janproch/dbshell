@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.DmlFramework;
+using DbShell.Driver.Common.Structure;
 
 namespace DbShell.RelatedDataSync.SqlModel
 {
@@ -12,7 +13,8 @@ namespace DbShell.RelatedDataSync.SqlModel
         private TargetReferenceColumn _col;
         private TargetEntitySqlModel _targetSqlModel;
 
-        public TargetRefColumnSqlModel(TargetReference fk, TargetReferenceColumn col, TargetEntitySqlModel targetSqlModel)
+        public TargetRefColumnSqlModel(TargetReference fk, TargetReferenceColumn col, TargetEntitySqlModel targetSqlModel, ColumnInfo colinfo)
+            : base(colinfo)
         {
             _col = col;
             _fk = fk;

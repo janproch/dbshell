@@ -41,12 +41,22 @@ namespace DbShell.Core.Utility
         [XamlProperty]
         public string LinkedDatabaseName { get; set; }
 
+        /// <summary>
+        /// Explicit database name
+        /// </summary>
+        [XamlProperty]
+        public string ExplicitDatabaseName { get; set; }
+
         // fill this if structure cannot be parsed
         public TableInfo StructureOverride;
 
         public LinkedDatabaseInfo LinkedInfo
         {
-            get { return new LinkedDatabaseInfo(LinkedServerName, LinkedDatabaseName); }
+            get
+            {
+                if (!String.IsNullOrEmpty(ExplicitDatabaseName)) return new LinkedDatabaseInfo(ExplicitDatabaseName);
+                return new LinkedDatabaseInfo(LinkedServerName, LinkedDatabaseName);
+            }
             set
             {
                 if (value == null)
@@ -60,6 +70,17 @@ namespace DbShell.Core.Utility
                     LinkedDatabaseName = value.LinkedDatabaseName;
                 }
             }
+        }
+
+        public NormalizedDatabaseConnectionInfo GetNormalizedConnectionInfo(IShellContext context)
+        {
+            return new NormalizedDatabaseConnectionInfo(new DatabaseConnectionInfoHolder
+            {
+                ProviderString = GetProviderString(context),
+                LinkedDatabaseName = LinkedDatabaseName,
+                LinkedServerName = LinkedServerName,
+                ExplicitDatabaseName = ExplicitDatabaseName,
+            });
         }
 
         DataFormatSettings ITabularDataSource.GetSourceFormat(IShellContext context)

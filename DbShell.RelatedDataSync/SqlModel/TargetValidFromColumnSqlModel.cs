@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.DmlFramework;
+using DbShell.Driver.Common.Structure;
 
 namespace DbShell.RelatedDataSync.SqlModel
 {
     public class TargetValidFromColumnSqlModel : TargetColumnSqlModelBase
     {
         private string _name;
-        public TargetValidFromColumnSqlModel(string name)
+        public TargetValidFromColumnSqlModel(string name, ColumnInfo colinfo)
+            : base(colinfo)
         {
             _name = name;
         }

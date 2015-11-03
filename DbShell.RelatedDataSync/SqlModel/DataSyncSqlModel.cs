@@ -19,6 +19,7 @@ namespace DbShell.RelatedDataSync.SqlModel
         private bool _allowExternalSources;
         private List<SourceEntitySqlModel> _externalSources = new List<SourceEntitySqlModel>();
         public string ProviderString { get; private set; }
+        public DatabaseInfo TargetStructure;
 
         SyncModel _model;
         public DataSyncSqlModel(SyncModel model, IShellContext context, bool allowExternalSources, string providerString)
@@ -26,6 +27,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             _model = model;
             _allowExternalSources = allowExternalSources;
             ProviderString = providerString;
+            TargetStructure = context.GetDatabaseStructure(providerString);
             SourceGraphModel = new SourceGraphSqlModel(model, context, this);
             foreach (var entity in model.Targets)
             {

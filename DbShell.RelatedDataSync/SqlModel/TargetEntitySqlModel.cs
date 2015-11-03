@@ -24,21 +24,24 @@ namespace DbShell.RelatedDataSync.SqlModel
         public SourceJoinSqlModel SourceJoinModel;
         public string SqlAlias;
         public bool RequiresGrouping;
+        public TableInfo Structure;
 
         public static string ExpressionColumnRegex = @"\{([^\}]+)\}";
 
         public string LogName => _dbsh.Alias ?? TargetTable.ToString();
+        public ColumnInfo FindColumnInfo(string name) => Structure?.Columns?.FirstOrDefault(x => x.Name == name);
 
         public TargetEntitySqlModel(DataSyncSqlModel dataSyncSqlModel, Target dbsh, IShellContext context)
         {
             this._dataSyncSqlModel = dataSyncSqlModel;
             this._dbsh = dbsh;
             TargetTable = new NameWithSchema(context.Replace(dbsh.TableSchema), context.Replace(dbsh.TableName));
+            Structure = dataSyncSqlModel.TargetStructure.FindTable(TargetTable);
             SqlAlias = _dbsh.Alias ?? "dst_" + _dataSyncSqlModel.Entities.Count;
 
             foreach (var col in dbsh.Columns)
             {
-                var targetCol = new TargetNoRefColumnSqlModel(col);
+                var targetCol = new TargetNoRefColumnSqlModel(col, FindColumnInfo(col.Name));
                 TargetColumns.Add(targetCol);
 
                 foreach (string alias in ExtractColumnSources(col))
@@ -57,7 +60,7 @@ namespace DbShell.RelatedDataSync.SqlModel
 
             foreach (var col in fk.Columns)
             {
-                TargetColumns.Add(new TargetRefColumnSqlModel(fk, col, targetEntity));
+                TargetColumns.Add(new TargetRefColumnSqlModel(fk, col, targetEntity, FindColumnInfo(col.BaseName)));
             }
 
             foreach (var col in targetEntity.KeySourceColumns)
@@ -102,6 +105,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 {
                     LeftExpr = keycol.CreateSourceExpression(joinModel, false),
                     RightExpr = keycol.CreateTargetExpression(res),
+                    CollateSpec = keycol.UseCollate(joinModel) ? "DATABASE_DEFAULT" : null,
                 });
             }
 
@@ -232,6 +236,8 @@ namespace DbShell.RelatedDataSync.SqlModel
 
                     // source column
                     RightExpr = column.CreateSourceExpression(SourceJoinModel, false),
+
+                    CollateSpec = column.UseCollate(SourceJoinModel) ? "DATABASE_DEFAULT" : null,
                 };
                 cmd.AddAndCondition(cond);
             }
@@ -332,6 +338,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 {
                     LeftExpr = column.CreateSourceExpression(SourceJoinModel, false),
                     RightExpr = column.CreateTargetExpression("target"),
+                    CollateSpec = column.UseCollate(SourceJoinModel) ? "DATABASE_DEFAULT" : null,
                 });
             }
             if (orCondition.Conditions.Any()) cmd.AddAndCondition(orCondition);

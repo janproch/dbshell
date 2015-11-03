@@ -1,4 +1,5 @@
 ﻿using DbShell.Driver.Common.DmlFramework;
+using DbShell.Driver.Common.Structure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,13 @@ namespace DbShell.RelatedDataSync.SqlModel
         public virtual bool Update => true;
         public virtual bool Insert => true;
         public virtual bool Compare => true;
+
+        public readonly ColumnInfo Info;
+
+        public TargetColumnSqlModelBase(ColumnInfo colinfo)
+        {
+            Info = colinfo;
+        }
 
         public DmlfExpression CreateTargetExpression(DmlfSource targetSource)
         {
@@ -47,6 +55,17 @@ namespace DbShell.RelatedDataSync.SqlModel
         {
             if (aggregate) return CreateAggregate(expr);
             return expr;
+        }
+
+        protected virtual string GetSourceDataType(SourceJoinSqlModel sourceJoinModel) => null;
+
+        public bool UseCollate(SourceJoinSqlModel sourceJoinModel)
+        {
+            if (Info == null) return false;
+            string srcType = GetSourceDataType(sourceJoinModel);
+            if (srcType == null) return false;
+            if (srcType.ToLower().Contains("char") && (Info.DataType?.ToLower()?.Contains("char") ?? false)) return true;
+            return false;
         }
     }
 }

@@ -38,5 +38,8 @@ namespace DbShell.Driver.Common.Structure
             if (ExplicitDatabaseName != null) return String.Format("[{0}].", ExplicitDatabaseName);
             return "";
         }
+
+        public bool IsExplicitDatabase => !String.IsNullOrEmpty(ExplicitDatabaseName);
+        public bool IsLinkedServer => !String.IsNullOrEmpty(LinkedServerName) && !String.IsNullOrEmpty(LinkedDatabaseName);
     }
 }

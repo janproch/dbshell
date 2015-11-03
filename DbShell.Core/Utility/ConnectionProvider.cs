@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using DbShell.Common;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.SqlServer;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core
 {
@@ -59,32 +60,12 @@ namespace DbShell.Core
 
         public static ConnectionProvider FromString(string s)
         {
-            var match = Regex.Match(s, @"(.*)\:\/\/(.*)");
-            if (match.Success)
+            string provider, connString;
+            if (ConnectionStringTool.SplitProviderString(s, out provider, out connString))
             {
-                return new ConnectionProvider(match.Groups[1].Value, match.Groups[2].Value);
+                return new ConnectionProvider(provider, connString);
             }
             return null;
-        }
-
-        public static string ExtractDatabaseName(string connectionString)
-        {
-            var m = Regex.Match(connectionString, "(^|;)(initial catalog|database)=([^;]*)($|;)", RegexOptions.IgnoreCase);
-            if (m.Success) return m.Groups[3].Value;
-            return null;
-        }
-
-        public static string ReplaceDatabaseName(string connectionString, string newDatabase)
-        {
-            return Regex.Replace(connectionString, "(^|;)(initial catalog|database)=([^;]*)($|;)",
-                                 m => m.Groups[1].Value + m.Groups[2].Value + "=" + newDatabase + m.Groups[4].Value, RegexOptions.IgnoreCase);
-        }
-
-        public static bool IsTheSameExceptDatabase(string connectionString1, string connectionString2)
-        {
-            string repl1 = ReplaceDatabaseName(connectionString1, "GenericDatabase");
-            string repl2 = ReplaceDatabaseName(connectionString2, "GenericDatabase");
-            return repl1 == repl2;
         }
     }
 }

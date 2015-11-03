@@ -192,11 +192,21 @@ namespace DbShell.Driver.Common.DmlFramework
 
     public class DmlfEqualCondition : DmlfBinaryCondition
     {
+        public string CollateSpec;
+
         public override void GenSql(ISqlDumper dmp)
         {
             LeftExpr.GenSql(dmp);
+            if (CollateSpec != null)
+            {
+                dmp.Put(" ^collate %s ", CollateSpec);
+            }
             dmp.Put("=");
             RightExpr.GenSql(dmp);
+            if (CollateSpec != null)
+            {
+                dmp.Put(" ^collate %s ", CollateSpec);
+            }
         }
 
         public override bool EvalCondition(IDmlfNamespace ns)
@@ -235,11 +245,21 @@ namespace DbShell.Driver.Common.DmlFramework
 
     public class DmlfNotEqualCondition : DmlfBinaryCondition
     {
+        public string CollateSpec;
+
         public override void GenSql(ISqlDumper dmp)
         {
             LeftExpr.GenSql(dmp);
+            if (CollateSpec != null)
+            {
+                dmp.Put(" ^collate %s ", CollateSpec);
+            }
             dmp.Put("<>");
             RightExpr.GenSql(dmp);
+            if (CollateSpec != null)
+            {
+                dmp.Put(" ^collate %s ", CollateSpec);
+            }
         }
 
         public override bool EvalCondition(IDmlfNamespace ns)
@@ -250,13 +270,23 @@ namespace DbShell.Driver.Common.DmlFramework
 
     public class DmlfNotEqualWithNullTestCondition : DmlfBinaryCondition
     {
+        public string CollateSpec;
+
         public override void GenSql(ISqlDumper dmp)
         {
             dmp.Put("(");
 
             LeftExpr.GenSql(dmp);
+            if (CollateSpec != null)
+            {
+                dmp.Put(" ^collate %s ", CollateSpec);
+            }
             dmp.Put("<>");
             RightExpr.GenSql(dmp);
+            if (CollateSpec != null)
+            {
+                dmp.Put(" ^collate %s ", CollateSpec);
+            }
 
             dmp.Put("^or");
             dmp.Put("(");

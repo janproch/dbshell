@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using DbShell.Common;
 using DbShell.Core;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.RelatedDataSync.SqlModel
 {
@@ -41,15 +42,14 @@ namespace DbShell.RelatedDataSync.SqlModel
                 bool canUseTable = true;
                 LinkedDatabaseInfo linked = null;
 
-                string tableConn = tableOrView.GetProviderString(context);
-                if (tableConn != context.GetDefaultConnection())
+                var ctxConn = new NormalizedDatabaseConnectionInfo(new DatabaseConnectionInfoHolder { ProviderString = context.GetDefaultConnection() });
+                var tableConn = tableOrView.GetNormalizedConnectionInfo(context);
+
+                if (ctxConn != tableConn)
                 {
-                    if (ConnectionProvider.IsTheSameExceptDatabase(tableConn, context.GetDefaultConnection()))
+                    if (ctxConn.ServerConnectionString == tableConn.ServerConnectionString)
                     {
-                        linked = new LinkedDatabaseInfo
-                        {
-                            ExplicitDatabaseName = ConnectionProvider.ExtractDatabaseName(tableConn),
-                        };
+                        linked = tableConn.GetLinkedInfo();
                     }
                     else
                     {

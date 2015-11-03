@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.DmlFramework;
 using System.Text.RegularExpressions;
+using DbShell.Driver.Common.Structure;
 
 namespace DbShell.RelatedDataSync.SqlModel
 {
@@ -13,7 +14,8 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         private TargetColumn _dbsh;
 
-        public TargetNoRefColumnSqlModel(TargetColumn dbsh)
+        public TargetNoRefColumnSqlModel(TargetColumn dbsh, ColumnInfo colinfo)
+            : base(colinfo)
         {
             _dbsh = dbsh;
         }
@@ -24,6 +26,17 @@ namespace DbShell.RelatedDataSync.SqlModel
         public override bool Update => _dbsh.Update;
         public override bool Insert => _dbsh.Insert;
         public override bool Compare => _dbsh.Compare;
+
+        protected override string GetSourceDataType(SourceJoinSqlModel sourceJoinModel)
+        {
+            switch (_dbsh.RealValueType)
+            {
+                case TargetColumnValueType.Source:
+                    var entity = sourceJoinModel[_dbsh.Source].Entities.First();
+                    return sourceJoinModel[_dbsh.Source].DbshColumns.First().DataType;
+            }
+            return null;
+        }
 
         public override DmlfExpression CreateSourceExpression(SourceJoinSqlModel sourceJoinModel, bool aggregate)
         {

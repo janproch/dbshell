@@ -4,6 +4,7 @@ using System.Xml;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.Utility;
+using System.Text;
 
 namespace DbShell.Driver.Common.Structure
 {
@@ -131,7 +132,7 @@ namespace DbShell.Driver.Common.Structure
         public override void Assign(DatabaseObjectInfo source)
         {
             base.Assign(source);
-            var src = (ColumnInfo) source;
+            var src = (ColumnInfo)source;
             Name = src.Name;
             DataType = src.DataType;
             DefaultValue = src.DefaultValue;
@@ -241,11 +242,11 @@ namespace DbShell.Driver.Common.Structure
         public override FullDatabaseRelatedName GetName()
         {
             return new FullDatabaseRelatedName
-                {
-                    ObjectName = OwnerTable != null ? OwnerTable.FullName : null,
-                    ObjectType = DatabaseObjectType.Column,
-                    SubName = Name,
-                };
+            {
+                ObjectName = OwnerTable != null ? OwnerTable.FullName : null,
+                ObjectType = DatabaseObjectType.Column,
+                SubName = Name,
+            };
         }
 
         public override string ToString()
@@ -253,6 +254,22 @@ namespace DbShell.Driver.Common.Structure
             string res = Name;
             if (OwnerTable != null && OwnerTable.FullName != null) res = OwnerTable.FullName.ToString() + "." + res;
             return res;
+        }
+
+        public string GetSqlType()
+        {
+            var sb = new StringBuilder();
+            sb.Append(DataType);
+            if (Length != 0 && (CommonType == null || CommonType is DbTypeString))
+            {
+                if (Length == -1 || Length > 8000) sb.Append("(max)");
+                else sb.Append($"({Length})");
+            }
+            if (Precision > 0 && CommonType is DbTypeNumeric && (DataType.ToLower() != "money"))
+            {
+                sb.Append($"({Precision},{Scale})");
+            }
+            return sb.ToString();
         }
     }
 }

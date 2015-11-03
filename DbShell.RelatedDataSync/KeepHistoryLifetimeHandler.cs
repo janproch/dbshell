@@ -65,7 +65,7 @@ namespace DbShell.RelatedDataSync
 
         internal override void AddTargetColumns(TargetEntitySqlModel targetEntityModel)
         {
-            targetEntityModel.TargetColumns.Add(new TargetValidFromColumnSqlModel(ValidFromColumn));
+            targetEntityModel.TargetColumns.Add(new TargetValidFromColumnSqlModel(ValidFromColumn, targetEntityModel.FindColumnInfo(ValidFromColumn)));
         }
     }
 }
