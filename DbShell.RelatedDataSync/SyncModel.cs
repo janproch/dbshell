@@ -34,6 +34,9 @@ namespace DbShell.RelatedDataSync
         [XamlProperty]
         public string SqlEpilogAfterCommitTransaction { get; set; }
 
+        [XamlProperty]
+        public bool IsFlatSync { get; set; }
+
         protected override void DoRun(IShellContext context)
         {
             context.SetVariable(GetSyncModelVariableName(context), this);

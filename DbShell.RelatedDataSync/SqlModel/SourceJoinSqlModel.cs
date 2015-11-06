@@ -1,4 +1,5 @@
 ﻿using DbShell.Driver.Common.DmlFramework;
+using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
 using System;
 using System.Collections.Generic;
@@ -48,23 +49,41 @@ namespace DbShell.RelatedDataSync.SqlModel
             //    AddEntity(column.Entities.First());
             //}
 
-            _entityQueue.AddRange(_sourceGraph.Entities);
+            if (_sourceGraph == null)
+            {
+                // flat variant
+                var sident = StructuredIdentifier.Parse(_targetEntitySqlModel.Dbsh.PrimarySource);
+                PrimarySource = _targetEntitySqlModel.DataSync.FlatSources.FirstOrDefault(x => x.Match(sident));
+                if (PrimarySource == null)
+                {
+                    throw new Exception($"DBSH-00000 Source not found for entity {_targetEntitySqlModel.LogName}");
+                }
+                SourceToRefsJoin.Source = PrimarySource.QuerySource;
+                foreach (var col in PrimarySource.Columns)
+                {
+                    Columns[col.Alias] = col;
+                }
+            }
+            else
+            {
+                _entityQueue.AddRange(_sourceGraph.Entities);
 
-            DetectPrimarySource();
+                DetectPrimarySource();
 
-            DetectUnusedEntities();
+                DetectUnusedEntities();
 
-            RebuildEntityList();
-            //queue.Add(_targetEntitySqlModel.KeySourceColumns.First().Entities.First());
-            //foreach (var ent in _targetEntitySqlModel.RequiredSourceColumns.SelectMany(x => x.Entities))
-            //{
-            //    if (queue.Contains(ent)) continue;
-            //    queue.Add(ent);
-            //}
+                RebuildEntityList();
+                //queue.Add(_targetEntitySqlModel.KeySourceColumns.First().Entities.First());
+                //foreach (var ent in _targetEntitySqlModel.RequiredSourceColumns.SelectMany(x => x.Entities))
+                //{
+                //    if (queue.Contains(ent)) continue;
+                //    queue.Add(ent);
+                //}
 
-            CreateSourceJoin();
+                CreateSourceJoin();
 
-            AddRefsToJoin();
+                AddRefsToJoin();
+            }
         }
 
         private void CreateSourceJoin()
@@ -132,10 +151,15 @@ namespace DbShell.RelatedDataSync.SqlModel
 
             if (!String.IsNullOrWhiteSpace(_targetEntitySqlModel.Dbsh.PrimarySource))
             {
-                PrimarySource = _sourceGraph.Entities.FirstOrDefault(x => x.SqlAlias == _targetEntitySqlModel.Dbsh.PrimarySource);
-                if (PrimarySource == null)
+                var sident = StructuredIdentifier.Parse(_targetEntitySqlModel.Dbsh.PrimarySource);
+
+                if (_sourceGraph != null)
                 {
-                    throw new Exception($"DBSH-00216 Primary source {_targetEntitySqlModel.Dbsh.PrimarySource} for target {_targetEntitySqlModel.TargetTable} not found");
+                    PrimarySource = _sourceGraph.Entities.FirstOrDefault(x => x.Match(sident));
+                    if (PrimarySource == null)
+                    {
+                        throw new Exception($"DBSH-00216 Primary source {_targetEntitySqlModel.Dbsh.PrimarySource} for target {_targetEntitySqlModel.TargetTable} not found");
+                    }
                 }
             }
             else

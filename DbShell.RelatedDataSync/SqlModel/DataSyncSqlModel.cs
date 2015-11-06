@@ -15,6 +15,7 @@ namespace DbShell.RelatedDataSync.SqlModel
     public class DataSyncSqlModel
     {
         public List<TargetEntitySqlModel> Entities = new List<TargetEntitySqlModel>();
+        public List<SourceEntitySqlModel> FlatSources = new List<SourceEntitySqlModel>();
         public SourceGraphSqlModel SourceGraphModel;
         private bool _allowExternalSources;
         private List<SourceEntitySqlModel> _externalSources = new List<SourceEntitySqlModel>();
@@ -28,7 +29,22 @@ namespace DbShell.RelatedDataSync.SqlModel
             _allowExternalSources = allowExternalSources;
             ProviderString = providerString;
             TargetStructure = context.GetDatabaseStructure(providerString);
-            SourceGraphModel = new SourceGraphSqlModel(model, context, this);
+            if (_model.IsFlatSync)
+            {
+                foreach (var src in _model.Sources)
+                {
+                    var entity = new SourceEntitySqlModel(src, this);
+                    entity.LoadFlatColumns();
+                    FlatSources.Add(entity);
+                    entity.SqlAlias = src.Alias ?? "src_" + FlatSources.Count;
+                    entity.InitializeQuerySource(src.DataSource, context);
+                    entity.MaterializeIfNeeded();
+                }
+            }
+            else
+            {
+                SourceGraphModel = new SourceGraphSqlModel(model, context, this);
+            }
             foreach (var entity in model.Targets)
             {
                 Entities.Add(new TargetEntitySqlModel(this, entity, context));
@@ -84,11 +100,17 @@ namespace DbShell.RelatedDataSync.SqlModel
             get { return _model; }
         }
 
+        private IEnumerable<SourceEntitySqlModel> EnumSources()
+        {
+            if (SourceGraphModel != null) return SourceGraphModel.Entities;
+            return FlatSources;
+        }
+
         private void DumpScript(SqlScriptCompiler cmp, bool useTransaction)
         {
             cmp.PutCommonProlog(useTransaction, _model.SqlPrologBeforeBeginTransaction, _model.SqlPrologAfterBeginTransaction);
 
-            foreach (var source in SourceGraphModel.Entities)
+            foreach (var source in EnumSources())
             {
                 source.PutMaterialize(cmp);
             }
@@ -106,7 +128,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 ent.RunRound2Reverted(cmp, useTransaction);
             }
 
-            foreach (var source in SourceGraphModel.Entities)
+            foreach (var source in EnumSources())
             {
                 source.PutDropMaterialized(cmp);
             }

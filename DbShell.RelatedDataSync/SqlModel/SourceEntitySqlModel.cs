@@ -92,6 +92,21 @@ namespace DbShell.RelatedDataSync.SqlModel
             _dataSync.AddExternalSource(this);
         }
 
+        public void LoadFlatColumns()
+        {
+            foreach (var colItem in _dbsh.Columns)
+            {
+                string alias = colItem.AliasOrName;
+                var col = new SourceColumnSqlModel
+                {
+                    Alias = alias,
+                };
+                Columns.Add(col);
+                col.Entities.Add(this);
+                col.DbshColumns.Add(colItem);
+            }
+        }
+
         public void MaterializeIfNeeded()
         {
             if (IsExternal) return;
@@ -156,6 +171,21 @@ namespace DbShell.RelatedDataSync.SqlModel
                 }
                 return res;
             }
+        }
+
+        public bool Match(StructuredIdentifier name)
+        {
+            if (name.Count == 1)
+            {
+                if (_dbsh.Alias == name.First) return true;
+                if (_dbsh.Alias == null && TableName?.Name == name.First) return true;
+            }
+            if (name.Count == 2)
+            {
+                if (_dbsh.Alias != null) return false;
+                return TableName?.Schema == name[0] && TableName?.Name == name[1];
+            }
+            return false;
         }
     }
 }

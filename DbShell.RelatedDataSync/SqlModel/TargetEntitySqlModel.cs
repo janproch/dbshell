@@ -30,13 +30,14 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         public string LogName => _dbsh.Alias ?? TargetTable.ToString();
         public ColumnInfo FindColumnInfo(string name) => Structure?.Columns?.FirstOrDefault(x => x.Name == name);
+        public DataSyncSqlModel DataSync => _dataSyncSqlModel;
 
         public TargetEntitySqlModel(DataSyncSqlModel dataSyncSqlModel, Target dbsh, IShellContext context)
         {
             this._dataSyncSqlModel = dataSyncSqlModel;
             this._dbsh = dbsh;
             TargetTable = new NameWithSchema(context.Replace(dbsh.TableSchema), context.Replace(dbsh.TableName));
-            Structure = dataSyncSqlModel.TargetStructure.FindTable(TargetTable);
+            Structure = dataSyncSqlModel.TargetStructure.FindTableLike(TargetTable.Schema, TargetTable.Name);
             SqlAlias = _dbsh.Alias ?? "dst_" + _dataSyncSqlModel.Entities.Count;
 
             foreach (var col in dbsh.Columns)
@@ -46,10 +47,27 @@ namespace DbShell.RelatedDataSync.SqlModel
 
                 foreach (string alias in ExtractColumnSources(col))
                 {
-                    var source = dataSyncSqlModel.SourceGraphModel[alias];
+                    SourceColumnSqlModel source = null;
+                    if (dataSyncSqlModel.SourceGraphModel == null)
+                    {
+                        // flat sync
+                        if (!String.IsNullOrEmpty(dbsh.PrimarySource))
+                        {
+                            var sident = StructuredIdentifier.Parse(Dbsh.PrimarySource);
+                            var tableSource = DataSync.FlatSources.FirstOrDefault(x => x.Match(sident));
+                            if (tableSource != null)
+                            {
+                                source = tableSource.Columns.FirstOrDefault(x => x.Alias == alias);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        source = dataSyncSqlModel.SourceGraphModel[alias];
+                        //targetCol.Sources.Add(source);
+                    }
                     RequiredSourceColumns.Add(source);
                     if (col.IsKey) KeySourceColumns.Add(source);
-                    //targetCol.Sources.Add(source);
                 }
             }
         }
@@ -437,7 +455,10 @@ namespace DbShell.RelatedDataSync.SqlModel
                 {
                     cmp.StartTimeMeasure("OP");
                     cmp.PutSmallTitleComment("INSERT");
+                    bool isIdentity = Structure != null && Structure.Columns.Any(x => x.AutoIncrement && insert.TargetColumns.Contains(x.Name));
+                    if (isIdentity) cmp.Dumper.AllowIdentityInsert(insert.TargetTable, true);
                     insert.GenSql(cmp.Dumper);
+                    if (isIdentity) cmp.Dumper.AllowIdentityInsert(insert.TargetTable, false);
                     cmp.EndCommand();
                     cmp.PutLogMessage(this, LogOperationType.Insert, "@rows rows inserted", "OP");
                 }
@@ -506,7 +527,7 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         public void RunRound2Reverted(SqlScriptCompiler cmp, bool useTransaction)
         {
-            if (_dbsh.LifetimeHandler.CreateDelete)
+            if (!_dbsh.LifetimeHandler.CreateDelete)
             {
                 return;
             }

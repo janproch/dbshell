@@ -86,7 +86,7 @@ namespace DbShell.Test
             RunScript("exec RunSync1");
 
             AssertIsNotNull("select DeletedDate from Target where IdOriginal='2' and ImportGroup='markdelete'");
-            AssertIsNull("select Id from Target where Id=2");
+            AssertIsNull("select Id from Target where IdOriginal=2 and ImportGroup='simple'");
 
             AssertIsNotNull("select ValidTo from Target where IdOriginal='2' and ImportGroup='keephistory'");
             AssertIsNull("select ValidTo from Target where IdOriginal='3' and ImportGroup='keephistory'");
@@ -102,7 +102,7 @@ namespace DbShell.Test
         [DeploymentItem("rds.xlsx")]
         [TestMethod]
         public void RdsExcelTest()
-        { 
+        {
             InitDatabase();
             RunEmbeddedScript("CreateRdsExcel.sql");
 
@@ -115,5 +115,21 @@ namespace DbShell.Test
             AssertExists("select * from ExcelTarget");
         }
 
+        [DeploymentItem("rds_flat.xaml")]
+        [TestMethod]
+        public void RdsFlatTest()
+        {
+            InitDatabase();
+            RunEmbeddedScript("CreateRdsFlat.sql");
+
+            using (var runner = CreateRunner())
+            {
+                runner.LoadFile("rds_flat.xaml");
+                runner.Run();
+            }
+
+            AssertExists("select * from Target1");
+            AssertExists("select * from Target2");
+        }
     }
 }

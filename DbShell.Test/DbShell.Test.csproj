@@ -104,6 +104,7 @@
     <EmbeddedResource Include="CreateRdsGeoDataIntegerKeys.sql" />
     <EmbeddedResource Include="CreateRds2Lifetime.sql" />
     <EmbeddedResource Include="CreateRdsExcel.sql" />
+    <EmbeddedResource Include="CreateRdsFlat.sql" />
     <Content Include="Ideas.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -249,6 +250,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="rds_excel.xaml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="rds_flat.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
