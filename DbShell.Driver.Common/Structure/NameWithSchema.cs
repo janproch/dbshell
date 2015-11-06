@@ -188,6 +188,12 @@ namespace DbShell.Driver.Common.Structure
         public static NameWithSchema Parse(string value)
         {
             if (value == null) return null;
+
+            var sident = StructuredIdentifier.Parse(value);
+
+            var res = sident.ToNameWithSchema();
+            if (res != null) return res;
+
             int dotPos = value.IndexOf('.');
             if (dotPos >= 0) return new NameWithSchema(value.Substring(0, dotPos), value.Substring(dotPos + 1));
             else return new NameWithSchema(value);
@@ -198,6 +204,11 @@ namespace DbShell.Driver.Common.Structure
             if (Schema != null && Name != null) return new StructuredIdentifier(new string[] { Schema, Name });
             if (Name != null) return new StructuredIdentifier(new string[] { Name });
             return null;
+        }
+
+        public string ToStructuredString()
+        {
+            return ToStructuredIdentifier().ToString();
         }
     }
 }
