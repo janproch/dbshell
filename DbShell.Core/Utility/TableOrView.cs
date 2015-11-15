@@ -63,11 +63,13 @@ namespace DbShell.Core.Utility
                 {
                     LinkedServerName = null;
                     LinkedDatabaseName = null;
+                    ExplicitDatabaseName = null;
                 }
                 else
                 {
                     LinkedServerName = value.LinkedServerName;
                     LinkedDatabaseName = value.LinkedDatabaseName;
+                    ExplicitDatabaseName = value.ExplicitDatabaseName;
                 }
             }
         }

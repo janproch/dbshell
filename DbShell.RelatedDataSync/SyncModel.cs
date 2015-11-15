@@ -41,5 +41,25 @@ namespace DbShell.RelatedDataSync
         {
             context.SetVariable(GetSyncModelVariableName(context), this);
         }
+
+        public void ReplaceSouceSchemaByTemplate(string template)
+        {
+            foreach(var source in Sources)
+            {
+                source.ReplaceSouceSchemaByTemplate(template);
+            }
+        }
+
+        public void ReplaceTargetSchemaByTemplate(string template)
+        {
+            foreach(var target in Targets)
+            {
+                target.ReplaceTargetSchemaByTemplate(template);
+            }
+            foreach (var targetRef in TargetReferences)
+            {
+                targetRef.ReplaceTargetSchemaByTemplate(template);
+            }
+        }
     }
 }

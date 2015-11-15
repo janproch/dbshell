@@ -1,4 +1,5 @@
-﻿using DbShell.Driver.Common.Utility;
+﻿using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,5 +31,22 @@ namespace DbShell.RelatedDataSync
 
         [XamlProperty]
         public bool Insert { get; set; } = true;
+
+        public void ReplaceTargetSchemaByTemplate(string template)
+        {
+            var identSrc = StructuredIdentifier.Parse(Source);
+
+            if (identSrc.Count == 1 || identSrc.Count == 2)
+            {
+                Source = new StructuredIdentifier(new string[] { template, identSrc.Last }).ToString();
+            }
+
+            var identDst = StructuredIdentifier.Parse(Target);
+
+            if (identDst.Count == 1 || identDst.Count == 2)
+            {
+                Target = new StructuredIdentifier(new string[] { template, identDst.Last }).ToString();
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DbShell.Common;
+using DbShell.Core.Utility;
 using DbShell.Driver.Common.Utility;
 using System;
 using System.Collections.Generic;
@@ -22,5 +23,16 @@ namespace DbShell.RelatedDataSync
 
         [XamlProperty]
         public List<SourceColumn> Columns { get; private set; } = new List<SourceColumn>();
+
+        public void ReplaceSouceSchemaByTemplate(string template)
+        {
+            var tbl = DataSource as TableOrView;
+            if (tbl != null)
+            {
+                tbl.Schema = template;
+                tbl.LinkedInfo = null;
+                tbl.Connection = null;
+            }
+        }
     }
 }

@@ -28,5 +28,10 @@ namespace DbShell.RelatedDataSync
 
         [XamlProperty]
         public LifetimeHandlerBase LifetimeHandler { get; set; } = new LifetimeHandlerBase();
+
+        public void ReplaceTargetSchemaByTemplate(string template)
+        {
+            TableSchema = template;
+        }
     }
 }
