@@ -53,8 +53,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                         // flat sync
                         if (!String.IsNullOrEmpty(dbsh.PrimarySource))
                         {
-                            var sident = StructuredIdentifier.Parse(Dbsh.PrimarySource);
-                            var tableSource = DataSync.FlatSources.FirstOrDefault(x => x.Match(sident));
+                            var tableSource = DataSync.FlatSources.FirstOrDefault(x => x.Match(Dbsh.PrimarySource));
                             if (tableSource != null)
                             {
                                 source = tableSource.Columns.FirstOrDefault(x => x.Alias == alias);
@@ -132,17 +131,21 @@ namespace DbShell.RelatedDataSync.SqlModel
             return res;
         }
 
-        public bool Match(StructuredIdentifier name)
+        public bool Match(string name)
         {
-            if (name.Count == 1)
+            if (name == _dbsh.Alias) return true;
+
+            var sident = StructuredIdentifier.Parse(name);
+
+            if (sident.Count == 1)
             {
-                if (_dbsh.Alias == name.First) return true;
-                if (_dbsh.Alias == null && TargetTable.Name == name.First) return true;
+                if (_dbsh.Alias == sident.First) return true;
+                if (_dbsh.Alias == null && TargetTable.Name == sident.First) return true;
             }
-            if (name.Count == 2)
+            if (sident.Count == 2)
             {
                 if (_dbsh.Alias != null) return false;
-                return TargetTable.Schema == name[0] && TargetTable.Name == name[1];
+                return TargetTable.Schema == sident[0] && TargetTable.Name == sident[1];
             }
             return false;
         }

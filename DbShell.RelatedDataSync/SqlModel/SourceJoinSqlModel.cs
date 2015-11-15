@@ -52,8 +52,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             if (_sourceGraph == null)
             {
                 // flat variant
-                var sident = StructuredIdentifier.Parse(_targetEntitySqlModel.Dbsh.PrimarySource);
-                PrimarySource = _targetEntitySqlModel.DataSync.FlatSources.FirstOrDefault(x => x.Match(sident));
+                PrimarySource = _targetEntitySqlModel.DataSync.FlatSources.FirstOrDefault(x => x.Match(_targetEntitySqlModel.Dbsh.PrimarySource));
                 if (PrimarySource == null)
                 {
                     throw new Exception($"DBSH-00000 Source not found for entity {_targetEntitySqlModel.LogName}");
@@ -151,11 +150,9 @@ namespace DbShell.RelatedDataSync.SqlModel
 
             if (!String.IsNullOrWhiteSpace(_targetEntitySqlModel.Dbsh.PrimarySource))
             {
-                var sident = StructuredIdentifier.Parse(_targetEntitySqlModel.Dbsh.PrimarySource);
-
                 if (_sourceGraph != null)
                 {
-                    PrimarySource = _sourceGraph.Entities.FirstOrDefault(x => x.Match(sident));
+                    PrimarySource = _sourceGraph.Entities.FirstOrDefault(x => x.Match(_targetEntitySqlModel.Dbsh.PrimarySource));
                     if (PrimarySource == null)
                     {
                         throw new Exception($"DBSH-00216 Primary source {_targetEntitySqlModel.Dbsh.PrimarySource} for target {_targetEntitySqlModel.TargetTable} not found");

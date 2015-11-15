@@ -6,11 +6,13 @@ using System.Linq;
 using System.Text;
 using DbShell.Common;
 using DbShell.Core.Utility;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core
 {
     public class FilesProvider : ElementBase, IListProvider
     {
+        [XamlProperty]
         public string Filter { get; set; }
 
         public IEnumerable GetList(IShellContext context)

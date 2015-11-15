@@ -138,8 +138,7 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         public TargetEntitySqlModel FindTarget(string name)
         {
-            var fullName = StructuredIdentifier.Parse(name);
-            var entity = Entities.FirstOrDefault(x => x.Match(fullName));
+            var entity = Entities.FirstOrDefault(x => x.Match(name));
             return entity;
         }
 

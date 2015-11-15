@@ -83,7 +83,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             }
 
             IsExternal = true;
-            _externalDataName = new NameWithSchema($"##{SqlAlias}_{new Random().Next(10000, 100000)}");
+            _externalDataName = new NameWithSchema(null, $"##{SqlAlias}_{new Random().Next(10000, 100000)}");
             QuerySource = new DmlfSource
             {
                 Alias = SqlAlias,
@@ -173,17 +173,20 @@ namespace DbShell.RelatedDataSync.SqlModel
             }
         }
 
-        public bool Match(StructuredIdentifier name)
+        public bool Match(string name)
         {
-            if (name.Count == 1)
+            if (name == _dbsh.Alias) return true;
+
+            var sident = StructuredIdentifier.Parse(name);
+            if (sident.Count == 1)
             {
-                if (_dbsh.Alias == name.First) return true;
-                if (_dbsh.Alias == null && TableName?.Name == name.First) return true;
+                if (_dbsh.Alias == sident.First) return true;
+                if (_dbsh.Alias == null && TableName?.Name == sident.First) return true;
             }
-            if (name.Count == 2)
+            if (sident.Count == 2)
             {
                 if (_dbsh.Alias != null) return false;
-                return TableName?.Schema == name[0] && TableName?.Name == name[1];
+                return TableName?.Schema == sident[0] && TableName?.Name == sident[1];
             }
             return false;
         }
