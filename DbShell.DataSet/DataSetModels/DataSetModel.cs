@@ -636,15 +636,19 @@ namespace DbShell.DataSet.DataSetModels
                     }
                     else
                     {
-                        if (r.ReferencedClass.IdentityColumn == null)
+                        if (!KeepUndefinedReferences)
                         {
-                            int ord = r.BaseClass.ColumnOrdinals[r.BindingColumn];
-                            if (r.BaseClass.AllInstances.Select(x => x.Values[ord]).Any(x => x != null))
+                            if (r.ReferencedClass.IdentityColumn == null)
                             {
-                                throw new Exception(String.Format("DBSH-00125 Lookup or target identity must be defined on table {0} because of reference from {1}", r.ReferencedClass.TableName,
-                                                                  r.BaseClass.TableName));
+                                int ord = r.BaseClass.ColumnOrdinals[r.BindingColumn];
+                                if (r.BaseClass.AllInstances.Select(x => x.Values[ord]).Any(x => x != null))
+                                {
+                                    throw new Exception(String.Format("DBSH-00125 Lookup or target identity must be defined on table {0} because of reference from {1}", r.ReferencedClass.TableName,
+                                                                      r.BaseClass.TableName));
+                                }
                             }
                         }
+
                         if (r.Mandatory)
                         {
                             if (inst.Values[i] == null || inst.Values[i] == DBNull.Value)

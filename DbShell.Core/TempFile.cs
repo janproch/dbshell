@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using DbShell.Common;
 using DbShell.Core.Utility;
+using log4net;
 
 namespace DbShell.Core
 {
@@ -13,6 +14,8 @@ namespace DbShell.Core
     /// </summary>
     public class TempFile : RunnableBase
     {
+        private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// variable name filled with temp file name
         /// </summary>
@@ -23,9 +26,9 @@ namespace DbShell.Core
             string file = Path.GetTempFileName();
             context.SetVariable(context.Replace(Variable), file);
             context.AddDisposableItem(new TempFileHolder
-                {
-                    File = file,
-                });
+            {
+                File = file,
+            });
         }
 
         private class TempFileHolder : IDisposable
@@ -34,7 +37,14 @@ namespace DbShell.Core
 
             public void Dispose()
             {
-                System.IO.File.Delete(File);
+                try
+                {
+                    System.IO.File.Delete(File);
+                }
+                catch (Exception err)
+                {
+                    _log.Error("DBSH-00000 Error deleting temporary file", err);
+                }
             }
         }
     }
