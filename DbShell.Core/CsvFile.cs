@@ -273,6 +273,7 @@ namespace DbShell.Core
         {
             var counts = new Dictionary<char, List<int>>();
             counts[','] = new List<int>();
+            counts['|'] = new List<int>();
             counts[';'] = new List<int>();
             counts['\t'] = new List<int>();
 
