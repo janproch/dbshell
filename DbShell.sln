@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbShell.Excel", "DbShell.Ex
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbShell.RelatedDataSync", "DbShell.RelatedDataSync\DbShell.RelatedDataSync.csproj", "{E08CEF81-49A5-4F5C-AA32-DA22833AB8EF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbShell.Dbf", "DbShell.Dbf\DbShell.Dbf.csproj", "{D5969C85-7B87-4ACA-A350-527A9B153B1C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -182,6 +184,18 @@ Global
 		{E08CEF81-49A5-4F5C-AA32-DA22833AB8EF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{E08CEF81-49A5-4F5C-AA32-DA22833AB8EF}.Release|x86.ActiveCfg = Release|Any CPU
 		{E08CEF81-49A5-4F5C-AA32-DA22833AB8EF}.Release|x86.Build.0 = Release|Any CPU
+		{D5969C85-7B87-4ACA-A350-527A9B153B1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5969C85-7B87-4ACA-A350-527A9B153B1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5969C85-7B87-4ACA-A350-527A9B153B1C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D5969C85-7B87-4ACA-A350-527A9B153B1C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D5969C85-7B87-4ACA-A350-527A9B153B1C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D5969C85-7B87-4ACA-A350-527A9B153B1C}.Debug|x86.Build.0 = Debug|Any CPU
+		{D5969C85-7B87-4ACA-A350-527A9B153B1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5969C85-7B87-4ACA-A350-527A9B153B1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5969C85-7B87-4ACA-A350-527A9B153B1C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D5969C85-7B87-4ACA-A350-527A9B153B1C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D5969C85-7B87-4ACA-A350-527A9B153B1C}.Release|x86.ActiveCfg = Release|Any CPU
+		{D5969C85-7B87-4ACA-A350-527A9B153B1C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
