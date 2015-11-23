@@ -26,7 +26,7 @@ Visual Studio 2010 (including MS-BUILD)
   <property name="nantcontrib_path" value="C:\Program Files\nant-0.92\nantcontrib-0.92\bin\" />
 
   <!-- path to NANT devenv -->
-  <property name="devenv" value="c:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv" />
+  <property name="devenv" value="c:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv" />
 
   <!-- SVN repository path and user credentials-->
   <property name="git_repository" value="https://git01.codeplex.com/dbshell" />
@@ -89,7 +89,9 @@ Visual Studio 2010 (including MS-BUILD)
       </fileset>
     </copy>
 
+	<!--
     <copy tofile="./output/Documentation/DbShell.chm" file="./source/Documentation/Help/Documentation.chm" />
+	-->
     
     <zip zipfile='DbShell.zip'>
       <fileset basedir='output'>

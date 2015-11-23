@@ -20,6 +20,16 @@ namespace DbShell
             try
             {
                 runner.LoadFile(args[0]);
+                for (int i = 1; i < args.Length; i++)
+                {
+                    if (args[i].StartsWith("--"))
+                    {
+                        string name = args[i].Substring(2);
+                        i++;
+                        if (i >= args.Length) break;
+                        runner.Context.SetVariable(name, args[i]);
+                    }
+                }
             }
             catch (Exception err)
             {
