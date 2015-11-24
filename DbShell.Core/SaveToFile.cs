@@ -7,6 +7,7 @@ using DbShell.Common;
 using DbShell.Core.Utility;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Utility;
+using System.ComponentModel;
 
 namespace DbShell.Core
 {
@@ -51,6 +52,7 @@ namespace DbShell.Core
         /// The encoding.
         /// </value>
         [XamlProperty]
+        [TypeConverter(typeof(EncodingTypeConverter))]
         public Encoding Encoding { get; set; }
 
         protected override void DoRun(IShellContext context)
