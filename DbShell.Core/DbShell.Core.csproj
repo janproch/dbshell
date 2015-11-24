@@ -74,6 +74,7 @@
     <Compile Include="MapNull.cs" />
     <Compile Include="MapRowNumber.cs" />
     <Compile Include="Put.cs" />
+    <Compile Include="QueryValue.cs" />
     <Compile Include="RazorModels\ColumnModel.cs" />
     <Compile Include="RazorModels\QueryModel.cs" />
     <Compile Include="RazorModels\RazorTemplateBase.cs" />
