@@ -25,7 +25,7 @@ namespace DbShell.Driver.Common.Utility
         public ICdlRecord AdaptRecord(ICdlRecord record)
         {
             var res = new ArrayDataRecord(record.Structure);
-            for (int i = 0; i < res.FieldCount; i++)
+            for (int i = 0; i < Math.Min(res.FieldCount, record.FieldCount); i++)
             {
                 var targetColumn = _columnMap.GetTargetColumnBySourceIndex(i);
                 if (targetColumn == null) continue;
