@@ -29,6 +29,14 @@ namespace DbShell
                         if (i >= args.Length) break;
                         runner.Context.SetVariable(name, args[i]);
                     }
+                    else if (args[i] == "/sqlconn")
+                    {
+                        i++;
+                        if (i >= args.Length) break;
+
+                        string sqlconn = args[i];
+                        runner.Context.SetDefaultConnection("sqlserver://" + sqlconn);
+                    }
                 }
             }
             catch (Exception err)
