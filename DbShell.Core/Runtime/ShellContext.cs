@@ -247,6 +247,7 @@ namespace DbShell.Core.Runtime
         public void SetExecutingFolder(string folder)
         {
             _executingFolder = folder;
+            SetVariable("BASE_DIRECTORY", folder);
         }
 
         public string GetExecutingFolder()
