@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddRows.cs" />
+    <Compile Include="ChangeColumn.cs" />
     <Compile Include="DataSet.cs" />
     <Compile Include="DataSetItemBase.cs" />
     <Compile Include="DataSetModels\DataSetClass.cs" />
@@ -53,6 +54,9 @@
     <Compile Include="DataSetModels\SqlRewriter.cs" />
     <Compile Include="DataSetModels\UndefinedReferenceReport.cs" />
     <Compile Include="DataSetModels\VariableRegistry.cs" />
+    <Compile Include="DateShiftFormula.cs" />
+    <Compile Include="FormulaDefinition.cs" />
+    <Compile Include="FormulaItemBase.cs" />
     <Compile Include="Import.cs" />
     <Compile Include="KeepKey.cs" />
     <Compile Include="LoadTable.cs" />

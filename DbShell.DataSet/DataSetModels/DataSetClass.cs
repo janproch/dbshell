@@ -42,6 +42,7 @@ namespace DbShell.DataSet.DataSetModels
         public List<DataSetInstance> AllInstances = new List<DataSetInstance>();
         public Dictionary<string, DataSetInstance> InstancesBySimpleKey = new Dictionary<string, DataSetInstance>();
         public Dictionary<string, DataSetInstance> InstancesByComplexPk = new Dictionary<string, DataSetInstance>();
+        public Dictionary<string, FormulaDefinition> ChangedColumns = new Dictionary<string, FormulaDefinition>();
 
         // dict old lookup value -> lookup mapping tuple
         public Dictionary<string, string[]> LookupValues = new Dictionary<string, string[]>();

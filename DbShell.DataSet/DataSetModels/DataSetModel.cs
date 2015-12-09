@@ -19,10 +19,12 @@ namespace DbShell.DataSet.DataSetModels
     public class DataSetModel
     {
         private DatabaseInfo _targetDatabase;
+
         private bool _prepared;
         private IShellContext _context;
         private int _idVarCounter;
         public Dictionary<NameWithSchema, DataSetClass> Classes = new Dictionary<NameWithSchema, DataSetClass>();
+        public Dictionary<string, FormulaDefinition> Formulas = new Dictionary<string, FormulaDefinition>();
         private IDatabaseFactory _factory;
         private IDialectDataAdapter _dda;
         private List<LoadReferencesDefinition> _loadRefDefs = new List<LoadReferencesDefinition>();
@@ -613,6 +615,12 @@ namespace DbShell.DataSet.DataSetModels
                 if (inst.Class.Columns[i] == inst.Class.IdentityColumn) continue;
                 if (inst.Class.TargetTable.Columns[i].ComputedExpression != null) continue;
                 if (was) sdw.Write(",");
+
+                FormulaDefinition formula = null;
+                if (inst.Class.ChangedColumns.ContainsKey(inst.Class.Columns[i])) formula = inst.Class.ChangedColumns[inst.Class.Columns[i]];
+
+                if (formula != null) formula.WritePrefix(sdw.CurrentCommandBuilder);
+
                 var r = inst.Class.GetReference(i);
                 //var fr = inst.Class.GetFulltextReference(i);
                 //if (fr != null)
@@ -697,6 +705,9 @@ namespace DbShell.DataSet.DataSetModels
                     //}
                     WriteValue(sdw.CurrentCommandBuilder, inst.Values[i]);
                 }
+
+                if (formula != null) formula.WritePostfix(sdw.CurrentCommandBuilder);
+
                 was = true;
             }
             sdw.Write(")");
@@ -848,6 +859,14 @@ namespace DbShell.DataSet.DataSetModels
             cls.LookupFieldIndexes = lookupColumns.Select(x => cls.ColumnOrdinals.Get(x, -1)).ToArray();
         }
 
+        public void ChangeColumn(NameWithSchema table, string column, string formula)
+        {
+            CheckUnprepared("ChangeColumn");
+            var cls = GetClass(table);
+            var formulaObj = Formulas[formula];
+            cls.ChangedColumns[column] = formulaObj;
+        }
+
         public void ImportIntoDatabase(DbConnection conn)
         {
             var sw = new StringWriter();
@@ -876,6 +895,11 @@ namespace DbShell.DataSet.DataSetModels
         public void LoadAllMissing()
         {
             _loadAllMissing = true;
+        }
+
+        public void DefineFormula(string name, FormulaDefinition formula)
+        {
+            Formulas[name] = formula;
         }
     }
 }
