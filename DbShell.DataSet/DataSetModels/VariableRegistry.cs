@@ -13,6 +13,8 @@ namespace DbShell.DataSet.DataSetModels
             internal int varname;
             internal int content;
             internal int age;
+            //  variable is modified, must be reloaded
+            internal bool modified;
             // if suspended variable cannot be removed from registry until ResumeVariables is called
             internal bool suspended;
         }
@@ -29,6 +31,12 @@ namespace DbShell.DataSet.DataSetModels
                 // move to last position
                 _registryByContent[content].age = 0;
                 varname = _registryByContent[content].varname;
+
+                if (_registryByContent[content].modified)
+                {
+                    _registryByContent[content].modified = false;
+                    twBefore.Write("set @var{0}=(select value from #memory where id={1});\n", _registryByContent[content].varname, content);
+                }
             }
             else
             {
@@ -88,6 +96,14 @@ namespace DbShell.DataSet.DataSetModels
         {
             _isSuspended = false;
             foreach (var reg in _registryByContent.Values) reg.suspended = false;
+        }
+
+        public void NotifyChangedVariable(int content)
+        {
+            if (_registryByContent.ContainsKey(content))
+            {
+                _registryByContent[content].modified = true;
+            }
         }
     }
 }

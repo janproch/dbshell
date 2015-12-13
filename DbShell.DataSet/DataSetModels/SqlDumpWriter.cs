@@ -87,5 +87,10 @@ namespace DbShell.DataSet.DataSetModels
         {
             m_variableRegistry.ResumeVariables();
         }
+
+        public void NotifyChangedVariable(int content)
+        {
+            m_variableRegistry.NotifyChangedVariable(content);
+        }
     }
 }

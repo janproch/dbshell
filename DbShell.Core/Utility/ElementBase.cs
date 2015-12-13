@@ -86,6 +86,11 @@ namespace DbShell.Core.Utility
             return context.GetDatabaseStructure(GetProviderString(context));
         }
 
+        public virtual string ToXamlExtension()
+        {
+            return null;
+        }
+
         //protected string Replace(IShellContext context, string value, string replacePattern = null)
         //{
         //    if (Context != null) return Context.Replace(value, replacePattern);

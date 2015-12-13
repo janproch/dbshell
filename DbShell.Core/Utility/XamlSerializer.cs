@@ -117,6 +117,9 @@ namespace DbShell.Core.Utility
             if (type == typeof(uint)) return o.ToString();
             if (type == typeof(ulong)) return o.ToString();
             if (type == typeof(DateTimeEx)) return ((DateTimeEx)o).ToStringNormalized();
+            var shellElem = o as ElementBase;
+            string xamlExtension = shellElem?.ToXamlExtension();
+            if (xamlExtension != null) return xamlExtension;
 
             if (type.IsEnum) return o.ToString();
             if (o is Encoding) return ((Encoding)o).WebName;

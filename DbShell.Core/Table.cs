@@ -34,5 +34,7 @@ namespace DbShell.Core
         {
             return String.Format("[Table {0}]", Name);
         }
+
+        protected override string XamlExtensionName => "Table";
     }
 }

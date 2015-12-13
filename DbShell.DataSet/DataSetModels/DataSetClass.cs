@@ -23,6 +23,10 @@ namespace DbShell.DataSet.DataSetModels
         public int[] ComplexPkColIndexes;
         public string[] LookupFields;
         public int[] LookupFieldIndexes;
+
+        public string[] ConditionalInsertFields;
+        public int[] ConditionalInsertFieldIndexes;
+
         public string SimplePkCol;
         public int SimplePkColIndex = -1;
 
