@@ -302,5 +302,10 @@ namespace DbShell.Core
         {
             return String.Format("[CsvFile {0}]", Name);
         }
+
+        public override string ToStringCtx(IShellContext context)
+        {
+            return String.Format("[CsvFile {0}]", context.Replace(Name));
+        }
     }
 }

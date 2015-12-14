@@ -112,5 +112,10 @@ namespace DbShell.Core
         {
             return String.Format("[CdlFile {0}]", Name);
         }
+
+        public override string ToStringCtx(IShellContext context)
+        {
+            return String.Format("[CdlFile {0}]", context.Replace(Name));
+        }
     }
 }

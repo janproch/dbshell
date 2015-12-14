@@ -69,5 +69,16 @@ namespace DbShell.Core
             doc.Load(file);
             return new XmlDocumentReader(doc, GetRowFormat(context), Columns, XPath);
         }
+
+        public override string ToString()
+        {
+            return String.Format("[XmlReader {0}]", File);
+        }
+
+        public override string ToStringCtx(IShellContext context)
+        {
+            return String.Format("[XmlReader {0}]", context.Replace(File));
+        }
+
     }
 }

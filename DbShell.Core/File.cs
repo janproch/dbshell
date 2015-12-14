@@ -78,5 +78,10 @@ namespace DbShell.Core
         {
             return String.Format("[File {0}]", Name);
         }
+
+        public override string ToStringCtx(IShellContext context)
+        {
+            return String.Format("[File {0}]", context.Replace(Name));
+        }
     }
 }

@@ -39,6 +39,11 @@ namespace DbShell.Core
             return String.Format("[View {0}]", Name);
         }
 
+        public override string ToStringCtx(IShellContext context)
+        {
+            return String.Format("[View {0}]", context.Replace(Name));
+        }
+
         protected override string XamlExtensionName => "View";
     }
 }

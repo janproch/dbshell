@@ -96,5 +96,10 @@ namespace DbShell.Core.Utility
         //    if (Context != null) return Context.Replace(value, replacePattern);
         //    return value;
         //}
+
+        public virtual string ToStringCtx(IShellContext context)
+        {
+            return ToString();
+        }
     }
 }
