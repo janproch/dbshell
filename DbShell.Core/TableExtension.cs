@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DbShell.Driver.Common.Structure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,15 +20,16 @@ namespace DbShell.Core
 
         public TableExtension(string name)
         {
-            var m = Regex.Match(name, @"([^\.]+)\.(.*)");
-            if (m.Success)
+            var ident = StructuredIdentifier.Parse(name);
+
+            if (ident.Count == 2)
             {
-                Schema = m.Groups[1].Value;
-                Schema = m.Groups[2].Value;
+                Schema = ident[0];
+                Name = ident[1];
             }
             else
             {
-                Name = name;
+                Name = ident.Last;
             }
         }
 

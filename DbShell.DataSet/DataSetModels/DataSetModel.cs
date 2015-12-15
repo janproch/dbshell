@@ -224,11 +224,11 @@ namespace DbShell.DataSet.DataSetModels
             CheckUnprepared("Clone");
             var res = new DataSetModel(_targetDatabase, _context, _factory);
 
-            foreach(var cls in Classes)
+            foreach (var cls in Classes)
             {
                 res.Classes[cls.Key] = new DataSetClass(res, cls.Value.TargetTable);
             }
-            foreach(var cls in res.Classes)
+            foreach (var cls in res.Classes)
             {
                 cls.Value.InitializeClass();
             }
@@ -246,11 +246,11 @@ namespace DbShell.DataSet.DataSetModels
         {
             LoadReference(
                 new LoadReferencesDefinition
-                    {
-                        Column = column,
-                        RefTable = reftable,
-                        Table = table
-                    });
+                {
+                    Column = column,
+                    RefTable = reftable,
+                    Table = table
+                });
         }
 
         public void LoadReference(LoadReferencesDefinition refDef)
@@ -273,11 +273,11 @@ namespace DbShell.DataSet.DataSetModels
                     {
                         if (refref.ReferencedClass != cls) continue;
                         res.Add(new LoadReferencesDefinition
-                            {
-                                Column = refref.BindingColumn,
-                                Table = rcls.TableName,
-                                RefTable = cls.TableName,
-                            });
+                        {
+                            Column = refref.BindingColumn,
+                            Table = rcls.TableName,
+                            RefTable = cls.TableName,
+                        });
                     }
                 }
             }
@@ -385,10 +385,11 @@ namespace DbShell.DataSet.DataSetModels
             var refValues = GetAllReferences(cls);
             if (refValues.Count == 0) return;
 
-            foreach(var row in cls.AllInstances)
+            foreach (var row in cls.AllInstances)
             {
                 string value = row.SimpleKeyValue;
                 if (!refValues.Contains(value)) continue;
+
                 string[] values = cls.LookupFieldIndexes.Select(x => x >= 0 ? row.Values[x].SafeToString() : null).ToArray();
                 cls.LookupValues[value] = values;
             }
@@ -606,6 +607,31 @@ namespace DbShell.DataSet.DataSetModels
 
         private void WriteInstance(SqlDumpWriter sdw, DataSetInstance inst)
         {
+            int idVariable = ReserveVariable();
+
+            if (inst.Class.ConditionalInsertFields != null)
+            {
+                var cls = inst.Class;
+                var sb = new StringBuilder();
+                sb.Append("(");
+                sb.AppendFormat("select top(1) tmain.[{0}] from [{1}] tmain ", cls.SimplePkCol, cls.TableName);
+                var exprs = new List<string>();
+                var rewr = new SqlRewriter(cls.TableName, this);
+                for (int i = 0; i < cls.ConditionalInsertFields.Length; i++) exprs.Add(rewr.Rewrite(cls.ConditionalInsertFields[i]));
+                rewr.WriteJoins(sb);
+                sb.Append(" where ");
+                bool wasCond = false;
+                for (int i = 0; i < exprs.Count; i++)
+                {
+                    if (wasCond) sb.Append(" and ");
+                    sb.AppendFormat("{0}=N'{1}'", exprs[i], inst.Values[cls.ConditionalInsertFieldIndexes[i]]);
+                    wasCond = true;
+                }
+                sb.Append(")");
+                inst.IdVariable = AssignVariable(sdw, sb.ToString(), idVariable);
+                sdw.Write("if ({0} is null) begin\n", sdw.GetVarExpr(inst.IdVariable.Value));
+            }
+
             sdw.Write("insert into [{0}] (", inst.Class.TableName);
             WriteColumnList(inst.Class, sdw.CurrentCommandBuilder);
             sdw.Write(") values (");
@@ -711,35 +737,64 @@ namespace DbShell.DataSet.DataSetModels
                 was = true;
             }
             sdw.Write(")");
-            sdw.EndCommand();
-            if (inst.RequiredIdentity)
+            if (inst.RequiredIdentity || inst.Class.ConditionalInsertFields != null)
             {
-                inst.IdVariable = AssignVariable(sdw, "SCOPE_IDENTITY()");
+                if (inst.Class.IdentityColumn != null)
+                {
+                    inst.IdVariable = AssignVariable(sdw, "SCOPE_IDENTITY()", idVariable, true);
+                }
+                else
+                {
+                    if (inst.Class.SimplePkCol != null)
+                    {
+                        inst.IdVariable = AssignVariable(sdw, inst.Values[inst.Class.SimplePkColIndex].ToString(), idVariable, true);
+                    }
+                }
             }
+            if (inst.Class.ConditionalInsertFields != null)
+            {
+                sdw.Write("end\n");
+            }
+            sdw.EndCommand();
         }
 
-        private int AssignVariable(SqlDumpWriter sdw, string initExpr)
+        private int ReserveVariable()
         {
             _idVarCounter++;
-            sdw.Write("set @reg0={0};", initExpr);
-            sdw.Write("insert into #memory (id, value) values ({0}, @reg0)", _idVarCounter);
-            sdw.EndCommand();
             return _idVarCounter;
+        }
+
+        private int AssignVariable(SqlDumpWriter sdw, string initExpr, int? variableId = null, bool deleteVariableFirst = false)
+        {
+            if (variableId == null)
+            {
+                _idVarCounter++;
+                variableId = _idVarCounter;
+            }
+            sdw.Write("set @reg0={0};", initExpr);
+            if (deleteVariableFirst)
+            {
+                sdw.Write("delete from #memory where id={0};", variableId.Value);
+                sdw.NotifyChangedVariable(variableId.Value);
+            }
+            sdw.Write("insert into #memory (id, value) values ({0}, @reg0)", variableId.Value);
+            sdw.EndCommand();
+            return variableId.Value;
         }
 
         protected internal void WriteValue(StringBuilder sb, object value)
         {
             if (value is string) sb.AppendFormat("N'{0}'", value.ToString().Replace("'", "''"));
-            else if (value is DateTime) sb.AppendFormat("'{0}'", ((DateTime) value).ToString("s"));
-            else if (value is decimal) sb.AppendFormat("'{0}'", ((decimal) value).ToString(CultureInfo.InvariantCulture));
-            else if (value is float) sb.AppendFormat("'{0}'", ((float) value).ToString(CultureInfo.InvariantCulture));
-            else if (value is double) sb.AppendFormat("'{0}'", ((double) value).ToString(CultureInfo.InvariantCulture));
+            else if (value is DateTime) sb.AppendFormat("'{0}'", ((DateTime)value).ToString("s"));
+            else if (value is decimal) sb.AppendFormat("'{0}'", ((decimal)value).ToString(CultureInfo.InvariantCulture));
+            else if (value is float) sb.AppendFormat("'{0}'", ((float)value).ToString(CultureInfo.InvariantCulture));
+            else if (value is double) sb.AppendFormat("'{0}'", ((double)value).ToString(CultureInfo.InvariantCulture));
             else if (value == null || value == DBNull.Value) sb.Append("NULL");
-            else if (value is bool) sb.Append((bool) value ? "1" : "0");
+            else if (value is bool) sb.Append((bool)value ? "1" : "0");
             else if (value is byte[])
             {
                 sb.Append("0x");
-                StringTool.EncodeHex((byte[]) value, sb);
+                StringTool.EncodeHex((byte[])value, sb);
             }
             else if (value is decimal) sb.AppendFormat(String.Format(CultureInfo.InvariantCulture, "'{0}'", value));
             else sb.AppendFormat("{0}", value);
@@ -797,7 +852,7 @@ namespace DbShell.DataSet.DataSetModels
         public void AddRowsByPk(NameWithSchema table, params string[] pks)
         {
             var cls = GetClass(table);
-            foreach(string pk in pks)
+            foreach (string pk in pks)
             {
                 cls.RequiredPks.Add(pk);
             }
@@ -857,6 +912,14 @@ namespace DbShell.DataSet.DataSetModels
             var cls = GetClass(table);
             cls.LookupFields = lookupColumns;
             cls.LookupFieldIndexes = lookupColumns.Select(x => cls.ColumnOrdinals.Get(x, -1)).ToArray();
+        }
+
+        public void DefineConditionalInsert(NameWithSchema table, string[] lookupColumns)
+        {
+            CheckUnprepared("ConditionalInsert");
+            var cls = GetClass(table);
+            cls.ConditionalInsertFields = lookupColumns;
+            cls.ConditionalInsertFieldIndexes = lookupColumns.Select(x => cls.ColumnOrdinals.Get(x, -1)).ToArray();
         }
 
         public void ChangeColumn(NameWithSchema table, string column, string formula)

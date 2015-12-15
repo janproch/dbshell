@@ -10,7 +10,7 @@ using DbShell.Driver.Common.Structure;
 
 namespace DbShell.DataSet
 {
-    public class LoadMissing : DataSetItemBase
+    public class ConditionalInsert : DataSetItemBase
     {
         [XamlProperty]
         public string Schema { get; set; }
@@ -18,9 +18,13 @@ namespace DbShell.DataSet
         [XamlProperty]
         public string Table { get; set; }
 
+        [XamlProperty]
+        public string Column { get; set; }
+
         protected override void DoRun(IShellContext context)
         {
-            GetModel(context).LoadMissing(new NameWithSchema(context.Replace(Schema), context.Replace(DataSetName)));
+            GetModel(context).DefineConditionalInsert(new NameWithSchema(context.Replace(Schema), context.Replace(Table)), new[] {Column});
         }
     }
+
 }

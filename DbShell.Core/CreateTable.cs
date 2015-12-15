@@ -152,5 +152,10 @@ namespace DbShell.Core
         {
             return String.Format("[Create Table {0}]", Name);
         }
+
+        public override string ToStringCtx(IShellContext context)
+        {
+            return String.Format("[Create Table {0}]", context.Replace(Name));
+        }
     }
 }

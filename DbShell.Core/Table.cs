@@ -34,5 +34,12 @@ namespace DbShell.Core
         {
             return String.Format("[Table {0}]", Name);
         }
+
+        public override string ToStringCtx(IShellContext context)
+        {
+            return String.Format("[Table {0}]", context.Replace(Name));
+        }
+
+        protected override string XamlExtensionName => "Table";
     }
 }

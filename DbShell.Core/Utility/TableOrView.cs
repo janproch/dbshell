@@ -94,6 +94,7 @@ namespace DbShell.Core.Utility
 
         public NameWithSchema GetFullName(IShellContext context)
         {
+            if (context == null) return new NameWithSchema(Schema, Name);
             return new NameWithSchema(context.Replace(Schema), context.Replace(Name));
         }
 
@@ -165,6 +166,18 @@ namespace DbShell.Core.Utility
             template.TabularData = this;
             template.Name = Name;
             template.Schema = Schema;
+        }
+
+        protected abstract string XamlExtensionName { get; }
+
+        public override string ToXamlExtension()
+        {
+            if (!String.IsNullOrEmpty(LinkedServerName)) return null;
+            if (!String.IsNullOrEmpty(LinkedDatabaseName)) return null;
+            if (!String.IsNullOrEmpty(ExplicitDatabaseName)) return null;
+            if (!String.IsNullOrEmpty(Connection)) return null;
+
+            return $"{{{XamlExtensionName} '{GetFullName(null).ToStructuredString()}'}}";
         }
     }
 }

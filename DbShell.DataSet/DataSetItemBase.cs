@@ -16,7 +16,7 @@ namespace DbShell.DataSet
         /// data set name
         /// </summary>
         [XamlProperty]
-        public string Name { get; set; }
+        public string DataSetName { get; set; }
 
         protected DataSetModel GetModel(IShellContext context)
         {
@@ -25,8 +25,8 @@ namespace DbShell.DataSet
 
         protected string GetDataSetVariableName(IShellContext context)
         {
-            if (String.IsNullOrEmpty(Name)) return "DefaultDataSet";
-            return context.Replace(Name);
+            if (String.IsNullOrEmpty(DataSetName)) return "DefaultDataSet";
+            return context.Replace(DataSetName);
         }
     }
 }

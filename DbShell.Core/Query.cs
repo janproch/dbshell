@@ -77,6 +77,11 @@ namespace DbShell.Core
             return String.Format("[Query {0}]", Text);
         }
 
+        public override string ToStringCtx(IShellContext context)
+        {
+            return String.Format("[Query {0}]", context.Replace(Text));
+        }
+
         IEnumerable IListProvider.GetList(IShellContext context)
         {
             using (var reader = ((ITabularDataSource)this).CreateReader(context))

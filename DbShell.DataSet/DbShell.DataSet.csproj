@@ -62,6 +62,7 @@
     <Compile Include="LoadTable.cs" />
     <Compile Include="LoadMissing.cs" />
     <Compile Include="LoadReference.cs" />
+    <Compile Include="ConditionalInsert.cs" />
     <Compile Include="Lookup.cs" />
     <Compile Include="Prepare.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
