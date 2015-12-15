@@ -9,14 +9,29 @@ namespace DbShell.DataSet
     public class DateShiftFormula : FormulaDefinition
     {
         [XamlProperty]
-        public DateTime OriginalValue { get; set; }
+        public string OriginalValue { get; set; }
 
         [XamlProperty]
-        public DateTime NewValue { get; set; }
+        public string NewValue { get; set; }
+
+        protected DateTime GetOriginalValue() => ConvertValue(OriginalValue);
+        protected DateTime GetNewValue() => ConvertValue(NewValue);
+
+        protected DateTime ConvertValue(string name)
+        {
+            switch (name)
+            {
+                case "TODAY":
+                    return DateTime.Now.Date;
+                case "NOW":
+                    return DateTime.Now;
+            }
+            return DateTime.Parse(name);
+        }
 
         public TimeSpan GetDateDiff()
         {
-            return NewValue - OriginalValue;
+            return GetNewValue() - GetOriginalValue();
         }
 
         public override void WritePrefix(StringBuilder sb)
