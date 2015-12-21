@@ -217,7 +217,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 }
             }
 
-            CreateKeyNotNullCondition(res.Select);
+            CreateNotNullConditions(res.Select);
 
             var existSelect = new DmlfSelect();
             existSelect.SingleFrom.Source = new DmlfSource
@@ -234,9 +234,9 @@ namespace DbShell.RelatedDataSync.SqlModel
             return res;
         }
 
-        private void CreateKeyNotNullCondition(DmlfCommandBase cmd)
+        private void CreateNotNullConditions(DmlfCommandBase cmd)
         {
-            foreach (var column in TargetColumns.Where(x => x.IsKey))
+            foreach (var column in TargetColumns.Where(x => x.IsKey || (x.Info?.NotNull ?? false)))
             {
                 var cond = new DmlfIsNotNullCondition
                 {
@@ -545,5 +545,10 @@ namespace DbShell.RelatedDataSync.SqlModel
         //    var compiler = new SqlScriptCompiler(dmp);
         //    Run(compiler);
         //}
+
+        public override string ToString()
+        {
+            return LogName;
+        }
     }
 }

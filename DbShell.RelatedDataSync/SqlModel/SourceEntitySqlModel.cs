@@ -190,5 +190,10 @@ namespace DbShell.RelatedDataSync.SqlModel
             }
             return false;
         }
+
+        public override string ToString()
+        {
+            return _dbsh.Alias ?? TableName?.Name;
+        }
     }
 }

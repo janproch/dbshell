@@ -259,6 +259,10 @@ namespace DbShell.RelatedDataSync.SqlModel
         private SourceEntitySqlModel PopEntityFromQueue()
         {
             var res = FindEntityFromQueue();
+            if (res == null)
+            {
+                throw new Exception("DBSH-00000 Internal error - PopEntityFromQueue() = null");
+            }
             _entityQueue.Remove(res);
             return res;
         }
