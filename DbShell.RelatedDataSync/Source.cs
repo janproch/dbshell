@@ -24,6 +24,12 @@ namespace DbShell.RelatedDataSync
         [XamlProperty]
         public List<SourceColumn> Columns { get; private set; } = new List<SourceColumn>();
 
+        [XamlProperty]
+        public string SourceTableVariable { get; set; }
+
+        [XamlProperty]
+        public string SourceQueryVariable { get; set; }
+
         public void ReplaceSouceSchemaByTemplate(string template)
         {
             var tbl = DataSource as TableOrView;

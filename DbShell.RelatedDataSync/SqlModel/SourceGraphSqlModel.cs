@@ -23,7 +23,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 var src = new SourceEntitySqlModel(item, dataSync);
                 Entities.Add(src);
                 src.SqlAlias = item.Alias ?? "src_" + Entities.Count;
-                src.InitializeQuerySource(item.DataSource, context);
+                src.InitializeQuerySource(item.DataSource, context, context.Replace(item.SourceTableVariable), context.Replace(item.SourceQueryVariable));
                 src.MaterializeIfNeeded();
 
                 foreach (var colItem in item.Columns)

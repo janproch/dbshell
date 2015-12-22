@@ -33,9 +33,31 @@ namespace DbShell.RelatedDataSync.SqlModel
         public Source Dbsh => _dbsh;
         public NameWithSchema ExternalDataName => _externalDataName;
 
-        public void InitializeQuerySource(ITabularDataSource dataSource, IShellContext context)
+        public void InitializeQuerySource(ITabularDataSource dataSource, IShellContext context, string sourceTableVariable, string sourceQueryVariable)
         {
             var tableOrView = dataSource as DbShell.Core.Utility.TableOrView;
+
+            if (!String.IsNullOrEmpty(sourceTableVariable))
+            {
+                QuerySource = new DmlfSource
+                {
+                    Alias = SqlAlias,
+                    TableOrView = new NameWithSchema($"###({sourceTableVariable})###"),
+                };
+                TableName = new NameWithSchema(sourceTableVariable);
+                return;
+            }
+
+            if (!String.IsNullOrEmpty(sourceQueryVariable))
+            {
+                QuerySource = new DmlfSource
+                {
+                    Alias = SqlAlias,
+                    SubQueryString = $"###({sourceQueryVariable})###",
+                };
+                return;
+
+            }
 
             if (tableOrView != null)
             {

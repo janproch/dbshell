@@ -48,9 +48,12 @@
     <Compile Include="LifetimeHandlerBase.cs" />
     <Compile Include="LogHandlerBase.cs" />
     <Compile Include="MarkDeleteLifetimeHandler.cs" />
+    <Compile Include="Parameter.cs" />
+    <Compile Include="ParameterValue.cs" />
     <Compile Include="Run.cs" />
     <Compile Include="SimpleLifetimeHandler.cs" />
     <Compile Include="SqlModel\DataSyncSqlModel.cs" />
+    <Compile Include="SqlModel\ParameterModel.cs" />
     <Compile Include="SqlModel\SourceColumnSqlModel.cs" />
     <Compile Include="SqlModel\SourceEntitySqlModel.cs" />
     <Compile Include="SqlModel\SourceGraphSqlModelBase.cs" />

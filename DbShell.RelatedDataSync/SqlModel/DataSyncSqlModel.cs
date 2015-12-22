@@ -21,14 +21,27 @@ namespace DbShell.RelatedDataSync.SqlModel
         private List<SourceEntitySqlModel> _externalSources = new List<SourceEntitySqlModel>();
         public string ProviderString { get; private set; }
         public DatabaseInfo TargetStructure;
+        public List<ParameterModel> Parameters = new List<ParameterModel>();
 
         SyncModel _model;
         public DataSyncSqlModel(SyncModel model, IShellContext context, bool allowExternalSources, string providerString)
         {
             _model = model;
             _allowExternalSources = allowExternalSources;
+
+            foreach(var param in model.Parameters)
+            {
+                Parameters.Add(new ParameterModel
+                {
+                    DataType = context.Replace(param.DataType),
+                    DefaultValue = context.Replace(param.DefaultValue),
+                    Name = context.Replace(param.Name),
+                });
+            }
+
             ProviderString = providerString;
             TargetStructure = context.GetDatabaseStructure(providerString);
+
             if (_model.IsFlatSync)
             {
                 foreach (var src in _model.Sources)
@@ -37,7 +50,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                     entity.LoadFlatColumns();
                     FlatSources.Add(entity);
                     entity.SqlAlias = src.Alias ?? "src_" + FlatSources.Count;
-                    entity.InitializeQuerySource(src.DataSource, context);
+                    entity.InitializeQuerySource(src.DataSource, context, src.SourceTableVariable, src.SourceQueryVariable);
                     entity.MaterializeIfNeeded();
                 }
             }
@@ -221,19 +234,19 @@ namespace DbShell.RelatedDataSync.SqlModel
             }
         }
 
-        public void Run(DbConnection conn, IDatabaseFactory factory, IShellContext context, bool useTransaction)
+        public void Run(DbConnection conn, IDatabaseFactory factory, IShellContext context, bool useTransaction, List<ParameterModel> pars, Dictionary<string, string> parValues)
         {
             FillExternalSources(conn, factory, context);
             var cmp = new SqlScriptCompiler(factory, this, context, null);
-            cmp.PutScriptProlog(useTransaction);
+            cmp.PutScriptProlog(useTransaction, pars, parValues);
             DumpScript(cmp, useTransaction);
             ExecuteScript(conn, cmp.GetCompiledSql());
             FreeExternalSources(conn, factory, context);
         }
 
-        public void CreateProcedure(DbConnection conn, IDatabaseFactory factory, NameWithSchema name, IShellContext context, bool useTransaction, bool overwriteExisting)
+        public void CreateProcedure(DbConnection conn, IDatabaseFactory factory, NameWithSchema name, IShellContext context, bool useTransaction, bool overwriteExisting, List<ParameterModel> pars)
         {
-            string sql = GenerateCreateProcedure(factory, name, context, useTransaction, overwriteExisting);
+            string sql = GenerateCreateProcedure(factory, name, context, useTransaction, overwriteExisting, pars);
             ExecuteScript(conn, sql);
         }
 
@@ -246,35 +259,35 @@ namespace DbShell.RelatedDataSync.SqlModel
             }
         }
 
-        private string GenerateCreateProcedureCore(IDatabaseFactory factory, NameWithSchema name, IShellContext context, bool useTransaction, string createKeyword)
+        private string GenerateCreateProcedureCore(IDatabaseFactory factory, NameWithSchema name, IShellContext context, bool useTransaction, string createKeyword, List<ParameterModel> pars)
         {
             var cmp = new SqlScriptCompiler(factory, this, context, name.ToString());
-            cmp.PutProcedureHeader(name, useTransaction, createKeyword);
+            cmp.PutProcedureHeader(name, useTransaction, createKeyword, pars);
             DumpScript(cmp, useTransaction);
             cmp.PutProcedureFooter();
             return cmp.GetCompiledSql();
         }
 
-        public string GenerateCreateProcedure(IDatabaseFactory factory, NameWithSchema name, IShellContext context, bool useTransaction, bool overwriteExisting)
+        public string GenerateCreateProcedure(IDatabaseFactory factory, NameWithSchema name, IShellContext context, bool useTransaction, bool overwriteExisting, List<ParameterModel> pars)
         {
             if (overwriteExisting)
             {
-                string sqlCore = GenerateCreateProcedureCore(factory, name, context, useTransaction, "");
+                string sqlCore = GenerateCreateProcedureCore(factory, name, context, useTransaction, "", pars);
                 var cmp = new SqlScriptCompiler(factory, this, context, name.ToString());
                 cmp.CreateOrAlterProcedure(name, sqlCore);
                 return cmp.GetCompiledSql();
             }
             else
             {
-                return GenerateCreateProcedureCore(factory, name, context, useTransaction, "create");
+                return GenerateCreateProcedureCore(factory, name, context, useTransaction, "create", pars);
             }
         }
 
-        public string GenerateScript(IDatabaseFactory factory, IShellContext context, bool useTransaction)
+        public string GenerateScript(IDatabaseFactory factory, IShellContext context, bool useTransaction, List<ParameterModel> pars, Dictionary<string, string> parValues)
         {
             var cmp = new SqlScriptCompiler(factory, this, context, null);
 
-            cmp.PutScriptProlog(useTransaction);
+            cmp.PutScriptProlog(useTransaction, pars, parValues);
             DumpScript(cmp, useTransaction);
 
             return cmp.GetCompiledSql();

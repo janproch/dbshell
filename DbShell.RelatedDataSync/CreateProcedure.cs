@@ -31,7 +31,7 @@ namespace DbShell.RelatedDataSync
             var connection = GetConnectionProvider(context);
             using (var conn = connection.Connect())
             {
-                sqlModel.CreateProcedure(conn, connection.Factory, new NameWithSchema(context.Replace(ProcSchema), context.Replace(ProcName)), context, UseTransaction, OverwriteExisting);
+                sqlModel.CreateProcedure(conn, connection.Factory, new NameWithSchema(context.Replace(ProcSchema), context.Replace(ProcName)), context, UseTransaction, OverwriteExisting, sqlModel.Parameters);
             }
         }
 
@@ -39,7 +39,7 @@ namespace DbShell.RelatedDataSync
         {
             var model = GetModel(context);
             var sqlModel = new DataSyncSqlModel(model, context, false, context.Replace(GetProviderString(context)));
-            return sqlModel.GenerateCreateProcedure(factory, new NameWithSchema(context.Replace(ProcSchema), context.Replace(ProcName)), context, UseTransaction, OverwriteExisting);
+            return sqlModel.GenerateCreateProcedure(factory, new NameWithSchema(context.Replace(ProcSchema), context.Replace(ProcName)), context, UseTransaction, OverwriteExisting, sqlModel.Parameters);
         }
     }
 }

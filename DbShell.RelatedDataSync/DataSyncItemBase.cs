@@ -14,7 +14,7 @@ namespace DbShell.RelatedDataSync
         /// sync model name
         /// </summary>
         [XamlProperty]
-        public string Name { get; set; }
+        public string DataSyncName { get; set; }
 
         protected SyncModel GetModel(IShellContext context)
         {
@@ -23,8 +23,8 @@ namespace DbShell.RelatedDataSync
 
         protected string GetSyncModelVariableName(IShellContext context)
         {
-            if (String.IsNullOrEmpty(Name)) return "DefaultSyncModel";
-            return context.Replace(Name);
+            if (String.IsNullOrEmpty(DataSyncName)) return "DefaultSyncModel";
+            return context.Replace(DataSyncName);
         }
     }
 

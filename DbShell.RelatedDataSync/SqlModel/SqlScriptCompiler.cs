@@ -42,12 +42,14 @@ namespace DbShell.RelatedDataSync.SqlModel
         private IShellContext _context;
         private string _procName;
         private StringWriter _sw;
+        private IDatabaseFactory _factory;
 
         public SqlScriptCompiler(IDatabaseFactory factory, DataSyncSqlModel datasync, IShellContext context, string procName)
         {
             _context = context;
             _procName = procName;
             _datasync = datasync;
+            _factory = factory;
 
             _sw = new StringWriter();
             var so = new SqlOutputStream(factory.CreateDialect(), _sw, new SqlFormatProperties());
@@ -56,6 +58,7 @@ namespace DbShell.RelatedDataSync.SqlModel
         }
 
         public ISqlDumper Dumper => _dmp;
+        public IDatabaseFactory Factory => _factory;
         public void Put(string format, params object[] args) => _dmp.Put(format, args);
         public void PutCmd(string format, params object[] args) => _dmp.PutCmd(format, args);
         public static DmlfExpression ImportDateTimeExpression => new DmlfSqlValueExpression { Value = ImportDateTimeVariableName };
@@ -94,13 +97,25 @@ namespace DbShell.RelatedDataSync.SqlModel
             _dmp.Put("&n");
         }
 
-        public void PutProcedureHeader(NameWithSchema name, bool useTransaction, string createKeyword)
+        public void PutProcedureHeader(NameWithSchema name, bool useTransaction, string createKeyword, List<ParameterModel> pars)
         {
             Put($"%k ^procedure %f ({ImportDateTimeVariableName} ^datetime = ^null", createKeyword, name);
             if (useTransaction) Put(", @useTransaction bit = 1");
+
+            foreach(var par in pars)
+            {
+                Put($", @{par.Name} {par.DataType} = ^null");
+            }
+
             Put($") ^as &n");
             Put("^begin&>&n");
             Put($"^if ({ImportDateTimeVariableName} ^is ^null) ^set {ImportDateTimeVariableName} = ^getdate();&n");
+
+            foreach (var par in pars)
+            {
+                if (String.IsNullOrEmpty(par.DefaultValue)) continue;
+                Put($"^if (@{par.Name} ^is ^null) ^set @{par.Name} = {par.DefaultValue}; &n");
+            }
         }
 
         public void PutCommonProlog(bool useTransaction, string sqlPrologBeforeBeginTransaction, string sqlPrologAfterBeginTransaction)
@@ -114,6 +129,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             Put("DECLARE @CatchErrorMessage NVARCHAR(4000);&n");
             Put("DECLARE @CatchErrorSeverity INT;;&n");
             Put("DECLARE @CatchErrorState INT;&n");
+            Put("DECLARE @SqlTemplate NVARCHAR(MAX);&n");
 
             Put("^declare @messages ^table (ID INT NOT NULL PRIMARY KEY IDENTITY, Message NVARCHAR(MAX), Created DATETIME NOT NULL DEFAULT GETDATE(), Duration FLOAT, Operation NVARCHAR(100), TargetEntity  NVARCHAR(250), Rows INT)");
             PutLogMessage(null, LogOperationType.Start, "Import started", null);
@@ -159,7 +175,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             Put("&<&n^end&n");
         }
 
-        public void PutScriptProlog(bool useTransaction)
+        public void PutScriptProlog(bool useTransaction, List<ParameterModel> pars, Dictionary<string, string> parValues)
         {
             Put($"^declare {ImportDateTimeVariableName} ^ datetime;&n");
             Put($"^set {ImportDateTimeVariableName} = ^getdate();&n");
@@ -167,6 +183,17 @@ namespace DbShell.RelatedDataSync.SqlModel
             {
                 Put("^declare @useTransaction bit;&n");
                 Put("^set @useTransaction = 1;&n");
+            }
+
+            foreach (var par in pars)
+            {
+                Put($"declare @{par.Name} {par.DataType} = ^null;&n");
+                string value = par.DefaultValue;
+                if (parValues.ContainsKey(par.Name)) value = parValues[par.Name];
+                if (!String.IsNullOrEmpty(value))
+                {
+                    Put($"^if (@{par.Name} ^is ^null) ^set @{par.Name} = {value}; &n");
+                }
             }
         }
 

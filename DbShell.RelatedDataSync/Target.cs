@@ -27,6 +27,9 @@ namespace DbShell.RelatedDataSync
         public List<TargetColumn> Columns { get; private set; } = new List<TargetColumn>();
 
         [XamlProperty]
+        public string FullTableNameVariable { get; set; }
+
+        [XamlProperty]
         public LifetimeHandlerBase LifetimeHandler { get; set; } = new LifetimeHandlerBase();
 
         public void ReplaceTargetSchemaByTemplate(string template)

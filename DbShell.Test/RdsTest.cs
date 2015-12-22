@@ -131,5 +131,42 @@ namespace DbShell.Test
             AssertExists("select * from Target1");
             AssertExists("select * from Target2");
         }
+
+        [DeploymentItem("rds_params.xaml")]
+        [TestMethod]
+        public void RdsParamsTest()
+        {
+            InitDatabase();
+            RunEmbeddedScript("CreateRds1Data.sql");
+            using (var runner = CreateRunner())
+            {
+                runner.LoadFile("rds_params.xaml");
+                runner.Run();
+            }
+            RunScript("exec RunSync1 @ResValue=11");
+            RunScript("exec RunSync1");
+
+            AssertIsValue("4", "select count(*) from Target where ParamId=11");
+            AssertIsValue("4", "select count(*) from Target where ParamId=33");
+            AssertIsValue("4", "select count(*) from Target where ParamId=99");
+            AssertIsValue("12", "select count(*) from Target");
+        }
+
+        [DeploymentItem("rds_name_params.xaml")]
+        [TestMethod]
+        public void RdsNameParamsTest()
+        {
+            InitDatabase();
+            RunEmbeddedScript("CreateRds_NameParams.sql");
+            using (var runner = CreateRunner())
+            {
+                runner.LoadFile("rds_name_params.xaml");
+                runner.Run();
+            }
+            RunScript("exec RunSync1 @TargetName='TargetData', @SourceName='SourceData', @SourceQuery='select 1001 as SourceId2, 1001 as Value2'");
+
+            AssertExists("select * from TargetData where ParamId=1");
+            AssertIsValue("1001", "select Value from TargetData where ParamId=2");
+        }
     }
 }

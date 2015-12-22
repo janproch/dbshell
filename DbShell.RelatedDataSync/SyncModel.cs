@@ -37,6 +37,9 @@ namespace DbShell.RelatedDataSync
         [XamlProperty]
         public bool IsFlatSync { get; set; }
 
+        [XamlProperty]
+        public List<Parameter> Parameters { get; private set; } = new List<Parameter>();
+
         protected override void DoRun(IShellContext context)
         {
             context.SetVariable(GetSyncModelVariableName(context), this);

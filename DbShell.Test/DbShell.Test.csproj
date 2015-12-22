@@ -105,6 +105,7 @@
     <EmbeddedResource Include="CreateRds2Lifetime.sql" />
     <EmbeddedResource Include="CreateRdsExcel.sql" />
     <EmbeddedResource Include="CreateRdsFlat.sql" />
+    <EmbeddedResource Include="CreateRds_NameParams.sql" />
     <Content Include="Ideas.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -256,6 +257,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="rds_flat.xaml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="rds_params.xaml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="rds_name_params.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

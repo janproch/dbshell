@@ -12,6 +12,19 @@ namespace DbShell.RelatedDataSync
 {
     public class Run : DataSyncScriptable
     {
+        [XamlProperty]
+        public List<ParameterValue> Parameters { get; set; } = new List<ParameterValue>();
+
+        private Dictionary<string, string> GetParameterValues(IShellContext context)
+        {
+            var res = new Dictionary<string, string>();
+            foreach(var par in Parameters)
+            {
+                res[context.Replace(par.Name)] = context.Replace(par.Value);
+            }
+            return res;
+        }
+
         protected override void DoRun(IShellContext context)
         {
             var model = GetModel(context);
@@ -31,7 +44,7 @@ namespace DbShell.RelatedDataSync
                         }
                     };
                 }
-                sqlModel.Run(conn, connection.Factory, context, UseTransaction);
+                sqlModel.Run(conn, connection.Factory, context, UseTransaction, sqlModel.Parameters, GetParameterValues(context));
             }
         }
 
@@ -39,7 +52,7 @@ namespace DbShell.RelatedDataSync
         {
             var model = GetModel(context);
             var sqlModel = new DataSyncSqlModel(model, context, true, context.Replace(GetProviderString(context)));
-            return sqlModel.GenerateScript(factory, context, UseTransaction);
+            return sqlModel.GenerateScript(factory, context, UseTransaction, sqlModel.Parameters, GetParameterValues(context));
         }
     }
 }
