@@ -50,13 +50,21 @@ namespace DbShell.Driver.Common.ChangeSet
         public void UpdateValue(string column, object value)
         {
             var val = Values.FirstOrDefault(x => x.Column == column);
-            if (val == null)
+
+            if (value == RevertedValue)
             {
-                val = new ChangeSetValue();
-                Values.Add(val);
+                Values.Remove(val);
             }
-            val.Column = column;
-            val.Value = value;
+            else
+            {
+                if (val == null)
+                {
+                    val = new ChangeSetValue();
+                    Values.Add(val);
+                }
+                val.Column = column;
+                val.Value = value;
+            }
         }
     }
 }

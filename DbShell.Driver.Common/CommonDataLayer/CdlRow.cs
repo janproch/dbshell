@@ -361,7 +361,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public void RevertChanges()
         {
             // cannot revert changes of new rows
-            if (RowState == CdlRowState.Added) return;
+            //if (RowState == CdlRowState.Added) return;
 
             for (int i = 0; i < m_fields.Length; i++)
             {

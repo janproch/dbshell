@@ -14,6 +14,8 @@ namespace DbShell.Driver.Common.ChangeSet
 {
     public abstract class ChangeSetItem
     {
+        public static object RevertedValue = new object();
+
         [XmlElem]
         public NameWithSchema TargetTable { get; set; }
 
