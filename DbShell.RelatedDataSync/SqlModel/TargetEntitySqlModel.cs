@@ -238,10 +238,19 @@ namespace DbShell.RelatedDataSync.SqlModel
             existSelect.SelectAll = true;
             CreateKeyCondition(existSelect, "tested");
             CreateLifetimeConditions(existSelect, "tested");
+            CreateFilterConditions(res.Select);
 
             res.Select.AddAndCondition(new DmlfNotExistCondition { Select = existSelect });
 
             return res;
+        }
+
+        private void CreateFilterConditions(DmlfCommandBase cmd)
+        {
+            foreach(var col in SourceJoinModel.Columns.Values)
+            {
+                if (col.FilterCondition != null) cmd.AddAndCondition(col.FilterCondition);
+            }
         }
 
         private void CreateNotNullConditions(DmlfCommandBase cmd)
@@ -299,6 +308,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 }
             });
             CreateKeyCondition(res, "target");
+            CreateFilterConditions(res);
             _dbsh.LifetimeHandler.CreateReliveConditions(res, "target", this);
             _dbsh.LifetimeHandler.CreateReliveUpdateFields(res, "target", this);
             return res;
@@ -323,6 +333,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             CreateKeyCondition(existSelect, "target");
             CreateRestrictionCondition(res, "target");
             CreateLifetimeConditions(res, "target");
+            CreateFilterConditions(existSelect);
             _dbsh.LifetimeHandler.CreateSetDeletedUpdateFields(res, "target", this);
             return res;
         }
@@ -342,6 +353,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             });
             CreateKeyCondition(cmd, "target");
             CreateLifetimeConditions(cmd, "target");
+            CreateFilterConditions(cmd);
 
             createUpdateSpecialColumns(cmd);
 
@@ -412,6 +424,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             CreateKeyCondition(existSelect, "target");
             CreateRestrictionCondition(res, "target");
             CreateLifetimeConditions(res, "target");
+            CreateFilterConditions(existSelect);
             return res;
         }
 

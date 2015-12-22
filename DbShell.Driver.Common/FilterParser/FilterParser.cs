@@ -144,11 +144,11 @@ namespace DbShell.Driver.Common.FilterParser
             return FilterLineTransformation.None;
         }
 
-        private static DmlfConditionBase DoParseFilterExpression(DbTypeBase type, DmlfExpression columnValue, string expression, Action<DbShellFilterAntlrParser> initParser = null)
+        private static DmlfConditionBase DoParseFilterExpression(ExpressionType type, DmlfExpression columnValue, string expression, Action<DbShellFilterAntlrParser> initParser = null)
         {
             expression = TransformExpression(expression);
 
-            switch (GetExpressionType(type))
+            switch (type)
             {
                 case ExpressionType.Number:
                     return ParseNumber(columnValue, expression, initParser);
@@ -167,6 +167,11 @@ namespace DbShell.Driver.Common.FilterParser
         }
 
         public static DmlfConditionBase ParseFilterExpression(DbTypeBase type, DmlfExpression columnValue, string expression, Action<DbShellFilterAntlrParser> initParser = null)
+        {
+            return ParseFilterExpression(GetExpressionType(type), columnValue, expression, initParser);
+        }
+
+        public static DmlfConditionBase ParseFilterExpression(ExpressionType type, DmlfExpression columnValue, string expression, Action<DbShellFilterAntlrParser> initParser = null)
         {
             if (expression == null) return null;
             var res = DoParseFilterExpression(type, columnValue, expression, initParser);

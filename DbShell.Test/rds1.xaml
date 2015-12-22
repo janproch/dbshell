@@ -6,7 +6,7 @@
     <rds:SyncModel >
         <rds:SyncModel.Sources>
             <rds:Source DataSource="{Table Source}">
-                <rds:SourceColumn Name="SourceId" />
+                <rds:SourceColumn Name="SourceId" Filter="&gt;=2" />
                 <rds:SourceColumn Name="Value" />
             </rds:Source>
         </rds:SyncModel.Sources>

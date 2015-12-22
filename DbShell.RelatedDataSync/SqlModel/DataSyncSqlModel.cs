@@ -57,6 +57,10 @@ namespace DbShell.RelatedDataSync.SqlModel
             else
             {
                 SourceGraphModel = new SourceGraphSqlModel(model, context, this);
+                foreach(var col in SourceGraphModel.Columns.Values)
+                {
+                    col.CompileFilter();
+                }
             }
             foreach (var entity in model.Targets)
             {

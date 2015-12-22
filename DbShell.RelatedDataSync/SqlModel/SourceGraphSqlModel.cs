@@ -39,6 +39,14 @@ namespace DbShell.RelatedDataSync.SqlModel
                     Columns[alias].DbshColumns.Add(colItem);
                     Columns[alias].Entities.Add(src);
                     src.Columns.Add(Columns[alias]);
+                    if (!String.IsNullOrEmpty(colItem.Filter))
+                    {
+                        Columns[alias].Filters.Add(colItem.Filter);
+                        if (colItem.FilterType != Driver.Common.FilterParser.FilterParser.ExpressionType.None)
+                        {
+                            Columns[alias].FilterType = colItem.FilterType;
+                        }
+                    }
                 }
             }
         }

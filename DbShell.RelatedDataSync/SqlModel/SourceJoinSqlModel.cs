@@ -82,6 +82,8 @@ namespace DbShell.RelatedDataSync.SqlModel
                 CreateSourceJoin();
 
                 AddRefsToJoin();
+
+                foreach (var col in Columns.Values) col.CompileFilter();
             }
         }
 
@@ -294,6 +296,11 @@ namespace DbShell.RelatedDataSync.SqlModel
                 }
                 Columns[alias].DbshColumns.Add(colItem);
                 Columns[alias].Entities.Add(src);
+                Columns[alias].FilterType = colItem.FilterType;
+                if (!String.IsNullOrEmpty(colItem.Filter))
+                {
+                    Columns[alias].Filters.Add(colItem.Filter);
+                }
                 src.Columns.Add(Columns[alias]);
             }
         }

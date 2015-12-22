@@ -27,6 +27,7 @@ namespace DbShell.Test
                 runner.LoadFile("rds1.xaml");
                 runner.Run();
             }
+            AssertIsValue("3", "select count(*) from Target");
         }
 
         [DeploymentItem("rds2.xaml")]

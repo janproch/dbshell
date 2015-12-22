@@ -126,6 +126,12 @@ namespace DbShell.RelatedDataSync.SqlModel
                 Columns.Add(col);
                 col.Entities.Add(this);
                 col.DbshColumns.Add(colItem);
+                if (!String.IsNullOrEmpty(colItem.Filter))
+                {
+                    col.Filters.Add(colItem.Filter);
+                    col.FilterType = colItem.FilterType;
+                    col.CompileFilter();
+                }
             }
         }
 
