@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace DbShell.RelatedDataSync.SqlModel
 {
@@ -345,5 +346,47 @@ namespace DbShell.RelatedDataSync.SqlModel
             Put($"^set @lastLogTime_{durationName} = ^getdate();&n");
         }
 
+        public void GenCommandSql(Action<ISqlDumper> dumpSql)
+        {
+            var sw = new StringWriter();
+            var so = new SqlOutputStream(Factory.CreateDialect(), sw, new SqlFormatProperties());
+            so.OverrideCommandDelimiter(";");
+
+            var dmp = Factory.CreateDumper(so, new SqlFormatProperties());
+            dumpSql(dmp);
+
+            string cmdText = sw.ToString();
+
+            var variables = Regex.Matches(cmdText, @"###\(([^\)]+)\)###");
+            if (variables.Count > 0)
+            {
+                var processedVars = new HashSet<string>();
+                PutCmd("^set @SqlTemplate = %v; &n", cmdText);
+                foreach (Match varItem in variables)
+                {
+                    string varName = varItem.Groups[1].Value;
+                    if (processedVars.Contains(varName)) continue;
+                    processedVars.Add(varName);
+                    PutCmd("^set @SqlTemplate = ^replace(@SqlTemplate, %v, %s); &n", $"###({varName})###", "@" + varName);
+                }
+                PutCmd("exec (@SqlTemplate); &n");
+            }
+            else
+            {
+                Dumper.Put("&r"); // dump separator if needed
+                Dumper.WriteRaw(cmdText);
+                Dumper.EndCommand();
+                Dumper.Put("&d"); // mark data dumped state
+            }
+        }
+
+        public void GenCommandSql(DmlfBase command)
+        {
+            GenCommandSql(dmp =>
+            {
+                command.GenSql(dmp);
+                dmp.EndCommand();
+            });
+        }
     }
 }

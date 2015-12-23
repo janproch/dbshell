@@ -433,50 +433,6 @@ namespace DbShell.RelatedDataSync.SqlModel
             _dbsh.LifetimeHandler.CreateLifetimeConditions(res, targetEntityAlias, this);
         }
 
-        private void GenCommandSql(Action<ISqlDumper> dumpSql, SqlScriptCompiler cmp)
-        {
-            var sw = new StringWriter();
-            var so = new SqlOutputStream(cmp.Factory.CreateDialect(), sw, new SqlFormatProperties());
-            so.OverrideCommandDelimiter(";");
-
-            var dmp = cmp.Factory.CreateDumper(so, new SqlFormatProperties());
-            dumpSql(dmp);
-
-            string cmdText = sw.ToString();
-
-            var variables = Regex.Matches(cmdText, @"###\(([^\)]+)\)###");
-            if (variables.Count > 0)
-            {
-                var processedVars = new HashSet<string>();
-                cmp.PutCmd("^set @SqlTemplate = %v; &n", cmdText);
-                foreach (Match varItem in variables)
-                {
-                    string varName = varItem.Groups[1].Value;
-                    if (processedVars.Contains(varName)) continue;
-                    processedVars.Add(varName);
-                    cmp.PutCmd("^set @SqlTemplate = ^replace(@SqlTemplate, %v, %s); &n", $"###({varName})###", "@" + varName);
-                }
-                cmp.PutCmd("exec (@SqlTemplate); &n");
-            }
-            else
-            {
-                cmp.Dumper.Put("&r"); // dump separator if needed
-                cmp.Dumper.WriteRaw(cmdText);
-                cmp.Dumper.EndCommand();
-                cmp.Dumper.Put("&d"); // mark data dumped state
-
-            }
-        }
-
-        private void GenCommandSql(DmlfBase command, SqlScriptCompiler cmp)
-        {
-            GenCommandSql(dmp =>
-            {
-                command.GenSql(dmp);
-                dmp.EndCommand();
-            }, cmp);
-        }
-
         private void RunCoreRound1(SqlScriptCompiler cmp)
         {
             if (_dbsh.LifetimeHandler.CreateMarkRelived)
@@ -486,7 +442,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 {
                     cmp.StartTimeMeasure("OP");
                     cmp.PutSmallTitleComment("MARK RELIVED");
-                    GenCommandSql(update, cmp);
+                    cmp.GenCommandSql(update);
                     cmp.EndCommand();
                     cmp.PutLogMessage(this, LogOperationType.MarkRelived, "@rows rows marked as relived", "OP");
                 }
@@ -499,7 +455,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 {
                     cmp.StartTimeMeasure("OP");
                     cmp.PutSmallTitleComment("MARK DELETED");
-                    GenCommandSql(update, cmp);
+                    cmp.GenCommandSql(update);
                     cmp.PutLogMessage(this, LogOperationType.MarkDeleted, "@rows rows marked as deleted", "OP");
                 }
             }
@@ -511,7 +467,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 {
                     cmp.StartTimeMeasure("OP");
                     cmp.PutSmallTitleComment("MARK UPDATED");
-                    GenCommandSql(update, cmp);
+                    cmp.GenCommandSql(update);
                     cmp.PutLogMessage(this, LogOperationType.MarkUpdated, "@rows rows marked as updated", "OP");
                 }
             }
@@ -524,9 +480,9 @@ namespace DbShell.RelatedDataSync.SqlModel
                     cmp.StartTimeMeasure("OP");
                     cmp.PutSmallTitleComment("INSERT");
                     bool isIdentity = Structure != null && Structure.Columns.Any(x => x.AutoIncrement && insert.TargetColumns.Contains(x.Name));
-                    if (isIdentity) GenCommandSql(dmp => dmp.AllowIdentityInsert(insert.TargetTable, true), cmp);
-                    GenCommandSql(insert, cmp);
-                    if (isIdentity) GenCommandSql(dmp => dmp.AllowIdentityInsert(insert.TargetTable, false), cmp);
+                    if (isIdentity) cmp.GenCommandSql(dmp => dmp.AllowIdentityInsert(insert.TargetTable, true));
+                    cmp.GenCommandSql(insert);
+                    if (isIdentity) cmp.GenCommandSql(dmp => dmp.AllowIdentityInsert(insert.TargetTable, false));
                     cmp.PutLogMessage(this, LogOperationType.Insert, "@rows rows inserted", "OP");
                 }
             }
@@ -538,7 +494,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 {
                     cmp.StartTimeMeasure("OP");
                     cmp.PutSmallTitleComment("UPDATE");
-                    GenCommandSql(update, cmp);
+                    cmp.GenCommandSql(update);
                     cmp.PutLogMessage(this, LogOperationType.Update, "@rows rows updated", "OP");
                 }
             }
@@ -553,7 +509,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 {
                     cmp.StartTimeMeasure("OP");
                     cmp.PutSmallTitleComment("DELETE");
-                    GenCommandSql(delete, cmp);
+                    cmp.GenCommandSql(delete);
                     cmp.PutLogMessage(this, LogOperationType.Delete, "@rows rows deleted", "OP");
                 }
             }

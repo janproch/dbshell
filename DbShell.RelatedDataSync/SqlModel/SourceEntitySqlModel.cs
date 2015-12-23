@@ -140,7 +140,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             if (IsExternal) return;
             if (!_dbsh.Materialize) return;
 
-            _materializedName = new NameWithSchema("#" + SqlAlias);
+            _materializedName = new NameWithSchema("#" + SqlAlias.Replace(".", "_"));
             _materializeSelect = new DmlfSelect();
             _materializeSelect.SingleFrom.Source = QuerySource;
             _materializeSelect.SelectIntoTable = _materializedName;
@@ -158,9 +158,8 @@ namespace DbShell.RelatedDataSync.SqlModel
             if (_materializedName == null) return;
             cmp.PutSmallTitleComment($"Materialize of entity {SqlAlias}");
             cmp.StartTimeMeasure("OP");
-            _materializeSelect.GenSql(cmp.Dumper);
+            cmp.GenCommandSql(_materializeSelect);
             cmp.PutLogMessage(null, LogOperationType.Materialize, $"@rows rows of {SqlAlias} materialized", "OP");
-            cmp.EndCommand();
         }
 
         public void PutDropMaterialized(SqlScriptCompiler cmp)
