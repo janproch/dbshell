@@ -86,6 +86,24 @@ namespace DbShell.Core.Utility
             return _doc.CreateElement(nsShort, name, ns);
         }
 
+        private bool SerializeArray<T>(object value, string tname, PropertyInfo prop, string tns, XmlElement root, string contentProperty, ref XmlElement contentPropertyElement)
+        {
+            if (value is T[])
+            {
+                var propElem = CreateElement(tname + "." + prop.Name, tns);
+                root.AppendChild(propElem);
+                foreach (T item in (T[])value)
+                {
+                    var itemElem = CreateElement(typeof(T).Name, "clr-namespace:System;assembly=mscorlib");
+                    itemElem.InnerText = item.ToString();
+                    propElem.AppendChild(itemElem);
+                }
+                if (prop.Name == contentProperty) contentPropertyElement = propElem;
+                return true;
+            }
+            return false;
+        }
+
         private object SerializeCore(object o)
         {
             if (o == null) return null;
@@ -140,20 +158,14 @@ namespace DbShell.Core.Utility
                 if (!prop.GetCustomAttributes(typeof(XamlPropertyAttribute), true).Any()) continue;
                 object value = prop.CallGet(o);
                 if (value == null) continue;
-                if (value is string[])
-                {
-                    var propElem = CreateElement(tname + "." + prop.Name, tns);
-                    root.AppendChild(propElem);
-                    //var arrayElem = _doc.CreateElement("Array", "http://schemas.microsoft.com/winfx/2006/xaml");
-                    //propElem.AppendChild(arrayElem);
-                    foreach (string item in (string[])value)
-                    {
-                        var itemElem = CreateElement("String", "clr-namespace:System;assembly=mscorlib");
-                        itemElem.InnerText = item;
-                        propElem.AppendChild(itemElem);
-                    }
-                    if (prop.Name == contentProperty) contentPropertyElement = propElem;
-                }
+                if (SerializeArray<string>(value, tname, prop, tns, root, contentProperty, ref contentPropertyElement)) { }
+                else if (SerializeArray<int>(value, tname, prop, tns, root, contentProperty, ref contentPropertyElement)) { }
+                else if (SerializeArray<short>(value, tname, prop, tns, root, contentProperty, ref contentPropertyElement)) { }
+                else if (SerializeArray<long>(value, tname, prop, tns, root, contentProperty, ref contentPropertyElement)) { }
+                else if (SerializeArray<byte>(value, tname, prop, tns, root, contentProperty, ref contentPropertyElement)) { }
+                else if (SerializeArray<float>(value, tname, prop, tns, root, contentProperty, ref contentPropertyElement)) { }
+                else if (SerializeArray<double>(value, tname, prop, tns, root, contentProperty, ref contentPropertyElement)) { }
+                else if (SerializeArray<decimal>(value, tname, prop, tns, root, contentProperty, ref contentPropertyElement)) { }
                 else if (!(value is string) && value is IEnumerable && !(value is DbShell.Core.Utility.ElementBase))
                 {
                     if (value.GetType().GetCustomAttributes(typeof(XamlUnfriendlyAttribute), true).Any())

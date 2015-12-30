@@ -20,6 +20,9 @@ namespace DbShell.Core
         [XamlProperty]
         public string Query { get; set; }
 
+        [XamlProperty]
+        public int[] ColumnSubset { get; set; }
+
         private Driver.Sqlite.SqliteStorage Storage
         {
             get { return Driver.Sqlite.SqliteStorage.GetFromDirectory(Identifier); }
@@ -32,12 +35,12 @@ namespace DbShell.Core
 
         TableInfo ITabularDataSource.GetRowFormat(IShellContext context)
         {
-            return Storage.Structure;
+            return Storage.Structure.CreateColumnSubset(ColumnSubset);
         }
 
         ICdlReader ITabularDataSource.CreateReader(IShellContext context)
         {
-            return Storage.CreateReader(Query);
+            return Storage.CreateReader(Query, ColumnSubset);
         }
 
         object IModelProvider.GetModel(IShellContext context)

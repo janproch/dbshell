@@ -37,6 +37,27 @@ namespace DbShell.Driver.Common.Structure
         [XmlCollection(typeof(ForeignKeyInfo))]
         public List<ForeignKeyInfo> ForeignKeys { get { return _foreignKeys; } }
 
+        public TableInfo CreateColumnSubset(IEnumerable<int> columnSubset)
+        {
+            if (columnSubset != null)
+            {
+                var ts = new TableInfo(OwnerDatabase);
+                foreach (int colindex in columnSubset)
+                {
+                    var src = Columns[colindex];
+                    ts.Columns.Add(new ColumnInfo(ts)
+                    {
+                        Name = src.Name,
+                        DataType = src.DataType,
+                        NotNull = src.NotNull,
+                        CommonType = src.CommonType,
+                    });
+                }
+                return ts;
+            }
+            return this;
+        }
+
         [XmlCollection(typeof(IndexInfo))]
         public List<IndexInfo> Indexes { get { return _indexes; } }
 

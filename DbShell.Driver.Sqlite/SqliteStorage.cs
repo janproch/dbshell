@@ -128,7 +128,7 @@ namespace DbShell.Driver.Sqlite
             {
                 row.ReadValue(i);
                 if (i > 0) sb.Append(",");
-                sb.Append((int) row.GetFieldType());
+                sb.Append((int)row.GetFieldType());
                 sb.Append(",");
                 string sqldata;
                 StorageTool.GetValueAsSqlLiteral(row, out sqldata);
@@ -167,8 +167,8 @@ namespace DbShell.Driver.Sqlite
                         for (int i = 0; i < _table.ColumnCount; i++)
                         {
                             row.SeekValue(i);
-                            var type = (TypeStorage) reader.GetInt32(i*2);
-                            StorageTool.ReadValue(reader, i*2 + 1, type, row);
+                            var type = (TypeStorage)reader.GetInt32(i * 2);
+                            StorageTool.ReadValue(reader, i * 2 + 1, type, row);
                         }
                         table.AddRowInternal(row);
                     }
@@ -177,7 +177,7 @@ namespace DbShell.Driver.Sqlite
             return table;
         }
 
-        public IEnumerable<ICdlRecord> EnumRows(ArrayDataRecord record, string query)
+        public IEnumerable<ICdlRecord> EnumRows(ArrayDataRecord record, string query, int subSetColumnCount)
         {
             using (var selcmd = _conn.CreateCommand())
             {
@@ -186,11 +186,11 @@ namespace DbShell.Driver.Sqlite
                 {
                     while (reader.Read())
                     {
-                        for (int i = 0; i < _table.ColumnCount; i++)
+                        for (int i = 0; i < subSetColumnCount; i++)
                         {
                             record.SeekValue(i);
-                            var type = (TypeStorage) reader.GetInt32(i*2);
-                            StorageTool.ReadValue(reader, i*2 + 1, type, record);
+                            var type = (TypeStorage)reader.GetInt32(i * 2);
+                            StorageTool.ReadValue(reader, i * 2 + 1, type, record);
                         }
                         yield return record;
                     }
@@ -198,10 +198,10 @@ namespace DbShell.Driver.Sqlite
             }
         }
 
-        public ICdlReader CreateReader(string query)
+        public ICdlReader CreateReader(string query, int[] columnSubset)
         {
-            var reader = new CdlStorageReader(Structure);
-            reader.SetEnumerator(EnumRows(reader, query));
+            var reader = new CdlStorageReader(Structure.CreateColumnSubset(columnSubset));
+            reader.SetEnumerator(EnumRows(reader, query, columnSubset.Length));
             return reader;
         }
 
