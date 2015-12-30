@@ -44,6 +44,10 @@ namespace DbShell.Core
         [XamlProperty]
         public IListProvider Source { get; set; }
 
+        [XamlProperty]
+        /// if true, then when exception occurs, continues with next item
+        public bool ContinueOnErrors { get; set; } = false;
+
         protected override void DoRun(IShellContext context)
         {
             var childContext = context.CreateChildContext();
@@ -77,9 +81,17 @@ namespace DbShell.Core
                 {
                     childContext.SetVariable(Property, item);
                 }
-                foreach (var command in Commands)
+                try
                 {
-                    command.Run(childContext);
+                    foreach (var command in Commands)
+                    {
+                        command.Run(childContext);
+                    }
+                }
+                catch (Exception err)
+                {
+                    if (!ContinueOnErrors) throw;
+                    context.OutputMessage(err.Message);
                 }
             }
         }

@@ -629,6 +629,7 @@ namespace DbShell.DataSet.DataSetModels
                 }
                 sb.Append(")");
                 inst.IdVariable = AssignVariable(sdw, sb.ToString(), idVariable);
+                sdw.EndCommand();
                 sdw.Write("if ({0} is null) begin\n", sdw.GetVarExpr(inst.IdVariable.Value));
             }
 
@@ -777,8 +778,7 @@ namespace DbShell.DataSet.DataSetModels
                 sdw.Write("delete from #memory where id={0};", variableId.Value);
                 sdw.NotifyChangedVariable(variableId.Value);
             }
-            sdw.Write("insert into #memory (id, value) values ({0}, @reg0)", variableId.Value);
-            sdw.EndCommand();
+            sdw.Write("insert into #memory (id, value) values ({0}, @reg0);", variableId.Value);
             return variableId.Value;
         }
 
