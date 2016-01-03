@@ -64,7 +64,7 @@ namespace DbShell.Driver.Common.Utility
             {
             }
             var clrType = row["DataType"] as Type;
-            if (clrType != null) return clrType.GetDatAdminType();
+            if (clrType != null) return clrType.GetCommonType();
             return new DbTypeString();
         }
 

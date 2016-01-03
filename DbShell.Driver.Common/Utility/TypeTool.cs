@@ -53,7 +53,7 @@ namespace DbShell.Driver.Common.Utility
             return DbType.String;
         }
 
-        public static DbTypeBase GetDatAdminType(this Type type)
+        public static DbTypeBase GetCommonType(this Type type)
         {
             switch (Type.GetTypeCode(type))
             {
@@ -97,11 +97,11 @@ namespace DbShell.Driver.Common.Utility
             if (type == typeof(Guid))
                 return new DbTypeGuid();
             if (type.FullName.ToLower().Contains("datetime")) return new DbTypeDatetime();
-            if (type.IsArray) return new DbTypeArray { ElementType = type.GetElementType().GetDatAdminType() };
+            if (type.IsArray) return new DbTypeArray { ElementType = type.GetElementType().GetCommonType() };
             return new DbTypeString();
         }
 
-        public static DbTypeBase GetDatAdminType(this TypeStorage type)
+        public static DbTypeBase GetCommonType(this TypeStorage type)
         {
             switch (type)
             {
