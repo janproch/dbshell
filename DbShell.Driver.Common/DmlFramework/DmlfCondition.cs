@@ -423,6 +423,11 @@ namespace DbShell.Driver.Common.DmlFramework
             string leftStr = Convert.ToString(left, CultureInfo.InvariantCulture);
             string rightStr = Convert.ToString(right, CultureInfo.InvariantCulture);
 
+            if (leftStr.ToLower() == "true" && rightStr == "1" && relation == "=") return true;
+            if (rightStr.ToLower() == "true" && leftStr == "1" && relation == "=") return true;
+            if (leftStr.ToLower() == "false" && rightStr == "0" && relation == "=") return true;
+            if (rightStr.ToLower() == "false" && leftStr == "0" && relation == "=") return true;
+
             if (leftType.IsNumberType() || rightType.IsNumberType())
             {
                 double leftValue, rightValue;

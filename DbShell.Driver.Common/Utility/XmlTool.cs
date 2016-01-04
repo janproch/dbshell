@@ -870,5 +870,16 @@ namespace DbShell.Driver.Common.Utility
             }
             return sw.ToString();
         }
+
+        public static string GetDocumentXml(this XmlDocument doc)
+        {
+            var sw = new StringWriter();
+            var opt = new XmlWriterSettings { OmitXmlDeclaration = true, Indent = true };
+            using (var xw = XmlWriter.Create(sw, opt))
+            {
+                doc.Save(xw);
+            }
+            return sw.ToString();
+        }
     }
 }
