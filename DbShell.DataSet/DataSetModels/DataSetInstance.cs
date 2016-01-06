@@ -53,7 +53,7 @@ namespace DbShell.DataSet.DataSetModels
                 if (IsReferenced) return true;
                 foreach (var r in Class.References)
                 {
-                    if (!r.Mandatory)
+                    if (r.BackReference)
                     {
                         object value = Values[Class.ColumnOrdinals[r.BindingColumn]];
                         if (value != null && value != DBNull.Value) return true;

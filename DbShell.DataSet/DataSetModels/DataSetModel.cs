@@ -13,11 +13,14 @@ using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
+using log4net;
 
 namespace DbShell.DataSet.DataSetModels
 {
     public class DataSetModel
     {
+        private readonly static ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private DatabaseInfo _targetDatabase;
 
         private bool _prepared;
@@ -501,6 +504,16 @@ namespace DbShell.DataSet.DataSetModels
             // 1. determine order of classes, as partial order using relation "contains mandatory relation"
             var orderedClasses = GetOrderedClasses();
 
+            var doneClasses = new HashSet<DataSetClass>();
+            foreach (var cls in orderedClasses)
+            {
+                foreach (var fk in cls.References)
+                {
+                    fk.BackReference = !fk.Mandatory && !doneClasses.Contains(fk.ReferencedClass);
+                }
+                doneClasses.Add(cls);
+            }
+
             // define lookups
             foreach (var cls in orderedClasses)
             {
@@ -578,14 +591,15 @@ namespace DbShell.DataSet.DataSetModels
         {
             foreach (var r in inst.Class.References)
             {
-                if (r.Mandatory) continue;
+                if (!r.BackReference) continue;
+                if (r.BaseClass.SimplePkCol == null) continue;
                 int colord = inst.Class.ColumnOrdinals[r.BindingColumn];
                 if (inst.Values[colord] == null || inst.Values[colord] == DBNull.Value) continue;
                 int? rvar = GetReferenceVariable(inst.Values[colord].ToString(), r.BaseClass, r.ReferencedClass, r.BindingColumn);
                 if (rvar == null) continue;
                 sdw.Write("update [{0}] set [{1}]=", r.BaseClass.TableName, r.BindingColumn);
                 sdw.WriteVar(rvar.Value);
-                sdw.Write(" where [{0}]=", r.BaseClass.IdentityColumn);
+                sdw.Write(" where [{0}]=", r.BaseClass.SimplePkCol);
                 sdw.WriteVar(inst.IdVariable.Value);
                 sdw.EndCommand();
             }
@@ -666,7 +680,14 @@ namespace DbShell.DataSet.DataSetModels
                         else
                         {
                             string refid = inst.Values[i].ToString();
-                            sdw.WriteVar(r.ReferencedClass.LookupVariables[refid]);
+                            if (r.ReferencedClass.LookupVariables.ContainsKey(refid))
+                            {
+                                sdw.WriteVar(r.ReferencedClass.LookupVariables[refid]);
+                            }
+                            else
+                            {
+                                sdw.Write("NULL");
+                            }
                         }
                     }
                     else
@@ -684,7 +705,11 @@ namespace DbShell.DataSet.DataSetModels
                             }
                         }
 
-                        if (r.Mandatory)
+                        if (r.BackReference)
+                        {
+                            sdw.Write("NULL");
+                        }
+                        else
                         {
                             if (inst.Values[i] == null || inst.Values[i] == DBNull.Value)
                             {
@@ -709,10 +734,6 @@ namespace DbShell.DataSet.DataSetModels
                                     sdw.WriteVar(rvar.Value);
                                 }
                             }
-                        }
-                        else
-                        {
-                            sdw.Write("NULL");
                         }
                     }
                 }
@@ -943,7 +964,16 @@ namespace DbShell.DataSet.DataSetModels
                     {
                         cmd.CommandText = item.Data;
                         cmd.Transaction = tran;
-                        cmd.ExecuteNonQuery();
+                        try
+                        {
+                            cmd.ExecuteNonQuery();
+                        }
+                        catch (Exception err)
+                        {
+                            _log.Error("DBSH-00000 Error importing data set", err);
+                            _log.Info(item.Data);
+                            throw;
+                        }
                     }
                 }
                 tran.Commit();

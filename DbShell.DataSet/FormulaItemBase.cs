@@ -10,6 +10,6 @@ namespace DbShell.DataSet
     public abstract class FormulaItemBase : DataSetItemBase
     {
         [XamlProperty]
-        public string FormulaName { get; set; }
+        public string FormulaName { get; set; } = "DefaultFormula";
     }
 }

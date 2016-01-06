@@ -11,6 +11,8 @@ namespace DbShell.DataSet.DataSetModels
         public DataSetClass ReferencedClass;
         public string BindingColumn;
         public bool Mandatory;
+        // base class of reference is inserted before target class is inserted, following UPDATE must be done
+        public bool BackReference;
         //public bool Load;
     }
 }

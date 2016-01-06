@@ -36,12 +36,14 @@ namespace DbShell.DataSet
 
         public override void WritePrefix(StringBuilder sb)
         {
-            sb.AppendFormat("DATEADD(ms, {0}, ", (long)GetDateDiff().TotalMilliseconds);
+            var diff = GetDateDiff();
+            double msDay = diff.Milliseconds + 1000 * (diff.Seconds + 60 * (diff.Minutes + 60 * diff.Hours));
+           sb.AppendFormat("DATEADD(dd, {0}, DATEADD(ms, {0}, ", diff.Days, (long)msDay);
         }
 
         public override void WritePostfix(StringBuilder sb)
         {
-            sb.Append(")");
+            sb.Append("))");
         }
     }
 }
