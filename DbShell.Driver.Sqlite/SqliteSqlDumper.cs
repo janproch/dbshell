@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Sql;
+using DbShell.Driver.Common.Structure;
 
 namespace DbShell.Driver.Sqlite
 {
@@ -50,6 +51,10 @@ namespace DbShell.Driver.Sqlite
             if (testIfExists) Put(" ^if ^exists");
             Put(" %f", obj.FullName);
             EndCommand();
+        }
+
+        public override void CreateIndex(IndexInfo ix)
+        {
         }
     }
 }
