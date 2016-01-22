@@ -500,6 +500,7 @@ namespace DbShell.DataSet.DataSetModels
 
             sdw.Write("create table #memory (id int, value int);\n");
             sdw.WriteBlockProlog("declare @reg0 int;\n");
+            sdw.EndCommand();
 
             // 1. determine order of classes, as partial order using relation "contains mandatory relation"
             var orderedClasses = GetOrderedClasses();
