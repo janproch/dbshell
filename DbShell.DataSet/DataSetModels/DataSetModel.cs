@@ -942,6 +942,10 @@ namespace DbShell.DataSet.DataSetModels
             var cls = GetClass(table);
             cls.ConditionalInsertFields = lookupColumns;
             cls.ConditionalInsertFieldIndexes = lookupColumns.Select(x => cls.ColumnOrdinals.Get(x, -1)).ToArray();
+            if (cls.ConditionalInsertFieldIndexes.Any(x => x < 0))
+            {
+                throw new Exception($"DBSH-00000 Some of conditional insert columns in class {cls.TableName} not found: {lookupColumns.CreateDelimitedText(",")}");
+            }
         }
 
         public void ChangeColumn(NameWithSchema table, string column, string formula)

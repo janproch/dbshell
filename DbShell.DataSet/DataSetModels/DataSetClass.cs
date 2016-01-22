@@ -248,6 +248,11 @@ namespace DbShell.DataSet.DataSetModels
             foreach (string id in InstancesBySimpleKey.Keys) refValues.Remove(id);
             return refValues;
         }
+
+        public override string ToString()
+        {
+            return this.TableName.ToString();
+        }
     }
 
     public class DataSetClassReader : ArrayDataRecord, ICdlReader
