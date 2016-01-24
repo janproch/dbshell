@@ -193,6 +193,7 @@ namespace DbShell.Driver.Common.Structure
         {
             get
             {
+                if (CommonType is DbTypeNumeric) return $"{Precision}, {Scale}";
                 if (Length == 0) return "";
                 if (Length == -1) return "max";
                 return Length.ToString();
