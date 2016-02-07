@@ -190,6 +190,7 @@ namespace DbShell.Driver.Common.Structure
             if (value == null) return null;
 
             var sident = StructuredIdentifier.Parse(value);
+            if (sident == null) return null;
 
             var res = sident.ToNameWithSchema();
             if (res != null) return res;

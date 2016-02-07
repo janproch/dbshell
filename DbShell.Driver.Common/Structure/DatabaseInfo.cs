@@ -78,6 +78,7 @@ namespace DbShell.Driver.Common.Structure
             if (name != null && name.Contains("."))
             {
                 var fullName = NameWithSchema.Parse(name);
+                if (fullName == null) return null;
                 return FindObjectLike(objs, fullName.Schema, fullName.Name);
             }
             return objs.FirstOrDefault(t => String.Compare(t.Name, name, true) == 0);

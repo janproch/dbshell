@@ -3,6 +3,7 @@ using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.DmlFramework;
 using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -334,6 +335,11 @@ namespace DbShell.RelatedDataSync.SqlModel
             //    entity == null || entity.Source == null ? "" : entity.Source.Name,
             //    entity == null ? "" : entity.Name,
             //    operation.ToString().ToUpper());
+        }
+
+        public void PutEditorInfo(string editorInfo)
+        {
+            SqlEditorInfoTool.PutEditorInfo(_dmp, editorInfo);
         }
 
         public void StartTimeMeasure(string durationName)

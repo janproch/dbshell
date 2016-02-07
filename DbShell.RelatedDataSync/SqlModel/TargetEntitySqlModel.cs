@@ -482,8 +482,8 @@ namespace DbShell.RelatedDataSync.SqlModel
                     bool isIdentity = Structure != null && Structure.Columns.Any(x => x.AutoIncrement && insert.TargetColumns.Contains(x.Name));
                     if (isIdentity) cmp.GenCommandSql(dmp => dmp.AllowIdentityInsert(insert.TargetTable, true));
                     cmp.GenCommandSql(insert);
-                    if (isIdentity) cmp.GenCommandSql(dmp => dmp.AllowIdentityInsert(insert.TargetTable, false));
                     cmp.PutLogMessage(this, LogOperationType.Insert, "@rows rows inserted", "OP");
+                    if (isIdentity) cmp.GenCommandSql(dmp => dmp.AllowIdentityInsert(insert.TargetTable, false));
                 }
             }
 

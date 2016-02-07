@@ -23,6 +23,9 @@ namespace DbShell.RelatedDataSync
         [XamlProperty]
         public bool OverwriteExisting { get; set; }
 
+        [XamlProperty]
+        public string EditorInfo { get; set; }
+
         protected override void DoRun(IShellContext context)
         {
             var model = GetModel(context);
@@ -39,7 +42,7 @@ namespace DbShell.RelatedDataSync
         {
             var model = GetModel(context);
             var sqlModel = new DataSyncSqlModel(model, context, false, context.Replace(GetProviderString(context)));
-            return sqlModel.GenerateCreateProcedure(factory, new NameWithSchema(context.Replace(ProcSchema), context.Replace(ProcName)), context, UseTransaction, OverwriteExisting, sqlModel.Parameters);
+            return sqlModel.GenerateCreateProcedure(factory, new NameWithSchema(context.Replace(ProcSchema), context.Replace(ProcName)), context, UseTransaction, OverwriteExisting, sqlModel.Parameters, EditorInfo);
         }
     }
 }

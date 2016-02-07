@@ -250,7 +250,7 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         public void CreateProcedure(DbConnection conn, IDatabaseFactory factory, NameWithSchema name, IShellContext context, bool useTransaction, bool overwriteExisting, List<ParameterModel> pars)
         {
-            string sql = GenerateCreateProcedure(factory, name, context, useTransaction, overwriteExisting, pars);
+            string sql = GenerateCreateProcedure(factory, name, context, useTransaction, overwriteExisting, pars, null);
             ExecuteScript(conn, sql);
         }
 
@@ -263,27 +263,28 @@ namespace DbShell.RelatedDataSync.SqlModel
             }
         }
 
-        private string GenerateCreateProcedureCore(IDatabaseFactory factory, NameWithSchema name, IShellContext context, bool useTransaction, string createKeyword, List<ParameterModel> pars)
+        private string GenerateCreateProcedureCore(IDatabaseFactory factory, NameWithSchema name, IShellContext context, bool useTransaction, string createKeyword, List<ParameterModel> pars, string editorInfo)
         {
             var cmp = new SqlScriptCompiler(factory, this, context, name.ToString());
             cmp.PutProcedureHeader(name, useTransaction, createKeyword, pars);
             DumpScript(cmp, useTransaction);
             cmp.PutProcedureFooter();
+            cmp.PutEditorInfo(editorInfo);
             return cmp.GetCompiledSql();
         }
 
-        public string GenerateCreateProcedure(IDatabaseFactory factory, NameWithSchema name, IShellContext context, bool useTransaction, bool overwriteExisting, List<ParameterModel> pars)
+        public string GenerateCreateProcedure(IDatabaseFactory factory, NameWithSchema name, IShellContext context, bool useTransaction, bool overwriteExisting, List<ParameterModel> pars, string editorInfo)
         {
             if (overwriteExisting)
             {
-                string sqlCore = GenerateCreateProcedureCore(factory, name, context, useTransaction, "", pars);
+                string sqlCore = GenerateCreateProcedureCore(factory, name, context, useTransaction, "", pars, editorInfo);
                 var cmp = new SqlScriptCompiler(factory, this, context, name.ToString());
                 cmp.CreateOrAlterProcedure(name, sqlCore);
                 return cmp.GetCompiledSql();
             }
             else
             {
-                return GenerateCreateProcedureCore(factory, name, context, useTransaction, "create", pars);
+                return GenerateCreateProcedureCore(factory, name, context, useTransaction, "create", pars, editorInfo);
             }
         }
 

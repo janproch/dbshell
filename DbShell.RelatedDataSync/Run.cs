@@ -15,6 +15,9 @@ namespace DbShell.RelatedDataSync
         [XamlProperty]
         public List<ParameterValue> Parameters { get; set; } = new List<ParameterValue>();
 
+        [XamlProperty]
+        public string EditorInfo { get; set; }
+
         private Dictionary<string, string> GetParameterValues(IShellContext context)
         {
             var res = new Dictionary<string, string>();
@@ -52,7 +55,7 @@ namespace DbShell.RelatedDataSync
         {
             var model = GetModel(context);
             var sqlModel = new DataSyncSqlModel(model, context, true, context.Replace(GetProviderString(context)));
-            return sqlModel.GenerateScript(factory, context, UseTransaction, sqlModel.Parameters, GetParameterValues(context));
+            return sqlModel.GenerateScript(factory, context, UseTransaction, sqlModel.Parameters, GetParameterValues(context)) + SqlEditorInfoTool.FormatEditorInfo(EditorInfo);
         }
     }
 }

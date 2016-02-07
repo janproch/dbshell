@@ -64,6 +64,7 @@ namespace DbShell.Driver.Common.Structure
 
         public static StructuredIdentifier Parse(string s)
         {
+            if (s == null) return null;
             var res = new StructuredIdentifier();
             int pos = 0;
             var currentSb = new StringBuilder();
