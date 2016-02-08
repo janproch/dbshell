@@ -38,7 +38,9 @@ namespace DbShell.RelatedDataSync.SqlModel
             this._dataSyncSqlModel = dataSyncSqlModel;
             this._dbsh = dbsh;
             TargetTable = new NameWithSchema(context.Replace(dbsh.TableSchema), context.Replace(dbsh.TableName));
-            Structure = dataSyncSqlModel.TargetStructure.FindTableLike(TargetTable.Schema, TargetTable.Name);
+            string findSchema = dbsh.TableSchema;
+            if (findSchema != null && findSchema.StartsWith("{@NOQUOTE}")) findSchema = null;
+            Structure = dataSyncSqlModel.TargetStructure.FindTableLike(findSchema, TargetTable.Name);
             SqlAlias = _dbsh.Alias ?? "dst_" + _dataSyncSqlModel.Entities.Count;
 
             foreach (var col in dbsh.Columns)
