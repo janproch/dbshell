@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.DmlFramework

@@ -8,6 +8,8 @@ namespace DbShell.Driver.Common.Structure
 {
     public class NameWithSchema : IComparable, IFormattable
     {
+        public const string NoQuotePrefix = "(@NOQUOTE)";
+
         /// <summary>
         /// Schema name
         /// </summary>

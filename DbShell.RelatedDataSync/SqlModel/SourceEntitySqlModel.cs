@@ -205,6 +205,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             if (name == _dbsh.Alias) return true;
 
             var sident = StructuredIdentifier.Parse(name);
+            if (sident == null) return false;
             if (sident.Count == 1)
             {
                 if (_dbsh.Alias == sident.First) return true;

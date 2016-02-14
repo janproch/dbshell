@@ -115,7 +115,7 @@ namespace DbShell.Driver.Common.Structure
 
         private static bool MustBeQuoted(string name)
         {
-            return !name.All(Char.IsLetterOrDigit);
+            return name.Any(x => !Char.IsLetterOrDigit(x) && x != '_');
         }
 
         public string ToString(string format, IFormatProvider formatProvider)

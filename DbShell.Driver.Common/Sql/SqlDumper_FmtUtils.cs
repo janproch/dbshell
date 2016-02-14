@@ -471,9 +471,9 @@ namespace DbShell.Driver.Common.Sql
 
         private static string QuoteIdentifier(ISqlDialect dialect, SqlFormatProperties props, string ident)
         {
-            if (ident != null && ident.StartsWith("{@NOQUOTE}"))
+            if (ident != null && ident.StartsWith(NameWithSchema.NoQuotePrefix))
             {
-                return ident.Substring("{@NOQUOTE}".Length);
+                return ident.Substring(NameWithSchema.NoQuotePrefix.Length);
             }
             switch (props.IdentifierQuoteMode)
             {

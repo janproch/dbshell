@@ -26,6 +26,7 @@ namespace DbShell.RelatedDataSync.SqlModel
         public string SqlAlias;
         public bool RequiresGrouping;
         public TableInfo Structure;
+        public LinkedDatabaseInfo TargetLinkedInfo;
 
         public static string ExpressionColumnRegex = @"\{([^\}]+)\}";
 
@@ -39,7 +40,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             this._dbsh = dbsh;
             TargetTable = new NameWithSchema(context.Replace(dbsh.TableSchema), context.Replace(dbsh.TableName));
             string findSchema = dbsh.TableSchema;
-            if (findSchema != null && findSchema.StartsWith("{@NOQUOTE}")) findSchema = null;
+            if (findSchema != null && findSchema.StartsWith(NameWithSchema.NoQuotePrefix)) findSchema = null;
             Structure = dataSyncSqlModel.TargetStructure.FindTableLike(findSchema, TargetTable.Name);
             SqlAlias = _dbsh.Alias ?? "dst_" + _dataSyncSqlModel.Entities.Count;
 
@@ -70,6 +71,24 @@ namespace DbShell.RelatedDataSync.SqlModel
                     }
                     RequiredSourceColumns.Add(source);
                     if (col.IsKey) KeySourceColumns.Add(source);
+                }
+            }
+
+            if (!String.IsNullOrEmpty(_dbsh.Connection))
+            {
+                var ctxConn = new NormalizedDatabaseConnectionInfo(new DatabaseConnectionInfoHolder { ProviderString = context.GetDefaultConnection() });
+                var tableConn = new NormalizedDatabaseConnectionInfo(new DatabaseConnectionInfoHolder { ProviderString = context.Replace(_dbsh.Connection), LinkedInfo = _dbsh.LinkedInfo });
+
+                if (ctxConn != tableConn)
+                {
+                    if (ctxConn.ServerConnectionString == tableConn.ServerConnectionString)
+                    {
+                        TargetLinkedInfo = tableConn.GetLinkedInfo();
+                    }
+                    else
+                    {
+                        throw new Exception("DBSH-00000 RDS target must be reachable by database or linked server");
+                    }
                 }
             }
         }
@@ -121,6 +140,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             {
                 Alias = SqlAlias,
                 TableOrView = TargetTableSqlName,
+                LinkedInfo = TargetLinkedInfo,
             };
             var rel = new DmlfRelation
             {
@@ -203,6 +223,7 @@ namespace DbShell.RelatedDataSync.SqlModel
         {
             var res = new DmlfInsertSelect();
             res.TargetTable = TargetTableSqlName;
+            res.LinkedInfo = TargetLinkedInfo;
             res.Select = new DmlfSelect();
             res.Select.From.Add(SourceJoinModel.SourceToRefsJoin);
 
@@ -236,6 +257,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             {
                 TableOrView = TargetTableSqlName,
                 Alias = "tested",
+                LinkedInfo = TargetLinkedInfo,
             };
             existSelect.SelectAll = true;
             CreateKeyCondition(existSelect, "tested");
@@ -307,6 +329,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 {
                     Alias = "target",
                     TableOrView = TargetTableSqlName,
+                    LinkedInfo = TargetLinkedInfo,
                 }
             });
             CreateKeyCondition(res, "target");
@@ -324,6 +347,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             {
                 Alias = "target",
                 TableOrView = TargetTableSqlName,
+                LinkedInfo = TargetLinkedInfo,
             };
             var existSelect = new DmlfSelect();
             res.AddAndCondition(new DmlfNotExistCondition
@@ -351,6 +375,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 {
                     Alias = "target",
                     TableOrView = TargetTableSqlName,
+                    LinkedInfo = TargetLinkedInfo,
                 }
             });
             CreateKeyCondition(cmd, "target");
@@ -415,6 +440,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             {
                 Alias = "target",
                 TableOrView = TargetTableSqlName,
+                LinkedInfo = TargetLinkedInfo,
             };
             var existSelect = new DmlfSelect();
             res.AddAndCondition(new DmlfNotExistCondition

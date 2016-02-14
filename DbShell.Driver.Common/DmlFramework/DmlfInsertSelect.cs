@@ -12,6 +12,9 @@ namespace DbShell.Driver.Common.DmlFramework
         [XmlElem]
         public NameWithSchema TargetTable { get; set; }
 
+        [XmlSubElem]
+        public LinkedDatabaseInfo LinkedInfo { get; set; }
+
         [XmlCollection(typeof (string))]
         public List<string> TargetColumns { get; set; }
 
@@ -25,7 +28,7 @@ namespace DbShell.Driver.Common.DmlFramework
 
         public override void GenSql(AbstractDb.ISqlDumper dmp)
         {
-            dmp.Put("^insert ^into %f (%,i)&n", TargetTable, TargetColumns);
+            dmp.Put("^insert ^into %l%f (%,i)&n", LinkedInfo, TargetTable, TargetColumns);
             Select.GenSql(dmp);
         }
     }
