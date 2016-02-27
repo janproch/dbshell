@@ -324,7 +324,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 entity == null ? "NULL" : $"'{entity.LogName}'",
                 "@msg",
                 "@lastLogDiff",
-                _procName == null ? "NULL" : $"'{_procName}'",
+                _procName == null ? "''" : $"'{_procName}'",
                 "@rows",
                 _context));
 
