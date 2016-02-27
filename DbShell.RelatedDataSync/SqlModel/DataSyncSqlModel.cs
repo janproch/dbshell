@@ -84,6 +84,11 @@ namespace DbShell.RelatedDataSync.SqlModel
             {
                 entity.CreateJoinModel();
             }
+
+            foreach (var entity in Entities)
+            {
+                entity.TestCorrectness();
+            }
         }
 
         private void PartialSortEntitiesByRefs()
@@ -134,6 +139,7 @@ namespace DbShell.RelatedDataSync.SqlModel
 
             foreach (var ent in Entities)
             {
+                if (!ent.IncludeInSync) continue;
                 ent.RunRound1(cmp, useTransaction);
             }
 
@@ -142,6 +148,7 @@ namespace DbShell.RelatedDataSync.SqlModel
 
             foreach (var ent in reverted)
             {
+                if (!ent.IncludeInSync) continue;
                 ent.RunRound2Reverted(cmp, useTransaction);
             }
 

@@ -18,6 +18,11 @@ namespace DbShell.RelatedDataSync.SqlModel
         {
             _model = model;
 
+            if (!model.Sources.Any())
+            {
+                throw new IncorrectRdsDefinitionException("LGM-00000 There are no available sources entities. Try to add source.");
+            }
+
             foreach (var item in model.Sources)
             {
                 var src = new SourceEntitySqlModel(item, dataSync);

@@ -87,10 +87,29 @@ namespace DbShell.RelatedDataSync.SqlModel
                     }
                     else
                     {
-                        throw new Exception("DBSH-00000 RDS target must be reachable by database or linked server");
+                        throw new IncorrectRdsDefinitionException($"DBSH-00000 RDS target must be reachable by database or linked server: ({TargetTable})");
                     }
                 }
             }
+        }
+
+        public void TestCorrectness()
+        {
+            if (IncludeInSync)
+            {
+                foreach (var fk in RefEntities.Values)
+                {
+                    if (!fk.TargetColumns.Any(x => x.IsKey) && !fk.TargetColumns.Any(x => x.IsRestriction))
+                    {
+                        throw new IncorrectRdsDefinitionException($"DBSH-00000 Table {fk.TargetTable} must have key or restriction, because it is referenced from {TargetTable}");
+                    }
+                }
+            }
+        }
+
+        public bool IncludeInSync
+        {
+            get { return TargetColumns.Any(x => x.IsKey); }
         }
 
         private NameWithSchema TargetTableSqlName

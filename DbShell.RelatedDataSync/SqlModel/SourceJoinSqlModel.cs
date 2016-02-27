@@ -79,6 +79,11 @@ namespace DbShell.RelatedDataSync.SqlModel
                 //    queue.Add(ent);
                 //}
 
+                if (!_entityQueue.Any())
+                {
+                    throw new IncorrectRdsDefinitionException("LGM-00000 None of source entities is used (try to set source column)");
+                }
+
                 CreateSourceJoin();
 
                 AddRefsToJoin();
