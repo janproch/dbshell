@@ -68,6 +68,9 @@ namespace DbShell.Driver.Common.DmlFramework
         private string m_alias;
 
         [XmlElem]
+        public bool WithNoLock { get; set; }
+
+        [XmlElem]
         public NameWithSchema TableOrView { get; set; }
 
         [XmlSubElem]
@@ -117,6 +120,10 @@ namespace DbShell.Driver.Common.DmlFramework
             if (Alias != null)
             {
                 dmp.Put(" %i", Alias);
+            }
+            if (WithNoLock)
+            {
+                dmp.Put(" ^with (^nolock)");
             }
         }
 

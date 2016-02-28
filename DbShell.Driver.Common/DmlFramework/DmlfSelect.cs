@@ -216,5 +216,20 @@ namespace DbShell.Driver.Common.DmlFramework
             if (OrderBy != null) OrderBy.ForEach(x => x.ForEachChild(action));
             if (GroupBy != null) GroupBy.ForEach(x => x.ForEachChild(action));
         }
+
+        public void ForAllSources(Action<DmlfSource> func)
+        {
+            foreach (var fromItem in From)
+            {
+                if (fromItem.Source != null)
+                {
+                    func(fromItem.Source);
+                }
+                foreach(var joinItem in fromItem.Relations)
+                {
+                    func(joinItem.Reference);
+                }
+            }
+        }
     }
 }
