@@ -4,6 +4,7 @@ using System.Linq;
 using DbShell.Driver.Common.DbDiff;
 using DbShell.Driver.Common.Utility;
 using System;
+using DbShell.Driver.Common.CommonTypeSystem;
 
 namespace DbShell.Driver.Common.Structure
 {
@@ -148,13 +149,13 @@ namespace DbShell.Driver.Common.Structure
         public override void Assign(DatabaseObjectInfo source)
         {
             base.Assign(source);
-            var src = (TableInfo) source;
+            var src = (TableInfo)source;
             if (src.PrimaryKey != null) PrimaryKey = src.PrimaryKey.ClonePrimaryKey(this);
-            foreach(var fk in src.ForeignKeys)
+            foreach (var fk in src.ForeignKeys)
             {
                 ForeignKeys.Add(fk.CloneForeignKey(this));
             }
-            foreach(var ix in src.Indexes)
+            foreach (var ix in src.Indexes)
             {
                 Indexes.Add(ix.CloneIndex(this));
             }
@@ -172,7 +173,7 @@ namespace DbShell.Driver.Common.Structure
         {
             base.AfterLoadLink();
 
-            if (PrimaryKey!=null) PrimaryKey.AfterLoadLink();
+            if (PrimaryKey != null) PrimaryKey.AfterLoadLink();
             foreach (var fk in ForeignKeys)
             {
                 fk.AfterLoadLink();
@@ -260,6 +261,16 @@ namespace DbShell.Driver.Common.Structure
             var cnew = col.CloneColumn(this);
             if (!reuseGrouId) cnew.GroupId = Guid.NewGuid().ToString();
             Columns.Add(col);
+        }
+
+        public void AddColumn(string columnName, string dataType, DbTypeBase commonType)
+        {
+            Columns.Add(new ColumnInfo(this)
+            {
+                Name = "ShapeId",
+                DataType = "int",
+                CommonType = commonType,
+            });
         }
 
         public void DropColumn(ColumnInfo column)
