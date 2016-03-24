@@ -139,7 +139,7 @@ namespace DbShell.Driver.Sqlite
             using (var inscmd = _conn.CreateCommand())
             {
                 inscmd.Transaction = _tran;
-                inscmd.CommandText = sb.ToString();
+                inscmd.CommandText = sb.ToString().Replace("\0", "\\0");
                 inscmd.ExecuteNonQuery();
                 _rowCount++;
             }

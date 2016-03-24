@@ -18,7 +18,7 @@ namespace DbShell.Driver.SqlServer
 
         public override void AllowIdentityInsert(NameWithSchema table, bool allow)
         {
-            Put("^set ^identity_insert %f %k;&n", table, allow ? "on" : "off");
+            PutCmd("^set ^identity_insert %f %k;&n", table, allow ? "on" : "off");
         }
 
         private void RenameObject(NamedObjectInfo obj, string newname)

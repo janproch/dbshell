@@ -13,12 +13,26 @@ namespace DbShell.Driver.SqlServer
     public class SqlServerBulkInserter : BulkInserterBase
     {
         private readonly static ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
+        
         protected override void RunBulkCopy(Common.CommonDataLayer.ICdlReader reader)
         {
             var ts = reader.Structure;
+
+            bool forceInserts = false;
             if (ts.Columns.Count == 1)
-            { // SqlBulkCopy has problems when running on tables with one column
+            {
+                // SqlBulkCopy has problems when running on tables with one column
+                forceInserts = true; 
+            }
+
+            if (DestinationTable.Columns.Any(x => x.DataType?.ToLower()?.Contains("geo") ?? false))
+            {
+                // SqlBulkCopy deosn't support spatial types
+                forceInserts = true;
+            }
+
+            if (forceInserts)
+            { 
                 RunInserts(reader);
                 return;
             }
