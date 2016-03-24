@@ -54,10 +54,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\ShapeFileDataReader.cs" />
     <Compile Include="Model\ShapeFileVertexReader.cs" />
     <Compile Include="Model\SpatialTool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\ShapeFileModel.cs" />
+    <Compile Include="ShpDataReader.cs" />
+    <Compile Include="ShpElementBase.cs" />
+    <Compile Include="ShpOpen.cs" />
+    <Compile Include="ShpRunnableBase.cs" />
     <Compile Include="ShpVertexReader.cs" />
     <Compile Include="XamlPropertyAttribute.cs" />
   </ItemGroup>

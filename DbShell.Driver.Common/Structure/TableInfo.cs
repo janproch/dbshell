@@ -263,14 +263,16 @@ namespace DbShell.Driver.Common.Structure
             Columns.Add(col);
         }
 
-        public void AddColumn(string columnName, string dataType, DbTypeBase commonType)
+        public ColumnInfo AddColumn(string columnName, string dataType, DbTypeBase commonType)
         {
-            Columns.Add(new ColumnInfo(this)
+            var newColumn = new ColumnInfo(this)
             {
                 Name = "ShapeId",
                 DataType = "int",
                 CommonType = commonType,
-            });
+            };
+            Columns.Add(newColumn);
+            return newColumn;
         }
 
         public void DropColumn(ColumnInfo column)

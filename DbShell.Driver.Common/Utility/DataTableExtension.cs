@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using DbShell.Driver.Common.Structure;
+using System.Data;
 
 namespace DbShell.Driver.Common.Utility
 {
@@ -25,18 +26,18 @@ namespace DbShell.Driver.Common.Utility
             return -1;
         }
 
-        //public static TableInfo GetTableInfo(this DataColumnCollection columns, string name)
-        //{
-        //    TableInfo res = new TableInfo();
-        //    //res.FilledMembers |= TableInfoMembers.ColumnNames | TableInfoMembers.ColumnTypes;
-        //    foreach (DataColumn col in columns.SortedByKey<DataColumn, int>(col => col.Ordinal))
-        //    {
-        //        var c = res.AddColumn(col.ColumnName, TypeTool.GetDatAdminType(col.DataType));
-        //        c.IsNullable = col.AllowDBNull;
-        //        c.DefaultValue = SqlExpression.ParseDefaultValue(col.DefaultValue.SafeToString(), null);
-        //    }
-        //    return res;
-        //}
+        public static TableInfo GetTableInfo(this DataColumnCollection columns)
+        {
+            TableInfo res = new TableInfo(null);
+            foreach (DataColumn col in columns.SortedByKey<DataColumn, int>(col => col.Ordinal))
+            {
+                var commonType = TypeTool.GetCommonType(col.DataType);
+                var colInfo = res.AddColumn(col.ColumnName, commonType.ToString(), TypeTool.GetCommonType(col.DataType));
+                colInfo.NotNull = !col.AllowDBNull;
+                res.Columns.Add(colInfo);
+            }
+            return res;
+        }
 
         public static DataTable SelectNewTable(this DataTable src, string cond, string sort)
         {
