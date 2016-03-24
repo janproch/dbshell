@@ -317,7 +317,9 @@ namespace DbShell.RelatedDataSync.SqlModel
             }
 
             Put($"INSERT INTO @messages (Message, Duration, Operation, TargetEntity, Rows) VALUES (@msg, @lastLogDiff, '{operation}', %v, @rows);&n", entity?.LogName);
-            Put("PRINT @msg; &n");
+            Put("RAISERROR(@msg, 0, 1) WITH NOWAIT; &n");
+
+            //Put("PRINT @msg; &n");
             _datasync.Dbsh.LogHandlers.ForEach(x => x.PutLogMessage(
                 Dumper,
                 $"'{operation}'",
