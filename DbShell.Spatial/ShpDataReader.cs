@@ -19,7 +19,7 @@ namespace DbShell.Spatial
 
         public TableInfo GetRowFormat(IShellContext context)
         {
-            return ShapeFileDataReader.GetTableInfo(GetModel(context).Shape.DataTable);
+            return GetModel(context).GetDataStructure();
         }
 
         public DataFormatSettings GetSourceFormat(IShellContext context)

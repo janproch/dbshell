@@ -1,5 +1,6 @@
 ﻿using DbShell.Common;
 using DbShell.Core.Utility;
+using DbShell.Driver.Common.Utility;
 using DbShell.Spatial.Model;
 using System;
 using System.Collections.Generic;

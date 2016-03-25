@@ -34,7 +34,6 @@ namespace DbShell.Driver.Common.Utility
                 var commonType = TypeTool.GetCommonType(col.DataType);
                 var colInfo = res.AddColumn(col.ColumnName, commonType.ToString(), TypeTool.GetCommonType(col.DataType));
                 colInfo.NotNull = !col.AllowDBNull;
-                res.Columns.Add(colInfo);
             }
             return res;
         }

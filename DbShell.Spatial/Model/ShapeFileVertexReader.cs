@@ -14,6 +14,7 @@ namespace DbShell.Spatial.Model
     {
         public event Action Disposing;
         private ShapeFileModel _model;
+        private bool _addFileIdentifier;
 
         struct ShapeFilePosition
         {
@@ -26,22 +27,27 @@ namespace DbShell.Spatial.Model
 
         IEnumerator<ShapeFilePosition> _enumerator;
 
-        public ShapeFileVertexReader(ShapeFileModel model)
-            : base(GetStructure())
+        public ShapeFileVertexReader(ShapeFileModel model, bool addFileIdentifier)
+            : base(GetStructure(addFileIdentifier))
         {
             _model = model;
+            _addFileIdentifier = addFileIdentifier;
         }
 
         private Shapefile Shape => _model.Shape;
 
-        public static TableInfo GetStructure()
+        public static TableInfo GetStructure(bool addFileIdentifier)
         {
             var res = new TableInfo(null);
-            res.AddColumn("ShapeId", "int", new DbTypeInt());
-            res.AddColumn("PartId", "int", new DbTypeInt());
-            res.AddColumn("VertexId", "int", new DbTypeInt());
-            res.AddColumn("X", "float", new DbTypeFloat());
-            res.AddColumn("Y", "float", new DbTypeFloat());
+            res.AddColumn("_ShapeId_", "int", new DbTypeInt());
+            res.AddColumn("_PartId_", "int", new DbTypeInt());
+            res.AddColumn("_VertexId_", "int", new DbTypeInt());
+            res.AddColumn("_X_", "float", new DbTypeFloat());
+            res.AddColumn("_Y_", "float", new DbTypeFloat());
+            if (addFileIdentifier)
+            {
+                res.AddColumn("_File_", "nvarchar(250)", new DbTypeString());
+            }
             return res;
         }
 
@@ -100,6 +106,7 @@ namespace DbShell.Spatial.Model
                 _values[2] = _enumerator.Current.Vertex;
                 _values[3] = _enumerator.Current.X;
                 _values[4] = _enumerator.Current.Y;
+                if (_addFileIdentifier) _values[5] = _model.File;
                 return true;
             }
             return false;

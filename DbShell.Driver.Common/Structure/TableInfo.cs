@@ -267,8 +267,8 @@ namespace DbShell.Driver.Common.Structure
         {
             var newColumn = new ColumnInfo(this)
             {
-                Name = "ShapeId",
-                DataType = "int",
+                Name = columnName,
+                DataType = dataType,
                 CommonType = commonType,
             };
             Columns.Add(newColumn);

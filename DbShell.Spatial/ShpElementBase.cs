@@ -1,5 +1,6 @@
 ﻿using DbShell.Common;
 using DbShell.Core.Utility;
+using DbShell.Driver.Common.Utility;
 using DbShell.Spatial.Model;
 using System;
 using System.Collections.Generic;
@@ -16,8 +17,11 @@ namespace DbShell.Spatial
         [XamlProperty]
         public string Name { get; set; }
 
+        public ShapeFileModel ModelOverride;
+
         protected ShapeFileModel GetModel(IShellContext context)
         {
+            if (ModelOverride != null) return ModelOverride;
             return (ShapeFileModel)context.GetVariable(GetShpVariableName(context));
         }
 

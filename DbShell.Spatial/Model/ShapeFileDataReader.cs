@@ -15,18 +15,24 @@ namespace DbShell.Spatial.Model
     {
         public event Action Disposing;
         private int _rowIndex = -1;
-        private DataTable _data;
+        private ShapeFileModel _model;
+        private bool _addFileIdentifier;
 
-        public ShapeFileDataReader(DataTable data)
-            : base(GetTableInfo(data))
+        public ShapeFileDataReader(ShapeFileModel model, bool addFileIdentifier)
+            : base(GetTableInfo(model.Shape.DataTable, addFileIdentifier))
         {
-            _data = data;
+            _model = model;
+            _addFileIdentifier = addFileIdentifier;
         }
 
-        public static TableInfo GetTableInfo(DataTable data)
+        public static TableInfo GetTableInfo(DataTable data, bool addFileIdentifier)
         {
             var res = data.Columns.GetTableInfo();
-            res.AddColumn("ShapeId", "int", new DbTypeInt());
+            res.AddColumn("_ShapeId_", "int", new DbTypeInt());
+            if (addFileIdentifier)
+            {
+                res.AddColumn("_File_", "nvarchar(250)", new DbTypeString());
+            }
             return res;
         }
 
@@ -46,14 +52,19 @@ namespace DbShell.Spatial.Model
 
         public bool Read()
         {
+            var data = _model.Shape.DataTable;
             _rowIndex++;
-            if (_rowIndex >= _data.Rows.Count) return false;
+            if (_rowIndex >= data.Rows.Count) return false;
 
-            for (int i = 0; i < Structure.ColumnCount; i++)
+            for (int i = 0; i < data.Columns.Count; i++)
             {
-                _values[i] = _data.Rows[_rowIndex][i];
+                _values[i] = data.Rows[_rowIndex][i];
             }
-            _values[Structure.ColumnCount] = _rowIndex;
+            _values[data.Columns.Count] = _rowIndex;
+            if (_addFileIdentifier)
+            {
+                _values[data.Columns.Count + 1] = _model.File;
+            }
 
             return true;
         }
