@@ -52,6 +52,8 @@ namespace DbShell.Core.Utility
                     return "http://schemas.dbshell.com/cdl";
                 case "DbShell.RelatedDataSync":
                     return "http://schemas.dbshell.com/datasync";
+                case "DbShell.Spatial":
+                    return "http://schemas.dbshell.com/spatial";
             }
             return "clr-namespace:" + codeNs;
         }
@@ -74,6 +76,8 @@ namespace DbShell.Core.Utility
                     return "cdl";
                 case "http://schemas.dbshell.com/datasync":
                     return "rds";
+                case "http://schemas.dbshell.com/spatial":
+                    return "spatial";
             }
             return null;
 

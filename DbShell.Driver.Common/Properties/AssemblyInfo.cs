@@ -35,4 +35,4 @@ using System.Windows.Markup;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: XmlnsDefinition("http://schemas.dbshell.com/cdl", "DbShell.Driver.Common.CommonDataLayer")]
+[assembly: XmlnsDefinition("http://schemas.dbshell.com/spatial", "DbShell.Spatial")]
