@@ -20,5 +20,10 @@ namespace DbShell.Core
         /// </summary>
         [XamlProperty]
         public List<XmlColumn> Columns { get; set; } = new List<XmlColumn>();
+
+        /// <summary>
+        /// name of collections (filled by XmlTableAnalyser)
+        /// </summary>
+        public string CollectionName { get; set; }
     }
 }

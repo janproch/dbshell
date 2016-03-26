@@ -77,7 +77,7 @@ namespace DbShell.Core
                         XPath = XPath,
                     });
                 }
-                if (Instructions != null) res.AddRange(res);
+                if (Instructions != null) res.AddRange(Instructions);
                 return res;
             }
 
@@ -88,17 +88,7 @@ namespace DbShell.Core
         public TableInfo GetRowFormat(IShellContext context)
         {
             var instructions = GetInstructions(context);
-
-            var res = new TableInfo(null);
-            foreach (var instruction in instructions)
-            {
-                foreach (var col in instruction.Columns)
-                {
-                    if (res.Columns.Any(x => x.Name == col.Name)) continue;
-                    res.Columns.Add(new ColumnInfo(res) { CommonType = new DbTypeString(), DataType = "nvarchar", Length = -1, Name = col.Name });
-                }
-            }
-            return res;
+            return XmlTableAnalyser.GetRowFormat(instructions);
         }
 
         public ICdlReader CreateReader(IShellContext context)

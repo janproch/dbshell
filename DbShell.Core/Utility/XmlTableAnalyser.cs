@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.CommonTypeSystem;
 
 namespace DbShell.Core.Utility
 {
@@ -111,6 +113,20 @@ namespace DbShell.Core.Utility
             //internal int StructuredChildrenCount => Children.Values.Count(x => x.IsStructured);
         }
 
+        public static TableInfo GetRowFormat(List<XmlReadInstructions> instructions)
+        {
+            var res = new TableInfo(null);
+            foreach (var instruction in instructions)
+            {
+                foreach (var col in instruction.Columns)
+                {
+                    if (res.Columns.Any(x => x.Name == col.Name)) continue;
+                    res.Columns.Add(new ColumnInfo(res) { CommonType = new DbTypeString(), DataType = "nvarchar", Length = -1, Name = col.Name });
+                }
+            }
+            return res;
+        }
+
         public static List<XmlReadInstructions> AnalyseXmlReader(System.Xml.XmlReader reader, bool globalUniqueColumnNames)
         {
             var root = new Node();
@@ -142,9 +158,13 @@ namespace DbShell.Core.Utility
                                 current.IsRepetetive = true;
                             }
                         }
+                        if (reader.IsEmptyElement) current = current.Parent;
                         break;
                     case XmlNodeType.Text:
-                        current.HasText = true;
+                        if (!String.IsNullOrWhiteSpace(reader.Value))
+                        {
+                            current.HasText = true;
+                        }
                         break;
                     case XmlNodeType.XmlDeclaration:
                     case XmlNodeType.ProcessingInstruction:
@@ -176,10 +196,21 @@ namespace DbShell.Core.Utility
 
             var res = new List<XmlReadInstructions>();
             var addedColumns = new HashSet<string>();
-            foreach(var resultSet in resultSets.Values)
+            var collectionNames = new HashSet<string>();
+            foreach (var resultSet in resultSets.Values)
             {
                 var instruction = new XmlReadInstructions();
                 instruction.XPath = resultSet.AbsXPath ?? "/";
+
+                string collectionName = resultSet.Name;
+                if (collectionNames.Contains(collectionName))
+                {
+                    int index = 2;
+                    while (collectionNames.Contains(collectionName + index)) index++;
+                    collectionName = collectionName + index;
+                }
+                instruction.CollectionName = collectionName;
+
                 if (!globalUniqueColumnNames) addedColumns.Clear();
 
                 CollectColumns(instruction, root, addedColumns, resultSet);
@@ -219,6 +250,7 @@ namespace DbShell.Core.Utility
 
             foreach (var attr in current.AttributeList)
             {
+                if (attr.Contains(":")) continue;
                 string xpath = current.GetXPath(relativeTo);
                 if (!String.IsNullOrEmpty(xpath) && !xpath.EndsWith("/")) xpath += "/";
                 xpath += "@" + attr;
