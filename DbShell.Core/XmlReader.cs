@@ -9,6 +9,7 @@ using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
+using System.Windows.Markup;
 
 namespace DbShell.Core
 {
@@ -18,24 +19,35 @@ namespace DbShell.Core
     public class XmlReader : ElementBase, ITabularDataSource, IModelProvider
     {
         /// <summary>
-        /// xpath, where rows are stored
+        ///  name of input file
         /// </summary>
+        [XamlProperty]
+        public string File { get; set; }
+
+        /// <summary>
+        /// whether to automatic analyse columns
+        /// </summary>
+        [XamlProperty]
+        public bool AnalyseColumns { get; set; }
+
+        /// <summary>
+        /// instructions for creating reader (xpath, columns)
+        /// </summary>
+        [XamlProperty]
+        public List<XmlReadInstructions> Instructions { get; set; } = new List<XmlReadInstructions>();
+
+
+        /// <summary>
+        /// xpath, where rows are stored (use instructions for multiple xpaths)
+        /// </summary>
+        [XamlProperty]
         public string XPath { get; set; }
 
         /// <summary>
-        /// list of defined columns
+        /// list of defined columns (use instructions for multiple xpaths)
         /// </summary>
-        public List<XmlColumn> Columns { get; set; }
-
-        /// <summary>
-        ///  name of input file
-        /// </summary>
-        public string File { get; set; }
-
-        public XmlReader()
-        {
-            Columns = new List<XmlColumn>();
-        }
+        [XamlProperty]
+        public List<XmlColumn> Columns { get; set; } = new List<XmlColumn>();
 
         DataFormatSettings ITabularDataSource.GetSourceFormat(IShellContext context)
         {
@@ -52,22 +64,51 @@ namespace DbShell.Core
             template.TabularData = this;
         }
 
+        private List<XmlReadInstructions> GetInstructions(IShellContext context)
+        {
+            if (!AnalyseColumns)
+            {
+                var res = new List<XmlReadInstructions>();
+                if (!String.IsNullOrEmpty(XPath) && Columns.Any())
+                {
+                    res.Add(new XmlReadInstructions
+                    {
+                        Columns = Columns,
+                        XPath = XPath,
+                    });
+                }
+                if (Instructions != null) res.AddRange(res);
+                return res;
+            }
+
+            string file = context.ResolveFile(context.Replace(File), ResolveFileMode.Input);
+            return XmlTableAnalyser.AnalyseFile(file, true);
+        }
+
         public TableInfo GetRowFormat(IShellContext context)
         {
+            var instructions = GetInstructions(context);
+
             var res = new TableInfo(null);
-            foreach (var col in Columns)
+            foreach (var instruction in instructions)
             {
-                res.Columns.Add(new ColumnInfo(res) { CommonType = new DbTypeString(), DataType = "nvarchar", Length = -1, Name = col.Name });
+                foreach (var col in instruction.Columns)
+                {
+                    if (res.Columns.Any(x => x.Name == col.Name)) continue;
+                    res.Columns.Add(new ColumnInfo(res) { CommonType = new DbTypeString(), DataType = "nvarchar", Length = -1, Name = col.Name });
+                }
             }
             return res;
         }
 
         public ICdlReader CreateReader(IShellContext context)
         {
+            var instructions = GetInstructions(context);
+
             string file = context.ResolveFile(context.Replace(File), ResolveFileMode.Input);
             var doc = new XmlDocument();
             doc.Load(file);
-            return new XmlDocumentReader(doc, GetRowFormat(context), Columns, XPath);
+            return new XmlDocumentReader(doc, GetRowFormat(context), instructions);
         }
 
         public override string ToString()

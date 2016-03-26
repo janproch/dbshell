@@ -13,17 +13,23 @@ namespace DbShell.Core
     {
         private XmlDocument _doc;
         private TableInfo _rowFormat;
-        private List<XmlColumn> _columns;
-        private XmlNodeList _nodes;
-        private int _currentIndex = -1;
+        private List<XmlReadInstructions> _instructions;
+        private IEnumerator<Record> _enumerator;
 
-        public XmlDocumentReader(XmlDocument doc, TableInfo rowFormat, List<XmlColumn> columns, string xpath)
+        internal class Record
+        {
+            internal XmlNode Node;
+            internal XmlReadInstructions Instruction;
+            internal Dictionary<string, int> ColDict;
+        }
+
+        public XmlDocumentReader(XmlDocument doc, TableInfo rowFormat, List<XmlReadInstructions> instructions)
             : base(rowFormat)
         {
             _doc = doc;
             _rowFormat = rowFormat;
-            _columns = columns;
-            _nodes = doc.SelectNodes(xpath);
+            _instructions = instructions;
+            _enumerator = GetRecords().GetEnumerator();
         }
 
         public void Dispose()
@@ -34,21 +40,48 @@ namespace DbShell.Core
 
         public event Action Disposing;
 
+        private IEnumerable<Record> GetRecords()
+        {
+            foreach(var instruction in _instructions)
+            {
+                var nodeList = _doc.SelectNodes(instruction.XPath);
+                var colDict = new Dictionary<string, int>();
+                foreach(var col in instruction.Columns)
+                {
+                    colDict[col.Name] = _rowFormat.Columns.IndexOfIf(x => x.Name == col.Name);
+                }
+
+                for(int i = 0; i < nodeList.Count; i++)
+                {
+                    yield return new Record
+                    {
+                        Instruction = instruction,
+                        Node = nodeList[i],
+                        ColDict = colDict,
+                    };
+                }
+            }
+        }
+
         public bool Read()
         {
-            if (_currentIndex + 1 >= _nodes.Count)
+            if (_enumerator.MoveNext())
             {
-                return false;
+                var current = _enumerator.Current;
+
+                for (int i = 0; i < _values.Length; i++) _values[i] = null;
+
+                foreach(var col in current.Instruction.Columns)
+                {
+                    int index = current.ColDict[col.Name];
+
+                    SeekValue(index);
+                    var elem = current.Node.SelectSingleNode(col.XPath);
+                    if (elem != null) SetString(elem.InnerText);
+                }
+                return true;
             }
-            _currentIndex++;
-            for (int i = 0; i < _columns.Count; i++)
-            {
-                SeekValue(i);
-                var elem = _nodes[_currentIndex].SelectSingleNode(_columns[i].XPath);
-                if (elem != null) SetString(elem.InnerText);
-                else SetNull();
-            }
-            return true;
+            return false;
         }
 
         public bool NextResult()

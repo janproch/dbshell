@@ -4,6 +4,7 @@ using System.IO;
 using DbShell.Core.Runtime;
 using DbShell.Driver.Common.Utility;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using DbShell.Core.Utility;
 
 namespace DbShell.Test
 {
@@ -124,5 +125,34 @@ namespace DbShell.Test
             TestValue("ImportedData", "ID_IMPORTED", "12", "Data3", "c2");
         }
 
+        [TestMethod]
+        [DeploymentItem("copytable_xmltocsv.xaml")]
+        [DeploymentItem("importedxml1.xml")]
+        [DeploymentItem("importedxml2.xml")]
+        [DeploymentItem("importedxml3.xml")]
+        [DeploymentItem("importedxml4.xml")]
+        public void XmlImportTest()
+        {
+            var instructions = XmlTableAnalyser.AnalyseFile("importedxml4.xml", true);
+
+            using (var runner = CreateRunner())
+            {
+                runner.LoadFile("copytable_xmltocsv.xaml");
+                runner.Run();
+
+                string output1 = File.ReadAllText("outputcsv1.csv");
+                Assert.AreEqual("sub,attr,x,y,z\r\nA,a1,x1,y1,z1\r\nA,a2,x2,y2,z2\r\nB,a3,x3,y3,z3\r\nB,a4,x4,y4,z4\r\n", output1);
+
+                string output2 = File.ReadAllText("outputcsv2.csv");
+                Assert.AreEqual("x,y,z,x2,y2,z2\r\nx1,y1,z1,(NULL),(NULL),(NULL)\r\nx2,y2,z2,(NULL),(NULL),(NULL)\r\n(NULL),(NULL),(NULL),x3,y3,z3\r\n(NULL),(NULL),(NULL),x4,y4,z4\r\n", output2);
+
+                string output3 = File.ReadAllText("outputcsv3.csv");
+                Assert.AreEqual("x\r\nx1\r\nx2\r\nx3\r\n", output3);
+
+                string output4 = File.ReadAllText("outputcsv4.csv");
+                Assert.AreEqual("x,y,z\r\nxval,yval,zval\r\n", output4);
+
+            }
+        }
     }
 }

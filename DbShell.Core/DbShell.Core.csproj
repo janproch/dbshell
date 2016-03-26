@@ -95,7 +95,7 @@
     <Compile Include="Utility\SqlProlog.cs" />
     <Compile Include="Utility\TableOrView.cs" />
     <Compile Include="Utility\XamlSerializer.cs" />
-    <Compile Include="Utility\XmlFlatAnalyser.cs" />
+    <Compile Include="Utility\XmlTableAnalyser.cs" />
     <Compile Include="View.cs" />
     <Compile Include="DatabaseExtension.cs" />
     <Compile Include="DatabaseProvider.cs" />
@@ -139,6 +139,7 @@
     <Compile Include="XmlColumn.cs" />
     <Compile Include="XmlDocumentReader.cs" />
     <Compile Include="XmlReader.cs" />
+    <Compile Include="XmlReadInstructions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DbShell.Common\DbShell.Common.csproj">

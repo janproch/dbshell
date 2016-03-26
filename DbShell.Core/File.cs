@@ -34,6 +34,7 @@ namespace DbShell.Core
             string name = GetName(context);
             if (name.ToLower().EndsWith(".cdl")) return new CdlFile {Connection = Connection, Name = name};
             if (name.ToLower().EndsWith(".csv")) return new CsvFile { Connection = Connection, Name = name };
+            if (name.ToLower().EndsWith(".xml")) return new XmlReader { Connection = Connection, File = name, AnalyseColumns = true };
             throw new Exception("DBSH-00002 Unknown soruce file type:" + name);
         }
 
