@@ -106,6 +106,7 @@
     <EmbeddedResource Include="CreateRdsExcel.sql" />
     <EmbeddedResource Include="CreateRdsFlat.sql" />
     <EmbeddedResource Include="CreateRds_NameParams.sql" />
+    <EmbeddedResource Include="CreateRdsRefRestr.sql" />
     <Content Include="Ideas.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -293,6 +294,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="importedxml1.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="rds_ref_restr.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

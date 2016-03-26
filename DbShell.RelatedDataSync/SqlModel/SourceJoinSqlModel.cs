@@ -79,14 +79,16 @@ namespace DbShell.RelatedDataSync.SqlModel
                 //    queue.Add(ent);
                 //}
 
-                if (!_entityQueue.Any())
+                if (!_entityQueue.Any() && targetEntitySqlModel.Dbsh.Columns.Any(x => x.IsKey))
                 {
                     throw new IncorrectRdsDefinitionException($"LGM-00000 None of source entities is used in {_targetEntitySqlModel.LogName} (try to set source column)");
                 }
 
-                CreateSourceJoin();
-
-                AddRefsToJoin();
+                if (_entityQueue.Any())
+                {
+                    CreateSourceJoin();
+                    AddRefsToJoin();
+                }
 
                 foreach (var col in Columns.Values) col.CompileFilter();
             }

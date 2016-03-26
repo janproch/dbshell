@@ -169,5 +169,22 @@ namespace DbShell.Test
             AssertExists("select * from TargetData where ParamId=1");
             AssertIsValue("1001", "select Value from TargetData where ParamId=2");
         }
+
+        [DeploymentItem("rds_ref_restr.xaml")]
+        [TestMethod]
+        public void RdsRefRestrTest()
+        {
+            InitDatabase();
+            RunEmbeddedScript("CreateRdsRefRestr.sql");
+
+            using (var runner = CreateRunner())
+            {
+                runner.LoadFile("rds_ref_restr.xaml");
+                runner.Run();
+            }
+
+            AssertExists("select * from Target");
+        }
+
     }
 }

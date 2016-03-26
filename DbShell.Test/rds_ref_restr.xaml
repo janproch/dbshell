@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Batch 
+    xmlns="http://schemas.dbshell.com/core"
+    xmlns:rds="http://schemas.dbshell.com/datasync"
+    >
+    <rds:SyncModel >
+        <rds:SyncModel.Sources>
+            <rds:Source DataSource="{Table Source}">
+                <rds:SourceColumn Name="SourceId" Filter="&gt;=2" />
+                <rds:SourceColumn Name="Value" />
+            </rds:Source>
+        </rds:SyncModel.Sources>
+        <rds:SyncModel.Targets>
+            <rds:Target TableName="TargetRef">
+                <rds:TargetColumn Name="SystemName" ValueType="Value" Value="SysRef" IsRestriction="True" />
+            </rds:Target>
+
+            <rds:Target TableName="Target">
+                <rds:TargetColumn Name="TargetIdOriginal" Source="SourceId" IsKey="True"/>
+                <rds:TargetColumn Name="Value" Source="Value" />
+            </rds:Target>
+        </rds:SyncModel.Targets>
+
+        <rds:SyncModel.TargetReferences>
+			<rds:TargetReference Source="Target" Target="TargetRef" >
+				<rds:TargetReferenceColumn BaseName="TargetRefId" RefName="TargetRefId" />
+			</rds:TargetReference>
+        </rds:SyncModel.TargetReferences>
+    </rds:SyncModel>
+    
+    <rds:Run />
+
+    <rds:CreateProcedure ProcName="RunSync" />
+</Batch>
