@@ -55,7 +55,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                 PrimarySource = _targetEntitySqlModel.DataSync.FlatSources.FirstOrDefault(x => x.Match(_targetEntitySqlModel.Dbsh.PrimarySource));
                 if (PrimarySource == null)
                 {
-                    throw new Exception($"DBSH-00000 Source not found for entity {_targetEntitySqlModel.LogName}");
+                    throw new IncorrectRdsDefinitionException($"DBSH-00000 Source not found for entity {_targetEntitySqlModel.LogName}");
                 }
                 SourceToRefsJoin.Source = PrimarySource.QuerySource;
                 foreach (var col in PrimarySource.Columns)
@@ -81,7 +81,7 @@ namespace DbShell.RelatedDataSync.SqlModel
 
                 if (!_entityQueue.Any())
                 {
-                    throw new IncorrectRdsDefinitionException("LGM-00000 None of source entities is used (try to set source column)");
+                    throw new IncorrectRdsDefinitionException($"LGM-00000 None of source entities is used in {_targetEntitySqlModel.LogName} (try to set source column)");
                 }
 
                 CreateSourceJoin();
