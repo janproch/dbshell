@@ -129,7 +129,8 @@ namespace DbShell.RelatedDataSync.SqlModel
                     break;
 
             }
-            throw new Exception("DBSH-00221 Cannot create expression");
+            
+            throw new IncorrectRdsDefinitionException($"DBSH-00221 Cannot create expression from column {Info?.OwnerTable?.Name}.{Name}. Try to set value type and corrent expression.");
         }
 
         private string GetColumnExpression(SourceJoinSqlModel sourceJoinModel, string colname, bool aggregate)

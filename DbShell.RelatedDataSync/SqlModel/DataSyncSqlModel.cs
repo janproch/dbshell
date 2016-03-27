@@ -266,6 +266,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             using (var cmd = conn.CreateCommand())
             {
                 cmd.CommandText = sql;
+                cmd.CommandTimeout = 3600;
                 cmd.ExecuteNonQuery();
             }
         }
