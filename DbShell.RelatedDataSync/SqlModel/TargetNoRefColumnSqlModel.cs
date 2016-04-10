@@ -100,6 +100,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                     {
                         addExpr.Items.Add(new DmlfLiteralExpression { Value = rest });
                     }
+                    if (!addExpr.Items.Any()) addExpr.Items.Add(new DmlfLiteralExpression { Value = "" });
                     return addExpr;
 
                 case TargetColumnValueType.Special:

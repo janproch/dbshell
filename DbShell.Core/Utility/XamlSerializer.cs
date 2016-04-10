@@ -209,7 +209,9 @@ namespace DbShell.Core.Utility
                         }
                         else
                         {
-                            root.SetAttribute(prop.Name, valueSer.ToString());
+                            string svalue = valueSer.ToString();
+                            if (value is string && svalue.StartsWith("{")) svalue = "{}" + svalue;
+                            root.SetAttribute(prop.Name, svalue);
                         }
                     }
                 }
