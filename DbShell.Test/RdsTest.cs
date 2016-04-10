@@ -202,5 +202,28 @@ namespace DbShell.Test
             AssertExists("select * from Master where MasterIsCopy=1");
             AssertExists("select * from Detail where DetailIsCopy=1");
         }
+
+        [DeploymentItem("rds_ref_update.xaml")]
+        [TestMethod]
+        public void RdsRefUpdate()
+        {
+            InitDatabase();
+            RunEmbeddedScript("CreateRdsRefUpdate.sql");
+
+            using (var runner = CreateRunner())
+            {
+                runner.LoadFile("rds_ref_update.xaml");
+                runner.Run();
+            }
+
+            RunScript("exec RunSync");
+            AssertIsValue("2", "select count(*) from TargetDetail inner join TargetMaster on TargetDetail.TargetMasterId=TargetMaster.TargetMasterId where TargetMaster.MasterIdOriginal=1");
+
+            RunScript("update Source set MasterId=2 where DetailId=1");
+            RunScript("exec RunSync");
+            AssertIsValue("1", "select count(*) from TargetDetail inner join TargetMaster on TargetDetail.TargetMasterId=TargetMaster.TargetMasterId where TargetMaster.MasterIdOriginal=1");
+
+        }
+
     }
 }
