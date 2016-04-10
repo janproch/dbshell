@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Batch 
+    xmlns="http://schemas.dbshell.com/core"
+    xmlns:rds="http://schemas.dbshell.com/datasync"
+    >
+    <rds:SyncModel >
+        <rds:SyncModel.Sources>
+            <rds:Source DataSource="{Table Source}">
+                <rds:SourceColumn Name="SourceId" />
+                <rds:SourceColumn Name="Value1" />
+                <rds:SourceColumn Name="Value2" />
+            </rds:Source>
+        </rds:SyncModel.Sources>
+        <rds:SyncModel.Targets>
+            <rds:Target TableName="Target">
+                <rds:TargetColumn Name="TargetIdOriginal" Source="SourceId" IsKey="True"/>
+                <rds:TargetColumn Name="Value" Template="{}{Value1}_{Value2}" />
+            </rds:Target>
+        </rds:SyncModel.Targets>
+    </rds:SyncModel>
+    
+    <rds:CreateProcedure ProcName="RunSync" />
+
+    <rds:Run />
+</Batch>

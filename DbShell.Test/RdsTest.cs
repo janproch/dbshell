@@ -222,8 +222,24 @@ namespace DbShell.Test
             RunScript("update Source set MasterId=2 where DetailId=1");
             RunScript("exec RunSync");
             AssertIsValue("1", "select count(*) from TargetDetail inner join TargetMaster on TargetDetail.TargetMasterId=TargetMaster.TargetMasterId where TargetMaster.MasterIdOriginal=1");
-
         }
 
+        [DeploymentItem("rds_template.xaml")]
+        [TestMethod]
+        public void RdsTemplate()
+        {
+            InitDatabase();
+            RunEmbeddedScript("CreateRdsTemplate.sql");
+
+            using (var runner = CreateRunner())
+            {
+                runner.LoadFile("rds_template.xaml");
+                runner.Run();
+            }
+
+            AssertIsValue("1_2", "select Value from Target where TargetIdOriginal=1");
+            AssertIsValue("1_", "select Value from Target where TargetIdOriginal=2");
+            AssertIsValue("_2", "select Value from Target where TargetIdOriginal=3");
+        }
     }
 }

@@ -83,6 +83,25 @@ namespace DbShell.RelatedDataSync.SqlModel
                             Value = _dbsh.Expression,
                         };
                     }
+                case TargetColumnValueType.Template:
+                    var addExpr = new DmlfAddOperatorExpression();
+                    string rest = _dbsh.Template;
+                    while (!String.IsNullOrEmpty(rest))
+                    {
+                        var match = Regex.Match(rest, TargetEntitySqlModel.ExpressionColumnRegex);
+                        if (!match.Success) break;
+                        if (match.Index > 0) addExpr.Items.Add(new DmlfLiteralExpression { Value = rest.Substring(0, match.Index) });
+                        rest = rest.Substring(match.Index + match.Length);
+                        string colExpr = GetColumnExpression(sourceJoinModel, match.Groups[1].Value, aggregate);
+                        string allExpr = $"ISNULL(CONVERT(NVARCHAR,{colExpr}),'')";
+                        addExpr.Items.Add(new DmlfSqlValueExpression { Value = allExpr });
+                    }
+                    if (!String.IsNullOrEmpty(rest))
+                    {
+                        addExpr.Items.Add(new DmlfLiteralExpression { Value = rest });
+                    }
+                    return addExpr;
+
                 case TargetColumnValueType.Special:
                     switch (_dbsh.SpecialValue)
                     {

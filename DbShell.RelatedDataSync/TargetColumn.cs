@@ -12,6 +12,7 @@ namespace DbShell.RelatedDataSync
         Value,
         Source,
         Expression,
+        Template,
         Special,
     }
 
@@ -40,6 +41,9 @@ namespace DbShell.RelatedDataSync
 
         [XamlProperty]
         public string Value { get; set; }
+
+        [XamlProperty]
+        public string Template { get; set; }
 
         [XamlProperty]
         public TargetColumnSpecialValue? SpecialValue { get; set; }
@@ -71,6 +75,7 @@ namespace DbShell.RelatedDataSync
                     if (!String.IsNullOrEmpty(Source)) return TargetColumnValueType.Source;
                     if (!String.IsNullOrEmpty(Expression)) return TargetColumnValueType.Expression;
                     if (!String.IsNullOrEmpty(Value)) return TargetColumnValueType.Value;
+                    if (!String.IsNullOrEmpty(Template)) return TargetColumnValueType.Template;
                     if (SpecialValue.HasValue) return TargetColumnValueType.Special;
                 }
                 return ValueType;

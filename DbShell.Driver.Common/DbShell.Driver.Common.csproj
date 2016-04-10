@@ -83,6 +83,7 @@
     <Compile Include="ChangeSet\ChangeSetInsertItem.cs" />
     <Compile Include="CommonDataLayer\CdlDataColumnInfo.cs" />
     <Compile Include="CommonTypeSystem\DbTypeParser.cs" />
+    <Compile Include="DmlFramework\DmlfAddOperatorExpression.cs" />
     <Compile Include="DmlFramework\DmlfAllowIdentityInsert.cs" />
     <Compile Include="DmlFramework\DmlfBatch.cs" />
     <Compile Include="DmlFramework\DmlfDisableConstraint.cs" />
