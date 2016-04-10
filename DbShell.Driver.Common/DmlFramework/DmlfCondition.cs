@@ -96,6 +96,7 @@ namespace DbShell.Driver.Common.DmlFramework
 
         public override void GenSql(ISqlDumper dmp)
         {
+            dmp.Put("&r"); // dump separator if needed
             dmp.WriteRaw(_literal);
         }
     }
@@ -225,13 +226,13 @@ namespace DbShell.Driver.Common.DmlFramework
             dmp.Put("=");
             RightExpr.GenSql(dmp);
 
-            dmp.Put("or");
+            dmp.Put(" ^or ");
             dmp.Put("(");
             LeftExpr.GenSql(dmp);
-            dmp.Put("is null");
-            dmp.Put("and");
+            dmp.Put("^is ^null");
+            dmp.Put(" ^and ");
             RightExpr.GenSql(dmp);
-            dmp.Put("is null");
+            dmp.Put(" ^is ^null ");
             dmp.Put(")");
 
             dmp.Put(")");

@@ -16,6 +16,7 @@ namespace DbShell.Driver.Common.DmlFramework
 
         public override void GenSql(ISqlDumper dmp)
         {
+            dmp.Put("&r"); // dump separator if needed
             dmp.WriteRaw(Value);
         }
 

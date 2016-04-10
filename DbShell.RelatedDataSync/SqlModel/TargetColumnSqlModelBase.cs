@@ -1,4 +1,5 @@
-﻿using DbShell.Driver.Common.DmlFramework;
+﻿using DbShell.Driver.Common.CommonTypeSystem;
+using DbShell.Driver.Common.DmlFramework;
 using DbShell.Driver.Common.Structure;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,39 @@ namespace DbShell.RelatedDataSync.SqlModel
             };
         }
 
+        public bool CannotBeCompared
+        {
+            get
+            {
+                return Info?.CommonType is DbTypeBlob;
+            }
+        }
+
+        private DmlfExpression CreateConvertExpression(string type, DmlfExpression expr)
+        {
+            var res = new DmlfFuncCallExpression
+            {
+                FuncName = "CONVERT"
+            };
+            res.Arguments.Add(new DmlfSqlValueExpression { Value = type });
+            res.Arguments.Add(expr);
+            return res;
+
+        }
+
+        public DmlfExpression CreateCompareExpression(DmlfExpression expr)
+        {
+            if (Info?.DataType?.ToLower()?.Contains("geo") ?? false)
+            {
+                return CreateConvertExpression("varchar(max)", expr);
+            }
+            if (Info?.DataType?.ToLower()?.Contains("xml") ?? false)
+            {
+                return CreateConvertExpression("nvarchar(max)", expr);
+            }
+            return expr;
+        }
+
         public DmlfExpression CreateTargetExpression(string targetEntityAlias)
         {
             return CreateTargetExpression(new DmlfSource { Alias = targetEntityAlias });
@@ -43,6 +77,11 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         protected DmlfExpression CreateAggregate(DmlfExpression expr)
         {
+            if (Info?.DataType?.ToLower()?.Contains("bit") ?? false)
+            {
+                expr = CreateConvertExpression("int", expr);
+            }
+
             var res = new DmlfFuncCallExpression
             {
                 FuncName = "MAX",

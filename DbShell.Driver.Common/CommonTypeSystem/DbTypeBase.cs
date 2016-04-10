@@ -83,5 +83,16 @@ namespace DbShell.Driver.Common.CommonTypeSystem
             if (type is DbTypeXml || type is DbTypeBlob) return false;
             return true;
         }
+
+        /// <summary>
+        /// tries to parse type from any database engine. It could be not exact, for exact parse use methods from specific database factory
+        /// </summary>
+        /// <param name="dataType"></param>
+        /// <returns></returns>
+        public static DbTypeBase ParseType(string dataType)
+        {
+            var parser = new DbTypeParser(dataType);
+            return parser.CommonType;
+        }
     }
 }

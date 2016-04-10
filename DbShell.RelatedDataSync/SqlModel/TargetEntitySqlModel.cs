@@ -455,11 +455,12 @@ namespace DbShell.RelatedDataSync.SqlModel
 
                 if (compare == null) compare = compareColumn(column);
                 if (!compare.Value) continue;
+                if (column.CannotBeCompared) continue;
 
                 orCondition.Conditions.Add(new DmlfNotEqualWithNullTestCondition
                 {
-                    LeftExpr = column.CreateSourceExpression(SourceJoinModel, false),
-                    RightExpr = column.CreateTargetExpression("target"),
+                    LeftExpr = column.CreateCompareExpression(column.CreateSourceExpression(SourceJoinModel, false)),
+                    RightExpr = column.CreateCompareExpression(column.CreateTargetExpression("target")),
                     CollateSpec = column.UseCollate(SourceJoinModel) ? "DATABASE_DEFAULT" : null,
                 });
             }

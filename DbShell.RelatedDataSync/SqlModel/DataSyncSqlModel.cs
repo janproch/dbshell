@@ -9,6 +9,7 @@ using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Sql;
 using System.IO;
 using DbShell.Driver.Common.Utility;
+using DbShell.Driver.Common.CommonTypeSystem;
 
 namespace DbShell.RelatedDataSync.SqlModel
 {
@@ -212,6 +213,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                     {
                         Name = col.Name,
                         DataType = col.DataType ?? "nvarchar(500)",
+                        CommonType = DbTypeBase.ParseType(col.DataType ?? "nvarchar(500)"),
                     });
                 }
                 dmp.CreateTable(tbl);

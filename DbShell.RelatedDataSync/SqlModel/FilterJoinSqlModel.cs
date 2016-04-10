@@ -215,6 +215,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                     }
                 }
 
+                added.Add(entity);
                 from.Relations.Add(relation);
             }
 
