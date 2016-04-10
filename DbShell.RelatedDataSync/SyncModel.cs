@@ -38,6 +38,9 @@ namespace DbShell.RelatedDataSync
         public bool IsFlatSync { get; set; }
 
         [XamlProperty]
+        public bool AllowBulkCopy { get; set; } = true;
+
+        [XamlProperty]
         public List<Parameter> Parameters { get; private set; } = new List<Parameter>();
 
         protected override void DoRun(IShellContext context)

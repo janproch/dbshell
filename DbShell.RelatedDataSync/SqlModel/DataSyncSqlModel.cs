@@ -226,6 +226,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                         Name = exSource.ExternalDataName.Name,
                         StructureOverride = tbl,
                     },
+                    AllowBulkCopy = _model.AllowBulkCopy,
                 };
                 var runnable = (IRunnable)copyTable;
                 runnable.Run(context);
@@ -277,6 +278,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             using (var cmd = conn.CreateCommand())
             {
                 cmd.CommandText = sql;
+                cmd.CommandTimeout = 3600;
                 cmd.ExecuteNonQuery();
             }
         }

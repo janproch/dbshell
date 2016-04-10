@@ -11,7 +11,7 @@ namespace DbShell.Spatial.Model
     {
         public static ProjectionInfo GetProjection(string name, IShellContext context)
         {
-            if (name == null) return null;
+            if (String.IsNullOrEmpty(name)) return null;
             name = context.Replace(name);
             return GetProjection(name);
         }
