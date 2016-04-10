@@ -44,6 +44,7 @@
     <Compile Include="CreateProcedure.cs" />
     <Compile Include="DataSyncItemBase.cs" />
     <Compile Include="DataSyncScriptable.cs" />
+    <Compile Include="SqlModel\FilterJoinSqlModel.cs" />
     <Compile Include="IncorrectRdsDefinitionException.cs" />
     <Compile Include="KeepHistoryLifetimeHandler.cs" />
     <Compile Include="LifetimeHandlerBase.cs" />

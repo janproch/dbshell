@@ -22,6 +22,9 @@ namespace DbShell.RelatedDataSync
         public bool Materialize { get; set; }
 
         [XamlProperty]
+        public bool ForceExternalSource { get; set; }
+
+        [XamlProperty]
         public List<SourceColumn> Columns { get; private set; } = new List<SourceColumn>();
 
         [XamlProperty]
@@ -29,6 +32,14 @@ namespace DbShell.RelatedDataSync
 
         [XamlProperty]
         public string SourceQueryVariable { get; set; }
+
+        #region TESTING
+        [XamlProperty]
+        public string OnExternalFilledAssertion { get; set; }
+
+        [XamlProperty]
+        public string OnExternalFilledRequiredValue { get; set; }
+        #endregion
 
         public void ReplaceSouceSchemaByTemplate(string template)
         {

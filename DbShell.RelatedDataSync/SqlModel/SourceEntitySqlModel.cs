@@ -35,73 +35,78 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         public void InitializeQuerySource(ITabularDataSource dataSource, IShellContext context, string sourceTableVariable, string sourceQueryVariable)
         {
-            var tableOrView = dataSource as DbShell.Core.Utility.TableOrView;
-
-            if (!String.IsNullOrEmpty(sourceTableVariable))
+            if (!_dbsh.ForceExternalSource)
             {
-                QuerySource = new DmlfSource
+                // try to create non-external source
+
+                var tableOrView = dataSource as DbShell.Core.Utility.TableOrView;
+
+                if (!String.IsNullOrEmpty(sourceTableVariable))
                 {
-                    Alias = SqlAlias,
-                    TableOrView = new NameWithSchema($"###({sourceTableVariable})###"),
-                };
-                TableName = new NameWithSchema(sourceTableVariable);
-                return;
-            }
-
-            if (!String.IsNullOrEmpty(sourceQueryVariable))
-            {
-                QuerySource = new DmlfSource
-                {
-                    Alias = SqlAlias,
-                    SubQueryString = $"###({sourceQueryVariable})###",
-                };
-                return;
-
-            }
-
-            if (tableOrView != null)
-            {
-                bool canUseTable = true;
-                LinkedDatabaseInfo linked = null;
-
-                var ctxConn = new NormalizedDatabaseConnectionInfo(new DatabaseConnectionInfoHolder { ProviderString = context.GetDefaultConnection() });
-                var tableConn = tableOrView.GetNormalizedConnectionInfo(context);
-
-                if (ctxConn != tableConn)
-                {
-                    if (ctxConn.ServerConnectionString == tableConn.ServerConnectionString)
-                    {
-                        linked = tableConn.GetLinkedInfo();
-                    }
-                    else
-                    {
-                        canUseTable = false;
-                    }
-                }
-
-                if (canUseTable)
-                {
-                    TableName = tableOrView.GetFullName(context);
                     QuerySource = new DmlfSource
                     {
                         Alias = SqlAlias,
-                        TableOrView = TableName,
-                        LinkedInfo = linked,
+                        TableOrView = new NameWithSchema($"###({sourceTableVariable})###"),
+                    };
+                    TableName = new NameWithSchema(sourceTableVariable);
+                    return;
+                }
+
+                if (!String.IsNullOrEmpty(sourceQueryVariable))
+                {
+                    QuerySource = new DmlfSource
+                    {
+                        Alias = SqlAlias,
+                        SubQueryString = $"###({sourceQueryVariable})###",
+                    };
+                    return;
+
+                }
+
+                if (tableOrView != null)
+                {
+                    bool canUseTable = true;
+                    LinkedDatabaseInfo linked = null;
+
+                    var ctxConn = new NormalizedDatabaseConnectionInfo(new DatabaseConnectionInfoHolder { ProviderString = context.GetDefaultConnection() });
+                    var tableConn = tableOrView.GetNormalizedConnectionInfo(context);
+
+                    if (ctxConn != tableConn)
+                    {
+                        if (ctxConn.ServerConnectionString == tableConn.ServerConnectionString)
+                        {
+                            linked = tableConn.GetLinkedInfo();
+                        }
+                        else
+                        {
+                            canUseTable = false;
+                        }
+                    }
+
+                    if (canUseTable)
+                    {
+                        TableName = tableOrView.GetFullName(context);
+                        QuerySource = new DmlfSource
+                        {
+                            Alias = SqlAlias,
+                            TableOrView = TableName,
+                            LinkedInfo = linked,
+                        };
+                        return;
+                    }
+                }
+
+                var query = dataSource as DbShell.Core.Query;
+                if (query != null && query.GetProviderString(context) == context.GetDefaultConnection())
+                {
+                    string sql = context.Replace(query.Text);
+                    QuerySource = new DmlfSource
+                    {
+                        Alias = SqlAlias,
+                        SubQueryString = sql,
                     };
                     return;
                 }
-            }
-
-            var query = dataSource as DbShell.Core.Query;
-            if (query != null && query.GetProviderString(context) == context.GetDefaultConnection())
-            {
-                string sql = context.Replace(query.Text);
-                QuerySource = new DmlfSource
-                {
-                    Alias = SqlAlias,
-                    SubQueryString = sql,
-                };
-                return;
             }
 
             IsExternal = true;
@@ -169,11 +174,21 @@ namespace DbShell.RelatedDataSync.SqlModel
             cmp.EndCommand();
         }
 
-        public string SingleKeyColumn
+        public string SingleKeyColumnNameOrAlias
         {
             get
             {
                 var res = _dbsh.Columns.Where(x => x.IsKey).Select(x => x.AliasOrName).ToList();
+                if (res.Count == 1) return res[0];
+                return null;
+            }
+        }
+
+        public string SingleKeyColumnOriginalName
+        {
+            get
+            {
+                var res = _dbsh.Columns.Where(x => x.IsKey).Select(x => x.Name).ToList();
                 if (res.Count == 1) return res[0];
                 return null;
             }

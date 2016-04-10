@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Batch 
+    xmlns="http://schemas.dbshell.com/core"
+    xmlns:rds="http://schemas.dbshell.com/datasync"
+    >
+    <rds:SyncModel >
+        <rds:SyncModel.Sources>
+            <rds:Source DataSource="{Table Master}" ForceExternalSource="true" OnExternalFilledRequiredValue="1" OnExternalFilledAssertion="select count (distinct MasterId) from ${TABLE}">
+                <rds:SourceColumn Name="MasterId" DataType="int" IsKey="true" Filter='1' FilterType='Number' />
+                <rds:SourceColumn Name="MasterValue" DataType="varchar(50)" />
+                <rds:SourceColumn Name="MasterIsCopy" Filter="FALSE" FilterType="Logical" DataType="bit" />
+            </rds:Source>
+            <rds:Source DataSource="{Table Detail}" ForceExternalSource="true" OnExternalFilledRequiredValue="1" OnExternalFilledAssertion="select count (distinct MasterId) from ${TABLE}">
+                <rds:SourceColumn Name="DetailId" DataType="int" IsKey="true" />
+                <rds:SourceColumn Name="MasterId" DataType="int" />
+                <rds:SourceColumn Name="DetailValue" DataType="varchar(50)" />
+                <rds:SourceColumn Name="DetailIsCopy" Filter="FALSE" FilterType="Logical" DataType="bit" />
+            </rds:Source>
+        </rds:SyncModel.Sources>
+        <rds:SyncModel.Targets>
+            <rds:Target TableName="Master" >
+                <rds:TargetColumn Name="MasterIdOriginal" Source="MasterId" IsKey="True" />
+                <rds:TargetColumn Name="MasterIsCopy" Value="1" IsRestriction="True" />
+                <rds:TargetColumn Name="MasterValue" Source="MasterValue" />
+            </rds:Target>
+
+            <rds:Target TableName="Detail">
+                <rds:TargetColumn Name="DetailIdOriginal" Source="DetailId" IsKey="True" />
+                <rds:TargetColumn Name="DetailIsCopy" Value="1" IsRestriction="True" />
+                <rds:TargetColumn Name="DetailValue" Source="DetailValue" />
+            </rds:Target>
+        </rds:SyncModel.Targets>
+		
+        <rds:SyncModel.TargetReferences>
+            <rds:TargetReference Source="Detail" Target="Master">
+                <rds:TargetReferenceColumn BaseName="MasterId" RefName="MasterId" />
+            </rds:TargetReference>
+        </rds:SyncModel.TargetReferences>
+    </rds:SyncModel>
+
+    <rds:Run />
+</Batch>

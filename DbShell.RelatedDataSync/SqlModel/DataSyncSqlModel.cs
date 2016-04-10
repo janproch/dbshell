@@ -216,9 +216,11 @@ namespace DbShell.RelatedDataSync.SqlModel
                 }
                 dmp.CreateTable(tbl);
 
+                var filterModel = FilterJoinSqlModel.Create(exSource, SourceGraphModel, factory);
+
                 var copyTable = new DbShell.Core.CopyTable
                 {
-                    Source = exSource.Dbsh.DataSource,
+                    Source = filterModel?.DataSource ?? exSource.Dbsh.DataSource,
                     Target = new DbShell.Core.Table
                     {
                         Name = exSource.ExternalDataName.Name,
@@ -227,6 +229,15 @@ namespace DbShell.RelatedDataSync.SqlModel
                 };
                 var runnable = (IRunnable)copyTable;
                 runnable.Run(context);
+
+                if (exSource.Dbsh.OnExternalFilledAssertion != null)
+                {
+                    string value = conn.ExecuteScalar(exSource.Dbsh.OnExternalFilledAssertion.Replace("${TABLE}", exSource.ExternalDataName.Name))?.ToString();
+                    if (value != exSource.Dbsh.OnExternalFilledRequiredValue)
+                    {
+                        throw new Exception($"DBSH-00000 OnExternalFilledAssertion failed, source={exSource.SqlAlias}, required={exSource.Dbsh.OnExternalFilledRequiredValue}, actual={value}, query={exSource.Dbsh.OnExternalFilledAssertion}");
+                    }
+                }
             }
         }
 

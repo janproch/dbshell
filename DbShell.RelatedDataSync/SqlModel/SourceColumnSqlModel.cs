@@ -18,20 +18,25 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         public DmlfConditionBase FilterCondition;
 
-        public void CompileFilter()
+        private static FilterParser.ExpressionType DetectFilterType(FilterParser.ExpressionType type, IEnumerable<SourceColumn> columns)
         {
-            if (!Filters.Any()) return;
-
-            var type = FilterType;
             if (type == FilterParser.ExpressionType.None)
             {
-                string dataType = DbshColumns.Select(x => x.DataType).FirstOrDefault(x => !String.IsNullOrEmpty(x)) ?? "";
+                string dataType = columns.Select(x => x.DataType).FirstOrDefault(x => !String.IsNullOrEmpty(x)) ?? "";
                 dataType = dataType.ToLower();
                 if (dataType.Contains("date") || dataType.Contains("time")) type = FilterParser.ExpressionType.DateTime;
                 else if (dataType.Contains("int") || dataType.Contains("float") || dataType.Contains("num") || dataType.Contains("dec")) type = FilterParser.ExpressionType.Number;
                 else if (dataType.Contains("bit") || dataType.Contains("bool") || dataType.Contains("log")) type = FilterParser.ExpressionType.Logical;
                 else type = FilterParser.ExpressionType.String;
             }
+            return type;
+        }
+
+        public void CompileFilter()
+        {
+            if (!Filters.Any()) return;
+
+            var type = DetectFilterType(FilterType, DbshColumns);
 
             var entity = Entities.First();
             var expr = new DmlfColumnRefExpression
@@ -59,6 +64,22 @@ namespace DbShell.RelatedDataSync.SqlModel
             {
                 FilterCondition = andCondition;
             }
+        }
+
+        public static DmlfConditionBase CompileSingleFilter(SourceColumn column, string tableAlias)
+        {
+            var expr = new DmlfColumnRefExpression
+            {
+                Column = new DmlfColumnRef
+                {
+                    ColumnName = column.Name,
+                    Source = new DmlfSource { Alias = tableAlias },
+                }
+            };
+
+            var type = DetectFilterType(column.FilterType, new[] { column });
+            var cond = FilterParser.ParseFilterExpression(type, expr, column.Filter);
+            return cond;
         }
     }
 }

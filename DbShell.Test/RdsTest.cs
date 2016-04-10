@@ -186,5 +186,21 @@ namespace DbShell.Test
             AssertExists("select * from Target");
         }
 
+        [DeploymentItem("rds_duplicator.xaml")]
+        [TestMethod]
+        public void RdsDuplicator()
+        {
+            InitDatabase();
+            RunEmbeddedScript("CreateRdsDuplicator.sql");
+
+            using (var runner = CreateRunner())
+            {
+                runner.LoadFile("rds_duplicator.xaml");
+                runner.Run();
+            }
+
+            AssertExists("select * from Master where MasterIsCopy=1");
+            AssertExists("select * from Detail where DetailIsCopy=1");
+        }
     }
 }

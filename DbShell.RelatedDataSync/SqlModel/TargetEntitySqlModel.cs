@@ -292,7 +292,40 @@ namespace DbShell.RelatedDataSync.SqlModel
         {
             foreach(var col in SourceJoinModel.Columns.Values)
             {
-                if (col.FilterCondition != null) cmd.AddAndCondition(col.FilterCondition);
+                if (col.FilterCondition != null)
+                {
+                    var orCond = new DmlfOrCondition();
+
+                    if (col.Entities.Count == 1)
+                    {
+                        var entity = col.Entities.Single();
+                        if (entity.SingleKeyColumnNameOrAlias != null)
+                        {
+                            var expr = new DmlfColumnRefExpression
+                            {
+                                Column = new DmlfColumnRef
+                                {
+                                    ColumnName = entity.GetColumnName(entity.SingleKeyColumnNameOrAlias),
+                                    Source = entity.QuerySource,
+                                }
+                            };
+                            orCond.Conditions.Add(new DmlfIsNullCondition
+                            {
+                                Expr = expr,
+                            });
+                        }
+                    }
+
+                    if (orCond.Conditions.Any())
+                    {
+                        orCond.Conditions.Add(col.FilterCondition);
+                        cmd.AddAndCondition(orCond);
+                    }
+                    else
+                    {
+                        cmd.AddAndCondition(col.FilterCondition);
+                    }
+                }
             }
         }
 
