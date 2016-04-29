@@ -109,7 +109,7 @@ namespace DbShell.Excel.ExcelModels
                 string name = value.SafeToString();
                 if (String.IsNullOrEmpty(name) || usedNames.Contains(name)) name = "column_" + i;
                 usedNames.Add(name);
-                res.Columns.Add(new ColumnInfo(res) {CommonType = new DbTypeString(), DataType = "nvarchar", Length = -1, Name = name});
+                res.Columns.Add(new ColumnInfo(res) { CommonType = new DbTypeString { Length = -1 }, DataType = "nvarchar", Length = -1, Name = name });
 
             }
             return res;

@@ -13,7 +13,7 @@ namespace DbShell.Driver.Common.CommonTypeSystem
             m_length = length;
         }
 
-        int m_length = 50;
+        int m_length = -1;
         [XmlAttrib("length")]
         public int Length
         {
