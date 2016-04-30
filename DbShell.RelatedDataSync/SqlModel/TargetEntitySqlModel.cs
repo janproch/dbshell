@@ -10,6 +10,7 @@ using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Sql;
 using System.Text.RegularExpressions;
 using System.IO;
+using DbShell.Driver.Common.FilterParser;
 
 namespace DbShell.RelatedDataSync.SqlModel
 {
@@ -259,7 +260,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             if (RequiresGrouping)
             {
                 res.Select.GroupBy = new DmlfGroupByCollection();
-                foreach (var col in TargetColumns.Where(x => x.IsKey))
+                foreach (var col in TargetColumns.Where(x => x.IsKey || (x.IsRestriction && x.IsReference)))
                 {
                     var expr = col.CreateSourceExpression(SourceJoinModel, false);
                     res.Select.GroupBy.Add(new DmlfGroupByItem
@@ -292,7 +293,40 @@ namespace DbShell.RelatedDataSync.SqlModel
         {
             foreach(var col in SourceJoinModel.Columns.Values)
             {
-                if (col.FilterCondition != null)
+                var colFilterCondition = col.FilterCondition;
+
+                // process additional condition
+                var additional = _dbsh.AdditionalFilters.FirstOrDefault(x => x.Column == col.Alias);
+                if (additional != null)
+                {
+                    var type = SourceColumnSqlModel.DetectFilterType(additional.FilterType, col.DbshColumns);
+
+                    var entity = col.Entities.First();
+                    var expr = new DmlfColumnRefExpression
+                    {
+                        Column = new DmlfColumnRef
+                        {
+                            ColumnName = entity.GetColumnName(col.Alias),
+                            Source = entity.QuerySource,
+                        }
+                    };
+
+                    var additionalCondition = FilterParser.ParseFilterExpression(type, expr, additional.Filter);
+
+                    if (colFilterCondition != null)
+                    {
+                        var andCondition = new DmlfAndCondition();
+                        andCondition.Conditions.Add(additionalCondition);
+                        andCondition.Conditions.Add(colFilterCondition);
+                        colFilterCondition = andCondition;
+                    }
+                    else
+                    {
+                        colFilterCondition = additionalCondition;
+                    }
+                }
+
+                if (colFilterCondition != null)
                 {
                     var orCond = new DmlfOrCondition();
 
@@ -318,12 +352,12 @@ namespace DbShell.RelatedDataSync.SqlModel
 
                     if (orCond.Conditions.Any())
                     {
-                        orCond.Conditions.Add(col.FilterCondition);
+                        orCond.Conditions.Add(colFilterCondition);
                         cmd.AddAndCondition(orCond);
                     }
                     else
                     {
-                        cmd.AddAndCondition(col.FilterCondition);
+                        cmd.AddAndCondition(colFilterCondition);
                     }
                 }
             }
@@ -365,9 +399,9 @@ namespace DbShell.RelatedDataSync.SqlModel
             CreateTargetColumsnCondition(cmd, targetEntityAlias, x => x.IsKey || x.IsRestriction);
         }
 
-        private void CreateRestrictionCondition(DmlfCommandBase cmd, string targetEntityAlias)
+        internal void CreateRestrictionCondition(DmlfCommandBase cmd, string targetEntityAlias, bool includeReferenceRestrictions = true)
         {
-            CreateTargetColumsnCondition(cmd, targetEntityAlias, x => x.IsRestriction);
+            CreateTargetColumsnCondition(cmd, targetEntityAlias, x => x.IsRestriction && (includeReferenceRestrictions || !x.IsReference));
         }
 
         private DmlfUpdate CompileMarkRelived()
@@ -503,13 +537,75 @@ namespace DbShell.RelatedDataSync.SqlModel
             existSelect.SelectAll = true;
             existSelect.From.Add(SourceJoinModel.SourceToRefsJoin);
             CreateKeyCondition(existSelect, "target");
-            CreateRestrictionCondition(res, "target");
+            CreateRestrictionCondition(res, "target", false);
             CreateLifetimeConditions(res, "target");
+            CreateReferenceRestrictionsCodition(res, "target");
+
             CreateFilterConditions(existSelect);
             return res;
         }
 
-        private void CreateLifetimeConditions(DmlfCommandBase res, string targetEntityAlias)
+        private void CreateReferenceRestrictionsCodition(DmlfCommandBase res, string targetEntityAlias)
+        {
+            var builder = new ReferenceRestrictionJoinBuilder();
+            builder.FindReferences(this, "target");
+            builder.AddReferenceJoins(res);
+
+            //int restrIndex = 1;
+            //foreach (var fkPair in this.RefEntities)
+            //{
+            //    if (!fkPair.Key.IsRestriction) continue;
+
+            //    // reference restriction - compile additional EXIST clause
+            //    var existRestr = new DmlfSelect();
+            //    string testedAlias = "tested_" + restrIndex;
+
+            //    existRestr.SingleFrom.Source = new DmlfSource
+            //    {
+            //        TableOrView = fkPair.Value.TargetTableSqlName,
+            //        Alias = testedAlias,
+            //        LinkedInfo = fkPair.Value.TargetLinkedInfo,
+            //    };
+            //    if (fkPair.Value.SourceJoinModel.SourceToRefsJoin.Source != null)
+            //    {
+            //        existRestr.From.Add(fkPair.Value.SourceJoinModel.SourceToRefsJoin);
+            //    }
+
+            //    existRestr.SelectAll = true;
+            //    fkPair.Value.CreateKeyCondition(existRestr, testedAlias);
+            //    fkPair.Value.CreateLifetimeConditions(existRestr, testedAlias);
+
+            //    foreach (var col in TargetColumns)
+            //    {
+            //        if (col.UnderlyingReference != fkPair.Key) continue;
+
+            //        var refColumn = new DmlfColumnRefExpression
+            //        {
+            //            Column = new DmlfColumnRef
+            //            {
+            //                Source = new DmlfSource { Alias = testedAlias },
+            //                ColumnName = col.RefColumnName,
+            //            }
+            //        };
+
+            //        existRestr.AddAndCondition(new DmlfEqualCondition
+            //        {
+            //            LeftExpr = col.CreateTargetExpression("target"),
+            //            RightExpr = refColumn,
+            //            CollateSpec = col.UseCollate(SourceJoinModel) ? "DATABASE_DEFAULT" : null,
+            //        });
+            //    }
+
+            //    res.AddAndCondition(new DmlfExistCondition
+            //    {
+            //        Select = existRestr,
+            //    });
+
+            //    restrIndex++;
+            //}
+        }
+
+        internal void CreateLifetimeConditions(DmlfCommandBase res, string targetEntityAlias)
         {
             _dbsh.LifetimeHandler.CreateLifetimeConditions(res, targetEntityAlias, this);
         }

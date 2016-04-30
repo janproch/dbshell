@@ -28,6 +28,9 @@ namespace DbShell.RelatedDataSync
         public List<TargetColumn> Columns { get; private set; } = new List<TargetColumn>();
 
         [XamlProperty]
+        public List<AdditionalFilter> AdditionalFilters { get; private set; } = new List<AdditionalFilter>();
+
+        [XamlProperty]
         public string FullTableNameVariable { get; set; }
 
         [XamlProperty]

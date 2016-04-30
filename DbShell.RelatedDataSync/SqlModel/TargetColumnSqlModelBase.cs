@@ -17,6 +17,9 @@ namespace DbShell.RelatedDataSync.SqlModel
         public virtual bool Update => true;
         public virtual bool Insert => true;
         public virtual bool Compare => true;
+        public virtual bool IsReference => false;
+        public virtual TargetReference UnderlyingReference => null;
+        public virtual string RefColumnName => null;
 
         public readonly ColumnInfo Info;
 

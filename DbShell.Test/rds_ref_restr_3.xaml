@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Batch 
+    xmlns="http://schemas.dbshell.com/core"
+    xmlns:rds="http://schemas.dbshell.com/datasync"
+    >
+    <rds:SyncModel >
+        <rds:SyncModel.Sources>
+            <rds:Source DataSource="{Table Source}">
+                <rds:SourceColumn Name="SourceId" />
+                <rds:SourceColumn Name="Value" />
+                <rds:SourceColumn Name="GroupName" />
+            </rds:Source>
+        </rds:SyncModel.Sources>
+        <rds:SyncModel.Targets>
+            <rds:Target TableName="TargetItem">
+                <rds:TargetColumn Name="TargetIdOriginal" Source="SourceId" IsKey="True" />
+                <rds:TargetColumn Name="Value" Source="Value" />
+            </rds:Target>
+
+            <rds:Target TableName="TargetCategory">
+                <rds:TargetColumn Name="IsImported" Value="1" IsRestriction="True" />
+            </rds:Target>
+
+            <rds:Target TableName="TargetGroup">
+                <rds:TargetColumn Name="GroupName" Source="GroupName" IsKey="True" />
+            </rds:Target>
+		
+            <rds:Target TableName="TargetItemGroup">
+                <rds:Target.LifetimeHandler>
+                    <rds:SimpleLifetimeHandler Delete="True" />
+                </rds:Target.LifetimeHandler>
+            </rds:Target>
+        </rds:SyncModel.Targets>
+
+        <rds:SyncModel.TargetReferences>
+			<rds:TargetReference Source="TargetGroup" Target="TargetCategory" IsRestriction="True" >
+				<rds:TargetReferenceColumn BaseName="TargetCategoryId" RefName="TargetCategoryId" />
+			</rds:TargetReference>
+			<rds:TargetReference Source="TargetItemGroup" Target="TargetItem" IsKey="True">
+				<rds:TargetReferenceColumn BaseName="TargetItemId" RefName="TargetItemId" />
+			</rds:TargetReference>
+			<rds:TargetReference Source="TargetItemGroup" Target="TargetGroup" IsRestriction="True">
+				<rds:TargetReferenceColumn BaseName="TargetGroupId" RefName="TargetGroupId" />
+			</rds:TargetReference>
+        </rds:SyncModel.TargetReferences>
+    </rds:SyncModel>
+    
+    <rds:CreateProcedure ProcName="RunSync" />
+</Batch>

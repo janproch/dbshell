@@ -275,7 +275,7 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         public void PutLogMessage(TargetEntitySqlModel entity, LogOperationType operation, string message, string durationName)
         {
-            Put("set @rows = cast(@@ROWCOUNT as nvarchar);&n");
+            Put("&nset @rows = cast(@@ROWCOUNT as nvarchar);&n");
             if (message == null)
             {
                 Put("set @msg = cast(ERROR_MESSAGE() as nvarchar(max))"

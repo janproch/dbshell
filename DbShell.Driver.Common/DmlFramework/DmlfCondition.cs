@@ -647,13 +647,24 @@ namespace DbShell.Driver.Common.DmlFramework
             {
                 GenSqlBegin(dmp);
                 bool was = false;
+                bool isIndent = false;
                 foreach (var item in Conditions)
                 {
-                    if (was) GenSqlConjuction(dmp);
+                    if (was)
+                    {
+                        if (!isIndent)
+                        {
+                            dmp.Put("&>");
+                            isIndent = true;
+                        }
+                        dmp.Put("&n");
+                        GenSqlConjuction(dmp);
+                    }
                     GenSqlItem(item, dmp);
                     was = true;
                 }
                 GenSqlEnd(dmp);
+                if (isIndent) dmp.Put("&<");
             }
         }
 

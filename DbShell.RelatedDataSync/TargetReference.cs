@@ -24,6 +24,9 @@ namespace DbShell.RelatedDataSync
         public bool IsKey { get; set; }
 
         [XamlProperty]
+        public bool IsRestriction { get; set; }
+
+        [XamlProperty]
         public bool Compare { get; set; }
 
         [XamlProperty]

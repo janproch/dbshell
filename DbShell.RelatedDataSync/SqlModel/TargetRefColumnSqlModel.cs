@@ -26,6 +26,10 @@ namespace DbShell.RelatedDataSync.SqlModel
         public override bool Update => _fk.Update;
         public override bool Insert => _fk.Insert;
         public override bool Compare => _fk.Compare;
+        public override bool IsRestriction => _fk.IsRestriction;
+        public override bool IsReference => true;
+        public override TargetReference UnderlyingReference => _fk;
+        public override string RefColumnName => _col.RefName;
 
         public override DmlfExpression CreateSourceExpression(SourceJoinSqlModel sourceJoinModel, bool aggregate)
         {

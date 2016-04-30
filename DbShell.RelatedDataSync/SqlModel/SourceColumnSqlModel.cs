@@ -18,7 +18,7 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         public DmlfConditionBase FilterCondition;
 
-        private static FilterParser.ExpressionType DetectFilterType(FilterParser.ExpressionType type, IEnumerable<SourceColumn> columns)
+        public static FilterParser.ExpressionType DetectFilterType(FilterParser.ExpressionType type, IEnumerable<SourceColumn> columns)
         {
             if (type == FilterParser.ExpressionType.None)
             {

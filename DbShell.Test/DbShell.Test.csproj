@@ -110,6 +110,8 @@
     <EmbeddedResource Include="CreateRdsDuplicator.sql" />
     <EmbeddedResource Include="CreateRdsRefUpdate.sql" />
     <EmbeddedResource Include="CreateRdsTemplate.sql" />
+    <EmbeddedResource Include="CreateRdsRefRestr2.sql" />
+    <EmbeddedResource Include="CreateRdsRefRestr3.sql" />
     <Content Include="Ideas.xml">
       <SubType>Designer</SubType>
     </Content>
@@ -321,6 +323,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="rds_template.xaml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="rds_ref_restr_2.xaml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="rds_ref_restr_3.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

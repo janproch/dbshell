@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdditionalFilter.cs" />
     <Compile Include="ColumnName.cs" />
     <Compile Include="CreateProcedure.cs" />
     <Compile Include="DataSyncItemBase.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="SimpleLifetimeHandler.cs" />
     <Compile Include="SqlModel\DataSyncSqlModel.cs" />
     <Compile Include="SqlModel\ParameterModel.cs" />
+    <Compile Include="SqlModel\ReferenceRestrictionJoinBuilder.cs" />
     <Compile Include="SqlModel\SourceColumnSqlModel.cs" />
     <Compile Include="SqlModel\SourceEntitySqlModel.cs" />
     <Compile Include="SqlModel\SourceGraphSqlModelBase.cs" />

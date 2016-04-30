@@ -241,5 +241,74 @@ namespace DbShell.Test
             AssertIsValue("1_", "select Value from Target where TargetIdOriginal=2");
             AssertIsValue("_2", "select Value from Target where TargetIdOriginal=3");
         }
+
+        [DeploymentItem("rds_ref_restr_2.xaml")]
+        [TestMethod]
+        public void RdsRefRestrTest2()
+        {
+            // restriction on reference object
+            InitDatabase();
+            RunEmbeddedScript("CreateRdsRefRestr2.sql");
+
+            using (var runner = CreateRunner())
+            {
+                runner.LoadFile("rds_ref_restr_2.xaml");
+                runner.Run();
+            }
+
+            RunScript("exec RunSync");
+
+            AssertIsValue("2", "select count(*) from TargetItemGroup where TargetGroupId=1");
+
+            RunScript("insert into TargetItemGroup values (3, 2)");
+
+            RunScript("exec RunSync");
+            AssertIsValue("2", "select count(*) from TargetItemGroup where TargetGroupId=1");
+            // test whether row which does not match restriction is not deleted
+            AssertIsValue("1", "select count(*) from TargetItemGroup where TargetGroupId=2");
+
+            RunScript("update Source set IsInGroup=0 where Value='val2'");
+            RunScript("exec RunSync");
+            AssertIsValue("1", "select count(*) from TargetItemGroup where TargetGroupId=1");
+            AssertIsValue("1", "select count(*) from TargetItemGroup where TargetGroupId=2");
+        }
+
+        [DeploymentItem("rds_ref_restr_3.xaml")]
+        [TestMethod]
+        public void RdsRefRestrTest3()
+        {
+            // restriction on reference object
+            InitDatabase();
+            RunEmbeddedScript("CreateRdsRefRestr3.sql");
+
+            using (var runner = CreateRunner())
+            {
+                runner.LoadFile("rds_ref_restr_3.xaml");
+                runner.Run();
+            }
+
+            RunScript("exec RunSync");
+
+            AssertIsValue("2", "select count(*) from TargetGroup");
+            AssertIsValue("3", "select count(*) from TargetItemGroup");
+
+            RunScript("insert into TargetGroup (GroupName, TargetCategoryId) values ('fixed1', 2)");
+            RunScript("insert into TargetItemGroup values (1, 3)");
+            RunScript("insert into TargetItemGroup values (2, 3)");
+
+            AssertIsValue("5", "select count(*) from TargetItemGroup");
+            AssertIsValue("3", "select count(*) from TargetGroup");
+
+            RunScript("exec RunSync");
+
+            AssertIsValue("5", "select count(*) from TargetItemGroup");
+            AssertIsValue("3", "select count(*) from TargetGroup");
+
+            RunScript("update Source set GroupName='g3' where SourceId = 3");
+            RunScript("exec RunSync");
+            AssertIsValue("5", "select count(*) from TargetItemGroup");
+            AssertIsValue("4", "select count(*) from TargetGroup");
+        }
+
     }
 }
