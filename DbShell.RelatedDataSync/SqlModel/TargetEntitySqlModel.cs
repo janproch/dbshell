@@ -550,59 +550,6 @@ namespace DbShell.RelatedDataSync.SqlModel
             var builder = new ReferenceRestrictionJoinBuilder();
             builder.FindReferences(this, "target");
             builder.AddReferenceJoins(res);
-
-            //int restrIndex = 1;
-            //foreach (var fkPair in this.RefEntities)
-            //{
-            //    if (!fkPair.Key.IsRestriction) continue;
-
-            //    // reference restriction - compile additional EXIST clause
-            //    var existRestr = new DmlfSelect();
-            //    string testedAlias = "tested_" + restrIndex;
-
-            //    existRestr.SingleFrom.Source = new DmlfSource
-            //    {
-            //        TableOrView = fkPair.Value.TargetTableSqlName,
-            //        Alias = testedAlias,
-            //        LinkedInfo = fkPair.Value.TargetLinkedInfo,
-            //    };
-            //    if (fkPair.Value.SourceJoinModel.SourceToRefsJoin.Source != null)
-            //    {
-            //        existRestr.From.Add(fkPair.Value.SourceJoinModel.SourceToRefsJoin);
-            //    }
-
-            //    existRestr.SelectAll = true;
-            //    fkPair.Value.CreateKeyCondition(existRestr, testedAlias);
-            //    fkPair.Value.CreateLifetimeConditions(existRestr, testedAlias);
-
-            //    foreach (var col in TargetColumns)
-            //    {
-            //        if (col.UnderlyingReference != fkPair.Key) continue;
-
-            //        var refColumn = new DmlfColumnRefExpression
-            //        {
-            //            Column = new DmlfColumnRef
-            //            {
-            //                Source = new DmlfSource { Alias = testedAlias },
-            //                ColumnName = col.RefColumnName,
-            //            }
-            //        };
-
-            //        existRestr.AddAndCondition(new DmlfEqualCondition
-            //        {
-            //            LeftExpr = col.CreateTargetExpression("target"),
-            //            RightExpr = refColumn,
-            //            CollateSpec = col.UseCollate(SourceJoinModel) ? "DATABASE_DEFAULT" : null,
-            //        });
-            //    }
-
-            //    res.AddAndCondition(new DmlfExistCondition
-            //    {
-            //        Select = existRestr,
-            //    });
-
-            //    restrIndex++;
-            //}
         }
 
         internal void CreateLifetimeConditions(DmlfCommandBase res, string targetEntityAlias)
