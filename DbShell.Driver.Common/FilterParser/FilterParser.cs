@@ -27,11 +27,11 @@ namespace DbShell.Driver.Common.FilterParser
 
         public enum ExpressionType
         {
+            None,
             Number,
             String,
             DateTime,
             Logical,
-            None,
         };
 
         private static DmlfConditionBase ParseNumber(DmlfExpression columnValue, string expression, Action<DbShellFilterAntlrParser> initParser = null)

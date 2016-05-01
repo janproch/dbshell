@@ -14,7 +14,7 @@ namespace DbShell.RelatedDataSync.SqlModel
         public List<SourceEntitySqlModel> Entities = new List<SourceEntitySqlModel>();
         public List<SourceColumn> DbshColumns = new List<SourceColumn>();
         public List<string> Filters = new List<string>();
-        public FilterParser.ExpressionType FilterType;
+        public FilterParser.ExpressionType FilterType = FilterParser.ExpressionType.None;
 
         public DmlfConditionBase FilterCondition;
 
