@@ -7,7 +7,7 @@ namespace DbShell.Test
     public class XamlReaderTest
     {
         [TestMethod]
-        [DeploymentItem("xamltest1.xaml")]
+        [DeploymentItem("Basics/xamltest1.xaml")]
         public void XamlReader1()
         {
             using (var runner = new ShellRunner())
@@ -17,7 +17,7 @@ namespace DbShell.Test
         }
 
         [TestMethod]
-        [DeploymentItem("xamltest2.xaml")]
+        [DeploymentItem("Basics/xamltest2.xaml")]
         public void XamlReader2()
         {
             using (var runner = new ShellRunner())

@@ -12,12 +12,12 @@ namespace DbShell.Test
     public class RazorTest : DatabaseTestBase
     {
         [TestMethod]
-        [DeploymentItem("dbdocs.xaml")]
-        [DeploymentItem("DatabaseDoc.cshtml")]
+        [DeploymentItem("ImportExport/dbdocs.xaml")]
+        [DeploymentItem("ImportExport/DatabaseDoc.cshtml")]
         public void DbDocs()
         {
             InitDatabase();
-            RunEmbeddedScript("CreateTestData.sql");
+            RunEmbeddedScript("CopyTable.CreateTestData.sql");
             using (var runner = CreateRunner())
             {
                 runner.LoadFile("dbdocs.xaml");
@@ -26,11 +26,11 @@ namespace DbShell.Test
         }
 
         [TestMethod]
-        [DeploymentItem("querytofiles.xaml")]
+        [DeploymentItem("ImportExport/querytofiles.xaml")]
         public void QueryToFiles()
         {
             InitDatabase();
-            RunEmbeddedScript("CreateTestData.sql");
+            RunEmbeddedScript("CopyTable.CreateTestData.sql");
             using (var runner = CreateRunner())
             {
                 runner.LoadFile("querytofiles.xaml");
@@ -40,12 +40,12 @@ namespace DbShell.Test
         }
 
         [TestMethod]
-        [DeploymentItem("querytohtml.xaml")]
-        [DeploymentItem("TableData.cshtml")]
+        [DeploymentItem("ImportExport/querytohtml.xaml")]
+        [DeploymentItem("ImportExport/TableData.cshtml")]
         public void QueryToHtml()
         {
             InitDatabase();
-            RunEmbeddedScript("CreateTestData.sql");
+            RunEmbeddedScript("CopyTable.CreateTestData.sql");
             using (var runner = CreateRunner())
             {
                 runner.LoadFile("querytohtml.xaml");

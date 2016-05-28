@@ -16,12 +16,12 @@ namespace DbShell.Test
             new Excel.Open();
         }
 
-        [DeploymentItem("rds1.xaml")]
+        [DeploymentItem("RelatedDataSync/rds1.xaml")]
         [TestMethod]
         public void SimpleSyncTest()
         {
             InitDatabase();
-            RunEmbeddedScript("CreateRds1Data.sql");
+            RunEmbeddedScript("RelatedDataSync.CreateRds1Data.sql");
             using (var runner = CreateRunner())
             {
                 runner.LoadFile("rds1.xaml");
@@ -30,12 +30,12 @@ namespace DbShell.Test
             AssertIsValue("3", "select count(*) from Target");
         }
 
-        [DeploymentItem("rds2.xaml")]
+        [DeploymentItem("RelatedDataSync/rds2.xaml")]
         [TestMethod]
         public void SourceJoinSyncTest()
         {
             InitDatabase();
-            RunEmbeddedScript("CreateRds2Data.sql");
+            RunEmbeddedScript("RelatedDataSync.CreateRds2Data.sql");
             using (var runner = CreateRunner())
             {
                 runner.LoadFile("rds2.xaml");
@@ -43,12 +43,12 @@ namespace DbShell.Test
             }
         }
 
-        [DeploymentItem("rdscountry_natural.xaml")]
+        [DeploymentItem("RelatedDataSync/rdscountry_natural.xaml")]
         [TestMethod]
         public void CountryNaturalKeysTest()
         {
             InitDatabase();
-            RunEmbeddedScript("CreateRdsGeoDataNatualKeys.sql");
+            RunEmbeddedScript("RelatedDataSync.CreateRdsGeoDataNatualKeys.sql");
             using (var runner = CreateRunner())
             {
                 runner.LoadFile("rdscountry_natural.xaml");
@@ -57,12 +57,12 @@ namespace DbShell.Test
             AssertExists("select * from TargetCityPartByContinentList");
         }
 
-        [DeploymentItem("rdscountry_integer.xaml")]
+        [DeploymentItem("RelatedDataSync/rdscountry_integer.xaml")]
         [TestMethod]
         public void CountryIntegerKeysTest()
         {
             InitDatabase();
-            RunEmbeddedScript("CreateRdsGeoDataIntegerKeys.sql");
+            RunEmbeddedScript("RelatedDataSync.CreateRdsGeoDataIntegerKeys.sql");
             using (var runner = CreateRunner())
             {
                 runner.LoadFile("rdscountry_integer.xaml");
@@ -70,12 +70,12 @@ namespace DbShell.Test
             }
         }
 
-        [DeploymentItem("rds_lifetime.xaml")]
+        [DeploymentItem("RelatedDataSync/rds_lifetime.xaml")]
         [TestMethod]
         public void LifetimeTest()
         {
             InitDatabase();
-            RunEmbeddedScript("CreateRds2Lifetime.sql");
+            RunEmbeddedScript("RelatedDataSync.CreateRds2Lifetime.sql");
             using (var runner = CreateRunner())
             {
                 runner.LoadFile("rds_lifetime.xaml");
@@ -99,13 +99,13 @@ namespace DbShell.Test
             AssertExists("select * from ImportLog where Operation='error'");
         }
 
-        [DeploymentItem("rds_excel.xaml")]
-        [DeploymentItem("rds.xlsx")]
+        [DeploymentItem("RelatedDataSync/rds_excel.xaml")]
+        [DeploymentItem("RelatedDataSync/rds.xlsx")]
         [TestMethod]
         public void RdsExcelTest()
         {
             InitDatabase();
-            RunEmbeddedScript("CreateRdsExcel.sql");
+            RunEmbeddedScript("RelatedDataSync.CreateRdsExcel.sql");
 
             using (var runner = CreateRunner())
             {
@@ -116,12 +116,12 @@ namespace DbShell.Test
             AssertExists("select * from ExcelTarget");
         }
 
-        [DeploymentItem("rds_flat.xaml")]
+        [DeploymentItem("RelatedDataSync/rds_flat.xaml")]
         [TestMethod]
         public void RdsFlatTest()
         {
             InitDatabase();
-            RunEmbeddedScript("CreateRdsFlat.sql");
+            RunEmbeddedScript("RelatedDataSync.CreateRdsFlat.sql");
 
             using (var runner = CreateRunner())
             {
@@ -133,12 +133,12 @@ namespace DbShell.Test
             AssertExists("select * from Target2");
         }
 
-        [DeploymentItem("rds_params.xaml")]
+        [DeploymentItem("RelatedDataSync/rds_params.xaml")]
         [TestMethod]
         public void RdsParamsTest()
         {
             InitDatabase();
-            RunEmbeddedScript("CreateRds1Data.sql");
+            RunEmbeddedScript("RelatedDataSync.CreateRds1Data.sql");
             using (var runner = CreateRunner())
             {
                 runner.LoadFile("rds_params.xaml");
@@ -153,12 +153,12 @@ namespace DbShell.Test
             AssertIsValue("12", "select count(*) from Target");
         }
 
-        [DeploymentItem("rds_name_params.xaml")]
+        [DeploymentItem("RelatedDataSync/rds_name_params.xaml")]
         [TestMethod]
         public void RdsNameParamsTest()
         {
             InitDatabase();
-            RunEmbeddedScript("CreateRds_NameParams.sql");
+            RunEmbeddedScript("RelatedDataSync.CreateRds_NameParams.sql");
             using (var runner = CreateRunner())
             {
                 runner.LoadFile("rds_name_params.xaml");
@@ -170,12 +170,12 @@ namespace DbShell.Test
             AssertIsValue("1001", "select Value from TargetData where ParamId=2");
         }
 
-        [DeploymentItem("rds_ref_restr.xaml")]
+        [DeploymentItem("RelatedDataSync/rds_ref_restr.xaml")]
         [TestMethod]
         public void RdsRefRestrTest()
         {
             InitDatabase();
-            RunEmbeddedScript("CreateRdsRefRestr.sql");
+            RunEmbeddedScript("RelatedDataSync.CreateRdsRefRestr.sql");
 
             using (var runner = CreateRunner())
             {
@@ -186,12 +186,12 @@ namespace DbShell.Test
             AssertExists("select * from Target");
         }
 
-        [DeploymentItem("rds_duplicator.xaml")]
+        [DeploymentItem("RelatedDataSync/rds_duplicator.xaml")]
         [TestMethod]
         public void RdsDuplicator()
         {
             InitDatabase();
-            RunEmbeddedScript("CreateRdsDuplicator.sql");
+            RunEmbeddedScript("RelatedDataSync.CreateRdsDuplicator.sql");
 
             using (var runner = CreateRunner())
             {
@@ -203,12 +203,12 @@ namespace DbShell.Test
             AssertExists("select * from Detail where DetailIsCopy=1");
         }
 
-        [DeploymentItem("rds_ref_update.xaml")]
+        [DeploymentItem("RelatedDataSync/rds_ref_update.xaml")]
         [TestMethod]
         public void RdsRefUpdate()
         {
             InitDatabase();
-            RunEmbeddedScript("CreateRdsRefUpdate.sql");
+            RunEmbeddedScript("RelatedDataSync.CreateRdsRefUpdate.sql");
 
             using (var runner = CreateRunner())
             {
@@ -224,12 +224,12 @@ namespace DbShell.Test
             AssertIsValue("1", "select count(*) from TargetDetail inner join TargetMaster on TargetDetail.TargetMasterId=TargetMaster.TargetMasterId where TargetMaster.MasterIdOriginal=1");
         }
 
-        [DeploymentItem("rds_template.xaml")]
+        [DeploymentItem("RelatedDataSync/rds_template.xaml")]
         [TestMethod]
         public void RdsTemplate()
         {
             InitDatabase();
-            RunEmbeddedScript("CreateRdsTemplate.sql");
+            RunEmbeddedScript("RelatedDataSync.CreateRdsTemplate.sql");
 
             using (var runner = CreateRunner())
             {
@@ -242,13 +242,13 @@ namespace DbShell.Test
             AssertIsValue("_2", "select Value from Target where TargetIdOriginal=3");
         }
 
-        [DeploymentItem("rds_ref_restr_2.xaml")]
+        [DeploymentItem("RelatedDataSync/rds_ref_restr_2.xaml")]
         [TestMethod]
         public void RdsRefRestrTest2()
         {
             // restriction on reference object
             InitDatabase();
-            RunEmbeddedScript("CreateRdsRefRestr2.sql");
+            RunEmbeddedScript("RelatedDataSync.CreateRdsRefRestr2.sql");
 
             using (var runner = CreateRunner())
             {
@@ -273,13 +273,13 @@ namespace DbShell.Test
             AssertIsValue("1", "select count(*) from TargetItemGroup where TargetGroupId=2");
         }
 
-        [DeploymentItem("rds_ref_restr_3.xaml")]
+        [DeploymentItem("RelatedDataSync/rds_ref_restr_3.xaml")]
         [TestMethod]
         public void RdsRefRestrTest3()
         {
             // restriction on reference object
             InitDatabase();
-            RunEmbeddedScript("CreateRdsRefRestr3.sql");
+            RunEmbeddedScript("RelatedDataSync.CreateRdsRefRestr3.sql");
 
             using (var runner = CreateRunner())
             {

@@ -63,13 +63,13 @@
   <ItemGroup>
     <Compile Include="DatabaseTestBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CopyTableTest.cs" />
-    <Compile Include="RazorTest.cs" />
-    <Compile Include="CsvTest.cs" />
-    <Compile Include="RdsTest.cs" />
+    <Compile Include="CopyTable\CopyTableTest.cs" />
+    <Compile Include="ImportExport\RazorTest.cs" />
+    <Compile Include="ImportExport\CsvTest.cs" />
+    <Compile Include="RelatedDataSync\RdsTest.cs" />
     <Compile Include="TestUtility.cs" />
-    <Compile Include="ToolTests.cs" />
-    <Compile Include="XamlReaderTest.cs" />
+    <Compile Include="Basics\ToolTests.cs" />
+    <Compile Include="Basics\XamlReaderTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DbShell.Common\DbShell.Common.csproj">
@@ -98,243 +98,243 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CreateRds1Data.sql" />
-    <EmbeddedResource Include="CreateRds2Data.sql" />
-    <EmbeddedResource Include="CreateRdsGeoDataNatualKeys.sql" />
-    <EmbeddedResource Include="CreateRdsGeoDataIntegerKeys.sql" />
-    <EmbeddedResource Include="CreateRds2Lifetime.sql" />
-    <EmbeddedResource Include="CreateRdsExcel.sql" />
-    <EmbeddedResource Include="CreateRdsFlat.sql" />
-    <EmbeddedResource Include="CreateRds_NameParams.sql" />
-    <EmbeddedResource Include="CreateRdsRefRestr.sql" />
-    <EmbeddedResource Include="CreateRdsDuplicator.sql" />
-    <EmbeddedResource Include="CreateRdsRefUpdate.sql" />
-    <EmbeddedResource Include="CreateRdsTemplate.sql" />
-    <EmbeddedResource Include="CreateRdsRefRestr2.sql" />
-    <EmbeddedResource Include="CreateRdsRefRestr3.sql" />
-    <Content Include="Ideas.xml">
+    <EmbeddedResource Include="RelatedDataSync\CreateRds1Data.sql" />
+    <EmbeddedResource Include="RelatedDataSync\CreateRds2Data.sql" />
+    <EmbeddedResource Include="RelatedDataSync\CreateRdsGeoDataNatualKeys.sql" />
+    <EmbeddedResource Include="RelatedDataSync\CreateRdsGeoDataIntegerKeys.sql" />
+    <EmbeddedResource Include="RelatedDataSync\CreateRds2Lifetime.sql" />
+    <EmbeddedResource Include="RelatedDataSync\CreateRdsExcel.sql" />
+    <EmbeddedResource Include="RelatedDataSync\CreateRdsFlat.sql" />
+    <EmbeddedResource Include="RelatedDataSync\CreateRds_NameParams.sql" />
+    <EmbeddedResource Include="RelatedDataSync\CreateRdsRefRestr.sql" />
+    <EmbeddedResource Include="RelatedDataSync\CreateRdsDuplicator.sql" />
+    <EmbeddedResource Include="RelatedDataSync\CreateRdsRefUpdate.sql" />
+    <EmbeddedResource Include="RelatedDataSync\CreateRdsTemplate.sql" />
+    <EmbeddedResource Include="RelatedDataSync\CreateRdsRefRestr2.sql" />
+    <EmbeddedResource Include="RelatedDataSync\CreateRdsRefRestr3.sql" />
+    <Content Include="ImportExport\Ideas.xml">
       <SubType>Designer</SubType>
     </Content>
-    <EmbeddedResource Include="CreateTestData.sql" />
-    <Content Include="importedxml4.xml">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="importedxml3.xml">
+    <EmbeddedResource Include="CopyTable\CreateTestData.sql" />
+    <Content Include="CopyTable\importedxml4.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="importedxml2.xml">
+    <Content Include="CopyTable\importedxml3.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="xamltest1.xaml">
+    <Content Include="CopyTable\importedxml2.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="xamltest2.xaml">
+    <Content Include="Basics\xamltest1.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="copytable_tabletocdl.xaml">
+    <Content Include="Basics\xamltest2.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="copytable_cdltocdl.xaml">
+    <Content Include="CopyTable\copytable_tabletocdl.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="copyalltables.xaml">
+    <Content Include="CopyTable\copytable_cdltocdl.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="copytable_tabletotable.xaml">
+    <Content Include="CopyTable\copyalltables.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="dbdocs.xaml">
+    <Content Include="CopyTable\copytable_tabletotable.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="copytable_columnmap.xaml">
+    <Content Include="ImportExport\dbdocs.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Album.cdl">
+    <Content Include="CopyTable\copytable_columnmap.xaml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ImportExport\Album.cdl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="csvexport.xaml">
+    <Content Include="ImportExport\csvexport.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="csvimport.xaml">
+    <Content Include="ImportExport\csvimport.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\Templates\DatabaseDoc.cshtml">
-      <Link>DatabaseDoc.cshtml</Link>
+      <Link>ImportExport\DatabaseDoc.cshtml</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="exportdataset.xaml">
+    <Content Include="ImportExport\exportdataset.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="querytofiles.xaml">
+    <Content Include="ImportExport\querytofiles.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\Templates\TableData.cshtml">
-      <Link>TableData.cshtml</Link>
+      <Link>ImportExport\TableData.cshtml</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="querytohtml.xaml">
+    <Content Include="ImportExport\querytohtml.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <Content Include="ImportedData.csv">
+    <Content Include="CopyTable\ImportedData.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="rds.xlsx">
+    <Content Include="RelatedDataSync\rds.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="mapped_import.xaml">
+    <Content Include="CopyTable\mapped_import.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="rds1.xaml">
+    <Content Include="RelatedDataSync\rds1.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="rds2.xaml">
+    <Content Include="RelatedDataSync\rds2.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="rds_lifetime.xaml">
+    <Content Include="RelatedDataSync\rds_lifetime.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="rdscountry_integer.xaml">
+    <Content Include="RelatedDataSync\rdscountry_integer.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="rdscountry_natural.xaml">
+    <Content Include="RelatedDataSync\rdscountry_natural.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="rds_excel.xaml">
+    <Content Include="RelatedDataSync\rds_excel.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="rds_flat.xaml">
+    <Content Include="RelatedDataSync\rds_flat.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="rds_params.xaml">
+    <Content Include="RelatedDataSync\rds_params.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="rds_name_params.xaml">
+    <Content Include="RelatedDataSync\rds_name_params.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="copytable_xmltocsv.xaml">
+    <Content Include="CopyTable\copytable_xmltocsv.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="importedxml1.xml">
+    <Content Include="CopyTable\importedxml1.xml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="rds_ref_restr.xaml">
+    <Content Include="RelatedDataSync\rds_ref_restr.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="rds_duplicator.xaml">
+    <Content Include="RelatedDataSync\rds_duplicator.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="rds_ref_update.xaml">
+    <Content Include="RelatedDataSync\rds_ref_update.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="rds_template.xaml">
+    <Content Include="RelatedDataSync\rds_template.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="rds_ref_restr_2.xaml">
+    <Content Include="RelatedDataSync\rds_ref_restr_2.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="rds_ref_restr_3.xaml">
+    <Content Include="RelatedDataSync\rds_ref_restr_3.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

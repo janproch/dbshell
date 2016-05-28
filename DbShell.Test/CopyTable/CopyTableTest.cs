@@ -12,11 +12,11 @@ namespace DbShell.Test
     public class CopyTableTest : DatabaseTestBase
     {
         [TestMethod]
-        [DeploymentItem("copytable_tabletocdl.xaml")]
+        [DeploymentItem("CopyTable/copytable_tabletocdl.xaml")]
         public void TableToCdl()
         {
             InitDatabase();
-            RunEmbeddedScript("CreateTestData.sql");
+            RunEmbeddedScript("CopyTable.CreateTestData.sql");
             using (var runner = CreateRunner())
             {
                 runner.LoadFile("copytable_tabletocdl.xaml");
@@ -25,11 +25,11 @@ namespace DbShell.Test
         }
 
         [TestMethod]
-        [DeploymentItem("copytable_cdltocdl.xaml")]
+        [DeploymentItem("CopyTable/copytable_cdltocdl.xaml")]
         public void CdlToCdl()
         {
             InitDatabase();
-            RunEmbeddedScript("CreateTestData.sql");
+            RunEmbeddedScript("CopyTable.CreateTestData.sql");
             using (var runner = CreateRunner())
             {
                 runner.LoadFile("copytable_cdltocdl.xaml");
@@ -40,11 +40,11 @@ namespace DbShell.Test
         }
 
         [TestMethod]
-        [DeploymentItem("copytable_tabletotable.xaml")]
+        [DeploymentItem("CopyTable/copytable_tabletotable.xaml")]
         public void TableToTable()
         {
             InitDatabase();
-            RunEmbeddedScript("CreateTestData.sql");
+            RunEmbeddedScript("CopyTable.CreateTestData.sql");
             using (var runner = CreateRunner())
             {
                 runner.LoadFile("copytable_tabletotable.xaml");
@@ -55,11 +55,11 @@ namespace DbShell.Test
         }
 
         [TestMethod]
-        [DeploymentItem("copytable_columnmap.xaml")]
+        [DeploymentItem("CopyTable/copytable_columnmap.xaml")]
         public void CopyTableColumnMapTest()
         {
             InitDatabase();
-            RunEmbeddedScript("CreateTestData.sql");
+            RunEmbeddedScript("CopyTable.CreateTestData.sql");
             using (var runner = CreateRunner())
             {
                 runner.LoadFile("copytable_columnmap.xaml");
@@ -74,11 +74,11 @@ namespace DbShell.Test
         }
 
         [TestMethod]
-        [DeploymentItem("copyalltables.xaml")]
+        [DeploymentItem("CopyTable/copyalltables.xaml")]
         public void CopyAllTablesTest()
         {
             InitDatabase();
-            RunEmbeddedScript("CreateTestData.sql");
+            RunEmbeddedScript("CopyTable.CreateTestData.sql");
             using (var runner = CreateRunner())
             {
                 runner.LoadFile("copyalltables.xaml");
@@ -100,12 +100,12 @@ namespace DbShell.Test
         }
 
         [TestMethod]
-        [DeploymentItem("mapped_import.xaml")]
-        [DeploymentItem("ImportedData.csv")]
+        [DeploymentItem("CopyTable/mapped_import.xaml")]
+        [DeploymentItem("CopyTable/ImportedData.csv")]
         public void MappedImportTest()
         {
             InitDatabase();
-            RunEmbeddedScript("CreateTestData.sql");
+            RunEmbeddedScript("CopyTable.CreateTestData.sql");
             using (var runner = CreateRunner())
             {
                 runner.LoadFile("mapped_import.xaml");
@@ -126,11 +126,11 @@ namespace DbShell.Test
         }
 
         [TestMethod]
-        [DeploymentItem("copytable_xmltocsv.xaml")]
-        [DeploymentItem("importedxml1.xml")]
-        [DeploymentItem("importedxml2.xml")]
-        [DeploymentItem("importedxml3.xml")]
-        [DeploymentItem("importedxml4.xml")]
+        [DeploymentItem("CopyTable/copytable_xmltocsv.xaml")]
+        [DeploymentItem("CopyTable/importedxml1.xml")]
+        [DeploymentItem("CopyTable/importedxml2.xml")]
+        [DeploymentItem("CopyTable/importedxml3.xml")]
+        [DeploymentItem("CopyTable/importedxml4.xml")]
         public void XmlImportTest()
         {
             var instructions = XmlTableAnalyser.AnalyseFile("importedxml4.xml", true);

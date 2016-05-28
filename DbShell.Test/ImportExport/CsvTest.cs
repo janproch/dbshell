@@ -8,8 +8,8 @@ namespace DbShell.Test
     public class CsvTest
     {
         [TestMethod]
-        [DeploymentItem("csvexport.xaml")]
-        [DeploymentItem("Album.cdl")]
+        [DeploymentItem("ImportExport/csvexport.xaml")]
+        [DeploymentItem("ImportExport/Album.cdl")]
         public void CsvExport()
         {
             using (var runner = new ShellRunner())
@@ -20,8 +20,8 @@ namespace DbShell.Test
         }
 
         [TestMethod]
-        [DeploymentItem("csvimport.xaml")]
-        [DeploymentItem("Album.cdl")]
+        [DeploymentItem("ImportExport/csvimport.xaml")]
+        [DeploymentItem("ImportExport/Album.cdl")]
         public void CsvImport()
         {
             using (var runner = new ShellRunner())
