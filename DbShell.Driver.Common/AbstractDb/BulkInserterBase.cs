@@ -93,7 +93,7 @@ namespace DbShell.Driver.Common.AbstractDb
             bool hasident = false;
             if (autoinc != null)
             {
-                hasident = _columnMap.GetTargetColumnBySourceIndex(autoinc.ColumnOrder) != null;
+                hasident = _columnMap.GetSourceColumnByTargetIndex(autoinc.ColumnOrder) != null;
             }
             return hasident;
         }

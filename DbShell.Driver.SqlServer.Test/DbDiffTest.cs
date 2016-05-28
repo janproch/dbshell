@@ -17,10 +17,10 @@ namespace DbShell.Driver.SqlServer.Test
     {
         private static string TransformSql(string sql)
         {
-            sql = sql.Replace("GO", ";");
+            sql = sql.Replace("GO", " ");
             sql = sql.Replace("\r", " ");
             sql = sql.Replace("\n", " ");
-            sql = sql.Replace(";;", ";");
+            sql = sql.Replace(";", " ");
             sql = sql.Replace(" ", "");
             return sql;
         }
@@ -84,6 +84,12 @@ namespace DbShell.Driver.SqlServer.Test
             runner.Run(dmp, new DbDiffOptions());
             string sql = sw.ToString();
             Assert.IsNotNull(sql);
+            //string expectedTran = TransformSql(expectedResult);
+            //string sqlTran = TransformSql(sql);
+            //for(int i = 0; i < expectedResult.Length; i++)
+            //{
+            //    Assert.AreEqual(expectedTran[i], sqlTran[i]);
+            //}
             Assert.AreEqual(TransformSql(expectedResult), TransformSql(sql));
         }
 
@@ -206,7 +212,7 @@ ALTER TABLE [dbo].[t1] ALTER COLUMN [c1] FLOAT NOT NULL
 GO
 ALTER TABLE [dbo].[t1] ADD CONSTRAINT [pk_t1] PRIMARY KEY ([c1])
 GO
-CREATE INDEX [ix1] on [dbo].[t1] ([c1] ASC)";
+CREATE INDEX [ix1] ON [dbo].[t1] ([c1] ASC)";
             TestDiff(db =>
                 {
                     var t1 = db.FindTableLike("t1");
@@ -231,7 +237,7 @@ CREATE TABLE [dbo].[t1] (
     CONSTRAINT [pk_t1] PRIMARY KEY ([c1])
 )
 GO
-CREATE INDEX [ix1] on [dbo].[t1] ([c1] ASC)
+CREATE INDEX [ix1] ON [dbo].[t1] ([c1] ASC)
 GO
 SET IDENTITY_INSERT [dbo].[t1] ON;
 INSERT INTO [dbo].[t1] ([c1], [c2]) select [c1] AS [c1], [c2] AS [c2] FROM [dbo].[TMP0]
