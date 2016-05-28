@@ -54,6 +54,8 @@ namespace DbShell.Core.Utility
                     return "http://schemas.dbshell.com/datasync";
                 case "DbShell.Spatial":
                     return "http://schemas.dbshell.com/spatial";
+                case "DbShell.LocalDb":
+                    return "http://schemas.dbshell.com/localdb";
             }
             return "clr-namespace:" + codeNs;
         }
@@ -78,6 +80,8 @@ namespace DbShell.Core.Utility
                     return "rds";
                 case "http://schemas.dbshell.com/spatial":
                     return "spatial";
+                case "http://schemas.dbshell.com/localdb":
+                    return "locdb";
             }
             return null;
 

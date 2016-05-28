@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Batch 
+    xmlns="http://schemas.dbshell.com/core"
+    xmlns:locdb="http://schemas.dbshell.com/localdb"
+    >
+
+    <locdb:TransformData LocalDbFile="test.locdb" Program="transform_concat2.exe" Table="tran_test" Column="value" />
+</Batch>

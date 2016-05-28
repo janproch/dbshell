@@ -34,7 +34,7 @@ namespace DbShell.LocalDb
 
                 conn.ExecuteNonQuery(GenerateSql(dmp =>
                 {
-                    dmp.PutCmd("^update %i ^set %i = fn_CalculateSomething(%i)", Table, Column, Column);
+                    dmp.PutCmd("^update %i ^set %i = SqliteFunctionTransform(%i)", Table, Column, Column);
                 }));
             }
         }
