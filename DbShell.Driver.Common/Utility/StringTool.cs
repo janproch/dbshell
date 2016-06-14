@@ -449,5 +449,11 @@ namespace DbShell.Driver.Common.Utility
             if (DateTime.TryParse(value, out res)) return res;
             return null;
         }
+
+        public static string GetNullIfEmpty(this string value)
+        {
+            if (String.IsNullOrWhiteSpace(value)) return null;
+            return value;
+        }
     }
 }
