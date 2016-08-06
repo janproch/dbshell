@@ -66,6 +66,15 @@ namespace DbShell.RelatedDataSync
         [XamlProperty]
         public bool Insert { get; set; } = true;
 
+        [XamlProperty]
+        public bool IsUpdateRestriction { get; set; }
+
+        [XamlProperty]
+        public bool IsDeleteRestriction { get; set; }
+
+        [XamlProperty]
+        public string CompareSelectorFunction { get; set; }
+
         public TargetColumnValueType RealValueType
         {
             get

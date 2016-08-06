@@ -45,7 +45,7 @@ namespace DbShell.Driver.Common.DmlFramework
 
         public override void GenSql(ISqlDumper dmp)
         {
-            dmp.Put(" %k(", FuncName);
+            dmp.Put(" %s(", FuncName);
             bool was = false;
             foreach (var arg in Arguments)
             {

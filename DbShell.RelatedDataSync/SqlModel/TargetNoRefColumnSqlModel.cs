@@ -22,10 +22,13 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         public override bool IsKey => _dbsh.IsKey;
         public override bool IsRestriction => _dbsh.IsRestriction;
+        public override bool IsUpdateRestriction => _dbsh.IsUpdateRestriction;
+        public override bool IsDeleteRestriction => _dbsh.IsDeleteRestriction;
         public override string Name => _dbsh.Name;
         public override bool Update => _dbsh.Update;
         public override bool Insert => _dbsh.Insert;
         public override bool Compare => _dbsh.Compare;
+        public override string CompareSelectorFunction => _dbsh.CompareSelectorFunction;
 
         protected override string GetSourceDataType(SourceJoinSqlModel sourceJoinModel)
         {

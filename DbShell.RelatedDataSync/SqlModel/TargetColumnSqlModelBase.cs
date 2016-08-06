@@ -14,12 +14,15 @@ namespace DbShell.RelatedDataSync.SqlModel
         public abstract string Name { get; }
         public abstract bool IsKey { get; }
         public virtual bool IsRestriction => false;
+        public virtual bool IsUpdateRestriction => false;
+        public virtual bool IsDeleteRestriction => false;
         public virtual bool Update => true;
         public virtual bool Insert => true;
         public virtual bool Compare => true;
         public virtual bool IsReference => false;
         public virtual TargetReference UnderlyingReference => null;
         public virtual string RefColumnName => null;
+        public virtual string CompareSelectorFunction => null;
 
         public readonly ColumnInfo Info;
 
@@ -108,6 +111,17 @@ namespace DbShell.RelatedDataSync.SqlModel
             if (srcType == null) return false;
             if (srcType.ToLower().Contains("char") && (Info.DataType?.ToLower()?.Contains("char") ?? false)) return true;
             return false;
+        }
+
+        public DmlfExpression GetCompareSelectorExpression(DmlfExpression expr)
+        {
+            if (String.IsNullOrEmpty(CompareSelectorFunction)) return expr;
+            var res = new DmlfFuncCallExpression
+            {
+                FuncName = CompareSelectorFunction,
+            };
+            res.Arguments.Add(expr);
+            return res;
         }
     }
 }

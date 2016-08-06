@@ -172,8 +172,8 @@ namespace DbShell.RelatedDataSync.SqlModel
             {
                 rel.Conditions.Add(new DmlfEqualCondition
                 {
-                    LeftExpr = keycol.CreateSourceExpression(joinModel, false),
-                    RightExpr = keycol.CreateTargetExpression(res),
+                    LeftExpr = keycol.GetCompareSelectorExpression(keycol.CreateSourceExpression(joinModel, false)),
+                    RightExpr = keycol.GetCompareSelectorExpression(keycol.CreateTargetExpression(res)),
                     CollateSpec = keycol.UseCollate(joinModel) ? "DATABASE_DEFAULT" : null,
                 });
             }
@@ -379,8 +379,8 @@ namespace DbShell.RelatedDataSync.SqlModel
         {
             foreach (var column in TargetColumns.Where(useThisColumns))
             {
-                var leftExpr = column.CreateTargetExpression(targetEntityAlias);
-                var rightExpr = column.CreateSourceExpression(SourceJoinModel, false);
+                var leftExpr = column.GetCompareSelectorExpression(column.CreateTargetExpression(targetEntityAlias));
+                var rightExpr = column.GetCompareSelectorExpression(column.CreateSourceExpression(SourceJoinModel, false));
 
                 DmlfConditionBase cond;
 
@@ -410,14 +410,19 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         }
 
-        private void CreateKeyCondition(DmlfCommandBase cmd, string targetEntityAlias)
+        private void CreateKeyCondition(DmlfCommandBase cmd, string targetEntityAlias, bool includeUpdateRestriction = false)
         {
-            CreateTargetColumsnCondition(cmd, targetEntityAlias, x => x.IsKey || x.IsRestriction);
+            CreateTargetColumsnCondition(cmd, targetEntityAlias, x => x.IsKey || x.IsRestriction || (includeUpdateRestriction && x.IsUpdateRestriction));
         }
 
         internal void CreateRestrictionCondition(DmlfCommandBase cmd, string targetEntityAlias, bool includeReferenceRestrictions = true)
         {
             CreateTargetColumsnCondition(cmd, targetEntityAlias, x => x.IsRestriction && (includeReferenceRestrictions || !x.IsReference));
+        }
+
+        internal void CreateDeleteRestrictionCondition(DmlfCommandBase cmd, string targetEntityAlias)
+        {
+            CreateTargetColumsnCondition(cmd, targetEntityAlias, x => x.IsDeleteRestriction);
         }
 
         private DmlfUpdate CompileMarkRelived()
@@ -480,7 +485,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                     LinkedInfo = TargetLinkedInfo,
                 }
             });
-            CreateKeyCondition(cmd, "target");
+            CreateKeyCondition(cmd, "target", true);
             CreateLifetimeConditions(cmd, "target");
             CreateFilterConditions(cmd);
 
@@ -554,6 +559,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             existSelect.From.Add(SourceJoinModel.SourceToRefsJoin);
             CreateKeyCondition(existSelect, "target");
             CreateRestrictionCondition(res, "target", false);
+            CreateDeleteRestrictionCondition(res, "target");
             CreateLifetimeConditions(res, "target");
             CreateReferenceRestrictionsCodition(res, "target");
 

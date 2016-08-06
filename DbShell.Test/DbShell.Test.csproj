@@ -243,6 +243,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <EmbeddedResource Include="RelatedDataSync\CreateRdsNullRestr.sql" />
+    <EmbeddedResource Include="RelatedDataSync\CreateRdsUpdateRestr.sql" />
     <Content Include="RelatedDataSync\rds.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -363,6 +364,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="RelatedDataSync\rds_null_restr.xaml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="RelatedDataSync\rds_update_restr.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -329,5 +329,26 @@ namespace DbShell.Test
                 AssertIsValue("3", "select count(*) from Target");
             }
         }
+
+        [DeploymentItem("RelatedDataSync/rds_update_restr.xaml")]
+        [TestMethod]
+        public void RdsUpdateRestr()
+        {
+            InitDatabase();
+            RunEmbeddedScript("RelatedDataSync.CreateRdsUpdateRestr.sql");
+
+            using (var runner = CreateRunner())
+            {
+                runner.LoadFile("rds_update_restr.xaml");
+                runner.Run();
+                AssertIsValue("2", "select count(*) from Target2");
+
+                RunScript("update Source2 set Value1=22 where ID=2");
+                runner.Run();
+                AssertIsValue("2", "select count(*) from Target2");
+                AssertIsValue("101", "select Value1 from Target2 where IdOriginal=1");
+                AssertIsValue("22", "select Value1 from Target2 where IdOriginal=2");
+            }
+        }
     }
 }
