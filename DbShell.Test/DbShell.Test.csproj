@@ -242,6 +242,7 @@
     <Content Include="LocalDb\transform_concat2.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="RelatedDataSync\CreateRdsNullRestr.sql" />
     <Content Include="RelatedDataSync\rds.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -356,6 +357,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="LocalDb\transform_exe.xaml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="RelatedDataSync\rds_null_restr.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

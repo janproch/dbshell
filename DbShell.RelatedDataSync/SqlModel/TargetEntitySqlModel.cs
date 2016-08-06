@@ -379,16 +379,32 @@ namespace DbShell.RelatedDataSync.SqlModel
         {
             foreach (var column in TargetColumns.Where(useThisColumns))
             {
-                var cond = new DmlfEqualCondition
+                var leftExpr = column.CreateTargetExpression(targetEntityAlias);
+                var rightExpr = column.CreateSourceExpression(SourceJoinModel, false);
+
+                DmlfConditionBase cond;
+
+                if (DmlfExpression.IsNullLiteral(leftExpr))
                 {
-                    // target columns
-                    LeftExpr = column.CreateTargetExpression(targetEntityAlias),
+                    cond = new DmlfIsNullCondition { Expr = rightExpr };
+                }
+                else if (DmlfExpression.IsNullLiteral(rightExpr))
+                {
+                    cond = new DmlfIsNullCondition { Expr = leftExpr };
+                }
+                else
+                {
+                    cond = new DmlfEqualCondition
+                    {
+                        // target columns
+                        LeftExpr = leftExpr,
 
-                    // source column
-                    RightExpr = column.CreateSourceExpression(SourceJoinModel, false),
+                        // source column
+                        RightExpr = rightExpr,
 
-                    CollateSpec = column.UseCollate(SourceJoinModel) ? "DATABASE_DEFAULT" : null,
-                };
+                        CollateSpec = column.UseCollate(SourceJoinModel) ? "DATABASE_DEFAULT" : null,
+                    };
+                }
                 cmd.AddAndCondition(cond);
             }
 

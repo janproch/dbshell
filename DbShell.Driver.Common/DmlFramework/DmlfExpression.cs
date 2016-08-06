@@ -42,5 +42,11 @@ namespace DbShell.Driver.Common.DmlFramework
         }
 
         protected abstract string GetTypeName();
+
+        public static bool IsNullLiteral(DmlfExpression expr)
+        {
+            var literal = expr as DmlfLiteralExpression;
+            return literal != null && literal.Value == null;
+        }
     }
 }

@@ -310,5 +310,24 @@ namespace DbShell.Test
             AssertIsValue("4", "select count(*) from TargetGroup");
         }
 
+        [DeploymentItem("RelatedDataSync/rds_null_restr.xaml")]
+        [TestMethod]
+        public void RdsNullRestr()
+        {
+            InitDatabase();
+            RunEmbeddedScript("RelatedDataSync.CreateRdsNullRestr.sql");
+
+            using (var runner = CreateRunner())
+            {
+                runner.LoadFile("rds_null_restr.xaml");
+                runner.Run();
+
+                AssertIsValue("3", "select count(*) from Target");
+
+                runner.Run();
+
+                AssertIsValue("3", "select count(*) from Target");
+            }
+        }
     }
 }
