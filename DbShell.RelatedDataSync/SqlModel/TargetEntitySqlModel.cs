@@ -170,12 +170,15 @@ namespace DbShell.RelatedDataSync.SqlModel
 
             foreach (var keycol in TargetColumns.Where(x => x.IsKey || x.IsRestriction))
             {
-                rel.Conditions.Add(new DmlfEqualCondition
-                {
-                    LeftExpr = keycol.GetCompareSelectorExpression(keycol.CreateSourceExpression(joinModel, false)),
-                    RightExpr = keycol.GetCompareSelectorExpression(keycol.CreateTargetExpression(res)),
-                    CollateSpec = keycol.UseCollate(joinModel) ? "DATABASE_DEFAULT" : null,
-                });
+                var cond = CreateEqualCondition(keycol, keycol.CreateSourceExpression(joinModel, false), keycol.CreateTargetExpression(res), keycol.UseCollate(joinModel));
+                rel.Conditions.Add(cond);
+
+                //rel.Conditions.Add(new DmlfEqualCondition
+                //{
+                //    LeftExpr = keycol.GetCompareSelectorExpression(keycol.CreateSourceExpression(joinModel, false)),
+                //    RightExpr = keycol.GetCompareSelectorExpression(keycol.CreateTargetExpression(res)),
+                //    CollateSpec = keycol.UseCollate(joinModel) ? "DATABASE_DEFAULT" : null,
+                //});
             }
 
             from.Relations.Add(rel);
@@ -375,39 +378,51 @@ namespace DbShell.RelatedDataSync.SqlModel
             }
         }
 
+        //rel.Conditions.Add(new DmlfEqualCondition
+        //{
+        //    LeftExpr = keycol.GetCompareSelectorExpression(keycol.CreateSourceExpression(joinModel, false)),
+        //    RightExpr = keycol.GetCompareSelectorExpression(keycol.CreateTargetExpression(res)),
+        //    CollateSpec = keycol.UseCollate(joinModel) ? "DATABASE_DEFAULT" : null,
+        //});
+        private DmlfConditionBase CreateEqualCondition(TargetColumnSqlModelBase column, DmlfExpression leftExprCore, DmlfExpression rightExprCore, bool useCollate)
+        {
+            var leftExpr = column.GetCompareSelectorExpression(leftExprCore);
+            var rightExpr = column.GetCompareSelectorExpression(rightExprCore);
+
+            if (DmlfExpression.IsNullLiteral(leftExpr))
+            {
+                return new DmlfIsNullCondition { Expr = rightExpr };
+            }
+            else if (DmlfExpression.IsNullLiteral(rightExpr))
+            {
+                return new DmlfIsNullCondition { Expr = leftExpr };
+            }
+            else
+            {
+                return new DmlfEqualCondition
+                {
+                    // target columns
+                    LeftExpr = leftExpr,
+
+                    // source column
+                    RightExpr = rightExpr,
+
+                    CollateSpec = useCollate ? "DATABASE_DEFAULT" : null,
+                };
+            }
+        }
+
+
         private void CreateTargetColumsnCondition(DmlfCommandBase cmd, string targetEntityAlias, Func<TargetColumnSqlModelBase, bool> useThisColumns)
         {
             foreach (var column in TargetColumns.Where(useThisColumns))
             {
-                var leftExpr = column.GetCompareSelectorExpression(column.CreateTargetExpression(targetEntityAlias));
-                var rightExpr = column.GetCompareSelectorExpression(column.CreateSourceExpression(SourceJoinModel, false));
-
-                DmlfConditionBase cond;
-
-                if (DmlfExpression.IsNullLiteral(leftExpr))
-                {
-                    cond = new DmlfIsNullCondition { Expr = rightExpr };
-                }
-                else if (DmlfExpression.IsNullLiteral(rightExpr))
-                {
-                    cond = new DmlfIsNullCondition { Expr = leftExpr };
-                }
-                else
-                {
-                    cond = new DmlfEqualCondition
-                    {
-                        // target columns
-                        LeftExpr = leftExpr,
-
-                        // source column
-                        RightExpr = rightExpr,
-
-                        CollateSpec = column.UseCollate(SourceJoinModel) ? "DATABASE_DEFAULT" : null,
-                    };
-                }
+                var cond = CreateEqualCondition(column,
+                    column.CreateTargetExpression(targetEntityAlias),
+                    column.CreateSourceExpression(SourceJoinModel, false),
+                     column.UseCollate(SourceJoinModel));
                 cmd.AddAndCondition(cond);
             }
-
         }
 
         private void CreateKeyCondition(DmlfCommandBase cmd, string targetEntityAlias, bool includeUpdateRestriction = false)
