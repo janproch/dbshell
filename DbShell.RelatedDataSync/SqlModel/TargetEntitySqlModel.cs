@@ -240,6 +240,13 @@ namespace DbShell.RelatedDataSync.SqlModel
                     yield return m.Groups[1].Value;
                 }
             }
+            if (col.RealValueType == TargetColumnValueType.Template)
+            {
+                foreach (Match m in Regex.Matches(col.Template, ExpressionColumnRegex))
+                {
+                    yield return m.Groups[1].Value;
+                }
+            }
         }
 
         private DmlfInsertSelect CompileInsert()
