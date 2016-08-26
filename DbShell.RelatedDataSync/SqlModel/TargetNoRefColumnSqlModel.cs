@@ -71,7 +71,7 @@ namespace DbShell.RelatedDataSync.SqlModel
 
                         return new DmlfSqlValueExpression
                         {
-                            Value = expr,
+                            Value = "(" + expr + ")",
                         };
 
                         //return GetExprOrAggregate(new DmlfSqlValueExpression
@@ -83,7 +83,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                     {
                         return new DmlfSqlValueExpression
                         {
-                            Value = _dbsh.Expression,
+                            Value = "(" + _dbsh.Expression + ")",
                         };
                     }
                 case TargetColumnValueType.Template:
@@ -146,7 +146,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                         case TargetColumnSpecialValue.ImportDate:
                             return new DmlfSqlValueExpression
                             {
-                                Value = SqlScriptCompiler.ImportDateVariableName,
+                                Value = "(" + SqlScriptCompiler.ImportDateVariableName + ")",
                             };
                     }
                     break;

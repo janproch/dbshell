@@ -63,7 +63,7 @@ namespace DbShell.RelatedDataSync.SqlModel
         public IDatabaseFactory Factory => _factory;
         public void Put(string format, params object[] args) => _dmp.Put(format, args);
         public void PutCmd(string format, params object[] args) => _dmp.PutCmd(format, args);
-        public static DmlfExpression ImportDateTimeExpression => new DmlfSqlValueExpression { Value = ImportDateTimeVariableName };
+        public static DmlfExpression ImportDateTimeExpression => new DmlfSqlValueExpression { Value = "(" + ImportDateTimeVariableName + ")" };
         public string GetCompiledSql() => _sw.ToString();
 
         private const string SEPARATOR =
