@@ -222,13 +222,13 @@ namespace DbShell.RelatedDataSync.SqlModel
                         continue;
                     }
 
-                    if (keycols.Count == 1)
-                    {
-                        if (keycols[0].Entities.Count > 2)
-                        {
-                            continue;
-                        }
-                    }
+                    //if (keycols.Count == 1)
+                    //{
+                    //    if (keycols[0].Entities.Count > 2)
+                    //    {
+                    //        continue;
+                    //    }
+                    //}
 
                     removable.Add(ent);
                 }
