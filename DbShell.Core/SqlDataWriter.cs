@@ -20,6 +20,9 @@ namespace DbShell.Core
         [XamlProperty]
         public string File { get; set; }
 
+        [XamlProperty]
+        public int? InsertSeparatorAfterRows { get; set; }
+
         public bool IsAvailableRowFormat(IShellContext context)
         {
             return false;
@@ -30,7 +33,7 @@ namespace DbShell.Core
             string file = context.ResolveFile(context.Replace(File), ResolveFileMode.Output);
             var fw = new StreamWriter(file);
             var provider = GetConnectionProvider(context);
-            return new SqlFileWriter(fw, provider.Factory);
+            return new SqlFileWriter(fw, provider.Factory, InsertSeparatorAfterRows);
         }
 
         public TableInfo GetRowFormat(IShellContext context)
