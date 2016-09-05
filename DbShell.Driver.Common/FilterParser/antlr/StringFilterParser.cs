@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 StringFilter.g 2015-09-19 21:51:32
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 StringFilter.g 2016-09-05 21:10:00
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 168, 219
@@ -35,7 +35,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
 		"DOT", 
 		"SQL_VARIABLE", 
 		"PLUS", 
-		"MINUS", 
+		"TILDA", 
 		"LT", 
 		"GT", 
 		"LE", 
@@ -89,6 +89,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
     public const int STAR = 29;
     public const int EOF = -1;
     public const int Q_STRING = 4;
+    public const int TILDA = 11;
     public const int COMMA = 27;
     public const int T_NULL = 22;
     public const int PLUS = 10;
@@ -124,7 +125,6 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
     public const int P = 37;
     public const int S = 53;
     public const int R = 52;
-    public const int MINUS = 11;
     public const int Y = 38;
     public const int X = 56;
     public const int SQL_LITERAL = 7;
@@ -506,7 +506,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
     };
 
     // $ANTLR start "element"
-    // StringFilter.g:26:1: element : (s1= string_lit | PLUS s1= string_lit | MINUS s1= string_lit | LT s1= string_lit | GT s1= string_lit | LE s1= string_lit | GE s1= string_lit | NE s1= string_lit | EQ s1= string_lit | ARROW s1= string_lit | NARROW s1= string_lit | DOLLAR s1= string_lit | NDOLLAR s1= string_lit | T_NULL | T_NOT T_NULL | T_EMPTY | T_NOT T_EMPTY | LT sql_name | GT sql_name | LE sql_name | GE sql_name | NE sql_name | EQ sql_name | EQ2 sql_name | NE2 sql_name );
+    // StringFilter.g:26:1: element : (s1= string_lit | PLUS s1= string_lit | TILDA s1= string_lit | LT s1= string_lit | GT s1= string_lit | LE s1= string_lit | GE s1= string_lit | NE s1= string_lit | EQ s1= string_lit | ARROW s1= string_lit | NARROW s1= string_lit | DOLLAR s1= string_lit | NDOLLAR s1= string_lit | T_NULL | T_NOT T_NULL | T_EMPTY | T_NOT T_EMPTY | LT sql_name | GT sql_name | LE sql_name | GE sql_name | NE sql_name | EQ sql_name | EQ2 sql_name | NE2 sql_name );
     public StringFilterParser.element_return element() // throws RecognitionException [1]
     {   
         StringFilterParser.element_return retval = new StringFilterParser.element_return();
@@ -515,7 +515,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
         object root_0 = null;
 
         IToken PLUS5 = null;
-        IToken MINUS6 = null;
+        IToken TILDA6 = null;
         IToken LT7 = null;
         IToken GT8 = null;
         IToken LE9 = null;
@@ -560,7 +560,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
 
 
         object PLUS5_tree=null;
-        object MINUS6_tree=null;
+        object TILDA6_tree=null;
         object LT7_tree=null;
         object GT8_tree=null;
         object LE9_tree=null;
@@ -588,7 +588,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
 
         try 
     	{
-            // StringFilter.g:26:8: (s1= string_lit | PLUS s1= string_lit | MINUS s1= string_lit | LT s1= string_lit | GT s1= string_lit | LE s1= string_lit | GE s1= string_lit | NE s1= string_lit | EQ s1= string_lit | ARROW s1= string_lit | NARROW s1= string_lit | DOLLAR s1= string_lit | NDOLLAR s1= string_lit | T_NULL | T_NOT T_NULL | T_EMPTY | T_NOT T_EMPTY | LT sql_name | GT sql_name | LE sql_name | GE sql_name | NE sql_name | EQ sql_name | EQ2 sql_name | NE2 sql_name )
+            // StringFilter.g:26:8: (s1= string_lit | PLUS s1= string_lit | TILDA s1= string_lit | LT s1= string_lit | GT s1= string_lit | LE s1= string_lit | GE s1= string_lit | NE s1= string_lit | EQ s1= string_lit | ARROW s1= string_lit | NARROW s1= string_lit | DOLLAR s1= string_lit | NDOLLAR s1= string_lit | T_NULL | T_NOT T_NULL | T_EMPTY | T_NOT T_EMPTY | LT sql_name | GT sql_name | LE sql_name | GE sql_name | NE sql_name | EQ sql_name | EQ2 sql_name | NE2 sql_name )
             int alt3 = 25;
             alt3 = dfa3.Predict(input);
             switch (alt3) 
@@ -626,13 +626,13 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
                     }
                     break;
                 case 3 :
-                    // StringFilter.g:29:5: MINUS s1= string_lit
+                    // StringFilter.g:29:5: TILDA s1= string_lit
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	MINUS6=(IToken)Match(input,MINUS,FOLLOW_MINUS_in_element145); 
-                    		MINUS6_tree = (object)adaptor.Create(MINUS6);
-                    		adaptor.AddChild(root_0, MINUS6_tree);
+                    	TILDA6=(IToken)Match(input,TILDA,FOLLOW_TILDA_in_element145); 
+                    		TILDA6_tree = (object)adaptor.Create(TILDA6);
+                    		adaptor.AddChild(root_0, TILDA6_tree);
 
                     	PushFollow(FOLLOW_string_lit_in_element149);
                     	s1 = string_lit();
@@ -1500,7 +1500,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
 
         override public string Description
         {
-            get { return "26:1: element : (s1= string_lit | PLUS s1= string_lit | MINUS s1= string_lit | LT s1= string_lit | GT s1= string_lit | LE s1= string_lit | GE s1= string_lit | NE s1= string_lit | EQ s1= string_lit | ARROW s1= string_lit | NARROW s1= string_lit | DOLLAR s1= string_lit | NDOLLAR s1= string_lit | T_NULL | T_NOT T_NULL | T_EMPTY | T_NOT T_EMPTY | LT sql_name | GT sql_name | LE sql_name | GE sql_name | NE sql_name | EQ sql_name | EQ2 sql_name | NE2 sql_name );"; }
+            get { return "26:1: element : (s1= string_lit | PLUS s1= string_lit | TILDA s1= string_lit | LT s1= string_lit | GT s1= string_lit | LE s1= string_lit | GE s1= string_lit | NE s1= string_lit | EQ s1= string_lit | ARROW s1= string_lit | NARROW s1= string_lit | DOLLAR s1= string_lit | NDOLLAR s1= string_lit | T_NULL | T_NOT T_NULL | T_EMPTY | T_NOT T_EMPTY | LT sql_name | GT sql_name | LE sql_name | GE sql_name | NE sql_name | EQ sql_name | EQ2 sql_name | NE2 sql_name );"; }
         }
 
     }
@@ -1567,7 +1567,7 @@ public partial class StringFilterParser : DbShellFilterAntlrParser
     public static readonly BitSet FOLLOW_string_lit_in_element123 = new BitSet(new ulong[]{0x0000000000000002UL});
     public static readonly BitSet FOLLOW_PLUS_in_element132 = new BitSet(new ulong[]{0x0000000000000070UL});
     public static readonly BitSet FOLLOW_string_lit_in_element136 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_MINUS_in_element145 = new BitSet(new ulong[]{0x0000000000000070UL});
+    public static readonly BitSet FOLLOW_TILDA_in_element145 = new BitSet(new ulong[]{0x0000000000000070UL});
     public static readonly BitSet FOLLOW_string_lit_in_element149 = new BitSet(new ulong[]{0x0000000000000002UL});
     public static readonly BitSet FOLLOW_LT_in_element158 = new BitSet(new ulong[]{0x0000000000000070UL});
     public static readonly BitSet FOLLOW_string_lit_in_element162 = new BitSet(new ulong[]{0x0000000000000002UL});

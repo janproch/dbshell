@@ -89,10 +89,14 @@
     <Compile Include="DmlFramework\DmlfDisableConstraint.cs" />
     <Compile Include="DmlFramework\DmlfInsert.cs" />
     <Compile Include="DmlFramework\DmlfHaving.cs" />
+    <Compile Include="FilterParser\antlr\ObjectFilterLexer.cs" />
+    <Compile Include="FilterParser\antlr\ObjectFilterParser.cs" />
     <Compile Include="Structure\NormalizedDatabaseConnectionInfo.cs" />
     <Compile Include="Structure\StructuredIdentifier.cs" />
     <Compile Include="Utility\ConnectionStringTool.cs" />
     <Compile Include="Utility\DateTimeExTypeConverter.cs" />
+    <Compile Include="Utility\ObjectFilterAntlrParser.cs" />
+    <Compile Include="Utility\ObjectFilterConditions.cs" />
     <Compile Include="Utility\SqlEditorInfoTool.cs" />
     <Compile Include="Utility\TargetColumnMap.cs" />
     <Compile Include="Utility\XamlPropertyAttribute.cs" />

@@ -26,7 +26,7 @@ sql_name : sql_identifier | sql_variable;
 element:
   s1=string_lit  { AddStringTestCondition<DmlfContainsTextCondition>(ExtractString($s1.text)); }
   | PLUS s1=string_lit  { AddStringTestCondition<DmlfContainsTextCondition>(ExtractString($s1.text)); }
-  | MINUS s1=string_lit  { AddStringTestCondition<DmlfContainsTextCondition>(ExtractString($s1.text));NegateLastCondition(); }
+  | TILDA s1=string_lit  { AddStringTestCondition<DmlfContainsTextCondition>(ExtractString($s1.text));NegateLastCondition(); }
   | LT s1=string_lit { AddStringRelation(ExtractString($s1.text), "<"); } 
   | GT s1=string_lit { AddStringRelation(ExtractString($s1.text), ">"); } 
   | LE s1=string_lit { AddStringRelation(ExtractString($s1.text), "<="); } 
@@ -60,7 +60,7 @@ list:
  
 expr: list; 
  
-MINUS:  '-';
+TILDA:  '~';
 LT:  '<';
 GT:  '>';
 GE:  '>=';
@@ -113,7 +113,7 @@ Q_STRING:
 	  '\"' )
 ;
 
-I_STRING: (~('[' | '-' | ' ' | '<' | '>' | '=' | '!' | '\r' | '\n' | '^' | '$' | '*' | ',' | '+' ))*;
+I_STRING: (~('[' | '~' | ' ' | '<' | '>' | '=' | '!' | '\r' | '\n' | '^' | '$' | '*' | ',' | '+' ))*;
 
 WHITESPACE : ( '\t' | ' ' | '\u000C' )+    { $channel = HIDDEN; } ;
 ENDLINE: ( '\r' | '\n' )+; 
