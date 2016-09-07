@@ -12,11 +12,9 @@ namespace DbShell.Driver.Common.Utility
     {
         public string Schema;
         public string Name;
-        public List<string> Content;
-        public string ContentText
-        {
-            set { Content = SplitContentText(value); }
-        }
+        public Func<List<string>> GetContentFunc;
+        public Func<string> GetContentTextFunc;
+        public string ContentText;
 
         public static List<string> SplitContentText(string s)
         {
@@ -41,6 +39,14 @@ namespace DbShell.Driver.Common.Utility
 
             res.AddRange(s.Split(' ', ',', '\r', '\n').Select(x => x.Trim()).Where(x => !String.IsNullOrEmpty(x)));
             return res;
+        }
+
+        public List<string> GetContent()
+        {
+            if (GetContentFunc != null) return GetContentFunc();
+            if (GetContentTextFunc != null) return SplitContentText(GetContentTextFunc());
+            if (ContentText != null) return SplitContentText(ContentText);
+            return null;
         }
     }
 
@@ -107,7 +113,8 @@ namespace DbShell.Driver.Common.Utility
                 case ObjectFilterContextEnum.Schema:
                     return obj.Schema != null && Match(obj.Schema);
                 case ObjectFilterContextEnum.Content:
-                    return obj.Content != null && obj.Content.Any(x => Match(x));
+                    var content = obj.GetContent();
+                    return content != null && content.Any(x => Match(x));
             }
             return false;
         }

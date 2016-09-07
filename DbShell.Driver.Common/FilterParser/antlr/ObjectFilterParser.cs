@@ -1,4 +1,4 @@
-// $ANTLR 3.2 Sep 23, 2009 12:02:23 ObjectFilter.g 2016-09-05 21:10:04
+// $ANTLR 3.2 Sep 23, 2009 12:02:23 ObjectFilter.g 2016-09-07 21:54:37
 
 // The variable 'variable' is assigned but its value is never used.
 #pragma warning disable 168, 219
@@ -31,6 +31,7 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
 		"Q_STRING", 
 		"A_STRING", 
 		"I_STRING", 
+		"PLUS", 
 		"TILDA", 
 		"ARROW", 
 		"NARROW", 
@@ -45,22 +46,23 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
 		"WHITESPACE"
     };
 
-    public const int DOLLAR = 10;
-    public const int TILDA = 7;
+    public const int DOLLAR = 11;
     public const int I_STRING = 6;
-    public const int NDOLLAR = 11;
-    public const int COMMA = 16;
-    public const int MAIL = 15;
-    public const int HASH = 14;
-    public const int A_STRING = 5;
-    public const int WHITESPACE = 18;
-    public const int ARROW = 8;
-    public const int ENDLINE = 17;
-    public const int EQ = 12;
+    public const int MAIL = 16;
+    public const int HASH = 15;
+    public const int WHITESPACE = 19;
     public const int EOF = -1;
-    public const int NARROW = 9;
-    public const int NE = 13;
     public const int Q_STRING = 4;
+    public const int TILDA = 8;
+    public const int NDOLLAR = 12;
+    public const int COMMA = 17;
+    public const int A_STRING = 5;
+    public const int ARROW = 9;
+    public const int PLUS = 7;
+    public const int ENDLINE = 18;
+    public const int EQ = 13;
+    public const int NARROW = 10;
+    public const int NE = 14;
 
     // delegates
     // delegators
@@ -174,7 +176,7 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
     };
 
     // $ANTLR start "element"
-    // ObjectFilter.g:16:1: element : (s1= string_lit | TILDA s1= string_lit | ARROW s1= string_lit | NARROW s1= string_lit | DOLLAR s1= string_lit | NDOLLAR s1= string_lit | EQ s1= string_lit | NE s1= string_lit );
+    // ObjectFilter.g:16:1: element : (s1= string_lit | PLUS s1= string_lit | TILDA s1= string_lit | ARROW s1= string_lit | NARROW s1= string_lit | DOLLAR s1= string_lit | NDOLLAR s1= string_lit | EQ s1= string_lit | NE s1= string_lit );
     public ObjectFilterParser.element_return element() // throws RecognitionException [1]
     {   
         ObjectFilterParser.element_return retval = new ObjectFilterParser.element_return();
@@ -182,28 +184,30 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
 
         object root_0 = null;
 
-        IToken TILDA2 = null;
-        IToken ARROW3 = null;
-        IToken NARROW4 = null;
-        IToken DOLLAR5 = null;
-        IToken NDOLLAR6 = null;
-        IToken EQ7 = null;
-        IToken NE8 = null;
+        IToken PLUS2 = null;
+        IToken TILDA3 = null;
+        IToken ARROW4 = null;
+        IToken NARROW5 = null;
+        IToken DOLLAR6 = null;
+        IToken NDOLLAR7 = null;
+        IToken EQ8 = null;
+        IToken NE9 = null;
         ObjectFilterParser.string_lit_return s1 = default(ObjectFilterParser.string_lit_return);
 
 
-        object TILDA2_tree=null;
-        object ARROW3_tree=null;
-        object NARROW4_tree=null;
-        object DOLLAR5_tree=null;
-        object NDOLLAR6_tree=null;
-        object EQ7_tree=null;
-        object NE8_tree=null;
+        object PLUS2_tree=null;
+        object TILDA3_tree=null;
+        object ARROW4_tree=null;
+        object NARROW5_tree=null;
+        object DOLLAR6_tree=null;
+        object NDOLLAR7_tree=null;
+        object EQ8_tree=null;
+        object NE9_tree=null;
 
         try 
     	{
-            // ObjectFilter.g:16:8: (s1= string_lit | TILDA s1= string_lit | ARROW s1= string_lit | NARROW s1= string_lit | DOLLAR s1= string_lit | NDOLLAR s1= string_lit | EQ s1= string_lit | NE s1= string_lit )
-            int alt1 = 8;
+            // ObjectFilter.g:16:8: (s1= string_lit | PLUS s1= string_lit | TILDA s1= string_lit | ARROW s1= string_lit | NARROW s1= string_lit | DOLLAR s1= string_lit | NDOLLAR s1= string_lit | EQ s1= string_lit | NE s1= string_lit )
+            int alt1 = 9;
             switch ( input.LA(1) ) 
             {
             case Q_STRING:
@@ -213,39 +217,44 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
                 alt1 = 1;
                 }
                 break;
-            case TILDA:
+            case PLUS:
             	{
                 alt1 = 2;
                 }
                 break;
-            case ARROW:
+            case TILDA:
             	{
                 alt1 = 3;
                 }
                 break;
-            case NARROW:
+            case ARROW:
             	{
                 alt1 = 4;
                 }
                 break;
-            case DOLLAR:
+            case NARROW:
             	{
                 alt1 = 5;
                 }
                 break;
-            case NDOLLAR:
+            case DOLLAR:
             	{
                 alt1 = 6;
                 }
                 break;
-            case EQ:
+            case NDOLLAR:
             	{
                 alt1 = 7;
                 }
                 break;
-            case NE:
+            case EQ:
             	{
                 alt1 = 8;
+                }
+                break;
+            case NE:
+            	{
+                alt1 = 9;
                 }
                 break;
             	default:
@@ -272,15 +281,33 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
                     }
                     break;
                 case 2 :
-                    // ObjectFilter.g:18:5: TILDA s1= string_lit
+                    // ObjectFilter.g:18:5: PLUS s1= string_lit
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	TILDA2=(IToken)Match(input,TILDA,FOLLOW_TILDA_in_element71); 
-                    		TILDA2_tree = (object)adaptor.Create(TILDA2);
-                    		adaptor.AddChild(root_0, TILDA2_tree);
+                    	PLUS2=(IToken)Match(input,PLUS,FOLLOW_PLUS_in_element70); 
+                    		PLUS2_tree = (object)adaptor.Create(PLUS2);
+                    		adaptor.AddChild(root_0, PLUS2_tree);
 
-                    	PushFollow(FOLLOW_string_lit_in_element75);
+                    	PushFollow(FOLLOW_string_lit_in_element74);
+                    	s1 = string_lit();
+                    	state.followingStackPointer--;
+
+                    	adaptor.AddChild(root_0, s1.Tree);
+                    	 AddStringTestCondition<ObjectFilterContainsTextCondition>(ExtractString(((s1 != null) ? input.ToString((IToken)(s1.Start),(IToken)(s1.Stop)) : null))); 
+
+                    }
+                    break;
+                case 3 :
+                    // ObjectFilter.g:19:5: TILDA s1= string_lit
+                    {
+                    	root_0 = (object)adaptor.GetNilNode();
+
+                    	TILDA3=(IToken)Match(input,TILDA,FOLLOW_TILDA_in_element82); 
+                    		TILDA3_tree = (object)adaptor.Create(TILDA3);
+                    		adaptor.AddChild(root_0, TILDA3_tree);
+
+                    	PushFollow(FOLLOW_string_lit_in_element86);
                     	s1 = string_lit();
                     	state.followingStackPointer--;
 
@@ -289,16 +316,16 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
 
                     }
                     break;
-                case 3 :
-                    // ObjectFilter.g:19:5: ARROW s1= string_lit
+                case 4 :
+                    // ObjectFilter.g:20:5: ARROW s1= string_lit
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	ARROW3=(IToken)Match(input,ARROW,FOLLOW_ARROW_in_element84); 
-                    		ARROW3_tree = (object)adaptor.Create(ARROW3);
-                    		adaptor.AddChild(root_0, ARROW3_tree);
+                    	ARROW4=(IToken)Match(input,ARROW,FOLLOW_ARROW_in_element95); 
+                    		ARROW4_tree = (object)adaptor.Create(ARROW4);
+                    		adaptor.AddChild(root_0, ARROW4_tree);
 
-                    	PushFollow(FOLLOW_string_lit_in_element88);
+                    	PushFollow(FOLLOW_string_lit_in_element99);
                     	s1 = string_lit();
                     	state.followingStackPointer--;
 
@@ -307,16 +334,16 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
 
                     }
                     break;
-                case 4 :
-                    // ObjectFilter.g:20:5: NARROW s1= string_lit
+                case 5 :
+                    // ObjectFilter.g:21:5: NARROW s1= string_lit
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	NARROW4=(IToken)Match(input,NARROW,FOLLOW_NARROW_in_element97); 
-                    		NARROW4_tree = (object)adaptor.Create(NARROW4);
-                    		adaptor.AddChild(root_0, NARROW4_tree);
+                    	NARROW5=(IToken)Match(input,NARROW,FOLLOW_NARROW_in_element108); 
+                    		NARROW5_tree = (object)adaptor.Create(NARROW5);
+                    		adaptor.AddChild(root_0, NARROW5_tree);
 
-                    	PushFollow(FOLLOW_string_lit_in_element101);
+                    	PushFollow(FOLLOW_string_lit_in_element112);
                     	s1 = string_lit();
                     	state.followingStackPointer--;
 
@@ -325,16 +352,16 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
 
                     }
                     break;
-                case 5 :
-                    // ObjectFilter.g:21:5: DOLLAR s1= string_lit
+                case 6 :
+                    // ObjectFilter.g:22:5: DOLLAR s1= string_lit
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	DOLLAR5=(IToken)Match(input,DOLLAR,FOLLOW_DOLLAR_in_element110); 
-                    		DOLLAR5_tree = (object)adaptor.Create(DOLLAR5);
-                    		adaptor.AddChild(root_0, DOLLAR5_tree);
+                    	DOLLAR6=(IToken)Match(input,DOLLAR,FOLLOW_DOLLAR_in_element121); 
+                    		DOLLAR6_tree = (object)adaptor.Create(DOLLAR6);
+                    		adaptor.AddChild(root_0, DOLLAR6_tree);
 
-                    	PushFollow(FOLLOW_string_lit_in_element114);
+                    	PushFollow(FOLLOW_string_lit_in_element125);
                     	s1 = string_lit();
                     	state.followingStackPointer--;
 
@@ -343,16 +370,16 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
 
                     }
                     break;
-                case 6 :
-                    // ObjectFilter.g:22:5: NDOLLAR s1= string_lit
+                case 7 :
+                    // ObjectFilter.g:23:5: NDOLLAR s1= string_lit
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	NDOLLAR6=(IToken)Match(input,NDOLLAR,FOLLOW_NDOLLAR_in_element123); 
-                    		NDOLLAR6_tree = (object)adaptor.Create(NDOLLAR6);
-                    		adaptor.AddChild(root_0, NDOLLAR6_tree);
+                    	NDOLLAR7=(IToken)Match(input,NDOLLAR,FOLLOW_NDOLLAR_in_element134); 
+                    		NDOLLAR7_tree = (object)adaptor.Create(NDOLLAR7);
+                    		adaptor.AddChild(root_0, NDOLLAR7_tree);
 
-                    	PushFollow(FOLLOW_string_lit_in_element127);
+                    	PushFollow(FOLLOW_string_lit_in_element138);
                     	s1 = string_lit();
                     	state.followingStackPointer--;
 
@@ -361,16 +388,16 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
 
                     }
                     break;
-                case 7 :
-                    // ObjectFilter.g:23:5: EQ s1= string_lit
+                case 8 :
+                    // ObjectFilter.g:24:5: EQ s1= string_lit
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	EQ7=(IToken)Match(input,EQ,FOLLOW_EQ_in_element136); 
-                    		EQ7_tree = (object)adaptor.Create(EQ7);
-                    		adaptor.AddChild(root_0, EQ7_tree);
+                    	EQ8=(IToken)Match(input,EQ,FOLLOW_EQ_in_element147); 
+                    		EQ8_tree = (object)adaptor.Create(EQ8);
+                    		adaptor.AddChild(root_0, EQ8_tree);
 
-                    	PushFollow(FOLLOW_string_lit_in_element140);
+                    	PushFollow(FOLLOW_string_lit_in_element151);
                     	s1 = string_lit();
                     	state.followingStackPointer--;
 
@@ -379,16 +406,16 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
 
                     }
                     break;
-                case 8 :
-                    // ObjectFilter.g:24:5: NE s1= string_lit
+                case 9 :
+                    // ObjectFilter.g:25:5: NE s1= string_lit
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	NE8=(IToken)Match(input,NE,FOLLOW_NE_in_element149); 
-                    		NE8_tree = (object)adaptor.Create(NE8);
-                    		adaptor.AddChild(root_0, NE8_tree);
+                    	NE9=(IToken)Match(input,NE,FOLLOW_NE_in_element160); 
+                    		NE9_tree = (object)adaptor.Create(NE9);
+                    		adaptor.AddChild(root_0, NE9_tree);
 
-                    	PushFollow(FOLLOW_string_lit_in_element153);
+                    	PushFollow(FOLLOW_string_lit_in_element164);
                     	s1 = string_lit();
                     	state.followingStackPointer--;
 
@@ -430,7 +457,7 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
     };
 
     // $ANTLR start "element_with_context"
-    // ObjectFilter.g:27:1: element_with_context : ( element | HASH element | MAIL element );
+    // ObjectFilter.g:28:1: element_with_context : ( element | HASH element | MAIL element );
     public ObjectFilterParser.element_with_context_return element_with_context() // throws RecognitionException [1]
     {   
         ObjectFilterParser.element_with_context_return retval = new ObjectFilterParser.element_with_context_return();
@@ -438,27 +465,28 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
 
         object root_0 = null;
 
-        IToken HASH10 = null;
-        IToken MAIL12 = null;
-        ObjectFilterParser.element_return element9 = default(ObjectFilterParser.element_return);
+        IToken HASH11 = null;
+        IToken MAIL13 = null;
+        ObjectFilterParser.element_return element10 = default(ObjectFilterParser.element_return);
 
-        ObjectFilterParser.element_return element11 = default(ObjectFilterParser.element_return);
+        ObjectFilterParser.element_return element12 = default(ObjectFilterParser.element_return);
 
-        ObjectFilterParser.element_return element13 = default(ObjectFilterParser.element_return);
+        ObjectFilterParser.element_return element14 = default(ObjectFilterParser.element_return);
 
 
-        object HASH10_tree=null;
-        object MAIL12_tree=null;
+        object HASH11_tree=null;
+        object MAIL13_tree=null;
 
         try 
     	{
-            // ObjectFilter.g:27:21: ( element | HASH element | MAIL element )
+            // ObjectFilter.g:28:21: ( element | HASH element | MAIL element )
             int alt2 = 3;
             switch ( input.LA(1) ) 
             {
             case Q_STRING:
             case A_STRING:
             case I_STRING:
+            case PLUS:
             case TILDA:
             case ARROW:
             case NARROW:
@@ -490,50 +518,50 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
             switch (alt2) 
             {
                 case 1 :
-                    // ObjectFilter.g:28:2: element
+                    // ObjectFilter.g:29:2: element
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	PushFollow(FOLLOW_element_in_element_with_context168);
-                    	element9 = element();
+                    	PushFollow(FOLLOW_element_in_element_with_context179);
+                    	element10 = element();
                     	state.followingStackPointer--;
 
-                    	adaptor.AddChild(root_0, element9.Tree);
+                    	adaptor.AddChild(root_0, element10.Tree);
 
                     }
                     break;
                 case 2 :
-                    // ObjectFilter.g:29:4: HASH element
+                    // ObjectFilter.g:30:4: HASH element
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	HASH10=(IToken)Match(input,HASH,FOLLOW_HASH_in_element_with_context174); 
-                    		HASH10_tree = (object)adaptor.Create(HASH10);
-                    		adaptor.AddChild(root_0, HASH10_tree);
+                    	HASH11=(IToken)Match(input,HASH,FOLLOW_HASH_in_element_with_context185); 
+                    		HASH11_tree = (object)adaptor.Create(HASH11);
+                    		adaptor.AddChild(root_0, HASH11_tree);
 
-                    	PushFollow(FOLLOW_element_in_element_with_context176);
-                    	element11 = element();
+                    	PushFollow(FOLLOW_element_in_element_with_context187);
+                    	element12 = element();
                     	state.followingStackPointer--;
 
-                    	adaptor.AddChild(root_0, element11.Tree);
+                    	adaptor.AddChild(root_0, element12.Tree);
                     	 SetLastConditionContext(ObjectFilterContextEnum.Content); 
 
                     }
                     break;
                 case 3 :
-                    // ObjectFilter.g:30:4: MAIL element
+                    // ObjectFilter.g:31:4: MAIL element
                     {
                     	root_0 = (object)adaptor.GetNilNode();
 
-                    	MAIL12=(IToken)Match(input,MAIL,FOLLOW_MAIL_in_element_with_context183); 
-                    		MAIL12_tree = (object)adaptor.Create(MAIL12);
-                    		adaptor.AddChild(root_0, MAIL12_tree);
+                    	MAIL13=(IToken)Match(input,MAIL,FOLLOW_MAIL_in_element_with_context194); 
+                    		MAIL13_tree = (object)adaptor.Create(MAIL13);
+                    		adaptor.AddChild(root_0, MAIL13_tree);
 
-                    	PushFollow(FOLLOW_element_in_element_with_context185);
-                    	element13 = element();
+                    	PushFollow(FOLLOW_element_in_element_with_context196);
+                    	element14 = element();
                     	state.followingStackPointer--;
 
-                    	adaptor.AddChild(root_0, element13.Tree);
+                    	adaptor.AddChild(root_0, element14.Tree);
                     	 SetLastConditionContext(ObjectFilterContextEnum.Schema); 
 
                     }
@@ -571,7 +599,7 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
     };
 
     // $ANTLR start "factor"
-    // ObjectFilter.g:33:1: factor : ( element_with_context )+ ;
+    // ObjectFilter.g:34:1: factor : ( element_with_context )+ ;
     public ObjectFilterParser.factor_return factor() // throws RecognitionException [1]
     {   
         ObjectFilterParser.factor_return retval = new ObjectFilterParser.factor_return();
@@ -579,18 +607,18 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
 
         object root_0 = null;
 
-        ObjectFilterParser.element_with_context_return element_with_context14 = default(ObjectFilterParser.element_with_context_return);
+        ObjectFilterParser.element_with_context_return element_with_context15 = default(ObjectFilterParser.element_with_context_return);
 
 
 
         try 
     	{
-            // ObjectFilter.g:33:7: ( ( element_with_context )+ )
-            // ObjectFilter.g:34:3: ( element_with_context )+
+            // ObjectFilter.g:34:7: ( ( element_with_context )+ )
+            // ObjectFilter.g:35:3: ( element_with_context )+
             {
             	root_0 = (object)adaptor.GetNilNode();
 
-            	// ObjectFilter.g:34:3: ( element_with_context )+
+            	// ObjectFilter.g:35:3: ( element_with_context )+
             	int cnt3 = 0;
             	do 
             	{
@@ -606,13 +634,13 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
             	    switch (alt3) 
             		{
             			case 1 :
-            			    // ObjectFilter.g:34:3: element_with_context
+            			    // ObjectFilter.g:35:3: element_with_context
             			    {
-            			    	PushFollow(FOLLOW_element_with_context_in_factor201);
-            			    	element_with_context14 = element_with_context();
+            			    	PushFollow(FOLLOW_element_with_context_in_factor212);
+            			    	element_with_context15 = element_with_context();
             			    	state.followingStackPointer--;
 
-            			    	adaptor.AddChild(root_0, element_with_context14.Tree);
+            			    	adaptor.AddChild(root_0, element_with_context15.Tree);
 
             			    }
             			    break;
@@ -663,7 +691,7 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
     };
 
     // $ANTLR start "list"
-    // ObjectFilter.g:36:1: list : factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )* ;
+    // ObjectFilter.g:37:1: list : factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )* ;
     public ObjectFilterParser.list_return list() // throws RecognitionException [1]
     {   
         ObjectFilterParser.list_return retval = new ObjectFilterParser.list_return();
@@ -671,31 +699,31 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
 
         object root_0 = null;
 
-        IToken COMMA16 = null;
-        IToken ENDLINE17 = null;
-        IToken ENDLINE19 = null;
-        ObjectFilterParser.factor_return factor15 = default(ObjectFilterParser.factor_return);
+        IToken COMMA17 = null;
+        IToken ENDLINE18 = null;
+        IToken ENDLINE20 = null;
+        ObjectFilterParser.factor_return factor16 = default(ObjectFilterParser.factor_return);
 
-        ObjectFilterParser.factor_return factor18 = default(ObjectFilterParser.factor_return);
+        ObjectFilterParser.factor_return factor19 = default(ObjectFilterParser.factor_return);
 
 
-        object COMMA16_tree=null;
-        object ENDLINE17_tree=null;
-        object ENDLINE19_tree=null;
+        object COMMA17_tree=null;
+        object ENDLINE18_tree=null;
+        object ENDLINE20_tree=null;
 
         try 
     	{
-            // ObjectFilter.g:36:5: ( factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )* )
-            // ObjectFilter.g:37:3: factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )*
+            // ObjectFilter.g:37:5: ( factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )* )
+            // ObjectFilter.g:38:3: factor ( ( COMMA | ( ( ENDLINE )+ ) ) factor )* ( ENDLINE )*
             {
             	root_0 = (object)adaptor.GetNilNode();
 
-            	PushFollow(FOLLOW_factor_in_list212);
-            	factor15 = factor();
+            	PushFollow(FOLLOW_factor_in_list223);
+            	factor16 = factor();
             	state.followingStackPointer--;
 
-            	adaptor.AddChild(root_0, factor15.Tree);
-            	// ObjectFilter.g:37:10: ( ( COMMA | ( ( ENDLINE )+ ) ) factor )*
+            	adaptor.AddChild(root_0, factor16.Tree);
+            	// ObjectFilter.g:38:10: ( ( COMMA | ( ( ENDLINE )+ ) ) factor )*
             	do 
             	{
             	    int alt6 = 2;
@@ -703,9 +731,9 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
             	    switch (alt6) 
             		{
             			case 1 :
-            			    // ObjectFilter.g:37:12: ( COMMA | ( ( ENDLINE )+ ) ) factor
+            			    // ObjectFilter.g:38:12: ( COMMA | ( ( ENDLINE )+ ) ) factor
             			    {
-            			    	// ObjectFilter.g:37:12: ( COMMA | ( ( ENDLINE )+ ) )
+            			    	// ObjectFilter.g:38:12: ( COMMA | ( ( ENDLINE )+ ) )
             			    	int alt5 = 2;
             			    	int LA5_0 = input.LA(1);
 
@@ -727,22 +755,22 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
             			    	switch (alt5) 
             			    	{
             			    	    case 1 :
-            			    	        // ObjectFilter.g:37:13: COMMA
+            			    	        // ObjectFilter.g:38:13: COMMA
             			    	        {
-            			    	        	COMMA16=(IToken)Match(input,COMMA,FOLLOW_COMMA_in_list217); 
-            			    	        		COMMA16_tree = (object)adaptor.Create(COMMA16);
-            			    	        		adaptor.AddChild(root_0, COMMA16_tree);
+            			    	        	COMMA17=(IToken)Match(input,COMMA,FOLLOW_COMMA_in_list228); 
+            			    	        		COMMA17_tree = (object)adaptor.Create(COMMA17);
+            			    	        		adaptor.AddChild(root_0, COMMA17_tree);
 
 
             			    	        }
             			    	        break;
             			    	    case 2 :
-            			    	        // ObjectFilter.g:37:21: ( ( ENDLINE )+ )
+            			    	        // ObjectFilter.g:38:21: ( ( ENDLINE )+ )
             			    	        {
-            			    	        	// ObjectFilter.g:37:21: ( ( ENDLINE )+ )
-            			    	        	// ObjectFilter.g:37:22: ( ENDLINE )+
+            			    	        	// ObjectFilter.g:38:21: ( ( ENDLINE )+ )
+            			    	        	// ObjectFilter.g:38:22: ( ENDLINE )+
             			    	        	{
-            			    	        		// ObjectFilter.g:37:22: ( ENDLINE )+
+            			    	        		// ObjectFilter.g:38:22: ( ENDLINE )+
             			    	        		int cnt4 = 0;
             			    	        		do 
             			    	        		{
@@ -758,11 +786,11 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
             			    	        		    switch (alt4) 
             			    	        			{
             			    	        				case 1 :
-            			    	        				    // ObjectFilter.g:37:22: ENDLINE
+            			    	        				    // ObjectFilter.g:38:22: ENDLINE
             			    	        				    {
-            			    	        				    	ENDLINE17=(IToken)Match(input,ENDLINE,FOLLOW_ENDLINE_in_list222); 
-            			    	        				    		ENDLINE17_tree = (object)adaptor.Create(ENDLINE17);
-            			    	        				    		adaptor.AddChild(root_0, ENDLINE17_tree);
+            			    	        				    	ENDLINE18=(IToken)Match(input,ENDLINE,FOLLOW_ENDLINE_in_list233); 
+            			    	        				    		ENDLINE18_tree = (object)adaptor.Create(ENDLINE18);
+            			    	        				    		adaptor.AddChild(root_0, ENDLINE18_tree);
 
 
             			    	        				    }
@@ -790,11 +818,11 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
             			    	}
 
             			    	 AddAndCondition(); 
-            			    	PushFollow(FOLLOW_factor_in_list229);
-            			    	factor18 = factor();
+            			    	PushFollow(FOLLOW_factor_in_list240);
+            			    	factor19 = factor();
             			    	state.followingStackPointer--;
 
-            			    	adaptor.AddChild(root_0, factor18.Tree);
+            			    	adaptor.AddChild(root_0, factor19.Tree);
 
             			    }
             			    break;
@@ -807,7 +835,7 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
             	loop6:
             		;	// Stops C# compiler whining that label 'loop6' has no statements
 
-            	// ObjectFilter.g:37:67: ( ENDLINE )*
+            	// ObjectFilter.g:38:67: ( ENDLINE )*
             	do 
             	{
             	    int alt7 = 2;
@@ -822,11 +850,11 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
             	    switch (alt7) 
             		{
             			case 1 :
-            			    // ObjectFilter.g:37:67: ENDLINE
+            			    // ObjectFilter.g:38:67: ENDLINE
             			    {
-            			    	ENDLINE19=(IToken)Match(input,ENDLINE,FOLLOW_ENDLINE_in_list235); 
-            			    		ENDLINE19_tree = (object)adaptor.Create(ENDLINE19);
-            			    		adaptor.AddChild(root_0, ENDLINE19_tree);
+            			    	ENDLINE20=(IToken)Match(input,ENDLINE,FOLLOW_ENDLINE_in_list246); 
+            			    		ENDLINE20_tree = (object)adaptor.Create(ENDLINE20);
+            			    		adaptor.AddChild(root_0, ENDLINE20_tree);
 
 
             			    }
@@ -874,7 +902,7 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
     };
 
     // $ANTLR start "expr"
-    // ObjectFilter.g:39:1: expr : list ;
+    // ObjectFilter.g:40:1: expr : list ;
     public ObjectFilterParser.expr_return expr() // throws RecognitionException [1]
     {   
         ObjectFilterParser.expr_return retval = new ObjectFilterParser.expr_return();
@@ -882,22 +910,22 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
 
         object root_0 = null;
 
-        ObjectFilterParser.list_return list20 = default(ObjectFilterParser.list_return);
+        ObjectFilterParser.list_return list21 = default(ObjectFilterParser.list_return);
 
 
 
         try 
     	{
-            // ObjectFilter.g:39:5: ( list )
-            // ObjectFilter.g:39:7: list
+            // ObjectFilter.g:40:5: ( list )
+            // ObjectFilter.g:40:7: list
             {
             	root_0 = (object)adaptor.GetNilNode();
 
-            	PushFollow(FOLLOW_list_in_expr245);
-            	list20 = list();
+            	PushFollow(FOLLOW_list_in_expr256);
+            	list21 = list();
             	state.followingStackPointer--;
 
-            	adaptor.AddChild(root_0, list20.Tree);
+            	adaptor.AddChild(root_0, list21.Tree);
 
             }
 
@@ -935,16 +963,16 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
     const string DFA6_eofS =
         "\x02\x02\x02\uffff";
     const string DFA6_minS =
-        "\x01\x10\x01\x04\x02\uffff";
+        "\x01\x11\x01\x04\x02\uffff";
     const string DFA6_maxS =
-        "\x02\x11\x02\uffff";
+        "\x02\x12\x02\uffff";
     const string DFA6_acceptS =
         "\x02\uffff\x01\x02\x01\x01";
     const string DFA6_specialS =
         "\x04\uffff}>";
     static readonly string[] DFA6_transitionS = {
             "\x01\x03\x01\x01",
-            "\x0c\x03\x01\uffff\x01\x01",
+            "\x0d\x03\x01\uffff\x01\x01",
             "",
             ""
     };
@@ -975,7 +1003,7 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
 
         override public string Description
         {
-            get { return "()* loopback of 37:10: ( ( COMMA | ( ( ENDLINE )+ ) ) factor )*"; }
+            get { return "()* loopback of 38:10: ( ( COMMA | ( ( ENDLINE )+ ) ) factor )*"; }
         }
 
     }
@@ -984,31 +1012,33 @@ public partial class ObjectFilterParser : ObjectFilterAntlrParser
 
     public static readonly BitSet FOLLOW_set_in_string_lit0 = new BitSet(new ulong[]{0x0000000000000002UL});
     public static readonly BitSet FOLLOW_string_lit_in_element62 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_TILDA_in_element71 = new BitSet(new ulong[]{0x0000000000000070UL});
-    public static readonly BitSet FOLLOW_string_lit_in_element75 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_ARROW_in_element84 = new BitSet(new ulong[]{0x0000000000000070UL});
-    public static readonly BitSet FOLLOW_string_lit_in_element88 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_NARROW_in_element97 = new BitSet(new ulong[]{0x0000000000000070UL});
-    public static readonly BitSet FOLLOW_string_lit_in_element101 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_DOLLAR_in_element110 = new BitSet(new ulong[]{0x0000000000000070UL});
-    public static readonly BitSet FOLLOW_string_lit_in_element114 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_NDOLLAR_in_element123 = new BitSet(new ulong[]{0x0000000000000070UL});
-    public static readonly BitSet FOLLOW_string_lit_in_element127 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_EQ_in_element136 = new BitSet(new ulong[]{0x0000000000000070UL});
-    public static readonly BitSet FOLLOW_string_lit_in_element140 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_NE_in_element149 = new BitSet(new ulong[]{0x0000000000000070UL});
-    public static readonly BitSet FOLLOW_string_lit_in_element153 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_element_in_element_with_context168 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_HASH_in_element_with_context174 = new BitSet(new ulong[]{0x0000000000003FF0UL});
-    public static readonly BitSet FOLLOW_element_in_element_with_context176 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_MAIL_in_element_with_context183 = new BitSet(new ulong[]{0x0000000000003FF0UL});
-    public static readonly BitSet FOLLOW_element_in_element_with_context185 = new BitSet(new ulong[]{0x0000000000000002UL});
-    public static readonly BitSet FOLLOW_element_with_context_in_factor201 = new BitSet(new ulong[]{0x000000000000FFF2UL});
-    public static readonly BitSet FOLLOW_factor_in_list212 = new BitSet(new ulong[]{0x0000000000030002UL});
-    public static readonly BitSet FOLLOW_COMMA_in_list217 = new BitSet(new ulong[]{0x000000000000FFF0UL});
-    public static readonly BitSet FOLLOW_ENDLINE_in_list222 = new BitSet(new ulong[]{0x000000000002FFF0UL});
-    public static readonly BitSet FOLLOW_factor_in_list229 = new BitSet(new ulong[]{0x0000000000030002UL});
-    public static readonly BitSet FOLLOW_ENDLINE_in_list235 = new BitSet(new ulong[]{0x0000000000020002UL});
-    public static readonly BitSet FOLLOW_list_in_expr245 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_PLUS_in_element70 = new BitSet(new ulong[]{0x0000000000000070UL});
+    public static readonly BitSet FOLLOW_string_lit_in_element74 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_TILDA_in_element82 = new BitSet(new ulong[]{0x0000000000000070UL});
+    public static readonly BitSet FOLLOW_string_lit_in_element86 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_ARROW_in_element95 = new BitSet(new ulong[]{0x0000000000000070UL});
+    public static readonly BitSet FOLLOW_string_lit_in_element99 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_NARROW_in_element108 = new BitSet(new ulong[]{0x0000000000000070UL});
+    public static readonly BitSet FOLLOW_string_lit_in_element112 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_DOLLAR_in_element121 = new BitSet(new ulong[]{0x0000000000000070UL});
+    public static readonly BitSet FOLLOW_string_lit_in_element125 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_NDOLLAR_in_element134 = new BitSet(new ulong[]{0x0000000000000070UL});
+    public static readonly BitSet FOLLOW_string_lit_in_element138 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_EQ_in_element147 = new BitSet(new ulong[]{0x0000000000000070UL});
+    public static readonly BitSet FOLLOW_string_lit_in_element151 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_NE_in_element160 = new BitSet(new ulong[]{0x0000000000000070UL});
+    public static readonly BitSet FOLLOW_string_lit_in_element164 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_element_in_element_with_context179 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_HASH_in_element_with_context185 = new BitSet(new ulong[]{0x0000000000007FF0UL});
+    public static readonly BitSet FOLLOW_element_in_element_with_context187 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_MAIL_in_element_with_context194 = new BitSet(new ulong[]{0x0000000000007FF0UL});
+    public static readonly BitSet FOLLOW_element_in_element_with_context196 = new BitSet(new ulong[]{0x0000000000000002UL});
+    public static readonly BitSet FOLLOW_element_with_context_in_factor212 = new BitSet(new ulong[]{0x000000000001FFF2UL});
+    public static readonly BitSet FOLLOW_factor_in_list223 = new BitSet(new ulong[]{0x0000000000060002UL});
+    public static readonly BitSet FOLLOW_COMMA_in_list228 = new BitSet(new ulong[]{0x000000000001FFF0UL});
+    public static readonly BitSet FOLLOW_ENDLINE_in_list233 = new BitSet(new ulong[]{0x000000000005FFF0UL});
+    public static readonly BitSet FOLLOW_factor_in_list240 = new BitSet(new ulong[]{0x0000000000060002UL});
+    public static readonly BitSet FOLLOW_ENDLINE_in_list246 = new BitSet(new ulong[]{0x0000000000040002UL});
+    public static readonly BitSet FOLLOW_list_in_expr256 = new BitSet(new ulong[]{0x0000000000000002UL});
 
 }

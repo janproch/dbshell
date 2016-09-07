@@ -14,7 +14,8 @@ options {
 string_lit: Q_STRING | A_STRING | I_STRING; 
 
 element:
-  s1=string_lit  { AddStringTestCondition<ObjectFilterContainsTextCondition>(ExtractString($s1.text)); }
+  s1=string_lit { AddStringTestCondition<ObjectFilterContainsTextCondition>(ExtractString($s1.text)); }
+  | PLUS s1=string_lit { AddStringTestCondition<ObjectFilterContainsTextCondition>(ExtractString($s1.text)); }
   | TILDA s1=string_lit  { AddStringTestCondition<ObjectFilterContainsTextCondition>(ExtractString($s1.text));NegateLastCondition(); }
   | ARROW s1=string_lit { AddStringTestCondition<ObjectFilterStartsWithCondition>(ExtractString($s1.text)); } 
   | NARROW s1=string_lit { AddStringTestCondition<ObjectFilterStartsWithCondition>(ExtractString($s1.text));NegateLastCondition(); } 
@@ -38,6 +39,7 @@ list:
  
 expr: list; 
  
+PLUS:  '+';
 TILDA:  '~';
 NE:  '<>';
 EQ:  '=';
