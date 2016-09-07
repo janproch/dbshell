@@ -15,6 +15,7 @@ namespace DbShell.Driver.Common.Utility
         public Func<List<string>> GetContentFunc;
         public Func<string> GetContentTextFunc;
         public string ContentText;
+        public bool AllowContent = true;
 
         public static List<string> SplitContentText(string s)
         {
@@ -43,6 +44,7 @@ namespace DbShell.Driver.Common.Utility
 
         public List<string> GetContent()
         {
+            if (!AllowContent) return null;
             if (GetContentFunc != null) return GetContentFunc();
             if (GetContentTextFunc != null) return SplitContentText(GetContentTextFunc());
             if (ContentText != null) return SplitContentText(ContentText);
