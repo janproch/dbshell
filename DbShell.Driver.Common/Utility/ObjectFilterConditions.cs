@@ -127,7 +127,7 @@ namespace DbShell.Driver.Common.Utility
             if (String.IsNullOrEmpty(value)) return true;
 
             var camelVariants = new HashSet<string>();
-            camelVariants.Add(new String(Filter.Where(Char.IsUpper).ToArray()));
+            camelVariants.Add(new String(value.Where(Char.IsUpper).ToArray()));
             if (value.All(x => Char.IsUpper(x) || x == '_'))
             {
                 var sb = new StringBuilder();
