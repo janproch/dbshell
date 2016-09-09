@@ -23,11 +23,14 @@ namespace DbShell.Driver.Common.DmlFramework
 
         protected void GenerateFrom(ISqlDumper dmp)
         {
-            dmp.Put("&n^from &>");
+            if (From.All(x => x.Source == null)) return;
+           dmp.Put("&n^from &>");
 
             bool wasfromItem = false;
             foreach (var fromItem in From)
             {
+                //if (fromItem.Source == null) throw new Exception("DBSH-00000 Source of FROM is NULL");
+                if (fromItem.Source == null) continue;
                 if (wasfromItem) dmp.Put(",&n");
                 fromItem.GenSql(dmp);
                 wasfromItem = true;

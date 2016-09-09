@@ -79,10 +79,10 @@ namespace DbShell.RelatedDataSync.SqlModel
                 //    queue.Add(ent);
                 //}
 
-                if (!_entityQueue.Any() && targetEntitySqlModel.Dbsh.Columns.Any(x => x.IsKey))
-                {
-                    throw new IncorrectRdsDefinitionException($"LGM-00000 None of source entities is used in {_targetEntitySqlModel.LogName} (try to set source column)");
-                }
+                //if (!_entityQueue.Any() && targetEntitySqlModel.Dbsh.Columns.Any(x => x.IsKey))
+                //{
+                //    throw new IncorrectRdsDefinitionException($"LGM-00000 None of source entities is used in {_targetEntitySqlModel.LogName} (try to set source column)");
+                //}
 
                 if (_entityQueue.Any())
                 {
