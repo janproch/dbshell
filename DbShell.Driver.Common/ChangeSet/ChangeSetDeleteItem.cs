@@ -45,6 +45,11 @@ namespace DbShell.Driver.Common.ChangeSet
                     // prevent cycling
                     continue;
                 }
+                if (fk.OwnerTable == fk.RefTable)
+                {
+                    // skip foreign keys referencing the same table
+                    continue;
+                }
                 var newItem = new ChangeSetDeleteItem
                     {
                         LinkedInfo = LinkedInfo,
