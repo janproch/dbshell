@@ -168,12 +168,12 @@ namespace DbShell.Driver.Common.DmlFramework
             if (Having != null) Having.GenSql(dmp);
             if (OrderBy != null && OrderBy.Count > 0)
             {
-                dmp.Put(" ^order ^by ");
+                dmp.Put("&n^order ^by ");
                 OrderBy.GenSql(dmp);
             }
             if (LimitCount != null)
             {
-                dmp.Put(" ^limit %s ^offset %s", LimitCount, Offset);
+                dmp.Put("&n^limit %s ^offset %s", LimitCount, Offset);
             }
         }
 
