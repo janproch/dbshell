@@ -222,6 +222,16 @@ namespace DbShell.RelatedDataSync.SqlModel
                         continue;
                     }
 
+                    if (ent.Dbsh.Columns.Any(x => x.Filter != null))
+                    {
+                        // entity has filter - is needed, when it is joined with any required column
+                        var linked = FilterJoinSqlModel.GetLinkedEntities(ent);
+                        if (linked.SelectMany(x => x.Columns).Any(x => _targetEntitySqlModel.RequiredSourceColumns.Any(y => y.Alias == x.Alias)))
+                        {
+                            continue;
+                        }
+                    }
+
                     //if (keycols.Count == 1)
                     //{
                     //    if (keycols[0].Entities.Count > 2)

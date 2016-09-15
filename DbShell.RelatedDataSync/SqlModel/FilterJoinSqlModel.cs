@@ -75,15 +75,17 @@ namespace DbShell.RelatedDataSync.SqlModel
             return "src_" + _filteredEntities.IndexOf(entity);
         }
 
-        private void BuildLinkedEntities()
+        public static List<SourceEntitySqlModel> GetLinkedEntities(SourceEntitySqlModel root)
         {
-            _linkedEntities.Add(_rootEntity);
+            var res = new List<SourceEntitySqlModel>();
+
+            res.Add(root);
 
             for (;;)
             {
                 bool added = false;
 
-                foreach (var ent1 in _linkedEntities)
+                foreach (var ent1 in res)
                 {
                     foreach (var col in ent1.Columns)
                     {
@@ -91,12 +93,11 @@ namespace DbShell.RelatedDataSync.SqlModel
                         {
                             if (ent2 == ent1) continue;
                             // prevent duplicate records in because of left joins
-                            if (ent2.SingleKeyColumnNameOrAlias != col.Alias) continue;
 
-                            if (!_linkedEntities.Contains(ent2))
+                            if (!res.Contains(ent2))
                             {
                                 added = true;
-                                _linkedEntities.Add(ent2);
+                                res.Add(ent2);
                                 break;
                             }
                         }
@@ -107,6 +108,13 @@ namespace DbShell.RelatedDataSync.SqlModel
 
                 if (!added) break;
             }
+
+            return res;
+        }
+
+        private void BuildLinkedEntities()
+        {
+            _linkedEntities = GetLinkedEntities(_rootEntity);
         }
 
         private void DetectUnusedEntities()

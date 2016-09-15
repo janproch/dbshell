@@ -350,5 +350,23 @@ namespace DbShell.Test
                 AssertIsValue("22", "select Value1 from Target2 where IdOriginal=2");
             }
         }
+
+        [DeploymentItem("RelatedDataSync/rds_joined_source_restr.xaml")]
+        [TestMethod]
+        public void RdsJoinedSourceRestr()
+        {
+            InitDatabase();
+            RunEmbeddedScript("RelatedDataSync.CreateRdsJoinedSourceRestr.sql");
+
+            using (var runner = CreateRunner())
+            {
+                runner.LoadFile("rds_joined_source_restr.xaml");
+                runner.Run();
+
+                RunScript("exec RunSync");
+
+                AssertIsValue("2", "select count(*) from Target");
+            }
+        }
     }
 }

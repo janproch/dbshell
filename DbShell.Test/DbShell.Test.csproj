@@ -244,6 +244,7 @@
     </Content>
     <EmbeddedResource Include="RelatedDataSync\CreateRdsNullRestr.sql" />
     <EmbeddedResource Include="RelatedDataSync\CreateRdsUpdateRestr.sql" />
+    <EmbeddedResource Include="RelatedDataSync\CreateRdsJoinedSourceRestr.sql" />
     <Content Include="RelatedDataSync\rds.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -370,6 +371,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="RelatedDataSync\rds_update_restr.xaml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="RelatedDataSync\rds_joined_source_restr.xaml">
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
