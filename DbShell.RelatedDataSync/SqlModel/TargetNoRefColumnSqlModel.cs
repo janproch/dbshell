@@ -96,7 +96,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                         if (match.Index > 0) addExpr.Items.Add(new DmlfLiteralExpression { Value = rest.Substring(0, match.Index) });
                         rest = rest.Substring(match.Index + match.Length);
                         string colExpr = GetColumnExpression(sourceJoinModel, match.Groups[1].Value, aggregate);
-                        string allExpr = $"ISNULL(CONVERT(NVARCHAR,{colExpr}),'')";
+                        string allExpr = $"ISNULL(CONVERT(NVARCHAR(MAX),{colExpr}),'')";
                         addExpr.Items.Add(new DmlfSqlValueExpression { Value = allExpr });
                     }
                     if (!String.IsNullOrEmpty(rest))
