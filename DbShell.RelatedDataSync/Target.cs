@@ -9,6 +9,13 @@ using DbShell.Driver.Common.Structure;
 
 namespace DbShell.RelatedDataSync
 {
+    public enum TargetGroupMode
+    {
+        AutoDetect,
+        Yes,
+        No
+    }
+
     [ContentProperty(nameof(Columns))]
     public class Target
     {
@@ -23,6 +30,9 @@ namespace DbShell.RelatedDataSync
 
         [XamlProperty]
         public string Alias { get; set; }
+
+        [XamlProperty]
+        public TargetGroupMode GroupMode { get; set; }
 
         [XamlProperty]
         public List<TargetColumn> Columns { get; private set; } = new List<TargetColumn>();

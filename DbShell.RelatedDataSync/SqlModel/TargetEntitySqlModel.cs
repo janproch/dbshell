@@ -207,6 +207,9 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         private bool DetectGrouping()
         {
+            if (Dbsh.GroupMode == TargetGroupMode.Yes) return true;
+            if (Dbsh.GroupMode == TargetGroupMode.No) return false;
+
             // TODO prozkoumat nasledujici radek!!!
             if (SourceJoinModel.SourceToRefsJoin.Source == null) return false;
             // if primary source is not defined, group=TRUE
