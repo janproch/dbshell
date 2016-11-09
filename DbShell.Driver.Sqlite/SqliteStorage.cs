@@ -28,12 +28,13 @@ namespace DbShell.Driver.Sqlite
 
         private static Dictionary<string, SqliteStorage> _storageDirectory = new Dictionary<string, SqliteStorage>();
 
-        public SqliteStorage(TableInfo table)
+        public QueryResultInfo AssociatedResultInfo;
+
+        public SqliteStorage(TableInfo table, string filePath = null)
         {
-            _file = Path.GetTempFileName();
+            _file = filePath ?? Path.GetTempFileName();
             _table = table;
-            _conn = new SQLiteConnection("Synchronous=Full;Data Source=" + _file);
-            _conn.Open();
+            _conn = OpenConnection();
             string sql = String.Format("create table {0} ({1})", TABLE_NAME, ColumnsText);
             _conn.ExecuteNonQuery(sql);
 
@@ -41,6 +42,13 @@ namespace DbShell.Driver.Sqlite
             {
                 _storageDirectory[_file] = this;
             }
+        }
+
+        public SQLiteConnection OpenConnection()
+        {
+            var conn = new SQLiteConnection("Synchronous=Full;Data Source=" + _file);
+            conn.Open();
+            return conn;
         }
 
         public string Identifier
