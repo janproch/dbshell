@@ -72,6 +72,7 @@
     <Compile Include="CreateTable.cs" />
     <Compile Include="FilesProvider.cs" />
     <Compile Include="FtpSyncDirectory.cs" />
+    <Compile Include="GetLastFile.cs" />
     <Compile Include="LoadModule.cs" />
     <Compile Include="MapConstant.cs" />
     <Compile Include="MapNull.cs" />
