@@ -6,6 +6,7 @@ using System.Text;
 using DbShell.Common;
 using DbShell.Core.Utility;
 using log4net;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core
 {
@@ -19,6 +20,7 @@ namespace DbShell.Core
         /// <summary>
         /// variable name filled with temp file name
         /// </summary>
+        [XamlProperty]
         public string Variable { get; set; }
 
         protected override void DoRun(IShellContext context)
