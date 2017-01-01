@@ -21,5 +21,7 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             return "str";
         }
+
+        public override string JavaScriptExpression => DmlfExpression.SerializeJson(Value);
     }
 }

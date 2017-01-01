@@ -18,6 +18,8 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             return this;
         }
+
+        public virtual string JavaScriptCondition => "true";
     }
 
     public abstract class DmlfUnaryCondition : DmlfConditionBase
@@ -53,6 +55,8 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             return !Expr.EvalCondition(ns);
         }
+
+        public override string JavaScriptCondition => $"!({Expr.JavaScriptCondition})";
     }
 
     public class DmlfIsNullCondition : DmlfUnaryCondition
@@ -68,6 +72,8 @@ namespace DbShell.Driver.Common.DmlFramework
             object value = Expr.EvalExpression(ns);
             return value == null || value == DBNull.Value;
         }
+
+        public override string JavaScriptCondition => $"({Expr.JavaScriptExpression})===null";
     }
 
     public class DmlfIsNotNullCondition : DmlfUnaryCondition
@@ -83,6 +89,8 @@ namespace DbShell.Driver.Common.DmlFramework
             object value = Expr.EvalExpression(ns);
             return value != null && value != DBNull.Value;
         }
+
+        public override string JavaScriptCondition => $"({Expr.JavaScriptExpression})!==null";
     }
 
     public class DmlfLiteralCondition : DmlfConditionBase
@@ -214,6 +222,8 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             return DmlfRelationCondition.EvalRelation(LeftExpr, RightExpr, "=", ns);
         }
+
+        public override string JavaScriptCondition => DmlfRelationCondition.JavaScriptRelation(LeftExpr, RightExpr, "==");
     }
 
     public class DmlfEqualWithNullTestCondition : DmlfBinaryCondition
@@ -242,6 +252,8 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             return DmlfRelationCondition.EvalRelation(LeftExpr, RightExpr, "=", ns);
         }
+
+        public override string JavaScriptCondition => DmlfRelationCondition.JavaScriptRelation(LeftExpr, RightExpr, "==");
     }
 
     public class DmlfNotEqualCondition : DmlfBinaryCondition
@@ -267,6 +279,8 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             return DmlfRelationCondition.EvalRelation(LeftExpr, RightExpr, "<>", ns);
         }
+
+        public override string JavaScriptCondition => DmlfRelationCondition.JavaScriptRelation(LeftExpr, RightExpr, "!=");
     }
 
     public class DmlfNotEqualWithNullTestCondition : DmlfBinaryCondition
@@ -314,6 +328,8 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             return DmlfRelationCondition.EvalRelation(LeftExpr, RightExpr, "<>", ns);
         }
+
+        public override string JavaScriptCondition => DmlfRelationCondition.JavaScriptRelation(LeftExpr, RightExpr, "!=");
     }
 
     public class DmlfGreaterCondition : DmlfBinaryCondition
@@ -329,6 +345,8 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             return DmlfRelationCondition.EvalRelation(LeftExpr, RightExpr, ">", ns);
         }
+
+        public override string JavaScriptCondition => DmlfRelationCondition.JavaScriptRelation(LeftExpr, RightExpr, ">");
     }
 
     public class DmlfGreaterEqualCondition : DmlfBinaryCondition
@@ -344,6 +362,8 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             return DmlfRelationCondition.EvalRelation(LeftExpr, RightExpr, ">=", ns);
         }
+
+        public override string JavaScriptCondition => DmlfRelationCondition.JavaScriptRelation(LeftExpr, RightExpr, ">=");
     }
 
     public class DmlfLessCondition : DmlfBinaryCondition
@@ -359,6 +379,8 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             return DmlfRelationCondition.EvalRelation(LeftExpr, RightExpr, "<", ns);
         }
+
+        public override string JavaScriptCondition => DmlfRelationCondition.JavaScriptRelation(LeftExpr, RightExpr, "<");
     }
 
     public class DmlfLessEqualCondition : DmlfBinaryCondition
@@ -374,6 +396,8 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             return DmlfRelationCondition.EvalRelation(LeftExpr, RightExpr, "<=", ns);
         }
+
+        public override string JavaScriptCondition => DmlfRelationCondition.JavaScriptRelation(LeftExpr, RightExpr, "<=");
     }
 
     public class DmlfRelationCondition : DmlfBinaryCondition
@@ -511,6 +535,15 @@ namespace DbShell.Driver.Common.DmlFramework
 
             return false;
         }
+
+        public static string JavaScriptRelation(DmlfExpression leftExpr, DmlfExpression rightExpr, string relation)
+        {
+            string left = leftExpr.JavaScriptExpression;
+            string right = rightExpr.JavaScriptExpression;
+            return $"({left}){relation}({right})";
+        }
+
+        public override string JavaScriptCondition => DmlfRelationCondition.JavaScriptRelation(LeftExpr, RightExpr, Relation);
     }
 
     public class DmlfLikeCondition : DmlfBinaryCondition
@@ -550,6 +583,8 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             return testedString.StartsWith(Value, StringComparison.InvariantCultureIgnoreCase);
         }
+
+        public override string JavaScriptCondition => $"_.startsWith(({Expr.JavaScriptExpression}), {DmlfExpression.SerializeJson(Value)})";
     }
 
     public class DmlfEndsWithCondition : DmlfStringTestCondition
@@ -564,6 +599,8 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             return testedString.EndsWith(Value, StringComparison.InvariantCultureIgnoreCase);
         }
+
+        public override string JavaScriptCondition => $"_.endsWith(({Expr.JavaScriptExpression}), {DmlfExpression.SerializeJson(Value)})";
     }
 
     public class DmlfContainsTextCondition : DmlfStringTestCondition
@@ -578,6 +615,8 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             return testedString.IndexOf(Value, StringComparison.InvariantCultureIgnoreCase) >= 0;
         }
+
+        public override string JavaScriptCondition => $"({Expr.JavaScriptExpression}).indexOf({DmlfExpression.SerializeJson(Value)})>=0";
     }
 
     public class DmlfNotLikeCondition : DmlfBinaryCondition
@@ -700,6 +739,15 @@ namespace DbShell.Driver.Common.DmlFramework
             if (Conditions.Count == 1) return Conditions[0].SimplifyCondition();
             return base.SimplifyCondition();
         }
+
+        public override string JavaScriptCondition
+        {
+            get
+            {
+                if (!Conditions.Any()) return "true";
+                return Conditions.Select(x => "(" + x.JavaScriptCondition + ")").CreateDelimitedText(" && ");
+            }
+        }
     }
 
     public class DmlfOrCondition : DmlfCompoudCondition
@@ -724,6 +772,15 @@ namespace DbShell.Driver.Common.DmlFramework
             if (Conditions.Count == 1) return Conditions[0].SimplifyCondition();
             return base.SimplifyCondition();
         }
+
+        public override string JavaScriptCondition
+        {
+            get
+            {
+                if (!Conditions.Any()) return "false";
+                return Conditions.Select(x => "(" + x.JavaScriptCondition + ")").CreateDelimitedText(" || ");
+            }
+        }
     }
 
     public class DmlfFalseCondition : DmlfConditionBase
@@ -737,6 +794,8 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             return false;
         }
+
+        public override string JavaScriptCondition => "false";
     }
 
     public class DmlfExistCondition : DmlfConditionBase
