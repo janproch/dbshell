@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using DbShell.Driver.Common.DbDiff;
 using DbShell.Driver.Common.Utility;
+using System.Web.Script.Serialization;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.Structure
 {
@@ -13,23 +15,28 @@ namespace DbShell.Driver.Common.Structure
         SetNull
     };
 
+    [DataContract]
     public class ForeignKeyInfo : ColumnsConstraintInfo
     {
         [XmlAttrib("update_action")]
+        [DataMember]
         public ForeignKeyAction OnUpdateAction { get; set; }
 
         [XmlAttrib("delete_action")]
+        [DataMember]
         public ForeignKeyAction OnDeleteAction { get; set; }
 
         private List<ColumnReference> _refColumns = new List<ColumnReference>();
 
         public TableInfo RefTable { get; set; }
         [XmlCollection(typeof(ColumnReference))]
+        [DataMember]
         public List<ColumnReference> RefColumns { get { return _refColumns; } }
 
 
         private string _refTableName;
         [XmlAttrib("ref_table")]
+        [DataMember]
         public string RefTableName
         {
             get
@@ -46,6 +53,7 @@ namespace DbShell.Driver.Common.Structure
 
         private string _refSchemaName;
         [XmlAttrib("ref_schema")]
+        [DataMember]
         public string RefSchemaName
         {
             get

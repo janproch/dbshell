@@ -5,12 +5,14 @@ using DbShell.Driver.Common.DbDiff;
 using DbShell.Driver.Common.Utility;
 using System;
 using DbShell.Driver.Common.CommonTypeSystem;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.Structure
 {
     /// <summary>
     /// Information abou table structure
     /// </summary>
+    [DataContract]
     public class TableInfo : ColumnListInfo
     {
         public TableInfo(DatabaseInfo database)
@@ -30,12 +32,14 @@ namespace DbShell.Driver.Common.Structure
         /// Table primary key
         /// </summary>
         [XmlSubElem]
+        [DataMember]
         public PrimaryKeyInfo PrimaryKey { get; set; }
 
         /// <summary>
         /// List of table foreign keys
         /// </summary>
         [XmlCollection(typeof(ForeignKeyInfo))]
+        [DataMember]
         public List<ForeignKeyInfo> ForeignKeys { get { return _foreignKeys; } }
 
         public TableInfo CreateColumnSubset(IEnumerable<int> columnSubset)
@@ -60,12 +64,15 @@ namespace DbShell.Driver.Common.Structure
         }
 
         [XmlCollection(typeof(IndexInfo))]
+        [DataMember]
         public List<IndexInfo> Indexes { get { return _indexes; } }
 
         [XmlCollection(typeof(UniqueInfo))]
+        [DataMember]
         public List<UniqueInfo> Uniques { get { return _uniques; } }
 
         [XmlCollection(typeof(CheckInfo))]
+        [DataMember]
         public List<CheckInfo> Checks { get { return _checks; } }
 
         public TableInfo CloneTable(DatabaseInfo ownerDb = null)

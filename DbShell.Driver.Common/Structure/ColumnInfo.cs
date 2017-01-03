@@ -5,12 +5,14 @@ using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.Utility;
 using System.Text;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.Structure
 {
     /// <summary>
     /// Information about column structure
     /// </summary>
+    [DataContract]
     public class ColumnInfo : TableObjectInfo, IExplicitXmlPersistent
     {
         public ColumnInfo(TableInfo table)
@@ -23,90 +25,107 @@ namespace DbShell.Driver.Common.Structure
         /// Column name
         /// </summary>
         [XmlAttrib("name")]
+        [DataMember]
         public string Name { get; set; }
 
         /// <summary>
         /// Data type
         /// </summary>
         [XmlAttrib("datatype")]
+        [DataMember]
         public string DataType { get; set; }
 
         /// <summary>
         /// Default value
         /// </summary>
         [XmlAttrib("default")]
+        [DataMember]
         public string DefaultValue { get; set; }
 
         /// <summary>
         /// String length
         /// </summary>
         [XmlAttrib("length")]
+        [DataMember]
         public int Length { get; set; }
 
         /// <summary>
         /// Column cannot be null
         /// </summary>
         [XmlAttrib("notnull")]
+        [DataMember]
         public bool NotNull { get; set; }
 
         /// <summary>
         /// Precision if decimal number
         /// </summary>
         [XmlAttrib("precision")]
+        [DataMember]
         public int Precision { get; set; }
 
         /// <summary>
         /// Scale of decimal number
         /// </summary>
         [XmlAttrib("scale")]
+        [DataMember]
         public int Scale { get; set; }
 
         /// <summary>
         /// Is Identity?
         /// </summary>
         [XmlAttrib("auto_increment")]
+        [DataMember]
         public bool AutoIncrement { get; set; }
 
         /// <summary>
         /// Is part of primary key?
         /// </summary>
         [XmlAttrib("primary_key")]
+        [DataMember]
         public bool PrimaryKey { get; set; }
 
         /// <summary>
         /// Comment
         /// </summary>
         [XmlAttrib("comment")]
+        [DataMember]
         public string Comment { get; set; }
 
         /// <summary>
         /// name of default constraint
         /// </summary>
         [XmlAttrib("default_constraint")]
+        [DataMember]
         public string DefaultConstraint { get; set; }
 
         /// <summary>
         /// expression for computed column
         /// </summary>
         [XmlAttrib("computed_expression")]
+        [DataMember]
         public string ComputedExpression { get; set; }
 
         /// <summary>
         /// whether computed column is persisted
         /// </summary>
         [XmlAttrib("is_persisted")]
+        [DataMember]
         public bool IsPersisted { get; set; }
 
         /// <summary>
         /// whether computed column is sparse
         /// </summary>
         [XmlAttrib("is_sparse")]
+        [DataMember]
         public bool IsSparse { get; set; }
 
         /// <summary>
         /// Portable data type
         /// </summary>
         public DbTypeBase CommonType { get; set; }
+
+        [DataMember]
+        public string CommonTypeCode => CommonType?.Code.ToString();
 
         public int ColumnOrder
         {

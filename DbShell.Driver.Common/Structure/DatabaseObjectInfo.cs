@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using DbShell.Driver.Common.Utility;
+using System.Web.Script.Serialization;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.Structure
 {
@@ -22,6 +24,7 @@ namespace DbShell.Driver.Common.Structure
         Schema,
     }
 
+    [DataContract]
     public abstract class DatabaseObjectInfo
     {
         public DatabaseInfo OwnerDatabase { get; private set; }

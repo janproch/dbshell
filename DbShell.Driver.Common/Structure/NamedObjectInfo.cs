@@ -1,7 +1,10 @@
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
+using System.Web.Script.Serialization;
 
 namespace DbShell.Driver.Common.Structure
 {
+    [DataContract]
     public abstract class NamedObjectInfo : DatabaseObjectInfo, IFullNamedObject
     {
         /// <summary>
@@ -13,6 +16,7 @@ namespace DbShell.Driver.Common.Structure
         /// Name (without schema)
         /// </summary>
         [XmlAttrib("name")]
+        [DataMember]
         public string Name
         {
             get
@@ -31,6 +35,7 @@ namespace DbShell.Driver.Common.Structure
         /// Schema name
         /// </summary>
         [XmlAttrib("schema")]
+        [DataMember]
         public string Schema
         {
             get

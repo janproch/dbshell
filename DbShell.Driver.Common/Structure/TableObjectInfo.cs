@@ -1,5 +1,9 @@
+using System.Runtime.Serialization;
+using System.Web.Script.Serialization;
+
 namespace DbShell.Driver.Common.Structure
 {
+    [DataContract]
     public abstract class TableObjectInfo : DatabaseObjectInfo
     {
         public TableInfo OwnerTable { get; private set; }

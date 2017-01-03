@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.Structure
 {
+    [DataContract]
     public abstract class ConstraintInfo : TableObjectInfo
     {
         [XmlAttrib("constraint_name")]
+        [DataMember]
         public string ConstraintName { get; set; }
 
         protected ConstraintInfo(TableInfo ownerTable)

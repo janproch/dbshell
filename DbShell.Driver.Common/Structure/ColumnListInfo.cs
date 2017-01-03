@@ -1,13 +1,16 @@
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 using System.Web.Script.Serialization;
 
 namespace DbShell.Driver.Common.Structure
 {
+    [DataContract]
     public abstract class ColumnListInfo : NamedObjectInfo
     {
         private ColumnList _columns = new ColumnList();
 
         [XmlCollection(typeof (ColumnInfo))]
+        [DataMember]
         public ColumnList Columns
         {
             get { return _columns; }

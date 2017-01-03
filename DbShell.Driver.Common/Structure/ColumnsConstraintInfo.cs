@@ -2,14 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.Structure
 {
+    [DataContract]
     public abstract class ColumnsConstraintInfo : ConstraintInfo
     {
         private List<ColumnReference> _columns = new List<ColumnReference>();
 
         [XmlCollection(typeof(ColumnReference))]
+        [DataMember]
         public List<ColumnReference> Columns { get { return _columns; } }
 
         public ColumnsConstraintInfo(TableInfo table)
