@@ -5,14 +5,18 @@ using System.Text;
 using System.Xml;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.ChangeSet
 {
+    [DataContract]
     public class ChangeSetValue : IExplicitXmlPersistent
     {
         [XmlAttrib]
+        [DataMember]
         public string Column { get; set; }
 
+        [DataMember]
         public object Value { get; set; }
 
         public void SaveToXml(XmlElement xml)

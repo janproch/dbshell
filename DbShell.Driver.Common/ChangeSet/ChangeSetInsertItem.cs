@@ -8,12 +8,15 @@ using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.DmlFramework;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.ChangeSet
 {
+    [DataContract]
     public class ChangeSetInsertItem : ChangeSetItem
     {
         [XmlCollection(typeof (ChangeSetValue))]
+        [DataMember]
         public List<ChangeSetValue> Values { get; set; }
 
         public ChangeSetInsertItem()

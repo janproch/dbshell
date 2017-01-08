@@ -6,15 +6,19 @@ using System.Xml;
 using DbShell.Driver.Common.DmlFramework;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.ChangeSet
 {
+    [DataContract]
     public class ChangeSetDeleteItem : ChangeSetItem
     {
         [XmlCollection(typeof (ChangeSetCondition))]
+        [DataMember]
         public List<ChangeSetCondition> Conditions { get; set; }
 
         [XmlElem]
+        [DataMember]
         public bool DeleteReferencesCascade { get; set; }
 
         public class DeleteWrapper

@@ -9,21 +9,27 @@ using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.DmlFramework;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.ChangeSet
 {
+    [DataContract]
     public class ChangeSetUpdateItem : ChangeSetItem
     {
         [XmlCollection(typeof (ChangeSetCondition))]
+        [DataMember]
         public List<ChangeSetCondition> Conditions { get; set; }
 
         [XmlCollection(typeof (ChangeSetValue))]
+        [DataMember]
         public List<ChangeSetValue> Values { get; set; }
 
         [XmlElem]
+        [DataMember]
         public bool UpdateReferences { get; set; }
 
         [XmlElem]
+        [DataMember]
         public bool DisableReferencedForeignKeys { get; set; }
 
         public ChangeSetUpdateItem()

@@ -9,14 +9,17 @@ using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.DmlFramework;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.ChangeSet
 {
+    [DataContract]
     public abstract class ChangeSetItem
     {
         public static object RevertedValue = new object();
 
         [XmlElem]
+        [DataMember]
         public NameWithSchema TargetTable { get; set; }
 
         [XmlSubElem]
@@ -31,6 +34,7 @@ namespace DbShell.Driver.Common.ChangeSet
                         {
                             Column = newcol.ToString(),
                             Expression = cond.Expression,
+                            ValueToBeEqual = cond.ValueToBeEqual,
                         }).ToList();
         }
 
@@ -65,7 +69,7 @@ namespace DbShell.Driver.Common.ChangeSet
                 };
             var column = colref.FindSourceColumn(db);
 
-            cmd.AddAndCondition(FilterParser.FilterParser.ParseFilterExpression(column != null ? column.CommonType : new DbTypeString(), colexpr, cond.Expression));
+            cmd.AddAndCondition(FilterParser.FilterParser.ParseFilterExpression(column != null ? column.CommonType : new DbTypeString(), colexpr, cond.UsedExpression));
             return true;
         }
 

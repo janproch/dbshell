@@ -11,30 +11,39 @@ using DbShell.Driver.Common.DmlFramework;
 using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.ChangeSet
 {
+    [DataContract]
     public class ChangeSetModel
     {
         [XmlCollection(typeof(NameWithSchema))]
+        [DataMember]
         public List<NameWithSchema> DeleteSkipList { get; set; }
 
         [XmlCollection(typeof (ChangeSetInsertItem))]
+        [DataMember]
         public List<ChangeSetInsertItem> Inserts { get; set; }
 
         [XmlCollection(typeof (ChangeSetUpdateItem))]
+        [DataMember]
         public List<ChangeSetUpdateItem> Updates { get; set; }
 
         [XmlCollection(typeof (ChangeSetDeleteItem))]
+        [DataMember]
         public List<ChangeSetDeleteItem> Deletes { get; set; }
 
         [XmlElem]
+        [DataMember]
         public bool DeleteReferencesCascade { get; set; }
 
         [XmlElem]
+        [DataMember]
         public bool UpdateReferences { get; set; }
 
         [XmlElem]
+        [DataMember]
         public bool DisableReferencedForeignKeys { get; set; }
 
         public ChangeSetModel()

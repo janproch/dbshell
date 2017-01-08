@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.Structure
 {
+    [DataContract]
     public class NameWithSchema : IComparable, IFormattable
     {
         public const string NoQuotePrefix = "(@NOQUOTE)";
@@ -21,6 +23,25 @@ namespace DbShell.Driver.Common.Structure
         public string Name { get; private set; }
 
         public readonly bool HideSchema;
+
+
+        [DataMember(Name ="Schema")]
+        public string SchemaSerialized
+        {
+            get { return Schema; }
+            set { Schema = value; }
+        }
+
+        [DataMember(Name = "Name")]
+        public string NameSerialized
+        {
+            get { return Name; }
+            set { Name = value; }
+        }
+
+        public NameWithSchema()
+        {
+        }
 
         public NameWithSchema(string schema, string name)
         {
