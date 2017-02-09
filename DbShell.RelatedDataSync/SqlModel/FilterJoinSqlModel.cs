@@ -42,7 +42,7 @@ namespace DbShell.RelatedDataSync.SqlModel
 
         private void FillEntitiesOnTheSameServer()
         {
-            if (_rootEntity.Dbsh.DataSource is DbShell.Core.Utility.TableOrView)
+            if (_rootEntity.Dbsh.DataSource is DbShell.Core.Utility.TableOrView && _sourceGraph != null)
             {
                 _isValid = true;
                 var rootTable = (DbShell.Core.Utility.TableOrView)_rootEntity.Dbsh.DataSource;
