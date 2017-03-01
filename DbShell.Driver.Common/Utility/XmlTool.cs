@@ -13,6 +13,7 @@ using System.Collections;
 using System.Text.RegularExpressions;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
+using System.Linq;
 
 namespace DbShell.Driver.Common.Utility
 {
@@ -471,7 +472,7 @@ namespace DbShell.Driver.Common.Utility
                 ((NameWithSchema)o).SaveToXml(xml);
                 return;
             }
-            foreach (PropertyInfo prop in o.GetType().GetProperties())
+            foreach (PropertyInfo prop in o.GetType().GetProperties().OrderBy(x => x.Name))
             {
                 foreach (XmlAttribAttribute attr in prop.GetCustomAttributes(typeof(XmlAttribAttribute), true))
                 {
@@ -487,10 +488,10 @@ namespace DbShell.Driver.Common.Utility
                     {
                         ((NameWithSchema)val).SaveToXml(xml.AddChild(attr.Name ?? prop.Name));
                     }
-                    else if (val is Dictionary<string,string>)
+                    else if (val is Dictionary<string, string>)
                     {
                         var elem = xml.AddChild(attr.Name ?? prop.Name);
-                        foreach(var item in (Dictionary<string,string>)val )
+                        foreach (var item in (Dictionary<string, string>)val)
                         {
                             var itemXml = elem.AddChild("Item");
                             itemXml.SetAttribute("Key", item.Key);
@@ -580,7 +581,7 @@ namespace DbShell.Driver.Common.Utility
         public static void LoadPropertiesCore(this object o, XmlElement xml)
         {
             if (xml == null) return;
-            foreach (PropertyInfo prop in o.GetType().GetProperties())
+            foreach (PropertyInfo prop in o.GetType().GetProperties().OrderBy(x => x.Name))
             {
                 bool propHandled = false;
                 //MethodInfo setMethod = prop.GetSetMethod();
@@ -772,7 +773,7 @@ namespace DbShell.Driver.Common.Utility
         {
             if (a.GetType() != b.GetType()) return false;
 
-            foreach (PropertyInfo prop in a.GetType().GetProperties())
+            foreach (PropertyInfo prop in a.GetType().GetProperties().OrderBy(x => x.Name))
             {
                 MethodInfo mtd = prop.GetGetMethod();
                 object vala = mtd.Invoke(a, new object[] { });
@@ -805,7 +806,7 @@ namespace DbShell.Driver.Common.Utility
         {
             if (src.GetType() != src.GetType()) return;
 
-            foreach (PropertyInfo prop in src.GetType().GetProperties())
+            foreach (PropertyInfo prop in src.GetType().GetProperties().OrderBy(x => x.Name))
             {
                 bool copy = false;
                 foreach (XmlAttribAttribute attr in prop.GetCustomAttributes(typeof(XmlAttribAttribute), true))
