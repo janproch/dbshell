@@ -602,10 +602,18 @@ namespace DbShell.Driver.SqlServer
                                     case "P":
                                         info = new StoredProcedureInfo(Structure);
                                         break;
-                                    case "IF":
                                     case "FN":
+                                        info = new FunctionInfo(Structure)
+                                        {
+                                            HasTableResult = false,
+                                        };
+                                        break;
+                                    case "IF":
                                     case "TF":
-                                        info = new FunctionInfo(Structure);
+                                        info = new FunctionInfo(Structure)
+                                        {
+                                            HasTableResult = true,
+                                        };
                                         break;
                                 }
                                 if (info == null) continue;
