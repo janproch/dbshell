@@ -18,6 +18,7 @@ namespace DbShell.Driver.Common.Utility
 
         public static IDataReader RunOneSqlCommandReader(this DbConnection conn, string sql, DbTransaction tran, int? timeout)
         {
+#if !NETCOREAPP1_1
             if (sql.StartsWith("@getschema"))
             {
                 string[] items = sql.Split(' ');
@@ -26,6 +27,7 @@ namespace DbShell.Driver.Common.Utility
                 if (entity == "tables") return new DataTableReader(conn.GetSchema("Tables"));
                 if (entity == "columns") return new DataTableReader(conn.GetSchema("Columns", new string[] { null, null, items[2].Trim() }).SelectNewTable("1=1", "ORDINAL_POSITION ASC"));
             }
+#endif
             DbCommand c = conn.CreateCommand();
             c.Connection = conn;
             if (timeout != null) c.CommandTimeout = timeout.Value;
