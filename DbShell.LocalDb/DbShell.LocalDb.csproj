@@ -44,6 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LocalDbItemBase.cs" />
+    <Compile Include="LocalDbModels\DataSetClass.cs" />
+    <Compile Include="LocalDbModels\DataSetModel.cs" />
     <Compile Include="LocalDbModels\SqliteFunctionTransform.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TransformData.cs" />
