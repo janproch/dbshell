@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if !NETCOREAPP1_1
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -122,3 +124,4 @@ namespace DbShell.Driver.Common.Utility
     }
 
 }
+#endif

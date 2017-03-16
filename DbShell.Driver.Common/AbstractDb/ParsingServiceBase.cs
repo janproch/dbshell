@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if !NETCOREAPP1_1
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -51,3 +53,5 @@ namespace DbShell.Driver.Common.AbstractDb
         }
     }
 }
+
+#endif

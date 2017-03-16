@@ -72,10 +72,12 @@ namespace DbShell.Driver.Common.AbstractDb
             return null;
         }
 
+#if !NETCOREAPP1_1
         public virtual IParsingService CreateParsingService()
         {
             return null;
         }
+#endif
 
         public virtual IDatabaseServerInterface CreateDatabaseServerInterface()
         {

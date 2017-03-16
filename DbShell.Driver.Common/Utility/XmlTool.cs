@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Net;
 using System.Text;
 using System.Xml;
@@ -8,7 +7,10 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Reflection;
 using System.Globalization;
+#if !NETCOREAPP1_1
+using System.Configuration;
 using System.Drawing;
+#endif
 using System.Collections;
 using System.Text.RegularExpressions;
 using DbShell.Driver.Common.CommonDataLayer;
@@ -87,6 +89,17 @@ namespace DbShell.Driver.Common.Utility
 
     public static class XmlTool
     {
+#if NETCOREAPP1_1
+        public static XmlNode SelectSingleNode(this XmlNode node, string name)
+        {
+            var element = node as XmlElement;
+            if (element == null) return null;
+            var elements = element.GetElementsByTagName(name);
+            if (elements.Count > 0) return elements[0];
+            return null;
+        }
+#endif
+
         public static void SerializeObject(XmlWriter xw, object o)
         {
             XmlSerializer ser = new XmlSerializer(o.GetType());
@@ -98,10 +111,17 @@ namespace DbShell.Driver.Common.Utility
 
         public static void SerializeObject(Stream fw, object o)
         {
+#if !NETCOREAPP1_1
             using (XmlWriter xw = new XmlTextWriter(fw, Encoding.UTF8))
             {
                 SerializeObject(xw, o);
             }
+#else
+            using (XmlWriter xw = XmlWriter.Create(fw))
+            {
+                SerializeObject(xw, o);
+            }
+#endif
         }
 
         public static void SerializeObject(string filename, object o)
@@ -125,10 +145,15 @@ namespace DbShell.Driver.Common.Utility
             string typename = elem.GetAttribute("type");
             Type type = Type.GetType(typename);
             XmlSerializer ser = new XmlSerializer(type);
+#if !NETCOREAPP1_1
             using (XmlNodeReader xr = new XmlNodeReader(elem.LastChild))
             {
                 return ser.Deserialize(xr);
             }
+#else
+            // TODO
+            return null;
+#endif
         }
 
         public static object DeserializeObject(XmlDocument doc)
@@ -358,23 +383,25 @@ namespace DbShell.Driver.Common.Utility
                 if ((bool)val) return "1";
                 return "0";
             }
-            else if (val.GetType().IsEnum)
+            else if (IsEnum(val.GetType()))
             {
                 return val.ToString().ToLower();
             }
+#if !NETCOREAPP1_1
             else if (val is Color)
             {
                 return ((Color)val).Name;
-            }
-            else if (val is Encoding)
-            {
-                return ((Encoding)val).WebName;
             }
             else if (val is Bitmap)
             {
                 var ms = new MemoryStream();
                 ((Bitmap)val).Save(ms, System.Drawing.Imaging.ImageFormat.Png);
                 return Convert.ToBase64String(ms.ToArray());
+            }
+#endif
+            else if (val is Encoding)
+            {
+                return ((Encoding)val).WebName;
             }
             else if (val is DateTime)
             {
@@ -393,6 +420,15 @@ namespace DbShell.Driver.Common.Utility
             return ValueFromString(prop.PropertyType, sval);
         }
 
+        public static bool IsEnum(Type type)
+        {
+#if NETCOREAPP1_1
+            return type.GetTypeInfo().IsEnum;
+#else
+            return type.IsEnum;
+#endif
+        }
+
         public static object ValueFromString(Type type, string sval)
         {
             if (sval == null) return null;
@@ -408,7 +444,7 @@ namespace DbShell.Driver.Common.Utility
                 if (sval == "0") return false;
                 return null;
             }
-            else if (type.IsEnum)
+            else if (IsEnum(type))
             {
                 return Enum.Parse(type, sval, true);
             }
@@ -416,6 +452,7 @@ namespace DbShell.Driver.Common.Utility
             {
                 return Encoding.GetEncoding(sval);
             }
+#if !NETCOREAPP1_1
             else if (type == typeof(Color))
             {
                 var col = Color.FromName(sval);
@@ -425,15 +462,16 @@ namespace DbShell.Driver.Common.Utility
                 }
                 return col;
             }
-            else if (type == typeof(DateTime) || type == typeof(DateTime?))
-            {
-                return DateTime.ParseExact(sval, "s", CultureInfo.InvariantCulture);
-            }
             else if (type == typeof(Bitmap))
             {
                 var ms = new MemoryStream(Convert.FromBase64String(sval));
                 var bmp = new Bitmap(ms);
                 return bmp;
+            }
+#endif
+            else if (type == typeof(DateTime) || type == typeof(DateTime?))
+            {
+                return DateTime.ParseExact(sval, "s", CultureInfo.InvariantCulture);
             }
             else
             {
@@ -452,7 +490,7 @@ namespace DbShell.Driver.Common.Utility
         {
             var doc = XmlTool.CreateDocument("Document");
             SaveProperties(o, doc.DocumentElement);
-            doc.Save(filename);
+            doc.Save(File.OpenWrite(filename));
         }
 
         public static void SaveProperties(this object o, XmlElement xml)
@@ -514,6 +552,7 @@ namespace DbShell.Driver.Common.Utility
                         SaveProperties(val, elem);
                     }
                 }
+#if !NETCOREAPP1_1
                 foreach (SettingAttribute attr in prop.GetCustomAttributes(typeof(SettingAttribute), true))
                 {
                     object val = prop.CallGet(o);
@@ -524,6 +563,7 @@ namespace DbShell.Driver.Common.Utility
                         if (sval != null) elem.InnerText = sval;
                     }
                 }
+#endif
                 foreach (XmlThisAttribute attr in prop.GetCustomAttributes(typeof(XmlThisAttribute), true))
                 {
                     object val = prop.CallGet(o);
@@ -552,7 +592,7 @@ namespace DbShell.Driver.Common.Utility
         public static void LoadProperties(this object o, string filename)
         {
             var doc = new XmlDocument();
-            doc.Load(filename);
+            doc.Load(File.OpenRead(filename));
             LoadProperties(o, doc.DocumentElement);
         }
 
@@ -566,6 +606,7 @@ namespace DbShell.Driver.Common.Utility
             o.LoadPropertiesCore(xml);
         }
 
+#if !NETCOREAPP1_1
         public static string DownloadProperties(this object o, string url)
         {
             using (var wc = new WebClient())
@@ -577,6 +618,7 @@ namespace DbShell.Driver.Common.Utility
                 return data;
             }
         }
+#endif
 
         public static void LoadPropertiesCore(this object o, XmlElement xml)
         {
@@ -649,11 +691,13 @@ namespace DbShell.Driver.Common.Utility
                         }
                     }
                 }
+#if !NETCOREAPP1_1
                 foreach (SettingAttribute attr in prop.GetCustomAttributes(typeof(SettingAttribute), true))
                 {
                     var elem = xml.SelectSingleNode(prop.Name);
                     if (elem != null) sval = elem.InnerText;
                 }
+#endif
                 foreach (XmlThisAttribute attr in prop.GetCustomAttributes(typeof(XmlThisAttribute), true))
                 {
                     object subval = prop.CallGet(o);
@@ -677,7 +721,7 @@ namespace DbShell.Driver.Common.Utility
                 foreach (XmlCollectionAttribute attr in prop.GetCustomAttributes(typeof(XmlCollectionAttribute), true))
                 {
                     string name = attr.GetElemName(prop);
-                    var lst = xml.SelectNodes(name);
+                    var lst = xml.GetElementsByTagName(name);
                     if (lst.Count > 0)
                     {
                         object colval = prop.CallGet(o);
@@ -751,7 +795,7 @@ namespace DbShell.Driver.Common.Utility
         public static Dictionary<string, string> LoadParameters(XmlElement xml)
         {
             Dictionary<string, string> res = new Dictionary<string, string>();
-            foreach (XmlElement x in xml.SelectNodes("Param"))
+            foreach (XmlElement x in xml.GetElementsByTagName("Param"))
             {
                 res[x.GetAttribute("name")] = x.InnerText;
             }

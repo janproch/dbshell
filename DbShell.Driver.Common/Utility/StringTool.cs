@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using System.Web;
 
 namespace DbShell.Driver.Common.Utility
 {
@@ -209,7 +208,11 @@ namespace DbShell.Driver.Common.Utility
                 if (was) sb.Append('&');
                 sb.Append(k);
                 sb.Append('=');
-                sb.Append(HttpUtility.UrlEncode(pars[k], e));
+#if !NETCOREAPP1_1
+                sb.Append(System.Web.HttpUtility.UrlEncode(pars[k], e));
+#else
+                sb.Append(System.Net.WebUtility.UrlEncode(pars[k]));
+#endif
                 was = true;
             }
             return sb.ToString();
@@ -224,7 +227,11 @@ namespace DbShell.Driver.Common.Utility
                 if (was) sb.Append('&');
                 sb.Append(k);
                 sb.Append('=');
-                sb.Append(HttpUtility.UrlEncode(pars[k]));
+#if !NETCOREAPP1_1
+                sb.Append(System.Web.HttpUtility.UrlEncode(pars[k]));
+#else
+                sb.Append(System.Net.WebUtility.UrlEncode(Encoding.UTF8.GetString(pars[k])));
+#endif
                 was = true;
             }
             return sb.ToString();

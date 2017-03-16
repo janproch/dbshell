@@ -14,7 +14,7 @@ namespace DbShell.Driver.Common.AbstractDb
 {
     public class BulkInserterBase : IBulkInserter
     {
-        private readonly static ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly static ILog _log = LogManager.GetLogger(typeof(BulkInserterBase));
 
         public TableInfo DestinationTable { get; set; }
 

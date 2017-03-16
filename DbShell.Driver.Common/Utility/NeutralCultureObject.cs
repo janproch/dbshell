@@ -12,16 +12,20 @@ namespace DbShell.Driver.Common.Utility
         CultureInfo old, oldui;
         public NeutralCultureObject()
         {
+#if !NETCOREAPP1_1
             old = Thread.CurrentThread.CurrentCulture;
             oldui = Thread.CurrentThread.CurrentUICulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+#endif
         }
         public void Close() { Dispose(); }
         public void Dispose()
         {
+#if !NETCOREAPP1_1
             Thread.CurrentThread.CurrentCulture = old;
             Thread.CurrentThread.CurrentUICulture = oldui;
+#endif
         }
     }
 }

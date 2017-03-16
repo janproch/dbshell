@@ -1,4 +1,5 @@
-﻿using Antlr.Runtime;
+﻿#if !NETCOREAPP1_1
+using Antlr.Runtime;
 using DbShell.Driver.Common.Utility;
 using System;
 using System.Collections.Generic;
@@ -72,3 +73,4 @@ public class ObjectFilterAntlrParser : Antlr.Runtime.Parser
         Conditions[Conditions.Count - 1] = new ObjectFilterNotCondition { Condition = Conditions[Conditions.Count - 1] };
     }
 }
+#endif

@@ -51,6 +51,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
             }
         }
 
+#if !NETCOREAPP1_1
         public InMemoryTable(TableInfo table, XmlElement xml)
         {
             Initialize();
@@ -63,6 +64,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 }
             }
         }
+#endif
 
         private InMemoryTable()
         {
@@ -95,6 +97,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public TableInfo Structure { get { return m_structure; } }
         IRowCollection<ArrayDataRecord> IInMemoryTable<ArrayDataRecord>.Rows { get { return this.Rows; } }
 
+#if !NETCOREAPP1_1
         public void SaveToXml(XmlElement xml)
         {
             using (XmlWriter xw = xml.CreateNavigator().AppendChild())
@@ -103,6 +106,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 xw.Flush();
             }
         }
+#endif
     }
 
     public class InMemoryRows : ListProxy<ArrayDataRecord>, IRowCollection<ArrayDataRecord>
@@ -139,3 +143,4 @@ namespace DbShell.Driver.Common.CommonDataLayer
     //    public int[] ColIndexes { get { return m_colIndexes.ToArray(); } }
     //}
 }
+

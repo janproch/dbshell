@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
+#if !NETCOREAPP1_1
 namespace DbShell.Driver.Common.Utility
 {
     public class EncodingTypeConverter : TypeConverter
@@ -73,3 +74,4 @@ namespace DbShell.Driver.Common.Utility
         }
     }
 }
+#endif

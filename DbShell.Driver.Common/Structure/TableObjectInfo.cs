@@ -1,5 +1,4 @@
 using System.Runtime.Serialization;
-using System.Web.Script.Serialization;
 
 namespace DbShell.Driver.Common.Structure
 {

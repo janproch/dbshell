@@ -36,6 +36,8 @@ namespace DbShell.Driver.Common.CommonDataLayer
                             res.Hour = lexer.ReadNumber(num2);
                             break;
                         }
+#if !NETCOREAPP1_1
+
                     case ':':
                         {
                             lexer.Skip(dtfi.TimeSeparator);
@@ -48,6 +50,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                             num2 = 1;
                             break;
                         }
+#endif
                     case '\'':
                     case '"':
                         {

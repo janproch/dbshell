@@ -147,8 +147,14 @@ namespace DbShell.Driver.Common.Utility
         public void Dispose()
         {
             m_disposed = true;
+#if !NETCOREAPP1_1
             m_onPutEvent.Close();
             m_onGetEvent.Close();
+#else
+            m_onPutEvent.Dispose();
+            m_onGetEvent.Dispose();
+#endif
+
         }
 
         #endregion

@@ -1,6 +1,5 @@
 ﻿using System.Xml;
 using DbShell.Driver.Common.Utility;
-using System.Web.Script.Serialization;
 
 namespace DbShell.Driver.Common.DmlFramework
 {
@@ -50,12 +49,14 @@ namespace DbShell.Driver.Common.DmlFramework
             return literal != null && literal.Value == null;
         }
 
+
+#if NETCOREAPP1_1
         public virtual string JavaScriptExpression => "null";
 
         public static string SerializeJson(object o)
         {
-            var ser = new JavaScriptSerializer();
-            return ser.Serialize(o);
+            return Newtonsoft.Json.JsonConvert.SerializeObject(o);
         }
+#endif
     }
 }

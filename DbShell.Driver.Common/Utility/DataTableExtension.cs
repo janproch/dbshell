@@ -1,4 +1,6 @@
-﻿using DbShell.Driver.Common.Structure;
+﻿#if !NETCOREAPP1_1
+
+using DbShell.Driver.Common.Structure;
 using System.Data;
 
 namespace DbShell.Driver.Common.Utility
@@ -58,3 +60,5 @@ namespace DbShell.Driver.Common.Utility
         //}
     }
 }
+
+#endif

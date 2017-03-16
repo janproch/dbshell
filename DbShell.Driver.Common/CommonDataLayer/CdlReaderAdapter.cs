@@ -39,10 +39,18 @@ namespace DbShell.Driver.Common.CommonDataLayer
             _reader = null;
         }
 
+
+#if !NETCOREAPP1_1
         public DataTable GetSchemaTable()
         {
             return _reader.Structure.SchemaFromStructure();
         }
+#else
+        public DataTable GetSchemaTable()
+        {
+            return null;
+        }
+#endif
 
         public bool NextResult()
         {

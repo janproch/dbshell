@@ -581,7 +581,7 @@ namespace DbShell.Driver.Common.DmlFramework
 
         protected override bool Test(string testedString)
         {
-            return testedString.StartsWith(Value, StringComparison.InvariantCultureIgnoreCase);
+            return testedString.StartsWith(Value, StringComparison.OrdinalIgnoreCase);
         }
 
         public override string JavaScriptCondition => $"_.startsWith(({Expr.JavaScriptExpression}), {DmlfExpression.SerializeJson(Value)})";
@@ -597,7 +597,7 @@ namespace DbShell.Driver.Common.DmlFramework
 
         protected override bool Test(string testedString)
         {
-            return testedString.EndsWith(Value, StringComparison.InvariantCultureIgnoreCase);
+            return testedString.EndsWith(Value, StringComparison.OrdinalIgnoreCase);
         }
 
         public override string JavaScriptCondition => $"_.endsWith(({Expr.JavaScriptExpression}), {DmlfExpression.SerializeJson(Value)})";
@@ -613,7 +613,7 @@ namespace DbShell.Driver.Common.DmlFramework
 
         protected override bool Test(string testedString)
         {
-            return testedString.IndexOf(Value, StringComparison.InvariantCultureIgnoreCase) >= 0;
+            return testedString.IndexOf(Value, StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
         public override string JavaScriptCondition => $"({Expr.JavaScriptExpression}).indexOf({DmlfExpression.SerializeJson(Value)})>=0";

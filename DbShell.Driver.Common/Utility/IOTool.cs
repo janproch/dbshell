@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+#if !NETCOREAPP1_1
 using System.Drawing;
 using System.Drawing.Imaging;
+#endif
 using System.IO;
 using System.Text;
 
@@ -68,7 +70,7 @@ namespace DbShell.Driver.Common.Utility
                     return toPath;
             }
 
-            StringCollection relativePath = new StringCollection();
+            var relativePath = new List<string>();
             string[] fromDirectories = fromDirectory.Split(
                 Path.DirectorySeparatorChar);
 
@@ -115,13 +117,13 @@ namespace DbShell.Driver.Common.Utility
 
         public static string LoadTextFile(string file)
         {
-            using (StreamReader sr = new StreamReader(file)) return sr.ReadToEnd();
+            using (StreamReader sr = new StreamReader(File.OpenRead(file))) return sr.ReadToEnd();
         }
 
         public static IEnumerable<string> LoadLines(string file)
         {
             if (!File.Exists(file)) yield break;
-            using (StreamReader sr = new StreamReader(file))
+            using (StreamReader sr = new StreamReader(File.OpenRead(file)))
             {
                 while (!sr.EndOfStream)
                 {
@@ -147,14 +149,14 @@ namespace DbShell.Driver.Common.Utility
             fn = Path.GetFileName(fn);
             fn = Path.Combine(linkpath, fn);
             fn = GetUniqueFileName(fn);
-            using (StreamWriter sw = new StreamWriter(fn)) sw.Write(origfile);
+            using (StreamWriter sw = new StreamWriter(File.OpenWrite(fn))) sw.Write(origfile);
         }
 
         public static string GetLinkContent(string file)
         {
             if (FileIsLink(file))
             {
-                using (StreamReader sr = new StreamReader(file))
+                using (StreamReader sr = new StreamReader(File.OpenRead(file)))
                 {
                     return sr.ReadToEnd().Trim();
                 }
@@ -210,6 +212,7 @@ namespace DbShell.Driver.Common.Utility
             }
         }
 
+#if !NETCOREAPP1_1
         public static string ImageToText(Bitmap image)
         {
             var ms = new MemoryStream();
@@ -222,10 +225,11 @@ namespace DbShell.Driver.Common.Utility
             var ms = new MemoryStream(Convert.FromBase64String(text));
             return new Bitmap(Image.FromStream(ms));
         }
+#endif
 
         public static void SaveLines(string path, HashSetEx<string> lines)
         {
-            using (var sw = new StreamWriter(path))
+            using (var sw = new StreamWriter(File.OpenWrite(path)))
             {
                 foreach (string line in lines)
                 {

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using DbShell.Driver.Common.DbDiff;
 using DbShell.Driver.Common.Utility;
-using System.Web.Script.Serialization;
 using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.Structure

@@ -7,6 +7,7 @@ using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
+using System.Reflection;
 
 namespace DbShell.Driver.Common.DbDiff
 {
@@ -76,7 +77,7 @@ namespace DbShell.Driver.Common.DbDiff
         public AlterOperation CloneForStructure(DatabaseInfo s)
         {
             Type t = GetType();
-            var res = t.GetConstructor(new Type[] { }).Invoke(new object[] { }) as AlterOperation;
+            var res = Activator.CreateInstance(t) as AlterOperation; ;
             res.AssignFrom(this);
             if (s != null) res.ChangeStructure(s);
             return res;

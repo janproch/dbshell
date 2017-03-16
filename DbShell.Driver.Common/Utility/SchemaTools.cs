@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.Structure;
 
+#if !NETCOREAPP1_1
+
 namespace DbShell.Driver.Common.Utility
 {
     public static class SchemaTools
@@ -71,3 +73,5 @@ namespace DbShell.Driver.Common.Utility
         }
     }
 }
+
+#endif
