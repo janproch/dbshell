@@ -21,8 +21,13 @@ namespace DbShell.Driver.Common.Utility
 
     public interface IFilterParserCore
     {
-        DmlfConditionBase ParseFilterExpression(FilterParserTool.ExpressionType type, DmlfExpression columnValue, string expression);
+        DmlfConditionBase ParseFilterExpression(FilterParserTool.ExpressionType type, DmlfExpression columnValue, string expression, ParserOptions options);
         ObjectFilterConditionBase ParseObjectFilter(string expression);
+    }
+
+    public class ParserOptions
+    {
+        public string CollateSpec;
     }
 
     public static class FilterParserTool
@@ -74,9 +79,9 @@ namespace DbShell.Driver.Common.Utility
             return FilterLineTransformation.None;
         }
 
-        public static DmlfConditionBase ParseFilterExpression(DbTypeBase type, DmlfExpression columnValue, string expression)
+        public static DmlfConditionBase ParseFilterExpression(DbTypeBase type, DmlfExpression columnValue, string expression, ParserOptions options = null)
         {
-            return ParseFilterExpression(GetExpressionType(type), columnValue, expression);
+            return ParseFilterExpression(GetExpressionType(type), columnValue, expression, options);
         }
 
         private static void WantParserCore()
@@ -84,13 +89,13 @@ namespace DbShell.Driver.Common.Utility
             if (ParserCore == null) throw new Exception("DBSH-00000 FilterParser corenot initialized");
         }
 
-        public static DmlfConditionBase ParseFilterExpression(ExpressionType type, DmlfExpression columnValue, string expression)
+        public static DmlfConditionBase ParseFilterExpression(ExpressionType type, DmlfExpression columnValue, string expression, ParserOptions options = null)
         {
             WantParserCore();
 
             if (expression == null) return null;
             expression = TransformExpression(expression);
-            var res = ParserCore.ParseFilterExpression(type, columnValue, expression);
+            var res = ParserCore.ParseFilterExpression(type, columnValue, expression, options);
             if (res != null) res = res.SimplifyCondition();
             return res;
         }

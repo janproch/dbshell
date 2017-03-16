@@ -95,6 +95,7 @@
     <Compile Include="Structure\StructuredIdentifier.cs" />
     <Compile Include="Utility\ConnectionStringTool.cs" />
     <Compile Include="Utility\DateTimeExTypeConverter.cs" />
+    <Compile Include="Utility\DateTimeTool.cs" />
     <Compile Include="Utility\FilterParserTool.cs" />
     <Compile Include="Utility\ObjectFilterAntlrParser.cs" />
     <Compile Include="Utility\ObjectFilterConditions.cs" />
