@@ -504,8 +504,7 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
     /// </summary>
     public static DateTime GetFirstDayOfWeek(DateTime dayInWeek)
     {
-        CultureInfo defaultCultureInfo = CultureInfo.CurrentCulture;
-        return GetFirstDayOfWeek(dayInWeek, defaultCultureInfo);
+        return DateTimeTool.GetFirstDayOfWeek(dayInWeek);
     }
 
     /// <summary>
@@ -514,12 +513,7 @@ public class DbShellFilterAntlrParser : Antlr.Runtime.Parser
     /// </summary>
     public static DateTime GetFirstDayOfWeek(DateTime dayInWeek, CultureInfo cultureInfo)
     {
-        DayOfWeek firstDay = cultureInfo.DateTimeFormat.FirstDayOfWeek;
-        DateTime firstDayInWeek = dayInWeek.Date;
-        while (firstDayInWeek.DayOfWeek != firstDay)
-            firstDayInWeek = firstDayInWeek.AddDays(-1);
-
-        return firstDayInWeek;
+        return DateTimeTool.GetFirstDayOfWeek(dayInWeek, cultureInfo);
     }
 
     public void Push(object o)

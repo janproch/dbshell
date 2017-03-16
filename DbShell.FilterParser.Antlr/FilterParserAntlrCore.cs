@@ -90,8 +90,12 @@ namespace DbShell.FilterParser.Antlr
         }
 
 
-        public DmlfConditionBase ParseFilterExpression(FilterParserTool.ExpressionType type, DmlfExpression columnValue, string expression)
+        public DmlfConditionBase ParseFilterExpression(FilterParserTool.ExpressionType type, DmlfExpression columnValue, string expression, ParserOptions options)
         {
+            Action<DbShellFilterAntlrParser> initParser = null;
+
+            if (options?.CollateSpec != null) initParser = x => x.CollateSpec = options?.CollateSpec;
+
             switch (type)
             {
                 case FilterParserTool.ExpressionType.Number:
