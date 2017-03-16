@@ -69,7 +69,7 @@ namespace DbShell.Driver.Common.ChangeSet
                 };
             var column = colref.FindSourceColumn(db);
 
-            cmd.AddAndCondition(FilterParser.FilterParser.ParseFilterExpression(column != null ? column.CommonType : new DbTypeString(), colexpr, cond.UsedExpression));
+            cmd.AddAndCondition(FilterParserTool.ParseFilterExpression(column != null ? column.CommonType : new DbTypeString(), colexpr, cond.UsedExpression));
             return true;
         }
 

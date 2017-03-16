@@ -1,5 +1,4 @@
-﻿using DbShell.Driver.Common.FilterParser;
-using DbShell.Driver.Common.Utility;
+﻿using DbShell.Driver.Common.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +24,7 @@ namespace DbShell.RelatedDataSync
         public string Filter { get; set; }
 
         [XamlProperty]
-        public FilterParser.ExpressionType FilterType { get; set; } = FilterParser.ExpressionType.None;
+        public FilterParserTool.ExpressionType FilterType { get; set; } = FilterParserTool.ExpressionType.None;
 
         public string AliasOrName
         {

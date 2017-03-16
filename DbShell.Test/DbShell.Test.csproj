@@ -65,6 +65,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Basics\FilterParserTests.cs" />
     <Compile Include="DatabaseTestBase.cs" />
     <Compile Include="LocalDb\LocalDbTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -96,6 +97,10 @@
     <ProjectReference Include="..\DbShell.Excel\DbShell.Excel.csproj">
       <Project>{af992d15-1c15-4db4-9df4-a4ef9a0bc92a}</Project>
       <Name>DbShell.Excel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DbShell.FilterParser.Antlr\DbShell.FilterParser.Antlr.csproj">
+      <Project>{CB8B097A-BC72-4142-89A9-6CF79818533C}</Project>
+      <Name>DbShell.FilterParser.Antlr</Name>
     </ProjectReference>
     <ProjectReference Include="..\DbShell.LocalDb\DbShell.LocalDb.csproj">
       <Project>{321190c8-2f2f-4d29-8cb0-459c28356f08}</Project>

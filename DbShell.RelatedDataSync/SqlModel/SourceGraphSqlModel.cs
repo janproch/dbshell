@@ -1,5 +1,6 @@
 ﻿using DbShell.Common;
 using DbShell.Driver.Common.DmlFramework;
+using DbShell.Driver.Common.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +48,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                     if (!String.IsNullOrEmpty(colItem.Filter))
                     {
                         Columns[alias].Filters.Add(colItem.Filter);
-                        if (colItem.FilterType != Driver.Common.FilterParser.FilterParser.ExpressionType.None)
+                        if (colItem.FilterType != FilterParserTool.ExpressionType.None)
                         {
                             Columns[alias].FilterType = colItem.FilterType;
                         }

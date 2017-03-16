@@ -10,7 +10,7 @@ using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Sql;
 using System.Text.RegularExpressions;
 using System.IO;
-using DbShell.Driver.Common.FilterParser;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.RelatedDataSync.SqlModel
 {
@@ -326,7 +326,7 @@ namespace DbShell.RelatedDataSync.SqlModel
                         }
                     };
 
-                    var additionalCondition = FilterParser.ParseFilterExpression(type, expr, additional.Filter);
+                    var additionalCondition = FilterParserTool.ParseFilterExpression(type, expr, additional.Filter);
 
                     if (colFilterCondition != null)
                     {

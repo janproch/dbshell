@@ -65,18 +65,7 @@ namespace DbShell.Driver.Common.Utility
 
         public static ObjectFilterConditionBase Parse(string s)
         {
-            var lexer = new ObjectFilterLexer(new ANTLRReaderStream(new StringReader(s)));
-            var tokens = new CommonTokenStream(lexer);
-            var parser = new ObjectFilterParser(tokens);
-            try
-            {
-                parser.expr();
-            }
-            catch
-            {
-                return null;
-            }
-            return parser.Condition;
+            return FilterParserTool.ParseObjectFilter(s);
         }
     }
 

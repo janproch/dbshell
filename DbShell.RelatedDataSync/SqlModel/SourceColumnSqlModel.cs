@@ -1,5 +1,5 @@
 ﻿using DbShell.Driver.Common.DmlFramework;
-using DbShell.Driver.Common.FilterParser;
+using DbShell.Driver.Common.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,20 +14,20 @@ namespace DbShell.RelatedDataSync.SqlModel
         public List<SourceEntitySqlModel> Entities = new List<SourceEntitySqlModel>();
         public List<SourceColumn> DbshColumns = new List<SourceColumn>();
         public List<string> Filters = new List<string>();
-        public FilterParser.ExpressionType FilterType = FilterParser.ExpressionType.None;
+        public FilterParserTool.ExpressionType FilterType = FilterParserTool.ExpressionType.None;
 
         public DmlfConditionBase FilterCondition;
 
-        public static FilterParser.ExpressionType DetectFilterType(FilterParser.ExpressionType type, IEnumerable<SourceColumn> columns)
+        public static FilterParserTool.ExpressionType DetectFilterType(FilterParserTool.ExpressionType type, IEnumerable<SourceColumn> columns)
         {
-            if (type == FilterParser.ExpressionType.None)
+            if (type == FilterParserTool.ExpressionType.None)
             {
                 string dataType = columns.Select(x => x.DataType).FirstOrDefault(x => !String.IsNullOrEmpty(x)) ?? "";
                 dataType = dataType.ToLower();
-                if (dataType.Contains("date") || dataType.Contains("time")) type = FilterParser.ExpressionType.DateTime;
-                else if (dataType.Contains("int") || dataType.Contains("float") || dataType.Contains("num") || dataType.Contains("dec")) type = FilterParser.ExpressionType.Number;
-                else if (dataType.Contains("bit") || dataType.Contains("bool") || dataType.Contains("log")) type = FilterParser.ExpressionType.Logical;
-                else type = FilterParser.ExpressionType.String;
+                if (dataType.Contains("date") || dataType.Contains("time")) type = FilterParserTool.ExpressionType.DateTime;
+                else if (dataType.Contains("int") || dataType.Contains("float") || dataType.Contains("num") || dataType.Contains("dec")) type = FilterParserTool.ExpressionType.Number;
+                else if (dataType.Contains("bit") || dataType.Contains("bool") || dataType.Contains("log")) type = FilterParserTool.ExpressionType.Logical;
+                else type = FilterParserTool.ExpressionType.String;
             }
             return type;
         }
@@ -52,7 +52,7 @@ namespace DbShell.RelatedDataSync.SqlModel
 
             foreach (var filter in Filters)
             {
-                var cond = FilterParser.ParseFilterExpression(type, expr, filter);
+                var cond = FilterParserTool.ParseFilterExpression(type, expr, filter);
                 andCondition.Conditions.Add(cond);
             }
 
@@ -78,7 +78,7 @@ namespace DbShell.RelatedDataSync.SqlModel
             };
 
             var type = DetectFilterType(column.FilterType, new[] { column });
-            var cond = FilterParser.ParseFilterExpression(type, expr, column.Filter);
+            var cond = FilterParserTool.ParseFilterExpression(type, expr, column.Filter);
             return cond;
         }
     }
