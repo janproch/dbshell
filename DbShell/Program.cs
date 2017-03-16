@@ -5,6 +5,7 @@ using System.Text;
 using DbShell.Core.Runtime;
 using log4net;
 using log4net.Config;
+using DbShell.FilterParser.Antlr;
 
 namespace DbShell
 {
@@ -15,6 +16,7 @@ namespace DbShell
         private static int Main(string[] args)
         {
             XmlConfigurator.Configure();
+            FilterParserAntlrCore.Initialize();
 
             var runner = new ShellRunner();
             try

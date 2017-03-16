@@ -85,6 +85,10 @@
       <Project>{80906e4d-1539-4f93-a227-3e072f49baea}</Project>
       <Name>DbShell.Driver.SqlServer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DbShell.FilterParser.Antlr\DbShell.FilterParser.Antlr.csproj">
+      <Project>{CB8B097A-BC72-4142-89A9-6CF79818533C}</Project>
+      <Name>DbShell.FilterParser.Antlr</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
