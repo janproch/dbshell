@@ -3,25 +3,48 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+#if !NETCOREAPP1_1
 using System.Windows.Markup;
+#endif
 using DbShell.Common;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
+#if !NETCOREAPP1_1
 using IronPython.Hosting;
 using Microsoft.Scripting.Hosting;
+#endif
 using log4net;
 
 namespace DbShell.Core.Runtime
 {
     public class ShellContext : IShellContext, IDisposable
     {
+#if NETCOREAPP1_1
+        class ScriptScope
+        {
+            Dictionary<string, object> _values = new Dictionary<string, object>();
+            ScriptScope _parent;
+
+            internal ScriptScope(ScriptScope parent) => _parent = parent;
+
+            internal object GetVariable(string name)
+            {
+                if (_values.TryGetValue(name, out var value)) return value;
+                if (_parent != null) return _parent.GetVariable(name);
+                return null;
+            }
+            internal void SetVariable(string name, object value) => _values[name] = value;
+        }
+#endif
+
         private ShellContext _parent;
-        private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog _log = LogManager.GetLogger(typeof(ShellContext));
 
         // fields shared with root context
         private Dictionary<string, DatabaseInfo> _dbCache;
+#if !NETCOREAPP1_1
         private readonly ScriptEngine _engine;
-
+#endif
         // script scope
         private ScriptScope _scope;
 
@@ -35,6 +58,7 @@ namespace DbShell.Core.Runtime
         // search folders
         private Dictionary<ResolveFileMode, List<string>> _additionalSearchFolders = new Dictionary<ResolveFileMode, List<string>>();
 
+#if !NETCOREAPP1_1
         [ThreadStatic]
         static ScriptEngine _staticEngine;
 
@@ -46,14 +70,18 @@ namespace DbShell.Core.Runtime
             }
             return _staticEngine;
         }
+#endif
 
         public ShellContext(ShellContext parent = null)
         {
             if (parent == null)
             {
-                //_engine = Python.CreateEngine();
+#if !NETCOREAPP1_1
                 _engine = GetEngine();
                 _scope = _engine.CreateScope();
+#else
+                _scope = new ScriptScope(null);
+#endif
 
                 _dbCache = new Dictionary<string, DatabaseInfo>();
             }
@@ -61,7 +89,9 @@ namespace DbShell.Core.Runtime
             {
                 _parent = parent;
 
+#if !NETCOREAPP1_1
                 _engine = _parent._engine;
+#endif
                 _dbCache = _parent._dbCache;
 
                 OnOutputMessage += ShellContext_OnOutputMessage;
@@ -125,13 +155,21 @@ namespace DbShell.Core.Runtime
 
         public object Evaluate(string expression)
         {
+#if !NETCOREAPP1_1
             return _engine.Execute(expression, Scope);
+#else
+            return Scope.GetVariable(expression);
+#endif
         }
 
         public void CreateScope()
         {
             if (_scope != null) throw new Exception("DBSH-00210 Scope already created");
+#if !NETCOREAPP1_1
             _scope = _engine.CreateScope(Scope);
+#else
+            _scope = new ScriptScope(Scope);
+#endif
         }
 
         public object GetVariable(string name)
@@ -157,6 +195,7 @@ namespace DbShell.Core.Runtime
 
         public void IncludeFile(string file)
         {
+#if !NETCOREAPP1_1
             using (var fr = new FileInfo(file).OpenRead())
             {
                 object obj = XamlReader.Load(fr);
@@ -171,6 +210,9 @@ namespace DbShell.Core.Runtime
                     runnable.Run(childContext);
                 }
             }
+#else
+            throw new NotImplementedError("DBSH-00000");
+#endif
         }
 
         private string SearchExistingFile(string file, ResolveFileMode mode, params string[] folders)

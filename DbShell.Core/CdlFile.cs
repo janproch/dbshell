@@ -19,7 +19,7 @@ namespace DbShell.Core
     /// </summary>
     public class CdlFile : ElementBase, ITabularDataSource, ITabularDataTarget, IModelProvider
     {
-        private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog _log = LogManager.GetLogger(typeof(CdlFile));
 
         /// <summary>
         /// File name (should have .cdl extension)
@@ -56,7 +56,7 @@ namespace DbShell.Core
             }
             finally
             {
-                if (br != null) br.Close();
+                if (br != null) br.Dispose();
             }
             return table;
         }

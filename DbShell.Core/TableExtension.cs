@@ -1,4 +1,6 @@
-﻿using DbShell.Driver.Common.Structure;
+﻿#if !NETCOREAPP1_1
+
+using DbShell.Driver.Common.Structure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,3 +57,5 @@ namespace DbShell.Core
         public string Schema { get; set; }
     }
 }
+
+#endif

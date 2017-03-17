@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if !NETCOREAPP1_1
+
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -12,7 +14,7 @@ namespace DbShell.Driver.SqlServer
 {
     public class SqlServerBulkInserter : BulkInserterBase
     {
-        private readonly static ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly static ILog _log = LogManager.GetLogger(typeof(SqlServerBulkInserter));
         
         protected override void RunBulkCopy(Common.CommonDataLayer.ICdlReader reader)
         {
@@ -98,3 +100,5 @@ namespace DbShell.Driver.SqlServer
         }
     }
 }
+
+#endif

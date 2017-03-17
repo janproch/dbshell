@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+#if !NETCOREAPP1_1
 using System.Data.SQLite;
+#else
+using SQLiteConnection = Microsoft.Data.Sqlite.SqliteConnection;
+#endif
 using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.AbstractDb;
@@ -48,10 +52,12 @@ namespace DbShell.Driver.Sqlite
             FactoryProvider.RegisterFactory(Instance);
         }
 
+#if !NETCOREAPP1_1
         public override DatabaseAnalyser CreateAnalyser()
         {
             return new SqliteAnalyser();
         }
+#endif
 
         public override SqlDialectCaps DialectCaps
         {

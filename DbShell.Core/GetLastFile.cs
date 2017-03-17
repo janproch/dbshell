@@ -13,7 +13,7 @@ namespace DbShell.Core
 {
     public class GetLastFile : RunnableBase
     {
-        private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog _log = LogManager.GetLogger(typeof(GetLastFile));
 
         /// <summary>
         /// variable name filled with last file name

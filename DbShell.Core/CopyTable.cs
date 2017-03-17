@@ -17,7 +17,7 @@ namespace DbShell.Core
     /// </summary>
     public class CopyTable : RunnableBase
     {
-        private static ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static ILog _log = LogManager.GetLogger(typeof(CopyTable));
 
         /// <summary>
         /// Source of copy operation

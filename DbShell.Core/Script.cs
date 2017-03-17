@@ -5,7 +5,9 @@ using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Text;
+#if !NETCOREAPP1_1
 using System.Windows.Markup;
+#endif
 using DbShell.Common;
 using DbShell.Core.Utility;
 using DbShell.Driver.Common.AbstractDb;
@@ -18,10 +20,12 @@ namespace DbShell.Core
     /// <summary>
     /// Job, which is aible to run SQL script, from file or given inline.
     /// </summary>
+#if !NETCOREAPP1_1
     [ContentProperty("Command")]
+#endif
     public class Script : RunnableBase
     {
-        private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog _log = LogManager.GetLogger(typeof(Script));
 
         /// <summary>
         /// Gets or sets the script file file.
@@ -83,7 +87,9 @@ namespace DbShell.Core
         /// <summary>
         /// file encoding
         /// </summary>
+#if !NETCOREAPP1_1
         [TypeConverter(typeof(EncodingTypeConverter))]
+#endif
         [XamlProperty]
         public Encoding FileEncoding { get; set; }
 
@@ -149,7 +155,7 @@ namespace DbShell.Core
                     if (File != null)
                     {
                         string fn = context.ResolveFile(File, ResolveFileMode.Input);
-                        using (var reader = new StreamReader(fn, FileEncoding))
+                        using (var reader = new StreamReader(System.IO.File.OpenRead(fn), FileEncoding))
                         {
                             _log.InfoFormat("DBSH-00067 Executing SQL file {0}", fn);
                             context.OutputMessage(String.Format("Executing SQL file {0}", fn));
@@ -161,7 +167,7 @@ namespace DbShell.Core
                         foreach (string file in Files)
                         {
                             string fn = context.ResolveFile(file, ResolveFileMode.Input);
-                            using (var reader = new StreamReader(fn, FileEncoding))
+                            using (var reader = new StreamReader(System.IO.File.OpenRead(fn), FileEncoding))
                             {
                                 _log.InfoFormat("DBSH-00148 Executing SQL file {0}", fn);
                                 context.OutputMessage(String.Format("Executing SQL file {0}", fn));

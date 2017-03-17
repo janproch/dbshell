@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if !NETCOREAPP1_1
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +11,6 @@ using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
-using System.Windows.Markup;
 
 namespace DbShell.Core
 {
@@ -97,7 +98,7 @@ namespace DbShell.Core
 
             string file = context.ResolveFile(context.Replace(File), ResolveFileMode.Input);
             var doc = new XmlDocument();
-            doc.Load(file);
+            doc.Load(System.IO.File.OpenRead(file));
             return new XmlDocumentReader(doc, GetRowFormat(context), instructions);
         }
 
@@ -113,3 +114,5 @@ namespace DbShell.Core
 
     }
 }
+
+#endif

@@ -20,12 +20,13 @@ namespace DbShell.Driver.SqlServer
             var res = new List<SqlServerLinkedServer>();
             using (var reader = conn.RunOneSqlCommandReader("exec sp_linkedservers"))
             {
-                foreach (DataRow row in reader.ToDataTable().Rows)
+                int nameIndex = reader.GetOrdinal("SRV_NAME");
+                while (reader.Read())
                 {
                     res.Add(new SqlServerLinkedServer
-                        {
-                            Name = row["SRV_NAME"].SafeToString(),
-                        });
+                    {
+                        Name = reader.GetString(nameIndex),
+                    });
                 }
             }
             return res;
@@ -36,9 +37,10 @@ namespace DbShell.Driver.SqlServer
             var res = new List<string>();
             using (var reader = conn.RunOneSqlCommandReader(String.Format("select name from [{0}].master.sys.databases", Name)))
             {
-                foreach (DataRow row in reader.ToDataTable().Rows)
+                int nameIndex = reader.GetOrdinal("name");
+                while (reader.Read())
                 {
-                    res.Add(row["name"].SafeToString());
+                    res.Add(reader.GetString(nameIndex));
                 }
             }
             return res;

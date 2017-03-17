@@ -31,7 +31,7 @@ namespace DbShell.Core
         public ICdlWriter CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context, DataFormatSettings sourceDataFormat)
         {
             string file = context.ResolveFile(context.Replace(File), ResolveFileMode.Output);
-            var fw = new StreamWriter(file);
+            var fw = new StreamWriter(System.IO.File.OpenWrite(file));
             var provider = GetConnectionProvider(context);
             return new SqlFileWriter(fw, provider.Factory, InsertSeparatorAfterRows);
         }

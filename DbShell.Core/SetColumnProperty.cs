@@ -7,7 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+#if !NETCOREAPP1_1
 using System.Windows.Markup;
+#endif
 using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core
@@ -15,7 +17,9 @@ namespace DbShell.Core
     /// <summary>
     /// Job, which sets column property
     /// </summary>
+#if !NETCOREAPP1_1
     [ContentProperty("Value")]
+#endif
     public class SetColumnProperty : RunnableBase
     {
         /// <summary>

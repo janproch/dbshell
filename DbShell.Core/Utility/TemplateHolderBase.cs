@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+#if !NETCOREAPP1_1
 using System.Windows.Markup;
+#endif
 using DbShell.Common;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Utility;
@@ -11,10 +13,12 @@ using log4net;
 
 namespace DbShell.Core.Utility
 {
+#if !NETCOREAPP1_1
     [ContentProperty("TemplateData")]
+#endif
     public abstract class TemplateHolderBase : RunnableBase
     {
-        private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog _log = LogManager.GetLogger(typeof(TemplateHolderBase));
 
         /// <summary>
         /// Gets or sets the template file.
@@ -37,7 +41,7 @@ namespace DbShell.Core.Utility
 
             if (templateData == null && TemplateFile != null)
             {
-                using (var sr = new StreamReader(context.ResolveFile(context.Replace(TemplateFile), ResolveFileMode.Template)))
+                using (var sr = System.IO.File.OpenText(context.ResolveFile(context.Replace(TemplateFile), ResolveFileMode.Template)))
                 {
                     templateData = sr.ReadToEnd();
                 }

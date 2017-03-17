@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+#if !NETCOREAPP1_1
 using System.Data.SQLite;
+#else
+using SQLiteDataReader = Microsoft.Data.Sqlite.SqliteDataReader;
+#endif
 using System.Globalization;
 using System.Linq;
 using System.Text;

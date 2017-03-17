@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+#if !NETCOREAPP1_1
 using System.Windows.Markup;
+#endif
 using DbShell.Common;
 using DbShell.Core.RazorModels;
 using DbShell.Core.Utility;
@@ -18,7 +20,9 @@ namespace DbShell.Core
     /// <summary>
     /// Represents query reading data from database. Can be exported to file in the some way as table.
     /// </summary>
+#if !NETCOREAPP1_1
     [ContentProperty("Text")]
+#endif
     public class Query : ElementBase, ITabularDataSource, IListProvider, IModelProvider
     {
         /// <summary>

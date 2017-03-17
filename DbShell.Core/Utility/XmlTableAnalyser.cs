@@ -267,7 +267,7 @@ namespace DbShell.Core.Utility
 
         public static List<XmlReadInstructions> AnalyseFile(string file, bool globalUniqueColumnNames)
         {
-            using (var textReader = new StreamReader(file))
+            using (var textReader = System.IO.File.OpenText(file))
             {
                 using (var reader = System.Xml.XmlReader.Create(textReader))
                 {

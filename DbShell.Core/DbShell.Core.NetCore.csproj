@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="System.Data.Common" Version="4.3.0" />
+    <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
+    <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DbShell.Common\DbShell.Common.NetCore.csproj" />
+    <ProjectReference Include="..\DbShell.Driver.Common\DbShell.Driver.Common.NetCore.csproj" />
+    <ProjectReference Include="..\DbShell.Driver.Sqlite\DbShell.Driver.Sqlite.NetCore.csproj" />
+    <ProjectReference Include="..\DbShell.Driver.SqlServer\DbShell.Driver.SqlServer.NetCore.csproj" />
+  </ItemGroup>
+
+</Project>

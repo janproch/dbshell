@@ -15,7 +15,7 @@ namespace DbShell.Core
     /// </summary>
     public class TempFile : RunnableBase
     {
-        private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog _log = LogManager.GetLogger(typeof(TempFile));
 
         /// <summary>
         /// variable name filled with temp file name

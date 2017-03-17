@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if !NETCOREAPP1_1
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,3 +28,5 @@ namespace DbShell.Core
         public string Name { get; set; }
     }
 }
+
+#endif

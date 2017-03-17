@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if !NETCOREAPP1_1
+
+using System;
 using DbShell.Common;
 using DbShell.Core.Runtime;
 using RazorEngine.Templating;
@@ -41,3 +43,5 @@ namespace DbShell.Core.RazorModels
         public static event Action<IRazorTemplate> InitializeTemplate;
     }
 }
+
+#endif

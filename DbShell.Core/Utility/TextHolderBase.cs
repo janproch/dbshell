@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Markup;
 using DbShell.Common;
 using DbShell.Core.RazorModels;
 using log4net;
@@ -12,7 +11,7 @@ namespace DbShell.Core.Utility
 {
     public abstract class TextHolderBase : TemplateHolderBase
     {
-        private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog _log = LogManager.GetLogger(typeof(TextHolderBase));
 
         /// <summary>
         /// Raw text input file
@@ -26,6 +25,7 @@ namespace DbShell.Core.Utility
 
         protected string LoadTextContent(object model, IShellContext context)
         {
+#if !NETCOREAPP1_1
             string templateData = LoadTemplate(context);
             if (templateData != null)
             {
@@ -33,12 +33,13 @@ namespace DbShell.Core.Utility
                 RazorScripting.ParseRazor(templateData, sw.Write, model);
                 return sw.ToString();
             }
+#endif
 
             string textData = TextData;
 
             if (textData == null && TextFile != null)
             {
-                using (var sr = new StreamReader(context.ResolveFile(context.Replace(TextFile), ResolveFileMode.Input)))
+                using (var sr = new StreamReader(System.IO.File.OpenRead(context.ResolveFile(context.Replace(TextFile), ResolveFileMode.Input))))
                 {
                     textData = sr.ReadToEnd();
                 }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
+#if !NETCOREAPP1_1
 using System.Windows.Markup;
+#endif
 using System.Xml;
 using DbShell.Common;
 using log4net;
@@ -10,7 +12,7 @@ namespace DbShell.Core.Runtime
 {
     public class ShellRunner : IDisposable
     {
-        private static readonly ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog _log = LogManager.GetLogger(typeof(ShellRunner));
 
         private IRunnable _main;
         private ShellContext _context;
@@ -29,6 +31,7 @@ namespace DbShell.Core.Runtime
             if (OutputMessage != null) OutputMessage(obj);
         }
 
+#if !NETCOREAPP1_1
         public void LoadFile(string file)
         {
             var obj = ShellLoader.LoadFile(file);
@@ -40,6 +43,7 @@ namespace DbShell.Core.Runtime
             var obj = ShellLoader.LoadString(content);
             LoadObject(obj, folder);
         }
+#endif
 
         public void LoadObject(object obj, string folder = null)
         {
@@ -108,6 +112,7 @@ namespace DbShell.Core.Runtime
             }
         }
 
+#if !NETCOREAPP1_1
         public void Abort()
         {
             if (_thread == null)
@@ -116,6 +121,7 @@ namespace DbShell.Core.Runtime
             }
             _thread.Abort();
         }
+#endif
 
         public bool IsAsyncFinished
         {

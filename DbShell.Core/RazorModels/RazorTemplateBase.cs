@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if !NETCOREAPP1_1
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using DbShell.Common;
@@ -96,3 +98,5 @@ namespace DbShell.Core.RazorModels
         }
     }
 }
+
+#endif

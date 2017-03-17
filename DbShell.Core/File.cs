@@ -33,8 +33,10 @@ namespace DbShell.Core
         {
             string name = GetName(context);
             if (name.ToLower().EndsWith(".cdl")) return new CdlFile {Connection = Connection, Name = name};
+#if !NETCOREAPP1_1
             if (name.ToLower().EndsWith(".csv")) return new CsvFile { Connection = Connection, Name = name };
             if (name.ToLower().EndsWith(".xml")) return new XmlReader { Connection = Connection, File = name, AnalyseColumns = true };
+#endif
             throw new Exception("DBSH-00002 Unknown soruce file type:" + name);
         }
 
@@ -42,7 +44,9 @@ namespace DbShell.Core
         {
             string name = GetName(context);
             if (name.ToLower().EndsWith(".cdl")) return new CdlFile { Connection = Connection, Name = name };
+#if !NETCOREAPP1_1
             if (name.ToLower().EndsWith(".csv")) return new CsvFile { Connection = Connection, Name = name };
+#endif
             //if (name.ToLower().EndsWith(".html") || name.ToLower().EndsWith(".htm"))
             //{
             //    return new Razor { Connection = Connection, Context = Context, Name = name };

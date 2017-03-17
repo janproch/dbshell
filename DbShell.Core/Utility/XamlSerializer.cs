@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if !NETCOREAPP1_1
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -307,3 +309,5 @@ namespace DbShell.Core.Utility
         }
     }
 }
+
+#endif

@@ -6,7 +6,7 @@ namespace DbShell.Core.Utility
 {
     public abstract class RunnableBase : ElementBase, IRunnable
     {
-        private static ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private static ILog _log = LogManager.GetLogger(typeof(RunnableBase));
 
         protected abstract void DoRun(IShellContext context);
 

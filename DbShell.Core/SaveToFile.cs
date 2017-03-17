@@ -52,7 +52,9 @@ namespace DbShell.Core
         /// The encoding.
         /// </value>
         [XamlProperty]
+#if !NETCOREAPP1_1
         [TypeConverter(typeof(EncodingTypeConverter))]
+#endif
         public Encoding Encoding { get; set; }
 
         protected override void DoRun(IShellContext context)
@@ -73,7 +75,7 @@ namespace DbShell.Core
                 }
                 else
                 {
-                    using (var fw = new StreamWriter(file, false, Encoding))
+                    using (var fw = new StreamWriter(System.IO.File.OpenWrite(file), Encoding))
                     {
                         fw.Write(obj.ToString());
                     }
@@ -82,7 +84,7 @@ namespace DbShell.Core
             if (Value!=null)
             {
                 string val = context.Replace(Value);
-                using (var fw = new StreamWriter(file, false, Encoding))
+                using (var fw = new StreamWriter(System.IO.File.OpenWrite(file), Encoding))
                 {
                     fw.Write(val);
                 }

@@ -363,6 +363,7 @@ namespace DbShell.Core.Utility
                 content = sb.ToString();
             }
 
+#if !NETCOREAPP1_1
             if (IsRazor)
             {
                 char ch = RazorChar ?? '\0';
@@ -376,6 +377,7 @@ namespace DbShell.Core.Utility
                 RazorScripting.ParseRazor(content, sw.Write, new object());
                 content = sw.ToString();
             }
+#endif
 
             if (Regex.Match(content, @"^\s*--\s*#\s*region\s", RegexOptions.Multiline).Success)
             {

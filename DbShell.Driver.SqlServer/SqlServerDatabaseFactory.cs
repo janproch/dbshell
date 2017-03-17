@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 using System.IO;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.DbDiff;
+using System.Reflection;
 
 namespace DbShell.Driver.SqlServer
 {
@@ -15,9 +16,18 @@ namespace DbShell.Driver.SqlServer
             return new SqlServerDatabaseAnalyser();
         }
 
+        private static Assembly GetAssembly(Type type)
+        {
+#if NETCOREAPP1_1
+            return type.GetTypeInfo().Assembly;
+#else
+            return type.Assembly;
+#endif
+        }
+
         internal static string LoadEmbeddedResource(string name)
         {
-            using (Stream s = typeof (SqlServerDatabaseFactory).Assembly.GetManifestResourceStream("DbShell.Driver.SqlServer." + name))
+            using (Stream s = GetAssembly(typeof (SqlServerDatabaseFactory)).GetManifestResourceStream("DbShell.Driver.SqlServer." + name))
             {
                 if (s == null)
                     throw new InvalidOperationException("Could not find embedded resource");
@@ -68,6 +78,7 @@ namespace DbShell.Driver.SqlServer
             return new SqlServerStatisticsProvider();
         }
 
+#if !NETCOREAPP1_1
         public override IParsingService CreateParsingService()
         {
             return new SqlServerParsingService();
@@ -77,6 +88,7 @@ namespace DbShell.Driver.SqlServer
         {
             return new SqlServerBulkInserter();
         }
+#endif
 
         public override IDatabaseServerInterface CreateDatabaseServerInterface()
         {

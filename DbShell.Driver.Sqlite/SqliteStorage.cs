@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+#if !NETCOREAPP1_1
 using System.Data.SQLite;
+#else
+using SQLiteConnection = Microsoft.Data.Sqlite.SqliteConnection;
+using SQLiteTransaction = Microsoft.Data.Sqlite.SqliteTransaction;
+#endif
 using System.IO;
 using System.Linq;
 using System.Text;

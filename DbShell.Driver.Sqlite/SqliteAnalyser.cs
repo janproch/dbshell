@@ -8,6 +8,7 @@ using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
 
+#if !NETCOREAPP1_1
 namespace DbShell.Driver.Sqlite
 {
     public class SqliteAnalyser : DatabaseAnalyser
@@ -63,3 +64,4 @@ namespace DbShell.Driver.Sqlite
         }
     }
 }
+#endif
