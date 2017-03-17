@@ -1,5 +1,8 @@
 ﻿using System.Xml;
 using DbShell.Driver.Common.Utility;
+#if !NETCOREAPP1_1
+using System.Web.Script.Serialization;
+#endif
 
 namespace DbShell.Driver.Common.DmlFramework
 {
@@ -49,10 +52,15 @@ namespace DbShell.Driver.Common.DmlFramework
             return literal != null && literal.Value == null;
         }
 
-
-#if NETCOREAPP1_1
         public virtual string JavaScriptExpression => "null";
 
+#if !NETCOREAPP1_1
+        public static string SerializeJson(object o)
+        {
+            var ser = new JavaScriptSerializer();
+            return ser.Serialize(o);
+        }
+#else
         public static string SerializeJson(object o)
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(o);
