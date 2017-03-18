@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
+    <RootNamespace>DbShell.Driver.SqlServer</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,6 +30,7 @@
     <None Remove="primary_keys.sql" />
     <None Remove="programmables.sql" />
     <None Remove="rowcounts.sql" />
+    <None Remove="tables.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,6 +48,7 @@
     <EmbeddedResource Include="primary_keys.sql" />
     <EmbeddedResource Include="programmables.sql" />
     <EmbeddedResource Include="rowcounts.sql" />
+    <EmbeddedResource Include="tables.sql" />
   </ItemGroup>
 
   <ItemGroup>
