@@ -51,7 +51,11 @@ namespace DbShell.Driver.Sqlite
 
         public SQLiteConnection OpenConnection()
         {
+#if !NETCOREAPP1_1
             var conn = new SQLiteConnection("Synchronous=Full;Data Source=" + _file);
+#else
+            var conn = new SQLiteConnection("Data Source=" + _file);
+#endif
             conn.Open();
             return conn;
         }
