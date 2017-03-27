@@ -1,5 +1,6 @@
 ﻿using System.Xml;
 using DbShell.Driver.Common.Utility;
+using System;
 #if !NETCOREAPP1_1
 using System.Web.Script.Serialization;
 #endif
@@ -66,5 +67,14 @@ namespace DbShell.Driver.Common.DmlFramework
             return Newtonsoft.Json.JsonConvert.SerializeObject(o);
         }
 #endif
+
+        public static DateTime? ExtractDate(object value)
+        {
+            var date = value as DateTime?;
+            if (date != null) return date;
+            DateTime result;
+            if (DateTime.TryParse(value?.ToString(), out result)) return result;
+            return null;
+        }
     }
 }

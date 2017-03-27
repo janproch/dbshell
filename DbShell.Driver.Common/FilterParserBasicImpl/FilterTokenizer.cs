@@ -8,8 +8,6 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
 {
     public enum FilterTokenType
     {
-        MONTH,
-        DAY,
         STRING,
         KEYWORD,
         COMMA,
@@ -35,6 +33,8 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
         public FilterTokenType TokenType;
         public string Data;
         public int IntData;
+
+        public override string ToString() => $"{TokenType}:{Data}";
     }
 
     public static class FilterRegexes
@@ -44,6 +44,13 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
         public static Regex DateCzechRegex = new Regex(@"(\d?\d)\.(\d?\d)\.(\d\d\d\d)?", RegexOptions.Compiled);
         public static Regex DateUsRegex = new Regex(@"(\d?\d)\/(\d?\d)\/(\d\d\d\d)?", RegexOptions.Compiled);
         public static Regex NumberRegex = new Regex(@"\d+(\.\d+)?", RegexOptions.Compiled);
+        public static Regex TimeSecondFractionRegex = new Regex(@"(\d?\d):(\d?\d):(\d?\d)\.(\d*)", RegexOptions.Compiled);
+        public static Regex TimeSecondRegex = new Regex(@"(\d?\d):(\d?\d):(\d?\d)", RegexOptions.Compiled);
+        public static Regex TimeMinuteRegex = new Regex(@"(\d?\d):(\d?\d)", RegexOptions.Compiled);
+        public static Regex FlowMonthRegex = new Regex(@"(\d?\d)\/", RegexOptions.Compiled);
+        public static Regex FlowDayRegex = new Regex(@"(\d?\d)\.", RegexOptions.Compiled);
+        public static Regex YearMonthRegex = new Regex(@"(\d\d\d\d)-(\d\d)", RegexOptions.Compiled);
+        public static Regex HourAnyMinuteRegex = new Regex(@"(\d\d):\*", RegexOptions.Compiled);
     }
 
     public class FilterTokenizer
@@ -54,8 +61,6 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
         public List<FilterToken> Result = new List<FilterToken>();
         private StringBuilder _buffer = new StringBuilder();
         private HashSet<string> _keywords;
-        private List<string> _months = new List<string>();
-        private List<string> _days = new List<string>();
 
         private FilterParseOptions _options;
 
@@ -67,18 +72,6 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
             _text = text;
             _keywords = keywords;
             _options = options;
-
-            if (_options.ParseTime)
-            {
-                _months = new List<string>
-                {
-                    "JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"
-                };
-                _days = new List<string>
-                {
-                    "MON","TUE","WED","THU","FRI","SAT","SUN"
-                };
-            }
         }
 
         private bool EndOfString => _position >= _text.Length;
@@ -190,18 +183,6 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
                         Emit(FilterTokenType.KEYWORD);
                         continue;
                     }
-                    int day = _days.IndexOf(buf);
-                    if (day >= 0)
-                    {
-                        Emit(FilterTokenType.DAY, day);
-                        continue;
-                    }
-                    int month = _months.IndexOf(buf);
-                    if (month >= 0)
-                    {
-                        Emit(FilterTokenType.MONTH, month);
-                        continue;
-                    }
                     _position = lastPos;
                 }
 
@@ -238,12 +219,6 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
 
                 if (_options.ParseTime)
                 {
-                    if (IsReg(FilterRegexes.YearRegex))
-                    {
-                        Read(FilterRegexes.YearRegex);
-                        Emit(FilterTokenType.YEAR);
-                        continue;
-                    }
                     if (IsReg(FilterRegexes.DateIsoRegex))
                     {
                         Read(FilterRegexes.DateIsoRegex);
@@ -260,6 +235,54 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
                     {
                         Read(FilterRegexes.DateUsRegex);
                         Emit(FilterTokenType.DATE);
+                        continue;
+                    }
+                    if (IsReg(FilterRegexes.TimeSecondFractionRegex))
+                    {
+                        Read(FilterRegexes.TimeSecondFractionRegex);
+                        Emit(FilterTokenType.TIME_SECOND_FRACTION);
+                        continue;
+                    }
+                    if (IsReg(FilterRegexes.TimeSecondRegex))
+                    {
+                        Read(FilterRegexes.TimeSecondRegex);
+                        Emit(FilterTokenType.TIME_SECOND);
+                        continue;
+                    }
+                    if (IsReg(FilterRegexes.TimeMinuteRegex))
+                    {
+                        Read(FilterRegexes.TimeMinuteRegex);
+                        Emit(FilterTokenType.TIME_MINUTE);
+                        continue;
+                    }
+                    if (IsReg(FilterRegexes.FlowDayRegex))
+                    {
+                        Read(FilterRegexes.FlowDayRegex);
+                        Emit(FilterTokenType.FLOW_DAY);
+                        continue;
+                    }
+                    if (IsReg(FilterRegexes.FlowMonthRegex))
+                    {
+                        Read(FilterRegexes.FlowMonthRegex);
+                        Emit(FilterTokenType.FLOW_MONTH);
+                        continue;
+                    }
+                    if (IsReg(FilterRegexes.YearMonthRegex))
+                    {
+                        Read(FilterRegexes.YearMonthRegex);
+                        Emit(FilterTokenType.YEAR_MONTH);
+                        continue;
+                    }
+                    if (IsReg(FilterRegexes.HourAnyMinuteRegex))
+                    {
+                        Read(FilterRegexes.HourAnyMinuteRegex);
+                        Emit(FilterTokenType.HOUR_ANY_MINUTE);
+                        continue;
+                    }
+                    if (IsReg(FilterRegexes.YearRegex))
+                    {
+                        Read(FilterRegexes.YearRegex);
+                        Emit(FilterTokenType.YEAR);
                         continue;
                     }
                 }

@@ -12,10 +12,10 @@ namespace DbShell.Test.Basics
     [TestClass]
     public class FilterParserTests
     {
-        private bool TestCondition(FilterParserTool.ExpressionType type, string condition, string testedString)
+        private bool TestCondition(FilterParserTool.ExpressionType type, string condition, object testedValue)
         {
             var cond = FilterParserTool.ParseFilterExpression(type, new DmlfPlaceholderExpression(), condition);
-            var ns = new DmlfSingleValueNamespace(testedString);
+            var ns = new DmlfSingleValueNamespace(testedValue);
             Assert.IsNotNull(cond, $"Error parsing condition {condition}");
             return cond.EvalCondition(ns);
         }
@@ -38,6 +38,24 @@ namespace DbShell.Test.Basics
         private void NumberFalse(string condition, string testedString)
         {
             Assert.IsFalse(TestCondition(FilterParserTool.ExpressionType.Number, condition, testedString));
+        }
+
+        private void DateTimeTrue(string condition, DateTime value, bool stringTest=true)
+        {
+            Assert.IsTrue(TestCondition(FilterParserTool.ExpressionType.DateTime, condition, value));
+            if (stringTest)
+            {
+                Assert.IsTrue(TestCondition(FilterParserTool.ExpressionType.DateTime, condition, value.ToString("s")));
+            }
+        }
+
+        private void DateTimeFalse(string condition, DateTime value, bool stringTest = true)
+        {
+            Assert.IsFalse(TestCondition(FilterParserTool.ExpressionType.DateTime, condition, value));
+            if (stringTest)
+            {
+                Assert.IsFalse(TestCondition(FilterParserTool.ExpressionType.DateTime, condition, value.ToString("s")));
+            }
         }
 
         [TestInitialize]
@@ -82,6 +100,45 @@ namespace DbShell.Test.Basics
 
             NumberTrue("-5--1", "-3");
             NumberFalse("-5--1", "-6");
+        }
+
+        [TestMethod]
+        public void TestDateTimeFilter()
+        {
+            DateTimeTrue("TODAY", DateTime.Now);
+            DateTimeTrue("YESTERDAY", DateTime.Now.AddDays(-1));
+            DateTimeTrue("TOMORROW", DateTime.Now.AddDays(1));
+
+            DateTimeFalse("TODAY", DateTime.Now.AddDays(-1));
+            DateTimeFalse("YESTERDAY", DateTime.Now.AddDays(1));
+            DateTimeFalse("TOMORROW", DateTime.Now);
+
+            DateTimeTrue("NEXT WEEK, TODAY", DateTime.Now.AddDays(7));
+            DateTimeTrue("NEXT WEEK, TODAY", DateTime.Now);
+            DateTimeFalse("NEXT WEEK, TODAY", DateTime.Now.AddDays(-1));
+
+            DateTimeTrue("1.3.2016", new DateTime(2016, 3, 1));
+            DateTimeTrue("2016-03-01", new DateTime(2016, 3, 1));
+            DateTimeTrue("3/1/2016", new DateTime(2016, 3, 1));
+
+            DateTimeTrue("1.3. 10:01", new DateTime(DateTime.Now.Year, 3, 1, 10, 1, 30));
+            DateTimeFalse("1.3. 10:01", new DateTime(DateTime.Now.Year, 3, 1, 10, 0, 30));
+            DateTimeTrue("1.3. 10:*", new DateTime(DateTime.Now.Year, 3, 1, 10, 25, 0));
+
+            DateTimeTrue("MON", new DateTime(2017, 3, 27));
+            DateTimeTrue("2017", new DateTime(2017, 3, 27));
+            DateTimeTrue("MON 2017", new DateTime(2017, 3, 27));
+            DateTimeFalse("MON 2017", new DateTime(2017, 3, 28));
+            DateTimeTrue("2017 JAN", new DateTime(2017, 1, 28));
+
+            DateTimeTrue("2016-03-05 15:23:33", new DateTime(2016, 3, 5, 15, 23, 33, 35));
+            DateTimeTrue("2016-03-05 15:23:33.35", new DateTime(2016, 3, 5, 15, 23, 33, 350), false);
+            DateTimeFalse("2016-03-05 15:23:33.35", new DateTime(2016, 3, 5, 15, 23, 33, 35));
+            DateTimeTrue("2016-03-05 15:23", new DateTime(2016, 3, 5, 15, 23, 46));
+            DateTimeFalse("2016-03-05 15:23", new DateTime(2016, 3, 5, 15, 24, 0));
+
+            DateTimeTrue(">=2016-03-05 15:23", new DateTime(2016, 3, 5, 15, 23, 46));
+            DateTimeFalse(">2016-03-05 15:23", new DateTime(2016, 3, 5, 15, 23, 46));
         }
     }
 }

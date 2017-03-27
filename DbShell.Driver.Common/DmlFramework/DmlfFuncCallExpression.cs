@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Xml;
 using DbShell.Driver.Common.AbstractDb;
+using System;
 
 namespace DbShell.Driver.Common.DmlFramework
 {
@@ -69,6 +70,29 @@ namespace DbShell.Driver.Common.DmlFramework
                     return Arguments[0].EvalExpression(ns)?.ToString()?.TrimStart();
                 case "RTRIM":
                     return Arguments[0].EvalExpression(ns)?.ToString()?.TrimEnd();
+                case "DATEPART":
+                    string partName = Arguments[0].EvalExpression(ns)?.ToString();
+                    var date = ExtractDate(Arguments[1].EvalExpression(ns));
+                    switch (partName?.ToUpper() ?? "")
+                    {
+                        case "HOUR":
+                            return date?.Hour;
+                        case "MINUTE":
+                            return date?.Minute;
+                        case "SECOND":
+                            return date?.Second;
+                        case "YEAR":
+                            return date?.Year;
+                        case "MONTH":
+                            return date?.Month;
+                        case "DAY":
+                            return date?.Day;
+                    }
+                    return 0;
+                case "MONTH":
+                    return ExtractDate(Arguments[0].EvalExpression(ns))?.Month;
+                case "YEAR":
+                    return ExtractDate(Arguments[0].EvalExpression(ns))?.Year;
             }
             return base.EvalExpression(ns);
         }

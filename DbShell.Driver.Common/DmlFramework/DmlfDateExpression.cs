@@ -49,7 +49,7 @@ namespace DbShell.Driver.Common.DmlFramework
         public override object EvalExpression(IDmlfNamespace ns)
         {
             var inner = Argument.EvalExpression(ns);
-            var dt = inner as DateTime?;
+            var dt = ExtractDate(inner);
             if (dt.HasValue) return dt.Value.Month;
             return null;
         }
@@ -70,7 +70,7 @@ namespace DbShell.Driver.Common.DmlFramework
         public override object EvalExpression(IDmlfNamespace ns)
         {
             var inner = Argument.EvalExpression(ns);
-            var dt = inner as DateTime?;
+            var dt = ExtractDate(inner);
             if (dt.HasValue) return (int)dt.Value.DayOfWeek;
             return null;
         }
