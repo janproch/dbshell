@@ -91,6 +91,10 @@
     <Compile Include="DmlFramework\DmlfDisableConstraint.cs" />
     <Compile Include="DmlFramework\DmlfInsert.cs" />
     <Compile Include="DmlFramework\DmlfHaving.cs" />
+    <Compile Include="FilterParserBasicImpl\FilterParseOptions.cs" />
+    <Compile Include="FilterParserBasicImpl\FilterParser.cs" />
+    <Compile Include="FilterParserBasicImpl\FilterParserCoreImpl.cs" />
+    <Compile Include="FilterParserBasicImpl\FilterTokenizer.cs" />
     <Compile Include="Structure\NormalizedDatabaseConnectionInfo.cs" />
     <Compile Include="Structure\StructuredIdentifier.cs" />
     <Compile Include="Utility\ConnectionStringTool.cs" />

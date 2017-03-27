@@ -60,5 +60,17 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             return "func";
         }
+
+        public override object EvalExpression(IDmlfNamespace ns)
+        {
+            switch (FuncName.ToUpper())
+            {
+                case "LTRIM":
+                    return Arguments[0].EvalExpression(ns)?.ToString()?.TrimStart();
+                case "RTRIM":
+                    return Arguments[0].EvalExpression(ns)?.ToString()?.TrimEnd();
+            }
+            return base.EvalExpression(ns);
+        }
     }
 }

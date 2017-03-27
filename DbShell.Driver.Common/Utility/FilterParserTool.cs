@@ -1,5 +1,6 @@
 ﻿using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.DmlFramework;
+using DbShell.Driver.Common.FilterParserBasicImpl;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -32,7 +33,7 @@ namespace DbShell.Driver.Common.Utility
 
     public static class FilterParserTool
     {
-        public static IFilterParserCore ParserCore;
+        public static IFilterParserCore ParserCore = new FilterParserCoreImpl();
 
         public const string LineTransformPrefix = "$LINE_TRANSFORM$=";
 
@@ -86,7 +87,7 @@ namespace DbShell.Driver.Common.Utility
 
         private static void WantParserCore()
         {
-            if (ParserCore == null) throw new Exception("DBSH-00000 FilterParser corenot initialized");
+            if (ParserCore == null) throw new Exception("DBSH-00000 FilterParser core not initialized");
         }
 
         public static DmlfConditionBase ParseFilterExpression(ExpressionType type, DmlfExpression columnValue, string expression, ParserOptions options = null)

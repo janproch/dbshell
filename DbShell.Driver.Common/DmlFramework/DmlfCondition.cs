@@ -181,6 +181,24 @@ namespace DbShell.Driver.Common.DmlFramework
             dmp.Put(" ^and ");
             UpperBound.GenSql(dmp);
         }
+
+        protected bool EvalBetween(IDmlfNamespace ns)
+        {
+            var cond = new DmlfAndCondition();
+            cond.Conditions.Add(new DmlfRelationCondition
+            {
+                LeftExpr = LowerBound,
+                Relation = "<=",
+                RightExpr = Expr,
+            });
+            cond.Conditions.Add(new DmlfRelationCondition
+            {
+                LeftExpr = Expr,
+                Relation = "<=",
+                RightExpr = UpperBound,
+            });
+            return cond.EvalCondition(ns);
+        }
     }
 
     public class DmlfBetweenCondition : DmlfBetweenConditionBase
@@ -189,6 +207,11 @@ namespace DbShell.Driver.Common.DmlFramework
         {
             dmp.Put(" ^between ");
         }
+
+        public override bool EvalCondition(IDmlfNamespace ns)
+        {
+            return EvalBetween(ns);
+        }
     }
 
     public class DmlfNotBetweenCondition : DmlfBetweenConditionBase
@@ -196,6 +219,11 @@ namespace DbShell.Driver.Common.DmlFramework
         protected override void DumpOperator(ISqlDumper dmp)
         {
             dmp.Put(" ^not ^between ");
+        }
+
+        public override bool EvalCondition(IDmlfNamespace ns)
+        {
+            return !EvalBetween(ns);
         }
     }
 
