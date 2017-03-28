@@ -11,5 +11,6 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
         public bool ParseNumber;
         public bool ParseString;
         public bool ParseLogical;
+        public bool ParseObject;
     }
 }

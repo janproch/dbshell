@@ -27,14 +27,16 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
                     opts.ParseLogical = true;
                     break;
             }
-            var parser = new FilterParser(expression, columnValue, opts);
+            var parser = new DmlfFilterParser(expression, columnValue, opts);
             parser.Run();
             return parser.Result;
         }
 
         public ObjectFilterConditionBase ParseObjectFilter(string expression)
         {
-            throw new NotImplementedException();
+            var parser = new ObjectFilterParser(expression);
+            parser.Run();
+            return parser.Result;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DbShell.Driver.Common.DmlFramework;
+using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
 using DbShell.FilterParser.Antlr;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -162,5 +163,29 @@ namespace DbShell.Test.Basics
             LogicalFalse("TRUE", "0");
         }
 
+        private void ObjectTrue(string condition, FilterableObjectData obj)
+        {
+            var cond = FilterParserTool.ParseObjectFilter(condition);
+            Assert.IsNotNull(cond, $"Error parsing condition {condition}");
+            Assert.IsTrue(cond.Match(obj));
+        }
+        private void ObjectFalse(string condition, FilterableObjectData obj)
+        {
+            var cond = FilterParserTool.ParseObjectFilter(condition);
+            Assert.IsNotNull(cond, $"Error parsing condition {condition}");
+            Assert.IsFalse(cond.Match(obj));
+        }
+
+        [TestMethod]
+        public void TestObjectFilter()
+        {
+            ObjectTrue("table", new FilterableObjectData { Name = "Table1" });
+            ObjectTrue("TN", new FilterableObjectData { Name = "TableName" });
+            ObjectFalse("TN", new FilterableObjectData { Name = "TableMediumName" });
+            ObjectTrue("=table", new FilterableObjectData { Name = "table" });
+            ObjectFalse("=table", new FilterableObjectData { Name = "table1" });
+            ObjectTrue("#col1", new FilterableObjectData { ContentText = "col1" });
+            ObjectFalse("#col1", new FilterableObjectData { ContentText = "col2" });
+        }
     }
 }

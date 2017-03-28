@@ -9,25 +9,16 @@ using System.Text.RegularExpressions;
 
 namespace DbShell.Driver.Common.FilterParserBasicImpl
 {
-    public class FilterParser
+    public class DmlfFilterParser : ParserBase<DmlfConditionBase>
     {
-        private string _expression;
-        private FilterTokenizer _tokenizer;
-        private HashSet<string> _keywords = new HashSet<string>();
         private DmlfExpression _columnValue;
 
-        private List<FilterToken> _tokens;
-        private int _currentTokenIndex;
-        private FilterParseOptions _options;
-
-        public DmlfConditionBase Result;
-        public bool IsError;
 
         DateTime Now = DateTime.Now;
 
-        public FilterParser(string expression, DmlfExpression columnValue, FilterParseOptions options)
+        public DmlfFilterParser(string expression, DmlfExpression columnValue, FilterParseOptions options)
+            : base(expression)
         {
-            _expression = expression;
             _columnValue = columnValue;
             _options = options;
 
@@ -68,19 +59,9 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
             }
         }
 
-        private bool EndOfInput => _currentTokenIndex >= _tokens.Count;
-
-        private FilterToken CurrentToken => _currentTokenIndex >= _tokens.Count ? null : _tokens[_currentTokenIndex];
-        private FilterToken NextToken => _currentTokenIndex + 1 >= _tokens.Count ? null : _tokens[_currentTokenIndex + 1];
-
-        public void Run()
+        protected override DmlfConditionBase ParseBody()
         {
-            _tokenizer = new FilterTokenizer(_expression, _keywords, _options);
-            _tokenizer.Run();
-            _tokens = _tokenizer.Result;
-            IsError = _tokenizer.IsError;
-            Result = ParseList();
-            if (IsError) Result = null;
+            return ParseList();
         }
 
         private DmlfOrCondition ParseList()
@@ -109,33 +90,6 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
                 res.Conditions.Add(ParseElement());
             }
             return res;
-        }
-
-        private bool TestKeywords(params string[] keywords)
-        {
-            for (int i = 0; i < keywords.Length; i++)
-            {
-                if (i + _currentTokenIndex >= _tokens.Count) return false;
-                if (_tokens[i + _currentTokenIndex].TokenType != FilterTokenType.KEYWORD) return false;
-                if (_tokens[i + _currentTokenIndex].Data != keywords[i]) return false;
-            }
-            Next(keywords.Length);
-            return true;
-        }
-
-        private void Next(int count = 1)
-        {
-            _currentTokenIndex += count;
-        }
-
-        private bool TestOperator(string opname)
-        {
-            if (CurrentToken?.TokenType == FilterTokenType.OPERATOR && CurrentToken.Data == opname)
-            {
-                Next();
-                return true;
-            }
-            return false;
         }
 
         private DmlfConditionBase Negate(DmlfConditionBase cond)

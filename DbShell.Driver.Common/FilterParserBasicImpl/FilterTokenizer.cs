@@ -16,6 +16,8 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
         BIT,
         MINUS,
 
+        OBJECT_CONTEXT,
+
         YEAR,
         DATE,
 
@@ -154,7 +156,7 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
             {
                 SkipWhitespace();
 
-                if (_options.ParseString || _options.ParseNumber)
+                if (_options.ParseString || _options.ParseNumber || _options.ParseObject)
                 {
                     if (CurrentChar == '\'')
                     {
@@ -177,15 +179,17 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
 
                 if (Char.IsUpper(CurrentChar))
                 {
-                    int lastPos = _position;
-                    ReadWhile(Char.IsLetter);
-                    string buf = _buffer.ToString();
+                    int testPos = _position;
+                    var sb = new StringBuilder();
+                    while (testPos < _text.Length && Char.IsLetter(_text[testPos])) sb.Append(_text[testPos++]);
+                    string buf = sb.ToString();
                     if (_keywords.Contains(buf))
                     {
+                        _buffer.Append(buf);
+                        _position = testPos;
                         Emit(FilterTokenType.KEYWORD);
                         continue;
                     }
-                    _position = lastPos;
                 }
 
                 if (CurrentChar == ',')
@@ -227,6 +231,16 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
                     Skip();
                     Emit(FilterTokenType.MINUS);
                     continue;
+                }
+
+                if (_options.ParseObject)
+                {
+                    if (CurrentChar=='@' || CurrentChar == '#')
+                    {
+                        Read();
+                        Emit(FilterTokenType.OBJECT_CONTEXT);
+                        continue;
+                    }
                 }
 
                 if (_options.ParseTime)
@@ -305,7 +319,7 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
                     return;
                 }
 
-                if (!_options.ParseString)
+                if (!_options.ParseString && !_options.ParseObject)
                 {
                     IsError = true;
                     return;
