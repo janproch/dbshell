@@ -58,6 +58,16 @@ namespace DbShell.Test.Basics
             }
         }
 
+        private void LogicalTrue(string condition, string testedString)
+        {
+            Assert.IsTrue(TestCondition(FilterParserTool.ExpressionType.Logical, condition, testedString));
+        }
+
+        private void LogicalFalse(string condition, string testedString)
+        {
+            Assert.IsFalse(TestCondition(FilterParserTool.ExpressionType.Logical, condition, testedString));
+        }
+
         [TestInitialize]
         public void Initialize()
         {
@@ -140,5 +150,17 @@ namespace DbShell.Test.Basics
             DateTimeTrue(">=2016-03-05 15:23", new DateTime(2016, 3, 5, 15, 23, 46));
             DateTimeFalse(">2016-03-05 15:23", new DateTime(2016, 3, 5, 15, 23, 46));
         }
+
+        [TestMethod]
+        public void TestLogicalFilter()
+        {
+            LogicalTrue("TRUE", "1");
+            LogicalTrue("1", "1");
+            LogicalTrue("FALSE", "0");
+            LogicalTrue("0", "0");
+
+            LogicalFalse("TRUE", "0");
+        }
+
     }
 }

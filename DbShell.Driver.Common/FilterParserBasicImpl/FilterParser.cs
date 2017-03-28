@@ -60,6 +60,12 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
                     "MON","TUE","WED","THU","FRI","SAT","SUN"
                 }.ForEach(x => _keywords.Add(x));
             }
+
+            if (_options.ParseLogical)
+            {
+                _keywords.Add("TRUE");
+                _keywords.Add("FALSE");
+            }
         }
 
         private bool EndOfInput => _currentTokenIndex >= _tokens.Count;
@@ -168,6 +174,8 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
             result = ParseNumberElement();
             if (result != null) return result;
             result = ParseDateTimeElement();
+            if (result != null) return result;
+            result = ParseLogicalElement();
             if (result != null) return result;
 
             IsError = true;
@@ -427,8 +435,39 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
             //Conditions.Add(cond);
         }
 
+        private DmlfConditionBase TrueCondition()
+        {
+            return new DmlfEqualCondition { LeftExpr = _columnValue, RightExpr = new DmlfLiteralExpression { Value = 1 } };
+        }
+
+        private DmlfConditionBase FalseCondition()
+        {
+            return new DmlfEqualCondition { LeftExpr = _columnValue, RightExpr = new DmlfLiteralExpression { Value = 0 } };
+        }
+
+        private DmlfConditionBase ParseLogicalElement()
+        {
+            if (!_options.ParseLogical) return null;
+
+            if (TestKeywords("TRUE")) return TrueCondition();
+            if (TestKeywords("FALSE")) return FalseCondition();
+            if (CurrentToken?.TokenType == FilterTokenType.BIT && CurrentToken?.Data == "1")
+            {
+                Next();
+                return TrueCondition();
+            }
+            if (CurrentToken?.TokenType == FilterTokenType.BIT && CurrentToken?.Data == "0")
+            {
+                Next();
+                return FalseCondition();
+            }
+            return null;
+        }
+
         private DmlfConditionBase ParseDateTimeElement()
         {
+            if (!_options.ParseTime) return null;
+
             if (TestKeywords("LAST", "HOUR")) { var h1 = new DateTime(Now.Year, Now.Month, Now.Day, Now.Hour, 0, 0); return DateTimeIntervalCondition(h1 - TimeSpan.FromHours(1), h1); }
             if (TestKeywords("THIS", "HOUR")) { var h1 = new DateTime(Now.Year, Now.Month, Now.Day, Now.Hour, 0, 0); return DateTimeIntervalCondition(h1, h1 + TimeSpan.FromHours(1)); }
             if (TestKeywords("NEXT", "HOUR")) { var h1 = new DateTime(Now.Year, Now.Month, Now.Day, Now.Hour, 0, 0); return DateTimeIntervalCondition(h1 + TimeSpan.FromHours(1), h1 + TimeSpan.FromHours(2)); }

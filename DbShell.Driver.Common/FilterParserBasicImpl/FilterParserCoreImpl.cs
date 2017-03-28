@@ -23,6 +23,9 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
                 case FilterParserTool.ExpressionType.DateTime:
                     opts.ParseTime = true;
                     break;
+                case FilterParserTool.ExpressionType.Logical:
+                    opts.ParseLogical = true;
+                    break;
             }
             var parser = new FilterParser(expression, columnValue, opts);
             parser.Run();

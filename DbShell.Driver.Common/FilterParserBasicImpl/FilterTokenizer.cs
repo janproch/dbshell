@@ -13,6 +13,7 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
         COMMA,
         OPERATOR,
         NUMBER,
+        BIT,
         MINUS,
 
         YEAR,
@@ -51,6 +52,7 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
         public static Regex FlowDayRegex = new Regex(@"(\d?\d)\.", RegexOptions.Compiled);
         public static Regex YearMonthRegex = new Regex(@"(\d\d\d\d)-(\d\d)", RegexOptions.Compiled);
         public static Regex HourAnyMinuteRegex = new Regex(@"(\d\d):\*", RegexOptions.Compiled);
+        public static Regex BitRegex = new Regex(@"0|1", RegexOptions.Compiled);
     }
 
     public class FilterTokenizer
@@ -206,6 +208,16 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
                     {
                         Read(FilterRegexes.NumberRegex);
                         Emit(FilterTokenType.NUMBER);
+                        continue;
+                    }
+                }
+
+                if (_options.ParseLogical)
+                {
+                    if (IsReg(FilterRegexes.BitRegex))
+                    {
+                        Read(FilterRegexes.BitRegex);
+                        Emit(FilterTokenType.BIT);
                         continue;
                     }
                 }
