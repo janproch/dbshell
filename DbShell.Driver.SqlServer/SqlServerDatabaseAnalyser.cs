@@ -744,7 +744,7 @@ namespace DbShell.Driver.SqlServer
                             while (reader.Read())
                             {
                                 string name = reader.SafeString("name");
-                                string id = reader.SafeString("object_id");
+                                string id = reader.SafeString("schema_id");
                                 Structure.Schemas.Add(new SchemaInfo(Structure)
                                     {
                                         ObjectId = id,
