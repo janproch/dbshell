@@ -34,6 +34,7 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
             {
                 _keywords.Add("THIS");
                 _keywords.Add("NEXT");
+                _keywords.Add("LAST");
                 _keywords.Add("WEEK");
                 _keywords.Add("YEAR");
                 _keywords.Add("MONTH");
