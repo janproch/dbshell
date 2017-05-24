@@ -17,15 +17,21 @@ namespace DbShell.Driver.SqlServer
             var res = new TableSizes();
             using (var cmd = conn.CreateCommand())
             {
-                cmd.CommandText = SqlServerLinkedServer.ReplaceLinkedServer(SqlServerDatabaseFactory.LoadEmbeddedResource("rowcounts.sql"), linkedInfo);
+                cmd.CommandText = SqlServerLinkedServer.ReplaceLinkedServer(SqlServerDatabaseFactory.LoadEmbeddedResource("tablesizes.sql"), linkedInfo);
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
                         string table = reader.SafeString("Table");
                         string schema = reader.SafeString("Schema");
-                        int rowcount = Int32.Parse(reader.SafeString("RowCount") ?? "0");
-                        res.RowCount[new NameWithSchema(schema, table)] = rowcount;
+                        var resItem = new TableSizesItem
+                        {
+                            RowCount = Int32.Parse(reader.SafeString("RowCount") ?? "0"),
+                            TotalSpaceKB = Int32.Parse(reader.SafeString("TotalSpaceKB") ?? "0"),
+                            UsedSpaceKB = Int32.Parse(reader.SafeString("UsedSpaceKB") ?? "0"),
+                            UnusedSpaceKB = Int32.Parse(reader.SafeString("UnusedSpaceKB") ?? "0"),
+                        };
+                        res.Items[new NameWithSchema(schema, table)] = resItem;
                     }
                 }
             }

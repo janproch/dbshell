@@ -1,6 +1,9 @@
 ﻿SELECT s.[Name] as [Schema],
 	   t.[name] as [Table],
-	   SUM(p.rows) as [RowCount]
+	   SUM(p.rows) as [RowCount],
+       SUM(a.total_pages) * 8 AS TotalSpaceKB, 
+	   SUM(a.used_pages) * 8 AS UsedSpaceKB, 
+	   (SUM(a.total_pages) - SUM(a.used_pages)) * 8 AS UnusedSpaceKB
 FROM [SERVER].sys.schemas s
 LEFT JOIN [SERVER].sys.tables t
 ON s.schema_id = t.schema_id

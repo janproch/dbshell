@@ -29,7 +29,6 @@
     <None Remove="parameters.sql" />
     <None Remove="primary_keys.sql" />
     <None Remove="programmables.sql" />
-    <None Remove="rowcounts.sql" />
     <None Remove="tables.sql" />
   </ItemGroup>
 
@@ -47,7 +46,7 @@
     <EmbeddedResource Include="parameters.sql" />
     <EmbeddedResource Include="primary_keys.sql" />
     <EmbeddedResource Include="programmables.sql" />
-    <EmbeddedResource Include="rowcounts.sql" />
+    <EmbeddedResource Include="tablesizes.sql" />
     <EmbeddedResource Include="tables.sql" />
   </ItemGroup>
 
