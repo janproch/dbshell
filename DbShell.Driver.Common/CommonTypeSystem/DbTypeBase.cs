@@ -7,7 +7,7 @@ using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.CommonTypeSystem
 {
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
     [TypeConverter(typeof(ExpandableObjectConverter))]
 #endif
     public abstract class DbTypeBase 

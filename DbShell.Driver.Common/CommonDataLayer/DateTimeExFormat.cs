@@ -36,7 +36,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                             FormatDigits(outputBuffer, dateTime.Hour, num2);
                             break;
                         }
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
                     case ':':
                         {
                             outputBuffer.Append(dtfi.TimeSeparator);

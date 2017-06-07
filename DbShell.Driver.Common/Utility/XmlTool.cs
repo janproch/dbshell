@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Reflection;
 using System.Globalization;
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
 using System.Configuration;
 using System.Drawing;
 #endif
@@ -89,7 +89,7 @@ namespace DbShell.Driver.Common.Utility
 
     public static class XmlTool
     {
-#if NETCOREAPP1_1
+#if NETSTANDARD1_5
         public static XmlNode SelectSingleNode(this XmlNode node, string name)
         {
             var element = node as XmlElement;
@@ -111,7 +111,7 @@ namespace DbShell.Driver.Common.Utility
 
         public static void SerializeObject(Stream fw, object o)
         {
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
             using (XmlWriter xw = new XmlTextWriter(fw, Encoding.UTF8))
             {
                 SerializeObject(xw, o);
@@ -145,7 +145,7 @@ namespace DbShell.Driver.Common.Utility
             string typename = elem.GetAttribute("type");
             Type type = Type.GetType(typename);
             XmlSerializer ser = new XmlSerializer(type);
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
             using (XmlNodeReader xr = new XmlNodeReader(elem.LastChild))
             {
                 return ser.Deserialize(xr);
@@ -387,7 +387,7 @@ namespace DbShell.Driver.Common.Utility
             {
                 return val.ToString().ToLower();
             }
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
             else if (val is Color)
             {
                 return ((Color)val).Name;
@@ -422,7 +422,7 @@ namespace DbShell.Driver.Common.Utility
 
         public static bool IsEnum(Type type)
         {
-#if NETCOREAPP1_1
+#if NETSTANDARD1_5
             return type.GetTypeInfo().IsEnum;
 #else
             return type.IsEnum;
@@ -452,7 +452,7 @@ namespace DbShell.Driver.Common.Utility
             {
                 return Encoding.GetEncoding(sval);
             }
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
             else if (type == typeof(Color))
             {
                 var col = Color.FromName(sval);
@@ -552,7 +552,7 @@ namespace DbShell.Driver.Common.Utility
                         SaveProperties(val, elem);
                     }
                 }
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
                 foreach (SettingAttribute attr in prop.GetCustomAttributes(typeof(SettingAttribute), true))
                 {
                     object val = prop.CallGet(o);
@@ -606,7 +606,7 @@ namespace DbShell.Driver.Common.Utility
             o.LoadPropertiesCore(xml);
         }
 
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
         public static string DownloadProperties(this object o, string url)
         {
             using (var wc = new WebClient())
@@ -691,7 +691,7 @@ namespace DbShell.Driver.Common.Utility
                         }
                     }
                 }
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
                 foreach (SettingAttribute attr in prop.GetCustomAttributes(typeof(SettingAttribute), true))
                 {
                     var elem = xml.SelectSingleNode(prop.Name);

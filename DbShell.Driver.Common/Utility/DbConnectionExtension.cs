@@ -18,7 +18,7 @@ namespace DbShell.Driver.Common.Utility
 
         public static IDataReader RunOneSqlCommandReader(this DbConnection conn, string sql, DbTransaction tran, int? timeout)
         {
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
             if (sql.StartsWith("@getschema"))
             {
                 string[] items = sql.Split(' ');

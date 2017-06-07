@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.Structure;
 
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
 
 namespace DbShell.Driver.Common.Utility
 {

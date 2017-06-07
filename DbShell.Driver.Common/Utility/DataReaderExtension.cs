@@ -8,7 +8,7 @@ namespace DbShell.Driver.Common.Utility
 {
     public static class DataReaderExtension
     {
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
         public static DataTable DataTableFromStructure(TableInfo tableStruct)
         {
             DataTable table = new DataTable();
@@ -84,7 +84,7 @@ namespace DbShell.Driver.Common.Utility
 #endif
 
 
-#if NETCOREAPP1_1
+#if NETSTANDARD1_5
         public static DbTypeBase ReaderDataType(DbColumn row)
         {
             try
@@ -128,7 +128,7 @@ namespace DbShell.Driver.Common.Utility
 
         public static QueryResultInfo GetQueryResultInfo(this IDataReader reader)
         {
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
             DataTable columns;
             try
             {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
 using System.Data.SQLite;
 #else
 using SQLiteConnection = Microsoft.Data.Sqlite.SqliteConnection;
@@ -52,7 +52,7 @@ namespace DbShell.Driver.Sqlite
             FactoryProvider.RegisterFactory(Instance);
         }
 
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
         public override DatabaseAnalyser CreateAnalyser()
         {
             return new SqliteAnalyser();

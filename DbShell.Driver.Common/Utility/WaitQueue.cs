@@ -147,7 +147,7 @@ namespace DbShell.Driver.Common.Utility
         public void Dispose()
         {
             m_disposed = true;
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
             m_onPutEvent.Close();
             m_onGetEvent.Close();
 #else

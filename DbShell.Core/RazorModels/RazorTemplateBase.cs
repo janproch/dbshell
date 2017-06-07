@@ -1,4 +1,4 @@
-﻿#if !NETCOREAPP1_1
+﻿#if !NETSTANDARD1_5
 
 using System;
 using System.Collections.Generic;

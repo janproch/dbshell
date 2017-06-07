@@ -33,7 +33,7 @@ namespace DbShell.Core
         {
             string name = GetName(context);
             if (name.ToLower().EndsWith(".cdl")) return new CdlFile {Connection = Connection, Name = name};
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
             if (name.ToLower().EndsWith(".csv")) return new CsvFile { Connection = Connection, Name = name };
             if (name.ToLower().EndsWith(".xml")) return new XmlReader { Connection = Connection, File = name, AnalyseColumns = true };
 #endif
@@ -44,7 +44,7 @@ namespace DbShell.Core
         {
             string name = GetName(context);
             if (name.ToLower().EndsWith(".cdl")) return new CdlFile { Connection = Connection, Name = name };
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
             if (name.ToLower().EndsWith(".csv")) return new CsvFile { Connection = Connection, Name = name };
 #endif
             //if (name.ToLower().EndsWith(".html") || name.ToLower().EndsWith(".htm"))

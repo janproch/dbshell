@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
 using System.Windows.Markup;
 #endif
 using DbShell.Common;
@@ -9,7 +9,7 @@ using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core.Utility
 {
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
     [ContentProperty("Commands")]
 #endif
     public abstract class RunnableContainer : RunnableBase

@@ -5,7 +5,7 @@ using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Text;
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
 using System.Windows.Markup;
 #endif
 using DbShell.Common;
@@ -20,7 +20,7 @@ namespace DbShell.Core
     /// <summary>
     /// Job, which is aible to run SQL script, from file or given inline.
     /// </summary>
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
     [ContentProperty("Command")]
 #endif
     public class Script : RunnableBase
@@ -87,7 +87,7 @@ namespace DbShell.Core
         /// <summary>
         /// file encoding
         /// </summary>
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
         [TypeConverter(typeof(EncodingTypeConverter))]
 #endif
         [XamlProperty]

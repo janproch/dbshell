@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
 using System.Drawing;
 using System.Drawing.Imaging;
 #endif
@@ -212,7 +212,7 @@ namespace DbShell.Driver.Common.Utility
             }
         }
 
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
         public static string ImageToText(Bitmap image)
         {
             var ms = new MemoryStream();

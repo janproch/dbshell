@@ -182,7 +182,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         [DisplayName("Default date-time value")]
         [Category("Errors")]
         [XamlProperty]
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
         [TypeConverter(typeof(DateTimeExTypeConverter))]
 #endif
         public DateTimeEx DefaultDateTime

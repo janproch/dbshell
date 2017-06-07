@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
 using System.Windows.Markup;
 #endif
 using DbShell.Common;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
 using IronPython.Hosting;
 using Microsoft.Scripting.Hosting;
 #endif
@@ -19,7 +19,7 @@ namespace DbShell.Core.Runtime
 {
     public class ShellContext : IShellContext, IDisposable
     {
-#if NETCOREAPP1_1
+#if NETSTANDARD1_5
         class ScriptScope
         {
             Dictionary<string, object> _values = new Dictionary<string, object>();
@@ -42,7 +42,7 @@ namespace DbShell.Core.Runtime
 
         // fields shared with root context
         private Dictionary<string, DatabaseInfo> _dbCache;
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
         private readonly ScriptEngine _engine;
 #endif
         // script scope
@@ -58,7 +58,7 @@ namespace DbShell.Core.Runtime
         // search folders
         private Dictionary<ResolveFileMode, List<string>> _additionalSearchFolders = new Dictionary<ResolveFileMode, List<string>>();
 
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
         [ThreadStatic]
         static ScriptEngine _staticEngine;
 
@@ -76,7 +76,7 @@ namespace DbShell.Core.Runtime
         {
             if (parent == null)
             {
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
                 _engine = GetEngine();
                 _scope = _engine.CreateScope();
 #else
@@ -89,7 +89,7 @@ namespace DbShell.Core.Runtime
             {
                 _parent = parent;
 
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
                 _engine = _parent._engine;
 #endif
                 _dbCache = _parent._dbCache;
@@ -155,7 +155,7 @@ namespace DbShell.Core.Runtime
 
         public object Evaluate(string expression)
         {
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
             return _engine.Execute(expression, Scope);
 #else
             return Scope.GetVariable(expression);
@@ -165,7 +165,7 @@ namespace DbShell.Core.Runtime
         public void CreateScope()
         {
             if (_scope != null) throw new Exception("DBSH-00210 Scope already created");
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
             _scope = _engine.CreateScope(Scope);
 #else
             _scope = new ScriptScope(Scope);
@@ -195,7 +195,7 @@ namespace DbShell.Core.Runtime
 
         public void IncludeFile(string file)
         {
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
             using (var fr = new FileInfo(file).OpenRead())
             {
                 object obj = XamlReader.Load(fr);

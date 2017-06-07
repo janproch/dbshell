@@ -208,7 +208,7 @@ namespace DbShell.Driver.Common.Utility
                 if (was) sb.Append('&');
                 sb.Append(k);
                 sb.Append('=');
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
                 sb.Append(System.Web.HttpUtility.UrlEncode(pars[k], e));
 #else
                 sb.Append(System.Net.WebUtility.UrlEncode(pars[k]));
@@ -227,7 +227,7 @@ namespace DbShell.Driver.Common.Utility
                 if (was) sb.Append('&');
                 sb.Append(k);
                 sb.Append('=');
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
                 sb.Append(System.Web.HttpUtility.UrlEncode(pars[k]));
 #else
                 sb.Append(System.Net.WebUtility.UrlEncode(Encoding.UTF8.GetString(pars[k])));

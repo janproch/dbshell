@@ -52,7 +52,7 @@ namespace DbShell.Core
         /// The encoding.
         /// </value>
         [XamlProperty]
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
         [TypeConverter(typeof(EncodingTypeConverter))]
 #endif
         public Encoding Encoding { get; set; }

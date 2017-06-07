@@ -363,7 +363,7 @@ namespace DbShell.Core.Utility
                 content = sb.ToString();
             }
 
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
             if (IsRazor)
             {
                 char ch = RazorChar ?? '\0';

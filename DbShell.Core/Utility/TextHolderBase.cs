@@ -25,7 +25,7 @@ namespace DbShell.Core.Utility
 
         protected string LoadTextContent(object model, IShellContext context)
         {
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
             string templateData = LoadTemplate(context);
             if (templateData != null)
             {

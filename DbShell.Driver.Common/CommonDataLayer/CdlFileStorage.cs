@@ -174,7 +174,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public void Dispose()
         {
             _directory = null;
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
             _cache.Close();
 #else
             _cache.Dispose();

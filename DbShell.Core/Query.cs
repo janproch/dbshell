@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
 using System.Windows.Markup;
 #endif
 using DbShell.Common;
@@ -20,7 +20,7 @@ namespace DbShell.Core
     /// <summary>
     /// Represents query reading data from database. Can be exported to file in the some way as table.
     /// </summary>
-#if !NETCOREAPP1_1
+#if !NETSTANDARD1_5
     [ContentProperty("Text")]
 #endif
     public class Query : ElementBase, ITabularDataSource, IListProvider, IModelProvider
