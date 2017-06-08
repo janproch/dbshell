@@ -40,7 +40,7 @@ namespace DbShell.Driver.Common.Structure
                     {
                         Name = column.Name,
                         NotNull = column.NotNull,
-                        CommonType = column.CommonType.Clone(),
+                        CommonType = column.CommonType?.Clone(),
                         DataType = column.DataType,
                         AutoIncrement = column.AutoIncrement,
                         PrimaryKey = column.IsKey,
