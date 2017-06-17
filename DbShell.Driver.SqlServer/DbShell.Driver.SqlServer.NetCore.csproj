@@ -46,6 +46,7 @@
     <EmbeddedResource Include="parameters.sql" />
     <EmbeddedResource Include="primary_keys.sql" />
     <EmbeddedResource Include="programmables.sql" />
+    <EmbeddedResource Include="databasesizes.sql" />
     <EmbeddedResource Include="tablesizes.sql" />
     <EmbeddedResource Include="tables.sql" />
   </ItemGroup>

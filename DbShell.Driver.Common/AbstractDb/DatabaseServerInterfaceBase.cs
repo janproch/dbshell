@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DbShell.Driver.Common.Structure;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -10,6 +11,6 @@ namespace DbShell.Driver.Common.AbstractDb
     {
         public DbConnection Connection { get; set; }
         public abstract DatabaseServerVersion GetVersion();
-        public abstract List<string> GetDatabaseList();
+        public abstract List<DatabaseOverviewInfo> GetDatabaseList(bool includeDetails, LinkedDatabaseInfo linkedInfo = null);
     }
 }

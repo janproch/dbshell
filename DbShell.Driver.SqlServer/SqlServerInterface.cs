@@ -4,11 +4,15 @@ using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Utility;
+using DbShell.Driver.Common.Structure;
+using log4net;
 
 namespace DbShell.Driver.SqlServer
 {
     public class SqlServerInterface : DatabaseServerInterfaceBase
     {
+        private static readonly ILog _log = LogManager.GetLogger(typeof(SqlServerInterface));
+
         public override DatabaseServerVersion GetVersion()
         {
             using (var cmd = Connection.CreateCommand())
@@ -48,23 +52,68 @@ namespace DbShell.Driver.SqlServer
             return null;
         }
 
-        public override List<string> GetDatabaseList()
+        public override List<DatabaseOverviewInfo> GetDatabaseList(bool includeDetails, LinkedDatabaseInfo linkedInfo = null)
         {
-            var res = new List<string>();
-            Connection.ChangeDatabase("master");
-            using (var cmd = Connection.CreateCommand())
+
+            if (includeDetails)
             {
-                cmd.CommandText = "SELECT * FROM sysdatabases";
-                using (var reader = cmd.ExecuteReader())
+                try
                 {
-                    while (reader.Read())
+                    using (var cmd = Connection.CreateCommand())
                     {
-                        res.Add(reader["name"].SafeToString());
+                        cmd.CommandText = SqlServerLinkedServer.ReplaceLinkedServer(SqlServerDatabaseFactory.LoadEmbeddedResource("databasesizes.sql"), linkedInfo);
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            var res = new List<DatabaseOverviewInfo>();
+                            while (reader.Read())
+                            {
+                                var item = new DatabaseOverviewInfo();
+                                item.Name = reader["DatabaseName"].SafeToString();
+                                item.RowSizeKB = long.Parse(reader["RowSizeKB"].SafeToString());
+                                item.LogSizeKB = long.Parse(reader["LogSizeKB"].SafeToString());
+                                item.Collation = reader["Collation"].SafeToString();
+                                item.RecoveryModel = reader["RecoveryModel"].SafeToString();
+                                bool isSnapshot = reader["SnapshotIsolation"].SafeToString() == "1";
+                                bool isReadCommitedSnapshot = reader["IsReadCommitedSnapshot"].SafeToString()?.ToLower() == "true";
+
+                                if (isSnapshot)
+                                {
+                                    if (isReadCommitedSnapshot) item.Concurrency = "High";
+                                    else item.Concurrency = "Middle";
+                                }
+                                else
+                                {
+                                    item.Concurrency = "Low";
+                                }
+
+                                res.Add(item);
+                            }
+                            return res;
+                        }
                     }
                 }
+                catch (Exception err)
+                {
+                    // use variant without details
+                    _log.Error("Error fetching database details", err);
+                }
             }
-            res.Sort();
-            return res;
+
+            using (var cmd = Connection.CreateCommand())
+            {
+                cmd.CommandText = SqlServerLinkedServer.ReplaceLinkedServer("SELECT name FROM [SERVER].sys.databases order by name", linkedInfo);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    var res = new List<DatabaseOverviewInfo>();
+                    while (reader.Read())
+                    {
+                        var item = new DatabaseOverviewInfo();
+                        item.Name = reader["name"].SafeToString();
+                        res.Add(item);
+                    }
+                    return res;
+                }
+            }
         }
     }
 }
