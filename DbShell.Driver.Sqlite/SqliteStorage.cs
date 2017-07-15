@@ -170,6 +170,15 @@ namespace DbShell.Driver.Sqlite
         //    return sb.ToString();
         //}
 
+        public object LoadScalarFromDb(string query)
+        {
+            using (var cmd = _conn.CreateCommand())
+            {
+                cmd.CommandText = query;
+                return cmd.ExecuteScalar();
+            }
+        }
+
         public CdlTable LoadTableData(string query)
         {
             var table = new CdlTable(_table);
