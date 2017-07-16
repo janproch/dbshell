@@ -2,16 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace DbShell.Driver.Common.Structure
 {
+    [DataContract]
     public class FunctionInfo : ProgrammableInfo
     {
         [XmlElem]
+        [DataMember]
         public string ResultType { get; set; }
 
         [XmlElem]
+        [DataMember]
         public bool HasTableResult { get; set; }
 
         public FunctionInfo(DatabaseInfo database)

@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.Structure
 {
+    [DataContract]
     public class TriggerInfo : ProgrammableInfo
     {
         private string _tableOrViewName;
 
         [XmlAttrib("table_or_view_name")]
+        [DataMember]
         public string TableOrViewName
         {
             get
@@ -29,6 +32,7 @@ namespace DbShell.Driver.Common.Structure
 
         private string _tableOrViewSchema;
         [XmlAttrib("table_or_view_schema")]
+        [DataMember]
         public string TableOrViewSchema
         {
             get

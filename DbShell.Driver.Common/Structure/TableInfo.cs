@@ -180,21 +180,35 @@ namespace DbShell.Driver.Common.Structure
         {
             base.AfterLoadLink();
 
-            if (PrimaryKey != null) PrimaryKey.AfterLoadLink();
+            if (PrimaryKey != null)
+            {
+                PrimaryKey.OwnerTable = this;
+                PrimaryKey.OwnerDatabase = OwnerDatabase;
+                PrimaryKey.AfterLoadLink();
+            }
+
             foreach (var fk in ForeignKeys)
             {
+                fk.OwnerTable = this;
+                fk.OwnerDatabase = OwnerDatabase;
                 fk.AfterLoadLink();
             }
             foreach (var ix in Indexes)
             {
+                ix.OwnerTable = this;
+                ix.OwnerDatabase = OwnerDatabase;
                 ix.AfterLoadLink();
             }
             foreach (var uq in Uniques)
             {
+                uq.OwnerTable = this;
+                uq.OwnerDatabase = OwnerDatabase;
                 uq.AfterLoadLink();
             }
             foreach (var ch in Checks)
             {
+                ch.OwnerTable = this;
+                ch.OwnerDatabase = OwnerDatabase;
                 ch.AfterLoadLink();
             }
         }

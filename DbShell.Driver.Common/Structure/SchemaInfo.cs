@@ -1,7 +1,9 @@
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.Structure
 {
+    [DataContract]
     public class SchemaInfo : DatabaseObjectInfo
     {
         public SchemaInfo(DatabaseInfo database)
@@ -10,6 +12,7 @@ namespace DbShell.Driver.Common.Structure
         }
 
         [XmlAttrib("name")]
+        [DataMember]
         public string Name { get; set; }
 
         public override DatabaseObjectType ObjectType

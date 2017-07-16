@@ -6,12 +6,15 @@ using System.Text;
 using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.DmlFramework;
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.Structure
 {
+    [DataContract]
     public class QueryResultInfo
     {
         [XmlCollection(typeof (QueryResultColumnInfo))]
+        [DataMember]
         public List<QueryResultColumnInfo> Columns { get; set; } 
 
         public QueryResultInfo()

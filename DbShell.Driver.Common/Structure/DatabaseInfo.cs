@@ -5,12 +5,14 @@ using System.Xml;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.DbDiff;
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.Structure
 {
     /// <summary>
     /// Information about database structure
     /// </summary>
+    [DataContract]
     public class DatabaseInfo : DatabaseObjectInfo, IExplicitXmlPersistent
     {
         public static readonly DatabaseInfo Empty = new DatabaseInfo();
@@ -31,42 +33,49 @@ namespace DbShell.Driver.Common.Structure
         /// List of tables
         /// </summary>
         [XmlCollection(typeof (TableInfo))]
+        [DataMember]
         public List<TableInfo> Tables
         {
             get { return _tables; }
         }
 
         [XmlCollection(typeof (ViewInfo))]
+        [DataMember]
         public List<ViewInfo> Views
         {
             get { return _views; }
         }
 
         [XmlCollection(typeof (StoredProcedureInfo))]
+        [DataMember]
         public List<StoredProcedureInfo> StoredProcedures
         {
             get { return _storedProcedures; }
         }
 
         [XmlCollection(typeof (FunctionInfo))]
+        [DataMember]
         public List<FunctionInfo> Functions
         {
             get { return _functions; }
         }
 
         [XmlCollection(typeof(TriggerInfo))]
+        [DataMember]
         public List<TriggerInfo> Triggers
         {
             get { return _triggers; }
         }
 
         [XmlCollection(typeof(SchemaInfo))]
+        [DataMember]
         public List<SchemaInfo> Schemas
         {
             get { return _schemas; }
         }
 
         [XmlElem]
+        [DataMember]
         public string DefaultSchema { get; set; }
 
         [XmlSubElem]
@@ -365,12 +374,36 @@ namespace DbShell.Driver.Common.Structure
 
         public override void AfterLoadLink()
         {
-            foreach (var obj in Tables) obj.AfterLoadLink();
-            foreach (var obj in Views) obj.AfterLoadLink();
-            foreach (var obj in StoredProcedures) obj.AfterLoadLink();
-            foreach (var obj in Functions) obj.AfterLoadLink();
-            foreach (var obj in Triggers) obj.AfterLoadLink();
-            foreach (var obj in Schemas) obj.AfterLoadLink();
+            foreach (var obj in Tables)
+            {
+                obj.OwnerDatabase = this;
+                obj.AfterLoadLink();
+            }
+            foreach (var obj in Views)
+            {
+                obj.OwnerDatabase = this;
+                obj.AfterLoadLink();
+            }
+            foreach (var obj in StoredProcedures)
+            {
+                obj.OwnerDatabase = this;
+                obj.AfterLoadLink();
+            }
+            foreach (var obj in Functions)
+            {
+                obj.OwnerDatabase = this;
+                obj.AfterLoadLink();
+            }
+            foreach (var obj in Triggers)
+            {
+                obj.OwnerDatabase = this;
+                obj.AfterLoadLink();
+            }
+            foreach (var obj in Schemas)
+            {
+                obj.OwnerDatabase = this;
+                obj.AfterLoadLink();
+            }
         }
 
         public DatabaseInfo CloneDatabase()

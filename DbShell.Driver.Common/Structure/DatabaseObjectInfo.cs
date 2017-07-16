@@ -26,7 +26,7 @@ namespace DbShell.Driver.Common.Structure
     [DataContract]
     public abstract class DatabaseObjectInfo
     {
-        public DatabaseInfo OwnerDatabase { get; private set; }
+        public DatabaseInfo OwnerDatabase { get; internal set; }
         public PropertyBag Properties { get; private set; }
         public abstract DatabaseObjectType ObjectType { get; }
 

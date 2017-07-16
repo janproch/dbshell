@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.Structure
 {
+    [DataContract]
     public abstract class SpecificObjectInfo : NamedObjectInfo
     {
         [XmlElem]
+        [DataMember]
         public string CreateSql { get; set; }
 
         protected SpecificObjectInfo(DatabaseInfo database)
