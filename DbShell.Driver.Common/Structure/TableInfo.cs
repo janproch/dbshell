@@ -187,6 +187,13 @@ namespace DbShell.Driver.Common.Structure
                 PrimaryKey.AfterLoadLink();
             }
 
+            foreach(var col in Columns)
+            {
+                col.OwnerTable = this;
+                col.OwnerDatabase = OwnerDatabase;
+                col.AfterLoadLink();
+            }
+
             foreach (var fk in ForeignKeys)
             {
                 fk.OwnerTable = this;
