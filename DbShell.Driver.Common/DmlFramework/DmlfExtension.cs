@@ -46,7 +46,7 @@ namespace DbShell.Driver.Common.DmlFramework
                 case DmlfSortOrderType.Ascending:
                     dmp.Put("^asc");
                     break;
-                case DmlfSortOrderType.Descendning:
+                case DmlfSortOrderType.Descending:
                     dmp.Put("^desc");
                     break;
             }
@@ -54,7 +54,7 @@ namespace DbShell.Driver.Common.DmlFramework
 
         public static DmlfSortOrderType GetOpposite(this DmlfSortOrderType type)
         {
-            if (type == DmlfSortOrderType.Ascending) return DmlfSortOrderType.Descendning;
+            if (type == DmlfSortOrderType.Ascending) return DmlfSortOrderType.Descending;
             else return DmlfSortOrderType.Ascending;
         }
 

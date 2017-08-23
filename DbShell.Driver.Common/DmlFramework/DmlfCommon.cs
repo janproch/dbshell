@@ -6,7 +6,7 @@ namespace DbShell.Driver.Common.DmlFramework
 {
     public enum DmlfJoinType { Inner, Outer, Left, Right, CrossApply, OuterApply }
     public enum DmlfBinaryOperator { Inner, Outer, Left, Right }
-    public enum DmlfSortOrderType { Ascending, Descendning }
+    public enum DmlfSortOrderType { Ascending, Descending }
 
     //public interface IDmlfHandler
     //{
