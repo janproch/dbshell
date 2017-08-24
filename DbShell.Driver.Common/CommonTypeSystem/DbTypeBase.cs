@@ -4,12 +4,14 @@ using System.Data;
 using System.Xml;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.CommonTypeSystem
 {
 #if !NETSTANDARD1_5
     [TypeConverter(typeof(ExpandableObjectConverter))]
 #endif
+    [DataContract]
     public abstract class DbTypeBase 
     {
         [Browsable(false)]

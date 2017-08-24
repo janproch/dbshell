@@ -2,9 +2,11 @@ using System;
 using System.Data;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.CommonTypeSystem
 {
+    [DataContract]
     public class DbTypeDatetime : DbTypeBase
     {
         DbDatetimeSubType m_subType = DbDatetimeSubType.Datetime;
@@ -12,6 +14,7 @@ namespace DbShell.Driver.Common.CommonTypeSystem
         private bool _extendedPrecision = false;
 
         [XmlAttrib("subtype")]
+        [DataMember]
         public DbDatetimeSubType SubType
         {
             get { return m_subType; }
@@ -20,6 +23,7 @@ namespace DbShell.Driver.Common.CommonTypeSystem
 
 
         [XmlAttrib("hastimezone")]
+        [DataMember]
         public bool HasTimeZone
         {
             get { return m_hasTimeZone; }
@@ -27,6 +31,7 @@ namespace DbShell.Driver.Common.CommonTypeSystem
         }
 
         [XmlAttrib("extended")]
+        [DataMember]
         public bool ExtendedPrecision
         {
             get { return _extendedPrecision; }

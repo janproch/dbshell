@@ -2,13 +2,16 @@ using System;
 using System.Data;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.CommonTypeSystem
 {
+    [DataContract]
     public class DbTypeText : DbTypeBase
     {
         DbSizeType m_size = DbSizeType.Normal;
         [XmlAttrib("size")]
+        [DataMember]
         public DbSizeType Size
         {
             get { return m_size; }
@@ -17,6 +20,7 @@ namespace DbShell.Driver.Common.CommonTypeSystem
 
         bool m_isUnicode = false;
         [XmlAttrib("unicode")]
+        [DataMember]
         public bool IsUnicode
         {
             get { return m_isUnicode; }

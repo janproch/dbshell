@@ -3,14 +3,17 @@ using System.ComponentModel;
 using System.Data;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.CommonTypeSystem
 {
+    [DataContract]
     public class DbTypeBlob : DbTypeBase
     {
         DbSizeType m_size = DbSizeType.Normal;
         [DisplayName("s_size")]
         [XmlAttrib("size")]
+        [DataMember]
         public DbSizeType Size
         {
             get { return m_size; }

@@ -2,9 +2,11 @@ using System;
 using System.Data;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.CommonTypeSystem
 {
+    [DataContract]
     public class DbTypeString : DbTypeBase
     {
         public DbTypeString() { }
@@ -15,6 +17,7 @@ namespace DbShell.Driver.Common.CommonTypeSystem
 
         int m_length = -1;
         [XmlAttrib("length")]
+        [DataMember]
         public int Length
         {
             get { return m_length; }
@@ -23,6 +26,7 @@ namespace DbShell.Driver.Common.CommonTypeSystem
 
         bool m_isUnicode = false;
         [XmlAttrib("unicode")]
+        [DataMember]
         public bool IsUnicode
         {
             get { return m_isUnicode; }
@@ -31,6 +35,7 @@ namespace DbShell.Driver.Common.CommonTypeSystem
 
         bool m_isBinary = false;
         [XmlAttrib("binary")]
+        [DataMember]
         public bool IsBinary
         {
             get { return m_isBinary; }
@@ -39,6 +44,7 @@ namespace DbShell.Driver.Common.CommonTypeSystem
 
         bool m_isVarLength = true;
         [XmlAttrib("varlength")]
+        [DataMember]
         public bool IsVarLength
         {
             get { return m_isVarLength; }

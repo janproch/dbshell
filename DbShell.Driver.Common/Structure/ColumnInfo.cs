@@ -122,6 +122,7 @@ namespace DbShell.Driver.Common.Structure
         /// <summary>
         /// Portable data type
         /// </summary>
+        [DataMember]
         public DbTypeBase CommonType { get; set; }
 
         [DataMember]

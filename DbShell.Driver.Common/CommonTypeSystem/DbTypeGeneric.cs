@@ -3,14 +3,17 @@ using System.ComponentModel;
 using System.Data;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.CommonTypeSystem
 {
+    [DataContract]
     public class DbTypeGeneric : DbTypeBase
     {
         string m_sql;
         [DisplayName("SQL")]
         [XmlAttrib("sql")]
+        [DataMember]
         public string Sql
         {
             get { return m_sql; }
