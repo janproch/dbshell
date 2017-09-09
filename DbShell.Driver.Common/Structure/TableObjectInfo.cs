@@ -14,5 +14,11 @@ namespace DbShell.Driver.Common.Structure
         }
 
         public abstract void SetDummyTable(NameWithSchema name);
+
+        [DataMember]
+        public string OwnerTableName => OwnerTable?.Name;
+
+        [DataMember]
+        public string OwnerSchemaName => OwnerTable?.Schema;
     }
 }
