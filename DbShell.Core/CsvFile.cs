@@ -1,6 +1,4 @@
-﻿#if !NETSTANDARD1_5
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -13,8 +11,11 @@ using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
+
+#if !NETSTANDARD1_5
 using LumenWorks.Framework.IO.Csv;
 using CsvReader = DbShell.Core.Utility.CsvReader;
+#endif
 
 namespace DbShell.Core
 {
@@ -142,7 +143,9 @@ namespace DbShell.Core
         /// The encoding, by default UTF-8
         /// </value>
         [XamlProperty]
+#if !NETSTANDARD1_5
         [TypeConverter(typeof(EncodingTypeConverter))]
+#endif
         public Encoding Encoding
         {
             get { return _encoding; }
@@ -186,6 +189,7 @@ namespace DbShell.Core
             return context.Replace(Name);
         }
 
+#if !NETSTANDARD1_5
         private LumenWorks.Framework.IO.Csv.CsvReader CreateCsvReader(IShellContext context)
         {
             string name = GetName(context);
@@ -224,6 +228,17 @@ namespace DbShell.Core
             var reader = CreateCsvReader(textReader);
             return new CsvReader(GetStructure(reader), reader, DataFormat);
         }
+#endif
+
+        TableInfo ITabularDataSource.GetRowFormat(IShellContext context)
+        {
+            return null;
+        }
+
+        ICdlReader ITabularDataSource.CreateReader(IShellContext context)
+        {
+            return null;
+        }
 
         bool ITabularDataTarget.IsAvailableRowFormat(IShellContext context)
         {
@@ -234,8 +249,8 @@ namespace DbShell.Core
         {
             string file = context.ResolveFile(GetName(context), ResolveFileMode.Output);
             context.OutputMessage("Writing file " + Path.GetFullPath(file));
-            //var fs = System.IO.File.OpenWrite(file);
-            var fw = new StreamWriter(file, false, Encoding);
+            var fs = System.IO.File.OpenWrite(file);
+            var fw = new StreamWriter(fs, Encoding);
             var writer = new CsvWriter(fw, Delimiter, Quote, Escape, Comment, QuotingMode, EndOfLine, DataFormat);
             if (HasHeaders)
             {
@@ -244,6 +259,7 @@ namespace DbShell.Core
             return writer;
         }
 
+#if !NETSTANDARD1_5
         private TableInfo GetStructure(LumenWorks.Framework.IO.Csv.CsvReader reader)
         {
             var res = new TableInfo(null);
@@ -251,7 +267,7 @@ namespace DbShell.Core
             {
                 foreach (string col in reader.GetFieldHeaders())
                 {
-                    res.Columns.Add(new ColumnInfo(res) {CommonType = new DbTypeString(), DataType = "nvarchar", Length = -1, Name = col});
+                    res.Columns.Add(new ColumnInfo(res) { CommonType = new DbTypeString(), DataType = "nvarchar", Length = -1, Name = col });
                 }
             }
             else
@@ -263,6 +279,7 @@ namespace DbShell.Core
             }
             return res;
         }
+#endif
 
         public char DetectDelimiter(IShellContext context)
         {
@@ -279,7 +296,8 @@ namespace DbShell.Core
             counts[';'] = new List<int>();
             counts['\t'] = new List<int>();
 
-            using (var reader = new StreamReader(file, Encoding))
+            using (var fs = System.IO.File.OpenRead(file))
+            using (var reader = new StreamReader(fs, Encoding))
             {
                 for (int i = 0; i < 100; i++)
                 {
@@ -311,5 +329,3 @@ namespace DbShell.Core
         }
     }
 }
-
-#endif
