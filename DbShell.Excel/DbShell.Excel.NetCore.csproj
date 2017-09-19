@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard1.5</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="ExcelModels\**" />
+    <EmbeddedResource Remove="ExcelModels\**" />
+    <None Remove="ExcelModels\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="NewWindow.cs" />
+    <Compile Remove="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Shaman.EPPlus" Version="1.0.1.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DbShell.Common\DbShell.Common.NetCore.csproj" />
+    <ProjectReference Include="..\DbShell.Core\DbShell.Core.NetCore.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ExcelModelsCore\" />
+    <Folder Include="Properties\" />
+  </ItemGroup>
+</Project>
