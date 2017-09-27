@@ -462,5 +462,21 @@ namespace DbShell.Driver.Common.Utility
             if (String.IsNullOrWhiteSpace(value)) return null;
             return value;
         }
+
+        public static string LimitLengtWholeWords(this string value, int length)
+        {
+            value = value.Substring(0, Math.Min(length, value.Length));
+
+            if (value.Length == length)
+            {
+                int lastSpace = value.LastIndexOf(' ');
+                if (lastSpace >= 0)
+                {
+                    value = value.Substring(0, lastSpace);
+                }
+            }
+
+            return value;
+        }
     }
 }
