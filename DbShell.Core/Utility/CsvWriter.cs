@@ -42,6 +42,9 @@ namespace DbShell.Core.Utility
                 bool quote = false;
                 switch (_qmode)
                 {
+                    case CsvQuotingMode.Never:
+                        quote = false;
+                        break;
                     case CsvQuotingMode.Always:
                         quote = true;
                         break;

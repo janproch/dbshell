@@ -14,8 +14,12 @@ namespace DbShell.Core.Utility
         /// </summary>
         AlwaysExceptNumbers,
         /// <summary>
-        /// Quoting markrks are used only of necessary
+        /// Quoting marks are used only of necessary
         /// </summary>
-        OnlyIfNecessary
+        OnlyIfNecessary,
+        /// <summary>
+        /// Never use quoting marks
+        /// </summary>
+        Never,
     }
 }
