@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DbShell.Driver.SqlServer;
 using DbShell.Driver.Sqlite;
+using DbShell.Driver.MySql;
 
 namespace DbShell.Core
 {
@@ -19,6 +20,7 @@ namespace DbShell.Core
             if (_loaded) return;
             SqlServerDatabaseFactory.Initialize();
             SqliteDatabaseFactory.Initialize();
+            MySqlDatabaseFactory.Initialize();
             _loaded = true;
         }
     }

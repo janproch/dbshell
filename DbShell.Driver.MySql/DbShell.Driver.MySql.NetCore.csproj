@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.5</TargetFramework>
+    <RootNamespace>DbShell.Driver.MySql</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="columns.sql" />
+    <EmbeddedResource Include="foreign_keys.sql" />
+    <EmbeddedResource Include="primary_keys.sql" />
+    <EmbeddedResource Include="tables.sql" />
+    <EmbeddedResource Include="table_modifications.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pomelo.Data.MySql" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DbShell.Driver.Common\DbShell.Driver.Common.NetCore.csproj" />
+  </ItemGroup>
+
+</Project>

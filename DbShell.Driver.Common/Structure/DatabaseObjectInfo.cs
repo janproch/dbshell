@@ -42,6 +42,10 @@ namespace DbShell.Driver.Common.Structure
         [XmlAttrib("modified")]
         public DateTime? ModifyDate { get; set; }
 
+        [XmlAttrib("modifyInfo")]
+        // modify info is changed when object is changed
+        public string ModifyInfo { get; set; }
+
         public DatabaseObjectInfo(DatabaseInfo database)
         {
             GroupId = Guid.NewGuid().ToString();
@@ -59,6 +63,7 @@ namespace DbShell.Driver.Common.Structure
             GroupId = source.GroupId;
             CreateDate = source.CreateDate;
             ModifyDate = source.ModifyDate;
+            ModifyInfo = source.ModifyInfo;
         }
 
         public virtual void AfterLoadLink()

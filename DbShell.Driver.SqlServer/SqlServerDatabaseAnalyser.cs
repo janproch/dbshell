@@ -276,19 +276,18 @@ namespace DbShell.Driver.SqlServer
                                 if (fk == null)
                                 {
                                     fk = new ForeignKeyInfo(fkt) {ConstraintName = cname, RefTable = pkt};
-                                    fk.Columns.Add(new ColumnReference
-                                        {
-                                            RefColumn = fkt.Columns[fkcolumn]
-                                        });
-                                    fk.RefColumns.Add(new ColumnReference
-                                        {
-                                            RefColumn = pkt.Columns[pkcolumn]
-                                        });
+                                    fkt.ForeignKeys.Add(fk);
                                     fk.OnDeleteAction = ForeignKeyActionExtension.FromSqlName(deleteAction);
                                     fk.OnUpdateAction = ForeignKeyActionExtension.FromSqlName(updateAction);
-                                    fkt.ForeignKeys.Add(fk);
                                 }
-                                ;
+                                fk.Columns.Add(new ColumnReference
+                                {
+                                    RefColumn = fkt.Columns[fkcolumn]
+                                });
+                                fk.RefColumns.Add(new ColumnReference
+                                {
+                                    RefColumn = pkt.Columns[pkcolumn]
+                                });
                             }
                         }
                     }
@@ -883,9 +882,15 @@ namespace DbShell.Driver.SqlServer
                             IsUnicode = true,
                         };
                 case "text":
-                    return new DbTypeText();
+                    return new DbTypeText()
+                    {
+                        IsUnicode = false,
+                    };
                 case "ntext":
-                    return new DbTypeText();
+                    return new DbTypeText()
+                    {
+                        IsUnicode = true,
+                    };
                 case "xml":
                     return new DbTypeXml();
                 case "money":

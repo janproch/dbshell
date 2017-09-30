@@ -40,7 +40,7 @@ namespace DbShell.Driver.SqlServer
 
         public override string[] Identifiers
         {
-            get { return new string[] {"sqlserver"}; }
+            get { return new string[] {"mssql", "sqlserver"}; }
         }
 
         public override Type[] ConnectionTypes

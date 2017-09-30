@@ -12,6 +12,8 @@ namespace DbShell.Driver.Common.Statistics
         public int TotalSpaceKB;
         public int UsedSpaceKB;
         public int UnusedSpaceKB;
+        public int DataLengthKB;
+        public int IndexLengthKB;
     }
 
     public class TableSizes
