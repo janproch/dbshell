@@ -10,119 +10,11 @@ using System.Text;
 
 namespace DbShell.Driver.MySql
 {
-    public class MySqlDatabaseAnalyser : DatabaseAnalyser
+    public class MySqlDatabaseAnalyser : SimpleDatabaseAnalyserBase
     {
-        private DateTime _last = DateTime.Now;
-
-        Dictionary<string, TableInfo> _tablesByName = new Dictionary<string, TableInfo>();
-        Dictionary<string, ViewInfo> _viewByName = new Dictionary<string, ViewInfo>();
-
-        private void Timer(string msg)
-        {
-            var now = DateTime.Now;
-            Debug.WriteLine("{0:0.00}", (now - _last).TotalMilliseconds);
-            Debug.WriteLine(msg);
-            _last = now;
-        }
-
         protected override void DoGetModifications()
         {
-            var existingTables = new HashSet<string>();
-            using (var cmd = Connection.CreateCommand())
-            {
-                cmd.CommandText = CreateQuery("table_modifications.sql", DatabaseObjectType.Table);
-                using (var reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        string modify = reader.SafeString("ALTER_TIME");
-                        string name = reader.SafeString("TABLE_NAME");
-                        existingTables.Add(name);
-                        var fullName = new NameWithSchema(null, name);
-                        var obj = Structure.FindTable(fullName);
-
-                        if (obj == null)
-                        {
-                            var item = new DatabaseChangeItem
-                            {
-                                Action = DatabaseChangeAction.Add,
-                                ObjectType = DatabaseObjectType.Table,
-                                NewName = fullName,
-                            };
-                            ChangeSet.Items.Add(item);
-                        }
-                        else
-                        {
-                            if (obj.ModifyInfo == null || obj.ModifyInfo != modify)
-                            {
-                                var item = new DatabaseChangeItem
-                                {
-                                    Action = DatabaseChangeAction.Change,
-                                    ObjectType = DatabaseObjectType.Table,
-                                    OldName = ((NamedObjectInfo)obj).FullName,
-                                    NewName = fullName,
-                                };
-                                ChangeSet.Items.Add(item);
-                            }
-                        }
-                    }
-                }
-            }
-            AddDeletedObjects(Structure.Tables, existingTables);
-        }
-
-        private void AddDeletedObjects<T>(IEnumerable<T> items, HashSet<string> existingObjects)
-            where T : NamedObjectInfo
-        {
-            foreach (var obj in items)
-            {
-                if (!existingObjects.Contains(obj.FullName.Name))
-                {
-                    var item = new DatabaseChangeItem
-                    {
-                        Action = DatabaseChangeAction.Remove,
-                        ObjectType = obj.ObjectType,
-                        OldName = obj.FullName,
-                    };
-                    ChangeSet.Items.Add(item);
-                }
-            }
-        }
-
-        private string CreateFilterExpression(DatabaseObjectType objectType)
-        {
-            List<string> res = null;
-            if (objectType == DatabaseObjectType.Table && FilterOptions.TableFilter != null)
-            {
-                if (res == null) res = new List<string>();
-                res.AddRange(FilterOptions.TableFilter);
-            }
-            if (objectType == DatabaseObjectType.View && FilterOptions.ViewFilter != null)
-            {
-                if (res == null) res = new List<string>();
-                res.AddRange(FilterOptions.ViewFilter);
-            }
-            if (objectType == DatabaseObjectType.StoredProcedure && FilterOptions.StoredProcedureFilter != null)
-            {
-                if (res == null) res = new List<string>();
-                res.AddRange(FilterOptions.StoredProcedureFilter);
-            }
-            if (objectType == DatabaseObjectType.Function && FilterOptions.FunctionFilter != null)
-            {
-                if (res == null) res = new List<string>();
-                res.AddRange(FilterOptions.FunctionFilter);
-            }
-            if (objectType == DatabaseObjectType.Trigger && FilterOptions.TriggerFilter != null)
-            {
-                if (res == null) res = new List<string>();
-                res.AddRange(FilterOptions.TriggerFilter);
-            }
-            if (res != null)
-            {
-                if (res.Count == 0) return " is null";
-                return " in (" + res.Select(x => $"'{x}'").CreateDelimitedText(",") + ")";
-            }
-            return " is not null";
+            DoGetModificationsCore(CreateQuery("table_modifications.sql", DatabaseObjectType.Table), "ALTER_TIME", "TABLE_NAME");
         }
 
         private string CreateQuery(string resFileName, DatabaseObjectType objectType)
@@ -135,54 +27,11 @@ namespace DbShell.Driver.MySql
 
         protected override void DoRunAnalysis()
         {
-            foreach (var table in Structure.Tables)
-            {
-                _tablesByName[table.Name] = table;
-            }
-
-            foreach (var view in Structure.Views)
-            {
-                _viewByName[view.Name] = view;
-            }
+            FillByNameDictionaries();
 
             if (FilterOptions.AnyTables && IsTablesPhase)
             {
-                Timer("tables...");
-                try
-                {
-                    using (var cmd = Connection.CreateCommand())
-                    {
-                        cmd.CommandText = CreateQuery("tables.sql", DatabaseObjectType.Table);
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                string tname = reader.SafeString("TABLE_NAME");
-                                string modify= reader.SafeString("ALTER_TIME");
-
-                                if (_tablesByName.TryGetValue(tname, out var table))
-                                {
-                                    table.FullName = new NameWithSchema(null, tname);
-                                    table.ModifyInfo = modify;
-                                }
-                                else
-                                {
-                                    table = new TableInfo(Structure)
-                                    {
-                                        FullName = new NameWithSchema(null, tname),
-                                        ModifyInfo = modify,
-                                    };
-                                    Structure.Tables.Add(table);
-                                    _tablesByName[tname] = table;
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (Exception err)
-                {
-                    AddErrorReport("Error loading tables", err);
-                }
+                DoLoadTableList(CreateQuery("tables.sql", DatabaseObjectType.Table), "ALTER_TIME", "TABLE_NAME");
 
                 Timer("columns...");
 
@@ -203,7 +52,7 @@ namespace DbShell.Driver.MySql
                                 col.Name = reader.SafeString("COLUMN_NAME");
                                 col.NotNull = reader.SafeString("IS_NULLABLE") == "NO";
                                 col.DataType = reader.SafeString("DATA_TYPE");
-                                col.Length= reader.SafeString("CHARACTER_MAXIMUM_LENGTH").SafeIntParse(); 
+                                col.Length = reader.SafeString("CHARACTER_MAXIMUM_LENGTH").SafeIntParse();
                                 col.Precision = reader.SafeString("NUMERIC_PRECISION").SafeIntParse();
                                 col.Scale = reader.SafeString("NUMERIC_SCALE").SafeIntParse();
                                 col.DefaultValue = reader.SafeString("COLUMN_DEFAULT");

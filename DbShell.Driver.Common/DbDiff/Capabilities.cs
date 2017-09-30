@@ -238,6 +238,8 @@ namespace DbShell.Driver.Common.DbDiff
         // name of RowId column automatically added to tables
         public string RowId;
 
+        public bool SupportsKeyInfo;
+
         public bool AllFlags
         {
             set
@@ -265,6 +267,7 @@ namespace DbShell.Driver.Common.DbDiff
                 AutoIncrement = value;
                 AllowDeleteFrom = value;
                 AllowUpdateFrom = value;
+                SupportsKeyInfo = value;
             }
         }
     }

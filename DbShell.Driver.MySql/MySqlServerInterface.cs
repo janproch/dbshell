@@ -9,11 +9,6 @@ namespace DbShell.Driver.MySql
 {
     public class MySqlServerInterface : DatabaseServerInterfaceBase
     {
-        public override DatabaseServerVersion GetVersion()
-        {
-            return new DatabaseServerVersion(Connection.ServerVersion);
-        }
-
         public override List<DatabaseOverviewInfo> GetDatabaseList(bool includeDetails, LinkedDatabaseInfo linkedInfo = null)
         {
             using (var cmd = Connection.CreateCommand())

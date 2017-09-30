@@ -47,6 +47,7 @@ namespace DbShell.Driver.Common.AbstractDb
                 res.Arrays = false;
                 res.SupportBackup = false;
                 res.AutoIncrement = true;
+                res.SupportsKeyInfo = true;
                 return res;
             }
         }
@@ -81,7 +82,7 @@ namespace DbShell.Driver.Common.AbstractDb
 
         public virtual IDatabaseServerInterface CreateDatabaseServerInterface()
         {
-            return null;
+            return new DatabaseServerInterfaceBase();
         }
 
         public virtual ISqlTypeProvider CreateSqlTypeProvider()

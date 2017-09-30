@@ -52,12 +52,10 @@ namespace DbShell.Driver.Sqlite
             FactoryProvider.RegisterFactory(Instance);
         }
 
-#if !NETSTANDARD1_5
         public override DatabaseAnalyser CreateAnalyser()
         {
             return new SqliteAnalyser();
         }
-#endif
 
         public override SqlDialectCaps DialectCaps
         {
@@ -75,6 +73,7 @@ namespace DbShell.Driver.Sqlite
                 res.RangeSelect = true;
                 res.AllowDeleteFrom = false;
                 res.AllowUpdateFrom = false;
+                res.SupportsKeyInfo = false;
                 res.RowId = "rowid";
                 return res;
             }

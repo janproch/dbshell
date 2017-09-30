@@ -7,10 +7,17 @@ using System.Text;
 
 namespace DbShell.Driver.Common.AbstractDb
 {
-    public abstract class DatabaseServerInterfaceBase : IDatabaseServerInterface
+    public class DatabaseServerInterfaceBase : IDatabaseServerInterface
     {
         public DbConnection Connection { get; set; }
-        public abstract DatabaseServerVersion GetVersion();
-        public abstract List<DatabaseOverviewInfo> GetDatabaseList(bool includeDetails, LinkedDatabaseInfo linkedInfo = null);
+
+        public virtual DatabaseServerVersion GetVersion()
+        {
+            return new DatabaseServerVersion(Connection.ServerVersion);
+        }
+        public virtual List<DatabaseOverviewInfo> GetDatabaseList(bool includeDetails, LinkedDatabaseInfo linkedInfo = null)
+        {
+            return new List<DatabaseOverviewInfo>();
+        }
     }
 }
