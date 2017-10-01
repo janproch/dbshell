@@ -168,11 +168,13 @@ namespace DbShell.Driver.Postgres
                 case "text":
                     return new DbTypeText();
                 case "time":
+                case "time without time zone":
                     return new DbTypeDatetime
                     {
                         SubType = DbDatetimeSubType.Time,
                     };
                 case "timetz":
+                case "time with time zone":
                     return new DbTypeDatetime
                     {
                         SubType = DbDatetimeSubType.Time,
@@ -183,6 +185,12 @@ namespace DbShell.Driver.Postgres
                     {
                         SubType = DbDatetimeSubType.Datetime,
                     };
+                case "timestamp without time zone":
+                    return new DbTypeDatetime
+                    {
+                        SubType = DbDatetimeSubType.Datetime,
+                    };
+                case "timestamp with time zone":
                 case "timestamptz":
                     return new DbTypeDatetime
                     {
