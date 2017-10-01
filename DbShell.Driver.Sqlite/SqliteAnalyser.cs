@@ -28,8 +28,9 @@ namespace DbShell.Driver.Sqlite
                 {
                     foreach (string table in tables)
                     {
-                        if (!_tablesByName.ContainsKey(table)) continue;
-                        var tableInfo = _tablesByName[table];
+                        var fname = new NameWithSchema(null, table);
+                        if (!_tablesByName.ContainsKey(fname)) continue;
+                        var tableInfo = _tablesByName[fname];
                         using (var cmd = Connection.CreateCommand())
                         {
                             cmd.CommandText = $"pragma table_info('{table}')";
@@ -71,8 +72,9 @@ namespace DbShell.Driver.Sqlite
 
                     foreach (string table in tables)
                     {
-                        if (!_tablesByName.ContainsKey(table)) continue;
-                        var tableInfo = _tablesByName[table];
+                        var fname = new NameWithSchema(null, table);
+                        if (!_tablesByName.ContainsKey(fname)) continue;
+                        var tableInfo = _tablesByName[fname];
                         using (var cmd = Connection.CreateCommand())
                         {
                             cmd.CommandText = $"pragma foreign_key_list('{table}')";
@@ -90,7 +92,7 @@ namespace DbShell.Driver.Sqlite
 
                                     string cname = $"FK_{table}_{id}";
 
-                                    var refTable = _tablesByName[refTableName];
+                                    var refTable = _tablesByName[new NameWithSchema(null, refTableName)];
 
                                     var fk = tableInfo.ForeignKeys.Find(f => f.ConstraintName == cname);
 

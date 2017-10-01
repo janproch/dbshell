@@ -1,63 +1,48 @@
 ﻿using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.DbDiff;
-using Pomelo.Data.MySql;
+using DbShell.Driver.Common.Structure;
+using Npgsql;
 using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
 using System.Reflection;
+using System.Text;
 
-namespace DbShell.Driver.MySql
+namespace DbShell.Driver.Postgres
 {
-    public class MySqlDatabaseFactory : DatabaseFactoryBase
+    public class PostgresDatabaseFactory : DatabaseFactoryBase
     {
-        public static readonly MySqlDatabaseFactory Instance = new MySqlDatabaseFactory();
+        public static readonly PostgresDatabaseFactory Instance = new PostgresDatabaseFactory();
 
         public override string[] Identifiers
         {
-            get { return new string[] { "mysql" }; }
+            get { return new string[] { "postgres" }; }
         }
 
         public override DbConnection CreateConnection(string connectionString)
         {
-            return new MySqlConnection(connectionString);
+            return new NpgsqlConnection(connectionString);
         }
 
         public override Type[] ConnectionTypes
         {
-            get { return new Type[] { typeof(MySqlConnection) }; }
+            get { return new Type[] { typeof(NpgsqlConnection) }; }
         }
 
         public override ISqlDumper CreateDumper(ISqlOutputStream stream, SqlFormatProperties props)
         {
-            return new MySqlSqlDumper(stream, this, props);
+            return new PostgresSqlDumper(stream, this, props);
         }
 
         //public override ILiteralFormatter CreateLiteralFormatter()
         //{
-        //    return new SqliteLiteralFormatter(this);
+        //    return new PostgresLiteralFormatter(this);
         //}
 
         public override ISqlDialect CreateDialect()
         {
-            return new MySqlDialect(this);
-        }
-
-        public override IDatabaseServerInterface CreateDatabaseServerInterface()
-        {
-            return new MySqlServerInterface();
-        }
-
-        public override DatabaseAnalyser CreateAnalyser()
-        {
-            return new MySqlDatabaseAnalyser
-            {
-                Factory = this,
-            };
-        }
-
-        public override IStatisticsProvider CreateStatisticsProvider()
-        {
-            return new MySqlStatisticsProvider();
+            return new PostgresDialect();
         }
 
         public static void Initialize()
@@ -65,30 +50,43 @@ namespace DbShell.Driver.MySql
             FactoryProvider.RegisterFactory(Instance);
         }
 
+        public override IDatabaseServerInterface CreateDatabaseServerInterface()
+        {
+            return new PostgreSqlServerInterface();
+        }
+
+        public override DatabaseAnalyser CreateAnalyser()
+        {
+            return new PostgresAnalyser
+            {
+                Factory = this,
+            };
+        }
+
         public override SqlDialectCaps DialectCaps
         {
             get
             {
                 var res = base.DialectCaps;
+
                 res.MultiCommand = true;
                 res.ForeignKeys = true;
-                res.Uniques = false;
-                res.MultipleSchema = false;
-                res.MultipleDatabase = false;
-                res.UncheckedReferences = true;
+                res.Uniques = true;
+                res.MultipleSchema = true;
+                res.MultipleDatabase = true;
                 res.NestedTransactions = true;
                 res.AnonymousPrimaryKey = true;
                 res.RangeSelect = true;
                 res.AllowDeleteFrom = false;
                 res.AllowUpdateFrom = false;
-                res.RowId = "rowid";
+                res.SupportsKeyInfo = true;
                 return res;
             }
         }
 
         internal static string LoadEmbeddedResource(string name)
         {
-            using (Stream s = GetAssembly(typeof(MySqlDatabaseFactory)).GetManifestResourceStream("DbShell.Driver.MySql." + name))
+            using (Stream s = GetAssembly(typeof(PostgresDatabaseFactory)).GetManifestResourceStream("DbShell.Driver.Postgres." + name))
             {
                 if (s == null)
                     throw new InvalidOperationException("Could not find embedded resource");
@@ -108,5 +106,4 @@ namespace DbShell.Driver.MySql
 #endif
         }
     }
-
 }

@@ -5,6 +5,7 @@ using System.Text;
 using DbShell.Driver.SqlServer;
 using DbShell.Driver.Sqlite;
 using DbShell.Driver.MySql;
+using DbShell.Driver.Postgres;
 
 namespace DbShell.Core
 {
@@ -21,6 +22,7 @@ namespace DbShell.Core
             SqlServerDatabaseFactory.Initialize();
             SqliteDatabaseFactory.Initialize();
             MySqlDatabaseFactory.Initialize();
+            PostgresDatabaseFactory.Initialize();
             _loaded = true;
         }
     }

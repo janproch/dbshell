@@ -19,7 +19,7 @@ namespace DbShell.Driver.Sqlite
 
         public override string[] Identifiers
         {
-            get { return new string[] {"sqlite"}; }
+            get { return new string[] { "sqlite" }; }
         }
 
         public override DbConnection CreateConnection(string connectionString)
@@ -29,7 +29,7 @@ namespace DbShell.Driver.Sqlite
 
         public override Type[] ConnectionTypes
         {
-            get { return new Type[] {typeof (SQLiteConnection)}; }
+            get { return new Type[] { typeof(SQLiteConnection) }; }
         }
 
         public override ISqlDumper CreateDumper(ISqlOutputStream stream, SqlFormatProperties props)
@@ -54,7 +54,10 @@ namespace DbShell.Driver.Sqlite
 
         public override DatabaseAnalyser CreateAnalyser()
         {
-            return new SqliteAnalyser();
+            return new SqliteAnalyser
+            {
+                Factory = this,
+            };
         }
 
         public override SqlDialectCaps DialectCaps

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.5</TargetFramework>
+    <RootNamespace>DbShell.Driver.Postgres</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="columns.psql" />
+    <EmbeddedResource Include="foreign_keys.psql" />
+    <EmbeddedResource Include="primary_keys.psql" />
+    <EmbeddedResource Include="table_modifications.psql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Npgsql" Version="3.2.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DbShell.Driver.Common\DbShell.Driver.Common.NetCore.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -13,7 +13,10 @@ namespace DbShell.Driver.SqlServer
 
         public override DatabaseAnalyser CreateAnalyser()
         {
-            return new SqlServerDatabaseAnalyser();
+            return new SqlServerDatabaseAnalyser
+            {
+                Factory = this,
+            };
         }
 
         private static Assembly GetAssembly(Type type)
@@ -27,7 +30,7 @@ namespace DbShell.Driver.SqlServer
 
         internal static string LoadEmbeddedResource(string name)
         {
-            using (Stream s = GetAssembly(typeof (SqlServerDatabaseFactory)).GetManifestResourceStream("DbShell.Driver.SqlServer." + name))
+            using (Stream s = GetAssembly(typeof(SqlServerDatabaseFactory)).GetManifestResourceStream("DbShell.Driver.SqlServer." + name))
             {
                 if (s == null)
                     throw new InvalidOperationException("Could not find embedded resource");
@@ -40,12 +43,12 @@ namespace DbShell.Driver.SqlServer
 
         public override string[] Identifiers
         {
-            get { return new string[] {"mssql", "sqlserver"}; }
+            get { return new string[] { "mssql", "sqlserver" }; }
         }
 
         public override Type[] ConnectionTypes
         {
-            get { return new Type[] {typeof (SqlConnection)}; }
+            get { return new Type[] { typeof(SqlConnection) }; }
         }
 
         public override System.Data.Common.DbConnection CreateConnection(string connectionString)
@@ -164,6 +167,7 @@ namespace DbShell.Driver.SqlServer
                 res.SupportBackup = true;
                 res.AllowDeleteFrom = true;
                 res.AllowUpdateFrom = true;
+                res.MultipleSchema = true;
                 return res;
             }
         }

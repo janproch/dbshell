@@ -42,6 +42,15 @@ namespace DbShell.Driver.Common.CommonTypeSystem
             set { m_isBinary = value; }
         }
 
+        bool m_isBit = false;
+        [XmlAttrib("bit")]
+        [DataMember]
+        public bool IsBit
+        {
+            get { return m_isBit; }
+            set { m_isBit = value; }
+        }
+
         bool m_isVarLength = true;
         [XmlAttrib("varlength")]
         [DataMember]
@@ -59,7 +68,7 @@ namespace DbShell.Driver.Common.CommonTypeSystem
         {
             get
             {
-                if (IsBinary) return typeof(byte[]);
+                if (IsBinary || IsBit) return typeof(byte[]);
                 return typeof(String);
             }
         }
@@ -96,12 +105,14 @@ namespace DbShell.Driver.Common.CommonTypeSystem
             {
                 if (IsUnicode) return "nvarchar";
                 if (IsBinary) return "varbinary";
+                if (IsBit) return "varbit";
                 return "varchar";
             }
             else
             {
                 if (IsUnicode) return "nchar";
                 if (IsBinary) return "binary";
+                if (IsBit) return "bit";
                 return "char";
             }
         }

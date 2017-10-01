@@ -33,6 +33,7 @@ namespace DbShell.Driver.Common.AbstractDb
         public DatabaseChangeSet ChangeSet;
         public DatabaseAnalyserFilterOptions FilterOptions;
         public DatabaseServerVersion ServerVersion;
+        public IDatabaseFactory Factory;
         public DatabaseAnalysePhase Phase = DatabaseAnalysePhase.All;
         public List<DatabaseAnalyserError> Errors = new List<DatabaseAnalyserError>();
         private string _linkedServerName;

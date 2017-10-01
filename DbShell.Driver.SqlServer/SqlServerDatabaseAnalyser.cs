@@ -17,25 +17,15 @@ namespace DbShell.Driver.SqlServer
         public static bool Is_2008(this DatabaseServerVersion version) { return version != null && version.IsMinimally(10, 0, 0); }
     }
 
-    public class SqlServerDatabaseAnalyser : DatabaseAnalyser
+    public class SqlServerDatabaseAnalyser : SimpleDatabaseAnalyserBase
     {
         private Dictionary<NameWithSchema, TableInfo> _tables = new Dictionary<NameWithSchema, TableInfo>();
         private Dictionary<string, TableInfo> _tablesById = new Dictionary<string, TableInfo>();
         private Dictionary<string, ViewInfo> _viewsById = new Dictionary<string, ViewInfo>();
 
-        private SqlConnection Connection
+        private new SqlConnection Connection
         {
             get { return (SqlConnection) _conn; }
-        }
-
-        private DateTime _last = DateTime.Now;
-
-        private void Timer(string msg)
-        {
-            var now = DateTime.Now;
-            Debug.WriteLine("{0:0.00}", (now - _last).TotalMilliseconds);
-            Debug.WriteLine(msg);
-            _last = now;
         }
 
         private string CreateFilterExpression(bool tables = false, bool views = false,
@@ -979,29 +969,10 @@ namespace DbShell.Driver.SqlServer
                     }
                 }
             }
-            AddDeletedObjects(Structure.Tables, existingObjects);
-            AddDeletedObjects(Structure.Views, existingObjects);
-            AddDeletedObjects(Structure.StoredProcedures, existingObjects);
-            AddDeletedObjects(Structure.Functions, existingObjects);
-        }
-
-        private void AddDeletedObjects<T>(IEnumerable<T> items, HashSet<string> existingObjects)
-            where T : NamedObjectInfo
-        {
-            foreach (var obj in items)
-            {
-                if (!existingObjects.Contains(obj.ObjectId))
-                {
-                    var item = new DatabaseChangeItem
-                        {
-                            Action = DatabaseChangeAction.Remove,
-                            ObjectId = obj.ObjectId,
-                            ObjectType = obj.ObjectType,
-                            OldName = obj.FullName,
-                        };
-                    ChangeSet.Items.Add(item);
-                }
-            }
+            AddDeletedObjectsById(Structure.Tables, existingObjects);
+            AddDeletedObjectsById(Structure.Views, existingObjects);
+            AddDeletedObjectsById(Structure.StoredProcedures, existingObjects);
+            AddDeletedObjectsById(Structure.Functions, existingObjects);
         }
     }
 }
