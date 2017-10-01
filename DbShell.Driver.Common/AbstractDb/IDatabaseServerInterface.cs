@@ -9,6 +9,8 @@ namespace DbShell.Driver.Common.AbstractDb
 {
     public class DatabaseOverviewInfo
     {
+        public string CustomData1; // to allow hacks :-)
+
         public string Name;
         public long RowSizeKB;
         public long LogSizeKB;
