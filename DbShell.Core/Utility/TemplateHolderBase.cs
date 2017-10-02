@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
 using System.Windows.Markup;
 #endif
 using DbShell.Common;
@@ -13,7 +13,7 @@ using log4net;
 
 namespace DbShell.Core.Utility
 {
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
     [ContentProperty("TemplateData")]
 #endif
     public abstract class TemplateHolderBase : RunnableBase

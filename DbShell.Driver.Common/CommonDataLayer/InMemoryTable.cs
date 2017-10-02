@@ -51,7 +51,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
             }
         }
 
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
         public InMemoryTable(TableInfo table, XmlElement xml)
         {
             Initialize();
@@ -97,7 +97,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         public TableInfo Structure { get { return m_structure; } }
         IRowCollection<ArrayDataRecord> IInMemoryTable<ArrayDataRecord>.Rows { get { return this.Rows; } }
 
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
         public void SaveToXml(XmlElement xml)
         {
             using (XmlWriter xw = xml.CreateNavigator().AppendChild())

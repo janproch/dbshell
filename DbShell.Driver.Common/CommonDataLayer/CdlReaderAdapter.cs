@@ -40,7 +40,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
         }
 
 
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
         public DataTable GetSchemaTable()
         {
             return _reader.Structure.SchemaFromStructure();

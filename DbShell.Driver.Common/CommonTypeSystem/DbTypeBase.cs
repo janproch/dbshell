@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.CommonTypeSystem
 {
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
     [TypeConverter(typeof(ExpandableObjectConverter))]
 #endif
     [DataContract]

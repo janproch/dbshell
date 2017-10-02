@@ -101,7 +101,7 @@ namespace DbShell.Driver.MySql
 
         private static Assembly GetAssembly(Type type)
         {
-#if NETSTANDARD1_5
+#if NETSTANDARD2_0
             return type.GetTypeInfo().Assembly;
 #else
             return type.Assembly;

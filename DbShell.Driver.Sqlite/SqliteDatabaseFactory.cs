@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
 using System.Data.SQLite;
 #else
 using SQLiteConnection = Microsoft.Data.Sqlite.SqliteConnection;

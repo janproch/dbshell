@@ -12,7 +12,7 @@ namespace DbShell.Driver.Common.Utility
         CultureInfo old, oldui;
         public NeutralCultureObject()
         {
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
             old = Thread.CurrentThread.CurrentCulture;
             oldui = Thread.CurrentThread.CurrentUICulture;
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
@@ -22,7 +22,7 @@ namespace DbShell.Driver.Common.Utility
         public void Close() { Dispose(); }
         public void Dispose()
         {
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
             Thread.CurrentThread.CurrentCulture = old;
             Thread.CurrentThread.CurrentUICulture = oldui;
 #endif

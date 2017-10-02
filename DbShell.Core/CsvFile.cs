@@ -12,7 +12,7 @@ using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
 
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
 using LumenWorks.Framework.IO.Csv;
 using CsvReader = DbShell.Core.Utility.CsvReader;
 #endif
@@ -143,7 +143,7 @@ namespace DbShell.Core
         /// The encoding, by default UTF-8
         /// </value>
         [XamlProperty]
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
         [TypeConverter(typeof(EncodingTypeConverter))]
 #endif
         public Encoding Encoding
@@ -189,7 +189,7 @@ namespace DbShell.Core
             return context.Replace(Name);
         }
 
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
         private LumenWorks.Framework.IO.Csv.CsvReader CreateCsvReader(IShellContext context)
         {
             string name = GetName(context);
@@ -259,7 +259,7 @@ namespace DbShell.Core
             return writer;
         }
 
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
         private TableInfo GetStructure(LumenWorks.Framework.IO.Csv.CsvReader reader)
         {
             var res = new TableInfo(null);

@@ -36,7 +36,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                             res.Hour = lexer.ReadNumber(num2);
                             break;
                         }
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
 
                     case ':':
                         {

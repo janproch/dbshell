@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.5</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>DbShell.Driver.Sqlite</RootNamespace>
   </PropertyGroup>
 
@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.8" />
-    <PackageReference Include="Microsoft.Data.SQLite" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Data.SQLite" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>

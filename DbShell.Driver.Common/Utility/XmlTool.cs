@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Reflection;
 using System.Globalization;
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
 using System.Configuration;
 using System.Drawing;
 #endif
@@ -89,7 +89,7 @@ namespace DbShell.Driver.Common.Utility
 
     public static class XmlTool
     {
-#if NETSTANDARD1_5
+#if NETSTANDARD2_0
         public static XmlNode SelectSingleNode(this XmlNode node, string name)
         {
             var element = node as XmlElement;
@@ -111,7 +111,7 @@ namespace DbShell.Driver.Common.Utility
 
         public static void SerializeObject(Stream fw, object o)
         {
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
             using (XmlWriter xw = new XmlTextWriter(fw, Encoding.UTF8))
             {
                 SerializeObject(xw, o);
@@ -145,7 +145,7 @@ namespace DbShell.Driver.Common.Utility
             string typename = elem.GetAttribute("type");
             Type type = Type.GetType(typename);
             XmlSerializer ser = new XmlSerializer(type);
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
             using (XmlNodeReader xr = new XmlNodeReader(elem.LastChild))
             {
                 return ser.Deserialize(xr);
@@ -387,7 +387,7 @@ namespace DbShell.Driver.Common.Utility
             {
                 return val.ToString().ToLower();
             }
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
             else if (val is Color)
             {
                 return ((Color)val).Name;
@@ -422,7 +422,7 @@ namespace DbShell.Driver.Common.Utility
 
         public static bool IsEnum(Type type)
         {
-#if NETSTANDARD1_5
+#if NETSTANDARD2_0
             return type.GetTypeInfo().IsEnum;
 #else
             return type.IsEnum;
@@ -452,7 +452,7 @@ namespace DbShell.Driver.Common.Utility
             {
                 return Encoding.GetEncoding(sval);
             }
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
             else if (type == typeof(Color))
             {
                 var col = Color.FromName(sval);
@@ -552,7 +552,7 @@ namespace DbShell.Driver.Common.Utility
                         SaveProperties(val, elem);
                     }
                 }
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
                 foreach (SettingAttribute attr in prop.GetCustomAttributes(typeof(SettingAttribute), true))
                 {
                     object val = prop.CallGet(o);
@@ -606,7 +606,7 @@ namespace DbShell.Driver.Common.Utility
             o.LoadPropertiesCore(xml);
         }
 
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
         public static string DownloadProperties(this object o, string url)
         {
             using (var wc = new WebClient())
@@ -691,7 +691,7 @@ namespace DbShell.Driver.Common.Utility
                         }
                     }
                 }
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
                 foreach (SettingAttribute attr in prop.GetCustomAttributes(typeof(SettingAttribute), true))
                 {
                     var elem = xml.SelectSingleNode(prop.Name);

@@ -1,4 +1,4 @@
-﻿#if !NETSTANDARD1_5
+﻿#if !NETSTANDARD2_0
 using Antlr.Runtime;
 using DbShell.Driver.Common.Utility;
 using System;

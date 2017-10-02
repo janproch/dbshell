@@ -21,7 +21,7 @@ namespace DbShell.Driver.SqlServer
 
         private static Assembly GetAssembly(Type type)
         {
-#if NETSTANDARD1_5
+#if NETSTANDARD2_0
             return type.GetTypeInfo().Assembly;
 #else
             return type.Assembly;
@@ -81,7 +81,7 @@ namespace DbShell.Driver.SqlServer
             return new SqlServerStatisticsProvider();
         }
 
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
         public override IParsingService CreateParsingService()
         {
             return new SqlServerParsingService();

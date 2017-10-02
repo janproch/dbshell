@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
 using System.Data.SQLite;
 #else
 using SQLiteDataReader = Microsoft.Data.Sqlite.SqliteDataReader;

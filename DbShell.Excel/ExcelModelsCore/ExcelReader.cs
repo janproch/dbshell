@@ -12,7 +12,7 @@ namespace DbShell.Excel.ExcelModels
 {
     public class ExcelReader : ArrayDataRecord, ICdlReader
     {
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
         private Worksheet _worksheet;
         private string[] _array;
         private int _rowIndex = 2;

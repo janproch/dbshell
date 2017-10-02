@@ -73,7 +73,7 @@ namespace DbShell.Driver.Common.AbstractDb
             return null;
         }
 
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
         public virtual IParsingService CreateParsingService()
         {
             return null;

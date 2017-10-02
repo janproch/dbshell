@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
 using System.Data.SQLite;
 #else
 using SQLiteConnection = Microsoft.Data.Sqlite.SqliteConnection;
@@ -51,7 +51,7 @@ namespace DbShell.Driver.Sqlite
 
         public SQLiteConnection OpenConnection()
         {
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
             var conn = new SQLiteConnection("Synchronous=Full;Data Source=" + _file);
 #else
             var conn = new SQLiteConnection("Data Source=" + _file);

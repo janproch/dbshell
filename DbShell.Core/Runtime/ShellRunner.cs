@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
 using System.Windows.Markup;
 #endif
 using System.Xml;
@@ -31,7 +31,7 @@ namespace DbShell.Core.Runtime
             if (OutputMessage != null) OutputMessage(obj);
         }
 
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
         public void LoadFile(string file)
         {
             var obj = ShellLoader.LoadFile(file);
@@ -112,7 +112,7 @@ namespace DbShell.Core.Runtime
             }
         }
 
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
         public void Abort()
         {
             if (_thread == null)

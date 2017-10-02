@@ -1,7 +1,7 @@
 ﻿using System.Xml;
 using DbShell.Driver.Common.Utility;
 using System;
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
 using System.Web.Script.Serialization;
 #endif
 
@@ -55,7 +55,7 @@ namespace DbShell.Driver.Common.DmlFramework
 
         public virtual string JavaScriptExpression => "null";
 
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
         public static string SerializeJson(object o)
         {
             var ser = new JavaScriptSerializer();

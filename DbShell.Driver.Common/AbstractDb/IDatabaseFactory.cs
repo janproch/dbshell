@@ -18,7 +18,7 @@ namespace DbShell.Driver.Common.AbstractDb
         IBulkInserter CreateBulkInserter();
         ILiteralFormatter CreateLiteralFormatter();
         IStatisticsProvider CreateStatisticsProvider();
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
         IParsingService CreateParsingService();
 #endif
         IDatabaseServerInterface CreateDatabaseServerInterface();

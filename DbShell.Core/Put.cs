@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
 using System.Windows.Markup;
 #endif
 using DbShell.Common;
@@ -16,7 +16,7 @@ namespace DbShell.Core
     /// <summary>
     /// Action for putting objects into collections
     /// </summary>
-#if !NETSTANDARD1_5
+#if !NETSTANDARD2_0
     [ContentProperty("Value")]
 #endif
     public class Put : RunnableBase
