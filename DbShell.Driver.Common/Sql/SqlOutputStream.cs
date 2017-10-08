@@ -106,12 +106,14 @@ namespace DbShell.Driver.Common.Sql
         ISqlDialect m_dialect;
         DbTransaction m_trans;
         StringBuilder m_curCommand = new StringBuilder();
+        ICancelableProcessCallback _cancelable;
 
-        public ConnectionSqlOutputStream(DbConnection conn, DbTransaction trans, ISqlDialect dialect)
+        public ConnectionSqlOutputStream(DbConnection conn, DbTransaction trans, ISqlDialect dialect, ICancelableProcessCallback cancelable = null)
         {
             m_conn = conn;
             m_dialect = dialect;
             m_trans = trans;
+            _cancelable = cancelable;
         }
 
         #region ISqlOutputStream Members
@@ -127,7 +129,7 @@ namespace DbShell.Driver.Common.Sql
         {
             string sql = m_curCommand.ToString().Trim();
             m_curCommand = new StringBuilder();
-            m_conn.ExecuteNonQuery(sql, m_trans, null);
+            m_conn.ExecuteNonQuery(sql, m_trans, null, _cancelable);
         }
 
         #endregion

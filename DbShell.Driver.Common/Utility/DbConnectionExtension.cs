@@ -110,12 +110,12 @@ namespace DbShell.Driver.Common.Utility
             return res;
         }
 
-        public static void ExecuteNonQuery(this DbConnection conn, string sql)
+        public static void ExecuteNonQuery(this DbConnection conn, string sql, ICancelableProcessCallback cancelable = null)
         {
-            ExecuteNonQuery(conn, sql, null, null);
+            ExecuteNonQuery(conn, sql, null, null, cancelable);
         }
 
-        public static void ExecuteNonQuery(this DbConnection conn, string sql, DbTransaction trans, int? timeout)
+        public static void ExecuteNonQuery(this DbConnection conn, string sql, DbTransaction trans, int? timeout, ICancelableProcessCallback cancelable = null)
         {
             if (String.IsNullOrEmpty(sql)) return;
             if (sql.StartsWith("@use"))
@@ -130,7 +130,9 @@ namespace DbShell.Driver.Common.Utility
                     cmd.CommandText = sql;
                     if (timeout != null) cmd.CommandTimeout = timeout.Value;
                     if (trans != null) cmd.Transaction = trans;
+                    cancelable?.AddCancelMethod(cmd, cmd.Cancel);
                     cmd.ExecuteNonQueryEx();
+                    cancelable?.RemoveCancelMethod(cmd);
                 }
             }
         }
