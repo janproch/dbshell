@@ -52,6 +52,15 @@ namespace DbShell.Driver.Common.Sql
         {
         }
 
+        public virtual void Comment(string value)
+        {
+            if (value == null) return;
+            foreach(string line in value.Split('\n'))
+            {
+                Put(" -- %s", line.TrimEnd());
+            }
+        }
+
         public virtual void ExtractMonth(Action<ISqlDumper> argument)
         {
             throw new NotImplementedError("DBSH-00159");

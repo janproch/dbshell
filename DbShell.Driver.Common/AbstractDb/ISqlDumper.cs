@@ -160,8 +160,8 @@ namespace DbShell.Driver.Common.AbstractDb
         IDatabaseFactory Factory { get; }
 
         void AllowIdentityInsert(NameWithSchema table, bool allow);
-
         void EnableConstraints(NameWithSchema table, bool enabled);
+        void Comment(string comment);
 
         // table operations
         void TruncateTable(NameWithSchema name);

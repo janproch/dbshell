@@ -213,9 +213,14 @@ namespace DbShell.Driver.MySql
         //    EndCommand();
         //}
 
-        //public override void EnableConstraints(NameWithSchema table, bool enabled)
-        //{
-        //    PutCmd("SET FOREIGN_KEY_CHECKS = %s", enabled ? "1" : "0");
-        //}
+        public override void EnableConstraints(NameWithSchema table, bool enabled)
+        {
+            PutCmd("^set FOREIGN_KEY_CHECKS = %s", enabled ? "1" : "0");
+        }
+
+        public override void Comment(string value)
+        {
+            Put("/* %s */", value);
+        }
     }
 }

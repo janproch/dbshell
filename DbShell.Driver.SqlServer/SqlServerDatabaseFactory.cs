@@ -168,6 +168,7 @@ namespace DbShell.Driver.SqlServer
                 res.AllowDeleteFrom = true;
                 res.AllowUpdateFrom = true;
                 res.MultipleSchema = true;
+                res.EnableConstraintsPerTable = true;
                 return res;
             }
         }

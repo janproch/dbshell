@@ -56,5 +56,10 @@ namespace DbShell.Driver.Sqlite
         public override void CreateIndex(IndexInfo ix)
         {
         }
+
+        public override void EnableConstraints(NameWithSchema table, bool enabled)
+        {
+            PutCmd("^pragma foreign_keys = %k", table, enabled ? "on" : "off");
+        }
     }
 }

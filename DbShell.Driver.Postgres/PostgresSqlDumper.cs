@@ -55,5 +55,10 @@ namespace DbShell.Driver.Postgres
         public override void CreateIndex(IndexInfo ix)
         {
         }
+
+        public override void EnableConstraints(NameWithSchema table, bool enabled)
+        {
+            PutCmd("&alter ^table %f %k ^trigger ^all", table, enabled ? "enable" : "disable");
+        }
     }
 }

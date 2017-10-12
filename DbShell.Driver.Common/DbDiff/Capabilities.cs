@@ -240,6 +240,8 @@ namespace DbShell.Driver.Common.DbDiff
 
         public bool SupportsKeyInfo;
 
+        public bool EnableConstraintsPerTable;
+
         public bool AllFlags
         {
             set
@@ -268,6 +270,7 @@ namespace DbShell.Driver.Common.DbDiff
                 AllowDeleteFrom = value;
                 AllowUpdateFrom = value;
                 SupportsKeyInfo = value;
+                EnableConstraintsPerTable = value;
             }
         }
     }

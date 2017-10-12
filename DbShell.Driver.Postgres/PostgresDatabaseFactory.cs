@@ -80,6 +80,7 @@ namespace DbShell.Driver.Postgres
                 res.AllowDeleteFrom = false;
                 res.AllowUpdateFrom = false;
                 res.SupportsKeyInfo = true;
+                res.EnableConstraintsPerTable = true;
                 return res;
             }
         }

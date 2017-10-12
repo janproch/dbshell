@@ -15,6 +15,7 @@ namespace DbShell.Driver.Common.Sql
         SqlFormatProperties m_props;
         bool m_wasend = false;
         string m_delimiterOverride = null;
+        public int Length { get; private set; }
 
         public SqlOutputStream(ISqlDialect dialect, TextWriter tw, SqlFormatProperties props)
         {
@@ -28,6 +29,7 @@ namespace DbShell.Driver.Common.Sql
         public void Write(string text)
         {
             SeparatorIfNeeded();
+            Length += text.Length;
             m_tw.Write(text);
         }
 

@@ -226,5 +226,10 @@ namespace DbShell.Driver.SqlServer
         {
             Put("%s", ((int)value) + 1);
         }
+
+        public override void EnableConstraints(NameWithSchema table, bool enabled)
+        {
+            PutCmd("^alter ^table %f %k ^constraint ^all", table, enabled ? "check" : "nocheck");
+        }
     }
 }

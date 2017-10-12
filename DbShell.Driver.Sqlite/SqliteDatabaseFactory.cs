@@ -78,6 +78,7 @@ namespace DbShell.Driver.Sqlite
                 res.AllowUpdateFrom = false;
                 res.SupportsKeyInfo = false;
                 res.RowId = "rowid";
+                res.EnableConstraintsPerTable = false;
                 return res;
             }
         }
