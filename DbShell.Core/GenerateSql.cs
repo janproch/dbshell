@@ -35,6 +35,16 @@ namespace DbShell.Core.NetCore
         public bool Truncate { get; set; }
     }
 
+    public class GenerateSqlObjectOptions
+    {
+        public bool AllObjects { get; set; }
+        public List<NameWithSchema> ObjectFilter { get; set; } = new List<NameWithSchema>();
+
+        public bool CheckExists { get; set; }
+        public bool Drop { get; set; }
+        public bool Create { get; set; }
+    }
+
     public class GenerateSql : RunnableBase
     {
         public string OutputFile { get; set; }
@@ -42,6 +52,9 @@ namespace DbShell.Core.NetCore
         public ICancelableProcessCallback Cancellable { get; set; }
 
         public GenerateSqlTableOptions TableOptions { get; set; } = new GenerateSqlTableOptions();
+        public GenerateSqlObjectOptions ViewOptions { get; set; } = new GenerateSqlObjectOptions();
+        public GenerateSqlObjectOptions StoredProcedureOptions { get; set; } = new GenerateSqlObjectOptions();
+        public GenerateSqlObjectOptions FunctionOptions { get; set; } = new GenerateSqlObjectOptions();
 
         protected override void DoRun(IShellContext context)
         {

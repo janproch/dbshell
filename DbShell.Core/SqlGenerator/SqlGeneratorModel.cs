@@ -23,6 +23,9 @@ namespace DbShell.Core.NetCore.SqlGenerator
         GenerateSql _options;
         DatabaseInfo _database;
         List<TableInfo> _tables = new List<TableInfo>();
+        List<ViewInfo> _views = new List<ViewInfo>();
+        List<StoredProcedureInfo> _storedProcedures = new List<StoredProcedureInfo>();
+        List<FunctionInfo> _functions = new List<FunctionInfo>();
         SqlDialectCaps _dialectCaps;
         ICancelableProcessCallback _cancelable;
         private bool _isCanceled;
@@ -38,6 +41,11 @@ namespace DbShell.Core.NetCore.SqlGenerator
             _database = database;
             _dialectCaps = _factory.DialectCaps;
 
+            FillWorkingSets();
+        }
+
+        private void FillWorkingSets()
+        {
             if (_options.TableOptions.AllTables)
             {
                 _tables.AddRange(_database.Tables);
@@ -45,6 +53,33 @@ namespace DbShell.Core.NetCore.SqlGenerator
             else
             {
                 _tables.AddRange(_options.TableOptions.TableFilter.Select(x => _database.FindTable(x)).Where(x => x != null));
+            }
+
+            if (_options.ViewOptions.AllObjects)
+            {
+                _views.AddRange(_database.Views);
+            }
+            else
+            {
+                _views.AddRange(_options.ViewOptions.ObjectFilter.Select(x => _database.FindView(x)).Where(x => x != null));
+            }
+
+            if (_options.StoredProcedureOptions.AllObjects)
+            {
+                _storedProcedures.AddRange(_database.StoredProcedures);
+            }
+            else
+            {
+                _storedProcedures.AddRange(_options.StoredProcedureOptions.ObjectFilter.Select(x => _database.FindStoredProcedure(x)).Where(x => x != null));
+            }
+
+            if (_options.FunctionOptions.AllObjects)
+            {
+                _functions.AddRange(_database.Functions);
+            }
+            else
+            {
+                _functions.AddRange(_options.FunctionOptions.ObjectFilter.Select(x => _database.FindFunction(x)).Where(x => x != null));
             }
         }
 
@@ -68,8 +103,15 @@ namespace DbShell.Core.NetCore.SqlGenerator
 
         private void DoRun()
         {
+            DropObjects(_storedProcedures, _options.StoredProcedureOptions, _dmp.DropStoredProcedure);
+            if (IsFull || _isCanceled) return;
+            DropObjects(_functions, _options.FunctionOptions, _dmp.DropFunction);
+            if (IsFull || _isCanceled) return;
+            DropObjects(_views, _options.ViewOptions, _dmp.DropView);
+            if (IsFull || _isCanceled) return;
             DropTables();
             if (IsFull || _isCanceled) return;
+
             CreateTables();
             if (IsFull || _isCanceled) return;
 
@@ -80,6 +122,29 @@ namespace DbShell.Core.NetCore.SqlGenerator
 
             CreateForeignKeys();
             if (IsFull || _isCanceled) return;
+
+            CreateObjects(_views, _options.ViewOptions, _dmp.CreateView);
+            if (IsFull || _isCanceled) return;
+            CreateObjects(_storedProcedures, _options.StoredProcedureOptions, _dmp.CreateStoredProcedure);
+            if (IsFull || _isCanceled) return;
+            CreateObjects(_functions, _options.FunctionOptions, _dmp.CreateFunction);
+            if (IsFull || _isCanceled) return;
+        }
+
+        private void DropObjects<T>(List<T> objects, GenerateSqlObjectOptions options, Action<T, bool> drop)
+        {
+            if (options.Drop)
+            {
+                objects.ForEach(x => drop(x, options.CheckExists));
+            }
+        }
+
+        private void CreateObjects<T>(List<T> objects, GenerateSqlObjectOptions options, Action<T> create)
+        {
+            if (options.Create)
+            {
+                objects.ForEach(x => create(x));
+            }
         }
 
         private void InsertTables()
