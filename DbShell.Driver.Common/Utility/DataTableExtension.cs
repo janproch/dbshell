@@ -1,6 +1,4 @@
-﻿#if !NETSTANDARD2_0
-
-using DbShell.Driver.Common.Structure;
+﻿using DbShell.Driver.Common.Structure;
 using System.Data;
 
 namespace DbShell.Driver.Common.Utility
@@ -60,5 +58,3 @@ namespace DbShell.Driver.Common.Utility
         //}
     }
 }
-
-#endif

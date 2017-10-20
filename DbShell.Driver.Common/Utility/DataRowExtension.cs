@@ -1,5 +1,4 @@
-﻿#if !NETSTANDARD2_0
-
+﻿
 using System;
 using System.Data;
 
@@ -73,5 +72,3 @@ namespace DbShell.Driver.Common.Utility
 		}
 	}
 }
-
-#endif
