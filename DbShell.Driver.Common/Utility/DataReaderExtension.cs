@@ -82,27 +82,27 @@ namespace DbShell.Driver.Common.Utility
         }
 
 
-//#if NETSTANDARD2_0
-//        public static DbTypeBase ReaderDataType(DbColumn row)
-//        {
-//            try
-//            {
-//                string tp = row.DataTypeName;
-//                if (tp == "xml") return new DbTypeXml();
-//                int size = row.ColumnSize ?? 0;
-//                if (tp == "varchar") return new DbTypeString { Length = size };
-//                if (tp == "nvarchar") return new DbTypeString { Length = size, IsUnicode = true };
-//                if (tp == "text") return new DbTypeText();
-//                if (tp == "ntext") return new DbTypeText { IsUnicode = true };
-//            }
-//            catch
-//            {
-//            }
-//            var clrType = row.DataType as Type;
-//            if (clrType != null) return clrType.GetCommonType();
-//            return new DbTypeString();
-//        }
-//#else
+#if NETSTANDARD2_0
+        public static DbTypeBase ReaderDataType(DbColumn row)
+        {
+            try
+            {
+                string tp = row.DataTypeName;
+                if (tp == "xml") return new DbTypeXml();
+                int size = row.ColumnSize ?? 0;
+                if (tp == "varchar") return new DbTypeString { Length = size };
+                if (tp == "nvarchar") return new DbTypeString { Length = size, IsUnicode = true };
+                if (tp == "text") return new DbTypeText();
+                if (tp == "ntext") return new DbTypeText { IsUnicode = true };
+            }
+            catch
+            {
+            }
+            var clrType = row.DataType as Type;
+            if (clrType != null) return clrType.GetCommonType();
+            return new DbTypeString();
+        }
+#endif
         public static DbTypeBase ReaderDataType(DataRow row)
         {
             try
@@ -123,7 +123,49 @@ namespace DbShell.Driver.Common.Utility
             return new DbTypeString();
         }
 
-        public static QueryResultInfo GetQueryResultInfo(this IDataReader reader)
+        private static QueryResultInfo GetQueryResultInfo_NetStandard(this IDataReader reader)
+        {
+#if NETSTANDARD2_0
+            var colinfo = reader as IDbColumnSchemaGenerator;
+            if (colinfo != null)
+            {
+                var res = new QueryResultInfo();
+                foreach (var row in colinfo.GetColumnSchema())
+                {
+                    var col = new QueryResultColumnInfo();
+                    int size = row.ColumnSize ?? 0;
+                    col.Name = row.ColumnName;
+                    col.NotNull = !(row.AllowDBNull ?? true);
+                    col.DataType = row.DataTypeName;
+                    col.Size = size;
+                    col.CommonType = ReaderDataType(row);
+
+                    col.BaseColumnName = row.BaseColumnName;
+                    col.BaseSchemaName = row.BaseSchemaName;
+                    col.BaseTableName = row.BaseTableName;
+                    col.BaseServerName = row.BaseServerName;
+                    col.BaseCatalogName = row.BaseCatalogName;
+                    if (row.IsAutoIncrement ?? false)
+                    {
+                        col.CommonType.SetAutoincrement(true);
+                        col.AutoIncrement = true;
+                    }
+                    if (row.IsKey ?? false) col.IsKey = true;
+                    if (row.IsHidden ?? false) col.IsHidden = true;
+                    if (row.IsReadOnly ?? false) col.IsReadOnly = true;
+                    if (row.IsAliased ?? false) col.IsAliased = true;
+                    res.Columns.Add(col);
+                }
+                return res;
+            }
+            return null;
+
+#else
+            retrun null;
+#endif
+        }
+
+        private static QueryResultInfo GetQueryResultInfo_SchemaTable(this IDataReader reader)
         {
             DataTable columns;
             try
@@ -136,48 +178,25 @@ namespace DbShell.Driver.Common.Utility
             }
             if (columns == null) return null;
             return SchemaTableToInfo(columns);
+        }
 
-            //var res = new QueryResultInfo();
-            //var colinfo = reader as IDbColumnSchemaGenerator;
-            //if (colinfo != null)
-            //{
-            //    foreach (var row in colinfo.GetColumnSchema())
-            //    {
-            //        var col = new QueryResultColumnInfo();
-            //        int size = row.ColumnSize ?? 0;
-            //        col.Name = row.ColumnName;
-            //        col.NotNull = !(row.AllowDBNull ?? true);
-            //        col.DataType = row.DataTypeName;
-            //        col.Size = size;
-            //        col.CommonType = ReaderDataType(row);
+        private static QueryResultInfo GetQueryResultInfo_OnlyColumnNames(this IDataReader reader)
+        {
+            var res = new QueryResultInfo();
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                var column = new QueryResultColumnInfo();
+                column.Name = reader.GetName(i);
+                res.Columns.Add(column);
+            }
+            return res;
+        }
 
-            //        col.BaseColumnName = row.BaseColumnName;
-            //        col.BaseSchemaName = row.BaseSchemaName;
-            //        col.BaseTableName = row.BaseTableName;
-            //        col.BaseServerName = row.BaseServerName;
-            //        col.BaseCatalogName = row.BaseCatalogName;
-            //        if (row.IsAutoIncrement ?? false)
-            //        {
-            //            col.CommonType.SetAutoincrement(true);
-            //            col.AutoIncrement = true;
-            //        }
-            //        if (row.IsKey ?? false) col.IsKey = true;
-            //        if (row.IsHidden ?? false) col.IsHidden = true;
-            //        if (row.IsReadOnly ?? false) col.IsReadOnly = true;
-            //        if (row.IsAliased ?? false) col.IsAliased = true;
-            //        res.Columns.Add(col);
-            //    }
-            //}
-            //else
-            //{
-            //    for (int i = 0; i < reader.FieldCount; i++)
-            //    {
-            //        var column = new QueryResultColumnInfo();
-            //        column.Name = reader.GetName(i);
-            //        res.Columns.Add(column);
-            //    }
-            //}
-            //return res;
+        public static QueryResultInfo GetQueryResultInfo(this IDataReader reader)
+        {
+            return reader.GetQueryResultInfo_NetStandard()
+                ?? reader.GetQueryResultInfo_SchemaTable()
+                ?? reader.GetQueryResultInfo_OnlyColumnNames();
         }
 
         public static TableInfo GetTableInfo(this IDataReader reader, bool includeHiddeColumns = false)
