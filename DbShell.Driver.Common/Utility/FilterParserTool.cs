@@ -59,6 +59,7 @@ namespace DbShell.Driver.Common.Utility
                     case DbTypeCode.Text:
                     case DbTypeCode.String:
                     case DbTypeCode.Guid:
+                    case DbTypeCode.Generic:
                         return ExpressionType.String;
                     case DbTypeCode.Datetime:
                         return ExpressionType.DateTime;
