@@ -34,6 +34,10 @@ namespace DbShell.Core
             return false;
         }
 
+        public void Cancel()
+        {
+        }
+
         public void Dispose()
         {
             if (Disposing != null) Disposing();

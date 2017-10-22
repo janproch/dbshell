@@ -71,9 +71,9 @@ namespace DbShell.Driver.Common.AbstractDb
             converter.ConvertValue(reader, type.DefaultStorage, valueHolder);
         }
 
-        public virtual ICdlReader AdaptReader(IDataReader reader, bool includeHiddenColumns)
+        public virtual ICdlReader AdaptReader(IDataReader reader, bool includeHiddenColumns, IDbCommand command = null)
         {
-            return new DataReaderAdapter(reader, m_factory, includeHiddenColumns);
+            return new DataReaderAdapter(reader, m_factory, includeHiddenColumns, command);
         }
 
         public virtual string GetFulltextSearchExpr(string expr, string substring, FulltextSearchParams pars)

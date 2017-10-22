@@ -45,6 +45,10 @@ namespace DbShell.Core.Utility
 
         public event Action Disposing;
 
+        public void Cancel()
+        {
+        }
+
         public void Dispose()
         {
             if (Disposing != null)

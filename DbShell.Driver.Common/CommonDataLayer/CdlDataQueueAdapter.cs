@@ -32,6 +32,8 @@ namespace DbShell.Driver.Common.CommonDataLayer
             return false;
         }
 
+        public void Cancel() { }
+
         public bool NextResult()
         {
             return false;

@@ -87,6 +87,11 @@ namespace DbShell.Excel.ExcelModels
         {
             throw new NotImplementedException();
         }
+
+        void ICdlReader.Cancel()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

@@ -178,7 +178,7 @@ namespace DbShell.Core.NetCore.SqlGenerator
             cmd.CommandText = sql;
             _cancelable?.AddCancelMethod(cmd, cmd.Cancel);
             var reader = cmd.ExecuteReader();
-            var result = dda.AdaptReader(reader);
+            var result = dda.AdaptReader(reader, command: cmd);
             result.Disposing += () =>
             {
                 reader.Dispose();

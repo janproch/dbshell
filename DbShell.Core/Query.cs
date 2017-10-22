@@ -67,7 +67,7 @@ namespace DbShell.Core
             cmd.CommandTimeout = 3600;
             cmd.CommandText = context.Replace(Text);
             var reader = cmd.ExecuteReader();
-            var result = dda.AdaptReader(reader);
+            var result = dda.AdaptReader(reader, command: cmd);
             result.Disposing += () =>
                 {
                     reader.Dispose();

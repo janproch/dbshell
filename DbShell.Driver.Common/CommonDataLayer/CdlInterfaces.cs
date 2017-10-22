@@ -104,6 +104,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
     {
         bool Read();
         bool NextResult();
+        void Cancel();
     }
 
     public interface ICdlWriter : IHookableDisposable

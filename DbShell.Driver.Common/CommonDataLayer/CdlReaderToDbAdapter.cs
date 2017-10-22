@@ -28,6 +28,8 @@ namespace DbShell.Driver.Common.CommonDataLayer
             }
         }
 
+        public void Cancel() { }
+
         public event Action Disposing;
 
         public bool Read()

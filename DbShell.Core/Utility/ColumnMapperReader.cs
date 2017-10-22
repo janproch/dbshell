@@ -35,6 +35,11 @@ namespace DbShell.Core.Utility
             }
         }
 
+        public void Cancel()
+        {
+            _source.Cancel();
+        }
+
         public event Action Disposing;
 
         public bool Read()

@@ -115,7 +115,7 @@ namespace DbShell.Core.Utility
             var dialect = connection.Factory.CreateDialect();
             cmd.CommandText = "SELECT * FROM " + LinkedInfo + dialect.QuoteFullName(fullName);
             var reader = cmd.ExecuteReader();
-            var result = dda.AdaptReader(reader);
+            var result = dda.AdaptReader(reader, command: cmd);
             result.Disposing += () =>
                 {
                     reader.Dispose();

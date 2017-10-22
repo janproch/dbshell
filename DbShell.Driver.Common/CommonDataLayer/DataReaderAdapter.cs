@@ -77,16 +77,23 @@ namespace DbShell.Driver.Common.CommonDataLayer
         private IDataReader _reader;
         private IDatabaseFactory _factory;
         private bool _includeHiddenColumns;
+        private IDbCommand _command;
 
-        public DataReaderAdapter(IDataReader reader, IDatabaseFactory factory, bool includeHiddenColumns)
+        public DataReaderAdapter(IDataReader reader, IDatabaseFactory factory, bool includeHiddenColumns, IDbCommand command = null)
         {
             _reader = reader;
             _factory = factory;
             _includeHiddenColumns = includeHiddenColumns;
             _structure = reader.GetTableInfo(_includeHiddenColumns);
+            _command = command;
         }
 
         #region ICdlReader Members
+
+        public void Cancel()
+        {
+            if (_command != null) _command.Cancel();
+        }
 
         public bool Read()
         {

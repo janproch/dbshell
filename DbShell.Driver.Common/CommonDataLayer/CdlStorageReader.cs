@@ -33,6 +33,8 @@ namespace DbShell.Driver.Common.CommonDataLayer
             return _reader.MoveNext();
         }
 
+        public void Cancel() { }
+
         public bool NextResult()
         {
             return false;
