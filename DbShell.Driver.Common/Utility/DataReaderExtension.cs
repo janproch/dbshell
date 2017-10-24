@@ -64,7 +64,7 @@ namespace DbShell.Driver.Common.Utility
 
                 col.BaseColumnName = row.SafeString("BaseColumnName");
                 col.BaseSchemaName = row.SafeString("BaseSchemaName");
-                col.BaseTableName = row .SafeString("BaseTableName");
+                col.BaseTableName = row.SafeString("BaseTableName");
                 col.BaseServerName = row.SafeString("BaseServerName");
                 col.BaseCatalogName = row.SafeString("BaseCatalogName");
                 if (row.SafeBool("IsAutoIncrement", false))
@@ -110,10 +110,10 @@ namespace DbShell.Driver.Common.Utility
                 string tp = row["DataTypeName"].SafeToString();
                 if (tp == "xml") return new DbTypeXml();
                 int size = row.SafeString("ColumnSize").SafeIntParse();
-                if (tp == "varchar") return new DbTypeString {Length = size};
-                if (tp == "nvarchar") return new DbTypeString {Length = size, IsUnicode = true};
+                if (tp == "varchar") return new DbTypeString { Length = size };
+                if (tp == "nvarchar") return new DbTypeString { Length = size, IsUnicode = true };
                 if (tp == "text") return new DbTypeText();
-                if (tp == "ntext") return new DbTypeText {IsUnicode = true};
+                if (tp == "ntext") return new DbTypeText { IsUnicode = true };
             }
             catch
             {
@@ -182,14 +182,21 @@ namespace DbShell.Driver.Common.Utility
 
         private static QueryResultInfo GetQueryResultInfo_OnlyColumnNames(this IDataReader reader)
         {
-            var res = new QueryResultInfo();
-            for (int i = 0; i < reader.FieldCount; i++)
+            try
             {
-                var column = new QueryResultColumnInfo();
-                column.Name = reader.GetName(i);
-                res.Columns.Add(column);
+                var res = new QueryResultInfo();
+                for (int i = 0; i < reader.FieldCount; i++)
+                {
+                    var column = new QueryResultColumnInfo();
+                    column.Name = reader.GetName(i);
+                    res.Columns.Add(column);
+                }
+                return res;
             }
-            return res;
+            catch
+            {
+                return null;
+            }
         }
 
         public static QueryResultInfo GetQueryResultInfo(this IDataReader reader)
