@@ -405,9 +405,6 @@ namespace DbShell.Driver.Common.DbDiff
         private void CopyDataType(ColumnInfo dst, ColumnInfo src)
         {
             dst.DataType = src.DataType;
-            dst.Length = src.Length;
-            dst.Precision = src.Precision;
-            dst.Scale = src.Scale;
             dst.CommonType = src.CommonType;
         }
 

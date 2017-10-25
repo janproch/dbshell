@@ -37,9 +37,9 @@ namespace DbShell.Driver.Postgres
             return res;
         }
 
-        protected override DbTypeBase AnalyseType(ColumnInfo col)
+        protected override DbTypeBase AnalyseType(ColumnInfo col, int len, int prec, int scale)
         {
-            return AnalyseType(col.DataType, col.Length, col.Precision, col.Scale, col.DefaultValue);
+            return AnalyseType(col.DataType, len, prec, scale, col.DefaultValue);
         }
 
         private DbTypeBase AnalyseType(string dt, int len, int prec, int scale, string coldef)

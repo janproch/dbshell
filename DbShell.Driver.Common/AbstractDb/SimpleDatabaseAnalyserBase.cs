@@ -225,7 +225,7 @@ namespace DbShell.Driver.Common.AbstractDb
                     {
                         while (reader.Read())
                         {
-                            string tschema = MultipleSchema? reader.SafeString(ToColumnCase("table_schema")) : null;
+                            string tschema = MultipleSchema ? reader.SafeString(ToColumnCase("table_schema")) : null;
                             string tname = reader.SafeString(ToColumnCase("table_name"));
                             var fname = new NameWithSchema(tschema, tname);
                             if (!_tablesByName.ContainsKey(fname)) continue;
@@ -234,11 +234,23 @@ namespace DbShell.Driver.Common.AbstractDb
                             col.Name = reader.SafeString(ToColumnCase("column_name"));
                             col.NotNull = reader.SafeString(ToColumnCase("is_nullable")) == "NO";
                             col.DataType = reader.SafeString(ToColumnCase("data_type"));
-                            col.Length = reader.SafeString(ToColumnCase("character_maximum_length")).SafeIntParse();
-                            col.Precision = reader.SafeString(ToColumnCase("numeric_precision")).SafeIntParse();
-                            col.Scale = reader.SafeString(ToColumnCase("numeric_scale")).SafeIntParse();
+                            int length = reader.SafeString(ToColumnCase("character_maximum_length")).SafeIntParse();
+                            int precision = reader.SafeString(ToColumnCase("numeric_precision")).SafeIntParse();
+                            int scale = reader.SafeString(ToColumnCase("numeric_scale")).SafeIntParse();
+
+                            var dt = col.DataType.ToLower();
+                            if (dt.Contains("char") || dt.Contains("binary"))
+                            {
+                                if (length > 0) col.DataType += $"({length})";
+                                if (length < 0) col.DataType += $"(max)";
+                            }
+                            if (dt.Contains("num") || dt.Contains("dec"))
+                            {
+                                col.DataType += $"({precision},{scale})";
+                            }
+
                             col.DefaultValue = reader.SafeString(ToColumnCase("column_default"));
-                            col.CommonType = AnalyseType(col);
+                            col.CommonType = AnalyseType(col, length, precision, scale);
                             table.Columns.Add(col);
                             if (String.IsNullOrWhiteSpace(col.DefaultValue)) col.DefaultValue = null;
                         }
@@ -264,9 +276,9 @@ namespace DbShell.Driver.Common.AbstractDb
                         while (reader.Read())
                         {
                             string table = reader.SafeString(ToColumnCase("table_name"));
-                            string schema = MultipleSchema? reader.SafeString(ToColumnCase("table_schema")) : null;
+                            string schema = MultipleSchema ? reader.SafeString(ToColumnCase("table_schema")) : null;
                             string cname = reader.SafeString(ToColumnCase("constraint_name"));
-                            string cschema = MultipleSchema ? reader.SafeString(ToColumnCase("constraint_schema")): null;
+                            string cschema = MultipleSchema ? reader.SafeString(ToColumnCase("constraint_schema")) : null;
                             string column = reader.SafeString(ToColumnCase("column_name"));
                             var fname = new NameWithSchema(schema, table);
                             if (!_tablesByName.ContainsKey(fname)) continue;
@@ -289,7 +301,7 @@ namespace DbShell.Driver.Common.AbstractDb
             }
         }
 
-        protected virtual DbTypeBase AnalyseType(ColumnInfo col)
+        protected virtual DbTypeBase AnalyseType(ColumnInfo col, int len, int prec, int scale)
         {
             return new DbTypeString();
         }

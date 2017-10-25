@@ -40,9 +40,9 @@ namespace DbShell.Driver.MySql
             }
         }
 
-        protected override DbTypeBase AnalyseType(ColumnInfo col)
+        protected override DbTypeBase AnalyseType(ColumnInfo col, int len, int prec, int scale)
         {
-            return AnalyseType(col.DataType, col.Length, col.Precision, col.Scale);
+            return AnalyseType(col.DataType, len, prec, scale);
         }
 
         public static DbTypeBase AnalyseType(string dt, int len, int prec, int scale)

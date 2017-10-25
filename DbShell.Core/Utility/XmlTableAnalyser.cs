@@ -121,7 +121,7 @@ namespace DbShell.Core.Utility
                 foreach (var col in instruction.Columns)
                 {
                     if (res.Columns.Any(x => x.Name == col.Name)) continue;
-                    res.Columns.Add(new ColumnInfo(res) { CommonType = new DbTypeString(), DataType = "nvarchar", Length = -1, Name = col.Name });
+                    res.Columns.Add(new ColumnInfo(res) { CommonType = new DbTypeString(), DataType = "nvarchar(max)", Name = col.Name });
                 }
             }
             return res;

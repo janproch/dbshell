@@ -144,23 +144,23 @@ namespace DbShell.Driver.Common.DbDiff
                 return false;
             }
 
-            if (a.Length != b.Length)
-            {
-                opts.DiffLogger.Trace("Column {0}, {1}: different lengths: {2}; {3}", a, b, a.Length, b.Length);
-                return false;
-            }
+            //if (a.Length != b.Length)
+            //{
+            //    opts.DiffLogger.Trace("Column {0}, {1}: different lengths: {2}; {3}", a, b, a.Length, b.Length);
+            //    return false;
+            //}
 
-            if (a.Precision != b.Precision)
-            {
-                opts.DiffLogger.Trace("Column {0}, {1}: different lengths: {2}; {3}", a, b, a.Precision, b.Precision);
-                return false;
-            }
+            //if (a.Precision != b.Precision)
+            //{
+            //    opts.DiffLogger.Trace("Column {0}, {1}: different lengths: {2}; {3}", a, b, a.Precision, b.Precision);
+            //    return false;
+            //}
 
-            if (a.Scale != b.Scale)
-            {
-                opts.DiffLogger.Trace("Column {0}, {1}: different scale: {2}; {3}", a, b, a.Scale, b.Scale);
-                return false;
-            }
+            //if (a.Scale != b.Scale)
+            //{
+            //    opts.DiffLogger.Trace("Column {0}, {1}: different scale: {2}; {3}", a, b, a.Scale, b.Scale);
+            //    return false;
+            //}
 
             return true;
         }

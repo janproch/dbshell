@@ -56,10 +56,10 @@ namespace DbShell.Driver.Common.AbstractDb
             get { return typeof(DbTypeCode); }
         }
 
-        public virtual DbTypeBase CreateCommonType(ColumnInfo column)
-        {
-            return new DbTypeString();
-        }
+        //public virtual DbTypeBase CreateCommonType(ColumnInfo column)
+        //{
+        //    return new DbTypeString();
+        //}
 
         protected virtual HashSetEx<string> LoadKeywords()
         {

@@ -17,33 +17,27 @@ namespace DbShell.Driver.Common.AbstractDb
                     return;
                 case DbTypeCode.String:
                     var str = (DbTypeString) commonType;
-                    columnInfo.DataType = str.GetStandardSqlName();
-                    columnInfo.Length = str.Length;
+                    columnInfo.DataType = $"{str.GetStandardSqlName()}({str.Length})";
                     return;
                 case DbTypeCode.Guid:
-                    columnInfo.DataType = "varchar";
-                    columnInfo.Length = 50;
+                    columnInfo.DataType = "varchar(50)";
                     return;
                 case DbTypeCode.Float:
                     columnInfo.DataType = "float";
                     return;
                 case DbTypeCode.Numeric:
-                    columnInfo.DataType = "numeric";
-                    columnInfo.Precision = commonType.GetLength();
-                    columnInfo.Scale = commonType.GetScale();
+                    columnInfo.DataType = $"numeric({commonType.GetLength()},{commonType.GetScale()})";
                     return;
                 case DbTypeCode.Text:
                 case DbTypeCode.Xml:
-                    columnInfo.DataType = "nvarchar";
-                    columnInfo.Length = -1;
+                    columnInfo.DataType = "nvarchar(max)";
                     return;
                 case DbTypeCode.Logical:
                     columnInfo.DataType = "int";
                     return;
             }
 
-            columnInfo.DataType = "varchar";
-            columnInfo.Length = 50;
+            columnInfo.DataType = "varchar(50)";
         }
     }
 }

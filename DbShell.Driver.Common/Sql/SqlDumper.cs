@@ -310,15 +310,15 @@ namespace DbShell.Driver.Common.Sql
             }
 
             Put("%k", col.DataType);
-            if (col.Length != 0 && (col.CommonType == null || col.CommonType is DbTypeString))
-            {
-                if (col.Length == -1 || col.Length > 8000) Put("(^max)");
-                else Put("(%s)", col.Length);
-            }
-            if (col.Precision > 0 && col.CommonType is DbTypeNumeric && (col.DataType.ToLower() != "money"))
-            {
-                Put("(%s,%s)", col.Precision, col.Scale);
-            }
+            //if (col.Length != 0 && (col.CommonType == null || col.CommonType is DbTypeString))
+            //{
+            //    if (col.Length == -1 || col.Length > 8000) Put("(^max)");
+            //    else Put("(%s)", col.Length);
+            //}
+            //if (col.Precision > 0 && col.CommonType is DbTypeNumeric && (col.DataType.ToLower() != "money"))
+            //{
+            //    Put("(%s,%s)", col.Precision, col.Scale);
+            //}
             if (col.AutoIncrement)
             {
                 Put(" ^identity");

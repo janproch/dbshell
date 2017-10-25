@@ -60,7 +60,7 @@ namespace DbShell.Core
 
         ColumnInfo[] IColumnMapping.GetOutputColumns(TableInfo inputTable, IShellContext context)
         {
-            var column = new ColumnInfo(new TableInfo(null)) {CommonType = new DbTypeString(), Name = Name, DataType = "nvarchar", Length = -1};
+            var column = new ColumnInfo(new TableInfo(null)) {CommonType = new DbTypeString(), Name = Name, DataType = "nvarchar(max)"};
             return new[] {column};
         }
 

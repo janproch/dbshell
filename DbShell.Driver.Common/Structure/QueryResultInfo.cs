@@ -13,9 +13,9 @@ namespace DbShell.Driver.Common.Structure
     [DataContract]
     public class QueryResultInfo
     {
-        [XmlCollection(typeof (QueryResultColumnInfo))]
+        [XmlCollection(typeof(QueryResultColumnInfo))]
         [DataMember]
-        public List<QueryResultColumnInfo> Columns { get; set; } 
+        public List<QueryResultColumnInfo> Columns { get; set; }
 
         public QueryResultInfo()
         {
@@ -40,15 +40,15 @@ namespace DbShell.Driver.Common.Structure
                 if (column.IsHidden && !includeHiddenColumns) continue;
 
                 var col = new ColumnInfo(res)
-                    {
-                        Name = column.Name,
-                        NotNull = column.NotNull,
-                        CommonType = column.CommonType?.Clone(),
-                        DataType = column.DataType,
-                        AutoIncrement = column.AutoIncrement,
-                        PrimaryKey = column.IsKey,
-                    };
-                if (col.CommonType is DbTypeString) col.Length = column.Size;
+                {
+                    Name = column.Name,
+                    NotNull = column.NotNull,
+                    CommonType = column.CommonType?.Clone(),
+                    DataType = column.DataType,
+                    AutoIncrement = column.AutoIncrement,
+                    PrimaryKey = column.IsKey,
+                };
+                if (col.CommonType is DbTypeString) col.DataType += $"({column.Size})";
 
                 if (column.AutoIncrement && col.CommonType != null)
                 {
@@ -57,7 +57,7 @@ namespace DbShell.Driver.Common.Structure
 
                 if (column.IsKey && res.FullName != null)
                 {
-                    pk.Columns.Add(new ColumnReference {RefColumn = col});
+                    pk.Columns.Add(new ColumnReference { RefColumn = col });
                 }
                 res.Columns.Add(col);
             }
@@ -74,7 +74,7 @@ namespace DbShell.Driver.Common.Structure
 
         private void Assign(QueryResultInfo source)
         {
-            foreach(var item in source.Columns)
+            foreach (var item in source.Columns)
             {
                 Columns.Add(item.Clone());
             }

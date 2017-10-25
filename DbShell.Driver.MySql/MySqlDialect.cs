@@ -26,9 +26,9 @@ namespace DbShell.Driver.MySql
             get { return '\''; }
         }
 
-        public override Common.CommonTypeSystem.DbTypeBase CreateCommonType(Common.Structure.ColumnInfo column)
-        {
-            return MySqlDatabaseAnalyser.AnalyseType(column.DataType, column.Length, column.Precision, column.Scale);
-        }
+        //public override Common.CommonTypeSystem.DbTypeBase CreateCommonType(Common.Structure.ColumnInfo column)
+        //{
+        //    return MySqlDatabaseAnalyser.AnalyseType(column.DataType, column.Length, column.Precision, column.Scale);
+        //}
     }
 }

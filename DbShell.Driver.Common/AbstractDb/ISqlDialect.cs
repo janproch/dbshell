@@ -35,6 +35,6 @@ namespace DbShell.Driver.Common.AbstractDb
 
         IDatabaseFactory Factory { get; }
 
-        DbTypeBase CreateCommonType(ColumnInfo column);
+        //DbTypeBase CreateCommonType(ColumnInfo column);
     }
 }

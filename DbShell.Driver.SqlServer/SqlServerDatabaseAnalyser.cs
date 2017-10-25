@@ -168,16 +168,29 @@ namespace DbShell.Driver.SqlServer
                                 col.NotNull = reader.SafeString("is_nullable") != "True";
                                 col.DataType = reader.SafeString("type_name");
                                 int bytelen = reader.SafeString("max_length").SafeIntParse();
+                                int length = 0;
                                 if (col.DataType.ToLower().Contains("nchar") || col.DataType.ToLower().Contains("nvarchar"))
                                 {
-                                    col.Length = bytelen >= 0 ? bytelen/2 : bytelen;
+                                    length = bytelen >= 0 ? bytelen/2 : bytelen;
                                 }
                                 else if (col.DataType.ToLower().Contains("char") || col.DataType.ToLower().Contains("binary"))
                                 {
-                                    col.Length = bytelen;
+                                    length = bytelen;
                                 }
-                                col.Precision = reader.SafeString("precision").SafeIntParse();
-                                col.Scale = reader.SafeString("scale").SafeIntParse();
+                                int precision = reader.SafeString("precision").SafeIntParse();
+                                int scale = reader.SafeString("scale").SafeIntParse();
+
+                                var dt = col.DataType.ToLower();
+                                if (dt.Contains("char") || dt.Contains("binary"))
+                                {
+                                    if (length > 0) col.DataType += $"({length})";
+                                    if (length < 0) col.DataType += $"(max)";
+                                }
+                                if (dt.Contains("num") || dt.Contains("dec"))
+                                {
+                                    col.DataType += $"({precision},{scale})";
+                                }
+
                                 col.DefaultValue = SimplifyExpression(reader.SafeString("default_value"));
                                 col.DefaultConstraint = reader.SafeString("default_constraint");
                                 col.AutoIncrement = reader.SafeString("is_identity") == "True";
@@ -185,7 +198,7 @@ namespace DbShell.Driver.SqlServer
                                 col.IsPersisted = reader.SafeString("is_persisted") == "True";
                                 col.IsSparse = reader.SafeString("is_sparse") == "True";
                                 col.ObjectId = reader.SafeString("column_id");
-                                col.CommonType = AnalyseType(col.DataType, col.Length, col.Precision, col.Scale);
+                                col.CommonType = AnalyseType(col.DataType, length, precision, scale);
                                 table.Columns.Add(col);
                                 if (String.IsNullOrWhiteSpace(col.ComputedExpression)) col.ComputedExpression = null;
                                 if (String.IsNullOrWhiteSpace(col.DefaultValue))

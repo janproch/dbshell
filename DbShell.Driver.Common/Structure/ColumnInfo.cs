@@ -43,32 +43,11 @@ namespace DbShell.Driver.Common.Structure
         public string DefaultValue { get; set; }
 
         /// <summary>
-        /// String length
-        /// </summary>
-        [XmlAttrib("length")]
-        [DataMember]
-        public int Length { get; set; }
-
-        /// <summary>
         /// Column cannot be null
         /// </summary>
         [XmlAttrib("notnull")]
         [DataMember]
         public bool NotNull { get; set; }
-
-        /// <summary>
-        /// Precision if decimal number
-        /// </summary>
-        [XmlAttrib("precision")]
-        [DataMember]
-        public int Precision { get; set; }
-
-        /// <summary>
-        /// Scale of decimal number
-        /// </summary>
-        [XmlAttrib("scale")]
-        [DataMember]
-        public int Scale { get; set; }
 
         /// <summary>
         /// Is Identity?
@@ -160,10 +139,7 @@ namespace DbShell.Driver.Common.Structure
             DataType = src.DataType;
             DefaultValue = src.DefaultValue;
             DefaultConstraint = src.DefaultConstraint;
-            Length = src.Length;
             NotNull = src.NotNull;
-            Precision = src.Precision;
-            Scale = src.Scale;
             AutoIncrement = src.AutoIncrement;
             PrimaryKey = src.PrimaryKey;
             Comment = src.Comment;
@@ -210,17 +186,6 @@ namespace DbShell.Driver.Common.Structure
         {
             if (OwnerTable?.PrimaryKey?.Columns?.Count != 1) return false;
             return OwnerTable.PrimaryKey.Columns[0].RefColumn == this;
-        }
-
-        public string LengthDisplay
-        {
-            get
-            {
-                if (CommonType is DbTypeNumeric) return $"{Precision}, {Scale}";
-                if (Length == 0) return "";
-                if (Length == -1) return "max";
-                return Length.ToString();
-            }
         }
 
         public string DefaultValueDisplay
@@ -280,20 +245,20 @@ namespace DbShell.Driver.Common.Structure
             return res;
         }
 
-        public string GetSqlType()
-        {
-            var sb = new StringBuilder();
-            sb.Append(DataType);
-            if (Length != 0 && (CommonType == null || CommonType is DbTypeString))
-            {
-                if (Length == -1 || Length > 8000) sb.Append("(max)");
-                else sb.Append($"({Length})");
-            }
-            if (Precision > 0 && CommonType is DbTypeNumeric && (DataType.ToLower() != "money"))
-            {
-                sb.Append($"({Precision},{Scale})");
-            }
-            return sb.ToString();
-        }
+        //public string GetSqlType()
+        //{
+        //    var sb = new StringBuilder();
+        //    sb.Append(DataType);
+        //    if (Length != 0 && (CommonType == null || CommonType is DbTypeString))
+        //    {
+        //        if (Length == -1 || Length > 8000) sb.Append("(max)");
+        //        else sb.Append($"({Length})");
+        //    }
+        //    if (Precision > 0 && CommonType is DbTypeNumeric && (DataType.ToLower() != "money"))
+        //    {
+        //        sb.Append($"({Precision},{Scale})");
+        //    }
+        //    return sb.ToString();
+        //}
     }
 }
