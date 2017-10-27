@@ -26,7 +26,7 @@ namespace DbShell.Driver.Common.Structure
     [DataContract]
     public abstract class DatabaseObjectInfo
     {
-        public DatabaseInfo OwnerDatabase { get; internal set; }
+        public DatabaseInfo OwnerDatabase { get; set; }
         public PropertyBag Properties { get; private set; }
         public abstract DatabaseObjectType ObjectType { get; }
 
@@ -34,6 +34,7 @@ namespace DbShell.Driver.Common.Structure
         public string ObjectId { get; set; }
 
         [XmlAttrib("groupid")]
+        [DataMember]
         public string GroupId { get; set; }
 
         [XmlAttrib("created")]
