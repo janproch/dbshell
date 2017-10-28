@@ -561,5 +561,10 @@ namespace DbShell.Driver.Common.Sql
             throw new System.NotImplementedException();
         }
 
+        public virtual void ColumnReadableValue(ColumnInfo column, string alias = null)
+        {
+            if (alias == null) Put("%i", column.Name);
+            else Put("%i.%i", alias, column.Name);
+        }
     }
 }

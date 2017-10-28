@@ -231,5 +231,13 @@ namespace DbShell.Driver.SqlServer
         {
             PutCmd("^alter ^table %f %k ^constraint ^all", table, enabled ? "check" : "nocheck");
         }
+
+        public override void ColumnReadableValue(ColumnInfo column, string alias = null)
+        {
+            var isGeo = column.DataType.ToLower().Contains("geo");
+            if (isGeo) Put("^convert(^nvarchar(^max), ");
+            base.ColumnReadableValue(column, alias);
+            if (isGeo) Put(")");
+        }
     }
 }

@@ -16,6 +16,7 @@ namespace DbShell.Driver.Common.Sql
         bool m_wasend = false;
         string m_delimiterOverride = null;
         public int Length { get; private set; }
+        public int CurrentCommandLength { get; private set; }
 
         public SqlOutputStream(ISqlDialect dialect, TextWriter tw, SqlFormatProperties props)
         {
@@ -30,12 +31,14 @@ namespace DbShell.Driver.Common.Sql
         {
             SeparatorIfNeeded();
             Length += text.Length;
+            CurrentCommandLength += text.Length;
             m_tw.Write(text);
         }
 
         public void EndCommand()
         {
             m_wasend = true;
+            CurrentCommandLength = 0;
         }
 
         public void OverrideCommandDelimiter(string delimiter)

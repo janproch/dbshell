@@ -50,6 +50,7 @@ namespace DbShell.Core.NetCore
         public string OutputFile { get; set; }
         public int FileSizeLimit { get; set; }
         public ICancelableProcessCallback Cancellable { get; set; }
+        public Action<string> Logger { get; set; }
 
         public GenerateSqlTableOptions TableOptions { get; set; } = new GenerateSqlTableOptions();
         public GenerateSqlObjectOptions ViewOptions { get; set; } = new GenerateSqlObjectOptions();
@@ -64,7 +65,7 @@ namespace DbShell.Core.NetCore
 
             using (var sw = new StreamWriter(file))
             {
-                var model = new SqlGeneratorModel(provider, sw, this, db, Cancellable);
+                var model = new SqlGeneratorModel(provider, sw, this, db, Cancellable, Logger);
                 model.Run();
             }
         }

@@ -28,12 +28,15 @@ namespace DbShell.Core.NetCore.SqlGenerator
         List<FunctionInfo> _functions = new List<FunctionInfo>();
         SqlDialectCaps _dialectCaps;
         ICancelableProcessCallback _cancelable;
+        Action<string> _logger;
         private bool _isCanceled;
+        const int MaxBatchInsertSize = 20000;
 
-        public SqlGeneratorModel(IConnectionProvider provider, TextWriter stream, GenerateSql options, DatabaseInfo database, ICancelableProcessCallback cancelable)
+        public SqlGeneratorModel(IConnectionProvider provider, TextWriter stream, GenerateSql options, DatabaseInfo database, ICancelableProcessCallback cancelable, Action<string> logger)
         {
             _cancelable = cancelable;
             _provider = provider;
+            _logger = logger;
             _factory = _provider.Factory;
             _sqlo = new SqlOutputStream(_factory.CreateDialect(), stream, new SqlFormatProperties());
             _dmp = _factory.CreateDumper(_sqlo, new SqlFormatProperties());
@@ -170,7 +173,18 @@ namespace DbShell.Core.NetCore.SqlGenerator
 
         private ICdlReader CreateTableReader(TableInfo table, out DbCommand cmd)
         {
-            string sql = GenerateSqlScript(dmp => dmp.Put("^select %,i ^from %f", table.Columns.Select(x => x.Name), table.FullName));
+            string sql = GenerateSqlScript(dmp =>
+            {
+                dmp.Put("^select ");
+                bool was = false;
+                foreach (var col in table.Columns)
+                {
+                    if (was) dmp.Put(",");
+                    dmp.ColumnReadableValue(col);
+                    was = true;
+                }
+                dmp.Put(" ^from %f", table.FullName);
+            });
             var dda = _factory.CreateDataAdapter();
             var conn = _provider.Connect();
             cmd = conn.CreateCommand();
@@ -210,6 +224,7 @@ namespace DbShell.Core.NetCore.SqlGenerator
             {
                 try
                 {
+                    int processedRows = 0;
                     while (reader.Read())
                     {
                         if (IsFull || _isCanceled)
@@ -217,6 +232,7 @@ namespace DbShell.Core.NetCore.SqlGenerator
                             cmd.Cancel();
                             return;
                         }
+                        LogMessage($"Exported {processedRows} rows from {table.Name}");
                         if (_options.TableOptions.OmitNulls)
                         {
                             var values = reader.GetValuesByCols(colIndexesArray).ToList();
@@ -237,6 +253,12 @@ namespace DbShell.Core.NetCore.SqlGenerator
                         {
                             _dmp.Put("^insert ^into %f (%,i) ^values (%,v);&n", table.FullName, colNames, reader.GetValuesByCols(colIndexesArray));
                         }
+
+                        if (_sqlo.CurrentCommandLength > MaxBatchInsertSize)
+                        {
+                            _dmp.EndCommand();
+                        }
+                        processedRows++;
                     }
                 }
                 finally
@@ -275,23 +297,39 @@ namespace DbShell.Core.NetCore.SqlGenerator
 
         private void DropTables()
         {
+            LogMessage("Generating dropping references");
             if (_options.TableOptions.DropReferences)
             {
                 _tables.SelectMany(x => x.GetReferences()).ToList().ForEach(x => _dmp.DropForeignKey(x));
             }
 
+            LogMessage("Generating dropping tables");
             if (_options.TableOptions.DropTables)
             {
                 _tables.ForEach(x => _dmp.DropTable(x, _options.TableOptions.CheckIfTableExists));
             }
         }
 
+        DateTime _lastLogged = DateTime.Now;
+        private void LogMessage(string message)
+        {
+            if (_logger == null) return;
+            if (DateTime.Now - _lastLogged > TimeSpan.FromSeconds(1))
+            {
+                _lastLogged = DateTime.Now;
+                _logger(message);
+
+            }
+        }
+
         private void CreateTables()
         {
+            LogMessage("Generating create tables");
             if (_options.TableOptions.CreateTables)
             {
                 _tables.ForEach(x => _dmp.CreateTable(x.WithoutIndexes().WithoutReferences()));
             }
+            LogMessage("Generating create indexes");
             if (_options.TableOptions.CreateIndexes)
             {
                 _tables.SelectMany(x => x.Indexes).ToList().ForEach(x => _dmp.CreateIndex(x));
@@ -300,6 +338,7 @@ namespace DbShell.Core.NetCore.SqlGenerator
 
         private void CreateForeignKeys()
         {
+            LogMessage("Generating create foreign keys");
             var fks = new List<ForeignKeyInfo>();
             if (_options.TableOptions.CreateForeignKeys)
             {

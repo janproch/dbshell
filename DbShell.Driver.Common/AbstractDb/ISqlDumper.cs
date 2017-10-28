@@ -180,5 +180,6 @@ namespace DbShell.Driver.Common.AbstractDb
         void ExtractDayOfMonth(Action<ISqlDumper> argument);
         void ExtractDayOfWeek(Action<ISqlDumper> argument);
         void PutDayOfWeekLiteral(DayOfWeek value);
+        void ColumnReadableValue(ColumnInfo column, string alias = null);
     }
 }
