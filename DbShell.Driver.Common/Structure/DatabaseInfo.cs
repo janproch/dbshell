@@ -32,28 +32,28 @@ namespace DbShell.Driver.Common.Structure
         /// <summary>
         /// List of tables
         /// </summary>
-        [XmlCollection(typeof (TableInfo))]
+        [XmlCollection(typeof(TableInfo))]
         [DataMember]
         public List<TableInfo> Tables
         {
             get { return _tables; }
         }
 
-        [XmlCollection(typeof (ViewInfo))]
+        [XmlCollection(typeof(ViewInfo))]
         [DataMember]
         public List<ViewInfo> Views
         {
             get { return _views; }
         }
 
-        [XmlCollection(typeof (StoredProcedureInfo))]
+        [XmlCollection(typeof(StoredProcedureInfo))]
         [DataMember]
         public List<StoredProcedureInfo> StoredProcedures
         {
             get { return _storedProcedures; }
         }
 
-        [XmlCollection(typeof (FunctionInfo))]
+        [XmlCollection(typeof(FunctionInfo))]
         [DataMember]
         public List<FunctionInfo> Functions
         {
@@ -96,6 +96,11 @@ namespace DbShell.Driver.Common.Structure
         private T FindObjectLike<T>(IEnumerable<T> objs, string schema, string name)
             where T : NamedObjectInfo
         {
+            var res = objs.FirstOrDefault(x => x.Schema == schema && x.Name == name);
+            if (res != null)
+            {
+                return null;
+            }
             if (schema == null)
             {
                 return objs.FirstOrDefault(t => String.Compare(t.Name, name, true) == 0);
@@ -447,7 +452,7 @@ namespace DbShell.Driver.Common.Structure
 
         public T FindByGroupId<T>(T obj) where T : DatabaseObjectInfo
         {
-            return (T) FindByGroupId(obj.GroupId);
+            return (T)FindByGroupId(obj.GroupId);
         }
 
         public TableInfo AddTable(NameWithSchema name)
@@ -504,13 +509,13 @@ namespace DbShell.Driver.Common.Structure
             switch (obj.ObjectType)
             {
                 case DatabaseObjectType.View:
-                    Views.Add((ViewInfo) res);
+                    Views.Add((ViewInfo)res);
                     break;
                 case DatabaseObjectType.StoredProcedure:
-                    StoredProcedures.Add((StoredProcedureInfo) res);
+                    StoredProcedures.Add((StoredProcedureInfo)res);
                     break;
                 case DatabaseObjectType.Function:
-                    Functions.Add((FunctionInfo) res);
+                    Functions.Add((FunctionInfo)res);
                     break;
                 case DatabaseObjectType.Trigger:
                     Triggers.Add((TriggerInfo)res);
@@ -522,10 +527,10 @@ namespace DbShell.Driver.Common.Structure
         private SpecificObjectInfo FindSpecificObject(SpecificObjectInfo obj)
         {
             return
-                (SpecificObjectInfo) FindStoredProcedure(obj.FullName)
-                ?? (SpecificObjectInfo) FindFunction(obj.FullName)
-                ?? (SpecificObjectInfo) FindView(obj.FullName)
-                ?? (SpecificObjectInfo) FindTrigger(obj.FullName);
+                (SpecificObjectInfo)FindStoredProcedure(obj.FullName)
+                ?? (SpecificObjectInfo)FindFunction(obj.FullName)
+                ?? (SpecificObjectInfo)FindView(obj.FullName)
+                ?? (SpecificObjectInfo)FindTrigger(obj.FullName);
         }
 
         public void AddObject(DatabaseObjectInfo obj, bool reuseGrouId)
@@ -593,9 +598,9 @@ namespace DbShell.Driver.Common.Structure
         public override FullDatabaseRelatedName GetName()
         {
             return new FullDatabaseRelatedName
-                {
-                    ObjectType = DatabaseObjectType.Database,
-                };
+            {
+                ObjectType = DatabaseObjectType.Database,
+            };
         }
     }
 }
