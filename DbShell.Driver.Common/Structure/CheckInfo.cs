@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.Structure
 {
+    [DataContract]
     public class CheckInfo : ConstraintInfo
     {
         [XmlElem]
+        [DataMember]
         public string Definition { get; set; }
 
         public CheckInfo(TableInfo table)

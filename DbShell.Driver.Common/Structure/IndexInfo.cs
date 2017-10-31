@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.Structure
 {
@@ -15,12 +16,15 @@ namespace DbShell.Driver.Common.Structure
         Fulltext
     }
 
+    [DataContract]
     public class IndexInfo : ColumnsConstraintInfo
     {
         [XmlAttrib("is_unique")]
+        [DataMember]
         public bool IsUnique { get; set; }
 
         [XmlAttrib("index_type")]
+        [DataMember]
         public DbIndexType IndexType { get; set; }
 
         public IndexInfo(TableInfo table)
