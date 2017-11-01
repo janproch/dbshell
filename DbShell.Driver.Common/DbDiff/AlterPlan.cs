@@ -189,7 +189,7 @@ namespace DbShell.Driver.Common.DbDiff
         public void ChangeColumn(ColumnInfo column, ColumnInfo newcolumn)
         {
             ColumnInfo col = Structure.FindOrCreateColumn(column);
-            AddOperation(new AlterOperation_ChangeColumn { OldObject = col, ParentTable = col.OwnerTable, NewObject = newcolumn.CloneColumn()});
+            AddOperation(new AlterOperation_ChangeColumn { OldObject = col, ParentTable = col.OwnerTable, NewObject = newcolumn.CloneColumn() });
         }
         public void UpdateData(NameWithSchema table, DataScript script)
         {
@@ -261,7 +261,7 @@ namespace DbShell.Driver.Common.DbDiff
         public void ChangeSpecificObject(SpecificObjectInfo obj, SpecificObjectInfo newobj)
         {
             var o = Structure.FindOrCreateSpecificObject(obj);
-            AddOperation(new AlterOperation_ChangeSpecificObject {OldObject = o, NewObject = newobj.CloneSpecificObject()});
+            AddOperation(new AlterOperation_ChangeSpecificObject { OldObject = o, NewObject = newobj.CloneSpecificObject() });
         }
 
         //public void CreateSchema(ISchemaStructure schema)
@@ -323,12 +323,24 @@ namespace DbShell.Driver.Common.DbDiff
                 Operations.InsertRange(index + 1, after);
                 index += after.Count;
             }
+
+            for (int index = Operations.Count - 1; index >= 0; index--)
+            {
+                for (int j = index - 1; j >= 0; j--)
+                {
+                    if (Operations[index].IsDuplicateOf(Operations[j]))
+                    {
+                        Operations.RemoveAt(index);
+                        break;
+                    }
+                }
+            }
         }
 
         public void Transform(AlterProcessorCaps caps, DbDiffOptions opts)
         {
             // transform operations
-            for (int index = 0; index < Operations.Count; )
+            for (int index = 0; index < Operations.Count;)
             {
                 var list = new List<AlterOperation>();
                 list.Add(Operations[index]);
@@ -373,7 +385,7 @@ namespace DbShell.Driver.Common.DbDiff
                             index--;
                         }
                     }
-                    for (int i = index + 1; i < Operations.Count; )
+                    for (int i = index + 1; i < Operations.Count;)
                     {
                         if (Operations[i].ParentTable == rop.ParentTable)
                         {
@@ -406,7 +418,7 @@ namespace DbShell.Driver.Common.DbDiff
             }
 
             // remove recreates which are dropped
-            for (int index = 0; index < RecreatedItems.Count; )
+            for (int index = 0; index < RecreatedItems.Count;)
             {
                 bool remove = false;
                 foreach (var op in Operations)

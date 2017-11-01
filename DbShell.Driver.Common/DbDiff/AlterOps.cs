@@ -125,6 +125,11 @@ namespace DbShell.Driver.Common.DbDiff
         public virtual void RunNameTransformation(INameTransformation transform)
         {
         }
+
+        public virtual bool IsDuplicateOf(AlterOperation alterOperation)
+        {
+            return false;
+        }
     }
 
     public class AlterOperation_Drop : AlterOperation
@@ -162,7 +167,17 @@ namespace DbShell.Driver.Common.DbDiff
         {
             return OldObject;
         }
+
+        public override bool IsDuplicateOf(AlterOperation alterOperation)
+        {
+            if (alterOperation is AlterOperation_Drop drop && drop.OldObject == OldObject)
+            {
+                return true;
+            }
+            return false;
+        }
     }
+
     public class AlterOperation_Create : AlterOperation
     {
         public DatabaseObjectInfo NewObject;
@@ -788,7 +803,7 @@ namespace DbShell.Driver.Common.DbDiff
             base.Run(proc, opts);
             if (Data != null)
             {
-                if (Data.MainChanges != null) proc.UpdateData((TableInfo) NewObject, Data.MainChanges, null);
+                if (Data.MainChanges != null) proc.UpdateData((TableInfo)NewObject, Data.MainChanges, null);
                 if (Data.LinkedChanges != null) proc.UpdateData(Data.LinkedChanges, null);
             }
         }
