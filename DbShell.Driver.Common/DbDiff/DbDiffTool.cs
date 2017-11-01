@@ -269,6 +269,8 @@ namespace DbShell.Driver.Common.DbDiff
                 {
                     if (scol.GroupId != dcol.GroupId) return false;
                 }
+                if (srcRefs[i].IsDescending != dstRefs[i].IsDescending) return false;
+                if (srcRefs[i].IsIncluded != dstRefs[i].IsIncluded) return false;
             }
             return true;
         }
@@ -291,6 +293,13 @@ namespace DbShell.Driver.Common.DbDiff
                 }
             }
             if (csrc.GetType() != cdst.GetType()) return false;
+
+            if (csrc is IndexInfo srcIndex && cdst is IndexInfo dstIndex)
+            {
+                if (srcIndex.IsUnique != dstIndex.IsUnique) return false;
+                if (srcIndex.IndexType != dstIndex.IndexType) return false;
+            }
+
             if (csrc is ColumnsConstraintInfo)
             {
                 TableInfo tsrc = pairing.Source.FindTable(csrc.OwnerTable.FullName);
