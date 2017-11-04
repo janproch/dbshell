@@ -50,7 +50,9 @@ namespace DbShell.Driver.Common.AbstractDb
     public interface IDatabaseServerInterface
     {
         DbConnection Connection { get; set; }
+        IDatabaseFactory Factory { get; set; }
         DatabaseServerVersion GetVersion();
         List<DatabaseOverviewInfo> GetDatabaseList(bool includeDetails, LinkedDatabaseInfo linkedInfo = null);
+        void CreateDatabase(string dbName);
     }
 }

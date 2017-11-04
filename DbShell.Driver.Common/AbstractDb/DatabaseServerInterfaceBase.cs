@@ -10,6 +10,7 @@ namespace DbShell.Driver.Common.AbstractDb
     public class DatabaseServerInterfaceBase : IDatabaseServerInterface
     {
         public DbConnection Connection { get; set; }
+        public IDatabaseFactory Factory { get; set; }
 
         public virtual DatabaseServerVersion GetVersion()
         {
@@ -18,6 +19,16 @@ namespace DbShell.Driver.Common.AbstractDb
         public virtual List<DatabaseOverviewInfo> GetDatabaseList(bool includeDetails, LinkedDatabaseInfo linkedInfo = null)
         {
             return new List<DatabaseOverviewInfo>();
+        }
+
+        public virtual void CreateDatabase(string dbName)
+        {
+            using (var cmd = Connection.CreateCommand())
+            {
+                var dialect = Factory?.CreateDialect();
+                cmd.CommandText = "CREATE DATABASE " + (dialect.QuoteIdentifier(dbName) ?? dbName);
+                cmd.ExecuteNonQuery();
+            }
         }
     }
 }
