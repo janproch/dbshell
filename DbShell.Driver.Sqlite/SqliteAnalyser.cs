@@ -22,10 +22,34 @@ namespace DbShell.Driver.Sqlite
             {
                 var tables = DoLoadTableList("select name, sql as hash from sqlite_master where type='table' and name " + CreateFilterExpression(DatabaseObjectType.Table), "hash", "name");
 
+                Timer("sequences...");
+
+                var sequences = new HashSet<string>();
+                try
+                {
+                    using (var cmd = Connection.CreateCommand())
+                    {
+                        cmd.CommandText = $"select name from sqlite_sequence";
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                sequences.Add(reader.GetString(0));
+                            }
+                        }
+                    }
+                }
+                catch (Exception err)
+                {
+                    AddErrorReport("Error loading sequences", err);
+                }
+
+
                 Timer("columns...");
 
                 try
                 {
+
                     foreach (string table in tables)
                     {
                         var fname = new NameWithSchema(null, table);
@@ -55,6 +79,7 @@ namespace DbShell.Driver.Sqlite
                                         });
                                     }
                                     col.CommonType = AnalyseType(col.DataType);
+                                    col.AutoIncrement = sequences.Contains(table);
                                     tableInfo.Columns.Add(col);
                                 }
                             }

@@ -59,7 +59,7 @@ namespace DbShell.Driver.Sqlite
 
         public override void EnableConstraints(NameWithSchema table, bool enabled)
         {
-            PutCmd("^pragma foreign_keys = %k", table, enabled ? "on" : "off");
+            PutCmd("^pragma foreign_keys = %k", enabled ? "on" : "off");
         }
     }
 }
