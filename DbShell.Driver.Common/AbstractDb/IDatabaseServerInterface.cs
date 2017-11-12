@@ -54,5 +54,7 @@ namespace DbShell.Driver.Common.AbstractDb
         DatabaseServerVersion GetVersion();
         List<DatabaseOverviewInfo> GetDatabaseList(bool includeDetails, LinkedDatabaseInfo linkedInfo = null);
         void CreateDatabase(string dbName);
+        void DropDatabase(string dbName);
+        void RenameDatabase(string oldName, string newName);
     }
 }

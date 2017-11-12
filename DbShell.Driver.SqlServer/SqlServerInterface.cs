@@ -52,6 +52,24 @@ namespace DbShell.Driver.SqlServer
             return null;
         }
 
+        public override void DropDatabase(string dbName)
+        {
+            using (var cmd = Connection.CreateCommand())
+            {
+                cmd.CommandText = $"ALTER DATABASE [{dbName}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;USE master;DROP DATABASE [{dbName}]";
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public override void RenameDatabase(string oldName, string newName)
+        {
+            using (var cmd = Connection.CreateCommand())
+            {
+                cmd.CommandText = $"EXEC sp_renamedb '{oldName}', '{newName}'";
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public override List<DatabaseOverviewInfo> GetDatabaseList(bool includeDetails, LinkedDatabaseInfo linkedInfo = null)
         {
 

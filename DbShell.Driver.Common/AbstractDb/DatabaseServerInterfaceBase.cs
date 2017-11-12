@@ -30,5 +30,25 @@ namespace DbShell.Driver.Common.AbstractDb
                 cmd.ExecuteNonQuery();
             }
         }
+
+        public virtual void DropDatabase(string dbName)
+        {
+            using (var cmd = Connection.CreateCommand())
+            {
+                var dialect = Factory?.CreateDialect();
+                cmd.CommandText = "DROP DATABASE " + (dialect.QuoteIdentifier(dbName) ?? dbName);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public virtual void RenameDatabase(string oldName, string newName)
+        {
+            using (var cmd = Connection.CreateCommand())
+            {
+                var dialect = Factory?.CreateDialect();
+                cmd.CommandText = "RENAME DATABASE " + (dialect.QuoteIdentifier(oldName) ?? oldName) + " TO " + (dialect.QuoteIdentifier(newName) ?? newName);
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }
