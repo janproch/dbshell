@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.Utility;
+using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.Structure
 {
+    [DataContract]
     public class ParameterInfo : DatabaseObjectInfo
     {
         public ProgrammableInfo Programmable;
@@ -14,18 +16,21 @@ namespace DbShell.Driver.Common.Structure
         /// Parameter name
         /// </summary>
         [XmlAttrib("name")]
+        [DataMember]
         public string Name { get; set; }
 
         /// <summary>
         /// Data type
         /// </summary>
         [XmlAttrib("datatype")]
+        [DataMember]
         public string DataType { get; set; }
 
         /// <summary>
         /// Data type
         /// </summary>
         [XmlAttrib("is_output")]
+        [DataMember]
         public bool IsOutput { get; set; }
 
         public ParameterInfo(ProgrammableInfo programmable)
