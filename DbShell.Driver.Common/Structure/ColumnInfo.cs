@@ -108,7 +108,7 @@ namespace DbShell.Driver.Common.Structure
         public FilterParserTool.ExpressionType FilterType => FilterParserTool.GetExpressionType(CommonType);
 
         [DataMember]
-        public string CommonTypeCode => CommonType?.Code.ToString();
+        public string CommonTypeCode => CommonType?.Code.ToString().ToLower();
 
         public int ColumnOrder
         {

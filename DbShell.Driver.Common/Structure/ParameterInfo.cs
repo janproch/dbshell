@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.Utility;
 using System.Runtime.Serialization;
+using DbShell.Driver.Common.CommonTypeSystem;
 
 namespace DbShell.Driver.Common.Structure
 {
@@ -33,6 +34,18 @@ namespace DbShell.Driver.Common.Structure
         [DataMember]
         public bool IsOutput { get; set; }
 
+        /// <summary>
+        /// Portable data type
+        /// </summary>
+        [DataMember]
+        public DbTypeBase CommonType { get; set; }
+
+        [DataMember]
+        public string CommonTypeCode => CommonType?.Code.ToString().ToLower();
+
+        [DataMember]
+        public string DefaultValue { get; set; }
+
         public ParameterInfo(ProgrammableInfo programmable)
             : base(programmable != null ? programmable.OwnerDatabase : null)
         {
@@ -58,6 +71,8 @@ namespace DbShell.Driver.Common.Structure
             Name = src.Name;
             DataType = src.DataType;
             IsOutput = src.IsOutput;
+            CommonType = src.CommonType;
+            DefaultValue = src.DefaultValue;
         }
 
         public override FullDatabaseRelatedName GetName()

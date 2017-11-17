@@ -658,6 +658,10 @@ namespace DbShell.Driver.SqlServer
                                     arg.DataType = reader.SafeString("DATA_TYPE");
                                     arg.Name = reader.SafeString("PARAMETER_NAME");
                                     arg.IsOutput = reader.SafeString("PARAMETER_MODE") == "OUT";
+                                    int precision = reader.SafeString("NUMERIC_PRECISION").SafeIntParse();
+                                    int scale = reader.SafeString("NUMERIC_SCALE").SafeIntParse();
+                                    int length = reader.SafeString("CHARACTER_MAXIMUM_LENGTH").SafeIntParse();
+                                    arg.CommonType = AnalyseType(arg.DataType, length, precision, scale);
                                 }
                             }
                         }
