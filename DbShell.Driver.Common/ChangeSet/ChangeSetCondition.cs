@@ -23,6 +23,6 @@ namespace DbShell.Driver.Common.ChangeSet
         [DataMember]
         public string ValueToBeEqual { get; set; }
 
-        public string UsedExpression => ValueToBeEqual != null ? "=" + ValueToBeEqual : Expression;
+        public string UsedExpression => ValueToBeEqual != null ? $"='{ValueToBeEqual}'"  : Expression;
     }
 }

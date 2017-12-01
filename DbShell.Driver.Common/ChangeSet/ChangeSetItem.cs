@@ -29,13 +29,13 @@ namespace DbShell.Driver.Common.ChangeSet
         {
             return (from cond in conditions
                     let col = StructuredIdentifier.Parse(cond.Column)
-                    let newcol = prefix/col
+                    let newcol = prefix / col
                     select new ChangeSetCondition
-                        {
-                            Column = newcol.ToString(),
-                            Expression = cond.Expression,
-                            ValueToBeEqual = cond.ValueToBeEqual,
-                        }).ToList();
+                    {
+                        Column = newcol.ToString(),
+                        Expression = cond.Expression,
+                        ValueToBeEqual = cond.ValueToBeEqual,
+                    }).ToList();
         }
 
         protected static bool GetConditions(DmlfCommandBase cmd, ChangeSetItem item, List<ChangeSetCondition> conditions, DatabaseInfo db)
@@ -50,11 +50,11 @@ namespace DbShell.Driver.Common.ChangeSet
         protected static bool GetCondition(DmlfCommandBase cmd, ChangeSetItem item, ChangeSetCondition cond, DatabaseInfo db)
         {
             var source = new DmlfSource
-                {
-                    Alias = "basetbl",
-                    LinkedInfo = item.LinkedInfo,
-                    TableOrView = item.TargetTable,
-                };
+            {
+                Alias = "basetbl",
+                LinkedInfo = item.LinkedInfo,
+                TableOrView = item.TargetTable,
+            };
             var colref = cmd.SingleFrom.GetColumnRef(source, item.TargetTable, StructuredIdentifier.Parse(cond.Column), db, DmlfJoinType.Inner);
             if (colref == null) return false;
 
@@ -64,12 +64,17 @@ namespace DbShell.Driver.Common.ChangeSet
             //if (column == null) return false;
 
             var colexpr = new DmlfColumnRefExpression
-                {
-                    Column = colref
-                };
+            {
+                Column = colref
+            };
             var column = colref.FindSourceColumn(db);
 
-            cmd.AddAndCondition(FilterParserTool.ParseFilterExpression(column != null ? column.CommonType : new DbTypeString(), colexpr, cond.UsedExpression));
+            var condItem = FilterParserTool.ParseFilterExpression(column != null ? column.CommonType : new DbTypeString(), colexpr, cond.UsedExpression);
+            if (condItem == null)
+            {
+                throw new Exception("DBSH-00000 Error creating condition");
+            }
+            cmd.AddAndCondition(condItem);
             return true;
         }
 
@@ -84,13 +89,13 @@ namespace DbShell.Driver.Common.ChangeSet
                 input.ReadFrom(col.Value);
                 dda.AdaptValue(input, colinfo.CommonType, output, converter);
                 fields.Add(new DmlfUpdateField
+                {
+                    TargetColumn = colinfo.Name,
+                    Expr = new DmlfLiteralExpression
                     {
-                        TargetColumn = colinfo.Name,
-                        Expr = new DmlfLiteralExpression
-                            {
-                                Value = output.GetValue(),
-                            }
-                    });
+                        Value = output.GetValue(),
+                    }
+                });
             }
         }
     }
