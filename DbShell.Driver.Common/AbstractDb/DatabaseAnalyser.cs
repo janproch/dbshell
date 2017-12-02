@@ -13,9 +13,10 @@ namespace DbShell.Driver.Common.AbstractDb
         Functions = 2,
         Views = 4,
         Settings = 8,
-        Finish = 16,
+        TableSizes = 16,
+        Finish = 32,
 
-        All = Tables | Functions | Views | Settings | Finish,
+        All = Tables | Functions | Views | Settings | TableSizes | Finish,
     }
 
     public class DatabaseAnalyserError
@@ -52,11 +53,11 @@ namespace DbShell.Driver.Common.AbstractDb
         protected void AddErrorReport(string message, Exception err)
         {
             Errors.Add(new DatabaseAnalyserError
-                {
-                    Message = message + ": " + err.Message,
-                    Detail = err.ToString(),
-                    Error = err,
-                });
+            {
+                Message = message + ": " + err.Message,
+                Detail = err.ToString(),
+                Error = err,
+            });
         }
 
         private void SortStructureItems()
