@@ -167,6 +167,7 @@ namespace DbShell.Driver.SqlServer
                                 col.Name = reader.SafeString("column_name");
                                 col.NotNull = reader.SafeString("is_nullable") != "True";
                                 col.DataType = reader.SafeString("type_name");
+                                string dataTypeName = col.DataType;
                                 int bytelen = reader.SafeString("max_length").SafeIntParse();
                                 int length = 0;
                                 if (col.DataType.ToLower().Contains("nchar") || col.DataType.ToLower().Contains("nvarchar"))
@@ -198,7 +199,7 @@ namespace DbShell.Driver.SqlServer
                                 col.IsPersisted = reader.SafeString("is_persisted") == "True";
                                 col.IsSparse = reader.SafeString("is_sparse") == "True";
                                 col.ObjectId = reader.SafeString("column_id");
-                                col.CommonType = AnalyseType(col.DataType, length, precision, scale);
+                                col.CommonType = AnalyseType(dataTypeName, length, precision, scale);
                                 table.Columns.Add(col);
                                 if (String.IsNullOrWhiteSpace(col.ComputedExpression)) col.ComputedExpression = null;
                                 if (String.IsNullOrWhiteSpace(col.DefaultValue))
