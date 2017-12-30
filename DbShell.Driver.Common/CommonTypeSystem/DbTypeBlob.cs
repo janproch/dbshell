@@ -44,5 +44,9 @@ namespace DbShell.Driver.Common.CommonTypeSystem
         {
             get { return TypeStorage.ByteArray; }
         }
+        public override bool IsBinaryType()
+        {
+            return true;
+        }
     }
 }

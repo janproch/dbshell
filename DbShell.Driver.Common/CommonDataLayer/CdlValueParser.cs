@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using DbShell.Driver.Common.Utility;
+using System.Text.RegularExpressions;
 
 namespace DbShell.Driver.Common.CommonDataLayer
 {
@@ -340,9 +341,9 @@ namespace DbShell.Driver.Common.CommonDataLayer
                     {
                         writer.SetNull();
                     }
-                    else if (text.EndsWith("=")) 
+                    else if (Regex.Match(text, @"^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$").Success)
                     {
-                        writer.SetByteArray(Convert.FromBase64String(text.Replace("=", "")));
+                        writer.SetByteArray(Convert.FromBase64String(text));
                     }
                     else
                     {
@@ -362,9 +363,9 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 case TypeStorage.String:
                     writer.SetString(text);
                     break;
-                //case TypeStorage.Array:
-                //    writer.SetArray(CdlArray.Parse(text));
-                //    break;
+                    //case TypeStorage.Array:
+                    //    writer.SetArray(CdlArray.Parse(text));
+                    //    break;
             }
         }
 

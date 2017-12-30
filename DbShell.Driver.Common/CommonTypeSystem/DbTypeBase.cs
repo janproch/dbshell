@@ -98,5 +98,10 @@ namespace DbShell.Driver.Common.CommonTypeSystem
             var parser = new DbTypeParser(dataType);
             return parser.CommonType;
         }
+
+        public virtual bool IsBinaryType()
+        {
+            return false;
+        }
     }
 }

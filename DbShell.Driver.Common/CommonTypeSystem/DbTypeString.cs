@@ -60,6 +60,11 @@ namespace DbShell.Driver.Common.CommonTypeSystem
             set { m_isVarLength = value; }
         }
 
+        public override bool IsBinaryType()
+        {
+            return IsBinary;
+        }
+
         public override DbTypeCode Code
         {
             get { return DbTypeCode.String; }
