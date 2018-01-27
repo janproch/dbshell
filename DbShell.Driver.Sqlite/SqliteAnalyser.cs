@@ -79,7 +79,7 @@ namespace DbShell.Driver.Sqlite
                                         });
                                     }
                                     col.CommonType = AnalyseType(col.DataType);
-                                    col.AutoIncrement = sequences.Contains(table);
+                                    col.AutoIncrement = sequences.Contains(table) && reader.SafeString("pk") == "1";
                                     tableInfo.Columns.Add(col);
                                 }
                             }
