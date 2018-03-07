@@ -88,7 +88,7 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
             _buffer.Append(CurrentChar);
             Skip();
         }
-        private const string _operatorChars = "=<>$!^~$";
+        private const string _operatorChars = "=<>$!^~$+";
 
         private void SkipWhitespace() => SkipWhile(Char.IsWhiteSpace);
         private static bool IsOperator(char ch) => _operatorChars.IndexOf(ch) >= 0;
@@ -96,7 +96,7 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
         private bool IsNormalChar(char ch)
         {
             if (IsOperator(ch)) return false;
-            if (ch == ',' || ch == '\'' || ch == '"' || Char.IsWhiteSpace(ch) || ch == '.') return false;
+            if (ch == ',' || ch == '\'' || ch == '"' || Char.IsWhiteSpace(ch)) return false;
             if (ch == '-' && _options.ParseNumber) return false;
             return true;
         }
