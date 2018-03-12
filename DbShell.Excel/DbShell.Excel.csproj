@@ -1,83 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{AF992D15-1C15-4DB4-9DF4-A4EF9A0BC92A}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DbShell.Excel</RootNamespace>
-    <AssemblyName>DbShell.Excel</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\_lib\Microsoft.Office.Interop.Excel.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Compile Remove="ExcelModels\**" />
+    <EmbeddedResource Remove="ExcelModels\**" />
+    <None Remove="ExcelModels\**" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Close.cs" />
-    <Compile Include="Create.cs" />
-    <Compile Include="ExcelElementBase.cs" />
-    <Compile Include="ExcelModels\ExcelWriter.cs" />
-    <Compile Include="ExcelRunnableBase.cs" />
-    <Compile Include="ExcelModels\ExcelModel.cs" />
-    <Compile Include="ExcelModels\ExcelReader.cs" />
-    <Compile Include="Open.cs" />
-    <Compile Include="NewWindow.cs" />
-    <Compile Include="Sheet.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Remove="NewWindow.cs" />
+    <Compile Remove="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DbShell.Common\DbShell.Common.csproj">
-      <Project>{1CB3E9BA-5F22-4AF6-9352-940E3E8CECB4}</Project>
-      <Name>DbShell.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DbShell.Core\DbShell.Core.csproj">
-      <Project>{72D4E33E-C0A3-45A8-9098-3FD9420A2E52}</Project>
-      <Name>DbShell.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DbShell.Driver.Common\DbShell.Driver.Common.csproj">
-      <Project>{CC233C46-AE79-4ADB-AE5C-B4BAE3FD2495}</Project>
-      <Name>DbShell.Driver.Common</Name>
-    </ProjectReference>
+    <PackageReference Include="Shaman.EPPlus" Version="1.0.1.2" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+  <ItemGroup>
+    <ProjectReference Include="..\DbShell.Common\DbShell.Common.csproj" />
+    <ProjectReference Include="..\DbShell.Core\DbShell.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ExcelModelsCore\" />
+    <Folder Include="Properties\" />
+  </ItemGroup>
 </Project>

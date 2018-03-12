@@ -1,137 +1,71 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{80906E4D-1539-4F93-A227-3E072F49BAEA}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>DbShell.Driver.SqlServer</RootNamespace>
-    <AssemblyName>DbShell.Driver.SqlServer</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-    <DocumentationFile>bin\Release\DbShell.Driver.SqlServer.XML</DocumentationFile>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Antlr3.Runtime, Version=3.1.3.42154, Culture=neutral, PublicKeyToken=3a9cab8f8d22bfb7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\_lib\Antlr3.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="Antlr3.Utility">
-      <HintPath>..\_lib\Antlr3.Utility.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\_lib\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Compile Remove="antlr\**" />
+    <EmbeddedResource Remove="antlr\**" />
+    <None Remove="antlr\**" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="antlr\SqlServerLexer.cs" />
-    <Compile Include="antlr\SqlServerParserEx.cs" />
-    <Compile Include="antlr\SqlServerParser.cs" />
-    <Compile Include="SqlServerDialectDataAdapter.cs" />
-    <Compile Include="SqlServerLinkedServer.cs" />
-    <Compile Include="SqlServerBulkInserter.cs" />
-    <Compile Include="SqlServerDatabaseAnalyser.cs" />
-    <Compile Include="SqlServerDatabaseFactory.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SqlServerDialect.cs" />
-    <Compile Include="SqlServerInterface.cs" />
-    <Compile Include="SqlServerLiteralFormatter.cs" />
-    <Compile Include="SqlServerParsingService.cs" />
-    <Compile Include="SqlServerSqlDumper.cs" />
-    <Compile Include="SqlServerStatisticsProvider.cs" />
-    <Compile Include="SqlServerTypeProvider.cs" />
-    <Compile Include="SqlTypeCode.cs" />
+    <Compile Remove="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\DbShell.Driver.Common\DbShell.Driver.Common.csproj">
-      <Project>{CC233C46-AE79-4ADB-AE5C-B4BAE3FD2495}</Project>
-      <Name>DbShell.Driver.Common</Name>
-    </ProjectReference>
+    <None Remove="columns.sql" />
+    <None Remove="foreign_keys.sql" />
+    <None Remove="getchecks.sql" />
+    <None Remove="getindexcols.sql" />
+    <None Remove="getindexes.sql" />
+    <None Remove="getschemas.sql" />
+    <None Remove="gettriggers.sql" />
+    <None Remove="loadsqlcode.sql" />
+    <None Remove="loadviews.sql" />
+    <None Remove="modifications.sql" />
+    <None Remove="parameters.sql" />
+    <None Remove="primary_keys.sql" />
+    <None Remove="programmables.sql" />
+    <None Remove="tables.sql" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="foreign_keys.sql" />
-    <EmbeddedResource Include="primary_keys.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="loadsqlcode.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="loadviews.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="rowcounts.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="antlr\SqlServer.g" />
-    <None Include="antlr\SqlServer.gsrc" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="tables.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="programmables.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="modifications.sql" />
-  </ItemGroup>
+
   <ItemGroup>
     <EmbeddedResource Include="columns.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="parameters.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="getindexes.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="getindexcols.sql" />
-  </ItemGroup>
-  <ItemGroup>
+    <EmbeddedResource Include="foreign_keys.sql" />
     <EmbeddedResource Include="getchecks.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="gettriggers.sql" />
-  </ItemGroup>
-  <ItemGroup>
+    <EmbeddedResource Include="getindexcols.sql" />
+    <EmbeddedResource Include="getindexes.sql" />
     <EmbeddedResource Include="getschemas.sql" />
+    <EmbeddedResource Include="gettriggers.sql" />
+    <EmbeddedResource Include="loadsqlcode.sql" />
+    <EmbeddedResource Include="loadviews.sql" />
+    <EmbeddedResource Include="modifications.sql" />
+    <EmbeddedResource Include="parameters.sql" />
+    <EmbeddedResource Include="primary_keys.sql" />
+    <EmbeddedResource Include="programmables.sql" />
+    <EmbeddedResource Include="databasesizes.sql" />
+    <EmbeddedResource Include="tablesizes.sql" />
+    <EmbeddedResource Include="tables.sql" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
+  <ItemGroup>
+    <PackageReference Include="log4net" Version="2.0.8" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="System.Data.Common" Version="4.3.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.3.0" />
+    <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
+    <PackageReference Include="System.Xml.XmlSerializer" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DbShell.Driver.Common\DbShell.Driver.Common.csproj" />
+  </ItemGroup>
+
 </Project>

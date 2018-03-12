@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DbShell.Driver.Common\DbShell.Driver.Common.NetCore.csproj" />
+    <ProjectReference Include="..\DbShell.Driver.Common\DbShell.Driver.Common.csproj" />
   </ItemGroup>
 
 </Project>
