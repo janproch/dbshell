@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<ForEach 
-  xmlns="http://schemas.dbshell.com/core"
-  Requires="Configuration.dbsh"
-  Connection="${Connection}"
-  Source="{Tables}"
-  Property="Table"
->
-  <CopyTable Source="{Table ${Table.Name}}" Target="{File Export/${Table.Name}.csv}" />
-</ForEach>
+include(file = "Configuration.json");
+
+forEach(property="table", source=getTables(), connection="${Connection}") 
+ {
+    copyTable(
+        source = table(name = "${table.name}"),
+        target = file(name = "${table.name}.csv")
+    )
+}

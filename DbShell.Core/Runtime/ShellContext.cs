@@ -12,33 +12,12 @@ namespace DbShell.Core.Runtime
 {
     public class ShellContext : IShellContext, IDisposable
     {
-#if NETSTANDARD2_0
-        class ScriptScope
-        {
-            Dictionary<string, object> _values = new Dictionary<string, object>();
-            ScriptScope _parent;
-
-            internal ScriptScope(ScriptScope parent) => _parent = parent;
-
-            internal object GetVariable(string name)
-            {
-                if (_values.TryGetValue(name, out var value)) return value;
-                if (_parent != null) return _parent.GetVariable(name);
-                return null;
-            }
-            internal void SetVariable(string name, object value) => _values[name] = value;
-        }
-#endif
-
         private ShellContext _parent;
 
         // fields shared with root context
         private Dictionary<string, DatabaseInfo> _dbCache;
-#if !NETSTANDARD2_0
-        private readonly ScriptEngine _engine;
-#endif
         // script scope
-        private ScriptScope _scope;
+        private VariableScope _scope;
 
         // inherited default values
         private string _executingFolder;
@@ -50,41 +29,18 @@ namespace DbShell.Core.Runtime
         // search folders
         private Dictionary<ResolveFileMode, List<string>> _additionalSearchFolders = new Dictionary<ResolveFileMode, List<string>>();
 
-#if !NETSTANDARD2_0
-        [ThreadStatic]
-        static ScriptEngine _staticEngine;
-
-        private static ScriptEngine GetEngine()
-        {
-            if (_staticEngine == null)
-            {
-                _staticEngine = Python.CreateEngine();
-            }
-            return _staticEngine;
-        }
-#endif
-
         public ShellContext(IServiceProvider serviceProvider, ShellContext parent = null)
         {
             ServiceProvider = serviceProvider;
             if (parent == null)
             {
-#if !NETSTANDARD2_0
-                _engine = GetEngine();
-                _scope = _engine.CreateScope();
-#else
-                _scope = new ScriptScope(null);
-#endif
+                _scope = new VariableScope(null);
 
                 _dbCache = new Dictionary<string, DatabaseInfo>();
             }
             else
             {
                 _parent = parent;
-
-#if !NETSTANDARD2_0
-                _engine = _parent._engine;
-#endif
                 _dbCache = _parent._dbCache;
 
                 OnOutputMessage += ShellContext_OnOutputMessage;
@@ -131,7 +87,7 @@ namespace DbShell.Core.Runtime
             return null;
         }
 
-        private ScriptScope Scope
+        private VariableScope Scope
         {
             get
             {
@@ -151,21 +107,13 @@ namespace DbShell.Core.Runtime
 
         public object Evaluate(string expression)
         {
-#if !NETSTANDARD2_0
-            return _engine.Execute(expression, Scope);
-#else
-            return Scope.GetVariable(expression);
-#endif
+            return Scope.Evaluate(expression);
         }
 
         public void CreateScope()
         {
             if (_scope != null) throw new Exception("DBSH-00210 Scope already created");
-#if !NETSTANDARD2_0
-            _scope = _engine.CreateScope(Scope);
-#else
-            _scope = new ScriptScope(Scope);
-#endif
+            _scope = new VariableScope(Scope);
         }
 
         public object GetVariable(string name)

@@ -11,7 +11,7 @@ namespace DbShell.Core
     /// <summary>
     /// Returns list of tables (list of <see cref="DbShell.Driver.Common.Structure.TableInfo"/>) of curent database structure
     /// </summary>
-    public class TablesProvider : ElementBase, IListProvider
+    public class GetTables : ElementBase, IListProvider
     {
         IEnumerable IListProvider.GetList(IShellContext context)
         {

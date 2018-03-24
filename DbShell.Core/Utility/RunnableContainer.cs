@@ -3,18 +3,16 @@ using System.Collections.Generic;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Utility;
 using DbShell.Driver.Common.Interfaces;
+using System.Collections;
 
 namespace DbShell.Core.Utility
 {
-    public abstract class RunnableContainer : RunnableBase
+    public abstract class RunnableContainer : RunnableBase, IDefaultCollectionProvider
     {
-        public RunnableContainer()
-        {
-            Commands = new List<IRunnable>();
-        }
-
         [XamlProperty]
-        public List<IRunnable> Commands { get; set; }
+        public List<IRunnable> Commands { get; set; } = new List<IRunnable>();
+
+        public IList DefaultCollection => Commands;
 
         //public override void EnumChildren(Action<IShellElement> enumFunc)
         //{

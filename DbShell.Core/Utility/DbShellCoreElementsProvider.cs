@@ -18,6 +18,9 @@ namespace DbShell.Core.Utility
             typeFunc("include", typeof(Include));
             typeFunc("table", typeof(Table));
             typeFunc("file", typeof(File));
+            typeFunc("forEach", typeof(ForEach));
+            typeFunc("getTables", typeof(GetTables));
+            typeFunc("getFiles", typeof(GetFiles));
         }
     }
 }

@@ -10,7 +10,7 @@ using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Core
 {
-    public class FilesProvider : ElementBase, IListProvider
+    public class GetFiles : ElementBase, IListProvider
     {
         [XamlProperty]
         public string Filter { get; set; }

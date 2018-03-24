@@ -1,0 +1,36 @@
+{
+    "$type": "batch",
+    "commands": [
+        {
+            "$type": "include",
+            "file": "Configuration.json"
+        },
+        {
+            "$type": "forEach",
+            "connection": "${Connection}",
+            "property": "Table",
+            "source": {
+                "$type": "tables"
+            },
+            "commands": [
+                {
+                    "$type": "copyTable",
+                    "source": {
+                        "$type": "table",
+                        "name": "album",
+                        "connection": "${Connection}"
+                    },
+                    "target": {
+                        "$type": "file",
+                        "name": "album.csv"
+                    }
+                }
+            ]
+        }
+    ]
+}
+
+include "Configuration.json";
+foreach (table in getTables()) {
+    copyTable(table(name="${table}"), file(name="alb"));
+}

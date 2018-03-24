@@ -1,8 +1,3 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<Batch 
-  xmlns="http://schemas.dbshell.com/core"
-  Requires="Configuration.dbsh" 
->
-  <Echo Message="Hello world!" />
-  <Echo Message="You will be connected to database ${DbName}" />
-</Batch>
+include(file = "Configuration.json");
+echo(message = "Hello world!", test1="1", test2="2");
+echo(message = "You will be connected to database ${DbName}");

@@ -42,7 +42,11 @@ namespace DbShell.Core.Runtime
 
         public void LoadObject(object obj, string folder = null)
         {
-            if (folder != null) _context.SetExecutingFolder(folder);
+            if (obj == null)
+                throw new Exception("DBSH-00000 Error loading script");
+
+            if (folder != null)
+                _context.SetExecutingFolder(folder);
             _main = obj as IRunnable;
             if (_main == null)
                 throw new Exception("DBSH-00000 Loaded object doesn't implement IRunnable");

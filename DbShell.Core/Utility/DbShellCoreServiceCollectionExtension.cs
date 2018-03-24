@@ -1,4 +1,5 @@
-﻿using DbShell.Driver.Common.Interfaces;
+﻿using DbShell.Core.ScriptParser;
+using DbShell.Driver.Common.Interfaces;
 using DbShell.Driver.Common.Utility;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -13,6 +14,8 @@ namespace DbShell.Core.Utility
         {
             services.AddSingleton<IJsonElementProvider, DbShellCoreElementsProvider>();
             services.AddSingleton<IJsonElementFactory, JsonElementFactory>();
+            services.AddTransient<IDbShellParser, DbShellParser>();
+            services.AddSingleton<IDbShellLanguageProvider, DbShellLanguageProvider>();
         }
     }
 }
