@@ -11,6 +11,7 @@ namespace DbShell.Driver.Common.AbstractDb
     {
         public DbConnection Connection { get; set; }
         public IDatabaseFactory Factory { get; set; }
+        public IServiceProvider ServiceProvider { get; set; }
 
         public virtual DatabaseServerVersion GetVersion()
         {

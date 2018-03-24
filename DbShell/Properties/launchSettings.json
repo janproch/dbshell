@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DbShell": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\jenasoft\\webdbshell\\dbshell\\Samples\\CsvExportSimple.json"
+    }
+  }
+}

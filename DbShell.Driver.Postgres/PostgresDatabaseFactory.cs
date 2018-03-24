@@ -13,7 +13,10 @@ namespace DbShell.Driver.Postgres
 {
     public class PostgresDatabaseFactory : DatabaseFactoryBase
     {
-        public static readonly PostgresDatabaseFactory Instance = new PostgresDatabaseFactory();
+        public PostgresDatabaseFactory(IServiceProvider serviceProvider) 
+            : base(serviceProvider)
+        {
+        }
 
         public override string[] Identifiers
         {
@@ -42,12 +45,7 @@ namespace DbShell.Driver.Postgres
 
         public override ISqlDialect CreateDialect()
         {
-            return new PostgresDialect();
-        }
-
-        public static void Initialize()
-        {
-            FactoryProvider.RegisterFactory(Instance);
+            return new PostgresDialect(this);
         }
 
         public override IDatabaseServerInterface CreateDatabaseServerInterface()

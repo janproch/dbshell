@@ -4,13 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using DbShell.Common;
 using DbShell.Core.Utility;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
-using log4net;
+using DbShell.Driver.Common.Interfaces;
 
 namespace DbShell.Core
 {
@@ -19,8 +18,6 @@ namespace DbShell.Core
     /// </summary>
     public class CdlFile : ElementBase, ITabularDataSource, ITabularDataTarget, IModelProvider
     {
-        private static readonly ILog _log = LogManager.GetLogger(typeof(CdlFile));
-
         /// <summary>
         /// File name (should have .cdl extension)
         /// </summary>

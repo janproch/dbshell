@@ -7,8 +7,8 @@ namespace DbShell.Driver.Postgres
 {
     public class PostgresDialect : DialectBase
     {
-        public PostgresDialect()
-            : base(PostgresDatabaseFactory.Instance)
+        public PostgresDialect(PostgresDatabaseFactory factory)
+            : base(factory)
         {
         }
 

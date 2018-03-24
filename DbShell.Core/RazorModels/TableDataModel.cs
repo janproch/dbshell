@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using DbShell.Common;
+using DbShell.Driver.Common.Interfaces;
 using DbShell.Driver.Common.Structure;
 
 namespace DbShell.Core.RazorModels

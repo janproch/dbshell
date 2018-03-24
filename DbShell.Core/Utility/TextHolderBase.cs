@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using DbShell.Common;
+using DbShell.Driver.Common.Interfaces;
 using DbShell.Core.RazorModels;
-using log4net;
+using Microsoft.Extensions.Logging;
 
 namespace DbShell.Core.Utility
 {
     public abstract class TextHolderBase : TemplateHolderBase
     {
-        private static readonly ILog _log = LogManager.GetLogger(typeof(TextHolderBase));
-
         /// <summary>
         /// Raw text input file
         /// </summary>

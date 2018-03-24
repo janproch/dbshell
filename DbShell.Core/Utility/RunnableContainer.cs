@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-#if !NETSTANDARD2_0
-using System.Windows.Markup;
-#endif
-using DbShell.Common;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Utility;
+using DbShell.Driver.Common.Interfaces;
 
 namespace DbShell.Core.Utility
 {
-#if !NETSTANDARD2_0
-    [ContentProperty("Commands")]
-#endif
     public abstract class RunnableContainer : RunnableBase
     {
         public RunnableContainer()

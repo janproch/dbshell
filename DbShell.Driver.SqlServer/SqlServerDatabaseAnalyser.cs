@@ -96,7 +96,7 @@ namespace DbShell.Driver.SqlServer
                 _viewsById[view.ObjectId] = view;
             }
 
-            var dialect = SqlServerDatabaseFactory.Instance.CreateDialect();
+            var dialect = Factory.CreateDialect();
 
             if (FilterOptions.AnyTables && IsTablesPhase)
             {

@@ -20,11 +20,11 @@ namespace DbShell.Driver.Common.Utility
     }
 
 
-    public interface IFilterParserCore
-    {
-        DmlfConditionBase ParseFilterExpression(FilterParserTool.ExpressionType type, DmlfExpression columnValue, string expression, ParserOptions options);
-        ObjectFilterConditionBase ParseObjectFilter(string expression);
-    }
+    //public interface IFilterParserCore
+    //{
+    //    DmlfConditionBase ParseFilterExpression(FilterParserTool.ExpressionType type, DmlfExpression columnValue, string expression, ParserOptions options);
+    //    ObjectFilterConditionBase ParseObjectFilter(string expression);
+    //}
 
     public class ParserOptions
     {
@@ -33,8 +33,6 @@ namespace DbShell.Driver.Common.Utility
 
     public static class FilterParserTool
     {
-        public static IFilterParserCore ParserCore = new FilterParserCoreImpl();
-
         public const string LineTransformPrefix = "$LINE_TRANSFORM$=";
 
         public enum ExpressionType
@@ -86,18 +84,11 @@ namespace DbShell.Driver.Common.Utility
             return ParseFilterExpression(GetExpressionType(type), columnValue, expression, options);
         }
 
-        private static void WantParserCore()
-        {
-            if (ParserCore == null) throw new Exception("DBSH-00000 FilterParser core not initialized");
-        }
-
         public static DmlfConditionBase ParseFilterExpression(ExpressionType type, DmlfExpression columnValue, string expression, ParserOptions options = null)
         {
-            WantParserCore();
-
             if (expression == null) return null;
             expression = TransformExpression(expression);
-            var res = ParserCore.ParseFilterExpression(type, columnValue, expression, options);
+            var res = FilterParserCoreImpl.ParseFilterExpression(type, columnValue, expression, options);
             if (res != null) res = res.SimplifyCondition();
             return res;
         }
@@ -173,9 +164,7 @@ namespace DbShell.Driver.Common.Utility
 
         public static ObjectFilterConditionBase ParseObjectFilter(string expression)
         {
-            WantParserCore();
-
-            return ParserCore.ParseObjectFilter(expression);
+            return FilterParserCoreImpl.ParseObjectFilter(expression);
         }
 
     }

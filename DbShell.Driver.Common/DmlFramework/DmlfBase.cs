@@ -61,7 +61,7 @@ namespace DbShell.Driver.Common.DmlFramework
 
         public override string ToString()
         {
-            return this.ToSql(GenericDatabaseFactory.Instance);
+            return this.ToSql(GenericDatabaseFactory.InternalInstance);
         }
 
         public virtual string GetIdentifier()

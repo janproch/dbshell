@@ -5,10 +5,10 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using DbShell.Common;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.SqlServer;
 using DbShell.Driver.Common.Utility;
+using DbShell.Driver.Common.Interfaces;
 
 namespace DbShell.Core
 {
@@ -18,11 +18,11 @@ namespace DbShell.Core
         private readonly IDatabaseFactory _factory;
         private readonly string _provider;
 
-        public ConnectionProvider(string provider, string connectionString)
+        public ConnectionProvider(IServiceProvider serviceProvider, string provider, string connectionString)
         {
             _connectionString = connectionString;
             _provider = provider;
-            _factory = FactoryProvider.FindFactory(_provider);
+            _factory = FactoryProvider.FindFactory(serviceProvider, _provider);
 
             if (_factory == null)
             {
@@ -58,12 +58,12 @@ namespace DbShell.Core
             return ((IConnectionProvider)this).ProviderString;
         }
 
-        public static ConnectionProvider FromString(string s)
+        public static ConnectionProvider FromString(IServiceProvider serviceProvider, string s)
         {
             string provider, connString;
             if (ConnectionStringTool.SplitProviderString(s, out provider, out connString))
             {
-                return new ConnectionProvider(provider, connString);
+                return new ConnectionProvider(serviceProvider, provider, connString);
             }
             return null;
         }

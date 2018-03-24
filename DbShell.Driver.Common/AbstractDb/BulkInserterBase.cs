@@ -8,13 +8,13 @@ using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
-using log4net;
+using Microsoft.Extensions.Logging;
 
 namespace DbShell.Driver.Common.AbstractDb
 {
     public class BulkInserterBase : IBulkInserter
     {
-        private readonly static ILog _log = LogManager.GetLogger(typeof(BulkInserterBase));
+        private ILogger<BulkInserterBase> _logger;
 
         public TableInfo DestinationTable { get; set; }
 
@@ -26,11 +26,13 @@ namespace DbShell.Driver.Common.AbstractDb
         public IDatabaseFactory Factory { get; set; }
         public LinkedDatabaseInfo LinkedInfo { get; set; }
         public DataFormatSettings SourceDataFormat { get; set; }
+        public IServiceProvider ServiceProvider { get; set; } = GenericServicesProvider.InternalInstance;
 
         protected TargetColumnMap _columnMap;
 
-        public BulkInserterBase()
+        public BulkInserterBase(ILogger<BulkInserterBase> logger)
         {
+            _logger = logger;
             BatchSize = 100;
             CopyOptions = new CopyTableTargetOptions();
         }
@@ -62,7 +64,7 @@ namespace DbShell.Driver.Common.AbstractDb
             {
                 try
                 {
-                    Connection.RunScript(dmp => dmp.TruncateTable(DestinationTable.FullName));
+                    Connection.RunScript(ServiceProvider, dmp => dmp.TruncateTable(DestinationTable.FullName));
                 }
                 catch (Exception err)
                 {
@@ -72,7 +74,7 @@ namespace DbShell.Driver.Common.AbstractDb
             }
             if (CopyOptions.DisableConstraints)
             {
-                Connection.RunScript(dmp => dmp.EnableConstraints(DestinationTable.FullName, false));
+                Connection.RunScript(ServiceProvider, dmp => dmp.EnableConstraints(DestinationTable.FullName, false));
             }
         }
 
@@ -80,7 +82,7 @@ namespace DbShell.Driver.Common.AbstractDb
         {
             if (CopyOptions.DisableConstraints)
             {
-                Connection.RunScript(dmp => dmp.EnableConstraints(DestinationTable.FullName, true));
+                Connection.RunScript(ServiceProvider, dmp => dmp.EnableConstraints(DestinationTable.FullName, true));
             }
         }
 
@@ -101,7 +103,7 @@ namespace DbShell.Driver.Common.AbstractDb
         protected virtual void RunInserts(ICdlReader reader)
         {
             //Connection.SystemConnection.SafeChangeDatabase(DatabaseName);
-            var dda = Connection.GetFactory().CreateDataAdapter();
+            var dda = Connection.GetFactory(ServiceProvider).CreateDataAdapter();
             using (DbCommand inscmd = Connection.CreateCommand())
             {
                 List<string> colnames = new List<string>();
@@ -113,7 +115,7 @@ namespace DbShell.Driver.Common.AbstractDb
                 }
                 string[] values = new string[colnames.Count];
                 NameWithSchema table = DestinationTable.FullName;
-                string insertTemplate = SqlDumper.Format(Connection.GetFactory(), "^insert ^into %f (%,i) ^values (%,s)", table, colnames, vals);
+                string insertTemplate = SqlDumper.Format(Connection.GetFactory(ServiceProvider), "^insert ^into %f (%,i) ^values (%,s)", table, colnames, vals);
 
                 bool hasident = HasIdentity(reader);
 
@@ -124,7 +126,7 @@ namespace DbShell.Driver.Common.AbstractDb
                 List<string> insertErrors = new List<string>();
                 try
                 {
-                    if (hasident) Connection.RunScript(dmp => { dmp.AllowIdentityInsert(table, true); }, trans);
+                    if (hasident) Connection.RunScript(ServiceProvider, dmp => { dmp.AllowIdentityInsert(table, true); }, trans);
                     try
                     {
                         int rowcounter = 0;
@@ -167,7 +169,7 @@ namespace DbShell.Driver.Common.AbstractDb
                     }
                     finally
                     {
-                        if (hasident) Connection.RunScript(dmp => { dmp.AllowIdentityInsert(table, false); }, trans);
+                        if (hasident) Connection.RunScript(ServiceProvider, dmp => { dmp.AllowIdentityInsert(table, false); }, trans);
                     }
                     trans.Commit();
 
@@ -220,13 +222,13 @@ namespace DbShell.Driver.Common.AbstractDb
             switch (rec.Severity)
             {
                 case LogSeverity.Info:
-                    _log.Info(rec.Message);
+                    _logger.LogInformation(rec.Message);
                     break;
                 case LogSeverity.Error:
-                    _log.Error(rec.Message);
+                    _logger.LogError(rec.Message);
                     break;
             }
-            if (Log!=null)
+            if (Log != null)
             {
                 Log(rec);
             }

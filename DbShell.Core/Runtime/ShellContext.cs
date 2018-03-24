@@ -3,17 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-#if !NETSTANDARD2_0
-using System.Windows.Markup;
-#endif
-using DbShell.Common;
+using Microsoft.Extensions.Logging;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
-#if !NETSTANDARD2_0
-using IronPython.Hosting;
-using Microsoft.Scripting.Hosting;
-#endif
-using log4net;
+using DbShell.Driver.Common.Interfaces;
 
 namespace DbShell.Core.Runtime
 {
@@ -38,7 +31,6 @@ namespace DbShell.Core.Runtime
 #endif
 
         private ShellContext _parent;
-        private static readonly ILog _log = LogManager.GetLogger(typeof(ShellContext));
 
         // fields shared with root context
         private Dictionary<string, DatabaseInfo> _dbCache;
@@ -72,8 +64,9 @@ namespace DbShell.Core.Runtime
         }
 #endif
 
-        public ShellContext(ShellContext parent = null)
+        public ShellContext(IServiceProvider serviceProvider, ShellContext parent = null)
         {
+            ServiceProvider = serviceProvider;
             if (parent == null)
             {
 #if !NETSTANDARD2_0
@@ -107,8 +100,8 @@ namespace DbShell.Core.Runtime
         {
             if (!_dbCache.ContainsKey(connectionKey))
             {
-                IConnectionProvider connection = ConnectionProvider.FromString(connectionKey);
-                _log.InfoFormat("DBSH-00076 Downloading structure for connection {0}", connection);
+                IConnectionProvider connection = ConnectionProvider.FromString(ServiceProvider, connectionKey);
+                this.GetLogger<ShellContext>().LogInformation("DBSH-00076 Downloading structure for connection {connection}", connection);
                 OutputMessage(String.Format("DBSH-00149 Downloading structure for connection {0}", connection));
                 var analyser = connection.Factory.CreateAnalyser();
                 using (var conn = connection.Connect())
@@ -146,6 +139,9 @@ namespace DbShell.Core.Runtime
                 return _parent.Scope;
             }
         }
+
+        public IServiceProvider ServiceProvider { get; private set; }
+
 
         public void Dispose()
         {
@@ -195,24 +191,18 @@ namespace DbShell.Core.Runtime
 
         public void IncludeFile(string file)
         {
-#if !NETSTANDARD2_0
-            using (var fr = new FileInfo(file).OpenRead())
+            object obj = ShellLoader.LoadFile(file, ServiceProvider);
+
+            var runnable = obj as IRunnable;
+            if (runnable == null)
+                throw new Exception(String.Format("DBSH-00059 Included file {0} doesn't contain root element implementing IRunnable", file));
+
+            using (var childContext = CreateChildContext())
             {
-                object obj = XamlReader.Load(fr);
-                var runnable = obj as IRunnable;
-                if (runnable == null) throw new Exception(String.Format("DBSH-00059 Included file {0} doesn't contain root element implementing IRunnable", file));
-                //var shellElem = obj as IShellElement;
-                //if (shellElem != null) ShellRunner.ProcessLoadedElement(shellElem, parent, this);
-                using (var childContext = CreateChildContext())
-                {
-                    childContext.SetExecutingFolder(Path.GetDirectoryName(file));
-                    SetExecutingFolder(Path.GetDirectoryName(file));
-                    runnable.Run(childContext);
-                }
+                childContext.SetExecutingFolder(Path.GetDirectoryName(file));
+                SetExecutingFolder(Path.GetDirectoryName(file));
+                runnable.Run(childContext);
             }
-#else
-            throw new NotImplementedError("DBSH-00000");
-#endif
         }
 
         private string SearchExistingFile(string file, ResolveFileMode mode, params string[] folders)
@@ -333,7 +323,7 @@ namespace DbShell.Core.Runtime
 
         public IShellContext CreateChildContext()
         {
-            return new ShellContext(this);
+            return new ShellContext(ServiceProvider, this);
         }
 
         public void AddDisposableItem(IDisposable disposable)

@@ -33,7 +33,7 @@
   <ItemGroup>
     <Reference Include="log4net">
       <HintPath>..\_lib\log4net.dll</HintPath>
-    </Reference>  
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml" />
@@ -72,10 +72,6 @@
     <Compile Include="WriteSql.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DbShell.Common\DbShell.Common.csproj">
-      <Project>{1cb3e9ba-5f22-4af6-9352-940e3e8cecb4}</Project>
-      <Name>DbShell.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DbShell.Core\DbShell.Core.csproj">
       <Project>{72d4e33e-c0a3-45a8-9098-3fd9420a2e52}</Project>
       <Name>DbShell.Core</Name>

@@ -6,13 +6,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Markup;
-using DbShell.Common;
+using DbShell.Driver.Common.Interfaces;
 using DbShell.Core.RazorModels;
 using DbShell.Core.Utility;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
-using log4net;
+using Microsoft.Extensions.Logging;
 
 namespace DbShell.Core
 {

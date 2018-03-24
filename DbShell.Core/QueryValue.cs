@@ -7,7 +7,7 @@ using System.Text;
 #if !NETSTANDARD2_0
 using System.Windows.Markup;
 #endif
-using DbShell.Common;
+using DbShell.Driver.Common.Interfaces;
 using DbShell.Core.RazorModels;
 using DbShell.Core.Utility;
 using DbShell.Driver.Common.AbstractDb;

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using DbShell.Common;
+using DbShell.Driver.Common.Interfaces;
 using DbShell.Core.Utility;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.CommonTypeSystem;

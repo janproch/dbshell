@@ -1,7 +1,7 @@
-﻿using DbShell.Common;
+﻿using DbShell.Driver.Common.Interfaces;
 using DbShell.Core.Utility;
 using DbShell.Driver.Common.Utility;
-using log4net;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,8 +13,6 @@ namespace DbShell.Core
 {
     public class GetLastFile : RunnableBase
     {
-        private static readonly ILog _log = LogManager.GetLogger(typeof(GetLastFile));
-
         /// <summary>
         /// variable name filled with last file name
         /// </summary>

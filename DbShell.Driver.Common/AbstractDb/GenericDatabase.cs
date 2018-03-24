@@ -1,20 +1,26 @@
-﻿using System;
+﻿using DbShell.Driver.Common.Utility;
+using System;
 
 namespace DbShell.Driver.Common.AbstractDb
 {
     public class GenericDialect : DialectBase
     {
-        public static GenericDialect Instance = new GenericDialect();
+        internal static readonly GenericDialect InternalInstance = new GenericDialect(GenericDatabaseFactory.InternalInstance);
 
-        protected GenericDialect()
-            : base(GenericDatabaseFactory.Instance)
+        protected GenericDialect(GenericDatabaseFactory factory)
+            : base(factory)
         {
         }
     }
 
     public class GenericDatabaseFactory : DatabaseFactoryBase
     {
-        public static GenericDatabaseFactory Instance = new GenericDatabaseFactory();
+        internal static readonly GenericDatabaseFactory InternalInstance = new GenericDatabaseFactory(GenericServicesProvider.InternalInstance);
+
+        protected GenericDatabaseFactory(IServiceProvider serviceProvider) 
+            : base(serviceProvider)
+        {
+        }
 
         public override string[] Identifiers
         {
@@ -34,7 +40,7 @@ namespace DbShell.Driver.Common.AbstractDb
 
     public class GenericDialectDataAdapter : DialectDataAdapterBase
     {
-        public static readonly GenericDialectDataAdapter Instance = new GenericDialectDataAdapter(GenericDatabaseFactory.Instance, SqlFormatProperties.Default);
+        internal readonly static GenericDialectDataAdapter InternalInstance = new GenericDialectDataAdapter(GenericDatabaseFactory.InternalInstance, SqlFormatProperties.Default);
 
         public GenericDialectDataAdapter(IDatabaseFactory factory, SqlFormatProperties props)
             : base(factory)

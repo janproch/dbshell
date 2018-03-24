@@ -1,28 +1,25 @@
 ﻿using System;
 using System.IO;
 using System.Threading;
-#if !NETSTANDARD2_0
-using System.Windows.Markup;
-#endif
-using System.Xml;
-using DbShell.Common;
-using log4net;
+using DbShell.Driver.Common.Interfaces;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DbShell.Core.Runtime
 {
     public class ShellRunner : IDisposable
     {
-        private static readonly ILog _log = LogManager.GetLogger(typeof(ShellRunner));
-
         private IRunnable _main;
         private ShellContext _context;
         private Thread _thread;
         public Exception Error { get; private set; }
         public bool FinishedOk { get; private set; }
+        public IServiceProvider ServiceProvider { get; set; }
 
-        public ShellRunner()
+        public ShellRunner(IServiceProvider serviceProvider)
         {
-            _context = new ShellContext();
+            ServiceProvider = serviceProvider;
+            _context = new ShellContext(serviceProvider);
             _context.OnOutputMessage += _context_OnOutputMessage;
         }
 
@@ -31,24 +28,24 @@ namespace DbShell.Core.Runtime
             if (OutputMessage != null) OutputMessage(obj);
         }
 
-#if !NETSTANDARD2_0
         public void LoadFile(string file)
         {
-            var obj = ShellLoader.LoadFile(file);
+            var obj = ShellLoader.LoadFile(file, ServiceProvider);
             LoadObject(obj, Path.GetDirectoryName(file));
         }
 
         public void LoadString(string content, string folder = null)
         {
-            var obj = ShellLoader.LoadString(content);
+            var obj = ShellLoader.LoadString(content, ServiceProvider);
             LoadObject(obj, folder);
         }
-#endif
 
         public void LoadObject(object obj, string folder = null)
         {
             if (folder != null) _context.SetExecutingFolder(folder);
-            _main = (IRunnable) obj;
+            _main = obj as IRunnable;
+            if (_main == null)
+                throw new Exception("DBSH-00000 Loaded object doesn't implement IRunnable");
         }
 
         public ShellContext Context
@@ -100,7 +97,7 @@ namespace DbShell.Core.Runtime
             }
             catch (Exception err)
             {
-                _log.Error("DBSH-00198 Exception occured when executing DbShell", err);
+                _context.GetLogger<ShellRunner>().LogError(0, err, "DBSH-00198 Exception occured when executing DbShell");
                 Error = err;
             }
             finally

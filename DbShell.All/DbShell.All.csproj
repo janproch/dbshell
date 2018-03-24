@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DbShell.Core\DbShell.Core.csproj" />
+    <ProjectReference Include="..\DbShell.Driver.Common\DbShell.Driver.Common.csproj" />
+    <ProjectReference Include="..\DbShell.Driver.MySql\DbShell.Driver.MySql.csproj" />
+    <ProjectReference Include="..\DbShell.Driver.Postgres\DbShell.Driver.Postgres.csproj" />
+    <ProjectReference Include="..\DbShell.Driver.Sqlite\DbShell.Driver.Sqlite.csproj" />
+    <ProjectReference Include="..\DbShell.Driver.SqlServer\DbShell.Driver.SqlServer.csproj" />
+    <ProjectReference Include="..\DbShell.Excel\DbShell.Excel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions">
+      <HintPath>..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.dependencyinjection.abstractions\2.0.0\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

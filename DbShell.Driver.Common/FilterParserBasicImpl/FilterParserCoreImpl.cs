@@ -7,9 +7,9 @@ using DbShell.Driver.Common.DmlFramework;
 
 namespace DbShell.Driver.Common.FilterParserBasicImpl
 {
-    public class FilterParserCoreImpl : IFilterParserCore
+    public static class FilterParserCoreImpl
     {
-        public DmlfConditionBase ParseFilterExpression(FilterParserTool.ExpressionType type, DmlfExpression columnValue, string expression, ParserOptions options)
+        public static DmlfConditionBase ParseFilterExpression(FilterParserTool.ExpressionType type, DmlfExpression columnValue, string expression, ParserOptions options)
         {
             var opts = new FilterParseOptions();
             switch (type)
@@ -32,7 +32,7 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
             return parser.Result;
         }
 
-        public ObjectFilterConditionBase ParseObjectFilter(string expression)
+        public static ObjectFilterConditionBase ParseObjectFilter(string expression)
         {
             var parser = new ObjectFilterParser(expression);
             parser.Run();

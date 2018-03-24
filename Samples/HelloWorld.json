@@ -1,0 +1,4 @@
+{
+    "$type": "echo",
+    "message": "Hello world"
+}

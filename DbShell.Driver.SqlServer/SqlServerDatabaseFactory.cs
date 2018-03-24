@@ -7,9 +7,13 @@ using System.Reflection;
 
 namespace DbShell.Driver.SqlServer
 {
-    public class SqlServerDatabaseFactory : DatabaseFactoryBase
+    public class SqlServerDatabaseFactory 
+        : DatabaseFactoryBase
     {
-        public static readonly SqlServerDatabaseFactory Instance = new SqlServerDatabaseFactory();
+        public SqlServerDatabaseFactory(IServiceProvider serviceProvider) 
+            : base(serviceProvider)
+        {
+        }
 
         public override DatabaseAnalyser CreateAnalyser()
         {
@@ -56,11 +60,6 @@ namespace DbShell.Driver.SqlServer
             return new SqlConnection(connectionString);
         }
 
-        public static void Initialize()
-        {
-            FactoryProvider.RegisterFactory(Instance);
-        }
-
         public override ILiteralFormatter CreateLiteralFormatter()
         {
             return new SqlServerLiteralFormatter(this);
@@ -68,7 +67,7 @@ namespace DbShell.Driver.SqlServer
 
         public override ISqlDialect CreateDialect()
         {
-            return new SqlServerDialect();
+            return new SqlServerDialect(this);
         }
 
         public override ISqlDumper CreateDumper(ISqlOutputStream stream, SqlFormatProperties props)

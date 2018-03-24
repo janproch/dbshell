@@ -8,8 +8,8 @@ namespace DbShell.Driver.Sqlite
 {
     public class SqliteDialect : DialectBase
     {
-        public SqliteDialect()
-            : base(SqliteDatabaseFactory.Instance)
+        public SqliteDialect(SqliteDatabaseFactory factory)
+            : base(factory)
         {
         }
 

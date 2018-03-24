@@ -10,12 +10,17 @@ using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.DbDiff;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Sqlite
 {
     public class SqliteDatabaseFactory : DatabaseFactoryBase
     {
-        public static readonly SqliteDatabaseFactory Instance = new SqliteDatabaseFactory();
+        public static readonly SqliteDatabaseFactory InternalInstance = new SqliteDatabaseFactory(GenericServicesProvider.InternalInstance);
+
+        public SqliteDatabaseFactory(IServiceProvider serviceProvider) : base(serviceProvider)
+        {
+        }
 
         public override string[] Identifiers
         {
@@ -44,12 +49,7 @@ namespace DbShell.Driver.Sqlite
 
         public override ISqlDialect CreateDialect()
         {
-            return new SqliteDialect();
-        }
-
-        public static void Initialize()
-        {
-            FactoryProvider.RegisterFactory(Instance);
+            return new SqliteDialect(this);
         }
 
         public override DatabaseAnalyser CreateAnalyser()

@@ -1,4 +1,4 @@
-﻿using DbShell.Common;
+﻿using DbShell.Driver.Common.Interfaces;
 using DbShell.Core.Utility;
 using System;
 using System.Collections.Generic;

@@ -42,7 +42,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
                 for (int i = 0; i < cols.Length; i++)
                 {
                     if (i > 0) sb.Append(", ");
-                    sb.AppendFormat("{0}={1}", cols[i], GenericDialectDataAdapter.Instance.GetSqlLiteral(values[i], new DbTypeString()));
+                    sb.AppendFormat("{0}={1}", cols[i], GenericDialectDataAdapter.InternalInstance.GetSqlLiteral(values[i], new DbTypeString()));
                 }
                 return sb.ToString();
             }

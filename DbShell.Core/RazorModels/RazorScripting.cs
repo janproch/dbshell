@@ -1,7 +1,7 @@
 ﻿#if !NETSTANDARD2_0
 
 using System;
-using DbShell.Common;
+using DbShell.Driver.Common.Interfaces;
 using DbShell.Core.Runtime;
 using RazorEngine.Templating;
 

@@ -21,5 +21,6 @@ namespace DbShell.Driver.Common.AbstractDb
         CopyTableTargetOptions CopyOptions { get; set; }
         event Action<LogRecord> Log;
         DataFormatSettings SourceDataFormat { get; set; }
+        IServiceProvider ServiceProvider { get; set; }
     }
 }

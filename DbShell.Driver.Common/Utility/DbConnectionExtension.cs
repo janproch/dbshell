@@ -263,17 +263,17 @@ namespace DbShell.Driver.Common.Utility
             data["sysconn_state"] = conn.State.ToString();
         }
 
-        public static void RunScript(this DbConnection conn, Action<ISqlDumper> script, DbTransaction trans = null)
+        public static void RunScript(this DbConnection conn, IServiceProvider serviceProvider, Action<ISqlDumper> script, DbTransaction trans = null)
         {
-            ConnectionSqlOutputStream sqlo = new ConnectionSqlOutputStream(conn, trans, GenericDialect.Instance);
-            var factory = conn.GetFactory();
+            ConnectionSqlOutputStream sqlo = new ConnectionSqlOutputStream(conn, trans, GenericDialect.InternalInstance);
+            var factory = conn.GetFactory(serviceProvider);
             ISqlDumper fmt = factory.CreateDumper(sqlo, SqlFormatProperties.Default);
             script(fmt);
         }
 
-        public static IDatabaseFactory GetFactory(this DbConnection connection)
+        public static IDatabaseFactory GetFactory(this DbConnection connection, IServiceProvider serviceProvider)
         {
-            return FactoryProvider.FindFactory(connection);
+            return FactoryProvider.FindFactory(serviceProvider, connection);
         }
     }
 }

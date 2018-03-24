@@ -8,7 +8,7 @@ using System.Text;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Utility;
-using log4net;
+using Microsoft.Extensions.Logging;
 
 namespace DbShell.Driver.SqlServer
 {

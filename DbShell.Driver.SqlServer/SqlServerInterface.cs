@@ -5,14 +5,11 @@ using System.Text;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Utility;
 using DbShell.Driver.Common.Structure;
-using log4net;
 
 namespace DbShell.Driver.SqlServer
 {
     public class SqlServerInterface : DatabaseServerInterfaceBase
     {
-        private static readonly ILog _log = LogManager.GetLogger(typeof(SqlServerInterface));
-
         public override DatabaseServerVersion GetVersion()
         {
             using (var cmd = Connection.CreateCommand())
@@ -113,7 +110,7 @@ namespace DbShell.Driver.SqlServer
                 catch (Exception err)
                 {
                     // use variant without details
-                    _log.Error("Error fetching database details", err);
+                    ServiceProvider.LogError<SqlServerInterface>(err, "Error fetching database details");
                 }
             }
 

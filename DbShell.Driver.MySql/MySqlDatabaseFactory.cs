@@ -10,7 +10,10 @@ namespace DbShell.Driver.MySql
 {
     public class MySqlDatabaseFactory : DatabaseFactoryBase
     {
-        public static readonly MySqlDatabaseFactory Instance = new MySqlDatabaseFactory();
+        public MySqlDatabaseFactory(IServiceProvider serviceProvider) 
+            : base(serviceProvider)
+        {
+        }
 
         public override string[] Identifiers
         {
@@ -58,11 +61,6 @@ namespace DbShell.Driver.MySql
         public override IStatisticsProvider CreateStatisticsProvider()
         {
             return new MySqlStatisticsProvider();
-        }
-
-        public static void Initialize()
-        {
-            FactoryProvider.RegisterFactory(Instance);
         }
 
         public override SqlDialectCaps DialectCaps

@@ -1,0 +1,17 @@
+{
+    "$type": "batch",
+    "commands": [
+        {
+            "$type": "include",
+            "file": "Configuration.json"
+        },
+        {
+            "$type": "echo",
+            "message": "Hello world"
+        },
+        {
+            "$type": "echo",
+            "message": "You will be connected to database ${DbName}"
+        }
+    ]
+}

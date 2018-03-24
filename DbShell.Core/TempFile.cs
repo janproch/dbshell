@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using DbShell.Common;
+using DbShell.Driver.Common.Interfaces;
 using DbShell.Core.Utility;
-using log4net;
 using DbShell.Driver.Common.Utility;
+using Microsoft.Extensions.Logging;
 
 namespace DbShell.Core
 {
@@ -15,8 +15,6 @@ namespace DbShell.Core
     /// </summary>
     public class TempFile : RunnableBase
     {
-        private static readonly ILog _log = LogManager.GetLogger(typeof(TempFile));
-
         /// <summary>
         /// variable name filled with temp file name
         /// </summary>
@@ -30,12 +28,14 @@ namespace DbShell.Core
             context.AddDisposableItem(new TempFileHolder
             {
                 File = file,
+                Context = context,
             });
         }
 
         private class TempFileHolder : IDisposable
         {
             internal string File;
+            internal IShellContext Context;
 
             public void Dispose()
             {
@@ -45,7 +45,7 @@ namespace DbShell.Core
                 }
                 catch (Exception err)
                 {
-                    _log.Error("DBSH-00000 Error deleting temporary file", err);
+                    Context.GetLogger<TempFile>().LogError(0, err, "DBSH-00000 Error deleting temporary file");
                 }
             }
         }

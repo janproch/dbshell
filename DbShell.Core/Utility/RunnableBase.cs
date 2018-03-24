@@ -1,38 +1,20 @@
 ﻿using System;
-using DbShell.Common;
-using log4net;
+using DbShell.Driver.Common.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace DbShell.Core.Utility
 {
     public abstract class RunnableBase : ElementBase, IRunnable
     {
-        private static ILog _log = LogManager.GetLogger(typeof(RunnableBase));
-
         protected abstract void DoRun(IShellContext context);
-
-        /// <summary>
-        /// Gets or sets the list of required files.
-        /// </summary>
-        /// <value>
-        /// The ';' delimited list of required files.
-        /// </value>
-        public string Requires { get; set; }
 
         void IRunnable.Run(IShellContext context)
         {
             if (Connection != null)
             {
+                string connection = context.Replace(Connection);
                 context = context.CreateChildContext();
-                context.SetDefaultConnection(Connection);
-            }
-            if (Requires != null)
-            {
-                foreach (string file in Requires.Split(';'))
-                {
-                    if (String.IsNullOrEmpty(file)) continue;
-                    _log.InfoFormat("DBSH-00005 Including file {0}", file);
-                    context.IncludeFile(context.ResolveFile(file, ResolveFileMode.DbShell));
-                }
+                context.SetDefaultConnection(connection);
             }
 
             DoRun(context);

@@ -4,10 +4,10 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using DbShell.Common;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.Interfaces;
 
 namespace DbShell.Core.Utility
 {

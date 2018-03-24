@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml;
-using DbShell.Common;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
+using DbShell.Driver.Common.Interfaces;
 
 namespace DbShell.Core.Utility
 {
@@ -63,7 +63,7 @@ namespace DbShell.Core.Utility
         {
             string providerString = GetProviderString(context);
             string providerStringReplaced = context.Replace(providerString);
-            var conn = ConnectionProvider.FromString(providerStringReplaced);
+            var conn = ConnectionProvider.FromString(context.ServiceProvider, providerStringReplaced);
             if (conn == null)
             {
                 throw new Exception("DBSH-00150 Connection not defined, provider string:" + providerString);
@@ -73,7 +73,7 @@ namespace DbShell.Core.Utility
 
         public string GetProviderString(IShellContext context)
         {
-            string providerString = Connection ?? context.GetDefaultConnection();
+            string providerString = Connection != null ? context.Replace(Connection) : context.GetDefaultConnection();
             if (providerString == null)
             {
                 throw new Exception("DBSH-00151 Connection is not set, element=" + GetType().FullName);

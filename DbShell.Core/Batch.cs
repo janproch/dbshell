@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using DbShell.Common;
 using DbShell.Core.Utility;
+using DbShell.Driver.Common.Interfaces;
 
 namespace DbShell.Core
 {

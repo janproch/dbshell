@@ -2,23 +2,60 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+//using DbShell.Core.Runtime;
+//using Microsoft.Extensions.Logging;
+//using log4net.Config;
+//using DbShell.FilterParser.Antlr;
+//using Microsoft.Extensions.DependencyInjection;
+using Serilog;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using DbShell.Core.Runtime;
-using log4net;
-using log4net.Config;
-using DbShell.FilterParser.Antlr;
+using DbShell.All;
 
 namespace DbShell
 {
     internal class Program
     {
-        private static ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        //private static ILog _log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+        //private static void AddSerilogServices(IServiceCollection services)
+        //{
+        //    var logger = new LoggerConfiguration()
+        //        .MinimumLevel.Debug()
+        //        .WriteTo.Console()
+        //        .CreateLogger();
+
+        //    services.AddSerilog();
+        //}
+
+        private static void ConfigureServices(IServiceCollection services)
+        {
+            services.AddLogging();
+            services.AddDbShell();
+        }
+
+        private static void ConfigureLogging(IServiceProvider serviceProvider)
+        {
+            var serilogLogger = new LoggerConfiguration()
+               .Enrich.FromLogContext()
+               .WriteTo.Console()
+               .CreateLogger();
+
+            var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
+            loggerFactory.AddSerilog(serilogLogger);
+        }
 
         private static int Main(string[] args)
         {
-            XmlConfigurator.Configure();
-            FilterParserAntlrCore.Initialize();
+            var services = new ServiceCollection();
+            ConfigureServices(services);
+            var serviceProvider = services.BuildServiceProvider();
+            ConfigureLogging(serviceProvider);
 
-            var runner = new ShellRunner();
+            var logger = serviceProvider.GetService<ILogger<Program>>();
+
+            var runner = new ShellRunner(serviceProvider);
             try
             {
                 runner.LoadFile(args[0]);
@@ -43,7 +80,7 @@ namespace DbShell
             }
             catch (Exception err)
             {
-                _log.Error("DBSH-00146 Error loading XAML", err);
+                logger.LogError(err, "DBSH-00146 Error loading input DbShell script");
                 return 1;
             }
 
@@ -53,9 +90,10 @@ namespace DbShell
             }
             catch (Exception err)
             {
-                _log.Error("DBSH-00147 Error running process", err);
+                logger.LogError(err, "DBSH-00147 Error running process");
                 return 2;
             }
+
             return 0;
         }
     }

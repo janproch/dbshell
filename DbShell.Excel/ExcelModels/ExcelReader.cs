@@ -1,16 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
-using Microsoft.Office.Interop.Excel;
 using Action = System.Action;
+
 
 namespace DbShell.Excel.ExcelModels
 {
     public class ExcelReader : ArrayDataRecord, ICdlReader
     {
+#if !NETSTANDARD2_0
         private Worksheet _worksheet;
         private string[] _array;
         private int _rowIndex = 2;
@@ -63,5 +65,33 @@ namespace DbShell.Excel.ExcelModels
                 Disposing = null;
             }
         }
+#endif
+
+        public ExcelReader(TableInfo structure, object[] values) : base(structure, values)
+        {
+        }
+
+        public event Action Disposing;
+
+        void IDisposable.Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
+        bool ICdlReader.NextResult()
+        {
+            throw new NotImplementedException();
+        }
+
+        bool ICdlReader.Read()
+        {
+            throw new NotImplementedException();
+        }
+
+        void ICdlReader.Cancel()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
+

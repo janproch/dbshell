@@ -5,28 +5,20 @@ using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Text;
-#if !NETSTANDARD2_0
-using System.Windows.Markup;
-#endif
-using DbShell.Common;
 using DbShell.Core.Utility;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Utility;
-using log4net;
+using DbShell.Driver.Common.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace DbShell.Core
 {
     /// <summary>
     /// Job, which is aible to run SQL script, from file or given inline.
     /// </summary>
-#if !NETSTANDARD2_0
-    [ContentProperty("Command")]
-#endif
     public class Script : RunnableBase
     {
-        private static readonly ILog _log = LogManager.GetLogger(typeof(Script));
-
         /// <summary>
         /// Gets or sets the script file file.
         /// </summary>
@@ -115,23 +107,27 @@ namespace DbShell.Core
                 cmd.Transaction = tran;
                 try
                 {
-                    if (logEachQuery) _log.InfoFormat("DBSH-00064 Executing SQL command {0}", sql);
+                    if (logEachQuery)
+                        context.GetLogger<Script>().LogInformation("DBSH-00064 Executing SQL command {sql}", sql);
                     cmd.ExecuteNonQuery();
                 }
                 catch (Exception err)
                 {
-                    _log.ErrorFormat("DBSH-00065 Error {0} when executing script {1}", err.Message, sql);
+                    context.GetLogger<Script>().LogError(0, err, "DBSH-00065 Error when executing script {1}", sql);
                     throw;
                 }
                 count++;
             }
-            if (logCount) _log.InfoFormat("DBSH-00073 Executed {0} commands", count);
+            if (logCount)
+                context.GetLogger<Script>().LogInformation("DBSH-00073 Executed {0} commands", count);
         }
 
         protected override void DoRun(IShellContext context)
         {
-            if (File != null && Command != null) throw new Exception("DBSH-00060 Both Script.File and Script.Command properties are set");
-            if (File == null && Command == null && Files == null) throw new Exception("DBSH-00061 None of Script.File and Script.Command and Script.Files properties are set");
+            if (File != null && Command != null)
+                throw new Exception("DBSH-00060 Both Script.File and Script.Command properties are set");
+            if (File == null && Command == null && Files == null)
+                throw new Exception("DBSH-00061 None of Script.File and Script.Command and Script.Files properties are set");
 
             var connection = GetConnectionProvider(context);
             using (var conn = connection.Connect())
@@ -157,7 +153,7 @@ namespace DbShell.Core
                         string fn = context.ResolveFile(File, ResolveFileMode.Input);
                         using (var reader = new StreamReader(System.IO.File.OpenRead(fn), FileEncoding))
                         {
-                            _log.InfoFormat("DBSH-00067 Executing SQL file {0}", fn);
+                            context.GetLogger<Script>().LogInformation("DBSH-00067 Executing SQL file {file}", fn);
                             context.OutputMessage(String.Format("Executing SQL file {0}", fn));
                             RunScript(reader, conn, tran, UseReplacements == true, false, true, context);
                         }
@@ -169,7 +165,7 @@ namespace DbShell.Core
                             string fn = context.ResolveFile(file, ResolveFileMode.Input);
                             using (var reader = new StreamReader(System.IO.File.OpenRead(fn), FileEncoding))
                             {
-                                _log.InfoFormat("DBSH-00148 Executing SQL file {0}", fn);
+                                context.GetLogger<Script>().LogInformation("DBSH-00148 Executing SQL file {file}", fn);
                                 context.OutputMessage(String.Format("Executing SQL file {0}", fn));
                                 RunScript(reader, conn, tran, UseReplacements == true, false, true, context);
                             }

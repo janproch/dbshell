@@ -6,10 +6,9 @@ using System.Text;
 #if !NETSTANDARD2_0
 using System.Windows.Markup;
 #endif
-using DbShell.Common;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Utility;
-using log4net;
+using DbShell.Driver.Common.Interfaces;
 
 namespace DbShell.Core.Utility
 {
@@ -18,8 +17,6 @@ namespace DbShell.Core.Utility
 #endif
     public abstract class TemplateHolderBase : RunnableBase
     {
-        private static readonly ILog _log = LogManager.GetLogger(typeof(TemplateHolderBase));
-
         /// <summary>
         /// Gets or sets the template file.
         /// </summary>

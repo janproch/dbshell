@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using DbShell.Common;
 using DbShell.Core.Utility;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
-using log4net;
+using DbShell.Driver.Common.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace DbShell.Core
 {
@@ -17,8 +17,6 @@ namespace DbShell.Core
     /// </summary>
     public class CopyTable : RunnableBase
     {
-        private static ILog _log = LogManager.GetLogger(typeof(CopyTable));
-
         /// <summary>
         /// Source of copy operation
         /// </summary>
@@ -116,7 +114,7 @@ namespace DbShell.Core
 
             var table = source.GetRowFormat(context);
 
-            _log.InfoFormat("Copy table data {0}=>{1}", Source.ToStringCtx(context), Target.ToStringCtx(context));
+            context.GetLogger<CopyTable>().LogInformation("Copy table data {0}=>{1}", Source.ToStringCtx(context), Target.ToStringCtx(context));
             context.OutputMessage(String.Format("Copy table data {0}=>{1}", Source.ToStringCtx(context), Target.ToStringCtx(context)));
 
             var transformedInputTable = table;

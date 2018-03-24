@@ -9,8 +9,8 @@ namespace DbShell.Driver.SqlServer
 {
     public class SqlServerDialect : DialectBase
     {
-        public SqlServerDialect()
-            : base(SqlServerDatabaseFactory.Instance)
+        public SqlServerDialect(SqlServerDatabaseFactory factory)
+            : base(factory)
         {
         }
 

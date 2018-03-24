@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using DbShell.Common;
+using DbShell.Driver.Common.Interfaces;
 
 namespace DbShell.Core.RazorModels
 {

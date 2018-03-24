@@ -3,11 +3,19 @@ using System.Data.Common;
 using DbShell.Driver.Common.DbDiff;
 using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Utility;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DbShell.Driver.Common.AbstractDb
 {
     public abstract class DatabaseFactoryBase : IDatabaseFactory
     {
+        private IServiceProvider _serviceProvider;
+
+        protected DatabaseFactoryBase(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+        }
+
         public virtual DatabaseAnalyser CreateAnalyser()
         {
             throw new NotImplementedError("DBSH-00155");
@@ -60,7 +68,7 @@ namespace DbShell.Driver.Common.AbstractDb
 
         public virtual IBulkInserter CreateBulkInserter()
         {
-            return new BulkInserterBase();
+            return ActivatorUtilities.CreateInstance<BulkInserterBase>(_serviceProvider);
         }
 
         public virtual ILiteralFormatter CreateLiteralFormatter()

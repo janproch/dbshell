@@ -4,13 +4,14 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
-using DbShell.Common;
 using DbShell.Core.Utility;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
+using DbShell.Driver.Common.Interfaces;
+using Microsoft.Extensions.Logging;
 
 #if !NETSTANDARD2_0
 using LumenWorks.Framework.IO.Csv;
@@ -248,6 +249,7 @@ namespace DbShell.Core
         ICdlWriter ITabularDataTarget.CreateWriter(TableInfo rowFormat, CopyTableTargetOptions options, IShellContext context, DataFormatSettings sourceDataFormat)
         {
             string file = context.ResolveFile(GetName(context), ResolveFileMode.Output);
+            context.GetLogger<CsvFile>().LogInformation("Writing file {file}", Path.GetFullPath(file));
             context.OutputMessage("Writing file " + Path.GetFullPath(file));
             var fs = System.IO.File.OpenWrite(file);
             var fw = new StreamWriter(fs, Encoding);
