@@ -32,6 +32,10 @@ namespace DbShell.Core.ScriptParser
                     ConvertCommandList(batch.Commands, node.ChildNodes);
                     return batch;
                 case "Command":
+                    if (node.ChildNodes[0].Term.Name == "Assign")
+                    {
+                        return ConvertNode(node.ChildNodes[0]);
+                    }
                     string typeName = node.ChildNodes[0].Token.Text;
                     var type = _elementFactory.JsonBinder.BindToType(null, typeName);
                     var instance = Activator.CreateInstance(type);
@@ -84,6 +88,15 @@ namespace DbShell.Core.ScriptParser
                     }
 
                     return instance;
+                case "Assign":
+                    string varName = node.ChildNodes[0].Token.Text;
+                    string strExpr = node.ChildNodes[1].Token.ValueString;
+                    return new SetVariable
+                    {
+                        Name = varName,
+                        Value = strExpr,
+                    };
+
             }
             return new Batch();
         }

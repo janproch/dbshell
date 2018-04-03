@@ -18,7 +18,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbShell.Driver.MySql", "DbS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbShell.Driver.Postgres", "DbShell.Driver.Postgres\DbShell.Driver.Postgres.csproj", "{D9B4FBBF-E83B-4407-9B64-CA101E8EF7C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbShell.All", "DbShell.All\DbShell.All.csproj", "{F634B19A-1FA6-4611-9D48-F68118B2D420}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbShell.All", "DbShell.All\DbShell.All.csproj", "{F634B19A-1FA6-4611-9D48-F68118B2D420}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbShell.Csv", "DbShell.Csv\DbShell.Csv.csproj", "{87C34421-096A-4831-8B93-5C58870E181F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -164,6 +166,22 @@ Global
 		{F634B19A-1FA6-4611-9D48-F68118B2D420}.Release|x64.Build.0 = Release|Any CPU
 		{F634B19A-1FA6-4611-9D48-F68118B2D420}.Release|x86.ActiveCfg = Release|Any CPU
 		{F634B19A-1FA6-4611-9D48-F68118B2D420}.Release|x86.Build.0 = Release|Any CPU
+		{87C34421-096A-4831-8B93-5C58870E181F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87C34421-096A-4831-8B93-5C58870E181F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87C34421-096A-4831-8B93-5C58870E181F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{87C34421-096A-4831-8B93-5C58870E181F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{87C34421-096A-4831-8B93-5C58870E181F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{87C34421-096A-4831-8B93-5C58870E181F}.Debug|x64.Build.0 = Debug|Any CPU
+		{87C34421-096A-4831-8B93-5C58870E181F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{87C34421-096A-4831-8B93-5C58870E181F}.Debug|x86.Build.0 = Debug|Any CPU
+		{87C34421-096A-4831-8B93-5C58870E181F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87C34421-096A-4831-8B93-5C58870E181F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87C34421-096A-4831-8B93-5C58870E181F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{87C34421-096A-4831-8B93-5C58870E181F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{87C34421-096A-4831-8B93-5C58870E181F}.Release|x64.ActiveCfg = Release|Any CPU
+		{87C34421-096A-4831-8B93-5C58870E181F}.Release|x64.Build.0 = Release|Any CPU
+		{87C34421-096A-4831-8B93-5C58870E181F}.Release|x86.ActiveCfg = Release|Any CPU
+		{87C34421-096A-4831-8B93-5C58870E181F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

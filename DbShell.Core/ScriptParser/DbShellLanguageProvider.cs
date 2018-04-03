@@ -19,6 +19,7 @@ namespace DbShell.Core.ScriptParser
 
             //Nonterminals
             var nCommand = new NonTerminal("Command");
+            var nAssign = new NonTerminal("Assign");
             var nCommandWithSemicolon = new NonTerminal("CommandWithSemicolon");
             var nCommandList = new NonTerminal("CommandList");
             var nCommandPropList = new NonTerminal("CommandPropList");
@@ -34,6 +35,8 @@ namespace DbShell.Core.ScriptParser
             var nprop = new NonTerminal("Property");
 
             nCommand.Rule = tident + "(" + nCommandPropList + ")" + nSubcommandList;
+            nCommand.Rule |= nAssign;
+            nAssign.Rule = tident + "=" + tstring;
             nCommandWithSemicolon.Rule = nCommand;
             nCommandWithSemicolon.Rule |= nCommand + ";";
             nCommandList.Rule = MakeStarRule(nCommandList, nCommandWithSemicolon);
@@ -47,6 +50,11 @@ namespace DbShell.Core.ScriptParser
 
             MarkPunctuation("{", "}", "(", ")", "=", ",", ";");
             MarkTransient(nCommandValue, nCommandWithSemicolon, nOptionalIdent);
+
+            var singleLineComment = new CommentTerminal("SingleLineComment", "//", "\r", "\n", "\u2085", "\u2028", "\u2029");
+            var delimitedComment = new CommentTerminal("DelimitedComment", "/*", "*/");
+            NonGrammarTerminals.Add(singleLineComment);
+            NonGrammarTerminals.Add(delimitedComment);
 
             this.Root = nCommandList;
 

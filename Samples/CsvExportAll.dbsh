@@ -1,7 +1,8 @@
 include(file = "Configuration.json");
 
-forEach(property="table", source=getTables(), connection="${Connection}") 
- {
+setConnection(defaultConnection="${Connection}");
+
+forEach(property="table", source=getTables()) {
     copyTable(
         source = table(name = "${table.name}"),
         target = file(name = "${table.name}.csv")

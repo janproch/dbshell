@@ -21,6 +21,7 @@ namespace DbShell.Core.Utility
             typeFunc("forEach", typeof(ForEach));
             typeFunc("getTables", typeof(GetTables));
             typeFunc("getFiles", typeof(GetFiles));
+            typeFunc("setConnection", typeof(SetConnection));
         }
     }
 }

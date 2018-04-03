@@ -8,6 +8,7 @@ using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DbShell.Core
 {
@@ -29,11 +30,27 @@ namespace DbShell.Core
             return null;
         }
 
+        private IDataFileFormat FindFormat(IShellContext context)
+        {
+            string name = GetName(context);
+            foreach (var format in context.ServiceProvider.GetService<IEnumerable<IDataFileFormat>>())
+            {
+                if (name.ToLower().EndsWith(format.Extension.ToLower()))
+                    return format;
+            }
+            return null;
+        }
+
         private ITabularDataSource CreateSource(IShellContext context)
         {
             string name = GetName(context);
-            if (name.ToLower().EndsWith(".cdl")) return new CdlFile {Connection = Connection, Name = name};
-            if (name.ToLower().EndsWith(".csv")) return new CsvFile { Connection = Connection, Name = name };
+            var format = FindFormat(context);
+
+            if (format != null)
+                return format.CreateSource(name);
+
+            //if (name.ToLower().EndsWith(".cdl")) return new CdlFile { Connection = Connection, Name = name };
+            //if (name.ToLower().EndsWith(".csv")) return new CsvFile { Connection = Connection, Name = name };
 
             //if (name.ToLower().EndsWith(".xml")) return new XmlReader { Connection = Connection, File = name, AnalyseColumns = true };
 
@@ -43,8 +60,14 @@ namespace DbShell.Core
         private ITabularDataTarget CreateTarget(IShellContext context)
         {
             string name = GetName(context);
-            if (name.ToLower().EndsWith(".cdl")) return new CdlFile { Connection = Connection, Name = name };
-            if (name.ToLower().EndsWith(".csv")) return new CsvFile { Connection = Connection, Name = name };
+            var format = FindFormat(context);
+
+            if (format != null)
+                return format.CreateTarget(name);
+
+            //string name = GetName(context);
+            //if (name.ToLower().EndsWith(".cdl")) return new CdlFile { Connection = Connection, Name = name };
+            //if (name.ToLower().EndsWith(".csv")) return new CsvFile { Connection = Connection, Name = name };
 
             //if (name.ToLower().EndsWith(".html") || name.ToLower().EndsWith(".htm"))
             //{

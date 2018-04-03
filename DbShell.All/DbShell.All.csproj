@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DbShell.Core\DbShell.Core.csproj" />
+    <ProjectReference Include="..\DbShell.Csv\DbShell.Csv.csproj" />
     <ProjectReference Include="..\DbShell.Driver.Common\DbShell.Driver.Common.csproj" />
     <ProjectReference Include="..\DbShell.Driver.MySql\DbShell.Driver.MySql.csproj" />
     <ProjectReference Include="..\DbShell.Driver.Postgres\DbShell.Driver.Postgres.csproj" />

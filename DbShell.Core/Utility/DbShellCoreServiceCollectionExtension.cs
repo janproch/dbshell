@@ -12,7 +12,7 @@ namespace DbShell.Core.Utility
     {
         public static void AddDbShellCore(this IServiceCollection services)
         {
-            services.AddSingleton<IJsonElementProvider, DbShellCoreElementsProvider>();
+            services.AddTransient<IJsonElementProvider, DbShellCoreElementsProvider>();
             services.AddSingleton<IJsonElementFactory, JsonElementFactory>();
             services.AddTransient<IDbShellParser, DbShellParser>();
             services.AddSingleton<IDbShellLanguageProvider, DbShellLanguageProvider>();
