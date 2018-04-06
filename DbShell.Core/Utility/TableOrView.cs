@@ -15,7 +15,7 @@ namespace DbShell.Core.Utility
     /// <summary>
     /// Table in database
     /// </summary>
-    public abstract class TableOrView : ElementBase, ITabularDataSource, ITabularDataTarget, IListProvider, IModelProvider
+    public abstract class TableOrView : ElementBase, ITabularDataSource, ITabularDataTarget, IListProvider, IModelProvider, ISingleValueDbShellObject
     {
         /// <summary>
         /// Table schema, can be ommited (eg. "dbo" on SQL server)
@@ -169,6 +169,18 @@ namespace DbShell.Core.Utility
         }
 
         protected abstract string XamlExtensionName { get; }
+
+        object ISingleValueDbShellObject.SingleValue
+        {
+            get
+            {
+                return Name;
+            }
+            set
+            {
+                Name = value?.ToString();
+            }
+        }
 
         public override string ToXamlExtension()
         {

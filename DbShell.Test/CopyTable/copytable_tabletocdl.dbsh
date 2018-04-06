@@ -1,1 +1,1 @@
-copyTable(source=table(name="Album"), target=file(name="test.cdl"));
+copyTable(source=table("Album"), target=file("test.cdl"));

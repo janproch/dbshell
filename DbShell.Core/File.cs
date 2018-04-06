@@ -15,7 +15,7 @@ namespace DbShell.Core
     /// <summary>
     /// Object representing file
     /// </summary>
-    public class File : ElementBase, ITabularDataSource, ITabularDataTarget
+    public class File : ElementBase, ITabularDataSource, ITabularDataTarget, ISingleValueDbShellObject
     {
         [XamlProperty]
         public string Name { get; set; }
@@ -109,6 +109,18 @@ namespace DbShell.Core
         public override string ToStringCtx(IShellContext context)
         {
             return String.Format("[File {0}]", context.Replace(Name));
+        }
+
+        object ISingleValueDbShellObject.SingleValue
+        {
+            get
+            {
+                return Name;
+            }
+            set
+            {
+                Name = value?.ToString();
+            }
         }
     }
 }

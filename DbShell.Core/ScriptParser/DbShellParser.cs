@@ -32,6 +32,12 @@ namespace DbShell.Core.ScriptParser
                     var batch = new Batch();
                     ConvertCommandList(batch.Commands, node.ChildNodes);
                     return batch;
+                case "true":
+                    return true;
+                case "false":
+                    return true;
+                case "string":
+                    return node.Token.ValueString;
                 case "Command":
                     if (node.ChildNodes[0].Term.Name == "Assign")
                     {
@@ -41,27 +47,29 @@ namespace DbShell.Core.ScriptParser
                     var type = _elementFactory.JsonBinder.BindToType(null, typeName);
                     var instance = Activator.CreateInstance(type);
 
-                    foreach (var paramNode in node.ChildNodes[1].ChildNodes)
+                    if (node.ChildNodes[1].Term.Name == "CommandValue")
                     {
-                        string propName = MiscTool.ToPascalCase(paramNode.ChildNodes[0].Token.Text);
-                        object propValue = null;
-
-                        if (paramNode.ChildNodes[1].Term.Name == "Command")
-                            propValue = ConvertNode(paramNode.ChildNodes[1]);
-                        else if (paramNode.ChildNodes[1].Term.Name == "true")
-                            propValue = true;
-                        else if (paramNode.ChildNodes[1].Term.Name == "false")
-                            propValue = false;
-                        else
-                            propValue = paramNode.ChildNodes[1].Token.ValueString;
-
-                        var prop = type.GetProperty(propName);
-                        if (prop == null)
+                        var singleHolder = instance as ISingleValueDbShellObject;
+                        object propValue = ConvertNode(node.ChildNodes[1].ChildNodes[0]);
+                        singleHolder.SingleValue = propValue;
+                    }
+                    else
+                    {
+                        foreach (var paramNode in node.ChildNodes[1].ChildNodes)
                         {
-                            _logger.LogWarning("Type {type} has not property {property}", typeName, propName);
-                            continue;
+                            string propName = MiscTool.ToPascalCase(paramNode.ChildNodes[0].Token.Text);
+
+                            var valueNode = paramNode.ChildNodes[1].ChildNodes[0];
+                            object propValue = ConvertNode(valueNode);
+
+                            var prop = type.GetProperty(propName);
+                            if (prop == null)
+                            {
+                                _logger.LogWarning("Type {type} has not property {property}", typeName, propName);
+                                continue;
+                            }
+                            prop.SetValue(instance, propValue);
                         }
-                        prop.SetValue(instance, propValue);
                     }
 
                     foreach (var subnode in node.ChildNodes[2].ChildNodes)

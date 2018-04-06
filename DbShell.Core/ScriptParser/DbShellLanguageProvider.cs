@@ -30,13 +30,14 @@ namespace DbShell.Core.ScriptParser
             var nSubcommand = new NonTerminal("SubCommand");
             var nCommandValue = new NonTerminal("CommandValue");
             var nOptionalIdent = new NonTerminal("OptionalIdent");
+            var nCommandParams = new NonTerminal("CommandParams");
 
             var narray = new NonTerminal("Array");
             var narrayBr = new NonTerminal("ArrayBr");
             var nvalue = new NonTerminal("Value");
             var nprop = new NonTerminal("Property");
 
-            nCommand.Rule = tident + "(" + nCommandPropList + ")" + nSubcommandList;
+            nCommand.Rule = tident + "(" + nCommandParams + ")" + nSubcommandList;
             nCommand.Rule |= nAssign;
             nAssign.Rule = tident + "=" + tstring;
             nCommandWithSemicolon.Rule = nCommand;
@@ -44,6 +45,7 @@ namespace DbShell.Core.ScriptParser
             nCommandList.Rule = MakeStarRule(nCommandList, nCommandWithSemicolon);
 
             nCommandPropList.Rule = MakeStarRule(nCommandPropList, tcomma, nCommandProp);
+            nCommandParams.Rule = nCommandPropList | nCommandValue;
             nCommandValue.Rule = tstring | nCommand | litTrue | litFalse;
             nCommandProp.Rule = tident + "=" + nCommandValue;
             nSubcommandList.Rule = MakeStarRule(nSubcommandList, nSubcommand);
@@ -51,7 +53,7 @@ namespace DbShell.Core.ScriptParser
             nSubcommand.Rule = nOptionalIdent + "{" + nCommandList + "}";
 
             MarkPunctuation("{", "}", "(", ")", "=", ",", ";");
-            MarkTransient(nCommandValue, nCommandWithSemicolon, nOptionalIdent);
+            MarkTransient(nCommandWithSemicolon, nOptionalIdent, nCommandParams);
 
             var singleLineComment = new CommentTerminal("SingleLineComment", "//", "\r", "\n", "\u2085", "\u2028", "\u2029");
             var delimitedComment = new CommentTerminal("DelimitedComment", "/*", "*/");

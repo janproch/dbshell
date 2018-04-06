@@ -1,4 +1,4 @@
-copyTable(source=table(name="Album"), target=table(name="AlbumCopy"), cleanTarget=true);
+copyTable(source=table("Album"), target=table("AlbumCopy"), cleanTarget=true);
 
-copyTable(source=table(name="Album"), target=file(name="test1.cdl"));
-copyTable(source=table(name="AlbumCopy"), target=file(name="test2.cdl"));
+copyTable(source=table("Album"), target=file("test1.cdl"));
+copyTable(source=table("AlbumCopy"), target=file("test2.cdl"));
