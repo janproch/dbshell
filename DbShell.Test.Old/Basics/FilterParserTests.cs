@@ -1,73 +1,81 @@
 ﻿using DbShell.Driver.Common.DmlFramework;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
+using DbShell.FilterParser.Antlr;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Xunit;
 
 namespace DbShell.Test.Basics
 {
+    [TestClass]
     public class FilterParserTests
     {
         private bool TestCondition(FilterParserTool.ExpressionType type, string condition, object testedValue)
         {
             var cond = FilterParserTool.ParseFilterExpression(type, new DmlfPlaceholderExpression(), condition);
             var ns = new DmlfSingleValueNamespace(testedValue);
-            Assert.NotNull(cond);
+            Assert.IsNotNull(cond, $"Error parsing condition {condition}");
             return cond.EvalCondition(ns);
         }
 
         private void StringTrue(string condition, string testedString)
         {
-            Assert.True(TestCondition(FilterParserTool.ExpressionType.String, condition, testedString));
+            Assert.IsTrue(TestCondition(FilterParserTool.ExpressionType.String, condition, testedString));
         }
 
         private void StringFalse(string condition, string testedString)
         {
-            Assert.False(TestCondition(FilterParserTool.ExpressionType.String, condition, testedString));
+            Assert.IsFalse(TestCondition(FilterParserTool.ExpressionType.String, condition, testedString));
         }
 
         private void NumberTrue(string condition, string testedString)
         {
-            Assert.True(TestCondition(FilterParserTool.ExpressionType.Number, condition, testedString));
+            Assert.IsTrue(TestCondition(FilterParserTool.ExpressionType.Number, condition, testedString));
         }
 
         private void NumberFalse(string condition, string testedString)
         {
-            Assert.False(TestCondition(FilterParserTool.ExpressionType.Number, condition, testedString));
+            Assert.IsFalse(TestCondition(FilterParserTool.ExpressionType.Number, condition, testedString));
         }
 
         private void DateTimeTrue(string condition, DateTime value, bool stringTest=true)
         {
-            Assert.True(TestCondition(FilterParserTool.ExpressionType.DateTime, condition, value));
+            Assert.IsTrue(TestCondition(FilterParserTool.ExpressionType.DateTime, condition, value));
             if (stringTest)
             {
-                Assert.True(TestCondition(FilterParserTool.ExpressionType.DateTime, condition, value.ToString("s")));
+                Assert.IsTrue(TestCondition(FilterParserTool.ExpressionType.DateTime, condition, value.ToString("s")));
             }
         }
 
         private void DateTimeFalse(string condition, DateTime value, bool stringTest = true)
         {
-            Assert.False(TestCondition(FilterParserTool.ExpressionType.DateTime, condition, value));
+            Assert.IsFalse(TestCondition(FilterParserTool.ExpressionType.DateTime, condition, value));
             if (stringTest)
             {
-                Assert.False(TestCondition(FilterParserTool.ExpressionType.DateTime, condition, value.ToString("s")));
+                Assert.IsFalse(TestCondition(FilterParserTool.ExpressionType.DateTime, condition, value.ToString("s")));
             }
         }
 
         private void LogicalTrue(string condition, string testedString)
         {
-            Assert.True(TestCondition(FilterParserTool.ExpressionType.Logical, condition, testedString));
+            Assert.IsTrue(TestCondition(FilterParserTool.ExpressionType.Logical, condition, testedString));
         }
 
         private void LogicalFalse(string condition, string testedString)
         {
-            Assert.False(TestCondition(FilterParserTool.ExpressionType.Logical, condition, testedString));
+            Assert.IsFalse(TestCondition(FilterParserTool.ExpressionType.Logical, condition, testedString));
         }
 
-        [Fact]
+        [TestInitialize]
+        public void Initialize()
+        {
+            //FilterParserAntlrCore.Initialize();
+        }
+
+        [TestMethod]
         public void TestStringFilter()
         {
             StringTrue("'val'", "val");
@@ -84,7 +92,7 @@ namespace DbShell.Test.Basics
             StringFalse("NOT EMPTY", "   ");
         }
 
-        [Fact]
+        [TestMethod]
         public void TestNumberFilter()
         {
             NumberTrue("='1'", "1");
@@ -105,7 +113,7 @@ namespace DbShell.Test.Basics
             NumberFalse("-5--1", "-6");
         }
 
-        [Fact]
+        [TestMethod]
         public void TestDateTimeFilter()
         {
             DateTimeTrue("TODAY", DateTime.Now);
@@ -144,7 +152,7 @@ namespace DbShell.Test.Basics
             DateTimeFalse(">2016-03-05 15:23", new DateTime(2016, 3, 5, 15, 23, 46));
         }
 
-        [Fact]
+        [TestMethod]
         public void TestLogicalFilter()
         {
             LogicalTrue("TRUE", "1");
@@ -158,17 +166,17 @@ namespace DbShell.Test.Basics
         private void ObjectTrue(string condition, FilterableObjectData obj)
         {
             var cond = FilterParserTool.ParseObjectFilter(condition);
-            Assert.NotNull(cond);
-            Assert.True(cond.Match(obj));
+            Assert.IsNotNull(cond, $"Error parsing condition {condition}");
+            Assert.IsTrue(cond.Match(obj));
         }
         private void ObjectFalse(string condition, FilterableObjectData obj)
         {
             var cond = FilterParserTool.ParseObjectFilter(condition);
-            Assert.NotNull(cond);
-            Assert.False(cond.Match(obj));
+            Assert.IsNotNull(cond, $"Error parsing condition {condition}");
+            Assert.IsFalse(cond.Match(obj));
         }
 
-        [Fact]
+        [TestMethod]
         public void TestObjectFilter()
         {
             ObjectTrue("table", new FilterableObjectData { Name = "Table1" });

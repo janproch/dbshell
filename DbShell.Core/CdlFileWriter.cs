@@ -15,14 +15,13 @@ namespace DbShell.Core
 
         public CdlFileWriter(string file, TableInfo table)
         {
-            var fw = new FileInfo(file).OpenWrite();
+            var fw = new FileInfo(file).Create();
             _bw = new BinaryWriter(fw);
-            var doc = XmlTool.CreateDocument("Table");
             var tcopy = table.CloneTable();
             tcopy.ForeignKeys.Clear();
             if (tcopy.PrimaryKey != null) tcopy.PrimaryKey.ConstraintName = null;
-            tcopy.SaveToXml(doc.DocumentElement);
-            _bw.Write(doc.GetPackedDocumentXml());
+            string data = JsonTool.Serialize(tcopy, x => x.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto);
+            _bw.Write(data);
         }
 
         public void Write(ICdlRecord row)

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DbShell.All;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,6 +10,20 @@ namespace DbShell.Test
 {
     public static class TestUtility
     {
+        private static void ConfigureServices(IServiceCollection services)
+        {
+            services.AddLogging();
+            services.AddDbShell();
+        }
+
+        public static IServiceProvider BuildServiceProvider()
+        {
+            var services = new ServiceCollection();
+            ConfigureServices(services);
+            var serviceProvider = services.BuildServiceProvider();
+            return serviceProvider;
+        }
+
         public static bool FileCompareCdlContent(string srcFileName, string dstFileName)
         {
             const int BUFFER_SIZE = 1 << 16;

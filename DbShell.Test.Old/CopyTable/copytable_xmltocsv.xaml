@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Batch xmlns="http://schemas.dbshell.com/core">
+    <CopyTable Source="{File 'importedxml1.xml'}" Target="{File 'outputcsv1.csv'}" />
+    <CopyTable Source="{File 'importedxml2.xml'}" Target="{File 'outputcsv2.csv'}" />
+    <CopyTable Source="{File 'importedxml3.xml'}" Target="{File 'outputcsv3.csv'}" />
+    <CopyTable Source="{File 'importedxml4.xml'}" Target="{File 'outputcsv4.csv'}" />
+</Batch>    

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace DbShell.Core.ScriptParser
@@ -47,6 +48,10 @@ namespace DbShell.Core.ScriptParser
 
                         if (paramNode.ChildNodes[1].Term.Name == "Command")
                             propValue = ConvertNode(paramNode.ChildNodes[1]);
+                        else if (paramNode.ChildNodes[1].Term.Name == "true")
+                            propValue = true;
+                        else if (paramNode.ChildNodes[1].Term.Name == "false")
+                            propValue = false;
                         else
                             propValue = paramNode.ChildNodes[1].Token.ValueString;
 
@@ -120,6 +125,7 @@ namespace DbShell.Core.ScriptParser
             foreach (var error in tree.ParserMessages)
             {
                 _logger.LogError("Parse error: {message}, location: {location}", error.Message, error.Location);
+                Trace.WriteLine($"Parse error: {error.Message}, location: {error.Location}");
             }
             if (tree.HasErrors())
                 return null;

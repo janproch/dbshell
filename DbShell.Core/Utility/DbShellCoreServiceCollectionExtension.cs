@@ -16,6 +16,7 @@ namespace DbShell.Core.Utility
             services.AddSingleton<IJsonElementFactory, JsonElementFactory>();
             services.AddTransient<IDbShellParser, DbShellParser>();
             services.AddSingleton<IDbShellLanguageProvider, DbShellLanguageProvider>();
+            services.AddTransient<IDataFileFormat, CdlFileFormat>();
         }
     }
 }

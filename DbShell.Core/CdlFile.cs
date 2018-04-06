@@ -36,10 +36,7 @@ namespace DbShell.Core
             var fr = new FileInfo(file).OpenRead();
             br = new BinaryReader(fr);
             string s = br.ReadString();
-            var doc = new XmlDocument();
-            doc.LoadXml(s);
-            table = new TableInfo(null);
-            table.LoadFromXml(doc.DocumentElement);
+            table = JsonTool.Deserilize<TableInfo>(s, x => x.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto);
             table.AfterLoadLink();
         }
 

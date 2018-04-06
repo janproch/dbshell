@@ -3,25 +3,16 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
 using DbShell.Core.Runtime;
-using Xunit;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace DbShell.Test
 {
     public class DatabaseTestBase
     {
-        public const string ConnectionString = @"MultipleActiveResultSets=True;Data Source=localhost\SQLEXPRESS;Integrated Security=SSPI";
-        public const string DatabaseName = "DbShellTest";
-
-        private string GetConnectionString(bool specifyDatabase)
-        {
-            string conns = ConnectionString;
-            if (specifyDatabase) conns += ";Initial Catalog=" + DatabaseName;
-            return conns;
-        }
-
         public SqlConnection OpenConnection(bool specifyDatabase)
         {
-            string conns = GetConnectionString(specifyDatabase);
+            string conns = ConfigurationManager.ConnectionStrings["Database"].ConnectionString;
+            if (specifyDatabase) conns += ";Initial Catalog=" + ConfigurationManager.AppSettings["Database"];
             var conn = new SqlConnection(conns);
             conn.Open();
             return conn;
@@ -29,17 +20,18 @@ namespace DbShell.Test
 
         protected ShellRunner CreateRunner()
         {
-            var runner = new ShellRunner(TestUtility.BuildServiceProvider());
-            runner.Context.SetDefaultConnection("sqlserver://" + GetConnectionString(true));
+            var runner = new ShellRunner();
+            runner.Context.SetDefaultConnection("sqlserver://" + ConfigurationManager.ConnectionStrings["Database"].ConnectionString + ";Initial Catalog=" +
+                                                ConfigurationManager.AppSettings["Database"]);
             return runner;
         }
 
-        public DatabaseTestBase()
+        public void InitDatabase()
         {
             // force close LINQ SQL connection
             SqlConnection.ClearAllPools();
 
-            string dbname = DatabaseName;
+            string dbname = ConfigurationManager.AppSettings["Database"];
 
             using (var conn = OpenConnection(false))
             {
@@ -61,8 +53,6 @@ CREATE DATABASE {0}",
             }
 
             SqlConnection.ClearAllPools();
-
-            RunEmbeddedScript("CopyTable.CreateTestData.sql");
         }
 
         public void RunScript(string sql)
@@ -117,19 +107,19 @@ CREATE DATABASE {0}",
         public void AssertIsNotNull(string sql)
         {
             object value = ExecuteScalar(sql);
-            Assert.True(value != null && value != DBNull.Value);
+            Assert.IsTrue(value != null && value != DBNull.Value);
         }
 
         public void AssertIsNull(string sql)
         {
             object value = ExecuteScalar(sql);
-            Assert.True(value == null || value == DBNull.Value);
+            Assert.IsTrue(value == null || value == DBNull.Value);
         }
 
         public void AssertIsValue(string svalue, string sql)
         {
             object value = ExecuteScalar(sql);
-            Assert.True(value?.ToString() == svalue);
+            Assert.IsTrue(value?.ToString() == svalue);
         }
 
         public void AssertExists(string sql)

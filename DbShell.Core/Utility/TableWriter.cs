@@ -44,6 +44,7 @@ namespace DbShell.Core.Utility
             _inserter.DestinationTable = destinationTableOverride ?? db.FindTableLike(_name.Schema, _name.Name);
             _inserter.CopyOptions = options;
             _inserter.Log += _inserter_Log;
+            _inserter.ServiceProvider = context.ServiceProvider;
 
             _thread = new Thread(Run);
             _thread.Start();

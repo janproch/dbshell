@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CopyTable
+    xmlns="http://schemas.dbshell.com/core"
+    >
+    <CopyTable.Source>
+        <Table Name="Album" />
+    </CopyTable.Source>
+    <CopyTable.Target>
+        <CdlFile Name="c:\test\test.cdl" />
+    </CopyTable.Target>
+</CopyTable>
+ 

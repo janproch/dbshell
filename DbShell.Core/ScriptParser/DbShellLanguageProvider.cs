@@ -16,6 +16,8 @@ namespace DbShell.Core.ScriptParser
             var tstring = new StringLiteral("string", "\"");
             var tnumber = new NumberLiteral("number");
             var tcomma = ToTerm(",");
+            var litTrue = ToTerm("true", "true");
+            var litFalse = ToTerm("false", "false");
 
             //Nonterminals
             var nCommand = new NonTerminal("Command");
@@ -42,7 +44,7 @@ namespace DbShell.Core.ScriptParser
             nCommandList.Rule = MakeStarRule(nCommandList, nCommandWithSemicolon);
 
             nCommandPropList.Rule = MakeStarRule(nCommandPropList, tcomma, nCommandProp);
-            nCommandValue.Rule = tstring | nCommand;
+            nCommandValue.Rule = tstring | nCommand | litTrue | litFalse;
             nCommandProp.Rule = tident + "=" + nCommandValue;
             nSubcommandList.Rule = MakeStarRule(nSubcommandList, nSubcommand);
             nOptionalIdent.Rule = Empty | tident;
