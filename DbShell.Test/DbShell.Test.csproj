@@ -37,6 +37,9 @@
     <None Update="CopyTable\copytable_cdltocdl.dbsh">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="CopyTable\copytable_columnmap.dbsh">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="CopyTable\copytable_tabletocdl.dbsh">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

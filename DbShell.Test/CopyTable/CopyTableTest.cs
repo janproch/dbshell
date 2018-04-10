@@ -45,24 +45,21 @@ namespace DbShell.Test
             Assert.True(TestUtility.FileCompareCdlContent("test1.cdl", "test2.cdl"));
         }
 
-        //[TestMethod]
-        //[DeploymentItem("CopyTable/copytable_columnmap.xaml")]
-        //public void CopyTableColumnMapTest()
-        //{
-        //    InitDatabase();
-        //    RunEmbeddedScript("CopyTable.CreateTestData.sql");
-        //    using (var runner = CreateRunner())
-        //    {
-        //        runner.LoadFile("copytable_columnmap.xaml");
-        //        runner.Run();
-        //        using (var sr = new StreamReader("test.csv"))
-        //        {
-        //            sr.ReadLine();
-        //            string line = sr.ReadLine().Trim();
-        //            Assert.AreEqual("1,4,AlbumId=1", line);
-        //        }
-        //    }
-        //}
+        [Fact]
+        public void CopyTableColumnMapTest()
+        {
+            using (var runner = CreateRunner())
+            {
+                runner.LoadFile("CopyTable/copytable_columnmap.dbsh");
+                runner.Run();
+                using (var sr = new StreamReader("test.csv"))
+                {
+                    sr.ReadLine();
+                    string line = sr.ReadLine().Trim();
+                    Assert.Equal("1,1,AlbumId=1", line);
+                }
+            }
+        }
 
         //[TestMethod]
         //[DeploymentItem("CopyTable/copyalltables.xaml")]

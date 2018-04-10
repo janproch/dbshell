@@ -60,13 +60,13 @@ namespace DbShell.Core
         /// How to map input columns to target (used if target has fixed columns, eg. existing table)
         /// </summary>
         [XamlProperty]
-        public TargetColumnMapMode TargetMapMode { get; set; }
+        public TargetColumnMapMode TargetMapMode { get; set; } = TargetColumnMapMode.Name;
 
         /// <summary>
         /// whether to allow bulk copy inserting, if target supports it
         /// </summary>
         [XamlProperty]
-        public bool AllowBulkCopy { get; set; }
+        public bool AllowBulkCopy { get; set; } = true;
 
         /// <summary>
         /// Gets or sets the column map. If ColumnMap is empty (no mappings are defined), identity column map is used
@@ -75,7 +75,7 @@ namespace DbShell.Core
         /// The column map.
         /// </value>
         [XamlProperty]
-        public List<IColumnMapping> ColumnMap { get; set; }
+        public List<IColumnMapping> ColumnMap { get; set; } = new List<IColumnMapping>();
 
         protected override void DoRun(IShellContext context)
         {
@@ -172,15 +172,5 @@ namespace DbShell.Core
 
         //    foreach (var item in ColumnMap) YieldChild(enumFunc, item);
         //}
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CopyTable" /> class.
-        /// </summary>
-        public CopyTable()
-        {
-            ColumnMap = new List<IColumnMapping>();
-            TargetMapMode = TargetColumnMapMode.Name;
-            AllowBulkCopy = true;
-        }
     }
 }

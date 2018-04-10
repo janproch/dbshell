@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<Batch xmlns="http://schemas.dbshell.com/core">
-    <CopyTable Source="{Table Album}" Target="{File test.csv}" CleanTarget="True" >
-      <CopyTable.ColumnMap>
-        <MapColumn Name="AlbumId" />
-        <MapValue Name="test" Expression="3+AlbumId"/>
-        <MapValue Name="test2" Value="AlbumId=${AlbumId}" />
-      </CopyTable.ColumnMap>
-    </CopyTable>
-</Batch>    
+CopyTable(
+  source=Table("Album"),
+  target=File("test.csv"),
+  clearTarget=true
+)
+columnMap {
+  MapColumn(name="AlbumId");
+  MapValue(name="test", Expression="AlbumId");
+  MapValue(name="test2", Value="AlbumId=${AlbumId}");
+}

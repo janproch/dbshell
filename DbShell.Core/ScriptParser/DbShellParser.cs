@@ -45,6 +45,10 @@ namespace DbShell.Core.ScriptParser
                     }
                     string typeName = node.ChildNodes[0].Token.Text;
                     var type = _elementFactory.JsonBinder.BindToType(null, typeName);
+
+                    if (type == null)
+                        throw new Exception($"Json type {typeName} not defined");
+
                     var instance = Activator.CreateInstance(type);
 
                     if (node.ChildNodes[1].Term.Name == "CommandValue")
@@ -78,7 +82,7 @@ namespace DbShell.Core.ScriptParser
 
                         if (subnode.ChildNodes.Count == 2)
                         {
-                            string propName = subnode.ChildNodes[0].Token.Text;
+                            string propName = MiscTool.ToPascalCase(subnode.ChildNodes[0].Token.Text);
                             var propInfo = type.GetProperty(propName);
                             collection = (IList)propInfo.GetValue(instance);
                         }

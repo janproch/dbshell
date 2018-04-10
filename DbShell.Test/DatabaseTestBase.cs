@@ -5,6 +5,8 @@ using System.IO;
 using DbShell.Core.Runtime;
 using Xunit;
 
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
+
 namespace DbShell.Test
 {
     public class DatabaseTestBase

@@ -1,4 +1,5 @@
-﻿using DbShell.Driver.Common.Interfaces;
+﻿using DbShell.Core.Utility;
+using DbShell.Driver.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +10,8 @@ namespace DbShell.Csv
     {
         public void EnumJsonTypes(Action<string, Type> typeFunc)
         {
-            typeFunc("csvFile", typeof(CsvFile));
+            MiscTool.RegisterAllJsonTypes(typeof(DbShellCsvElementsProvider).Assembly, "DbShell.Csv", typeFunc);
+            //typeFunc("csvFile", typeof(CsvFile));
         }
     }
 }

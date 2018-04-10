@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace DbShell.Core.Utility
@@ -20,6 +21,16 @@ namespace DbShell.Core.Utility
             if (value.Length > 0 && char.IsLower(value[0]))
                 return char.ToUpper(value[0]) + value.Substring(1);
             return value;
+        }
+
+        public static void RegisterAllJsonTypes(Assembly assembly, string ns, Action<string, Type> typeFunc)
+        {
+            foreach(var type in assembly.GetTypes())
+            {
+                if (!type.FullName.StartsWith(ns + "."))
+                    continue;
+                typeFunc(type.Name, type);
+            }
         }
     }
 }
