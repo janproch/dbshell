@@ -1,0 +1,3 @@
+ForEach(property="table", source=GetTables()) {
+  CopyTable(source=Table("${table.Name}"), target=File("${table.Name}.cdl"));
+}

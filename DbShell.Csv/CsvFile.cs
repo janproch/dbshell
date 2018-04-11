@@ -12,11 +12,7 @@ using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
 using DbShell.Driver.Common.Interfaces;
 using Microsoft.Extensions.Logging;
-
-#if !NETSTANDARD2_0
 using LumenWorks.Framework.IO.Csv;
-using CsvReader = DbShell.Core.Utility.CsvReader;
-#endif
 
 namespace DbShell.Csv
 {
@@ -190,7 +186,6 @@ namespace DbShell.Csv
             return context.Replace(Name);
         }
 
-#if !NETSTANDARD2_0
         private LumenWorks.Framework.IO.Csv.CsvReader CreateCsvReader(IShellContext context)
         {
             string name = GetName(context);
@@ -229,17 +224,6 @@ namespace DbShell.Csv
             var reader = CreateCsvReader(textReader);
             return new CsvReader(GetStructure(reader), reader, DataFormat);
         }
-#endif
-
-        TableInfo ITabularDataSource.GetRowFormat(IShellContext context)
-        {
-            return null;
-        }
-
-        ICdlReader ITabularDataSource.CreateReader(IShellContext context)
-        {
-            return null;
-        }
 
         bool ITabularDataTarget.IsAvailableRowFormat(IShellContext context)
         {
@@ -261,7 +245,6 @@ namespace DbShell.Csv
             return writer;
         }
 
-#if !NETSTANDARD2_0
         private TableInfo GetStructure(LumenWorks.Framework.IO.Csv.CsvReader reader)
         {
             var res = new TableInfo(null);
@@ -269,19 +252,18 @@ namespace DbShell.Csv
             {
                 foreach (string col in reader.GetFieldHeaders())
                 {
-                    res.Columns.Add(new ColumnInfo(res) { CommonType = new DbTypeString(), DataType = "nvarchar", Length = -1, Name = col });
+                    res.Columns.Add(new ColumnInfo(res) { CommonType = new DbTypeString(), DataType = "nvarchar", Name = col });
                 }
             }
             else
             {
                 for (int i = 1; i <= reader.FieldCount; i++)
                 {
-                    res.Columns.Add(new ColumnInfo(res) { CommonType = new DbTypeString(), DataType = "nvarchar", Length = -1, Name = String.Format("#{0}", i) });
+                    res.Columns.Add(new ColumnInfo(res) { CommonType = new DbTypeString(), DataType = "nvarchar", Name = String.Format("#{0}", i) });
                 }
             }
             return res;
         }
-#endif
 
         public char DetectDelimiter(IShellContext context)
         {

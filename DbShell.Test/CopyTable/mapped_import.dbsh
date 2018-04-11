@@ -1,0 +1,4 @@
+CopyTable(source=File("ImportedData.csv"), target=Table("ImportedData"));
+CopyTable(source=File("ImportedData.csv"), target=Table("ImportedData"), targetMapMode="OrdinalSkipIdentity");
+CopyTable(source=File("ImportedData.csv"), target=Table("ImportedData"), allowBulkCopy=false);
+CopyTable(source=File("ImportedData.csv"), target=Table("ImportedData"), targetMapMode="OrdinalSkipIdentity", allowBulkCopy=false);

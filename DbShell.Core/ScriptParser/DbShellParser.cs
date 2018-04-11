@@ -72,6 +72,10 @@ namespace DbShell.Core.ScriptParser
                                 _logger.LogWarning("Type {type} has not property {property}", typeName, propName);
                                 continue;
                             }
+
+                            if (propValue is string propValueString && prop.PropertyType.IsEnum)
+                                propValue = Enum.Parse(prop.PropertyType, propValueString);
+
                             prop.SetValue(instance, propValue);
                         }
                     }

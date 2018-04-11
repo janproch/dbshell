@@ -1,6 +1,4 @@
-﻿#if !NETSTANDARD2_0
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +13,7 @@ namespace DbShell.Csv
         private LumenWorks.Framework.IO.Csv.CsvReader _reader;
         private string[] _array;
         private DataFormatSettings _dataFormat;
+        private bool _canceled;
 
         public CsvReader(TableInfo structure, LumenWorks.Framework.IO.Csv.CsvReader reader, DataFormatSettings dataFormat)
             : base(structure)
@@ -26,6 +25,9 @@ namespace DbShell.Csv
 
         public bool Read()
         {
+            if (_canceled)
+                return false;
+
             if (_reader.ReadNextRecord())
             {
                 _reader.CopyCurrentRecordTo(_array);
@@ -61,7 +63,11 @@ namespace DbShell.Csv
             }
             _reader.Dispose();
         }
+
+        public void Cancel()
+        {
+            _canceled = true;
+        }
     }
 }
 
-#endif

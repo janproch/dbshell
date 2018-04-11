@@ -61,57 +61,50 @@ namespace DbShell.Test
             }
         }
 
-        //[TestMethod]
-        //[DeploymentItem("CopyTable/copyalltables.xaml")]
-        //public void CopyAllTablesTest()
-        //{
-        //    InitDatabase();
-        //    RunEmbeddedScript("CopyTable.CreateTestData.sql");
-        //    using (var runner = CreateRunner())
-        //    {
-        //        runner.LoadFile("copyalltables.xaml");
-        //        runner.Run();
-        //    }
-        //}
+        [Fact]
+        public void CopyAllTablesTest()
+        {
+            using (var runner = CreateRunner())
+            {
+                runner.LoadFile("CopyTable/copyalltables.dbsh");
+                runner.Run();
+            }
+        }
 
-        //private void TestValue(string table, string idcol, string idval, string column, string value)
-        //{
-        //    using (var conn = OpenConnection(true))
-        //    {
-        //        using (var cmd = conn.CreateCommand())
-        //        {
-        //            cmd.CommandText = String.Format("SELECT [{0}] FROM [{1}] WHERE [{2}] = '{3}'", column, table, idcol, idval);
-        //            string realVal = cmd.ExecuteScalar().SafeToString();
-        //            Assert.AreEqual(value, realVal);
-        //        }
-        //    }
-        //}
+        private void TestValue(string table, string idcol, string idval, string column, string value)
+        {
+            using (var conn = OpenConnection(true))
+            {
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = String.Format("SELECT [{0}] FROM [{1}] WHERE [{2}] = '{3}'", column, table, idcol, idval);
+                    string realVal = cmd.ExecuteScalar().SafeToString();
+                    Assert.Equal(value, realVal);
+                }
+            }
+        }
 
-        //[TestMethod]
-        //[DeploymentItem("CopyTable/mapped_import.xaml")]
-        //[DeploymentItem("CopyTable/ImportedData.csv")]
-        //public void MappedImportTest()
-        //{
-        //    InitDatabase();
-        //    RunEmbeddedScript("CopyTable.CreateTestData.sql");
-        //    using (var runner = CreateRunner())
-        //    {
-        //        runner.LoadFile("mapped_import.xaml");
-        //        runner.Run();
-        //    }
+        [Fact]
+        public void MappedImportTest()
+        {
+            using (var runner = CreateRunner())
+            {
+                runner.LoadFile("CopyTable/mapped_import.dbsh");
+                runner.Run();
+            }
+            
+            // bulk copy
+            TestValue("ImportedData", "ID_IMPORTED", "1", "Data1", "a1");
+            TestValue("ImportedData", "ID_IMPORTED", "3", "Data3", "c3");
+            TestValue("ImportedData", "ID_IMPORTED", "4", "Data1", "a3");
+            TestValue("ImportedData", "ID_IMPORTED", "6", "Data3", "c2");
 
-        //    // bulk copy
-        //    TestValue("ImportedData", "ID_IMPORTED", "1", "Data1", "a1");
-        //    TestValue("ImportedData", "ID_IMPORTED", "3", "Data3", "c3");
-        //    TestValue("ImportedData", "ID_IMPORTED", "4", "Data1", "a3");
-        //    TestValue("ImportedData", "ID_IMPORTED", "6", "Data3", "c2");
-
-        //    // inserts
-        //    TestValue("ImportedData", "ID_IMPORTED", "7", "Data1", "a1");
-        //    TestValue("ImportedData", "ID_IMPORTED", "9", "Data3", "c3");
-        //    TestValue("ImportedData", "ID_IMPORTED", "10", "Data1", "a3");
-        //    TestValue("ImportedData", "ID_IMPORTED", "12", "Data3", "c2");
-        //}
+            // inserts
+            TestValue("ImportedData", "ID_IMPORTED", "7", "Data1", "a1");
+            TestValue("ImportedData", "ID_IMPORTED", "9", "Data3", "c3");
+            TestValue("ImportedData", "ID_IMPORTED", "10", "Data1", "a3");
+            TestValue("ImportedData", "ID_IMPORTED", "12", "Data3", "c2");
+        }
 
         //[TestMethod]
         //[DeploymentItem("CopyTable/copytable_xmltocsv.xaml")]

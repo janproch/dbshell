@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="LumenWorks.Framework.IO" Version="3.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DbShell.Core\DbShell.Core.csproj" />
     <ProjectReference Include="..\DbShell.Driver.Common\DbShell.Driver.Common.csproj" />
   </ItemGroup>
