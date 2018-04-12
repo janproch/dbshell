@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using DbShell.Core.Utility;
 
-namespace DbShell.Core
+namespace DbShell.Xml
 {
     /// <summary>
     /// definition of column saved in XML

@@ -1,0 +1,4 @@
+CopyTable(source=File("importedxml1.xml"), target=File("outputcsv1.csv"));
+CopyTable(source=File("importedxml2.xml"), target=File("outputcsv2.csv"));
+CopyTable(source=File("importedxml3.xml"), target=File("outputcsv3.csv"));
+CopyTable(source=File("importedxml4.xml"), target=File("outputcsv4.csv"));

@@ -25,6 +25,7 @@
     <ProjectReference Include="..\DbShell.All\DbShell.All.csproj" />
     <ProjectReference Include="..\DbShell.Core\DbShell.Core.csproj" />
     <ProjectReference Include="..\DbShell.Driver.Common\DbShell.Driver.Common.csproj" />
+    <ProjectReference Include="..\DbShell.Xml\DbShell.Xml.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,7 +50,22 @@
     <None Update="CopyTable\copytable_tabletotable.dbsh">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="CopyTable\copytable_xmltocsv.dbsh">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="CopyTable\ImportedData.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="CopyTable\importedxml1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="CopyTable\importedxml2.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="CopyTable\importedxml3.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="CopyTable\importedxml4.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="CopyTable\mapped_import.dbsh">

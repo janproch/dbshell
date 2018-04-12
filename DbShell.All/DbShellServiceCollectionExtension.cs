@@ -1,5 +1,6 @@
 ﻿using DbShell.Core.Utility;
 using DbShell.Csv;
+using DbShell.Xml;
 using DbShell.Driver.MySql;
 using DbShell.Driver.Postgres;
 using DbShell.Driver.Sqlite;
@@ -25,6 +26,7 @@ namespace DbShell.All
 
             // add file formats
             services.AddDbShellCsv();
+            services.AddDbShellXml();
         }
     }
 }

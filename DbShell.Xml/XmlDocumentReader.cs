@@ -1,5 +1,4 @@
-﻿#if !NETSTANDARD2_0
-
+﻿
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +8,7 @@ using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
 
-namespace DbShell.Core
+namespace DbShell.Xml
 {
     internal class XmlDocumentReader : ArrayDataRecord, ICdlReader
     {
@@ -17,6 +16,7 @@ namespace DbShell.Core
         private TableInfo _rowFormat;
         private List<XmlReadInstructions> _instructions;
         private IEnumerator<Record> _enumerator;
+        private bool _isCanceled;
 
         internal class Record
         {
@@ -67,6 +67,9 @@ namespace DbShell.Core
 
         public bool Read()
         {
+            if (_isCanceled)
+                return false;
+
             if (_enumerator.MoveNext())
             {
                 var current = _enumerator.Current;
@@ -83,6 +86,7 @@ namespace DbShell.Core
                 }
                 return true;
             }
+
             return false;
         }
 
@@ -90,7 +94,11 @@ namespace DbShell.Core
         {
             return false;
         }
+
+        public void Cancel()
+        {
+            _isCanceled = true;
+        }
     }
 }
 
-#endif

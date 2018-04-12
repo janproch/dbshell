@@ -13,6 +13,7 @@
     <ProjectReference Include="..\DbShell.Driver.Sqlite\DbShell.Driver.Sqlite.csproj" />
     <ProjectReference Include="..\DbShell.Driver.SqlServer\DbShell.Driver.SqlServer.csproj" />
     <ProjectReference Include="..\DbShell.Excel\DbShell.Excel.csproj" />
+    <ProjectReference Include="..\DbShell.Xml\DbShell.Xml.csproj" />
   </ItemGroup>
 
   <ItemGroup>

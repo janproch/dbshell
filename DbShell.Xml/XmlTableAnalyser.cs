@@ -7,7 +7,7 @@ using System.Xml;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.CommonTypeSystem;
 
-namespace DbShell.Core.Utility
+namespace DbShell.Xml
 {
     public static class XmlTableAnalyser
     {

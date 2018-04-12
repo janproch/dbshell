@@ -20,9 +20,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbShell.Driver.Postgres", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbShell.All", "DbShell.All\DbShell.All.csproj", "{F634B19A-1FA6-4611-9D48-F68118B2D420}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbShell.Csv", "DbShell.Csv\DbShell.Csv.csproj", "{87C34421-096A-4831-8B93-5C58870E181F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbShell.Csv", "DbShell.Csv\DbShell.Csv.csproj", "{87C34421-096A-4831-8B93-5C58870E181F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbShell.Test", "DbShell.Test\DbShell.Test.csproj", "{8594B596-A901-46BB-BFEC-59BE5EE678F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbShell.Test", "DbShell.Test\DbShell.Test.csproj", "{8594B596-A901-46BB-BFEC-59BE5EE678F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbShell.Xml", "DbShell.Xml\DbShell.Xml.csproj", "{60E6592A-9D27-4044-9A23-2CC6CE22BA38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -200,6 +202,22 @@ Global
 		{8594B596-A901-46BB-BFEC-59BE5EE678F0}.Release|x64.Build.0 = Release|Any CPU
 		{8594B596-A901-46BB-BFEC-59BE5EE678F0}.Release|x86.ActiveCfg = Release|Any CPU
 		{8594B596-A901-46BB-BFEC-59BE5EE678F0}.Release|x86.Build.0 = Release|Any CPU
+		{60E6592A-9D27-4044-9A23-2CC6CE22BA38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60E6592A-9D27-4044-9A23-2CC6CE22BA38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60E6592A-9D27-4044-9A23-2CC6CE22BA38}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{60E6592A-9D27-4044-9A23-2CC6CE22BA38}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{60E6592A-9D27-4044-9A23-2CC6CE22BA38}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{60E6592A-9D27-4044-9A23-2CC6CE22BA38}.Debug|x64.Build.0 = Debug|Any CPU
+		{60E6592A-9D27-4044-9A23-2CC6CE22BA38}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{60E6592A-9D27-4044-9A23-2CC6CE22BA38}.Debug|x86.Build.0 = Debug|Any CPU
+		{60E6592A-9D27-4044-9A23-2CC6CE22BA38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60E6592A-9D27-4044-9A23-2CC6CE22BA38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60E6592A-9D27-4044-9A23-2CC6CE22BA38}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{60E6592A-9D27-4044-9A23-2CC6CE22BA38}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{60E6592A-9D27-4044-9A23-2CC6CE22BA38}.Release|x64.ActiveCfg = Release|Any CPU
+		{60E6592A-9D27-4044-9A23-2CC6CE22BA38}.Release|x64.Build.0 = Release|Any CPU
+		{60E6592A-9D27-4044-9A23-2CC6CE22BA38}.Release|x86.ActiveCfg = Release|Any CPU
+		{60E6592A-9D27-4044-9A23-2CC6CE22BA38}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
