@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using DbShell.Driver.Common.AbstractDb;
-using DbShell.Driver.SqlServer;
 using DbShell.Driver.Common.Utility;
 using DbShell.Driver.Common.Interfaces;
 

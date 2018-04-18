@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>DbShell.All</id>
+    <version>1.0.0</version>
+    <authors>janpr</authors>
+    <owners>janpr</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>DbShell - all avilable assemblies. Library for work with databases - obbtain structure, export, import data</description>
+    <releaseNotes>First release.</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <tags>SQL T-SQL</tags>
+    <dependencies>
+      <dependency id="DbShell.Core" version="1.0" />
+      <dependency id="DbShell.Csv" version="1.0" />
+      <dependency id="DbShell.Driver.Common" version="1.0" />
+      <dependency id="DbShell.Driver.MySql" version="1.0" />
+      <dependency id="DbShell.Driver.Postgres" version="1.0" />
+      <dependency id="DbShell.Driver.Sqlite" version="1.0" />
+      <dependency id="DbShell.Driver.SqlServer" version="1.0" />
+      <dependency id="DbShell.Excel" version="1.0" />
+      <dependency id="DbShell.Xml" version="1.0" />
+    </dependencies>
+  </metadata>
+  <files>
+	  <file src="..\DbShell.All\bin\Release\netstandard2.0\DbShell.All.dll" target="lib\netstandard2.0" />
+  </files>  
+</package>

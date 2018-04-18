@@ -24,10 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DbShell.Driver.Common\DbShell.Driver.Common.csproj" />
-    <ProjectReference Include="..\DbShell.Driver.MySql\DbShell.Driver.MySql.csproj" />
-    <ProjectReference Include="..\DbShell.Driver.Postgres\DbShell.Driver.Postgres.csproj" />
-    <ProjectReference Include="..\DbShell.Driver.Sqlite\DbShell.Driver.Sqlite.csproj" />
-    <ProjectReference Include="..\DbShell.Driver.SqlServer\DbShell.Driver.SqlServer.csproj" />
   </ItemGroup>
 
 </Project>

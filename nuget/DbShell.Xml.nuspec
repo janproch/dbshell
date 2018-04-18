@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>DbShell.Xml</id>
+    <version>1.0.0</version>
+    <authors>janpr</authors>
+    <owners>janpr</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>DbShell - XML file format support.</description>
+    <releaseNotes>First release.</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <tags>SQL T-SQL</tags>
+    <dependencies>
+      <dependency id="DbShell.Core" version="1.0" />
+      <dependency id="DbShell.Driver.Common" version="1.0" />
+    </dependencies>
+  </metadata>
+  <files>
+	  <file src="..\DbShell.Xml\bin\Release\netstandard2.0\DbShell.Xml.dll" target="lib\netstandard2.0" />
+  </files>  
+</package>
