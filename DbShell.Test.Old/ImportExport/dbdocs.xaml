@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<Razor
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns="http://schemas.dbshell.com/core"
-    File="dbdocs.html"
-    TemplateFile="DatabaseDoc.cshtml"
-    Model="{Database}"
-    />
- 

@@ -1,5 +1,0 @@
-====== Download ======
-
-  * [[http://dbshell.codeplex.com/releases/|Download]] ZIP package with executable from codeplex
-  * Or download source code using [[http://git-scm.com/download|git]]:\\ git clone https://git01.codeplex.com/dbshell
-

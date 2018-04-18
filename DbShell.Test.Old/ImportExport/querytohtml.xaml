@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<Razor
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns="http://schemas.dbshell.com/core"
-    Model="{Query 'SELECT * FROM Genre'}"
-    File="genres.html"
-    TemplateFile="TableData.cshtml"
-/>
