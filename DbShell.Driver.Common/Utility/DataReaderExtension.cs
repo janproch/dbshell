@@ -58,7 +58,16 @@ namespace DbShell.Driver.Common.Utility
                 int size = row.SafeString("ColumnSize").SafeIntParse();
                 col.Name = row.SafeString("ColumnName");
                 col.NotNull = !(bool)row["AllowDBNull"];
-                col.DataType = row["DataTypeName"].SafeToString();
+
+                int dataTypeNameIndex = row.Table.Columns.GetOrdinal("DataTypeName");
+                int dataTypeIndex = row.Table.Columns.GetOrdinal("DataType");
+                if (dataTypeNameIndex >= 0)
+                    col.DataType = row[dataTypeNameIndex].SafeToString();
+                else if (dataTypeIndex >= 0)
+                    col.DataType = (row[dataTypeIndex] as Type)?.Name ?? "String";
+                else
+                    col.DataType = "String";
+
                 col.Size = size;
                 col.CommonType = ReaderDataType(row);
 
