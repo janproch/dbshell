@@ -1,4 +1,4 @@
-# dbshell
+# DbShell
 
 DbShell is toolkit for automation of database operations.
 
