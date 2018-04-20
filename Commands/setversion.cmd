@@ -1,3 +1,5 @@
+setlocal
+
 copy nuget\DbShell.All.nuspec build\DbShell.All.nuspec
 ReplaceInFile build\DbShell.All.nuspec 0.0.3811 %1
 copy nuget\DbShell.Core.nuspec build\DbShell.Core.nuspec
@@ -18,3 +20,5 @@ copy nuget\DbShell.Excel.nuspec build\DbShell.Excel.nuspec
 ReplaceInFile build\DbShell.Excel.nuspec 0.0.3811 %1
 copy nuget\DbShell.Xml.nuspec build\DbShell.Xml.nuspec
 ReplaceInFile build\DbShell.Xml.nuspec 0.0.3811 %1
+
+endlocal
