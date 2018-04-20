@@ -19,6 +19,6 @@
     </dependencies>
   </metadata>
   <files>
-	  <file src="..\..\DbShell.Core\bin\Release\netstandard2.0\DbShell.Core.dll" target="lib\netstandard2.0" />
+	  <file src="publish\DbShell.Core.dll" target="lib\netstandard2.0" />
   </files>  
 </package>
