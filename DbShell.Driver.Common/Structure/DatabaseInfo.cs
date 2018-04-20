@@ -99,7 +99,7 @@ namespace DbShell.Driver.Common.Structure
             var res = objs.FirstOrDefault(x => x.Schema == schema && x.Name == name);
             if (res != null)
             {
-                return null;
+                return res;
             }
             if (schema == null)
             {

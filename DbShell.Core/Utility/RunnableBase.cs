@@ -8,7 +8,7 @@ namespace DbShell.Core.Utility
     {
         protected abstract void DoRun(IShellContext context);
 
-        void IRunnable.Run(IShellContext context)
+        public void Run(IShellContext context)
         {
             if (Connection != null)
             {

@@ -68,6 +68,8 @@ namespace DbShell.Core
         [XamlProperty]
         public bool AllowBulkCopy { get; set; } = true;
 
+        public bool DisableConstraints { get; set; } = false;
+
         /// <summary>
         /// Gets or sets the column map. If ColumnMap is empty (no mappings are defined), identity column map is used
         /// </summary>
@@ -106,11 +108,12 @@ namespace DbShell.Core
             }
 
             var options = new CopyTableTargetOptions
-                {
-                    TruncateBeforeCopy = CleanTarget,
-                    TargetMapMode = TargetMapMode,
-                    AllowBulkCopy = AllowBulkCopy,
-                };
+            {
+                TruncateBeforeCopy = CleanTarget,
+                TargetMapMode = TargetMapMode,
+                AllowBulkCopy = AllowBulkCopy,
+                DisableConstraints = DisableConstraints,
+            };
 
             var table = source.GetRowFormat(context);
 

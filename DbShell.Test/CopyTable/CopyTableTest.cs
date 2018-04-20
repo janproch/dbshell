@@ -6,6 +6,8 @@ using DbShell.Driver.Common.Utility;
 using DbShell.Core.Utility;
 using Xunit;
 using DbShell.Xml;
+using DbShell.Core;
+using DbShell.All;
 
 namespace DbShell.Test
 {
@@ -117,19 +119,37 @@ namespace DbShell.Test
                 runner.LoadFile("CopyTable/copytable_xmltocsv.dbsh");
                 runner.Run();
 
-                string output1 = File.ReadAllText("outputcsv1.csv");
+                string output1 = System.IO.File.ReadAllText("outputcsv1.csv");
                 Assert.Equal("sub,attr,x,y,z\r\nA,a1,x1,y1,z1\r\nA,a2,x2,y2,z2\r\nB,a3,x3,y3,z3\r\nB,a4,x4,y4,z4\r\n", output1);
 
-                string output2 = File.ReadAllText("outputcsv2.csv");
+                string output2 = System.IO.File.ReadAllText("outputcsv2.csv");
                 Assert.Equal("x,y,z,x2,y2,z2\r\nx1,y1,z1,(NULL),(NULL),(NULL)\r\nx2,y2,z2,(NULL),(NULL),(NULL)\r\n(NULL),(NULL),(NULL),x3,y3,z3\r\n(NULL),(NULL),(NULL),x4,y4,z4\r\n", output2);
 
-                string output3 = File.ReadAllText("outputcsv3.csv");
+                string output3 = System.IO.File.ReadAllText("outputcsv3.csv");
                 Assert.Equal("x\r\nx1\r\nx2\r\nx3\r\n", output3);
 
-                string output4 = File.ReadAllText("outputcsv4.csv");
+                string output4 = System.IO.File.ReadAllText("outputcsv4.csv");
                 Assert.Equal("x,y,z\r\nxval,yval,zval\r\n", output4);
-
             }
+        }
+
+        [Fact]
+        public void CopyDatabaseTest()
+        {
+            RunScript("DELETE FROM Album");
+            RunScript("DELETE FROM Genre");
+
+            var copyAll = new CopyAllTables
+            {
+                SourceConnection = "sqlite://Data Source=CopyTable/SqliteTestData.locdb",
+                TargetConnection = GetProviderConnectionString(true),
+                DisableConstraints = true,
+            };
+
+            copyAll.Run();
+
+            AssertIsValue("31", "select count(*) from Genre");
+            AssertIsValue("10", "select count(*) from Album");
         }
     }
 }

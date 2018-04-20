@@ -14,11 +14,16 @@ namespace DbShell.Test
         public const string ConnectionString = @"MultipleActiveResultSets=True;Data Source=localhost\SQLEXPRESS;Integrated Security=SSPI";
         public const string DatabaseName = "DbShellTest";
 
-        private string GetConnectionString(bool specifyDatabase)
+        protected string GetConnectionString(bool specifyDatabase)
         {
             string conns = ConnectionString;
             if (specifyDatabase) conns += ";Initial Catalog=" + DatabaseName;
             return conns;
+        }
+
+        protected string GetProviderConnectionString(bool specifyDatabase)
+        {
+            return "sqlserver://" + GetConnectionString(specifyDatabase);
         }
 
         public SqlConnection OpenConnection(bool specifyDatabase)

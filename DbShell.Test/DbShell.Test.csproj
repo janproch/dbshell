@@ -71,6 +71,9 @@
     <None Update="CopyTable\mapped_import.dbsh">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="CopyTable\SqliteTestData.locdb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

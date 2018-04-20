@@ -21,6 +21,7 @@
       <dependency id="DbShell.Driver.SqlServer" version="0.0.3811" />
       <dependency id="DbShell.Excel" version="0.0.3811" />
       <dependency id="DbShell.Xml" version="0.0.3811" />
+      <dependency id="Microsoft.Extensions.DependencyInjection" version="2.0.0" />
     </dependencies>
   </metadata>
   <files>
