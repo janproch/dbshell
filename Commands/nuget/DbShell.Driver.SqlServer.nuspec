@@ -2,9 +2,10 @@
 <package >
   <metadata>
     <id>DbShell.Driver.SqlServer</id>
-    <version>1.0.0</version>
-    <authors>janpr</authors>
-    <owners>janpr</owners>
+    <version>0.0.3811</version>
+    <authors>Jan Prochazka (JenaSoft)</authors>
+    <owners>Jan Prochazka (JenaSoft)</owners>
+    <projectUrl>http://dbshell.org</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>DbShell - MS SQL Server driver.</description>
     <releaseNotes>First release.</releaseNotes>
