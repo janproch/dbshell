@@ -2,23 +2,20 @@
 <package >
   <metadata>
     <id>DbShell.Core</id>
-    <version>1.0.0</version>
-    <authors>janpr</authors>
-    <owners>janpr</owners>
+    <version>0.0.3811</version>
+    <authors>Jan Prochazka (JenaSoft)</authors>
+    <owners>Jan Prochazka (JenaSoft)</owners>
+    <projectUrl>http://dbshell.org</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>DbShell - core. Library for work with databases - obbtain structure, export, import data</description>
     <releaseNotes>First release.</releaseNotes>
     <copyright>Copyright 2018</copyright>
-    <tags>SQL T-SQL</tags>
+    <tags>SQL Database</tags>
     <dependencies>
       <dependency id="DbShell.Driver.Common" version="1.0" />
       <dependency id="Irony.NetCore" version="1.0.10" />
       <dependency id="Microsoft.Extensions.Logging" version="2.0.0" />
       <dependency id="Newtonsoft.Json" version="11.0.1" />
-      <dependency id="System.Data.Common" version="4.3.0" />
-      <dependency id="System.Xml.ReaderWriter" version="4.3.1" />
-      <dependency id="System.Xml.XmlDocument" version="4.301" />
-      <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
     </dependencies>
   </metadata>
   <files>

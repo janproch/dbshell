@@ -9,15 +9,12 @@
     <description>DbShell - MS SQL Server driver.</description>
     <releaseNotes>First release.</releaseNotes>
     <copyright>Copyright 2018</copyright>
-    <tags>SQL T-SQL</tags>
+    <tags>SQL T-SQL Database MSSQL</tags>
     <dependencies>
       <dependency id="DbShell.Driver.Common" version="1.0" />
       <dependency id="Microsoft.Extensions.Logging" version="2.0.0" />
       <dependency id="Newtonsoft.Json" version="11.0.1" />
-      <dependency id="System.Data.Common" version="4.3.0" />
       <dependency id="System.Data.SqlClient" version="4.3.0" />
-      <dependency id="System.Xml.XmlDocument" version="4.3.0" />
-      <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
     </dependencies>
   </metadata>
   <files>

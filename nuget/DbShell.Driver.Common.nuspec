@@ -2,20 +2,18 @@
 <package >
   <metadata>
     <id>DbShell.Driver.Common</id>
-    <version>1.0.0</version>
-    <authors>janpr</authors>
-    <owners>janpr</owners>
+    <version>0.0.3811</version>
+    <authors>Jan Prochazka (JenaSoft)</authors>
+    <owners>Jan Prochazka (JenaSoft)</owners>
+    <projectUrl>http://dbshell.org</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>DbShell - common driver.</description>
+    <description>DbShell - common functionality - abstractions, types, algorithms.</description>
     <releaseNotes>First release.</releaseNotes>
     <copyright>Copyright 2018</copyright>
-    <tags>SQL T-SQL</tags>
+    <tags>SQL Database Abstraction</tags>
     <dependencies>
       <dependency id="Microsoft.Extensions.Logging" version="2.0.0" />
       <dependency id="Newtonsoft.Json" version="11.0.1" />
-      <dependency id="System.Data.Common" version="4.3.0" />
-      <dependency id="System.Xml.XmlDocument" version="4.301" />
-      <dependency id="System.Xml.XmlSerializer" version="4.3.0" />
     </dependencies>
   </metadata>
   <files>
