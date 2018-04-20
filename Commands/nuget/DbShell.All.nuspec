@@ -12,18 +12,18 @@
     <copyright>Copyright 2018</copyright>
     <tags>SQL Database T-SQL MySQL SQLite Postgres MSSQL Import Export</tags>
     <dependencies>
-      <dependency id="DbShell.Core" version="1.0" />
-      <dependency id="DbShell.Csv" version="1.0" />
-      <dependency id="DbShell.Driver.Common" version="1.0" />
-      <dependency id="DbShell.Driver.MySql" version="1.0" />
-      <dependency id="DbShell.Driver.Postgres" version="1.0" />
-      <dependency id="DbShell.Driver.Sqlite" version="1.0" />
-      <dependency id="DbShell.Driver.SqlServer" version="1.0" />
-      <dependency id="DbShell.Excel" version="1.0" />
-      <dependency id="DbShell.Xml" version="1.0" />
+      <dependency id="DbShell.Core" version="0.0.3811" />
+      <dependency id="DbShell.Csv" version="0.0.3811" />
+      <dependency id="DbShell.Driver.Common" version="0.0.3811" />
+      <dependency id="DbShell.Driver.MySql" version="0.0.3811" />
+      <dependency id="DbShell.Driver.Postgres" version="0.0.3811" />
+      <dependency id="DbShell.Driver.Sqlite" version="0.0.3811" />
+      <dependency id="DbShell.Driver.SqlServer" version="0.0.3811" />
+      <dependency id="DbShell.Excel" version="0.0.3811" />
+      <dependency id="DbShell.Xml" version="0.0.3811" />
     </dependencies>
   </metadata>
   <files>
-	  <file src="..\DbShell.All\bin\Release\netstandard2.0\DbShell.All.dll" target="lib\netstandard2.0" />
+	  <file src="..\..\DbShell.All\bin\Release\netstandard2.0\DbShell.All.dll" target="lib\netstandard2.0" />
   </files>  
 </package>

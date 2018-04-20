@@ -11,13 +11,13 @@
     <copyright>Copyright 2018</copyright>
     <tags>SQL T-SQL Database MSSQL</tags>
     <dependencies>
-      <dependency id="DbShell.Driver.Common" version="1.0" />
+      <dependency id="DbShell.Driver.Common" version="0.0.3811" />
       <dependency id="Microsoft.Extensions.Logging" version="2.0.0" />
       <dependency id="Newtonsoft.Json" version="11.0.1" />
       <dependency id="System.Data.SqlClient" version="4.3.0" />
     </dependencies>
   </metadata>
   <files>
-	  <file src="..\DbShell.Driver.SqlServer\bin\Release\netstandard2.0\DbShell.Driver.SqlServer.dll" target="lib\netstandard2.0" />
+	  <file src="..\..\DbShell.Driver.SqlServer\bin\Release\netstandard2.0\DbShell.Driver.SqlServer.dll" target="lib\netstandard2.0" />
   </files>  
 </package>

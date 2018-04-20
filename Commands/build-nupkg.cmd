@@ -1,0 +1,10 @@
+nuget pack build\DbShell.All.nuspec
+nuget pack build\DbShell.Core.nuspec
+nuget pack build\DbShell.Csv.nuspec
+nuget pack build\DbShell.Driver.Common.nuspec
+nuget pack build\DbShell.Driver.MySql.nuspec
+nuget pack build\DbShell.Driver.Postgres.nuspec
+nuget pack build\DbShell.Driver.Sqlite.nuspec
+nuget pack build\DbShell.Driver.SqlServer.nuspec
+nuget pack build\DbShell.Excel.nuspec
+nuget pack build\DbShell.Xml.nuspec

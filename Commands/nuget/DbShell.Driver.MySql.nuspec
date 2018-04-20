@@ -1,22 +1,22 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>DbShell.Driver.Postgres</id>
+    <id>DbShell.Driver.MySql</id>
     <version>0.0.3811</version>
     <authors>Jan Prochazka (JenaSoft)</authors>
     <owners>Jan Prochazka (JenaSoft)</owners>
     <projectUrl>http://dbshell.org</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>DbShell - PostgreSQLL driver.</description>
+    <description>DbShell - MySQL driver.</description>
     <releaseNotes>First release.</releaseNotes>
     <copyright>Copyright 2018</copyright>
-    <tags>SQL Database Postgres</tags>
+    <tags>SQL Database MySQL</tags>
     <dependencies>
-      <dependency id="DbShell.Driver.Common" version="1.0" />
-      <dependency id="Npgsql" version="3.2.5" />
+      <dependency id="DbShell.Driver.Common" version="0.0.3811" />
+      <dependency id="Pomelo.Data.MySql" version="1.0.0" />
     </dependencies>
   </metadata>
   <files>
-	  <file src="..\DbShell.Driver.Postgres\bin\Release\netstandard2.0\DbShell.Driver.Postgres.dll" target="lib\netstandard2.0" />
+	  <file src="..\..\DbShell.Driver.MySql\bin\Release\netstandard2.0\DbShell.Driver.MySql.dll" target="lib\netstandard2.0" />
   </files>  
 </package>

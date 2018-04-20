@@ -1,22 +1,22 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>DbShell.Driver.MySql</id>
+    <id>DbShell.Driver.Common</id>
     <version>0.0.3811</version>
     <authors>Jan Prochazka (JenaSoft)</authors>
     <owners>Jan Prochazka (JenaSoft)</owners>
     <projectUrl>http://dbshell.org</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>DbShell - MySQL driver.</description>
+    <description>DbShell - common functionality - abstractions, types, algorithms.</description>
     <releaseNotes>First release.</releaseNotes>
     <copyright>Copyright 2018</copyright>
-    <tags>SQL Database MySQL</tags>
+    <tags>SQL Database Abstraction</tags>
     <dependencies>
-      <dependency id="DbShell.Driver.Common" version="1.0" />
-      <dependency id="Pomelo.Data.MySql" version="1.0.0" />
+      <dependency id="Microsoft.Extensions.Logging" version="2.0.0" />
+      <dependency id="Newtonsoft.Json" version="11.0.1" />
     </dependencies>
   </metadata>
   <files>
-	  <file src="..\DbShell.Driver.MySql\bin\Release\netstandard2.0\DbShell.Driver.MySql.dll" target="lib\netstandard2.0" />
+	  <file src="..\..\DbShell.Driver.Common\bin\Release\netstandard2.0\DbShell.Driver.Common.dll" target="lib\netstandard2.0" />
   </files>  
 </package>

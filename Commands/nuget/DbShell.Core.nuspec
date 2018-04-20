@@ -12,13 +12,13 @@
     <copyright>Copyright 2018</copyright>
     <tags>SQL Database</tags>
     <dependencies>
-      <dependency id="DbShell.Driver.Common" version="1.0" />
+      <dependency id="DbShell.Driver.Common" version="0.0.3811" />
       <dependency id="Irony.NetCore" version="1.0.10" />
       <dependency id="Microsoft.Extensions.Logging" version="2.0.0" />
       <dependency id="Newtonsoft.Json" version="11.0.1" />
     </dependencies>
   </metadata>
   <files>
-	  <file src="..\DbShell.Core\bin\Release\netstandard2.0\DbShell.Core.dll" target="lib\netstandard2.0" />
+	  <file src="..\..\DbShell.Core\bin\Release\netstandard2.0\DbShell.Core.dll" target="lib\netstandard2.0" />
   </files>  
 </package>
