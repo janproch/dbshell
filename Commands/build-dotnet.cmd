@@ -3,8 +3,8 @@ cd ..
 
 dotnet restore DbShell.sln
 
-cd DbShell.All
+cd DbShell
 
-dotnet publish DbShell.All.csproj -o ..\Commands\publish -c Release
+dotnet publish DbShell.csproj -o ..\Commands\publish -c Release
 
 endlocal
