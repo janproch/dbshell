@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DbShell.All" Version="1.0.2" />
+    <PackageReference Include="DbShell.All" Version="1.0.3" />
   </ItemGroup>
 
   <ItemGroup>
