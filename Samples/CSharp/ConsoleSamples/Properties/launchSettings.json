@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "ConsoleSamples": {
+      "commandName": "Project"
+    },
+    "ExportToCsv": {
+      "commandName": "Project",
+      "commandLineArgs": "ExportToCsv"
+    },
+    "AnalyseTables": {
+      "commandName": "Project",
+      "commandLineArgs": "AnalyseTables"
+    }
+  }
+}
