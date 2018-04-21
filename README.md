@@ -24,6 +24,13 @@ copyAll.Run();
 
 ## Example - get table names and table columns
 ```
+using DbShell.All;
+using DbShell.Core;
+using DbShell.Driver.Common.AbstractDb;
+using System;
+
+...
+
 // build service containing all supported database egnines and file formats, with default logging
 var serviceProvider = DbShellUtility.BuildDefaultServiceProvider();
 
