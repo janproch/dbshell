@@ -1,6 +1,7 @@
 # DbShell
 
 DbShell is toolkit for automation of database operations.
+
 DbShell packages can be used individualy, but you have to customize DI containers (call appropriate services.AddXXX extension methods).
 If you don't have time to do that, install NuGet package DbShell.All: `Install-Package DbShell.All`
 
