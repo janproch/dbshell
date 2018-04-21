@@ -1,5 +1,6 @@
 ﻿using DbShell.All;
 using DbShell.Core;
+using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Utility;
 using Newtonsoft.Json;
 using System;
@@ -25,6 +26,9 @@ namespace ConsoleSamples.Samples
 
                 // assign DbConnection to analyse
                 analyser.Connection = conn;
+
+                // analyse only tables. If this line is omited, all database objects (eg. views, stored procedures...) will be analysed
+                analyser.Phase = DatabaseAnalysePhase.Tables;
 
                 // perform full analysis (other option is IncrementalAnalysis, when changes are detected)
                 analyser.FullAnalysis();
