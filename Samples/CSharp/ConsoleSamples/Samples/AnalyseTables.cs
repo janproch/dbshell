@@ -1,11 +1,7 @@
 ﻿using DbShell.All;
 using DbShell.Core;
 using DbShell.Driver.Common.AbstractDb;
-using DbShell.Driver.Common.Utility;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ConsoleSamples.Samples
 {
@@ -36,8 +32,15 @@ namespace ConsoleSamples.Samples
                 // get result structure
                 var analysedStructure = analyser.Structure;
 
-                // print JSON representation if result structure
-                Console.WriteLine(JsonConvert.SerializeObject(analysedStructure, Formatting.Indented));
+                // print table and column names
+                foreach (var table in analysedStructure.Tables)
+                {
+                    Console.WriteLine(table.Name);
+                    foreach (var column in table.Columns)
+                    {
+                        Console.WriteLine("    " + column.Name + " " + column.DataType);
+                    }
+                }
             }
         }
     }
