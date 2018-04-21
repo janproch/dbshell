@@ -1,5 +1,5 @@
 mkdir publish\Samples
-xcopy ..\Samples\*.* publish\Samples
+xcopy ..\Samples\*.* publish\Samples /s /e
 
 rename publish dbshell
 
