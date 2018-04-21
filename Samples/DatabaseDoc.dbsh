@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<Razor 
-  xmlns="http://schemas.dbshell.com/core"
-  Requires="Configuration.dbsh"
-  Connection="${Connection}"
-  Template="DatabaseDoc.cshtml"
-  File="DatabaseDoc.html"
-  Model="{Database}"
-/>

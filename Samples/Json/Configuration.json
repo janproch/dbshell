@@ -1,0 +1,10 @@
+{
+    "$type": "Batch",
+    "commands": [
+        {
+            "$type": "SetVariable",
+            "name": "Connection",
+            "value": "sqlite://Data Source=${BASE_DIRECTORY}/../Chinook_Sqlite.sqlite"
+        }
+    ]
+}

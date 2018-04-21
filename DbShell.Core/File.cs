@@ -113,14 +113,8 @@ namespace DbShell.Core
 
         object ISingleValueDbShellObject.SingleValue
         {
-            get
-            {
-                return Name;
-            }
-            set
-            {
-                Name = value?.ToString();
-            }
+            get => Name;
+            set => Name = value?.ToString();
         }
     }
 }

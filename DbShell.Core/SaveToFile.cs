@@ -8,6 +8,7 @@ using DbShell.Core.Utility;
 using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.Utility;
 using System.ComponentModel;
+using Microsoft.Extensions.Logging;
 
 namespace DbShell.Core
 {
@@ -65,28 +66,39 @@ namespace DbShell.Core
             if (Expression != null)
             {
                 object obj = context.Evaluate(Expression);
+
+                if (obj == null)
+                {
+                    context.GetLogger<SaveToFile>().LogWarning("DBSH-00000 Skipping SaveToFile, Expression {expression} evaluates to null", Expression);
+                    return;
+                }
+
                 if (obj is byte[])
                 {
-                    var bytes = (byte[]) obj;
+                    var bytes = (byte[])obj;
                     using (var fw = System.IO.File.OpenWrite(file))
                     {
                         fw.Write(bytes, 0, bytes.Length);
+                        context.GetLogger<SaveToFile>().LogInformation("Saved {bytes} bytes to file {file}", bytes.Length, Path.GetFullPath(file));
                     }
                 }
                 else
                 {
                     using (var fw = new StreamWriter(System.IO.File.OpenWrite(file), Encoding))
                     {
-                        fw.Write(obj.ToString());
+                        string s = obj.ToString();
+                        fw.Write(s);
+                        context.GetLogger<SaveToFile>().LogInformation("Saved {length} characters to file {file}", s.Length, Path.GetFullPath(file));
                     }
                 }
             }
-            if (Value!=null)
+            if (Value != null)
             {
                 string val = context.Replace(Value);
                 using (var fw = new StreamWriter(System.IO.File.OpenWrite(file), Encoding))
                 {
                     fw.Write(val);
+                    context.GetLogger<SaveToFile>().LogInformation("Saved {length} characters to file {file}", val.Length, Path.GetFullPath(file));
                 }
             }
         }

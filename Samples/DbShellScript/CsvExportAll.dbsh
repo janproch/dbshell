@@ -1,0 +1,9 @@
+Include("Configuration.dbsh");
+SetConnection("${Connection}");
+
+ForEach(property="table", source=GetTables()) {
+    CopyTable(
+        source = Table("${table.name}"),
+        target = File("${table.name}.csv")
+    )
+}

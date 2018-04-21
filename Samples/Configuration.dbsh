@@ -1,8 +1,0 @@
-// define connection string here
-ConnectionNoDb="sqlserver://Data Source=localhost\SQLEXPRESS;MultipleActiveResultSets=True;Integrated Security=SSPI";
-
-// define database name
-DbName="Chinook";
-
-// compose full connection string
-Connection="${ConnectionNoDb};Initial Catalog=${DbName}";

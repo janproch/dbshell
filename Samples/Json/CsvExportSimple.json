@@ -1,0 +1,21 @@
+{
+    "$type": "Batch",
+    "commands": [
+        {
+            "$type": "Include",
+            "file": "Configuration.json"
+        },
+        {
+            "$type": "CopyTable",
+            "source": {
+                "$type": "Table",
+                "name": "album",
+                "connection": "${Connection}"
+            },
+            "target": {
+                "$type": "File",
+                "name": "album.csv"
+            }
+        }
+    ]
+}

@@ -242,6 +242,8 @@ namespace DbShell.Driver.Common.DbDiff
 
         public bool EnableConstraintsPerTable;
 
+        public bool AllowSchemaOnlyReader;
+
         public bool AllFlags
         {
             set
@@ -271,6 +273,7 @@ namespace DbShell.Driver.Common.DbDiff
                 AllowUpdateFrom = value;
                 SupportsKeyInfo = value;
                 EnableConstraintsPerTable = value;
+                AllowSchemaOnlyReader = value;
             }
         }
     }

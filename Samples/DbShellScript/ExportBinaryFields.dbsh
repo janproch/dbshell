@@ -1,0 +1,8 @@
+Include("Configuration.dbsh");
+SetConnection("${Connection}");
+
+ForEach(
+    source = Query("SELECT FirstName, LastName, Address FROM Customer WHERE CustomerId < 5 ORDER BY CustomerId")
+) {
+    SaveToFile(file = "${FirstName}-${LastName}.txt", Expression = "Address");
+}

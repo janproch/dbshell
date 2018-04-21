@@ -23,7 +23,7 @@ namespace DbShell.Core
 #if !NETSTANDARD2_0
     [ContentProperty("Text")]
 #endif
-    public class Query : ElementBase, ITabularDataSource, IListProvider, IModelProvider
+    public class Query : ElementBase, ITabularDataSource, IListProvider, IModelProvider, ISingleValueDbShellObject
     {
         /// <summary>
         /// Gets or sets the query text.
@@ -36,15 +36,23 @@ namespace DbShell.Core
 
         private TableInfo GetRowFormat(IShellContext context)
         {
-            using (var conn = GetConnectionProvider(context).Connect())
+            var provider = GetConnectionProvider(context);
+            using (var conn = provider.Connect())
             {
                 var cmd = conn.CreateCommand();
                 cmd.CommandText = context.Replace(Text);
-                using (var reader = cmd.ExecuteReader(CommandBehavior.KeyInfo | CommandBehavior.SchemaOnly))
+                var behaviour = provider.Factory.DialectCaps.AllowSchemaOnlyReader ? CommandBehavior.KeyInfo | CommandBehavior.SchemaOnly : CommandBehavior.Default;
+                using (var reader = cmd.ExecuteReader(behaviour))
                 {
                     return reader.GetTableInfo();
                 }
             }
+        }
+
+        object ISingleValueDbShellObject.SingleValue
+        {
+            get => Text;
+            set => Text = value?.ToString();
         }
 
         DataFormatSettings ITabularDataSource.GetSourceFormat(IShellContext context)

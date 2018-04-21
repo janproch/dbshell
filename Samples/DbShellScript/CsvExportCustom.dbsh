@@ -1,0 +1,16 @@
+Include("Configuration.dbsh");
+SetConnection("${Connection}");
+
+CopyTable(
+  source = Query("""select Album.Title as Album, Artist.Name as Artist, Artist.ArtistId, Album.AlbumId
+      from Album
+      inner join Artist on Album.ArtistId = Artist.ArtistId
+  """),
+  target = CsvFile(name = "AlbumComplex.csv", delimiter = ";"),
+  clearTarget = true
+)
+columnMap {
+  MapValue(name = "ID", Value = "${AlbumId}-${ArtistId}");
+  MapColumn(name = 'Artist');
+  MapColumn(name = 'Album');
+}

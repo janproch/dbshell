@@ -13,7 +13,10 @@ namespace DbShell.Core.ScriptParser
         {
             //Terminals
             var tident = new IdentifierTerminal("identifier");
-            var tstring = new StringLiteral("string", "\"");
+            var tstringQuot = new StringLiteral("stringQuot", "\"");
+            var tstringApos = new StringLiteral("stringSpos", "'");
+            var tstringTripleQuot = new StringLiteral("stringTripleQuot", "\"\"\"", StringOptions.AllowsLineBreak);
+            var tstringTripleApos = new StringLiteral("stringTripleApos", "'''", StringOptions.AllowsLineBreak);
             var tnumber = new NumberLiteral("number");
             var tcomma = ToTerm(",");
             var litTrue = ToTerm("true", "true");
@@ -31,6 +34,7 @@ namespace DbShell.Core.ScriptParser
             var nCommandValue = new NonTerminal("CommandValue");
             var nOptionalIdent = new NonTerminal("OptionalIdent");
             var nCommandParams = new NonTerminal("CommandParams");
+            var nString = new NonTerminal("String");
 
             var narray = new NonTerminal("Array");
             var narrayBr = new NonTerminal("ArrayBr");
@@ -39,21 +43,22 @@ namespace DbShell.Core.ScriptParser
 
             nCommand.Rule = tident + "(" + nCommandParams + ")" + nSubcommandList;
             nCommand.Rule |= nAssign;
-            nAssign.Rule = tident + "=" + tstring;
+            nAssign.Rule = tident + "=" + nString;
             nCommandWithSemicolon.Rule = nCommand;
             nCommandWithSemicolon.Rule |= nCommand + ";";
             nCommandList.Rule = MakeStarRule(nCommandList, nCommandWithSemicolon);
 
             nCommandPropList.Rule = MakeStarRule(nCommandPropList, tcomma, nCommandProp);
             nCommandParams.Rule = nCommandPropList | nCommandValue;
-            nCommandValue.Rule = tstring | nCommand | litTrue | litFalse;
+            nCommandValue.Rule = nString | nCommand | litTrue | litFalse;
             nCommandProp.Rule = tident + "=" + nCommandValue;
             nSubcommandList.Rule = MakeStarRule(nSubcommandList, nSubcommand);
             nOptionalIdent.Rule = Empty | tident;
             nSubcommand.Rule = nOptionalIdent + "{" + nCommandList + "}";
+            nString.Rule = tstringQuot | tstringApos | tstringTripleQuot | tstringTripleApos;
 
             MarkPunctuation("{", "}", "(", ")", "=", ",", ";");
-            MarkTransient(nCommandWithSemicolon, nOptionalIdent, nCommandParams);
+            MarkTransient(nCommandWithSemicolon, nOptionalIdent, nCommandParams, nString);
 
             var singleLineComment = new CommentTerminal("SingleLineComment", "//", "\r", "\n", "\u2085", "\u2028", "\u2029");
             var delimitedComment = new CommentTerminal("DelimitedComment", "/*", "*/");

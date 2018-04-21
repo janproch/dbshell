@@ -172,14 +172,8 @@ namespace DbShell.Core.Utility
 
         object ISingleValueDbShellObject.SingleValue
         {
-            get
-            {
-                return Name;
-            }
-            set
-            {
-                Name = value?.ToString();
-            }
+            get => Name;
+            set => Name = value?.ToString();
         }
 
         public override string ToXamlExtension()

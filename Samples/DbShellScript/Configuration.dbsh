@@ -1,0 +1,2 @@
+// define connection string here
+Connection="sqlite://Data Source=${BASE_DIRECTORY}/../Chinook_Sqlite.sqlite";

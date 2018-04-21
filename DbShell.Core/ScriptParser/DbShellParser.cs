@@ -36,7 +36,7 @@ namespace DbShell.Core.ScriptParser
                     return true;
                 case "false":
                     return true;
-                case "string":
+                case string s when s.StartsWith("string"):
                     return node.Token.ValueString;
                 case "Command":
                     if (node.ChildNodes[0].Term.Name == "Assign")
@@ -55,6 +55,10 @@ namespace DbShell.Core.ScriptParser
                     {
                         var singleHolder = instance as ISingleValueDbShellObject;
                         object propValue = ConvertNode(node.ChildNodes[1].ChildNodes[0]);
+
+                        if (singleHolder is null)
+                            throw new Exception($"DBSH-00000 Type {instance.GetType().Name} does not allow parameter without name");
+
                         singleHolder.SingleValue = propValue;
                     }
                     else
@@ -73,8 +77,14 @@ namespace DbShell.Core.ScriptParser
                                 continue;
                             }
 
-                            if (propValue is string propValueString && prop.PropertyType.IsEnum)
-                                propValue = Enum.Parse(prop.PropertyType, propValueString);
+                            if (propValue is string propValueString)
+                            {
+                                if (prop.PropertyType.IsEnum)
+                                    propValue = Enum.Parse(prop.PropertyType, propValueString);
+
+                                if (prop.PropertyType == typeof(char))
+                                    propValue = propValueString.Length > 0 ? propValueString[0] : ' ';
+                            }
 
                             prop.SetValue(instance, propValue);
                         }

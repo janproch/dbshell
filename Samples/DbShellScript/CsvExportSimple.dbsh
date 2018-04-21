@@ -1,0 +1,7 @@
+Include("Configuration.dbsh");
+SetConnection("${Connection}");
+
+CopyTable(
+    source = Table("album"),
+    target = File("album.csv")
+)

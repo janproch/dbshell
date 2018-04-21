@@ -2,7 +2,7 @@
   "profiles": {
     "DbShell": {
       "commandName": "Project",
-      "commandLineArgs": "C:\\jenasoft\\webdbshell\\dbshell\\Samples\\CsvExportAll.dbsh"
+      "commandLineArgs": "c:\\jenasoft\\webdbshell\\dbshell\\Samples\\DbShellScript\\CsvExportCustom.dbsh"
     }
   }
 }

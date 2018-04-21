@@ -24,7 +24,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbShell.Csv", "DbShell.Csv\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbShell.Test", "DbShell.Test\DbShell.Test.csproj", "{8594B596-A901-46BB-BFEC-59BE5EE678F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbShell.Xml", "DbShell.Xml\DbShell.Xml.csproj", "{60E6592A-9D27-4044-9A23-2CC6CE22BA38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbShell.Xml", "DbShell.Xml\DbShell.Xml.csproj", "{60E6592A-9D27-4044-9A23-2CC6CE22BA38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

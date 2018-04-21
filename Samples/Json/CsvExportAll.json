@@ -1,0 +1,31 @@
+{
+    "$type": "Batch",
+    "commands": [
+        {
+            "$type": "Include",
+            "file": "Configuration.json"
+        },
+        {
+            "$type": "ForEach",
+            "connection": "${Connection}",
+            "property": "TableName",
+            "source": {
+                "$type": "GetTables"
+            },
+            "commands": [
+                {
+                    "$type": "CopyTable",
+                    "source": {
+                        "$type": "Table",
+                        "name": "${TableName}",
+                        "connection": "${Connection}"
+                    },
+                    "target": {
+                        "$type": "File",
+                        "name": "${TableName}.csv"
+                    }
+                }
+            ]
+        }
+    ]
+}

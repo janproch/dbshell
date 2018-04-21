@@ -13,7 +13,7 @@ namespace DbShell.Core
     /// <summary>
     /// Command used for printing value
     /// </summary>
-    public class Echo : RunnableBase
+    public class Echo : RunnableBase, ISingleValueDbShellObject
     {
         /// <summary>
         /// Gets or sets the message to be printed.
@@ -29,6 +29,12 @@ namespace DbShell.Core
             string text = context.Replace(Message);
             context.GetLogger<Echo>().LogInformation(text);
             context.OutputMessage(text);
+        }
+
+        object ISingleValueDbShellObject.SingleValue
+        {
+            get => Message;
+            set => Message = value?.ToString();
         }
     }
 }

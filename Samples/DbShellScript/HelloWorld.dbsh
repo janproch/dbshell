@@ -1,0 +1,4 @@
+Include("Configuration.dbsh");
+
+Echo("Hello world!");
+Echo(message = "You will be connected to database with provider string ${Connection}");

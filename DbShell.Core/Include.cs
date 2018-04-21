@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DbShell.Core
 {
-    public class Include : RunnableBase
+    public class Include : RunnableBase, ISingleValueDbShellObject
     {
         public string File { get; set; }
 
@@ -16,6 +16,12 @@ namespace DbShell.Core
             string file = context.Replace(File);
             context.GetLogger<RunnableBase>().LogInformation("DBSH-00005 Including file {file}", file);
             context.IncludeFile(context.ResolveFile(File, ResolveFileMode.DbShell));
+        }
+
+        object ISingleValueDbShellObject.SingleValue
+        {
+            get => File;
+            set => File = value?.ToString();
         }
     }
 }
