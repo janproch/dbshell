@@ -22,7 +22,7 @@ namespace DbShell.All
         public static void Run(this IRunnable runnable)
         {
             var serviceProvider = BuildDefaultServiceProvider();
-            runnable.Run(BuildDefaultServiceProvider());
+            runnable.Run(serviceProvider);
         }
     }
 }
