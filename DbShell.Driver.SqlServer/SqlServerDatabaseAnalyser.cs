@@ -158,6 +158,10 @@ namespace DbShell.Driver.SqlServer
                         cmd.CommandText = sql;
                         using (var reader = cmd.ExecuteReader())
                         {
+                            int sparseIndex;
+                            try { sparseIndex = reader.GetOrdinal("is_sparse"); }
+                            catch { sparseIndex = -1; }
+
                             while (reader.Read())
                             {
                                 string tid = reader.SafeString("object_id");
@@ -197,7 +201,7 @@ namespace DbShell.Driver.SqlServer
                                 col.AutoIncrement = reader.SafeString("is_identity") == "True";
                                 col.ComputedExpression = SimplifyExpression(reader.SafeString("computed_expression"));
                                 col.IsPersisted = reader.SafeString("is_persisted") == "True";
-                                col.IsSparse = reader.SafeString("is_sparse") == "True";
+                                col.IsSparse = sparseIndex >= 0 ? reader.GetString(sparseIndex) == "true" : false;
                                 col.ObjectId = reader.SafeString("column_id");
                                 col.CommonType = AnalyseType(dataTypeName, length, precision, scale);
                                 table.Columns.Add(col);
