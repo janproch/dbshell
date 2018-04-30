@@ -201,7 +201,7 @@ namespace DbShell.Driver.SqlServer
                                 col.AutoIncrement = reader.SafeString("is_identity") == "True";
                                 col.ComputedExpression = SimplifyExpression(reader.SafeString("computed_expression"));
                                 col.IsPersisted = reader.SafeString("is_persisted") == "True";
-                                col.IsSparse = sparseIndex >= 0 ? reader.GetString(sparseIndex) == "true" : false;
+                                col.IsSparse = sparseIndex >= 0 ? reader[sparseIndex]?.ToString()?.ToLower() == "true" : false;
                                 col.ObjectId = reader.SafeString("column_id");
                                 col.CommonType = AnalyseType(dataTypeName, length, precision, scale);
                                 table.Columns.Add(col);
