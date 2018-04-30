@@ -16,6 +16,7 @@ namespace DbShell.Driver.Common.Utility
         {
             settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             settings.TypeNameHandling = TypeNameHandling.None;
+            settings.NullValueHandling = NullValueHandling.Ignore;
             settings.Converters.Add(new StringEnumConverter { CamelCaseText = true });
         }
 
