@@ -105,10 +105,10 @@ namespace DbShell.Driver.Common.Structure
         public DbTypeBase CommonType { get; set; }
 
         [DataMember]
-        public FilterParserTool.ExpressionType FilterType => FilterParserTool.GetExpressionType(CommonType);
+        public FilterParserType FilterType => FilterParserTool.GetExpressionType(CommonType);
 
         [DataMember]
-        public string CommonTypeCode => CommonType?.Code.ToString().ToLower();
+        public DbTypeCode? CommonTypeCode => CommonType?.Code;
 
         public int ColumnOrder
         {

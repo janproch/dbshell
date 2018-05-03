@@ -96,6 +96,19 @@ namespace DbShell.Driver.Common.Structure
             return null;
         }
 
+        public int GetColumnIndex(string name)
+        {
+            return Columns.IndexOfIf(c => String.Compare(c.Name, name, StringComparison.OrdinalIgnoreCase) == 0);
+        }
+
+        public ColumnInfo ColumnByName(string name)
+        {
+            int index = GetColumnIndex(name);
+            if (index < 0) return null;
+            return Columns[index];
+        }
+
+
         /// <summary>
         /// Gets list of referenced tables
         /// </summary>

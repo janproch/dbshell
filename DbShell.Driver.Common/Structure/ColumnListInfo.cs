@@ -1,4 +1,5 @@
 using DbShell.Driver.Common.Utility;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace DbShell.Driver.Common.Structure
@@ -6,11 +7,11 @@ namespace DbShell.Driver.Common.Structure
     [DataContract]
     public abstract class ColumnListInfo : NamedObjectInfo
     {
-        private ColumnList _columns = new ColumnList();
+        private List<ColumnInfo> _columns = new List<ColumnInfo>();
 
         [XmlCollection(typeof (ColumnInfo))]
         [DataMember]
-        public ColumnList Columns
+        public List<ColumnInfo> Columns
         {
             get { return _columns; }
         }

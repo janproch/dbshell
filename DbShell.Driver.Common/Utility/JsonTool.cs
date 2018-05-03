@@ -17,7 +17,7 @@ namespace DbShell.Driver.Common.Utility
             settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             settings.TypeNameHandling = TypeNameHandling.None;
             settings.NullValueHandling = NullValueHandling.Ignore;
-            settings.Converters.Add(new StringEnumConverter { CamelCaseText = true });
+            settings.Converters.Add(new StringEnumConverter());
         }
 
         public static JsonSerializerSettings GetDefaultSettings(Action<JsonSerializerSettings> overrides = null)

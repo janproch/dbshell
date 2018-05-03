@@ -9,23 +9,25 @@ namespace DbShell.Driver.Common.FilterParserBasicImpl
 {
     public static class FilterParserCoreImpl
     {
-        public static DmlfConditionBase ParseFilterExpression(FilterParserTool.ExpressionType type, DmlfExpression columnValue, string expression, ParserOptions options)
+        public static DmlfConditionBase ParseFilterExpression(FilterParserType type, DmlfExpression columnValue, string expression, ParserOptions options)
         {
             var opts = new FilterParseOptions();
             switch (type)
             {
-                case FilterParserTool.ExpressionType.String:
+                case FilterParserType.String:
                     opts.ParseString = true;
                     break;
-                case FilterParserTool.ExpressionType.Number:
+                case FilterParserType.Number:
                     opts.ParseNumber = true;
                     break;
-                case FilterParserTool.ExpressionType.DateTime:
+                case FilterParserType.DateTime:
                     opts.ParseTime = true;
                     break;
-                case FilterParserTool.ExpressionType.Logical:
+                case FilterParserType.Logical:
                     opts.ParseLogical = true;
                     break;
+                default:
+                    throw new Exception("DBSH-00000 Unexpected filter parser type:" + type);
             }
             var parser = new DmlfFilterParser(expression, columnValue, opts);
             parser.Run();

@@ -283,14 +283,14 @@ namespace DbShell.Driver.Common.AbstractDb
                             var fname = new NameWithSchema(schema, table);
                             if (!_tablesByName.ContainsKey(fname)) continue;
                             var t = _tablesByName[fname];
-                            t.Columns[column].PrimaryKey = true;
+                            t.ColumnByName(column).PrimaryKey = true;
 
                             if (t.PrimaryKey == null)
                             {
                                 t.PrimaryKey = new PrimaryKeyInfo(t);
                                 t.PrimaryKey.ConstraintName = cname;
                             }
-                            t.PrimaryKey.Columns.Add(new ColumnReference { RefColumn = t.Columns[column] });
+                            t.PrimaryKey.Columns.Add(new ColumnReference { RefColumn = t.ColumnByName(column) });
                         }
                     }
                 }
@@ -348,11 +348,11 @@ namespace DbShell.Driver.Common.AbstractDb
                             }
                             fk.Columns.Add(new ColumnReference
                             {
-                                RefColumn = fkt.Columns[fkcolumn]
+                                RefColumn = fkt.ColumnByName(fkcolumn)
                             });
                             fk.RefColumns.Add(new ColumnReference
                             {
-                                RefColumn = pkt.Columns[pkcolumn]
+                                RefColumn = pkt.ColumnByName(pkcolumn)
                             });
                         }
                     }

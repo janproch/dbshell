@@ -42,7 +42,7 @@ namespace DbShell.Core
 
         ColumnInfo[] IColumnMapping.GetOutputColumns(TableInfo inputTable, IShellContext context)
         {
-            var column = inputTable.Columns[Name].CloneColumn();
+            var column = inputTable.ColumnByName(Name).CloneColumn();
             column.Name = OutputName ?? Name;
             return new[] {column};
         }

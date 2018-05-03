@@ -393,7 +393,7 @@ namespace DbShell.Driver.Common.DbDiff
                     {
                         //plan.RecreateObject(fk, null);
                         var table = fk.OwnerTable;
-                        var othercol = table.Columns[fk.Columns[i].Name];
+                        var othercol = table.ColumnByName(fk.Columns[i].Name);
 
                         // compare types with ignoring autoincrement flag
                         // HACK: ignore specific attributes

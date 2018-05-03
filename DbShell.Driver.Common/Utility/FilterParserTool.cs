@@ -19,6 +19,15 @@ namespace DbShell.Driver.Common.Utility
         None
     }
 
+    public enum FilterParserType
+    {
+        None,
+        Number,
+        String,
+        DateTime,
+        Logical,
+        Object,
+    };
 
     //public interface IFilterParserCore
     //{
@@ -35,16 +44,7 @@ namespace DbShell.Driver.Common.Utility
     {
         public const string LineTransformPrefix = "$LINE_TRANSFORM$=";
 
-        public enum ExpressionType
-        {
-            None,
-            Number,
-            String,
-            DateTime,
-            Logical,
-        };
-
-        public static ExpressionType GetExpressionType(DbTypeBase type)
+        public static FilterParserType GetExpressionType(DbTypeBase type)
         {
             if (type != null)
             {
@@ -53,19 +53,19 @@ namespace DbShell.Driver.Common.Utility
                     case DbTypeCode.Int:
                     case DbTypeCode.Numeric:
                     case DbTypeCode.Float:
-                        return ExpressionType.Number;
+                        return FilterParserType.Number;
                     case DbTypeCode.Text:
                     case DbTypeCode.String:
                     case DbTypeCode.Guid:
                     case DbTypeCode.Generic:
-                        return ExpressionType.String;
+                        return FilterParserType.String;
                     case DbTypeCode.Datetime:
-                        return ExpressionType.DateTime;
+                        return FilterParserType.DateTime;
                     case DbTypeCode.Logical:
-                        return ExpressionType.Logical;
+                        return FilterParserType.Logical;
                 }
             }
-            return ExpressionType.None;
+            return FilterParserType.None;
         }
 
         public static FilterLineTransformation GetExpressionTransformation(string expression)
@@ -84,7 +84,7 @@ namespace DbShell.Driver.Common.Utility
             return ParseFilterExpression(GetExpressionType(type), columnValue, expression, options);
         }
 
-        public static DmlfConditionBase ParseFilterExpression(ExpressionType type, DmlfExpression columnValue, string expression, ParserOptions options = null)
+        public static DmlfConditionBase ParseFilterExpression(FilterParserType type, DmlfExpression columnValue, string expression, ParserOptions options = null)
         {
             if (expression == null) return null;
             expression = TransformExpression(expression);

@@ -37,11 +37,11 @@ namespace DbShell.Driver.Common.Structure
 
         [XmlAttrib("is_descending")]
         [DataMember]
-        public bool IsDescending { get; set; }
+        public bool? IsDescending { get; set; }
 
         [XmlAttrib("is_included")]
         [DataMember]
-        public bool IsIncluded { get; set; }
+        public bool? IsIncluded { get; set; }
 
         public ColumnReference Clone()
         {

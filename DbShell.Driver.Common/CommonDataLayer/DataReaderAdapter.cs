@@ -25,7 +25,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
 
         public int GetOrdinal(string colName)
         {
-            return _structure.Columns.GetIndex(colName);
+            return _structure.GetColumnIndex(colName);
         }
 
         public string GetName(int i)

@@ -173,18 +173,18 @@ namespace DbShell.Driver.SqlServer
             if (ix.IsUnique) Put(" ^unique");
             Put(" ^index %i &n^on %f (&>&n", ix.ConstraintName, ix.OwnerTable.FullName);
             bool was = false;
-            foreach (var col in ix.Columns.Where(x => !x.IsIncluded))
+            foreach (var col in ix.Columns.Where(x => x.IsIncluded != true))
             {
                 if (was) Put("&n,");
-                Put("%i %k", col.RefColumnName, col.IsDescending ? "DESC" : "ASC");
+                Put("%i %k", col.RefColumnName, col.IsDescending == true ? "DESC" : "ASC");
                 was = true;
             }
             Put("&<&n)");
             was = false;
-            if (ix.Columns.Any(x => x.IsIncluded))
+            if (ix.Columns.Any(x => x.IsIncluded == true))
             {
                 Put(" ^include (&>&n");
-                foreach (var col in ix.Columns.Where(x => x.IsIncluded))
+                foreach (var col in ix.Columns.Where(x => x.IsIncluded == true))
                 {
                     if (was) Put("&n,");
                     Put("%i", col.RefColumnName);

@@ -46,7 +46,7 @@ namespace DbShell.Driver.Common.Sql
                 for (int i = 0; i < upd.Columns.Length; i++)
                 {
                     if (i > 0) Put(", ");
-                    Put("%i=%v", upd.Columns[i], new ValueTypeHolder(upd.Values[i], table.Columns[upd.Columns[i]].CommonType));
+                    Put("%i=%v", upd.Columns[i], new ValueTypeHolder(upd.Values[i], table.ColumnByName(upd.Columns[i]).CommonType));
                 }
                 Where(table.FullName, upd.CondCols, upd.CondValues);
                 Put(";&n");
@@ -75,7 +75,7 @@ namespace DbShell.Driver.Common.Sql
                 var insColumns = new List<string>();
                 for (int i = 0; i < ins.Columns.Length; i++)
                 {
-                    var col = table.Columns[ins.Columns[i]];
+                    var col = table.ColumnByName(ins.Columns[i]);
                     if (col != null)
                     {
                         insColumns.Add(ins.Columns[i]);

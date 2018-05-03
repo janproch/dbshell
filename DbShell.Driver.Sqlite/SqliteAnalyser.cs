@@ -130,11 +130,11 @@ namespace DbShell.Driver.Sqlite
                                     }
                                     fk.Columns.Add(new ColumnReference
                                     {
-                                        RefColumn = tableInfo.Columns[fromColumn]
+                                        RefColumn = tableInfo.ColumnByName(fromColumn)
                                     });
                                     fk.RefColumns.Add(new ColumnReference
                                     {
-                                        RefColumn = refTable.Columns[toColumn]
+                                        RefColumn = refTable.ColumnByName(toColumn)
                                     });
                                 }
                             }

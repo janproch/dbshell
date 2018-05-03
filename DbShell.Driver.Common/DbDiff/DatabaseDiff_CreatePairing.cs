@@ -149,7 +149,7 @@ namespace DbShell.Driver.Common.DbDiff
             foreach (var csrc in tsrc.Columns)
             {
                 if (IsPaired(csrc)) continue;
-                int cindex = tsrc.Columns.GetIndex(csrc.Name);
+                int cindex = tsrc.GetColumnIndex(csrc.Name);
                 if (cindex < tdst.Columns.Count && !IsPaired(tdst.Columns[cindex]))
                 {
                     PairObjects(csrc, tdst.Columns[cindex]);

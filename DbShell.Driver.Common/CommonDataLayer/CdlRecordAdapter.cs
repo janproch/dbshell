@@ -149,7 +149,7 @@ namespace DbShell.Driver.Common.CommonDataLayer
 
         public int GetOrdinal(string name)
         {
-            return m_record.Structure.Columns.GetIndex(name);
+            return m_record.Structure.GetColumnIndex(name);
         }
 
         public string GetString(int i)

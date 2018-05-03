@@ -65,7 +65,7 @@ namespace DbShell.Driver.Common.Utility
 
         public int GetOrdinal(string colName)
         {
-            return _structure.Columns.GetIndex(colName);
+            return _structure.GetColumnIndex(colName);
         }
 
         public string GetName(int i)
