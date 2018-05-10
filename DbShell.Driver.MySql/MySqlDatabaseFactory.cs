@@ -1,6 +1,6 @@
 ﻿using DbShell.Driver.Common.AbstractDb;
 using DbShell.Driver.Common.DbDiff;
-using Pomelo.Data.MySql;
+using MySql.Data.MySqlClient;
 using System;
 using System.Data.Common;
 using System.IO;
