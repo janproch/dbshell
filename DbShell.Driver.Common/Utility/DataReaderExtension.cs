@@ -57,7 +57,7 @@ namespace DbShell.Driver.Common.Utility
                 var col = new QueryResultColumnInfo();
                 int size = row.SafeString("ColumnSize").SafeIntParse();
                 col.Name = row.SafeString("ColumnName");
-                col.NotNull = !(bool)row["AllowDBNull"];
+                if (row["AllowDBNull"] is bool notNull) col.NotNull = !notNull;
 
                 int dataTypeNameIndex = row.Table.Columns.GetOrdinal("DataTypeName");
                 int dataTypeIndex = row.Table.Columns.GetOrdinal("DataType");
