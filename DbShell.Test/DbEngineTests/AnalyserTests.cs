@@ -88,7 +88,19 @@ namespace DbShell.Test.DbEngineTests
                 var genre = newDbInfo.FindTableLike("genre");
                 Assert.Equal(3, genre.ColumnCount);
                 Assert.Equal("testflag", genre.Columns[2].Name);
-            }
+
+                Thread.Sleep(TimeSpan.FromSeconds(1.5));
+                RunScript($"drop table {dialect.QuoteIdentifier("Genre")};");
+                analyser = factory.CreateAnalyser();
+                analyser.Connection = conn;
+                analyser.Structure = newDbInfo;
+                analyser.GetModifications();
+                analyser.IncrementalAnalysis();
+                var newDbInfo2 = analyser.Structure;
+                Assert.Equal(4, newDbInfo2.Tables.Count);
+                var genre2 = newDbInfo.FindTableLike("genre");
+                Assert.Null(genre2);
+           }
         }
     }
 }
