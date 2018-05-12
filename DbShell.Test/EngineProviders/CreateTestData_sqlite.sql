@@ -1,13 +1,31 @@
-﻿CREATE TABLE Album ( 
+﻿CREATE TABLE Artist ( 
+    ArtistId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
+    Name NVARCHAR(120) NULL
+);
+
+CREATE TABLE Album ( 
     AlbumId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
     Title NVARCHAR(160) NOT NULL, 
-    ArtistId INT NOT NULL
+    ArtistId INT NOT NULL,
+    CONSTRAINT FK_AlbumArtistId FOREIGN KEY (ArtistId) REFERENCES Artist(ArtistId) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 CREATE TABLE AlbumCopy ( 
     AlbumId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
     Title NVARCHAR(160) NOT NULL, 
     ArtistId INT NOT NULL
 );
+
+INSERT INTO Artist (ArtistId, Name) VALUES (1, 'AC/DC');
+INSERT INTO Artist (ArtistId, Name) VALUES (2, 'TEST1');
+INSERT INTO Artist (ArtistId, Name) VALUES (3, 'Aerosmith');
+INSERT INTO Artist (ArtistId, Name) VALUES (4, 'Alanis Morissette');
+INSERT INTO Artist (ArtistId, Name) VALUES (5, 'Alice In Chains');
+INSERT INTO Artist (ArtistId, Name) VALUES (6, 'Antônio Carlos Jobim');
+INSERT INTO Artist (ArtistId, Name) VALUES (7, 'Apocalyptica');
+INSERT INTO Artist (ArtistId, Name) VALUES (8, 'Audioslave');
+INSERT INTO Artist (ArtistId, Name) VALUES (9, 'BackBeat');
+INSERT INTO Artist (ArtistId, Name) VALUES (10, 'Billy Cobham');
+
 
 INSERT INTO Album (AlbumId, Title, ArtistId) VALUES (1, 'For Those About To Rock We Salute You', 1);
 INSERT INTO Album (AlbumId, Title, ArtistId) VALUES (2, 'Balls to the Wall', 3);

@@ -22,7 +22,7 @@ namespace DbShell.Test.DbEngineTests
                 analyser.Connection = conn;
                 analyser.FullAnalysis();
                 var result = analyser.Structure;
-                Assert.Equal(4, result.Tables.Count);
+                Assert.Equal(5, result.Tables.Count);
 
                 var album = result.FindTableLike("album");
                 Assert.NotNull(album);
@@ -31,6 +31,10 @@ namespace DbShell.Test.DbEngineTests
                 Assert.True(album.Columns[1].CommonType is DbTypeString);
                 Assert.True(album.Columns[2].CommonType is DbTypeInt);
                 Assert.True(album.Columns[0].AutoIncrement);
+                Assert.Equal(1, album.ForeignKeys.Count);
+                var fk = album.ForeignKeys[0];
+                Assert.Equal("Artist", fk.RefTableName);
+                Assert.Equal(1, fk.Columns.Count);
 
                 var genre = result.FindTableLike("genre");
                 Assert.False(genre.Columns[0].AutoIncrement);

@@ -1,15 +1,36 @@
-﻿CREATE TABLE dbo.Album ( 
+﻿CREATE TABLE [dbo].[Artist] ( 
+    [ArtistId] INT IDENTITY NOT NULL, 
+    [Name] NVARCHAR(120) NULL, 
+    CONSTRAINT [PK_Artist] PRIMARY KEY ([ArtistId])
+)
+
+CREATE TABLE dbo.Album ( 
     AlbumId INT IDENTITY NOT NULL, 
     Title NVARCHAR(160) NOT NULL, 
     ArtistId INT NOT NULL, 
-    CONSTRAINT PK_Album PRIMARY KEY (AlbumId)
+    CONSTRAINT PK_Album PRIMARY KEY (AlbumId),
+    CONSTRAINT [FK_AlbumArtistId] FOREIGN KEY ([ArtistId]) REFERENCES [dbo].[Artist]([ArtistId]) ON DELETE NO ACTION ON UPDATE NO ACTION
 )
+
 CREATE TABLE dbo.AlbumCopy ( 
     AlbumId INT IDENTITY NOT NULL, 
     Title NVARCHAR(160) NOT NULL, 
     ArtistId INT NOT NULL, 
     CONSTRAINT PK_AlbumCopy PRIMARY KEY (AlbumId)
 )
+
+SET IDENTITY_INSERT [dbo].[Artist] ON;
+INSERT INTO [dbo].[Artist] ([ArtistId], [Name]) VALUES (1, 'AC/DC');
+INSERT INTO [dbo].[Artist] ([ArtistId], [Name]) VALUES (2, 'TEST1');
+INSERT INTO [dbo].[Artist] ([ArtistId], [Name]) VALUES (3, 'Aerosmith');
+INSERT INTO [dbo].[Artist] ([ArtistId], [Name]) VALUES (4, 'Alanis Morissette');
+INSERT INTO [dbo].[Artist] ([ArtistId], [Name]) VALUES (5, 'Alice In Chains');
+INSERT INTO [dbo].[Artist] ([ArtistId], [Name]) VALUES (6, N'Antônio Carlos Jobim');
+INSERT INTO [dbo].[Artist] ([ArtistId], [Name]) VALUES (7, 'Apocalyptica');
+INSERT INTO [dbo].[Artist] ([ArtistId], [Name]) VALUES (8, 'Audioslave');
+INSERT INTO [dbo].[Artist] ([ArtistId], [Name]) VALUES (9, 'BackBeat');
+INSERT INTO [dbo].[Artist] ([ArtistId], [Name]) VALUES (10, 'Billy Cobham');
+SET IDENTITY_INSERT [dbo].[Artist] OFF;
 
 SET IDENTITY_INSERT Album ON
 INSERT INTO [Album] ([AlbumId], [Title], [ArtistId]) VALUES (1, 'For Those About To Rock We Salute You', 1);
