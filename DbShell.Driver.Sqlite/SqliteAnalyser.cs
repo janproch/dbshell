@@ -128,7 +128,7 @@ namespace DbShell.Driver.Sqlite
 
         protected override void DoGetModifications()
         {
-            DoGetModificationsCore("select name, sql as hash from sqlite_master where type='table'", "hash", "name");
+            DoGetModificationsCore("select name, sql as hash from sqlite_master where type='table' and name!='sqlite_sequence'", "hash", "name");
         }
 
         public DbTypeBase AnalyseType(string typeName)

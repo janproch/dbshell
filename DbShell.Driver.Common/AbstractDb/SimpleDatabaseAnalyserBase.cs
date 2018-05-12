@@ -17,6 +17,14 @@ namespace DbShell.Driver.Common.AbstractDb
         protected Dictionary<NameWithSchema, TableInfo> _tablesByName = new Dictionary<NameWithSchema, TableInfo>();
         protected Dictionary<NameWithSchema, ViewInfo> _viewByName = new Dictionary<NameWithSchema, ViewInfo>();
 
+        private static string CreateObjectId(string prefix, string schema, string name)
+        {
+            if (schema != null)
+                return $"{prefix}:{schema}.{name}";
+
+            return $"{prefix}:{name}";
+        }
+
         protected void Timer(string msg)
         {
             var now = DateTime.Now;
@@ -73,7 +81,7 @@ namespace DbShell.Driver.Common.AbstractDb
             if (res != null)
             {
                 if (res.Count == 0) return " is null";
-                return " in (" + res.Select(x => removeIdPrefix ? $"'{x.Substring(x.IndexOf(':') + 1)}'" : x).CreateDelimitedText(",") + ")";
+                return " in (" + res.Select(x => removeIdPrefix ? $"'{x.Substring(x.IndexOf(':') + 1)}'" : $"'{x}'").CreateDelimitedText(",") + ")";
             }
             return " is not null";
         }
@@ -90,7 +98,7 @@ namespace DbShell.Driver.Common.AbstractDb
                         Action = DatabaseChangeAction.Remove,
                         ObjectType = obj.ObjectType,
                         OldName = obj.FullName,
-                        ObjectId = $"{objectIdPrefix}:{obj.Schema}.{obj.Name}",
+                        ObjectId = CreateObjectId(objectIdPrefix, obj.Schema, obj.Name),
                     };
                     ChangeSet.Items.Add(item);
                 }
@@ -140,7 +148,7 @@ namespace DbShell.Driver.Common.AbstractDb
                             {
                                 Action = DatabaseChangeAction.Add,
                                 ObjectType = DatabaseObjectType.Table,
-                                ObjectId = objectId ?? $"table:{schema}.{name}",
+                                ObjectId = objectId ?? CreateObjectId("table", schema, name),
                                 NewName = fullName,
                             };
                             ChangeSet.Items.Add(item);
@@ -155,7 +163,7 @@ namespace DbShell.Driver.Common.AbstractDb
                                     ObjectType = DatabaseObjectType.Table,
                                     OldName = ((NamedObjectInfo)obj).FullName,
                                     NewName = fullName,
-                                    ObjectId = objectId ?? $"table:{schema}.{name}",
+                                    ObjectId = objectId ?? CreateObjectId("table", schema, name),
                                 };
                                 ChangeSet.Items.Add(item);
                             }
@@ -196,7 +204,7 @@ namespace DbShell.Driver.Common.AbstractDb
                                 {
                                     FullName = fname,
                                     ModifyInfo = modify,
-                                    ObjectId = $"table:{tschema}.{tname}",
+                                    ObjectId = CreateObjectId("table", tschema, tname),
                                 };
                                 Structure.Tables.Add(table);
                                 _tablesByName[fname] = table;
