@@ -27,5 +27,14 @@ namespace DbShell.Driver.Postgres
                 }
             }
         }
+
+        public override void DropDatabase(string dbName)
+        {
+            using (var cmd = Connection.CreateCommand())
+            {
+                cmd.CommandText = $"select pg_terminate_backend(pg_stat_activity.pid) from pg_stat_activity where pg_stat_activity.datname = '{dbName}';DROP DATABASE \"{dbName}\"";
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }

@@ -15,7 +15,7 @@ namespace DbShell.EngineProviders.Test
             yield return new[] { "mssql" };
         }
 
-        public IEnumerator<object[]> GetEnumerator() => Enumerate().GetEnumerator();
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        IEnumerator<object[]> IEnumerable<object[]>.GetEnumerator() => Enumerate().GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => Enumerate().GetEnumerator();
     }
 }
