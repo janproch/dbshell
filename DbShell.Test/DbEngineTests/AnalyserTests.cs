@@ -100,7 +100,20 @@ namespace DbShell.Test.DbEngineTests
                 Assert.Equal(4, newDbInfo2.Tables.Count);
                 var genre2 = newDbInfo.FindTableLike("genre");
                 Assert.Null(genre2);
-           }
+
+                Thread.Sleep(TimeSpan.FromSeconds(1.5));
+                RunScript($"create table {dialect.QuoteIdentifier("NewTable1")} (testcol int null);");
+                analyser = factory.CreateAnalyser();
+                analyser.Connection = conn;
+                analyser.Structure = newDbInfo;
+                analyser.GetModifications();
+                analyser.IncrementalAnalysis();
+                var newDbInfo3 = analyser.Structure;
+                Assert.Equal(5, newDbInfo3.Tables.Count);
+                var newTable1 = newDbInfo.FindTableLike("NewTable1");
+                Assert.NotNull(newTable1);
+                Assert.Equal(1, newTable1.ColumnCount);
+            }
         }
     }
 }
