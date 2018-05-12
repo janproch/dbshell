@@ -8,14 +8,20 @@ using Xunit;
 using DbShell.Xml;
 using DbShell.Core;
 using DbShell.All;
+using System.Collections.Generic;
+using System.Collections;
+using DbShell.EngineProviders.Test;
 
 namespace DbShell.Test
 {
     public class CopyTableTest : DatabaseTestBase
     {
-        [Fact]
-        public void TableToCdl()
+        [Theory]
+        [ClassData(typeof(DatabaseEngineGenerator))]
+        public void TableToCdl(string engine)
         {
+            Initialize(engine);
+
             using (var runner = CreateRunner())
             {
                 runner.LoadFile("CopyTable/copytable_tabletocdl.dbsh");
@@ -23,9 +29,12 @@ namespace DbShell.Test
             }
         }
 
-        [Fact]
-        public void CdlToCdl()
+        [Theory]
+        [ClassData(typeof(DatabaseEngineGenerator))]
+        public void CdlToCdl(string engine)
         {
+            Initialize(engine);
+
             using (var runner = CreateRunner())
             {
                 runner.LoadFile("CopyTable/copytable_cdltocdl.dbsh");
@@ -36,9 +45,12 @@ namespace DbShell.Test
             Assert.True(TestUtility.FileCompare("test1.csv", "test2.csv"));
         }
 
-        [Fact]
-        public void TableToTable()
+        [Theory]
+        [ClassData(typeof(DatabaseEngineGenerator))]
+        public void TableToTable(string engine)
         {
+            Initialize(engine);
+            
             using (var runner = CreateRunner())
             {
                 runner.LoadFile("CopyTable/copytable_tabletotable.dbsh");
@@ -48,9 +60,12 @@ namespace DbShell.Test
             Assert.True(TestUtility.FileCompareCdlContent("test1.cdl", "test2.cdl"));
         }
 
-        [Fact]
-        public void CopyTableColumnMapTest()
+        [Theory]
+        [ClassData(typeof(DatabaseEngineGenerator))]
+        public void CopyTableColumnMapTest(string engine)
         {
+            Initialize(engine);
+
             using (var runner = CreateRunner())
             {
                 runner.LoadFile("CopyTable/copytable_columnmap.dbsh");
@@ -64,9 +79,12 @@ namespace DbShell.Test
             }
         }
 
-        [Fact]
-        public void CopyAllTablesTest()
+        [Theory]
+        [ClassData(typeof(DatabaseEngineGenerator))]
+        public void CopyAllTablesTest(string engine)
         {
+            Initialize(engine);
+
             using (var runner = CreateRunner())
             {
                 runner.LoadFile("CopyTable/copyalltables.dbsh");
@@ -76,7 +94,7 @@ namespace DbShell.Test
 
         private void TestValue(string table, string idcol, string idval, string column, string value)
         {
-            using (var conn = OpenConnection(true))
+            using (var conn = OpenConnection())
             {
                 using (var cmd = conn.CreateCommand())
                 {
@@ -87,9 +105,12 @@ namespace DbShell.Test
             }
         }
 
-        [Fact]
-        public void MappedImportTest()
+        [Theory]
+        [ClassData(typeof(DatabaseEngineGenerator))]
+        public void MappedImportTest(string engine)
         {
+            Initialize(engine);
+
             using (var runner = CreateRunner())
             {
                 runner.LoadFile("CopyTable/mapped_import.dbsh");
@@ -109,9 +130,12 @@ namespace DbShell.Test
             TestValue("ImportedData", "ID_IMPORTED", "12", "Data3", "c2");
         }
 
-        [Fact]
-        public void XmlImportTest()
+        [Theory]
+        [ClassData(typeof(DatabaseEngineGenerator))]
+        public void XmlImportTest(string engine)
         {
+            Initialize(engine);
+
             var instructions = XmlTableAnalyser.AnalyseFile("CopyTable/importedxml4.xml", true);
 
             using (var runner = CreateRunner())
@@ -133,16 +157,19 @@ namespace DbShell.Test
             }
         }
 
-        [Fact]
-        public void CopyDatabaseTest()
+        [Theory]
+        [ClassData(typeof(DatabaseEngineGenerator))]
+        public void CopyDatabaseTest(string engine)
         {
+            Initialize(engine);
+
             RunScript("DELETE FROM Album");
             RunScript("DELETE FROM Genre");
 
             var copyAll = new CopyAllTables
             {
                 SourceConnection = "sqlite://Data Source=CopyTable/SqliteTestData.locdb",
-                TargetConnection = GetProviderConnectionString(true),
+                TargetConnection = ProviderConnectionString,
                 DisableConstraints = true,
             };
 

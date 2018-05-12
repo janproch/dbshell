@@ -8,10 +8,12 @@
 
   <ItemGroup>
     <None Remove="CopyTable\CreateTestData.sql" />
+    <None Remove="EngineProviders\CreateTestData_sqlite.sql" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="CopyTable\CreateTestData.sql" />
+    <EmbeddedResource Include="EngineProviders\CreateTestData_sqlite.sql" />
+    <EmbeddedResource Include="EngineProviders\CreateTestData_mssql.sql" />
   </ItemGroup>
 
   <ItemGroup>
