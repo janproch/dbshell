@@ -10,7 +10,7 @@ namespace DbShell.EngineProviders.Test
         public IEnumerable<object[]> Enumerate()
         {
             yield return new[] { "sqlite" };
-            //yield return new[] { "mysql" };
+            yield return new[] { "mysql" };
             //yield return new[] { "postgre" };
             yield return new[] { "mssql" };
         }

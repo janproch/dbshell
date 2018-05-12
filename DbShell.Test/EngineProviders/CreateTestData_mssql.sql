@@ -19,6 +19,20 @@ CREATE TABLE dbo.AlbumCopy (
     CONSTRAINT PK_AlbumCopy PRIMARY KEY (AlbumId)
 )
 
+CREATE TABLE Genre ( 
+    GenreId INT NOT NULL, 
+    Name NVARCHAR(120) NULL, 
+    CONSTRAINT PK_Genre PRIMARY KEY (GenreId)
+)
+
+CREATE TABLE ImportedData ( 
+    ID_IMPORTED INT IDENTITY NOT NULL, 
+	Data1 NVARCHAR(250) NULL,
+	Data2 NVARCHAR(250) NULL,
+	Data3 NVARCHAR(250) NULL
+    CONSTRAINT PK_ImportedData PRIMARY KEY (ID_IMPORTED)
+)
+
 SET IDENTITY_INSERT [dbo].[Artist] ON;
 INSERT INTO [dbo].[Artist] ([ArtistId], [Name]) VALUES (1, 'AC/DC');
 INSERT INTO [dbo].[Artist] ([ArtistId], [Name]) VALUES (2, 'TEST1');
@@ -44,13 +58,6 @@ INSERT INTO [Album] ([AlbumId], [Title], [ArtistId]) VALUES (8, 'Warner 25 Anos'
 INSERT INTO [Album] ([AlbumId], [Title], [ArtistId]) VALUES (9, 'Plays Metallica By Four Cellos', 7);
 INSERT INTO [Album] ([AlbumId], [Title], [ArtistId]) VALUES (10, 'Audioslave', 8);
 SET IDENTITY_INSERT Album OFF
-
-
-CREATE TABLE Genre ( 
-    GenreId INT NOT NULL, 
-    Name NVARCHAR(120) NULL, 
-    CONSTRAINT PK_Genre PRIMARY KEY (GenreId)
-)
 
 
 INSERT INTO [Genre] ([GenreId], [Name]) VALUES (1, 'Rock');
@@ -85,10 +92,3 @@ INSERT INTO [Genre] ([GenreId], [Name]) VALUES (35, 'test');
 INSERT INTO [Genre] ([GenreId], [Name]) VALUES (101, 'Rock And Roll');
 INSERT INTO [Genre] ([GenreId], [Name]) VALUES (102, 'Blues');
 
-CREATE TABLE ImportedData ( 
-    ID_IMPORTED INT IDENTITY NOT NULL, 
-	Data1 NVARCHAR(250) NULL,
-	Data2 NVARCHAR(250) NULL,
-	Data3 NVARCHAR(250) NULL
-    CONSTRAINT PK_ImportedData PRIMARY KEY (ID_IMPORTED)
-)

@@ -94,11 +94,13 @@ namespace DbShell.Test
 
         private void TestValue(string table, string idcol, string idval, string column, string value)
         {
+            var dialect = DatabaseFactory.CreateDialect();
             using (var conn = OpenConnection())
             {
                 using (var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = String.Format("SELECT [{0}] FROM [{1}] WHERE [{2}] = '{3}'", column, table, idcol, idval);
+                    cmd.CommandText = String.Format("SELECT {0} FROM {1} WHERE {2} = '{3}'", 
+                        dialect.QuoteIdentifier(column), dialect.QuoteIdentifier(table), dialect.QuoteIdentifier(idcol), idval);
                     string realVal = cmd.ExecuteScalar().SafeToString();
                     Assert.Equal(value, realVal);
                 }

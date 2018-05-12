@@ -34,7 +34,11 @@ namespace DbShell.Driver.MySql
             if (FilterOptions.AnyTables && IsTablesPhase)
             {
                 DoLoadTableList(CreateQuery("tables.sql", DatabaseObjectType.Table), "ALTER_TIME", "TABLE_NAME");
-                DoLoadColumnsFromInformationSchema(CreateQuery("columns.sql", DatabaseObjectType.Table));
+                DoLoadColumnsFromInformationSchema(CreateQuery("columns.sql", DatabaseObjectType.Table), (record, col) =>
+                {
+                    if (record.SafeString("EXTRA")?.ToLower()?.Contains("auto_increment") == true)
+                        col.AutoIncrement = true;
+                });
                 DoLoadPrimaryKeysFromInformationSchema(CreateQuery("primary_keys.sql", DatabaseObjectType.Table));
                 DoLoadForeignKeysFromInformationSchema(CreateQuery("foreign_keys.sql", DatabaseObjectType.Table));
             }
@@ -45,9 +49,16 @@ namespace DbShell.Driver.MySql
             return AnalyseType(col.DataType, len, prec, scale);
         }
 
+        private static string GetDataTypeNameWithoutParams(string dt)
+        {
+            int index = dt.IndexOf('(');
+            if (index >= 0) return dt.Substring(0, index);
+            return dt;
+        }
+
         public static DbTypeBase AnalyseType(string dt, int len, int prec, int scale)
         {
-            switch (dt)
+            switch (GetDataTypeNameWithoutParams(dt))
             {
                 case "binary":
                     return new DbTypeString

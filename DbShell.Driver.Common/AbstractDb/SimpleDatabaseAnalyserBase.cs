@@ -3,6 +3,7 @@ using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -213,7 +214,7 @@ namespace DbShell.Driver.Common.AbstractDb
             return res;
         }
 
-        protected void DoLoadColumnsFromInformationSchema(string sql)
+        protected void DoLoadColumnsFromInformationSchema(string sql, Action<IDataRecord, ColumnInfo> parseAditionalInfo = null)
         {
             Timer("columns...");
             try
@@ -251,8 +252,10 @@ namespace DbShell.Driver.Common.AbstractDb
 
                             col.DefaultValue = reader.SafeString(ToColumnCase("column_default"));
                             col.CommonType = AnalyseType(col, length, precision, scale);
-                            table.Columns.Add(col);
                             if (String.IsNullOrWhiteSpace(col.DefaultValue)) col.DefaultValue = null;
+                            parseAditionalInfo?.Invoke(reader, col);
+
+                            table.Columns.Add(col);
                         }
                     }
                 }

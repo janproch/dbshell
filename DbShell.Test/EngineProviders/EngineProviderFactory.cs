@@ -15,6 +15,8 @@ namespace DbShell.Test.EngineProviders
                     return new SqlServerEngineProvider();
                 case "sqlite":
                     return new SqliteEngineProvider();
+                case "mysql":
+                    return new MySqlEngineProvider();
             }
             return null;
         }

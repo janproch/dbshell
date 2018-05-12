@@ -33,7 +33,7 @@ namespace DbShell.Test.DbEngineTests
                 Assert.True(album.Columns[0].AutoIncrement);
                 Assert.Equal(1, album.ForeignKeys.Count);
                 var fk = album.ForeignKeys[0];
-                Assert.Equal("Artist", fk.RefTableName);
+                Assert.Equal("artist", fk.RefTableName?.ToLower());
                 Assert.Equal(1, fk.Columns.Count);
 
                 var genre = result.FindTableLike("genre");
