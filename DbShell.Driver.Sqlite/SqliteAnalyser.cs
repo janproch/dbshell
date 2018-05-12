@@ -20,44 +20,21 @@ namespace DbShell.Driver.Sqlite
 
             if (FilterOptions.AnyTables && IsTablesPhase)
             {
-                var tables = DoLoadTableList("select name, sql as hash from sqlite_master where type='table' and name " + CreateFilterExpression(DatabaseObjectType.Table), "hash", "name");
-
-                Timer("sequences...");
-
-                var sequences = new HashSet<string>();
-                try
-                {
-                    using (var cmd = Connection.CreateCommand())
-                    {
-                        cmd.CommandText = $"select name from sqlite_sequence";
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                sequences.Add(reader.GetString(0));
-                            }
-                        }
-                    }
-                }
-                catch (Exception err)
-                {
-                    AddErrorReport("Error loading sequences", err);
-                }
-
+                var tables = DoLoadTableList("select name, sql as hash from sqlite_master where type='table' and name!='sqlite_sequence' and name " + CreateFilterExpression(DatabaseObjectType.Table), "hash", "name");
 
                 Timer("columns...");
 
                 try
                 {
 
-                    foreach (string table in tables)
+                    foreach (var table in tables)
                     {
-                        var fname = new NameWithSchema(null, table);
+                        var fname = new NameWithSchema(null, table.name);
                         if (!_tablesByName.ContainsKey(fname)) continue;
                         var tableInfo = _tablesByName[fname];
                         using (var cmd = Connection.CreateCommand())
                         {
-                            cmd.CommandText = $"pragma table_info('{table}')";
+                            cmd.CommandText = $"pragma table_info('{table.name}')";
                             using (var reader = cmd.ExecuteReader())
                             {
                                 while (reader.Read())
@@ -71,7 +48,7 @@ namespace DbShell.Driver.Sqlite
                                         if (tableInfo.PrimaryKey == null)
                                         {
                                             tableInfo.PrimaryKey = new PrimaryKeyInfo(tableInfo);
-                                            tableInfo.PrimaryKey.ConstraintName = $"PK_{table}";
+                                            tableInfo.PrimaryKey.ConstraintName = $"PK_{table.name}";
                                         }
                                         tableInfo.PrimaryKey.Columns.Add(new ColumnReference
                                         {
@@ -79,7 +56,7 @@ namespace DbShell.Driver.Sqlite
                                         });
                                     }
                                     col.CommonType = AnalyseType(col.DataType);
-                                    col.AutoIncrement = sequences.Contains(table) && reader.SafeString("pk") == "1";
+                                    col.AutoIncrement = table.modify.ToLower().Contains("autoincrement") && reader.SafeString("pk") == "1";
                                     tableInfo.Columns.Add(col);
                                 }
                             }
@@ -95,14 +72,14 @@ namespace DbShell.Driver.Sqlite
                 {
                     Timer("foreign keys...");
 
-                    foreach (string table in tables)
+                    foreach (var table in tables)
                     {
-                        var fname = new NameWithSchema(null, table);
+                        var fname = new NameWithSchema(null, table.name);
                         if (!_tablesByName.ContainsKey(fname)) continue;
                         var tableInfo = _tablesByName[fname];
                         using (var cmd = Connection.CreateCommand())
                         {
-                            cmd.CommandText = $"pragma foreign_key_list('{table}')";
+                            cmd.CommandText = $"pragma foreign_key_list('{table.name}')";
                             using (var reader = cmd.ExecuteReader())
                             {
                                 while (reader.Read())
@@ -115,7 +92,7 @@ namespace DbShell.Driver.Sqlite
                                     string onUpdate = reader.SafeString("on_update");
                                     string onDelete = reader.SafeString("on_delete");
 
-                                    string cname = $"FK_{table}_{id}";
+                                    string cname = $"FK_{table.name}_{id}";
 
                                     var refTable = _tablesByName[new NameWithSchema(null, refTableName)];
 

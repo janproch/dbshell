@@ -3,7 +3,10 @@ using System.Configuration;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.IO;
+using DbShell.All;
+using DbShell.Core;
 using DbShell.Core.Runtime;
+using DbShell.Driver.Common.AbstractDb;
 using DbShell.Test.EngineProviders;
 using Xunit;
 
@@ -22,6 +25,15 @@ namespace DbShell.Test
         {
             _engineProvider = EngineProviderFactory.GetProvider(engine);
             _engineProvider.CreateDatabase();
+        }
+
+        protected IDatabaseFactory DatabaseFactory
+        {
+            get
+            {
+                var provider = ConnectionProvider.FromString(DbShellUtility.BuildDefaultServiceProvider(), ProviderConnectionString);
+                return provider.Factory;
+            }
         }
 
         protected ShellRunner CreateRunner()

@@ -166,9 +166,9 @@ namespace DbShell.Driver.Common.AbstractDb
             else AddDeletedObjectsByName(Structure.Tables, existingTables, "table");
         }
 
-        protected List<string> DoLoadTableList(string sql, string modifyColumn, string nameColumn, string schemaColumn = null)
+        protected List<(string schema, string name, string modify)> DoLoadTableList(string sql, string modifyColumn, string nameColumn, string schemaColumn = null)
         {
-            var tables = new List<string>();
+            var res = new List<(string schema, string name, string modify)>();
             Timer("tables...");
             try
             {
@@ -200,7 +200,7 @@ namespace DbShell.Driver.Common.AbstractDb
                                 Structure.Tables.Add(table);
                                 _tablesByName[fname] = table;
                             }
-                            tables.Add(tname);
+                            res.Add((tschema, tname, modify));
                         }
                     }
                 }
@@ -210,7 +210,7 @@ namespace DbShell.Driver.Common.AbstractDb
                 AddErrorReport("Error loading tables", err);
             }
 
-            return tables;
+            return res;
         }
 
         protected void DoLoadColumnsFromInformationSchema(string sql)
