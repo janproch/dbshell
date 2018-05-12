@@ -9,10 +9,12 @@
   <ItemGroup>
     <None Remove="CopyTable\CreateTestData.sql" />
     <None Remove="EngineProviders\CreateTestData_mysql.sql" />
+    <None Remove="EngineProviders\CreateTestData_postgres.sql" />
     <None Remove="EngineProviders\CreateTestData_sqlite.sql" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="EngineProviders\CreateTestData_postgres.sql" />
     <EmbeddedResource Include="EngineProviders\CreateTestData_mysql.sql" />
     <EmbeddedResource Include="EngineProviders\CreateTestData_sqlite.sql" />
     <EmbeddedResource Include="EngineProviders\CreateTestData_mssql.sql" />

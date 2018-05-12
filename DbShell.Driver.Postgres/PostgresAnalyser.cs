@@ -42,6 +42,13 @@ namespace DbShell.Driver.Postgres
             return AnalyseType(col.DataType, len, prec, scale, col.DefaultValue);
         }
 
+        private static string GetDataTypeNameWithoutParams(string dt)
+        {
+            int index = dt.IndexOf('(');
+            if (index >= 0) return dt.Substring(0, index);
+            return dt;
+        }
+
         private DbTypeBase AnalyseType(string dt, int len, int prec, int scale, string coldef)
         {
             if (dt.StartsWith("_"))
@@ -52,7 +59,7 @@ namespace DbShell.Driver.Postgres
                     ElementType = res,
                 };
             }
-            switch (dt)
+            switch (GetDataTypeNameWithoutParams(dt))
             {
                 case "bigint":
                 case "int8":

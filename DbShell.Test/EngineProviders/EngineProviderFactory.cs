@@ -17,8 +17,10 @@ namespace DbShell.Test.EngineProviders
                     return new SqliteEngineProvider();
                 case "mysql":
                     return new MySqlEngineProvider();
+                case "postgres":
+                    return new PostgresEngineProvider();
             }
-            return null;
+            throw new Exception($"Engine not supported: {engine}");
         }
 
         public static void RunEmbeddedScript(IDatabaseEngineProvider provider, string name)

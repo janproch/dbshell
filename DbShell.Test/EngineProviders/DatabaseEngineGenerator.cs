@@ -11,7 +11,7 @@ namespace DbShell.EngineProviders.Test
         {
             yield return new[] { "sqlite" };
             yield return new[] { "mysql" };
-            //yield return new[] { "postgre" };
+            yield return new[] { "postgres" };
             yield return new[] { "mssql" };
         }
 

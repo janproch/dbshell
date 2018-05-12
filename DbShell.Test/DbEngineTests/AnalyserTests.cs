@@ -3,6 +3,7 @@ using DbShell.EngineProviders.Test;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using Xunit;
 
 namespace DbShell.Test.DbEngineTests
@@ -11,7 +12,7 @@ namespace DbShell.Test.DbEngineTests
     {
         [Theory]
         [ClassData(typeof(DatabaseEngineGenerator))]
-        public void AnalyserTest(string engine)
+        public void FullAnalyse(string engine)
         {
             Initialize(engine);
 
@@ -44,6 +45,49 @@ namespace DbShell.Test.DbEngineTests
                 Assert.True(importedData.Columns[0].AutoIncrement);
             }
         }
+
+        [Theory]
+        [ClassData(typeof(DatabaseEngineGenerator))]
+        public void IncrementalAnalyse(string engine)
+        {
+            Initialize(engine);
+
+            using (var conn = OpenConnection())
+            {
+                var factory = DatabaseFactory;
+                var analyser = factory.CreateAnalyser();
+                analyser.Connection = conn;
+                analyser.FullAnalysis();
+                var dbInfo = analyser.Structure;
+
+                // new analyser
+                analyser = factory.CreateAnalyser();
+                analyser.Connection = conn;
+                analyser.Structure = dbInfo;
+                analyser.GetModifications();
+                var changeSet = analyser.ChangeSet;
+                Assert.Equal(0, changeSet.Items.Count);
+
+                Thread.Sleep(TimeSpan.FromSeconds(1.5));
+                RunScript("alter table Genre add testflag int null");
+                analyser = factory.CreateAnalyser();
+                analyser.Connection = conn;
+                analyser.Structure = dbInfo;
+                analyser.GetModifications();
+                changeSet = analyser.ChangeSet;
+                Assert.Equal(1, changeSet.Items.Count);
+
+                analyser = factory.CreateAnalyser();
+                analyser.Connection = conn;
+                analyser.Structure = dbInfo;
+                analyser.ChangeSet = changeSet;
+                analyser.IncrementalAnalysis();
+                var newDbInfo = analyser.Structure;
+
+                var genre = newDbInfo.FindTableLike("genre");
+                Assert.Equal(3, genre.ColumnCount);
+                Assert.Equal("testflag", genre.Columns[2].Name);
+            }
+        }
     }
 }
-
