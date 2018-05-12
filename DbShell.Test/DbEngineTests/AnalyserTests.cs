@@ -51,6 +51,7 @@ namespace DbShell.Test.DbEngineTests
         public void IncrementalAnalyse(string engine)
         {
             Initialize(engine);
+            var dialect = DatabaseFactory.CreateDialect();
 
             using (var conn = OpenConnection())
             {
@@ -69,7 +70,7 @@ namespace DbShell.Test.DbEngineTests
                 Assert.Equal(0, changeSet.Items.Count);
 
                 Thread.Sleep(TimeSpan.FromSeconds(1.5));
-                RunScript("alter table Genre add testflag int null");
+                RunScript($"alter table {dialect.QuoteIdentifier("Genre")} add testflag int null");
                 analyser = factory.CreateAnalyser();
                 analyser.Connection = conn;
                 analyser.Structure = dbInfo;

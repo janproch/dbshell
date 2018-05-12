@@ -24,7 +24,10 @@ namespace DbShell.Driver.Postgres
             if (FilterOptions.AnyTables && IsTablesPhase)
             {
                 DoLoadTableList(CreateQuery("table_modifications.psql", DatabaseObjectType.Table), "Hash", "Name", "Schema");
-                DoLoadColumnsFromInformationSchema(CreateQuery("columns.psql", DatabaseObjectType.Table));
+                DoLoadColumnsFromInformationSchema(CreateQuery("columns.psql", DatabaseObjectType.Table), (reader, col) =>
+                {
+                    col.AutoIncrement = reader.SafeString("column_default")?.StartsWith("nextval(") == true;
+                });
                 DoLoadPrimaryKeysFromInformationSchema(CreateQuery("primary_keys.psql", DatabaseObjectType.Table));
                 DoLoadForeignKeysFromInformationSchema(CreateQuery("foreign_keys.psql", DatabaseObjectType.Table));
             }
