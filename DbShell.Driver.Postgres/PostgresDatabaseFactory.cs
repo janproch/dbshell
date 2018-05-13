@@ -83,6 +83,33 @@ namespace DbShell.Driver.Postgres
             }
         }
 
+        public override SqlDumperCaps DumperCaps
+        {
+            get
+            {
+                return new SqlDumperCaps
+                {
+                    AllFlags = false,
+                    CreateTable = true,
+                    DropTable = true,
+                    //AlterTable = true,
+                    CreateDatabase = true,
+                    DropDatabase = true,
+                    RenameColumn = true,
+                    ChangeColumnType = true,
+                    ChangeColumnDefaultValue = true,
+                    AddColumn = true,
+                    DropColumn = true,
+                    ChangeColumn = true,
+                    RenameTable = true,
+                    AddConstraint = true,
+                    DropConstraint = true,
+                    AddIndex = true,
+                    DropIndex = true,
+                };
+            }
+        }
+
         internal static string LoadEmbeddedResource(string name)
         {
             using (Stream s = GetAssembly(typeof(PostgresDatabaseFactory)).GetManifestResourceStream("DbShell.Driver.Postgres." + name))

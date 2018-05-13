@@ -25,8 +25,8 @@ namespace DbShell.Driver.Common.Sql
 
     partial class SqlDumper
     {
-        public void WriteRaw(string text) { m_stream.Write(text); }
-        public void EndCommand() { m_stream.EndCommand(); }
+        public void WriteRaw(string text) { _stream.Write(text); }
+        public void EndCommand() { _stream.EndCommand(); }
 
         public void PutCmd(string format, params object[] args)
         {
@@ -490,7 +490,7 @@ namespace DbShell.Driver.Common.Sql
 
         protected string QuoteIdentifier(string ident)
         {
-            return QuoteIdentifier(m_dialect, m_props, ident);
+            return QuoteIdentifier(_dialect, _props, ident);
         }
 
         private static string QuoteFullName(ISqlDialect dialect, SqlFormatProperties props, SqlFormatterState state, NameWithSchema name)
@@ -510,7 +510,7 @@ namespace DbShell.Driver.Common.Sql
 
         protected string QuoteFullName(NameWithSchema name)
         {
-            return QuoteFullName(m_dialect, m_props, null, name);
+            return QuoteFullName(_dialect, _props, null, name);
         }
 
         public static string GetCasedString(string s, CharacterCase cc)

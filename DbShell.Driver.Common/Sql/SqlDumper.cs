@@ -12,36 +12,39 @@ namespace DbShell.Driver.Common.Sql
 {
     public partial class SqlDumper : ISqlDumper
     {
-        protected readonly ISqlOutputStream m_stream;
-        protected readonly SqlFormatProperties m_props;
-        protected readonly ISqlDialect m_dialect;
-        private SqlFormatterState m_formatterState = new SqlFormatterState();
-        private IDialectDataAdapter m_DDA;
-        private IDatabaseFactory m_factory;
+        protected readonly ISqlOutputStream _stream;
+        protected readonly SqlFormatProperties _props;
+        protected readonly ISqlDialect _dialect;
+        private SqlFormatterState _formatterState = new SqlFormatterState();
+        private IDialectDataAdapter _DDA;
+        private IDatabaseFactory _factory;
+        protected SqlDialectCaps _dialectCaps;
+        protected SqlDumperCaps _dumperCaps;
 
         public SqlDumper(ISqlOutputStream stream, IDatabaseFactory factory, SqlFormatProperties props)
         {
-            m_stream = stream;
-            m_props = props;
-            m_factory = factory;
-            m_DDA = m_factory.CreateDataAdapter();
-            m_formatterState.DDA = m_DDA;
-            m_dialect = m_factory.CreateDialect();
+            _stream = stream;
+            _props = props;
+            _factory = factory;
+            _DDA = _factory.CreateDataAdapter();
+            _formatterState.DDA = _DDA;
+            _dialect = _factory.CreateDialect();
+            _dumperCaps = _factory.DumperCaps;
         }
 
         public ISqlOutputStream Stream
         {
-            get { return m_stream; }
+            get { return _stream; }
         }
 
         public SqlFormatProperties FormatProperties
         {
-            get { return m_props; }
+            get { return _props; }
         }
 
         public IDatabaseFactory Factory
         {
-            get { return m_factory; }
+            get { return _factory; }
         }
 
         public virtual void AllowIdentityInsert(NameWithSchema table, bool allow)
@@ -91,12 +94,12 @@ namespace DbShell.Driver.Common.Sql
 
         public ISqlDialect Dialect
         {
-            get { return m_dialect; }
+            get { return _dialect; }
         }
 
         public SqlFormatterState FormatterState
         {
-            get { return m_formatterState; }
+            get { return _formatterState; }
         }
 
         public virtual void ReorderColumns(NameWithSchema table, List<string> newColumnOrder)
@@ -216,12 +219,14 @@ namespace DbShell.Driver.Common.Sql
             throw new NotImplementedException();
         }
 
+        protected bool _primaryKeyWrittenInCreateTable = false;
         public virtual void CreateTable(TableInfo tableSrc)
         {
             var table = tableSrc.CloneTable();
             table.AfterLoadLink();
             Put("^create ^table %l%f ( &>&n", table.GetLinkedInfo(), table.FullName);
             bool first = true;
+            _primaryKeyWrittenInCreateTable = false;
             foreach (var col in table.Columns)
             {
                 if (!first) Put(", &n");
@@ -229,7 +234,7 @@ namespace DbShell.Driver.Common.Sql
                 Put("%i ", col.Name);
                 ColumnDefinition(col, true, true, true);
             }
-            if (table.PrimaryKey != null)
+            if (table.PrimaryKey != null && !_primaryKeyWrittenInCreateTable)
             {
                 if (!first) Put(", &n");
                 first = false;
@@ -300,9 +305,14 @@ namespace DbShell.Driver.Common.Sql
             }
         }
 
+        protected virtual void IdentityDefinition()
+        {
+            Put(" ^auto_increment");
+        }
+
         public virtual void ColumnDefinition(ColumnInfo col, bool includeDefault, bool includeNullable, bool includeCollate)
         {
-            if (col.ComputedExpression != null)
+            if (col.ComputedExpression != null && _dialectCaps.ComputedColumns)
             {
                 Put("^as %s", col.ComputedExpression);
                 if (col.IsPersisted) Put(" ^persisted");
@@ -310,21 +320,13 @@ namespace DbShell.Driver.Common.Sql
             }
 
             Put("%k", col.DataType);
-            //if (col.Length != 0 && (col.CommonType == null || col.CommonType is DbTypeString))
-            //{
-            //    if (col.Length == -1 || col.Length > 8000) Put("(^max)");
-            //    else Put("(%s)", col.Length);
-            //}
-            //if (col.Precision > 0 && col.CommonType is DbTypeNumeric && (col.DataType.ToLower() != "money"))
-            //{
-            //    Put("(%s,%s)", col.Precision, col.Scale);
-            //}
+
             if (col.AutoIncrement)
             {
-                Put(" ^identity");
+                IdentityDefinition();
             }
             WriteRaw(" ");
-            if (col.IsSparse)
+            if (col.IsSparse && _dialectCaps.SparseColumns)
             {
                 Put(" ^sparse ");
             }
@@ -449,7 +451,7 @@ namespace DbShell.Driver.Common.Sql
             {
                 if (cnt is PrimaryKeyInfo)
                 {
-                    if (cnt.ConstraintName != null && !m_dialect.Factory.DialectCaps.AnonymousPrimaryKey)
+                    if (cnt.ConstraintName != null && !_dialect.Factory.DialectCaps.AnonymousPrimaryKey)
                     {
                         Put(" ^constraint %i", cnt.ConstraintName);
                     }
@@ -503,8 +505,11 @@ namespace DbShell.Driver.Common.Sql
             string tmptable = GenerateTempTableName(id);
 
             // remove constraints
-            //DropConstraints(oldTable.GetReferencedFrom(), DropFlags.None);
-            this.DropConstraints(oldTable.Constraints);
+            if (_dumperCaps.DropConstraint)
+            {
+                this.DropConstraints(oldTable.GetReferences());
+                this.DropConstraints(oldTable.Constraints);
+            }
 
             RenameTable(oldTable, tmptable);
 
@@ -535,15 +540,23 @@ namespace DbShell.Driver.Common.Sql
                    old.FullName);
             if (hasident) AllowIdentityInsert(newTable.FullName, false);
 
-            // newTable.Constraints are allready created
-            //CreateConstraints(newTable.GetReferencedFrom());
+            if (_dumperCaps.DropConstraint)
+            {
+                // newTable.Constraints are allready created
+                this.CreateConstraints(newTable.GetReferences());
+            }
 
+            DropRecreatedTempTable(tmptable);
+        }
+
+        protected virtual void DropRecreatedTempTable(string tmptable)
+        {
             PutCmd("^drop ^table %i", tmptable);
         }
 
         public AlterProcessorCaps AlterCaps
         {
-            get { return m_factory.DumperCaps; }
+            get { return _factory.DumperCaps; }
         }
 
         public virtual void DropTable(TableInfo obj, bool testIfExists)

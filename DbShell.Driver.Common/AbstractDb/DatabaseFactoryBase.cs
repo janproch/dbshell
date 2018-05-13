@@ -56,6 +56,7 @@ namespace DbShell.Driver.Common.AbstractDb
                 res.SupportBackup = false;
                 res.AutoIncrement = true;
                 res.SupportsKeyInfo = true;
+                res.SparseColumns = false;
                 return res;
             }
         }

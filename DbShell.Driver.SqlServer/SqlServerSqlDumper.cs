@@ -146,6 +146,11 @@ namespace DbShell.Driver.SqlServer
             }
         }
 
+        protected override void IdentityDefinition()
+        {
+            Put(" ^identity");
+        }
+
         public override void RenameConstraint(ConstraintInfo cnt, string newname)
         {
             if (cnt.ObjectType == DatabaseObjectType.Index) PutCmd("^execute sp_rename '%f.%i', '%s', 'INDEX'", cnt.OwnerTable.FullName, cnt.ConstraintName, newname);

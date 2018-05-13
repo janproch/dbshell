@@ -27,6 +27,7 @@ namespace DbShell.Driver.Postgres
                 DoLoadColumnsFromInformationSchema(CreateQuery("columns.psql", DatabaseObjectType.Table), (reader, col) =>
                 {
                     col.AutoIncrement = reader.SafeString("column_default")?.StartsWith("nextval(") == true;
+                    if (col.AutoIncrement) col.DefaultValue = null;
                 });
                 DoLoadPrimaryKeysFromInformationSchema(CreateQuery("primary_keys.psql", DatabaseObjectType.Table));
                 DoLoadForeignKeysFromInformationSchema(CreateQuery("foreign_keys.psql", DatabaseObjectType.Table));

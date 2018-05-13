@@ -244,6 +244,10 @@ namespace DbShell.Driver.Common.DbDiff
 
         public bool AllowSchemaOnlyReader;
 
+        public bool ComputedColumns;
+
+        public bool SparseColumns;
+
         public bool AllFlags
         {
             set
@@ -274,6 +278,8 @@ namespace DbShell.Driver.Common.DbDiff
                 SupportsKeyInfo = value;
                 EnableConstraintsPerTable = value;
                 AllowSchemaOnlyReader = value;
+                ComputedColumns = value;
+                SparseColumns = value;
             }
         }
     }

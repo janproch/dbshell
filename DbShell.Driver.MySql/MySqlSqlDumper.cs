@@ -27,20 +27,20 @@ namespace DbShell.Driver.MySql
         //    PutCmd("^rename ^database %i ^to %i", oldname, newname);
         //}
 
-        //public override void ChangeColumn(ColumnInfo oldcol, ColumnInfo newcol, IEnumerable<ConstraintInfo> constraints)
-        //{
-        //    Put("^alter ^table %f ^change ^column %i %i ", oldcol.Table, oldcol.ColumnName, newcol.ColumnName);
-        //    ColumnDefinition(newcol, true, true, true);
-        //    InlineConstraints(constraints);
-        //    EndCommand();
-        //}
+        public override void ChangeColumn(ColumnInfo oldcol, ColumnInfo newcol, IEnumerable<ConstraintInfo> constraints)
+        {
+            Put("^alter ^table %f ^change ^column %i %i ", oldcol.OwnerTable, oldcol.Name, newcol.Name);
+            ColumnDefinition(newcol, true, true, true);
+            InlineConstraints(constraints);
+            EndCommand();
+        }
 
-        //public override void RenameColumn(IColumnStructure column, string newcol)
-        //{
-        //    var newcoldef = new ColumnStructure(column);
-        //    newcoldef.ColumnName = newcol;
-        //    this.ChangeColumn(column, newcoldef);
-        //}
+        public override void RenameColumn(ColumnInfo column, string newcol)
+        {
+            var newcoldef = column.CloneColumn();
+            newcoldef.Name = newcol;
+            ChangeColumn(column, newcoldef, new ConstraintInfo[] { });
+        }
 
         //public override void DropSpecificObject(ISpecificObjectStructure obj, DropFlags flags)
         //{

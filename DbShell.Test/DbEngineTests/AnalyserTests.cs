@@ -30,9 +30,15 @@ namespace DbShell.Test.DbEngineTests
             Assert.True(album.Columns[2].CommonType is DbTypeInt);
             Assert.True(album.Columns[0].AutoIncrement);
             Assert.Equal(1, album.ForeignKeys.Count);
+
             var fk = album.ForeignKeys[0];
             Assert.Equal("artist", fk.RefTableName?.ToLower());
             Assert.Equal(1, fk.Columns.Count);
+
+            var pk = album.PrimaryKey;
+            Assert.NotNull(pk);
+            Assert.Equal(1, pk.Columns.Count);
+            Assert.Equal("albumid", pk.Columns[0].RefColumnName.ToLower());
 
             var genre = result.FindTableLike("genre");
             Assert.False(genre.Columns[0].AutoIncrement);

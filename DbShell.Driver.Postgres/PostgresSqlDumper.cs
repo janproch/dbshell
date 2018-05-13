@@ -35,13 +35,19 @@ namespace DbShell.Driver.Postgres
             Put(") as int)");
         }
 
+        protected override void DropRecreatedTempTable(string tmptable)
+        {
+            PutCmd("^drop ^table %i ^cascade", tmptable);
+        }
+
         public override void RenameTable(Common.Structure.TableInfo obj, string newname)
         {
             PutCmd("^alter ^table %f ^rename ^to %i", obj.FullName, newname);
         }
 
-        public override void ColumnDefinition(Common.Structure.ColumnInfo col, bool includeDefault, bool includeNullable, bool includeCollate)
+        public override void RenameColumn(ColumnInfo column, string newcol)
         {
+            PutCmd("^alter ^table %f ^rename ^column %i ^to %i", column.OwnerTable, column.Name, newcol);
         }
 
         public override void DropTable(Common.Structure.TableInfo obj, bool testIfExists)
@@ -52,13 +58,23 @@ namespace DbShell.Driver.Postgres
             EndCommand();
         }
 
-        public override void CreateIndex(IndexInfo ix)
-        {
-        }
+        //public override void CreateIndex(IndexInfo ix)
+        //{
+        //}
 
         public override void EnableConstraints(NameWithSchema table, bool enabled)
         {
             PutCmd("&alter ^table %f %k ^trigger ^all", table, enabled ? "enable" : "disable");
+        }
+
+        public override void ColumnDefinition(ColumnInfo col, bool includeDefault, bool includeNullable, bool includeCollate)
+        {
+            if (col.AutoIncrement)
+            {
+                Put("^serial");
+                return;
+            }
+            base.ColumnDefinition(col, includeDefault, includeNullable, includeCollate);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.CommonTypeSystem;
 using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Structure;
 
@@ -41,7 +42,30 @@ namespace DbShell.Driver.Sqlite
             PutCmd("^alter ^table %f ^rename ^to %i", obj.FullName, newname);
         }
 
-        public override void ColumnDefinition(Common.Structure.ColumnInfo col, bool includeDefault, bool includeNullable, bool includeCollate)
+        //public override void ColumnDefinition(Common.Structure.ColumnInfo col, bool includeDefault, bool includeNullable, bool includeCollate)
+        //{
+        //    if (col.AutoIncrement)
+        //    {
+        //        Put("^integer ^primary ^key ^not ^null ^autoincrement");
+        //    }
+        //    else
+        //    {
+        //        Put("%k", col.DataType);
+        //    }
+        //}
+
+        public override void ColumnDefinition(ColumnInfo col, bool includeDefault, bool includeNullable, bool includeCollate)
+        {
+            if (col.AutoIncrement && col.CommonType is DbTypeInt)
+            {
+                Put("^integer ^primary ^key ^autoincrement ^not ^null");
+                _primaryKeyWrittenInCreateTable = true;
+                return;
+            }
+            base.ColumnDefinition(col, includeDefault, includeNullable, includeCollate);
+        }
+
+        protected override void IdentityDefinition()
         {
         }
 

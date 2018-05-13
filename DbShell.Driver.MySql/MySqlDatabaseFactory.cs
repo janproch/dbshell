@@ -85,6 +85,41 @@ namespace DbShell.Driver.MySql
             }
         }
 
+        public override SqlDumperCaps DumperCaps
+        {
+            get
+            {
+                return new SqlDumperCaps
+                {
+                    AllFlags = false,
+                    CreateTable = true,
+                    DropTable = true,
+                    //AlterTable = true,
+                    RenameColumn = true,
+                    ChangeColumnType = true,
+                    ChangeColumnDefaultValue = true,
+                    ChangeAutoIncrement = true,
+                    AddColumn = true,
+                    DropColumn = true,
+                    ChangeColumn = true,
+                    RenameTable = true,
+                    AddConstraint = true,
+                    DropConstraint = true,
+                    AddIndex = true,
+                    DropIndex = true,
+
+                    CreateDatabase = true,
+                    DropDatabase = true,
+                    RecreateTable = true,
+                    RenameDatabase = false, // http://dev.mysql.com/doc/refman/5.1/en/rename-database.html
+
+                    ForceAbsorbPrimaryKey = true,
+
+                    DepCaps = new AlterDependencyCaps { AllFlags = false, ChangeColumn_Reference = true },
+                };
+            }
+        }
+
         internal static string LoadEmbeddedResource(string name)
         {
             using (Stream s = GetAssembly(typeof(MySqlDatabaseFactory)).GetManifestResourceStream("DbShell.Driver.MySql." + name))

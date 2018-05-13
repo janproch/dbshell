@@ -266,6 +266,7 @@ namespace DbShell.Driver.Common.Structure
             {
                 PrimaryKey = primaryKeyInfo.ClonePrimaryKey(this);
                 if (!reuseGrouId) PrimaryKey.GroupId = Guid.NewGuid().ToString();
+                PrimaryKey.OwnerTable = this;
             }
             var foreignKeyInfo = cnt as ForeignKeyInfo;
             if (foreignKeyInfo != null)
@@ -273,6 +274,7 @@ namespace DbShell.Driver.Common.Structure
                 var fknew = foreignKeyInfo.CloneForeignKey(this);
                 if (!reuseGrouId) fknew.GroupId = Guid.NewGuid().ToString();
                 ForeignKeys.Add(fknew);
+                fknew.OwnerTable = this;
             }
             var indexInfo = cnt as IndexInfo;
             if (indexInfo != null)
@@ -280,6 +282,7 @@ namespace DbShell.Driver.Common.Structure
                 var ixnew = indexInfo.CloneIndex(this);
                 if (!reuseGrouId) ixnew.GroupId = Guid.NewGuid().ToString();
                 Indexes.Add(ixnew);
+                ixnew.OwnerTable = this;
             }
             var uniqueInfo = cnt as UniqueInfo;
             if (uniqueInfo != null)
@@ -287,6 +290,7 @@ namespace DbShell.Driver.Common.Structure
                 var uqnew = uniqueInfo.CloneUnique(this);
                 if (!reuseGrouId) uqnew.GroupId = Guid.NewGuid().ToString();
                 Uniques.Add(uqnew);
+                uqnew.OwnerTable = this;
             }
             var checkInfo = cnt as CheckInfo;
             if (checkInfo != null)
@@ -294,6 +298,7 @@ namespace DbShell.Driver.Common.Structure
                 var chnew = checkInfo.CloneCheck(this);
                 if (!reuseGrouId) chnew.GroupId = Guid.NewGuid().ToString();
                 Checks.Add(chnew);
+                chnew.OwnerTable = this;
             }
         }
 
@@ -302,6 +307,7 @@ namespace DbShell.Driver.Common.Structure
             var cnew = col.CloneColumn(this);
             if (!reuseGrouId) cnew.GroupId = Guid.NewGuid().ToString();
             Columns.Add(col);
+            col.OwnerTable = this;
         }
 
         public ColumnInfo AddColumn(string columnName, string dataType, DbTypeBase commonType)
@@ -311,6 +317,7 @@ namespace DbShell.Driver.Common.Structure
                 Name = columnName,
                 DataType = dataType,
                 CommonType = commonType,
+                OwnerTable = this,
             };
             Columns.Add(newColumn);
             return newColumn;

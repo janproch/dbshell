@@ -168,6 +168,7 @@ namespace DbShell.Driver.SqlServer
                 res.AllowUpdateFrom = true;
                 res.MultipleSchema = true;
                 res.EnableConstraintsPerTable = true;
+                res.SparseColumns = true;
                 return res;
             }
         }

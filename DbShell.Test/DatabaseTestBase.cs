@@ -7,6 +7,7 @@ using DbShell.All;
 using DbShell.Core;
 using DbShell.Core.Runtime;
 using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Structure;
 using DbShell.Test.EngineProviders;
 using Xunit;
@@ -139,6 +140,29 @@ namespace DbShell.Test
         {
             var changeSet = GetModifications(dbInfo);
             return IncrementalAnalysis(dbInfo, changeSet);
+        }
+
+        protected string GenerateSqlScript(Action<ISqlDumper> dmpFunc)
+        {
+            var sw = new StringWriter();
+            var sqlo = new SqlOutputStream(DatabaseFactory.CreateDialect(), sw, new SqlFormatProperties());
+            var dmp = DatabaseFactory.CreateDumper(sqlo, new SqlFormatProperties());
+            dmpFunc(dmp);
+            return sw.ToString();
+        }
+
+        protected void RunScript(Action<ISqlDumper> dmpFunc)
+        {
+            using (var conn = OpenConnection())
+            {
+                using (var trans = conn.BeginTransaction())
+                {
+                    var sqlo = new ConnectionSqlOutputStream(conn, trans, DatabaseFactory.CreateDialect());
+                    var dmp = DatabaseFactory.CreateDumper(sqlo, new SqlFormatProperties());
+                    dmpFunc(dmp);
+                    trans.Commit();
+                }
+            }
         }
     }
 }

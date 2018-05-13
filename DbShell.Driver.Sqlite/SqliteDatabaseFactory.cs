@@ -80,7 +80,26 @@ namespace DbShell.Driver.Sqlite
                 res.RowId = "rowid";
                 res.EnableConstraintsPerTable = false;
                 res.AllowSchemaOnlyReader = false;
+                res.ComputedColumns = false;
                 return res;
+            }
+        }
+
+        public override SqlDumperCaps DumperCaps
+        {
+            get
+            {
+                return new SqlDumperCaps
+                {
+                    AllFlags = false,
+                    CreateTable = true,
+                    DropTable = true,
+                    RenameTable = true,
+                    RecreateTable = true,
+                    AddIndex = true,
+                    DropIndex = true,
+                    AddColumn = true,
+                };
             }
         }
     }
