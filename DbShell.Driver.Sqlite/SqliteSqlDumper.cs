@@ -85,5 +85,15 @@ namespace DbShell.Driver.Sqlite
         {
             PutCmd("^pragma foreign_keys = %k", enabled ? "on" : "off");
         }
+
+        public override void AlterProlog()
+        {
+            PutCmd("^pragma foreign_keys = ^off");
+        }
+
+        public override void AlterEpilog()
+        {
+            PutCmd("^pragma foreign_keys = ^on");
+        }
     }
 }

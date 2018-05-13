@@ -90,12 +90,15 @@ namespace DbShell.Driver.Common.DbDiff
         {
         }
 
-        protected void TransformToRecreateTable(List<AlterOperation> replacement, AlterPlan plan)
+        protected void TransformToRecreateTable(AlterProcessorCaps caps, List<AlterOperation> replacement, AlterPlan plan)
         {
             replacement.Clear();
             var op = new AlterOperation_RecreateTable { ParentTable = ParentTable };
             //ParentTable.LoadStructure(TableStructureMembers.All, targetDb);
-            foreach (var fk in ParentTable.GetReferences()) plan.RecreateObject(fk, null);
+            if (caps.DropConstraint)
+            {
+                foreach (var fk in ParentTable.GetReferences()) plan.RecreateObject(fk, null);
+            }
             op.AppendOp(this);
             replacement.Add(op);
         }
@@ -280,7 +283,7 @@ namespace DbShell.Driver.Common.DbDiff
         public List<ConstraintInfo> AdditionalConstraints = new List<ConstraintInfo>();
         public override void TransformToImplementedOps(AlterProcessorCaps caps, DbDiffOptions opts, List<AlterOperation> replacement, AlterPlan plan)
         {
-            if (!caps.AddColumn) TransformToRecreateTable(replacement, plan);
+            if (!caps.AddColumn) TransformToRecreateTable(caps, replacement, plan);
         }
         public override void Run(IAlterProcessor proc, DbDiffOptions opts)
         {
@@ -316,7 +319,7 @@ namespace DbShell.Driver.Common.DbDiff
     {
         public override void TransformToImplementedOps(AlterProcessorCaps caps, DbDiffOptions opts, List<AlterOperation> replacement, AlterPlan plan)
         {
-            if (!caps.DropColumn) TransformToRecreateTable(replacement, plan);
+            if (!caps.DropColumn) TransformToRecreateTable(caps, replacement, plan);
         }
 
         public override void AddLogicalDependencies(AlterProcessorCaps caps, DbDiffOptions opts, List<AlterOperation> before, List<AlterOperation> after, AlterPlan plan)
@@ -362,12 +365,12 @@ namespace DbShell.Driver.Common.DbDiff
         {
             if (!caps.ChangeColumn)
             {
-                TransformToRecreateTable(replacement, plan);
+                TransformToRecreateTable(caps, replacement, plan);
                 return;
             }
             if (!caps.ChangeAutoIncrement && ((ColumnInfo)OldObject).AutoIncrement != ((ColumnInfo)NewObject).AutoIncrement)
             {
-                TransformToRecreateTable(replacement, plan);
+                TransformToRecreateTable(caps, replacement, plan);
                 return;
             }
             if (!caps.ChangeComputedColumnExpression && ((ColumnInfo)NewObject).ComputedExpression != null)
@@ -385,33 +388,36 @@ namespace DbShell.Driver.Common.DbDiff
             //var recreateFks = new List<ForeignKeyInfo>();
             //var changeCols = new List<Tuple<ColumnInfo, ColumnInfo>>();
 
-            foreach (var fk in ParentTable.GetReferences())
+            if (caps.DropConstraint)
             {
-                for (int i = 0; i < fk.RefColumns.Count; i++)
+                foreach (var fk in ParentTable.GetReferences())
                 {
-                    if (fk.RefColumns[i].Name == oldcol.Name)
+                    for (int i = 0; i < fk.RefColumns.Count; i++)
                     {
-                        //plan.RecreateObject(fk, null);
-                        var table = fk.OwnerTable;
-                        var othercol = table.ColumnByName(fk.Columns[i].Name);
-
-                        // compare types with ignoring autoincrement flag
-                        // HACK: ignore specific attributes
-                        var opts2 = opts.Clone();
-                        opts2.IgnoreSpecificData = true;
-
-                        if (!DbDiffTool.EqualTypes(othercol, newcol, opts2))
+                        if (fk.RefColumns[i].Name == oldcol.Name)
                         {
-                            var othercolNewType = othercol.CloneColumn();
-                            CopyDataType(othercolNewType, newcol);
-                            after.Add(new AlterOperation_ChangeColumn
+                            //plan.RecreateObject(fk, null);
+                            var table = fk.OwnerTable;
+                            var othercol = table.ColumnByName(fk.Columns[i].Name);
+
+                            // compare types with ignoring autoincrement flag
+                            // HACK: ignore specific attributes
+                            var opts2 = opts.Clone();
+                            opts2.IgnoreSpecificData = true;
+
+                            if (!DbDiffTool.EqualTypes(othercol, newcol, opts2))
                             {
-                                ParentTable = table,
-                                OldObject = othercol,
-                                NewObject = othercolNewType,
-                            });
+                                var othercolNewType = othercol.CloneColumn();
+                                CopyDataType(othercolNewType, newcol);
+                                after.Add(new AlterOperation_ChangeColumn
+                                {
+                                    ParentTable = table,
+                                    OldObject = othercol,
+                                    NewObject = othercolNewType,
+                                });
+                            }
+                            opts.AlterLogger.Warning(String.Format("Changed referenced column {0}.{1}", fk.OwnerTable.FullName, othercol.Name));
                         }
-                        opts.AlterLogger.Warning(String.Format("Changed referenced column {0}.{1}", fk.OwnerTable.FullName, othercol.Name));
                     }
                 }
             }
@@ -491,7 +497,7 @@ namespace DbShell.Driver.Common.DbDiff
     {
         public override void TransformToImplementedOps(AlterProcessorCaps caps, DbDiffOptions opts, List<AlterOperation> replacement, AlterPlan plan)
         {
-            if (!caps.RenameColumn) TransformToRecreateTable(replacement, plan);
+            if (!caps.RenameColumn) TransformToRecreateTable(caps, replacement, plan);
         }
     }
     public class AlterOperation_CreateConstraint : AlterOperation_Create
@@ -507,7 +513,7 @@ namespace DbShell.Driver.Common.DbDiff
         public override void TransformToImplementedOps(AlterProcessorCaps caps, DbDiffOptions opts, List<AlterOperation> replacement, AlterPlan plan)
         {
             var c = GetConstraintCaps(caps, NewObject);
-            if (!c.Create) TransformToRecreateTable(replacement, plan);
+            if (!c.Create) TransformToRecreateTable(caps, replacement, plan);
         }
         public override void RunNameTransformation(INameTransformation transform)
         {
@@ -558,7 +564,7 @@ namespace DbShell.Driver.Common.DbDiff
         public override void TransformToImplementedOps(AlterProcessorCaps caps, DbDiffOptions opts, List<AlterOperation> replacement, AlterPlan plan)
         {
             var c = GetConstraintCaps(caps, OldObject);
-            if (!c.Drop) TransformToRecreateTable(replacement, plan);
+            if (!c.Drop) TransformToRecreateTable(caps, replacement, plan);
         }
     }
     public class AlterOperation_ChangeConstraint : AlterOperation_Change
@@ -575,7 +581,7 @@ namespace DbShell.Driver.Common.DbDiff
                 }
                 else
                 {
-                    TransformToRecreateTable(replacement, plan);
+                    TransformToRecreateTable(caps, replacement, plan);
                 }
             }
         }
@@ -602,7 +608,7 @@ namespace DbShell.Driver.Common.DbDiff
                 }
                 else
                 {
-                    TransformToRecreateTable(replacement, plan);
+                    TransformToRecreateTable(caps, replacement, plan);
                 }
             }
         }
@@ -628,7 +634,7 @@ namespace DbShell.Driver.Common.DbDiff
         {
             if (!caps.PermuteColumns)
             {
-                TransformToRecreateTable(replacement, plan);
+                TransformToRecreateTable(caps, replacement, plan);
             }
         }
         public override void Run(IAlterProcessor proc, DbDiffOptions opts)

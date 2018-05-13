@@ -222,5 +222,10 @@ namespace DbShell.Driver.MySql
         {
             Put("/* %s */", value);
         }
+
+        public override void BeginTransaction()
+        {
+            PutCmd("^start ^transaction");
+        }
     }
 }

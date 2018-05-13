@@ -181,5 +181,11 @@ namespace DbShell.Driver.Common.AbstractDb
         void ExtractDayOfWeek(Action<ISqlDumper> argument);
         void PutDayOfWeekLiteral(DayOfWeek value);
         void ColumnReadableValue(ColumnInfo column, string alias = null);
+
+        void BeginTransaction();
+        void CommitTransaction();
+
+        void AlterProlog();
+        void AlterEpilog();
     }
 }

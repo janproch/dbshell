@@ -48,6 +48,20 @@ namespace DbShell.Test.DbEngineTests
             Title("add identity flag");
             TestTableDiff("AlbumCopy", table => table.FindColumn("albumid").AutoIncrement = true);
         }
+        [Theory]
+        [ClassData(typeof(DatabaseEngineGenerator))]
+        public void AlterTable_ChangeRefColumn(string engine)
+        {
+            Initialize(engine);
+
+            Title("change referenced column");
+            TestTableDiff("artist", table =>
+            {
+                table.FindColumn("artistid").AutoIncrement = false;
+                table.FindColumn("artistid").DataType = "float";
+                table.FindColumn("artistid").CommonType = new DbTypeFloat();
+            });
+        }
 
         [Theory]
         [ClassData(typeof(DatabaseEngineGenerator))]
@@ -100,7 +114,7 @@ namespace DbShell.Test.DbEngineTests
 
         private void RunPlan(AlterPlan plan)
         {
-            RunScript(dmp => plan.CreateRunner().Run(dmp, new DbDiffOptions()));
+            RunSqlScript(dmp => plan.CreateRunner().Run(dmp, new DbDiffOptions()));
         }
 
         private void AssertEqual(TableInfo alteredTableInfo, TableInfo newTableInfo)

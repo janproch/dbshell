@@ -531,6 +531,13 @@ namespace DbShell.Driver.Common.DbDiff
             //        dep.RunDrop(proc, opts);
             //    }
             //}
+            var dmp = proc as ISqlDumper;
+            if (dmp != null)
+            {
+                dmp.AlterProlog();
+                dmp.BeginTransaction();
+            }
+
             foreach (var op in Operations)
             {
                 op.Run(proc, opts);
@@ -542,6 +549,12 @@ namespace DbShell.Driver.Common.DbDiff
                         op.Run(new DatabaseInfoAlterProcessor(Structure), opts);
                     }
                 }
+            }
+
+            if (dmp != null)
+            {
+                dmp.CommitTransaction();
+                dmp.AlterEpilog();
             }
         }
     }

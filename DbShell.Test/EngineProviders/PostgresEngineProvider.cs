@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Text;
+using System.Threading;
 
 namespace DbShell.Test.EngineProviders
 {
@@ -33,7 +34,14 @@ WHERE
                 }
             }
 
-            EngineProviderFactory.RunEmbeddedScript(this, "CreateTestData_postgres.sql");
+            try
+            {
+                EngineProviderFactory.RunEmbeddedScript(this, "CreateTestData_postgres.sql");
+            }
+            catch
+            {
+                EngineProviderFactory.RunEmbeddedScript(this, "CreateTestData_postgres.sql");
+            }
         }
 
         public DbConnection OpenConnection()

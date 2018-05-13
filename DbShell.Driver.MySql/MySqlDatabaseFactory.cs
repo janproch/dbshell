@@ -81,6 +81,7 @@ namespace DbShell.Driver.MySql
                 res.AllowUpdateFrom = false;
                 res.RowId = "rowid";
                 res.EnableConstraintsPerTable = false;
+                res.ExplicitDropConstraint = true;
                 return res;
             }
         }

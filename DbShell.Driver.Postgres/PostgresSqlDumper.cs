@@ -1,4 +1,5 @@
 ﻿using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.DbDiff;
 using DbShell.Driver.Common.Sql;
 using DbShell.Driver.Common.Structure;
 using System;
@@ -64,7 +65,7 @@ namespace DbShell.Driver.Postgres
 
         public override void EnableConstraints(NameWithSchema table, bool enabled)
         {
-            PutCmd("&alter ^table %f %k ^trigger ^all", table, enabled ? "enable" : "disable");
+            PutCmd("^alter ^table %f %k ^trigger ^all", table, enabled ? "enable" : "disable");
         }
 
         public override void ColumnDefinition(ColumnInfo col, bool includeDefault, bool includeNullable, bool includeCollate)
@@ -75,6 +76,30 @@ namespace DbShell.Driver.Postgres
                 return;
             }
             base.ColumnDefinition(col, includeDefault, includeNullable, includeCollate);
+        }
+
+
+        public override void ChangeColumn(ColumnInfo oldcol, ColumnInfo newcol, IEnumerable<ConstraintInfo> constraints)
+        {
+            if (oldcol.Name != newcol.Name)
+            {
+                PutCmd("^alter ^table %f ^rename ^column %i ^to %i", oldcol.OwnerTable, oldcol.Name, newcol.Name);
+            }
+            if (!DbDiffTool.EqualTypes(oldcol, newcol, new DbDiffOptions()))
+            {
+                PutCmd("^alter ^table %f ^alter ^column %i ^type %s", newcol.OwnerTable, newcol.Name, newcol.DataType);
+            }
+            if (oldcol.NotNull != newcol.NotNull)
+            {
+                if (newcol.NotNull) PutCmd("^alter ^table %f ^alter ^column %i ^set ^not ^null", newcol.OwnerTable, newcol.Name); 
+                else PutCmd("^alter ^table %f ^alter ^column %i ^drop ^not ^null", newcol.OwnerTable, newcol.Name);
+            }
+            if (oldcol.DefaultValue  != newcol.DefaultValue)
+            {
+                if (newcol.DefaultValue == null) PutCmd("^alter ^table %f ^alter ^column %i ^drop ^default", newcol.OwnerTable, newcol.Name);
+                else PutCmd("^alter ^table %f ^alter ^column %i ^set ^default %s", newcol.OwnerTable, newcol.Name, newcol.DefaultValue);
+            }
+            this.CreateConstraints(constraints);
         }
     }
 }

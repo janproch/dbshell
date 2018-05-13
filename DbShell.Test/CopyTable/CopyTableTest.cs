@@ -164,9 +164,10 @@ namespace DbShell.Test
         public void CopyDatabaseTest(string engine)
         {
             Initialize(engine);
+            var dialect = DatabaseFactory.CreateDialect();
 
-            RunScript("DELETE FROM Album");
-            RunScript("DELETE FROM Genre");
+            RunScript($"DELETE FROM {dialect.QuoteIdentifier("Album")}");
+            RunScript($"DELETE FROM {dialect.QuoteIdentifier("Genre")}");
 
             var copyAll = new CopyAllTables
             {
@@ -177,8 +178,8 @@ namespace DbShell.Test
 
             copyAll.Run();
 
-            AssertIsValue("31", "select count(*) from Genre");
-            AssertIsValue("10", "select count(*) from Album");
+            AssertIsValue("31", $"select count(*) from {dialect.QuoteIdentifier("Genre")}");
+            AssertIsValue("10", $"select count(*) from {dialect.QuoteIdentifier("Album")}");
         }
     }
 }

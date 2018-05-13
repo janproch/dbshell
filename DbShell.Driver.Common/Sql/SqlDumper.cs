@@ -30,6 +30,7 @@ namespace DbShell.Driver.Common.Sql
             _formatterState.DDA = _DDA;
             _dialect = _factory.CreateDialect();
             _dumperCaps = _factory.DumperCaps;
+            _dialectCaps = _factory.DialectCaps;
         }
 
         public ISqlOutputStream Stream
@@ -360,7 +361,10 @@ namespace DbShell.Driver.Common.Sql
 
         public virtual void DropForeignKey(ForeignKeyInfo fk)
         {
-            DropConstraint(fk);
+            if (_dialectCaps.ExplicitDropConstraint)
+                PutCmd("^alter ^table %f ^drop ^foreign ^key %i", fk.OwnerTable, fk.ConstraintName);
+            else
+                DropConstraint(fk);
         }
 
         public virtual void CreateForeignKey(ForeignKeyInfo fk)
@@ -372,7 +376,10 @@ namespace DbShell.Driver.Common.Sql
 
         public virtual void DropPrimaryKey(PrimaryKeyInfo pk)
         {
-            DropConstraint(pk);
+            if (_dialectCaps.ExplicitDropConstraint)
+                PutCmd("^alter ^table %f ^drop ^primary ^key", pk.OwnerTable);
+            else
+                DropConstraint(pk);
         }
 
         public virtual void CreatePrimaryKey(PrimaryKeyInfo pk)
@@ -578,6 +585,23 @@ namespace DbShell.Driver.Common.Sql
         {
             if (alias == null) Put("%i", column.Name);
             else Put("%i.%i", alias, column.Name);
+        }
+
+        public virtual void BeginTransaction()
+        {
+            PutCmd("^begin ^transaction");
+        }
+
+        public virtual void CommitTransaction()
+        {
+            PutCmd("^commit");
+        }
+
+        public virtual void AlterProlog()
+        {
+        }
+        public virtual void AlterEpilog()
+        {
         }
     }
 }

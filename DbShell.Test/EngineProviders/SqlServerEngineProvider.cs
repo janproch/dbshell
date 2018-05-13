@@ -8,7 +8,7 @@ namespace DbShell.Test.EngineProviders
 {
     public class SqlServerEngineProvider : IDatabaseEngineProvider
     {
-        public const string ConnectionString = @"MultipleActiveResultSets=True;Data Source=localhost\SQLEXPRESS;Integrated Security=SSPI";
+        public const string ConnectionString = @"Data Source=localhost\SQLEXPRESS;Integrated Security=SSPI";
         public const string DatabaseName = "DbShellTest";
 
         public string ProviderConnectionString => "sqlserver://" + GetConnectionString(true);

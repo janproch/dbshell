@@ -151,17 +151,13 @@ namespace DbShell.Test
             return sw.ToString();
         }
 
-        protected void RunScript(Action<ISqlDumper> dmpFunc)
+        protected void RunSqlScript(Action<ISqlDumper> dmpFunc)
         {
             using (var conn = OpenConnection())
             {
-                using (var trans = conn.BeginTransaction())
-                {
-                    var sqlo = new ConnectionSqlOutputStream(conn, trans, DatabaseFactory.CreateDialect());
-                    var dmp = DatabaseFactory.CreateDumper(sqlo, new SqlFormatProperties());
-                    dmpFunc(dmp);
-                    trans.Commit();
-                }
+                var sqlo = new ConnectionSqlOutputStream(conn, null, DatabaseFactory.CreateDialect());
+                var dmp = DatabaseFactory.CreateDumper(sqlo, new SqlFormatProperties());
+                dmpFunc(dmp);
             }
         }
     }
