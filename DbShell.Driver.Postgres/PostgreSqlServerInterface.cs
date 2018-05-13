@@ -36,5 +36,14 @@ namespace DbShell.Driver.Postgres
                 cmd.ExecuteNonQuery();
             }
         }
+
+        public override void RenameDatabase(string oldName, string newName)
+        {
+            using (var cmd = Connection.CreateCommand())
+            {
+                cmd.CommandText = $"ALTER DATABASE \"{oldName}\" RENAME TO \"{newName}\";";
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }
