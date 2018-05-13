@@ -7,6 +7,7 @@ using DbShell.All;
 using DbShell.Core;
 using DbShell.Core.Runtime;
 using DbShell.Driver.Common.AbstractDb;
+using DbShell.Driver.Common.Structure;
 using DbShell.Test.EngineProviders;
 using Xunit;
 
@@ -93,6 +94,51 @@ namespace DbShell.Test
         {
             string existSql = $"select case when exists({sql}) then 1 else 0 end";
             AssertIsValue("1", existSql);
+        }
+
+        protected DatabaseInfo FullAnalyse()
+        {
+            using (var conn = OpenConnection())
+            {
+                var factory = DatabaseFactory;
+                var analyser = factory.CreateAnalyser();
+                analyser.Connection = conn;
+                analyser.FullAnalysis();
+                return analyser.Structure;
+            }
+        }
+
+        protected DatabaseChangeSet GetModifications(DatabaseInfo dbInfo)
+        {
+            using (var conn = OpenConnection())
+            {
+                var factory = DatabaseFactory;
+                var analyser = factory.CreateAnalyser();
+                analyser.Connection = conn;
+                analyser.Structure = dbInfo;
+                analyser.GetModifications();
+                return analyser.ChangeSet;
+            }
+        }
+
+        protected DatabaseInfo IncrementalAnalysis(DatabaseInfo dbInfo, DatabaseChangeSet changeSet)
+        {
+            using (var conn = OpenConnection())
+            {
+                var factory = DatabaseFactory;
+                var analyser = factory.CreateAnalyser();
+                analyser.Connection = conn;
+                analyser.Structure = dbInfo;
+                analyser.ChangeSet = changeSet;
+                analyser.IncrementalAnalysis();
+                return analyser.Structure;
+            }
+        }
+
+        protected DatabaseInfo GetModificationsAndIncrementalAnalysis(DatabaseInfo dbInfo)
+        {
+            var changeSet = GetModifications(dbInfo);
+            return IncrementalAnalysis(dbInfo, changeSet);
         }
     }
 }
