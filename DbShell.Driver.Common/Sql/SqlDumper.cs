@@ -603,5 +603,10 @@ namespace DbShell.Driver.Common.Sql
         public virtual void AlterEpilog()
         {
         }
+
+        public virtual void SelectTableIntoNewTable(NameWithSchema sourceName, NameWithSchema targetName)
+        {
+            PutCmd("^select * ^into %f ^from %f", targetName, sourceName);
+        }
     }
 }

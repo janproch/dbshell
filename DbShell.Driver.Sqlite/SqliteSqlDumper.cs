@@ -95,5 +95,10 @@ namespace DbShell.Driver.Sqlite
         {
             PutCmd("^pragma foreign_keys = ^on");
         }
+
+        public override void SelectTableIntoNewTable(NameWithSchema sourceName, NameWithSchema targetName)
+        {
+            PutCmd("^create ^table %f ^as ^select * ^from %f", targetName, sourceName);
+        }
     }
 }

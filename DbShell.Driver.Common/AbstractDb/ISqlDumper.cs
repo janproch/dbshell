@@ -187,5 +187,7 @@ namespace DbShell.Driver.Common.AbstractDb
 
         void AlterProlog();
         void AlterEpilog();
+
+        void SelectTableIntoNewTable(NameWithSchema sourceName, NameWithSchema targetName);
     }
 }

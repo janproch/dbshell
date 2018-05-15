@@ -227,5 +227,10 @@ namespace DbShell.Driver.MySql
         {
             PutCmd("^start ^transaction");
         }
+
+        public override void SelectTableIntoNewTable(NameWithSchema sourceName, NameWithSchema targetName)
+        {
+            PutCmd("^create ^table %f (^select * ^from %f)", targetName, sourceName);
+        }
     }
 }
