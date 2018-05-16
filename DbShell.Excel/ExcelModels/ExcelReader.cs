@@ -5,6 +5,7 @@ using System.Text;
 using DbShell.Driver.Common.CommonDataLayer;
 using DbShell.Driver.Common.Structure;
 using DbShell.Driver.Common.Utility;
+using OfficeOpenXml;
 using Action = System.Action;
 
 
@@ -12,37 +13,29 @@ namespace DbShell.Excel.ExcelModels
 {
     public class ExcelReader : ArrayDataRecord, ICdlReader
     {
-#if !NETSTANDARD2_0
-        private Worksheet _worksheet;
+        private ExcelWorksheet _worksheet;
         private string[] _array;
         private int _rowIndex = 2;
-        private Range _usedRange;
-        private object[,] _usedData;
         private int _rowCount;
+        private bool _isCanceled;
 
-        public ExcelReader(TableInfo structure, Worksheet worksheet)
+        public ExcelReader(TableInfo structure, ExcelWorksheet worksheet)
             : base(structure)
         {
             _worksheet = worksheet;
             _array = new string[structure.ColumnCount];
-            _usedRange = _worksheet.UsedRange;
+            _rowCount = _worksheet.Dimension.Rows;
         }
 
         public bool Read()
         {
-            if (_usedData == null)
-            {
-                _usedData = _usedRange.Value2;
-                _rowCount = _usedRange.Rows.Count;
-            }
-            if (_rowIndex > _rowCount)
+            if (_rowIndex > _rowCount || _isCanceled)
             {
                 return false;
             }
             for (int i = 1; i <= _array.Length; i++)
             {
-                //object value = ((Range) _usedRange.Cells[_rowIndex, i]).Value2;
-                object value = _usedData[_rowIndex, i];
+                object value = _worksheet.GetValue(_rowIndex, i);
                 string svalue = value.SafeToString();
                 _values[i - 1] = svalue;
             }
@@ -65,32 +58,10 @@ namespace DbShell.Excel.ExcelModels
                 Disposing = null;
             }
         }
-#endif
 
-        public ExcelReader(TableInfo structure, object[] values) : base(structure, values)
+        public void Cancel()
         {
-        }
-
-        public event Action Disposing;
-
-        void IDisposable.Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
-        bool ICdlReader.NextResult()
-        {
-            throw new NotImplementedException();
-        }
-
-        bool ICdlReader.Read()
-        {
-            throw new NotImplementedException();
-        }
-
-        void ICdlReader.Cancel()
-        {
-            throw new NotImplementedException();
+            _isCanceled = true;
         }
     }
 }

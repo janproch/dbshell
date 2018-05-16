@@ -74,24 +74,25 @@ namespace DbShell.Excel.ExcelModels
 
         private TableInfo GetSheetStructure(ExcelWorksheet sheet)
         {
-            return null;
-            //var res = new TableInfo(null);
-            //var range = sheet.UsedRange.Columns;
-            //var usedNames = new HashSet<string>();
-            //for (int i = 1; i <= range.Count; i++)
-            //{
-            //    usedNames.Add("column_" + i);
-            //}
-            //for (int i = 1; i <= range.Count; i++)
-            //{
-            //    object value = ((Range) range.Cells[1, i]).Value2;
-            //    string name = value.SafeToString();
-            //    if (String.IsNullOrEmpty(name) || usedNames.Contains(name)) name = "column_" + i;
-            //    usedNames.Add(name);
-            //    res.Columns.Add(new ColumnInfo(res) { CommonType = new DbTypeString { Length = -1 }, DataType = "nvarchar", Length = -1, Name = name });
+            var res = new TableInfo(null);
 
-            //}
-            //return res;
+            int rows = sheet.Dimension.Rows;
+            int columns = sheet.Dimension.Columns;
+
+            var usedNames = new HashSet<string>();
+            for (int i = 1; i <= columns; i++)
+            {
+                usedNames.Add("column_" + i);
+            }
+            for (int i = 1; i <= columns; i++)
+            {
+                object value = sheet.GetValue(1, i);
+                string name = value.SafeToString();
+                if (String.IsNullOrEmpty(name) || usedNames.Contains(name)) name = "column_" + i;
+                usedNames.Add(name);
+                res.Columns.Add(new ColumnInfo(res) { CommonType = new DbTypeString { Length = -1 }, DataType = "nvarchar", Name = name });
+            }
+            return res;
         }
 
         public TableInfo GetSheetStructure(string sheetName)
@@ -108,18 +109,16 @@ namespace DbShell.Excel.ExcelModels
 
         public ExcelReader CreateReader(string sheetName)
         {
-            return null;
-            //var sheet = GetSheet(sheetName);
-            //var ts = GetSheetStructure(sheet);
-            //return new ExcelReader(ts, sheet);
+            var sheet = GetSheet(sheetName);
+            var ts = GetSheetStructure(sheet);
+            return new ExcelReader(ts, sheet);
         }
 
         public ExcelReader CreateReader(int index)
         {
-            return null;
-            //var sheet = _package.Workbook.Worksheets[index];
-            //var ts = GetSheetStructure(sheet);
-            //return new ExcelReader(ts, sheet);
+            var sheet = _package.Workbook.Worksheets[index];
+            var ts = GetSheetStructure(sheet);
+            return new ExcelReader(ts, sheet);
         }
 
         public string[] GetSheetNames()

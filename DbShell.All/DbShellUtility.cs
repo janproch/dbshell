@@ -10,8 +10,16 @@ namespace DbShell.All
 {
     public static class DbShellUtility
     {
+        private static bool _registeredEncodings = false;
+
         public static IServiceProvider BuildDefaultServiceProvider()
         {
+            if (!_registeredEncodings)
+            {
+                _registeredEncodings = true;
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            }
+
             var services = new ServiceCollection();
             services.AddLogging(builder => builder.AddConsole());
             services.AddDbShell();

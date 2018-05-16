@@ -80,6 +80,9 @@
     <None Update="CopyTable\SqliteTestData.locdb">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="ExportImportFormats\Combined.xlsx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
