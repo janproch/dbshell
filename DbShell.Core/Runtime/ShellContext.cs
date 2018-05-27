@@ -13,6 +13,7 @@ namespace DbShell.Core.Runtime
     public class ShellContext : IShellContext, IDisposable
     {
         private ShellContext _parent;
+        private int _loggedMessageCount;
 
         // fields shared with root context
         private Dictionary<string, DatabaseInfo> _dbCache;
@@ -25,6 +26,7 @@ namespace DbShell.Core.Runtime
         private string _defaultOutputFolder;
 
         private List<IDisposable> _disposableItems = new List<IDisposable>();
+        private ILogger<ShellContext> _logger;
 
         // search folders
         private Dictionary<ResolveFileMode, List<string>> _additionalSearchFolders = new Dictionary<ResolveFileMode, List<string>>();
@@ -32,6 +34,7 @@ namespace DbShell.Core.Runtime
         public ShellContext(IServiceProvider serviceProvider, ShellContext parent = null)
         {
             ServiceProvider = serviceProvider;
+            _logger = this.GetLogger<ShellContext>();
             if (parent == null)
             {
                 _scope = new VariableScope(null);
@@ -42,14 +45,7 @@ namespace DbShell.Core.Runtime
             {
                 _parent = parent;
                 _dbCache = _parent._dbCache;
-
-                OnOutputMessage += ShellContext_OnOutputMessage;
             }
-        }
-
-        void ShellContext_OnOutputMessage(string msg)
-        {
-            if (_parent != null) _parent.OutputMessage(msg);
         }
 
         public DatabaseInfo GetDatabaseStructure(string connectionKey)
@@ -57,8 +53,8 @@ namespace DbShell.Core.Runtime
             if (!_dbCache.ContainsKey(connectionKey))
             {
                 IConnectionProvider connection = ConnectionProvider.FromString(ServiceProvider, connectionKey);
-                this.GetLogger<ShellContext>().LogInformation("DBSH-00076 Downloading structure for connection {connection}", connection);
-                OutputMessage(String.Format("DBSH-00149 Downloading structure for connection {0}", connection));
+                _logger.LogInformation("DBSH-00076 Downloading structure for connection {connection}", connection);
+                this.Info(String.Format("DBSH-00149 Downloading structure for connection {0}", connection));
                 var analyser = connection.Factory.CreateAnalyser();
                 using (var conn = connection.Connect())
                 {
@@ -97,7 +93,7 @@ namespace DbShell.Core.Runtime
         }
 
         public IServiceProvider ServiceProvider { get; private set; }
-
+        private List<IMessageLogger> _additionalLoggers = new List<IMessageLogger>();
 
         public void Dispose()
         {
@@ -237,13 +233,6 @@ namespace DbShell.Core.Runtime
             return null;
         }
 
-        public event Action<string> OnOutputMessage;
-
-        public void OutputMessage(string message)
-        {
-            if (OnOutputMessage != null) OnOutputMessage(message);
-        }
-
         public void AddSearchFolder(ResolveFileMode mode, string folder)
         {
             if (!_additionalSearchFolders.ContainsKey(mode))
@@ -277,6 +266,31 @@ namespace DbShell.Core.Runtime
         public void AddDisposableItem(IDisposable disposable)
         {
             _disposableItems.Add(disposable);
+        }
+
+        public void LogMessage(LogMessageRecord message)
+        {
+            if (_parent != null)
+            {
+                _parent.LogMessage(message);
+            }
+            else
+            {
+                if (message.Number == null)
+                    message.Number = ++_loggedMessageCount;
+
+                message.SendToSystemLogger(_logger);
+            }
+
+            foreach (var logger in _additionalLoggers)
+            {
+                logger.LogMessage(message);
+            }
+        }
+
+        public void AddLogger(IMessageLogger logger)
+        {
+            _additionalLoggers.Add(logger);
         }
     }
 }

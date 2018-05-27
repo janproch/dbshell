@@ -28,7 +28,7 @@ namespace DbShell.Core
         {
             string text = context.Replace(Message);
             context.GetLogger<Echo>().LogInformation(text);
-            context.OutputMessage(text);
+            context.Info(text);
         }
 
         object ISingleValueDbShellObject.SingleValue

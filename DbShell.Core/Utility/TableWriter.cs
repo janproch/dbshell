@@ -43,16 +43,11 @@ namespace DbShell.Core.Utility
             var db = context.GetDatabaseStructure(connection.ProviderString);
             _inserter.DestinationTable = destinationTableOverride ?? db.FindTableLike(_name.Schema, _name.Name);
             _inserter.CopyOptions = options;
-            _inserter.Log += _inserter_Log;
+            _inserter.MessageLogger = _context;
             _inserter.ServiceProvider = context.ServiceProvider;
 
             _thread = new Thread(Run);
             _thread.Start();
-        }
-
-        void _inserter_Log(Driver.Common.Utility.LogRecord obj)
-        {
-            _context.OutputMessage(obj.Message);
         }
 
         private void Run()

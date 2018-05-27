@@ -5,15 +5,15 @@ using System.Text;
 
 namespace DbShell.Driver.Common.Utility
 {
-    public enum LogSeverity
-    {
-        Info,
-        Error,
-    }
+    //public enum LogSeverity
+    //{
+    //    Info,
+    //    Error,
+    //}
 
-    public class LogRecord
-    {
-        public LogSeverity Severity;
-        public string Message;
-    }
+    //public class LogRecord
+    //{
+    //    public LogSeverity Severity;
+    //    public string Message;
+    //}
 }

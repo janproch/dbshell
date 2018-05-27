@@ -19,8 +19,8 @@ namespace DbShell.Driver.Common.AbstractDb
         IDatabaseFactory Factory { get; set; }
         void Run(ICdlReader reader);
         CopyTableTargetOptions CopyOptions { get; set; }
-        event Action<LogRecord> Log;
         DataFormatSettings SourceDataFormat { get; set; }
         IServiceProvider ServiceProvider { get; set; }
+        IMessageLogger MessageLogger { get; set; }
     }
 }

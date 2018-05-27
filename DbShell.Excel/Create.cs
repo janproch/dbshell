@@ -29,7 +29,7 @@ namespace DbShell.Excel
         protected override void DoRun(IShellContext context)
         {
             string file = context.ResolveFile(context.Replace(File), ResolveFileMode.Output);
-            context.OutputMessage("Writing file " + Path.GetFullPath(file));
+            context.Info("Writing file " + Path.GetFullPath(file));
             var model = ExcelModel.CreateFile(file);
             model.DataFormat = DataFormat;
             context.SetVariable(GetExcelVariableName(context), model);

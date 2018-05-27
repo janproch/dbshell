@@ -77,7 +77,7 @@ namespace DbShell.Core
         {
             string file = GetName(context);
             file = context.ResolveFile(file, ResolveFileMode.Output);
-            context.OutputMessage("Writing file " + Path.GetFullPath(file));
+            context.Info("Writing file " + Path.GetFullPath(file));
             return new CdlFileWriter(file, rowFormat);
         }
 

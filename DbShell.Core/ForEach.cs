@@ -91,7 +91,7 @@ namespace DbShell.Core
                 catch (Exception err)
                 {
                     if (!ContinueOnErrors) throw;
-                    context.OutputMessage(err.Message);
+                    context.Error(err.Message);
                 }
             }
         }

@@ -137,7 +137,7 @@ namespace DbShell.Core
                 {
                     if (UseTransactions)
                     {
-                        context.OutputMessage("Opening transaction");
+                        context.Info("Opening transaction");
                         tran = conn.BeginTransaction();
                     }
 
@@ -153,8 +153,8 @@ namespace DbShell.Core
                         string fn = context.ResolveFile(File, ResolveFileMode.Input);
                         using (var reader = new StreamReader(System.IO.File.OpenRead(fn), FileEncoding))
                         {
-                            context.GetLogger<Script>().LogInformation("DBSH-00067 Executing SQL file {file}", fn);
-                            context.OutputMessage(String.Format("Executing SQL file {0}", fn));
+                            //context.GetLogger<Script>().LogInformation("DBSH-00067 Executing SQL file {file}", fn);
+                            context.Info(String.Format("Executing SQL file {0}", fn));
                             RunScript(reader, conn, tran, UseReplacements == true, false, true, context);
                         }
                     }
@@ -165,8 +165,7 @@ namespace DbShell.Core
                             string fn = context.ResolveFile(file, ResolveFileMode.Input);
                             using (var reader = new StreamReader(System.IO.File.OpenRead(fn), FileEncoding))
                             {
-                                context.GetLogger<Script>().LogInformation("DBSH-00148 Executing SQL file {file}", fn);
-                                context.OutputMessage(String.Format("Executing SQL file {0}", fn));
+                                context.Info(String.Format("Executing SQL file {0}", fn));
                                 RunScript(reader, conn, tran, UseReplacements == true, false, true, context);
                             }
                         }
@@ -174,7 +173,7 @@ namespace DbShell.Core
 
                     if (tran != null)
                     {
-                        context.OutputMessage("Commiting transaction");
+                        context.Info("Commiting transaction");
                         tran.Commit();
                     }
                 }
@@ -182,7 +181,7 @@ namespace DbShell.Core
                 {
                     if (tran != null)
                     {
-                        context.OutputMessage("Rollbacking transaction");
+                        context.Info("Rollbacking transaction");
                         tran.Rollback();
                     }
                     throw;

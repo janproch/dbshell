@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,71 +8,74 @@ namespace DbShell.Driver.Common.Utility
 {
     public static class MessageLoggerExtension
     {
-        public static void LogMessage(this IMessageLogger logger, MessageLogLevel level, string message)
+        public static LogMessageRecord LogMessage(this IMessageLogger logger, LogLevel level, string message)
         {
-            if (logger == null) return;
             LogMessageRecord rec = new LogMessageRecord(level, message);
-            logger.LogMessage(rec);
+            logger?.LogMessage(rec);
+            return rec; ;
         }
-        public static void LogMessage(this IMessageLogger logger, string category, MessageLogLevel level, string format, params object[] args)
+        public static LogMessageRecord LogMessage(this IMessageLogger logger, string category, LogLevel level, string format, params object[] args)
         {
-            if (logger == null) return;
             string msg = format;
             if (args.Length > 0) msg = String.Format(format, args);
-            logger.LogMessage(new LogMessageRecord { Category = category, Message = msg, Level = level });
+            var rec = new LogMessageRecord { Category = category, Message = msg, Level = level };
+            logger?.LogMessage(rec);
+            return rec;
         }
-        public static void LogMessageDetail(this IMessageLogger logger, string category, MessageLogLevel level, string message, string detail)
+        public static LogMessageRecord LogMessageDetail(this IMessageLogger logger, string category, LogLevel level, string message, string detail)
         {
-            if (logger == null) return;
-            logger.LogMessage(new LogMessageRecord { Category = category, Message = message, Detail = detail, Level = level });
+            var rec = new LogMessageRecord { Category = category, Message = message, Detail = detail, Level = level };
+            logger?.LogMessage(rec);
+            return rec;
         }
-        public static void LogMessageEx(this IMessageLogger logger, LogMessageRecord rec)
+        public static LogMessageRecord LogMessageEx(this IMessageLogger logger, LogMessageRecord rec)
         {
             logger.LogMessage(rec);
+            return rec;
         }
-        public static void Trace(this IMessageLogger logger, string message)
+        public static LogMessageRecord Trace(this IMessageLogger logger, string message)
         {
-            logger.LogMessage(MessageLogLevel.Trace, message);
+            return logger.LogMessage(LogLevel.Trace, message);
         }
-        public static void Trace(this IMessageLogger logger, string message, params object[] args)
+        public static LogMessageRecord Trace(this IMessageLogger logger, string message, params object[] args)
         {
-            logger.LogMessage(MessageLogLevel.Trace, String.Format(message, args));
-        }
-
-        public static void Debug(this IMessageLogger logger, string message)
-        {
-            logger.LogMessage(MessageLogLevel.Debug, message);
-        }
-        public static void Debug(this IMessageLogger logger, string message, params object[] args)
-        {
-            logger.LogMessage(MessageLogLevel.Debug, String.Format(message, args));
+            return logger.LogMessage(LogLevel.Trace, String.Format(message, args));
         }
 
-        public static void Info(this IMessageLogger logger, string message)
+        public static LogMessageRecord Debug(this IMessageLogger logger, string message)
         {
-            logger.LogMessage(MessageLogLevel.Info, message);
+            return logger.LogMessage(LogLevel.Debug, message);
         }
-        public static void Info(this IMessageLogger logger, string message, params object[] args)
+        public static LogMessageRecord Debug(this IMessageLogger logger, string message, params object[] args)
         {
-            logger.LogMessage(MessageLogLevel.Info, String.Format(message, args));
-        }
-
-        public static void Warning(this IMessageLogger logger, string message)
-        {
-            logger.LogMessage(MessageLogLevel.Warning, message);
-        }
-        public static void Warning(this IMessageLogger logger, string message, params object[] args)
-        {
-            logger.LogMessage(MessageLogLevel.Warning, String.Format(message, args));
+            return logger.LogMessage(LogLevel.Debug, String.Format(message, args));
         }
 
-        public static void Error(this IMessageLogger logger, string message)
+        public static LogMessageRecord Info(this IMessageLogger logger, string message)
         {
-            logger.LogMessage(MessageLogLevel.Error, message);
+            return logger.LogMessage(LogLevel.Information, message);
         }
-        public static void Error(this IMessageLogger logger, string message, params object[] args)
+        public static LogMessageRecord Info(this IMessageLogger logger, string message, params object[] args)
         {
-            logger.LogMessage(MessageLogLevel.Error, String.Format(message, args));
+            return logger.LogMessage(LogLevel.Information, String.Format(message, args));
+        }
+
+        public static LogMessageRecord Warning(this IMessageLogger logger, string message)
+        {
+            return logger.LogMessage(LogLevel.Warning, message);
+        }
+        public static LogMessageRecord Warning(this IMessageLogger logger, string message, params object[] args)
+        {
+            return logger.LogMessage(LogLevel.Warning, String.Format(message, args));
+        }
+
+        public static LogMessageRecord Error(this IMessageLogger logger, string message)
+        {
+            return logger.LogMessage(LogLevel.Error, message);
+        }
+        public static LogMessageRecord Error(this IMessageLogger logger, string message, params object[] args)
+        {
+            return logger.LogMessage(LogLevel.Error, String.Format(message, args));
         }
     }
 }

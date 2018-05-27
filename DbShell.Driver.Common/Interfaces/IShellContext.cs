@@ -4,10 +4,11 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using DbShell.Driver.Common.Structure;
+using DbShell.Driver.Common.Utility;
 
 namespace DbShell.Driver.Common.Interfaces
 {
-    public interface IShellContext : IDisposable
+    public interface IShellContext: IDisposable, IMessageLogger
     {
         DatabaseInfo GetDatabaseStructure(string providerKey);
         void SetVariable(string name, object value);
@@ -28,7 +29,6 @@ namespace DbShell.Driver.Common.Interfaces
         //void PopDefaultConnection();
         string GetDefaultConnection();
 
-        void OutputMessage(string message);
         void AddSearchFolder(ResolveFileMode mode, string folder);
         void PutDatabaseInfoCache(string providerKey, DatabaseInfo db);
         //string DefaultConnection { get; set; }
@@ -36,6 +36,8 @@ namespace DbShell.Driver.Common.Interfaces
 
         void SetDefaultOutputFolder(string value);
         string GetDefaultOutputFolder();
+
+        void AddLogger(IMessageLogger logger);
 
         IShellContext CreateChildContext();
         void AddDisposableItem(IDisposable disposable);

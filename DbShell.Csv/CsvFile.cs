@@ -234,7 +234,7 @@ namespace DbShell.Csv
         {
             string file = context.ResolveFile(GetName(context), ResolveFileMode.Output);
             context.GetLogger<CsvFile>().LogInformation("Writing file {file}", Path.GetFullPath(file));
-            context.OutputMessage("Writing file " + Path.GetFullPath(file));
+            context.Info("Writing file " + Path.GetFullPath(file));
             var fs = System.IO.File.OpenWrite(file);
             var fw = new StreamWriter(fs, Encoding);
             var writer = new CsvWriter(fw, Delimiter, Quote, Escape, Comment, QuotingMode, EndOfLine, DataFormat);

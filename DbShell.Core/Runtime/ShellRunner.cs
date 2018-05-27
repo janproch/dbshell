@@ -20,13 +20,8 @@ namespace DbShell.Core.Runtime
         {
             ServiceProvider = serviceProvider;
             _context = new ShellContext(serviceProvider);
-            _context.OnOutputMessage += _context_OnOutputMessage;
         }
 
-        void _context_OnOutputMessage(string obj)
-        {
-            if (OutputMessage != null) OutputMessage(obj);
-        }
 
         public void LoadFile(string file)
         {
@@ -79,12 +74,6 @@ namespace DbShell.Core.Runtime
             _context.Dispose();
         }
 
-        public void OnOutputMessage(string message)
-        {
-            if (OutputMessage != null) OutputMessage(message);
-        }
-
-        public event Action<string> OutputMessage;
         public event Action FinishedAsync;
 
         public void Start()

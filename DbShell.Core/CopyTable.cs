@@ -117,8 +117,7 @@ namespace DbShell.Core
 
             var table = source.GetRowFormat(context);
 
-            context.GetLogger<CopyTable>().LogInformation("Copy table data {0}=>{1}", Source.ToStringCtx(context), Target.ToStringCtx(context));
-            context.OutputMessage(String.Format("Copy table data {0}=>{1}", Source.ToStringCtx(context), Target.ToStringCtx(context)));
+            context.Info(String.Format("Copy table data {0}=>{1}", Source.ToStringCtx(context), Target.ToStringCtx(context)));
 
             var transformedInputTable = table;
             var counts = new List<int>();

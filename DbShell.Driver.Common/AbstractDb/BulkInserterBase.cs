@@ -197,41 +197,16 @@ namespace DbShell.Driver.Common.AbstractDb
             RunInserts(reader);
         }
 
-        public event Action<LogRecord> Log;
+        public IMessageLogger MessageLogger { get; set; }
 
         protected void LogInfo(string msg)
         {
-            DoLog(new LogRecord
-                {
-                    Message = msg,
-                    Severity = LogSeverity.Info,
-                });
+            MessageLogger?.Info(msg)?.SendToSystemLogger(_logger);
         }
 
         protected void LogError(string msg)
         {
-            DoLog(new LogRecord
-            {
-                Message = msg,
-                Severity = LogSeverity.Error,
-            });
-        }
-
-        protected void DoLog(LogRecord rec)
-        {
-            switch (rec.Severity)
-            {
-                case LogSeverity.Info:
-                    _logger.LogInformation(rec.Message);
-                    break;
-                case LogSeverity.Error:
-                    _logger.LogError(rec.Message);
-                    break;
-            }
-            if (Log != null)
-            {
-                Log(rec);
-            }
+            MessageLogger?.Error(msg)?.SendToSystemLogger(_logger);
         }
     }
 }
