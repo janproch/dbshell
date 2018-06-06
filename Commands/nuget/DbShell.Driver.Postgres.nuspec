@@ -5,10 +5,10 @@
     <version>0.0.3811</version>
     <authors>Jan Prochazka (JenaSoft)</authors>
     <owners>Jan Prochazka (JenaSoft)</owners>
-    <projectUrl>http://dbshell.org</projectUrl>
+    <projectUrl>https://github.com/dbshell/dbshell</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>DbShell - PostgreSQLL driver.</description>
-    <releaseNotes>First release.</releaseNotes>
+    <releaseNotes>Improvements</releaseNotes>
     <copyright>Copyright 2018</copyright>
     <tags>SQL Database Postgres</tags>
     <dependencies>
