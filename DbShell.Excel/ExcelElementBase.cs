@@ -16,7 +16,7 @@ namespace DbShell.Excel
         /// Excel variable name
         /// </summary>
         [XamlProperty]
-        public string Name { get; set; }
+        public string VariableName { get; set; }
 
         protected ExcelModel GetModel(IShellContext context)
         {
@@ -25,8 +25,8 @@ namespace DbShell.Excel
 
         protected string GetExcelVariableName(IShellContext context)
         {
-            if (String.IsNullOrEmpty(Name)) return "DefaultExcel";
-            return context.Replace(Name);
+            if (String.IsNullOrEmpty(VariableName)) return "DefaultExcel";
+            return context.Replace(VariableName);
         }
     }
 }

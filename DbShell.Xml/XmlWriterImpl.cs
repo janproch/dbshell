@@ -12,19 +12,17 @@ namespace DbShell.Xml
         private ICdlValueFormatter _formatter;
         private DataFormatSettings _dataFormat;
         private bool _useAttributes;
+        private bool _closeWriter;
+        private string _rowElementName;
 
-        public XmlWriterImpl(string file, string rootName, DataFormatSettings dataFormat, bool useAttributes)
+        public XmlWriterImpl(System.Xml.XmlWriter writer, bool closeWriter, DataFormatSettings dataFormat, bool useAttributes, string rowElementName)
         {
-            var settings = new System.Xml.XmlWriterSettings
-            {
-                Indent = true,
-            };
-            _writer = System.Xml.XmlWriter.Create(file, settings);
-            _writer.WriteStartDocument();
-            _writer.WriteStartElement(String.IsNullOrEmpty(rootName) ? "Data" : rootName);
+            _writer = writer;
             _dataFormat = dataFormat;
             _formatter = new CdlValueFormatter(_dataFormat ?? new DataFormatSettings());
             _useAttributes = useAttributes;
+            _closeWriter = closeWriter;
+            _rowElementName = rowElementName;
         }
 
         public void Dispose()
@@ -34,14 +32,15 @@ namespace DbShell.Xml
                 Disposing();
                 Disposing = null;
             }
-            _writer.WriteEndElement();
-            _writer.WriteEndDocument();
-            _writer.Dispose();
+            if (_closeWriter)
+            {
+                XmlWriter.CloseWriter(_writer);
+            }
         }
 
         public void Write(ICdlRecord row)
         {
-            _writer.WriteStartElement("Row");
+            _writer.WriteStartElement(_rowElementName ?? "Row");
             for(int i = 0; i < row.FieldCount; i++)
             {
                 string name = row.GetName(i);

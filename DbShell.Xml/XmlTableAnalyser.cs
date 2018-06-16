@@ -113,6 +113,19 @@ namespace DbShell.Xml
             //internal int StructuredChildrenCount => Children.Values.Count(x => x.IsStructured);
         }
 
+        public static List<string> GetCollections(List<XmlReadInstructions> instructions)
+        {
+            var res = new List<string>();
+            foreach (var instruction in instructions)
+            {
+                if (instruction.CollectionName != null && !res.Contains(instruction.CollectionName))
+                {
+                    res.Add(instruction.CollectionName);
+                }
+            }
+            return res;
+        }
+
         public static TableInfo GetRowFormat(List<XmlReadInstructions> instructions)
         {
             var res = new TableInfo(null);
