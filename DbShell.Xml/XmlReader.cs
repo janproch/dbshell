@@ -35,7 +35,6 @@ namespace DbShell.Xml
         [XamlProperty]
         public List<XmlReadInstructions> Instructions { get; set; } = new List<XmlReadInstructions>();
 
-
         /// <summary>
         /// xpath, where rows are stored (use instructions for multiple xpaths)
         /// </summary>
